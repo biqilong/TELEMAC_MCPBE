@@ -1470,6 +1470,10 @@ files: declarations_telemac3d.f
   sumver.f
   wave_equation.F
   telemac3d.F
+  floc_wchu_2cpbe.f
+  floc_wchu_3cpbe.f
+  floc_kinetics_2cpbe.f
+  floc_kinetics_3cpbe.f
 
 [tomawac]
 path: <root>|sources|tomawac
