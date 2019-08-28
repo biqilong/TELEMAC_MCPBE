@@ -810,9 +810,13 @@
       INTEGER HIND_TYPE
 !
 !>    Floculation method: 1: apply reduction due to turbulent breakup of
-!!    flocs; 2: Soulsby floculation model
+!!    flocs; 2: Soulsby floculation model; 3: MCPBE flocculation model
 !
       INTEGER FLOC_TYPE
+!
+!>    MCPBE Floculation model: 
+!!    1: 2-class 3-equation model; 2: 3-class 4-equation model;3: 3-class 5-equation model
+      INTEGER MCPBE_VER
 !
 !>    Type of waves (regular or irregular)
 !
@@ -825,6 +829,9 @@
 !>    Option for finite volumes (see cvtrvf)
 !
       INTEGER OPTVF_GAI
+!
+!>    Index used in MCPBE flocculation model
+      INTEGER IMICFLC,IMACFLC,IMEGFLC,IMICF_MACF,IMICF_MEGF
 !
 !-----------------------------------------------------------------------
 !
@@ -1217,6 +1224,59 @@
 !>    Threshold concentration for hindered settling
 !
       DOUBLE PRECISION :: CINI
+!
+!>    MCPBE, Fractal dimension of macroflocs and megaflocs
+!
+      DOUBLE PRECISION :: FRACDIM_MAC, FRACDIM_MEG
+!
+!>    Size of microflocs and megaflocs
+!
+      DOUBLE PRECISION :: FLOCMIC_DIAFIX, FLOCMEG_DIAFIX
+!
+!>    Density of microflocs
+!
+      DOUBLE PRECISION :: FLOCMIC_DEN
+!
+!>    Fraction of created microflocs by macrofloc breakup, and by megafloc breakup
+!
+      DOUBLE PRECISION :: BRKFRAC_P1, BRKFRAC_P2
+!
+!>    Fraction of remaining megaflocs during a larger megafloc breakup
+!
+      DOUBLE PRECISION :: BRKFRAC_F2
+!
+!>    Number of created macroflocs by macrofloc breakup, and by megafloc breakup
+!
+      DOUBLE PRECISION :: BRK_K1, BRK_K2
+!
+!>    Number of created megaflocs by a larger megafloc breakup
+!
+      DOUBLE PRECISION :: BRK_K3
+!
+!>    Collision efficiency, breakup efficiency
+!
+      DOUBLE PRECISION :: AGG_ALPHA, BRK_EFF
+!
+!>    Floc yield strength
+!
+      DOUBLE PRECISION :: BRK_FY
+!
+!>    Floc breakup frequency coefficient
+!
+      DOUBLE PRECISION :: BRK_Q
+!
+!>    Boltzmann constant
+!
+      DOUBLE PRECISION :: KBOLZ
+!
+!>    Temperature used in mcpbe model
+!
+      DOUBLE PRECISION :: TEMPSTD
+!
+!>    initial number conc. of microflocs bounded in macroflocs and megaflocs
+!
+      DOUBLE PRECISION :: NC1_INI,NC2_INI
+!
 !-----------------------------------------------------------------------
 !
 !       7) STRINGS

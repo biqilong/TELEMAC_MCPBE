@@ -950,6 +950,18 @@
 !
       TYPE(BIEF_OBJ), TARGET :: TB2
 !
+!>    Size of microflocs in case of 3CPBE
+!
+      TYPE(BIEF_OBJ), TARGET :: FLOCMIC_DIA
+!
+!>    Size and density of macroflocs
+!
+      TYPE(BIEF_OBJ), TARGET :: FLOCMAC_DIA, FLOCMAC_DEN
+!
+!>    Size and density of megaflocs
+!
+      TYPE(BIEF_OBJ), TARGET :: FLOCMEG_DIA, FLOCMEG_DEN
+!
 !
 !     CALCULATED VARIABLES FOR THE COUPLING TOMAWAC/TELEMAC3D
 !

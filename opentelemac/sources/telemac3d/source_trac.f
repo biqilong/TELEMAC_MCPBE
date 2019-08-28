@@ -52,6 +52,7 @@
       USE DECLARATIONS_TELEMAC3D
       USE INTERFACE_WAQTEL
       USE INTERFACE_TELEMAC3D,EX_SOURCE_TRAC =>SOURCE_TRAC
+      USE DECLARATIONS_GAIA, ONLY: FLOC,FLOC_TYPE,MCPBE_VER
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -109,6 +110,18 @@
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM SOURCE_WAQ'
 !
       ENDIF
+!
+!***********************************************************************
+!     FOR COUPLING WITH GAIA, WHEN MCPBE FLOCCULATION MODEL IS ENABLED
+!***********************************************************************
+!
+      IF(INCLUS(COUPLING,'GAIA'))THEN
+        IF(FLOC .AND. FLOC_TYPE.EQ.3) THEN
+          IF(MCPBE_VER.EQ.1) CALL FLOC_KINETICS_2CPBE
+          IF(MCPBE_VER.GE.2) CALL FLOC_KINETICS_3CPBE
+        ENDIF
+      ENDIF
+
 !
 !-----------------------------------------------------------------------
 !

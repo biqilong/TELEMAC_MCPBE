@@ -1840,13 +1840,15 @@ AIDE =
 'Formule pour floculation :
 \begin{itemize}
 \item 1: Van Leussen ;
-\item 2: Soulsby et  al. (2013).
+\item 2: Soulsby et  al. (2013);
+\item 3: MCPBE (KU Leuven).
 \end{itemize}'
 AIDE1 =
 'Type of flocculation formula:
 \begin{itemize}
 \item 1: Van Leussen,
-\item 2: Soulsby et  al. (2013).
+\item 2: Soulsby et  al. (2013);
+\item 3: MCPBE (KU Leuven).
 \end{itemize}'
 /
 NOM = 'COEFFICIENT TRADUISANT LA FORMATION DES FLOCS'
@@ -1904,6 +1906,382 @@ is modelled, this coefficient traduces the breaking of flocs by
 turbulence (coefficient $b$ of Van Leussen formula).
 Value to be imposed if
 \telkey{INFLUENCE OF TURBULENCE ON SETTLING VELOCITY} = YES.'
+/
+NOM = 'MCPBE VERSION'
+NOM1 = 'MCPBE VERSION'
+TYPE = INTEGER
+INDEX = 80
+TAILLE = 1
+DEFAUT = 1
+DEFAUT1 = 1
+MNEMO = 'MCPBE\_VER'
+RUBRIQUE = 
+'FLOCULATION';'FORMULE POUR FLOCULATION'
+RUBRIQUE1 = 
+'FLOCCULATION';'FLOCCULATION FORMULA'
+NIVEAU = 1
+AIDE = 
+'Versions of MCPBE flocculation model:
+\begin{itemize}
+\item 1: TCPBE (3 eqs.);
+\item 2: 3CPBE (4 eqs.);
+\item 3: 3CPBE (5 eqs.).
+\end{itemize}'
+AIDE1 = 
+'Versions of MCPBE flocculation model:
+\begin{itemize}
+\item 1: TCPBE (3 eqs.);
+\item 2: 3CPBE (4 eqs.);
+\item 3: 3CPBE (5 eqs.).
+\end{itemize}'
+/
+NOM = 'FRACTAL DIMENSION OF MACROFLOCS'
+NOM1 = 'FRACTAL DIMENSION OF MACROFLOCS'
+TYPE = REAL
+INDEX = 81
+TAILLE = 1
+DEFAUT = 2.3
+DEFAUT1 = 2.3
+MNEMO = 'FRACDIM\_MAC'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'ranges from 1 to 3, suggest set as a constant 
+for all flocs at the moment'
+AIDE1 =
+'ranges from 1 to 3, suggest set as a constant 
+for all flocs at the moment'
+/
+NOM = 'FRACTAL DIMENSION OF MEGAFLOCS'
+NOM1 = 'FRACTAL DIMENSION OF MEGAFLOCS'
+TYPE = REAL
+INDEX = 82
+TAILLE = 1
+DEFAUT = 2.3
+DEFAUT1 = 2.3
+MNEMO = 'FRACDIM\_MEG'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'ranges from 1 to 3, suggest set as a constant 
+for all flocs at the moment'
+AIDE1 =
+'ranges from 1 to 3, suggest set as a constant 
+for all flocs at the moment'
+/
+NOM = 'SIZE OF MICROFLOCS'
+NOM1 = 'SIZE OF MICROFLOCS'
+TYPE = REAL
+INDEX = 83
+TAILLE = 1
+DEFAUT = 50.E-6
+DEFAUT1 = 50.E-6
+MNEMO = 'FLOCMIC\_DIAFIX'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'size of microflocs, ~4-30 micron'
+AIDE1 =
+'size of microflocs, ~4-30 micron'
+/
+NOM = 'SIZE OF MEGAFLOCS'
+NOM1 = 'SIZE OF MEGAFLOCS'
+TYPE = REAL
+INDEX = 84
+TAILLE = 1
+DEFAUT = 350.E-6
+DEFAUT1 = 350.E-6
+MNEMO = 'FLOCMEG\_DIAFIX'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'size of megaflocs, ~200-400 micron, only used for 
+fixed 3rd class in the 3-class 4-equation model'
+AIDE1 =
+'size of megaflocs, ~200-400 micron, only used for 
+fixed 3rd class in the 3-class 4-equation model'
+/
+NOM = 'MICROFLOC DENSITY'
+NOM1 = 'MICROFLOC DENSITY'
+TYPE = REAL
+INDEX = 85
+TAILLE = 1
+DEFAUT = 2200.
+DEFAUT1 = 2200.
+MNEMO = 'FLOCMIC\_DEN'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'density of microflocs, ~1600-2650 kg/m3'
+AIDE1 =
+'density of microflocs, ~1600-2650 kg/m3'
+/
+NOM = 'FRACTION OF CREATED MICROFLOCS BY MACROFLOC BREAKUP'
+NOM1 = 'FRACTION OF CREATED MICROFLOCS BY MACROFLOC BREAKUP'
+TYPE = REAL
+INDEX = 86
+TAILLE = 1
+DEFAUT = 0.1
+DEFAUT1 = 0.1
+MNEMO = 'BRKFRAC\_P1'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'mass fraction of created microflocs when a macrofloc breaks up'
+AIDE1 =
+'mass fraction of created microflocs when a macrofloc breaks up'
+/
+NOM = 'FRACTION OF CREATED MICROFLOCS BY MEGAFLOC BREAKUP'
+NOM1 = 'FRACTION OF CREATED MICROFLOCS BY MEGAFLOC BREAKUP'
+TYPE = REAL
+INDEX = 87
+TAILLE = 1
+DEFAUT = 0.1
+DEFAUT1 = 0.1
+MNEMO = 'BRKFRAC\_P2'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'mass fraction of created microflocs when a megafloc breaks up'
+AIDE1 =
+'mass fraction of created microflocs when a megafloc breaks up'
+/
+NOM = 'FRACTION OF REMAINING MEGAFLOCS DURING MEGAFLOC BREAKUP'
+NOM1 = 'FRACTION OF REMAINING MEGAFLOCS DURING MEGAFLOC BREAKUP'
+TYPE = REAL
+INDEX = 88
+TAILLE = 1
+DEFAUT = 0.0
+DEFAUT1 = 0.0
+MNEMO = 'BRKFRAC\_F2'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'mass fraction of remaining megaflocs when a larger megafloc breaks up'
+AIDE1 =
+'mass fraction of remaining megaflocs when a larger megafloc breaks up'
+/
+NOM = 'NUMBER OF CREATED MACROFLOCS BY MACROFLOC BREAKUP'
+NOM1 = 'NUMBER OF CREATED MACROFLOCS BY MACROFLOC BREAKUP'
+TYPE = REAL
+INDEX = 89
+TAILLE = 1
+DEFAUT = 2.
+DEFAUT1 = 2.
+MNEMO = 'BRK\_K1'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'number of created macroflocs when a parent macroflocs breaks up'
+AIDE1 =
+'number of created macroflocs when a parent macroflocs breaks up'
+/
+NOM = 'NUMBER OF CREATED MACROFLOCS BY MEGAFLOC BREAKUP'
+NOM1 = 'NUMBER OF CREATED MACROFLOCS BY MEGAFLOC BREAKUP'
+TYPE = REAL
+INDEX = 90
+TAILLE = 1
+DEFAUT = 2.
+DEFAUT1 = 2.
+MNEMO = 'BRK\_K2'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'number of created macroflocs when a megaflocs breaks up'
+AIDE1 =
+'number of created macroflocs when a megaflocs breaks up'
+/
+NOM = 'NUMBER OF CREATED MEGAFLOCS BY MEGAFLOC BREAKUP'
+NOM1 = 'NUMBER OF CREATED MEGAFLOCS BY MEGAFLOC BREAKUP'
+TYPE = REAL
+INDEX = 91
+TAILLE = 1
+DEFAUT = 0.
+DEFAUT1 = 0.
+MNEMO = 'BRK\_K3'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'number of created megaflocs when a larger megaflocs breaks up'
+AIDE1 =
+'number of created megaflocs when a larger megaflocs breaks up'
+/
+NOM = 'COLLISION EFFICIENCY'
+NOM1 = 'COLLISION EFFICIENCY'
+TYPE = REAL
+INDEX = 92
+TAILLE = 1
+DEFAUT = 0.2
+DEFAUT1 = 0.2
+MNEMO = 'AGG\_ALPHA'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'collision efficiency based on the data fitting'
+AIDE1 =
+'collision efficiency based on the data fitting'
+/
+NOM = 'BREAKUP EFFICIENCY'
+NOM1 = 'BREAKUP EFFICIENCY'
+TYPE = REAL
+INDEX = 93
+TAILLE = 1
+DEFAUT = 1.E-04
+DEFAUT1 = 1.E-04
+MNEMO = 'BRK\_EFF'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'breakup efficiency based on the data fitting'
+AIDE1 =
+'breakup efficiency based on the data fitting'
+/
+NOM = 'FLOC YIELD STRENGTH'
+NOM1 = 'FLOC YIELD STRENGTH'
+TYPE = REAL
+INDEX = 94
+TAILLE = 1
+DEFAUT = 1.E-10
+DEFAUT1 = 1.E-10
+MNEMO = 'BRK\_FY'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'floc yield strength'
+AIDE1 =
+'floc yield strength'
+/
+NOM = 'FLOC BREAKUP FREQUENCY COEFFICIENT'
+NOM1 = 'FLOC BREAKUP FREQUENCY COEFFICIENT'
+TYPE = REAL
+INDEX = 95
+TAILLE = 1
+DEFAUT = 5.E-01
+DEFAUT1 = 5.E-01
+MNEMO = 'BRK\_Q'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'Parameter in the floc breakup frequency function'
+AIDE1 =
+'Parameter in the floc breakup frequency function'
+/
+NOM = 'BOLTZMANN CONSTANT'
+NOM1 = 'BOLTZMANN CONSTANT'
+TYPE = REAL
+INDEX = 96
+TAILLE = 1
+DEFAUT = 1.38E-23
+DEFAUT1 = 1.38E-23
+MNEMO = 'KBOLZ'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'Boltzmann constant'
+AIDE1 =
+'Boltzmann constant'
+/
+NOM = 'TEMPERATURE USED IN MCPBE MODEL'
+NOM1 = 'TEMPERATURE USED IN MCPBE MODEL'
+TYPE = REAL
+INDEX = 97
+TAILLE = 1
+DEFAUT = 283.
+DEFAUT1 = 283.
+MNEMO = 'TEMPSTD'
+RUBRIQUE =
+'FLOCULATION';'MCPBE\_VER'
+RUBRIQUE1 =
+'FLOCCULATION';'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'temperature used in mcpbe model'
+AIDE1 =
+'temperature used in mcpbe model'
+/
+NOM = 'INI. NUMBER CONC. OF MICROFLOCS BOUNDED IN MACROFLOCS'
+NOM1 = 'INI. NUMBER CONC. OF MICROFLOCS BOUNDED IN MACROFLOCS'
+TYPE = REAL
+INDEX = 98
+TAILLE = 1
+DEFAUT = 20.
+DEFAUT1 = 20.
+MNEMO = 'NC1_INI'
+RUBRIQUE =
+‘FLOCULATION’;'MCPBE\_VER'
+RUBRIQUE1 =
+‘FLOCCULATION’;'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'initial number conc. of microflocs bounded in macroflocs'
+AIDE1 =
+'initial number conc. of microflocs bounded in macroflocs'
+/
+NOM = 'INI. NUMBER CONC. OF MICROFLOCS BOUNDED IN MEGAFLOCS'
+NOM1 = 'INI. NUMBER CONC. OF MICROFLOCS BOUNDED IN MEGAFLOCS'
+TYPE = REAL
+INDEX = 99
+TAILLE = 1
+DEFAUT = 100.
+DEFAUT1 = 100.
+MNEMO = 'NC2_INI'
+RUBRIQUE =
+‘FLOCULATION’;'MCPBE\_VER'
+RUBRIQUE1 =
+‘FLOCCULATION’;'MCPBE\_VER'
+NIVEAU = 1
+AIDE =
+'initial number conc. of microflocs bounded in megaflocs'
+AIDE1 =
+'initial number conc. of microflocs bounded in megaflocs'
 /
 NOM = 'MAXIMUM D''ITERATIONS POUR LE SOLVEUR POUR LA SUSPENSION'
 NOM1 = 'MAXIMUM NUMBER OF ITERATIONS FOR SOLVER FOR SUSPENSION'
