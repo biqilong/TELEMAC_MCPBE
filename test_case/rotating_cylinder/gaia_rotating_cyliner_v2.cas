@@ -1,0 +1,60 @@
+/---------------------------------------------------------------------
+/                            GAIA
+/---------------------------------------------------------------------
+/ GENERAL
+/---------------------------------------------------------------------
+/
+TITLE = 'Schematize_Scheldt_Estuary'
+
+GEOMETRY FILE            = geo_rotating_cylinder_v2.slf
+BOUNDARY CONDITIONS FILE = bc_rotating_cylinder_v2.cli
+RESULTS FILE             = r2D_gaia_rotating_cylinder_v2.slf
+
+VARIABLES FOR GRAPHIC PRINTOUTS = 'U,V,S,H,B,E,TOB,M,QSBL'
+MASS-BALANCE = YES
+DEBUGGER = 0
+
+/---------------------------------------------------------------------
+/ NUMERICAL PARAMETERS
+/---------------------------------------------------------------------
+/
+ZERO = 1e-12
+MINIMAL VALUE OF THE WATER HEIGHT = 0.001
+
+/---------------------------------------------------------------------
+/ PHYSICAL PARAMETERS
+/---------------------------------------------------------------------
+CLASSES TYPE OF SEDIMENT    = CO;CO;CO
+CLASSES SEDIMENT DENSITY    = 2000.0;2000.0;2000.0
+CLASSES SEDIMENT DIAMETERS  = 0.00002;0.00002;0.00002
+/CLASSES SETTLING VELOCITIES = 0.002;0.002;0.002
+CLASSES INITIAL FRACTION    = 1.0;0.0;0.0
+
+FLOCCULATION         = YES
+FLOCCULATION FORMULA = 3
+MCPBE VERSION        = 2
+
+NUMBER OF LAYERS FOR INITIAL STRATIFICATION = 1
+LAYERS INITIAL THICKNESS                    = 0.0
+
+/Bedload computation
+BED LOAD FOR ALL SANDS = NO
+SLOPE EFFECT           = YES
+BED-LOAD TRANSPORT FORMULA FOR ALL SANDS = 7
+LAYERS NON COHESIVE BED POROSITY = 0.375
+CLASSES SHIELDS PARAMETERS       = 0.1;0.1;0.1;0.1
+
+/Suspended load computation
+SUSPENSION FOR ALL SANDS =  NO
+SOLVER FOR DIFFUSION OF SUSPENSION = 7
+MAXIMUM NUMBER OF ITERATIONS FOR SOLVER FOR SUSPENSION = 200
+LAYERS MUD CONCENTRATION           = 500.0
+LAYERS CRITICAL EROSION SHEAR STRESS OF THE MUD = 0.05
+CLASSES CRITICAL SHEAR STRESS FOR MUD DEPOSITION = 1000.0
+
+LAYERS PARTHENIADES CONSTANT = 0.5D-03
+
+SKIN FRICTION CORRECTION = 0
+
+ADVECTION-DIFFUSION SCHEME WITH SETTLING VELOCITY = 0
+/
