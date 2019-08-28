@@ -1,0 +1,170 @@
+\renewcommand{\labelitemi}{$\triangleright$}
+
+\chapter{Growth of frazil ice}
+%
+% - Purpose & Problem description:
+%     These first two parts give reader short details about the test case,
+%     the physical phenomena involved and specify how the numerical solution will be validated
+%
+\section{Purpose}
+This test case has been purposefully setup to demonstrate that \khione is capable of correctly growing frazil ice when the air temperature is sufficiently cold.\newline
+
+A linear thermal budget formulation is used with an air temperature set to -10~[degC]. Water is running down a flat flume over 10~[km] long at a gentle slope of 1:10,000.\newline
+
+The model is driven by coupling three steering files. No Fortran file is required.
+
+~\newline
+\section{Model setup}
+
+\subsection{Domain}
+The domain is a long flat-bottom flume, boxed within (0,0) and (150,10,000), its length being 10~[km] along the x-axis and its width being 150~[m] along the y-axis. The channel has a slope of 1:10,000 between the elevation 5~[m] (upstream) and 4~[m] (downstream).
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphicsmaybe{[scale=0.40]}{../img/bottom.png}
+    \end{center}
+    \caption{Bottom elevation}
+    \label{fig:growth_bottom}
+\end{figure}
+
+\subsection{Mesh}
+The mesh of the domain was created with a uniform density of about 0.35~m, resulting in a mesh with 4,800 elements and 2,807 vertices. (see figure \ref{fig:growth_mesh}).
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphicsmaybe{[scale=0.40]}{../img/mesh.png}
+    \end{center}
+    \caption{Domain mesh}
+    \label{fig:growth_mesh}
+\end{figure}
+
+\subsection{Boundary definitions}
+There are two solid boundaries and 2 open boundaries.\newline
+
+The solid boundaries are on either side of the length of the flume, considered as solid walls with perfect slip conditions (condition 2 2 2).
+The open boundaries are at (x=0) for the upstream and at (x=10,000) for the downstream of the flume. A constant discharge of 300~[m$^3$/s] is imposed at the upstream boundary. A constant water level is set at 6.6265~[m] at the downstream boundary.\newline
+
+A first simulation is carried out with for the hydrodynamics only to get to a steady state equilibrium of a constant and uniform water depth of 6.6265~[m] and a constant and uniform discharge of 300~[m$^3$/s] along the entire length of the flume.
+
+\subsection{Coupling}
+The simulation calls on the thermal exchanges between the atmosphere and the water as computed within \khione. The simulation is, therefore, coupled with \khione. Additionally, because some of the properties of the water and tracer temperature are computed within \waqtel, the simulation is also coupled with \waqtel, although none of its processes are activated.
+\begin{itemize}
+    \item\textit{COUPLING WITH = 'WAQTEL;KHIONE'}
+    \item\textit{WATER QUALITY PROCESS = 1}, no processes activated within \waqtel
+    \item\textit{ICE PROCESSES = 2}, thermal budget and frazil growth process activated within \khione
+\end{itemize}
+One tracer is used to hold water temperature. The second tracer is used to hold frazil ice concentration.
+
+\subsection{Initial conditions}
+A hydrodynamics steady state condition is established first separately to reach a constant and uniform water depth of 6.6265~[m] and a constant and uniform discharge of 300~[m$^3$/s].\newline
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphicsmaybe{[scale=0.40]}{../img/l-section.png}
+    \end{center}
+    \caption{Domain mesh}
+    \label{fig:growth_profile}
+\end{figure}
+
+Water temperature is initially set at 0.05~$^\circ C$. Frazil concentration is set at 0~[SI]. These values are also used for the upstream boundary condition.
+
+% - Physical parameters:
+%     This part details all the physical properties of the water, its 
+%     content and its physcial forcing.
+%
+\subsection{Physical parameters}
+%
+Physical properties are set through three steering files, for which \telemac2D is coupled with \waqtel and with \khione.
+
+In relation to \telemac2D (within the \telemac2D steering file), there is no advection of tracer (since the water remains at rest in the box) and the diffusion is turned off through:
+\begin{itemize}
+\item\textit{DIFFUSION OF TRACERS = NO}
+\item\textit{COEFFICIENT FOR DIFFUSION OF TRACERS = 0.}
+\end{itemize}
+Additionally, the tidal flats are turned off:
+\begin{itemize}
+    \item\textit{TIDAL FLATS = NO}
+\end{itemize}
+In order to balance the slope and the discharge through the flume, a friction law is used, based on the Manning coefficient:
+\begin{itemize}
+    \item\textit{LAW OF BOTTOM FRICTION = 4}
+    \item\textit{FRICTION COEFFICIENT = 0.025}
+\end{itemize}
+
+In relation to \waqtel (within the \waqtel steering file), the following physical properties are set:
+\begin{itemize}
+    \item\textit{WATER DENSITY = 1000.}
+    \item\textit{KINEMATIC WATER VISCOSITY = 1.E-6}
+%    \item\textit{DISPERSION ALONG THE FLOW = 1.E-2}
+%    \item\textit{DISPERSION ACROSS THE FLOW = 1.E-2}
+    \item\textit{ATMOSPHERE-WATER EXCHANGE MODEL = 3}, referring to the linear thermal budget formulation
+%    \item\textit{COEFFICIENT TO CALIBRATE THE ATMOSPHERE-WATER EXCHANGE MODEL = 0.0025}
+    \item\textit{WATER SPECIFIC HEAT = 4180.}
+    \item\textit{AIR SPECIFIC HEAT = 1002.}
+\end{itemize}
+
+In relation to \khione (within the \khione steering file), the following physical defaults values for atmospheric inputs are set: 
+\begin{itemize}
+    \item\textit{AIR TEMPERATURE      = -10.0}
+    \item\textit{DEWPOINT TEMPERATURE =   0.0}
+    \item\textit{CLOUD COVER          =   0.0}
+    \item\textit{VISIBILITY           =   1.E9}
+    \item\textit{RAIN                 =   0.0}
+%    \item\textit{WIND XY-COMPONENTS   =   5.;3.}
+    \item\textit{RELATIVE MODEL ELEVATION FROM MEAN SEA LEVEL = 80.}
+\end{itemize}
+
+\subsection{Numerical parameters}
+Only two numerical parameters are essential to the simulation. These are defined in the \telemac2D steering file:
+\begin{itemize}
+\item\textit{TIME STEP = 2.}
+\item\textit{NUMBER OF TIME STEPS = 18000}
+\end{itemize}
+The total duration of the simulation is, therefore, 24~hours.
+
+~\newline
+\section{Results}
+The following figure (Figure \ref{fig:growth_temp}) shows a longitudinal profile of water temperature (blue) and frazil concentration (growth) along the full length of the flume.
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphicsmaybe{[scale=0.50]}{../img/frazil-profile.png}
+    \end{center}
+    \caption{Water temperature and frazil growth along the flume}
+    \label{fig:growth_temp}
+\end{figure}
+
+As the water temperature goes below 0$^\circ C$, the creation of frazil floes cools down the water temperature further to a super-cool temperature. In turn, further growth of frazil ice release latent heat, which heats up again water to a temperature just below 0$^\circ C$.
+
+Higher details of the frazil concentration is shown in the figure below (Figure \ref{fig:growth_frazil}) as a coloured map.
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphicsmaybe{[scale=0.40]}{../img/frazil-map.png}
+    \end{center}
+    \caption{Growth of frazil floes}
+    \label{fig:growth_frazil}
+\end{figure}
+
+~\newline
+\section{Conclusions}
+
+The variation in water temperature over the length of the flume highlights the correct process when frazil ice is created and grows with a longer exposure to the cold air temperature. Coming in the flume at 0.05$^\circ C$, the longer water is exposed to the cold air temperature the cooler (or super-cooler) it gets until frazil floes starts to appear.
+
+~\newline
+\section{Steering files}
+
+
+\subsection{\telemac2D}
+\lstinputlisting[language=TelemacCas]{../t2d_frazil.cas}
+
+
+\subsection{\waqtel}
+\lstinputlisting[language=TelemacCas]{../waq_frazil.cas}
+
+
+\subsection{\khione}
+\lstinputlisting[language=TelemacCas]{../ice_frazil.cas}
+
+
+\renewcommand{\labelitemi}{\textbullet}

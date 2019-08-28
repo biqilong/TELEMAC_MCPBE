@@ -1,0 +1,16 @@
+\begin{todolist}
+\setlength\itemsep{0.01em}
+\item Create the branch \textbf{vXpY} from the trunk.
+  \item Update the \verb!NEWS.txt!. Replace trunk section by section
+    \textbf{vXpY}.
+  \item In \verb!documentation/data/TelemacDocs.cls! change the command
+    \verb!\telmaversion! to \textbf{vXpY}.
+  \item In \verb!sources/utils/special/declarations_special.f! change the
+    parameter VERSION to \textbf{vXpY}.
+  \item In \verb!configs/systel.edf.cfg! change version to \textbf{vXpY}.
+  \item Run \verb!validateTELEMAC.py!.
+  \item Run \verb!docTELEMAC.py!.
+  \item Add all the generated documentation to repository.
+  \item Run \verb!damocles.py --eficas!.
+  \item Add the \verb!scripts/python27/eficas! folder to the repository.
+\end{todolist}

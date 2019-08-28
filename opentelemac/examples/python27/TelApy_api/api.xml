@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<validation xref="api" rank="5" tags="python2">
+
+<!-- Extras and Meta Data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <deco xref="default">
+      <look format="png" colourbar="jet.xml" />
+      <data title="api" author="Y.Audouin" contact="www.opentelemac.org" />
+   </deco>
+
+<!-- Actions based on python scripts ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <action xref="vnv_t2d"
+      do="python gouttedo.py" code="exec"
+	    target="gouttedo.py"
+      title="Telemac2d api run of gouttedo"
+   />
+   <action xref="t2d-par"
+      do="mpirun -n 4 python gouttedo.py" code="exec"
+	    target="gouttedo.py"
+      title="Telemac2d api run of gouttedo"
+   />
+   <action xref="vnv_sis"
+      do="python glissement.py" code="exec"
+	    target="glissement.py"
+      title="Sisyphe api run of glissement"
+   />
+   <action xref="sis-par"
+      do="mpirun -n 4 python glissement.py" code="exec"
+	    target="glissement.py"
+      title="Sisyphe api run of glissement"
+   />
+   <action xref="vnv_wac"
+      do="python dean.py" code="exec"
+	    target="dean.py"
+      title="Tomawac api run of dean"
+   />
+   <action xref="wac-par"
+      do="mpirun -n 4 python dean.py" code="exec"
+	    target="dean.py"
+      title="Tomawac api run of dean"
+   />
+   <action xref="vnv_t3d"
+      do="python gouttedo3d.py" code="exec"
+	    target="gouttedo3d.py"
+      title="Telemac2d api run of gouttedo"
+   />
+   <action xref="t3d-par"
+      do="mpirun -n 4 python gouttedo3d.py" code="exec"
+	    target="gouttedo3d.py"
+      title="Telemac2d api run of gouttedo"
+   />
+   <action xref="vnv_art"
+      do="python bj78.py" code="exec"
+	    target="bj78.py"
+      title="Telemac2d api run of gouttedo"
+   />
+
+<!-- End of Validation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+ </validation>

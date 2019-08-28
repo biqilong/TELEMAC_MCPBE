@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<validation xref="hermes_api" rank="2" tags="python2">
+
+<!-- Extras and Meta Data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <deco xref="default">
+      <look format="png" colourbar="jet.xml" />
+      <data title="hermes_api" author="Y.Audouin" contact="www.opentelemac.org" />
+   </deco>
+
+<!-- Actions based on python scripts ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <action xref="vnv_read_write"
+      do="python read-write.py" code="exec"
+	    target="read-write.py" deprefs="r3d_gouttedo.slf;r2d_gouttedo.slf;geo_gouttedo.med;geo_gouttedo.cli;geo_gouttedo.clm"
+      title="Telemac2d api run of gouttedo"
+   />
+   <action xref="read-write-format"
+      do="python read-write-format.py" code="exec"
+	    target="read-write-format.py" deprefs="r3d_gouttedo.slf;r2d_gouttedo.slf;r3d_gouttedo.med;geo_gouttedo.med"
+      title="Telemac2d api run of gouttedo"
+   />
+
+<!-- End of Validation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+ </validation>

@@ -1,0 +1,1583 @@
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!brief GETTER/SETTER OF TELEMAC3D VARIABLES
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+!history Y AUDOUIN (EDF R&D, LNHE)
+!+       21/08/2013
+!+       V6P3
+!+       Creation of the file
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+      MODULE API_HANDLE_VAR_T3D
+
+        USE API_HANDLE_ERROR
+        USE API_INSTANCE_T3D
+        IMPLICIT NONE
+        ! Size of the string containing the name of a variable
+        INTEGER, PARAMETER :: T3D_VAR_LEN=40
+        ! Size of the string containing the type of a variable
+        INTEGER, PARAMETER :: T3D_TYPE_LEN=12
+        ! Size of the string containing the information about a variable
+        INTEGER, PARAMETER :: T3D_INFO_LEN=200
+        ! The maximum number of variable
+        INTEGER, PARAMETER :: NB_VAR_T3D=57
+!
+        CHARACTER(LEN=T3D_VAR_LEN),ALLOCATABLE :: VNAME_T3D(:)
+        CHARACTER(LEN=T3D_INFO_LEN),ALLOCATABLE :: VINFO_T3D(:)
+!
+      CONTAINS
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET A DOUBLE ARRAY
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_DOUBLE_ARRAY_T3D_D
+     &     (INST, VARNAME, VALEUR, DIM1, IERR)
+!
+        TYPE(INSTANCE_T3D),         INTENT(IN) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN) :: VARNAME
+        INTEGER,                    INTENT(IN) :: DIM1
+        DOUBLE PRECISION,           INTENT(OUT):: VALEUR(DIM1)
+        INTEGER,                    INTENT(OUT):: IERR
+!
+        IERR = 0
+!
+        IF(TRIM(VARNAME).EQ.'MODEL.HBOR') THEN
+          VALEUR(1:INST%HBOR%DIM1) = INST%HBOR%R(1:INST%HBOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBOR2D') THEN
+          VALEUR(1:INST%UBOR2D%DIM1) = INST%UBOR2D%R(1:INST%UBOR2D%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBOR2D') THEN
+          VALEUR(1:INST%VBOR2D%DIM1) = INST%VBOR2D%R(1:INST%VBOR2D%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORF') THEN
+          VALEUR(1:INST%UBORF%DIM1) = INST%UBORF%R(1:INST%UBORF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORF') THEN
+          VALEUR(1:INST%VBORF%DIM1) = INST%VBORF%R(1:INST%VBORF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORF') THEN
+          VALEUR(1:INST%WBORF%DIM1) = INST%WBORF%R(1:INST%WBORF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORL') THEN
+          VALEUR(1:INST%UBORL%DIM1) = INST%UBORL%R(1:INST%UBORL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORL') THEN
+          VALEUR(1:INST%VBORL%DIM1) = INST%VBORL%R(1:INST%VBORL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORL') THEN
+          VALEUR(1:INST%WBORL%DIM1) = INST%WBORL%R(1:INST%WBORL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORS') THEN
+          VALEUR(1:INST%UBORS%DIM1) = INST%UBORS%R(1:INST%UBORS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORS') THEN
+          VALEUR(1:INST%VBORS%DIM1) = INST%VBORS%R(1:INST%VBORS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORS') THEN
+          VALEUR(1:INST%WBORS%DIM1) = INST%WBORS%R(1:INST%WBORS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.XNEBOR') THEN
+          VALEUR(1:INST%MESH2D%XNEBOR%DIM1) =
+     &    INST%MESH2D%XNEBOR%R(1:INST%MESH2D%XNEBOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.YNEBOR') THEN
+          VALEUR(1:INST%MESH2D%YNEBOR%DIM1) =
+     &    INST%MESH2D%YNEBOR%R(1:INST%MESH2D%YNEBOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WATERDEPTH') THEN
+          VALEUR(1:INST%H%DIM1) = INST%H%R(1:INST%H%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.INCWATERDEPTH') THEN
+          VALEUR(1:INST%DH%DIM1) = INST%DH%R(1:INST%DH%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TA') THEN
+          VALEUR(1:INST%TA%DIM1) = INST%TA%R(1:INST%TA%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYU') THEN
+          VALEUR(1:INST%U%DIM1) = INST%U%R(1:INST%U%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYV') THEN
+          VALEUR(1:INST%V%DIM1) = INST%V%R(1:INST%V%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYW') THEN
+          VALEUR(1:INST%W%DIM1) = INST%W%R(1:INST%W%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.X') THEN
+          VALEUR(1:INST%MESH3D%X%DIM1) =
+     &    INST%MESH3D%X%R(1:INST%MESH3D%X%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.Y') THEN
+          VALEUR(1:INST%MESH3D%Y%DIM1) =
+     &    INST%MESH3D%Y%R(1:INST%MESH3D%Y%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.FLUX_BOUNDARIES') THEN
+          VALEUR(1:SIZE(INST%FLUX_BOUNDARIES)) =
+     &    INST%FLUX_BOUNDARIES(1:SIZE(INST%FLUX_BOUNDARIES))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.COTIMP') THEN
+          VALEUR(1:SIZE(INST%COTIMP)) = INST%COTIMP(1:SIZE(INST%COTIMP))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VITIMP') THEN
+          VALEUR(1:SIZE(INST%VITIMP)) = INST%VITIMP(1:SIZE(INST%VITIMP))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBIMP') THEN
+          VALEUR(1:SIZE(INST%DEBIMP)) = INST%DEBIMP(1:SIZE(INST%DEBIMP))
+        ! <get_double_array>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE GET_DOUBLE_ARRAY_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF DEFINES THE VALUE OF A DOUBLE ARRAY
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE SET_DOUBLE_ARRAY_T3D_D
+     &     (INST, VARNAME, VALEUR, DIM1, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(INOUT) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(IN) :: DIM1
+        DOUBLE PRECISION,      INTENT(IN) :: VALEUR(DIM1)
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.HBOR') THEN
+          INST%HBOR%R(1:INST%HBOR%DIM1) = VALEUR(1:INST%HBOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBOR2D') THEN
+          INST%UBOR2D%R(1:INST%UBOR2D%DIM1) = VALEUR(1:INST%UBOR2D%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBOR2D') THEN
+          INST%VBOR2D%R(1:INST%VBOR2D%DIM1) = VALEUR(1:INST%VBOR2D%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORF') THEN
+          INST%UBORF%R(1:INST%UBORF%DIM1) = VALEUR(1:INST%UBORF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORF') THEN
+          INST%VBORF%R(1:INST%VBORF%DIM1) = VALEUR(1:INST%VBORF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORF') THEN
+          INST%WBORF%R(1:INST%WBORF%DIM1) = VALEUR(1:INST%WBORF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORL') THEN
+          INST%UBORL%R(1:INST%UBORL%DIM1) = VALEUR(1:INST%UBORL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORL') THEN
+          INST%VBORL%R(1:INST%VBORL%DIM1) = VALEUR(1:INST%VBORL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORL') THEN
+          INST%WBORL%R(1:INST%WBORL%DIM1) = VALEUR(1:INST%WBORL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORS') THEN
+          INST%UBORS%R(1:INST%UBORS%DIM1) = VALEUR(1:INST%UBORS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORS') THEN
+          INST%VBORS%R(1:INST%VBORS%DIM1) = VALEUR(1:INST%VBORS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORS') THEN
+          INST%WBORS%R(1:INST%WBORS%DIM1) = VALEUR(1:INST%WBORS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WATERDEPTH') THEN
+          INST%H%R(1:INST%H%DIM1) = VALEUR(1:INST%H%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.INCWATERDEPTH') THEN
+          INST%DH%R(1:INST%DH%DIM1) = VALEUR(1:INST%DH%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TA') THEN
+          INST%TA%R(1:INST%TA%DIM1) = VALEUR(1:INST%TA%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYU') THEN
+          INST%U%R(1:INST%U%DIM1) = VALEUR(1:INST%U%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYV') THEN
+          INST%V%R(1:INST%V%DIM1) = VALEUR(1:INST%V%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYW') THEN
+          INST%W%R(1:INST%W%DIM1) = VALEUR(1:INST%W%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.FLUX_BOUNDARIES') THEN
+          INST%FLUX_BOUNDARIES(1:SIZE(INST%FLUX_BOUNDARIES)) =
+     &    VALEUR(1:SIZE(INST%FLUX_BOUNDARIES))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.COTIMP') THEN
+          INST%COTIMP(1:SIZE(INST%COTIMP)) = VALEUR(1:SIZE(INST%COTIMP))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBIMP') THEN
+          INST%DEBIMP(1:SIZE(INST%DEBIMP)) = VALEUR(1:SIZE(INST%DEBIMP))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VITIMP') THEN
+          INST%VITIMP(1:SIZE(INST%VITIMP)) = VALEUR(1:SIZE(INST%VITIMP))
+        ! <set_double_array>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE SET_DOUBLE_ARRAY_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET AN INTEGER ARRAY
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_INTEGER_ARRAY_T3D_D
+     &     (INST, VARNAME, VALEUR, DIM1, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(IN) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(IN) :: DIM1
+        INTEGER,               INTENT(OUT) :: VALEUR(DIM1)
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.LIHBOR') THEN
+          VALEUR(1:INST%LIHBOR%DIM1) = INST%LIHBOR%I(1:INST%LIHBOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOF') THEN
+          VALEUR(1:INST%LIUBOF%DIM1) = INST%LIUBOF%I(1:INST%LIUBOF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOF') THEN
+          VALEUR(1:INST%LIVBOF%DIM1) = INST%LIVBOF%I(1:INST%LIVBOF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOF') THEN
+          VALEUR(1:INST%LIWBOF%DIM1) = INST%LIWBOF%I(1:INST%LIWBOF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOL') THEN
+          VALEUR(1:INST%LIUBOL%DIM1) = INST%LIUBOL%I(1:INST%LIUBOL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOL') THEN
+          VALEUR(1:INST%LIVBOL%DIM1) = INST%LIVBOL%I(1:INST%LIVBOL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOL') THEN
+          VALEUR(1:INST%LIWBOL%DIM1) = INST%LIWBOL%I(1:INST%LIWBOL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOS') THEN
+          VALEUR(1:INST%LIUBOS%DIM1) = INST%LIUBOS%I(1:INST%LIUBOS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOS') THEN
+          VALEUR(1:INST%LIVBOS%DIM1) = INST%LIVBOS%I(1:INST%LIVBOS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOS') THEN
+          VALEUR(1:INST%LIWBOS%DIM1) = INST%LIWBOS%I(1:INST%LIWBOS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KP1BOR') THEN
+          VALEUR(1:INST%MESH2D%KP1BOR%DIM1) =
+     &    INST%MESH2D%KP1BOR%I(1:INST%MESH2D%KP1BOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NUMLIQ') THEN
+          VALEUR(1:INST%NUMLIQ%DIM1) = INST%NUMLIQ%I(1:INST%NUMLIQ%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NBOR') THEN
+          VALEUR(1:INST%MESH3D%NBOR%DIM1) =
+     &    INST%MESH3D%NBOR%I(1:INST%MESH3D%NBOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
+          VALEUR(1:SIZE(INST%MESH2D%IKLE%I)) =
+     &    INST%MESH2D%IKLE%I(1:SIZE(INST%MESH2D%IKLE%I))
+        ! <get_integer_array>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE GET_INTEGER_ARRAY_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF DEFINES THE VALUE OF AN INTEGER ARRAY
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE SET_INTEGER_ARRAY_T3D_D
+     &     (INST, VARNAME, VALEUR, DIM1, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(INOUT) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(IN) :: DIM1
+        INTEGER,               INTENT(IN) :: VALEUR(DIM1)
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.LIHBOR') THEN
+          INST%LIHBOR%I(1:INST%LIHBOR%DIM1) = VALEUR(1:INST%LIHBOR%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOF') THEN
+          INST%LIUBOF%I(1:INST%LIUBOF%DIM1) = VALEUR(1:INST%LIUBOF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOF') THEN
+          INST%LIVBOF%I(1:INST%LIVBOF%DIM1) = VALEUR(1:INST%LIVBOF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOF') THEN
+          INST%LIWBOF%I(1:INST%LIWBOF%DIM1) = VALEUR(1:INST%LIWBOF%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOL') THEN
+          INST%LIUBOL%I(1:INST%LIUBOL%DIM1) = VALEUR(1:INST%LIUBOL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOL') THEN
+          INST%LIVBOL%I(1:INST%LIVBOL%DIM1) = VALEUR(1:INST%LIVBOL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOL') THEN
+          INST%LIWBOL%I(1:INST%LIWBOL%DIM1) = VALEUR(1:INST%LIWBOL%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOS') THEN
+          INST%LIUBOS%I(1:INST%LIUBOS%DIM1) = VALEUR(1:INST%LIUBOS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOS') THEN
+          INST%LIVBOS%I(1:INST%LIVBOS%DIM1) = VALEUR(1:INST%LIVBOS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOS') THEN
+          INST%LIWBOS%I(1:INST%LIWBOS%DIM1) = VALEUR(1:INST%LIWBOS%DIM1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
+          INST%MESH2D%IKLE%I(1:SIZE(INST%MESH2D%IKLE%I)) =
+     &    VALEUR(1:SIZE(INST%MESH2D%IKLE%I))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.BND_TIDE') THEN
+          INST%BND_TIDE(1:SIZE(INST%BND_TIDE)) =
+     &    VALEUR(1:SIZE(INST%BND_TIDE))
+        ! <set_integer_array>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE SET_INTEGER_ARRAY_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET A DOUBLE VARIABLE FROM TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
+      !PARAM VALEUR    [OUT]    CONTAINS THE READ VALUE
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_DOUBLE_T3D_D
+     &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
+!
+        TYPE(INSTANCE_T3D),         INTENT(IN) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN) :: VARNAME
+        DOUBLE PRECISION,           INTENT(OUT):: VALEUR
+        INTEGER,                    INTENT(IN) :: INDEX1
+        INTEGER,                    INTENT(IN) :: INDEX2
+        INTEGER,                    INTENT(IN) :: INDEX3
+        INTEGER,                    INTENT(OUT):: IERR
+!
+        IERR = 0
+        VALEUR = 0.0
+!
+        IF(TRIM(VARNAME).EQ.'MODEL.HBOR') THEN
+          VALEUR = INST%HBOR%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBOR2D') THEN
+          VALEUR = INST%UBOR2D%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBOR2D') THEN
+          VALEUR = INST%VBOR2D%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORF') THEN
+          VALEUR = INST%UBORF%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORF') THEN
+          VALEUR = INST%VBORF%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORF') THEN
+          VALEUR = INST%WBORF%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORL') THEN
+          VALEUR = INST%UBORL%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORL') THEN
+          VALEUR = INST%VBORL%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORL') THEN
+          VALEUR = INST%WBORL%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORS') THEN
+          VALEUR = INST%UBORS%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORS') THEN
+          VALEUR = INST%VBORS%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORS') THEN
+          VALEUR = INST%WBORS%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.XNEBOR') THEN
+          VALEUR = INST%MESH2D%XNEBOR%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.YNEBOR') THEN
+          VALEUR = INST%MESH2D%YNEBOR%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WATERDEPTH') THEN
+          VALEUR = INST%H%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.INCWATERDEPTH') THEN
+          VALEUR = INST%DH%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TA') THEN
+          VALEUR = INST%TA%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYU') THEN
+          VALEUR = INST%U%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYV') THEN
+          VALEUR = INST%V%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYW') THEN
+          VALEUR = INST%W%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.X') THEN
+          VALEUR = INST%MESH3D%X%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.Y') THEN
+          VALEUR = INST%MESH3D%Y%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.FLUX_BOUNDARIES') THEN
+          VALEUR = INST%FLUX_BOUNDARIES(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.COTIMP') THEN
+          VALEUR = INST%COTIMP(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VITIMP') THEN
+          VALEUR = INST%VITIMP(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.AT') THEN
+          VALEUR = INST%AT
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DUREE') THEN
+          VALEUR = INST%DUREE
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBIMP') THEN
+          VALEUR = INST%DEBIMP(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TIDALRANGE') THEN
+          VALEUR = INST%CTIDE
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TIDALVELOCITY') THEN
+          VALEUR = INST%CTIDEV
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.SEALEVEL') THEN
+          VALEUR = INST%MSL
+        ! <get_double>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE GET_DOUBLE_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF DEFINES THE VALUE OF A DOUBLE VARIABLE OF TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
+      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE SET_DOUBLE_T3D_D
+     &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(INOUT) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        DOUBLE PRECISION,      INTENT(IN) :: VALEUR
+        INTEGER,               INTENT(IN) :: INDEX1
+        INTEGER,               INTENT(IN) :: INDEX2
+        INTEGER,               INTENT(IN) :: INDEX3
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.HBOR') THEN
+          INST%HBOR%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBOR2D') THEN
+          INST%UBOR2D%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBOR2D') THEN
+          INST%VBOR2D%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORF') THEN
+          INST%UBORF%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORF') THEN
+          INST%VBORF%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORF') THEN
+          INST%WBORF%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORL') THEN
+          INST%UBORL%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORL') THEN
+          INST%VBORL%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORL') THEN
+          INST%WBORL%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORS') THEN
+          INST%UBORS%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORS') THEN
+          INST%VBORS%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORS') THEN
+          INST%WBORS%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WATERDEPTH') THEN
+          INST%H%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.INCWATERDEPTH') THEN
+          INST%DH%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TA') THEN
+          INST%TA%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYU') THEN
+          INST%U%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYV') THEN
+          INST%V%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYW') THEN
+          INST%W%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.FLUX_BOUNDARIES') THEN
+          INST%FLUX_BOUNDARIES(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.COTIMP') THEN
+          INST%COTIMP(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBIMP') THEN
+          INST%DEBIMP(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VITIMP') THEN
+          INST%VITIMP(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.AT') THEN
+          INST%AT = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TIDALRANGE') THEN
+          INST%CTIDE = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TIDALVELOCITY') THEN
+          INST%CTIDEV = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.SEALEVEL') THEN
+          INST%MSL = VALEUR
+        ! <set_double>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE SET_DOUBLE_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET AN INTEGER VARIABLE FROM TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
+      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_INTEGER_T3D_D
+     &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(IN) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(OUT) :: VALEUR
+        INTEGER,               INTENT(IN) :: INDEX1
+        INTEGER,               INTENT(IN) :: INDEX2
+        INTEGER,               INTENT(IN) :: INDEX3
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        VALEUR = -1
+        IF(TRIM(VARNAME).EQ.'MODEL.LIHBOR') THEN
+          VALEUR = INST%LIHBOR%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOF') THEN
+          VALEUR = INST%LIUBOF%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOF') THEN
+          VALEUR = INST%LIVBOF%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOF') THEN
+          VALEUR = INST%LIWBOF%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOL') THEN
+          VALEUR = INST%LIUBOL%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOL') THEN
+          VALEUR = INST%LIVBOL%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOL') THEN
+          VALEUR = INST%LIWBOL%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOS') THEN
+          VALEUR = INST%LIUBOS%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOS') THEN
+          VALEUR = INST%LIVBOS%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOS') THEN
+          VALEUR = INST%LIWBOS%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KP1BOR') THEN
+          VALEUR = INST%MESH2D%KP1BOR%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NUMLIQ') THEN
+          VALEUR = INST%NUMLIQ%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NBOR') THEN
+           VALEUR = INST%MESH3D%NBOR%I(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NPOIN') THEN
+          VALEUR = INST%MESH3D%NPOIN
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NELEM') THEN
+          VALEUR = INST%MESH3D%NELEM
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NPTFR') THEN
+          VALEUR = INST%MESH2D%NPTFR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NTIMESTEPS') THEN
+          VALEUR = INST%NIT
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LT') THEN
+          VALEUR = INST%LT
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NELMAX') THEN
+          VALEUR = INST%MESH3D%NELMAX
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
+          VALEUR = INST%MESH2D%IKLE%I((INDEX2-1)*INST%MESH2D%IKLE%DIM1
+     &                               + INDEX1)
+        ! <get_integer>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE GET_INTEGER_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE OF TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
+      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE SET_INTEGER_T3D_D
+     &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(INOUT) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(IN) :: VALEUR
+        INTEGER,               INTENT(IN) :: INDEX1
+        INTEGER,               INTENT(IN) :: INDEX2
+        INTEGER,               INTENT(IN) :: INDEX3
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.LIHBOR') THEN
+          INST%LIHBOR%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOF') THEN
+          INST%LIUBOF%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOF') THEN
+          INST%LIVBOF%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOF') THEN
+          INST%LIWBOF%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOL') THEN
+          INST%LIUBOL%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOL') THEN
+          INST%LIVBOL%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOL') THEN
+          INST%LIWBOL%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOS') THEN
+          INST%LIUBOS%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOS') THEN
+          INST%LIVBOS%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOS') THEN
+          INST%LIWBOS%I(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NTIMESTEPS') THEN
+          INST%NIT = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LT') THEN
+          INST%LT = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.BND_TIDE') THEN
+          INST%BND_TIDE(INDEX1)=VALEUR
+        ! <set_integer>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE SET_INTEGER_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET A STRING VARIABLE FROM TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
+      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
+      !PARAM VALUELEN   [IN]    Length of the string
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_STRING_T3D_D
+     &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(IN) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(IN) :: VALUELEN
+        INTEGER,               INTENT(IN) :: INDEX1
+        INTEGER,               INTENT(IN) :: INDEX2
+        CHARACTER,             INTENT(OUT) :: VALEUR(VALUELEN)
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        INTEGER I,J
+!
+        IERR = 0
+        VALEUR = ""
+        IF(TRIM(VARNAME).EQ.'MODEL.RESULTFILE') THEN
+          I = INST%T3DRES
+          DO J = 1,VALUELEN
+            VALEUR(J:J) = INST%T3D_FILES(I)%NAME(J:J)
+          ENDDO
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.BCFILE') THEN
+          I = INST%T3DCLI
+          DO J = 1,VALUELEN
+            VALEUR(J:J) = INST%T3D_FILES(I)%NAME(J:J)
+          ENDDO
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.GEOMETRYFILE') THEN
+          I = INST%T3DGEO
+          DO J = 1,VALUELEN
+            VALEUR(J:J) = INST%T3D_FILES(I)%NAME(J:J)
+          ENDDO
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.EQUATION') THEN
+          DO J = 1,VALUELEN
+            VALEUR(J:J) = INST%EQUA(J:J)
+          ENDDO
+        ! <get_string>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE GET_STRING_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF DEFINES THE VALUE OF A STRING VARIABLE OF TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
+      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
+      !PARAM VALUELEN   [IN]    LENGTH OF THE STRING
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE SET_STRING_T3D_D
+     &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(INOUT) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(IN) :: VALUELEN
+        INTEGER,               INTENT(IN) :: INDEX1
+        INTEGER,               INTENT(IN) :: INDEX2
+        CHARACTER,             INTENT(IN) :: VALEUR(VALUELEN)
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        INTEGER I,J
+!
+        IERR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.RESULTFILE') THEN
+          I = INST%T3DRES
+          DO J=1,VALUELEN
+            INST%T3D_FILES(I)%NAME(J:J) = VALEUR(J)
+          ENDDO
+        ! <set_string>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE SET_STRING_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET A BOOLEAN VARIABLE FROM TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
+      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_BOOLEAN_T3D_D
+     &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(IN) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(OUT) :: VALEUR
+        INTEGER,               INTENT(IN) :: INDEX1
+        INTEGER,               INTENT(IN) :: INDEX2
+        INTEGER,               INTENT(IN) :: INDEX3
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        VALEUR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.DEBUG') THEN
+          VALEUR = INST%DEBUG
+        ! <get_boolean>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE GET_BOOLEAN_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF DEFINES THE VALUE OF A BOOLEAN VARIABLE OF TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
+      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
+      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
+      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
+      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE SET_BOOLEAN_T3D_D
+     &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(INOUT) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(IN) :: VALEUR
+        INTEGER,               INTENT(IN) :: INDEX1
+        INTEGER,               INTENT(IN) :: INDEX2
+        INTEGER,               INTENT(IN) :: INDEX3
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        IF(TRIM(VARNAME).EQ.'MODEL.DEBUG') THEN
+          INST%DEBUG = VALEUR
+        ! <set_boolean>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE SET_BOOLEAN_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET INFORMATIONS ON A VARIABLE OF TELEMAC3D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !+HISTORY C. GOEURY (EDF R&D LNHE)
+      !+        04/09/2016
+      !+        V7P1
+      !++=
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE
+      !PARAM VARTYPE   [OUT]    TYPE OF THE VARIABLE
+      !+                        (INTEGER, DOUBLE, STRING, BOOLEAN)
+      !PARAM READONLY  [OUT]    0 IF THE VARIABLE IS READ ONLY
+      !+                        1 IF IT IS WRITTABLE
+      !PARAM NDIM      [OUT]    NUMBER OF DIMENSION
+      !+                        (0 IF IT IS NOT AN ARRAY)
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_VAR_SIZE_T3D_D
+     &         (INST, VARNAME, DIM1, DIM2, DIM3, IERR)
+!
+        TYPE(INSTANCE_T3D),    INTENT(IN) :: INST
+        CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)  :: VARNAME
+        INTEGER,               INTENT(OUT) :: DIM1
+        INTEGER,               INTENT(OUT) :: DIM2
+        INTEGER,               INTENT(OUT) :: DIM3
+        INTEGER,               INTENT(OUT) :: IERR
+!
+        IERR = 0
+        DIM1 = 0
+        DIM2 = 0
+        DIM3 = 0
+!
+        IF(TRIM(VARNAME).EQ.'MODEL.HBOR') THEN
+          DIM1 = INST%HBOR%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBOR2D') THEN
+          DIM1 = INST%UBOR2D%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBOR2D') THEN
+          DIM1 = INST%VBOR2D%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORF') THEN
+          DIM1 = INST%UBORF%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORF') THEN
+          DIM1 = INST%VBORF%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORF') THEN
+          DIM1 = INST%WBORF%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORL') THEN
+          DIM1 = INST%UBORL%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORL') THEN
+          DIM1 = INST%VBORL%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORL') THEN
+          DIM1 = INST%WBORL%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORS') THEN
+          DIM1 = INST%UBORS%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORS') THEN
+          DIM1 = INST%VBORS%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORS') THEN
+          DIM1 = INST%WBORS%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.XNEBOR') THEN
+          DIM1 = INST%MESH2D%XNEBOR%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.YNEBOR') THEN
+          DIM1 = INST%MESH2D%YNEBOR%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WATERDEPTH') THEN
+          DIM1 = INST%H%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.INCWATERDEPTH') THEN
+          DIM1 = INST%DH%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TA') THEN
+          DIM1 = INST%TA%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYU') THEN
+          DIM1 = INST%U%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYV') THEN
+          DIM1 = INST%V%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYW') THEN
+          DIM1 = INST%W%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KP1BOR') THEN
+          DIM1 = INST%MESH2D%KP1BOR%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.X') THEN
+          DIM1 = INST%MESH3D%X%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.Y') THEN
+          DIM1 = INST%MESH3D%Y%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NBOR') THEN
+          DIM1 = INST%MESH3D%NBOR%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NUMLIQ') THEN
+          DIM1 = INST%NUMLIQ%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIHBOR') THEN
+          DIM1 = INST%LIHBOR%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOF') THEN
+          DIM1 = INST%LIUBOF%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOF') THEN
+          DIM1 = INST%LIVBOF%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOF') THEN
+          DIM1 = INST%LIWBOF%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOL') THEN
+          DIM1 = INST%LIUBOL%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOL') THEN
+          DIM1 = INST%LIVBOL%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOL') THEN
+          DIM1 = INST%LIWBOL%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOS') THEN
+          DIM1 = INST%LIUBOS%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOS') THEN
+          DIM1 = INST%LIVBOS%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOS') THEN
+          DIM1 = INST%LIWBOS%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.COTIMP') THEN
+          DIM1 = SIZE(INST%COTIMP)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBIMP') THEN
+          DIM1 = SIZE(INST%DEBIMP)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VITIMP') THEN
+          DIM1 = SIZE(INST%VITIMP)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.FLUX_BOUNDARIES') THEN
+          DIM1 = SIZE(INST%FLUX_BOUNDARIES)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.RESULTFILE') THEN
+          DIM1 = 250
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.EQUATION') THEN
+          DIM1 = 20
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.GEOMETRYFILE') THEN
+          DIM1 = 250
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.BND_TIDE')THEN
+          DIM1 = SIZE(INST%BND_TIDE)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE')THEN
+          DIM1 = INST%MESH2D%IKLE%DIM2
+          DIM2 = INST%MESH2D%IKLE%DIM1
+        ! <get_var_size>
+        ENDIF
+!
+      END SUBROUTINE GET_VAR_SIZE_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET THE SIZE OF EACH DIMENSION OF A VARAIBLE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !HISTORY C GOEURY (EDF R&D, LNHE)
+      !+       01/09/2016
+      !+       V7P1
+      !+       IENT,JENT AND KENT ADDED FOR MPI CONTROL IN GET AND SET
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM VARNAME    [IN]    NAME OF THE VARAIBLE
+      !PARAM DIM1      [OUT]    SIZE OF THE FIRST DIMENSION
+      !PARAM DIM2      [OUT]    SIZE OF THE SECOND DIMENSION
+      !PARAM DIM3      [OUT]    SIZE OF THE THIRD DIMENSION
+      !PARAM IENT      [OUT]    1 if the numbering is on point
+      !PARAM JENT      [OUT]    1 if the numbering is on point
+      !PARAM KENT      [OUT]    1 if the numbering is on point
+      !PARAM GETPOS    [OUT]    Postion after which the get is posible
+      !+                        on the variable
+      !PARAM SETPOS    [OUT]    Postion after which the Set is posible
+      !+                        on the variable
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_VAR_TYPE_T3D_D
+     &        (VARNAME, VARTYPE, READONLY, NDIM,IENT,JENT,KENT,
+     &         GETPOS,SETPOS,IERR)
+!
+        CHARACTER(LEN=T3D_VAR_LEN),  INTENT(IN)  :: VARNAME
+        CHARACTER(LEN=T3D_TYPE_LEN), INTENT(OUT) :: VARTYPE
+        LOGICAL,                     INTENT(OUT) :: READONLY
+        INTEGER,                     INTENT(OUT) :: NDIM
+        INTEGER,                     INTENT(OUT) :: IERR
+        INTEGER,                     INTENT(OUT) :: IENT
+        INTEGER,                     INTENT(OUT) :: JENT
+        INTEGER,                     INTENT(OUT) :: KENT
+        INTEGER,                     INTENT(OUT) :: GETPOS
+        INTEGER,                     INTENT(OUT) :: SETPOS
+!
+        IERR = 0
+        VARTYPE = ''
+        READONLY = .TRUE.
+        NDIM = 0
+        IENT = 0
+        JENT = 0
+        KENT = 0
+        GETPOS = NO_POSITION
+        SETPOS = NO_POSITION
+!
+        IF(TRIM(VARNAME).EQ.'MODEL.AT') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.BCFILE') THEN
+          VARTYPE = 'STRING'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_READ_CASE_POS
+          SETPOS = RUN_READ_CASE_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.GRAPH_PERIOD') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_READ_CASE_POS
+          SETPOS = RUN_READ_CASE_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LISTIN_PERIOD') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_READ_CASE_POS
+          SETPOS = RUN_READ_CASE_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBUG') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_SET_CONFIG_POS
+          SETPOS = RUN_SET_CONFIG_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.BND_TIDE') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBIMP') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.HBOR') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KP1BOR') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NBOR') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBOR2D') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBOR2D') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORF') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORF') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORF') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORL') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORL') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORL') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.UBORS') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VBORS') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WBORS') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIHBOR') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NUMLIQ') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOF') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOF') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOF') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOL') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOL') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOL') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIUBOS') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIVBOS') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LIWBOS') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .TRUE.
+          NDIM = 2
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TA') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.XNEBOR') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.YNEBOR') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.WATERDEPTH') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.INCWATERDEPTH') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYU') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYV') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VELOCITYW') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.X') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.Y') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.FLUX_BOUNDARIES') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          IENT = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.COTIMP') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.DEBIMP') THEN
+          VARTYPE =  'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VITIMP') THEN
+          VARTYPE =  'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_TIMESTEP_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.RESULTFILE') THEN
+          VARTYPE = 'STRING'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.GEOMETRYFILE') THEN
+          VARTYPE = 'STRING'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NPOIN') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NELEM') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NELMAX') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NPTFR') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TIDALRANGE') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.TIDALVELOCITY') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.SEALEVEL') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NTIMESTEPS') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_READ_CASE_POS
+          SETPOS = RUN_READ_CASE_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.LT') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .FALSE.
+          NDIM = 0
+          GETPOS = RUN_READ_CASE_POS
+          SETPOS = RUN_READ_CASE_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.EQUATION') THEN
+          VARTYPE = 'STRING'
+          READONLY = .TRUE.
+          NDIM = 1
+          GETPOS = RUN_READ_CASE_POS
+          SETPOS = RUN_READ_CASE_POS
+        ! <get_var_type>
+        ELSE
+          IERR = UNKNOWN_VAR_ERROR
+          ERR_MESS = 'UNKNOWN VARIABLE NAME : '//TRIM(VARNAME)
+        ENDIF
+!
+      END SUBROUTINE GET_VAR_TYPE_T3D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET A DESCRIPTION OF EACH VARIABLE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE SET_VAR_LIST_T3D_D(IERR)
+!
+        INTEGER, INTENT(OUT) :: IERR
+!
+        INTEGER :: I
+!
+        I=0
+        IERR = 0
+        IF(.NOT.ALLOCATED(VNAME_T3D)) THEN
+          ALLOCATE(VNAME_T3D(NB_VAR_T3D),STAT=IERR)
+          IF(IERR.NE.0) RETURN
+          ALLOCATE(VINFO_T3D(NB_VAR_T3D),STAT=IERR)
+          IF(IERR.NE.0) RETURN
+!
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.AT'
+          VINFO_T3D(I) = 'CURRENT TIME'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.BCFILE'
+          VINFO_T3D(I) = 'BOUNDARY CONFITION FILE NAME'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.BND_TIDE'
+          VINFO_T3D(I) = 'OPTION FOR TIDAL BOUNDARY CONDITIONS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.COTIMP'
+          VINFO_T3D(I) = 'xxx'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VITIMP'
+          VINFO_T3D(I) = 'xxx'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.DEBIMP'
+          VINFO_T3D(I) = 'DISCHARGE ON FRONTIER'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.DEBUG'
+          VINFO_T3D(I) = 'ACTIVATING DEBUG MODE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.FLUX_BOUNDARIES'
+          VINFO_T3D(I) = 'FLUX AT BOUNDARIES'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.GEOMETRYFILE'
+          VINFO_T3D(I) = 'NAME OF THE GEOMERY FILE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.GRAPH_PERIOD'
+          VINFO_T3D(I) = 'GRAPHICAL OUTPUT PERIOD'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.HBOR'
+          VINFO_T3D(I) = 'BOUNDARY VALUE ON H FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.IKLE'
+          VINFO_T3D(I) = 'CONNECTIVITY TABLE BETWEEN ELEMENT AND NODES'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.INCWATERDEPTH'
+          VINFO_T3D(I) = 'INCREASE IN THE THE DEPTH OF THE WATER'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.KP1BOR'
+          VINFO_T3D(I) =
+     &           'POINTS FOLLOWING AND PRECEDING A BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIHBOR'
+          VINFO_T3D(I) = 'BOUNDARY TYPE ON H FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LISTIN_PERIOD'
+          VINFO_T3D(I) = 'LISTING OUTPUT PERIOD'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIUBOF'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY CONDITIONS FOR U ON THE BOT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIVBOF'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY CONDITIONS FOR V ON THE BOT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIWBOF'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY CONDITIONS FOR W ON THE BOT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIUBOL'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY COND FOR U ON THE LAT BOUND'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIVBOL'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY COND FOR V ON THE LAT BOUND'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIWBOL'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY COND FOR W ON THE LAT BOUND'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIUBOS'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY CONDITIONS FOR U AT THE FS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIVBOS'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY CONDITIONS FOR V AT THE FS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIWBOS'
+          VINFO_T3D(I) = 'TYPE OF BOUNDARY CONDITIONS FOR W AT THE FS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LT'
+          VINFO_T3D(I) = 'CURRENT TIME STEP'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.TA'
+          VINFO_T3D(I) = 'TRACER INFORMATION'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NBOR'
+          VINFO_T3D(I) = 'GLOBAL NUMBER OF BOUNDARY POINTS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NELEM'
+          VINFO_T3D(I) = 'NUMBER OF ELEMENT IN THE MESH'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NELMAX'
+          VINFO_T3D(I) = 'MAXIMUM NUMBER OF ELEMENTS ENVISAGED'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NPOIN'
+          VINFO_T3D(I) = 'NUMBER OF POINT IN THE MESH'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NPTFR'
+          VINFO_T3D(I) = 'NUMBER OF BOUNDARY POINTS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NTIMESTEPS'
+          VINFO_T3D(I) = 'NUMBER OF TIME STEPS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NUMLIQ'
+          VINFO_T3D(I) = 'LIQUID BOUNDARY NUMBERS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.RESULTFILE'
+          VINFO_T3D(I) = 'NAME OF THE RESULT FILE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.SEALEVEL'
+          VINFO_T3D(I) = 'COEFFICIENT TO CALIBRATE SEA LEVEL'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.TIDALRANGE'
+          VINFO_T3D(I) = 'COEFFICIENT TO CALIBRATE TIDAL RANGE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.UBOR2D'
+          VINFO_T3D(I) = 'BOUNDARY VALUE ON U FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VBOR2D'
+          VINFO_T3D(I) = 'BOUNDARY VALUE ON V FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.UBORF'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY U ON THE BOTTOM'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VBORF'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY V ON THE BOTTOM'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.WBORF'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY W ON THE BOTTOM'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.UBORL'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY U ON THE LATERAL BOUNDARY'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VBORL'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY V ON THE LATERAL BOUNDARY'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.WBORL'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY W ON THE LATERAL BOUNDARY'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.UBORS'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY U AT THE FREE SURFACE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VBORS'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY V AT THE FREE SURFACE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.WBORS'
+          VINFO_T3D(I) = 'PRESCRIBED VELOCITY W AT THE FREE SURFACE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VELOCITYU'
+          VINFO_T3D(I) = 'VELOCITY ON U'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VELOCITYV'
+          VINFO_T3D(I) = 'VELOCITY ON V'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.VELOCITYW'
+          VINFO_T3D(I) = 'VELOCITY ON W'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.WATERDEPTH'
+          VINFO_T3D(I) = 'DEPTH OF THE WATER'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.X'
+          VINFO_T3D(I) = 'X COORDINATES FOR EACH POINT OF THE MESH'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.XNEBOR'
+          VINFO_T3D(I) = 'NORMAL X TO 1D BOUNDARY POINTS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.Y'
+          VINFO_T3D(I) = 'Y COORDINATES FOR EACH POINT OF THE MESH'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.YNEBOR'
+          VINFO_T3D(I) = 'NORMAL Y TO 1D BOUNDARY POINTS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.EQUATION'
+          VINFO_T3D(I) = 'NAME OF THE EQUATION USED'
+          ! <get_var_list>
+          IF(I.NE.NB_VAR_T3D) THEN
+            IERR = INCREASE_NB_VAR_T3D_ERROR
+            RETURN
+          ENDIF
+        ENDIF
+!
+      END SUBROUTINE SET_VAR_LIST_T3D_D
+!
+      END MODULE API_HANDLE_VAR_T3D

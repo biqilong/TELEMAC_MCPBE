@@ -1,0 +1,121 @@
+\chapter{Share your project}
+
+\section{Create a central \soft{git} repository}
+
+\soft{git} is a powerful tool to make it easier for several people to develop in one code.
+The first thing to do is to create a central repository where people will share their developments.
+Everyone will keep synchronised with that repository and a newcomer on the project may clone it to start working on the project.
+
+The central repository may be cloned from an existing repository in \important{bare} mode.
+It will not contain the source files and no one will be able to develop in it.
+It will only be used to push and pull developments.
+To clone a repository in bare mode type:
+\begin{lstlisting}
+  git clone --bare user@ipAddress:\$PATH/myRepository
+\end{lstlisting}%$
+
+\important{Important}: It is necessary to create such a bare repository, otherwise there will be interferences between people and developments may be lost or broken during the sharing process.
+
+It is also possible to deposit a central repository on \soft{github}. To do so register an account on \url{http://www.github.com}.
+Providing an academic email address will allow you to deposit private repositories on \soft{github} for free.
+Create a new private repository in \soft{github}. Then, in your local repository set the \important{origin} to be the \soft{github} repository:
+\begin{lstlisting}
+  git remote add origin http://www.github.com/userName/repositoryName.git
+\end{lstlisting}
+Then you can push the branches you want (\textit{e.g.} master) onto the \soft{github} repository:
+\begin{lstlisting}
+  git push origin master
+\end{lstlisting}
+
+All the contributors to the project may then clone the central repository and begin working on their local clones in their own branches.
+
+\section{Share developments between \soft{git} repositories}
+
+A possibility is to use \important{master} only for stable versions of the code and have a \important{candidate} branch to share the ongoing developments to be included in the future release.
+To share your branch \important{myBranch} with other developers \important{push} it on the central repository:
+\begin{lstlisting}
+  git push -u origin myBranch
+\end{lstlisting}
+The \important{-u} option establishes a tracking connection between your local branch and the remote one.
+To update your local branches with all new developments that were pushed on the central repository type:
+\begin{lstlisting}
+  git pull origin
+\end{lstlisting}
+You can pull only one branch from origin if you prefer:
+\begin{lstlisting}
+  git pull origin master
+\end{lstlisting}
+
+You can share with other remote repositories than origin.
+You just need to define a remote:
+\begin{lstlisting}
+  git remote add name@ip.address:\$PATH/repository remote1
+\end{lstlisting}%$
+Then pull any branch from \important{remote1}:
+\begin{lstlisting}
+  git pull remote1 branch_dev
+\end{lstlisting}
+
+Here are more details about sharing work with remote repositories:
+\url{http://www.git-tower.com/learn/ebook/command-line/remote-repositories/publish-local-branch}.
+
+\section{Share developments between \soft{git} and \soft{svn} repositories}\label{sec:gitsvn}
+All the commits you do in the \soft{git} clone of the \soft{svn} branch are local to the git repository.
+In order to upload your commits on the \soft{svn} branch, type :
+\begin{lstlisting}
+  git svn dcommit
+\end{lstlisting}
+This pushes the master onto the \soft{svn} branch. Before your push you can check the commits with:
+\begin{lstlisting}
+  git svn dcommit --dry-run
+\end{lstlisting}
+
+The main difficulty will then be to merge your developments into the trunk of the svn repository.
+\soft{git} and \soft{svn} do not treat the merge operation in the same way, so that to avoid any trouble my advice is to do as follows:\\
+
+- appart from the \soft{git} clone, create an \soft{svn} clone of the branch you're working on:\\
+\begin{lstlisting}
+  svn checkout http://svn.opentelemac.org/svn/opentelemac/branches/myBranch
+\end{lstlisting}
+- to update the svn repository with you \soft{git svn} commits, type:
+\begin{lstlisting}
+  svn update
+\end{lstlisting}
+- in this \soft{svn} clone, always perform the \important{merge} operations: \\
+Launch the merge command with $rev$ being the last revision of the trunk
+you are up to date with. If this is the first time you are updating it is the
+revision at which your branch was created (can be found in the log given by the
+"svn log" command) otherwise you can get that value using the following
+command:
+\begin{lstlisting}[language=bash]
+  svn propget svn:mergeinfo .
+\end{lstlisting}
+It should return something like that:
+\begin{lstlisting}[language=bash]
+/branches/guppy:187-256,4145-4591
+/branches/jewelpuffer:4665-4793
+/branches/rainbowfish:2559-2958,4070-4614,4623-4798
+/branches/salmon:138-254,272-286
+/trunk:541-3423,4222-4817
+\end{lstlisting}
+The value you want is in the line \verb+/trunk:541-3423,4222-4817+. You need
+the last digits i.e. $4817$.  Then you replace in the following command rev by
+that number.
+\begin{lstlisting}[language=bash]
+  svn merge -r rev:HEAD http://svn.opentelemac.org/svn/opentelemac/trunk .
+\end{lstlisting}
+The $HEAD$ value will be automatically replaced by the latest revision of the
+trunk.\\
+If the merge generates any conflict you will need to resolve them.\\
+When everything is resolved. You need to commit the merged version. Add
+the trunk revision number to the commit message for information.
+\begin{lstlisting}[language=python]
+  svn commit -m ``Merged with revision rev of the trunk''
+\end{lstlisting}
+- once the merge is done, update the remotes/git-svn branch in your git repository:
+\begin{lstlisting}[language=python]
+  git svn fetch
+\end{lstlisting}
+
+\important{Remark: to keep everything organised I have an \textit{opentelemac} repository containing all the svn and git clones, organised into two subfolders: \textit{git} and \textit{svn}.
+The latter contain all the git and svn clones respectively, named after the branches.}

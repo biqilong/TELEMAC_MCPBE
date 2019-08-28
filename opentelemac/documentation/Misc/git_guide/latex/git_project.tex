@@ -1,0 +1,158 @@
+\chapter{Use \soft{git} for your project}
+
+In this chapter we will see how to start using \soft{git} within :\\
+- a new project \\
+- an existing project already tracked by \soft{git} \\
+- an existing project tracked by \soft{svn} \\
+
+\section{Creation of a new \soft{git} repository}
+
+In a terminal, go to the directory where you want to start the version control:
+\begin{lstlisting}
+  cd \$PATH/myDirectory
+\end{lstlisting} %$
+The directory may be empty or already contain files, it doesn't matter. Initialise \soft{git} in the directory from the terminal by entering:
+\begin{lstlisting}
+  git init
+\end{lstlisting}
+\soft{git} is now enabled for your repository.
+You need to indicate your name and email that will be associated to the commits made in this repository by entering in the terminal:
+\begin{lstlisting}
+  git config user.name "My Name"
+  git config user.email myName@edf.fr
+\end{lstlisting}
+You can also configure \soft{git} to use the text editor of your choice for making commits.
+Otherwise the default \soft{git} interface will be used.
+If you want to set your text editor (\soft{vi} or \soft{emacs} are recommended for this) type:
+\begin{lstlisting}
+  git config core.editor vim
+\end{lstlisting}
+
+Then, you need to tell \soft{git} which files you want to track.
+Imagine that at the beginning of the project \soft{myDirectory} only contains the files \file{README.txt} and \file{CODINGRULES.txt}. To track changes in these files type:
+\begin{lstlisting}
+  git add README.txt CODINGRULES.txt
+\end{lstlisting}
+
+\important{Important}:
+If you don't tell \soft{git} to add a file to the repository it won't track it.
+Each time you create a new file in the directory, if you want \soft{git} to track it you need to type \important{git add newFile.ext}.
+
+To have \soft{git} create a first version of your project type:
+\begin{lstlisting}
+  git commit
+\end{lstlisting}
+\soft{git} then pops up a text editor window and asks you to enter a \important{commit message}. For example, type:
+\begin{lstlisting}
+  First commit
+\end{lstlisting}
+then save (CTRL-X+CTRL-S in \soft{emacs}) and close the text editor.
+\soft{git} then tells you a new commit has been made on the branch \soft{master} (we'll see later what branches are):
+\begin{lstlisting}
+ [master (root-commit) 11a6c58] First commit
+ 0 files changed
+ create mode 100644 CODINGRULES.txt
+ create mode 100644 README.txt
+
+\end{lstlisting}
+
+
+\important{Important: the \soft{git} repository should contain all the necessary files for your code to compile and execute: source files, makefile, case files, documentation, README.}
+
+
+\section{Cloning an existing \soft{git} repository}
+
+To clone an existing \soft{git} repository, type:
+\begin{lstlisting}
+  git clone name@domain:\$PATH/centralGitRepository
+\end{lstlisting}%$
+To clone from a \soft{github} repository this would look like:
+\begin{lstlisting}
+  git clone http://github.com/userName/myDirectory.git
+\end{lstlisting}
+
+You still need to configure \soft{git} by setting the user name and email as above, and choosing a text editor for the commits.
+
+From inside EDF this is a bit more complicated due to the proxy.
+Just create a repository, for example myRepository, then init git and configure the user and editor.
+Then, open the file \soft{.git/config} with a text editor and add to it the following lines:
+\begin{lstlisting}
+  [remote "origin"]
+    fetch = +refs/heads/*:refs/remotes/origin/*
+    url = http://userName:pswd@github.com/repoUserName/repoName.git
+  [http]
+    proxy = http://proxypac.edf.fr:3128
+  [https]
+    proxy = https://proxypac.edf.fr:3128
+\end{lstlisting}
+where \important{userName} is your \soft{github} user name (you have to be registered as a contributor to the project by the project administrator).
+\important{pswd} is your \soft{github} password (special characters must be ``translated'', a list is available at \url{http://meyerweb.com/eric/tools/dencoder/}).
+\important{repoUserName} is the \soft{github} user name of the project administrator and \important{repoName} is the name of the repository.
+
+Then, you can enter in the terminal:
+\begin{lstlisting}
+  git pull
+\end{lstlisting}
+and you'll have the remote repository as if you had cloned it.
+
+\section{Cloning an existing \soft{svn} repository}
+
+To clone an existing \soft{svn} repository, type:
+\begin{lstlisting}
+  git svn clone http://address/centralSvnRepository
+\end{lstlisting}%$
+To clone from the opentelemac repository this would look like:
+\begin{lstlisting}
+  git svn clone http://svn.opentelemac.org/svn/opentelemac/trunk
+\end{lstlisting}
+If the cloning is interrupted (due for instance to the EDF proxy limitations), to finish procedure, you need to run the following command from your repository:
+\begin{lstlisting}
+  git svn fetch
+\end{lstlisting}
+The clone thus created only contains a specific branch of the central \soft{svn} repository, tagged as \important{remotes/git-svn}.
+
+If you want to add the \soft{svn} branch \verb"myBranch" you should edit: \verb"my_repository/.git/config" as following:
+\begin{lstlisting}
+[svn-remote "svn"]
+	url = http://svn.opentelemac.org/svn/opentelemac/
+	fetch = trunk:refs/remotes/git-svn
+	fetch = branches/myBranch:refs/remotes/myBranch
+\end{lstlisting}
+
+and run the command:
+\begin{lstlisting}
+  git svn fetch
+\end{lstlisting}
+
+You can verify that a new remote branch was added with the command:
+\begin{lstlisting}
+  git branch -r
+\end{lstlisting}
+
+and you can now create a local branch from the remote branch:
+\begin{lstlisting}
+  git branch myBranch-local myBranch
+\end{lstlisting}
+
+You can work in this git repository following the advice given in the chapter~\ref{sec:useGit}.
+Chapter~\ref{sec:gitsvn} shows how to share your developments with the \soft{svn} repository.
+You still need to configure \soft{git} by setting the user name and email as above, and choosing a text editor for the commits.
+
+From inside EDF, before doing the clone it is necessary to configure \soft{svn} for the proxy : you need to modify the \verb"$HOME/.subversion/server"
+file by adding the following lines under the line \verb"[global]":
+\begin{lstlisting}[language=bash]
+[global]
+...
+http-proxy-host = proxypac.edf.fr
+http-proxy-port = 3128
+http-proxy-username = NNI
+http-proxy-password = SesamePassword
+...
+\end{lstlisting}
+Where:
+\begin{itemize}
+\item \textbf{http-proxy-host} is the address of your proxy.
+\item \textbf{http-proxy-port} is the port of your proxy.
+\item \textbf{http-proxy-username} is the login for your proxy.
+\item \textbf{http-proxy-password} is the password for your proxy.
+\end{itemize}

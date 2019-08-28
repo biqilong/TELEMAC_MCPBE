@@ -1,0 +1,275 @@
+\chapter{Bump}\label{chapter:bump}
+
+\section{Purpose}
+
+This test case presents a flow over a bump on the bed with subcritical condition.
+It allows to show that \telemac{2d} is able to correctly reproduce
+the hydrodynamic impact of a changing bed slopes, vertical flow
+contractions and expansions. Furthermore, It allows to have a good
+representation of flows computed in steady and transient flow regimes. \\
+
+The solution produced by \telemac{2d} in a frictionless channel
+presenting an idealised bump on the bottom  is compared with
+the analytical solution to this problem. In this test case,
+all flow regimes i.e. sub-critical, critical and trans-critical are studied.
+
+\section{Description}
+
+\subsection{Analytic solution}
+
+From the strict hyperbolicity of the shallow water system, the flow over the bump can be caracterized by a
+criticality condition. Depending on the value of the Froud number 
+the flow can either be subcritical (fluvial, $Fr<1$) 
+or supercritical (torrential, $Fr>1$).
+Let's recall the definition of the Froud number:
+\begin{equation}
+Fr = \dfrac{|{\bf u}|}{\sqrt{gh}}
+\end{equation}
+where $|{\bf u}|$ is the norm of the depth averaged velocity and $g$ is the gravitational acceleration. Another useful quatity in the case of a constant discharge $q$ is the critical height defined by:
+\begin{equation}
+h_c = \left( \dfrac{q}{\sqrt{g}}\right)^{2/3}
+\end{equation}
+The flow can either be subcritical if $h>h_c$ or supercritical if $h<h_c$.
+In the case of a frictionless channel with a constant disharge $q_0$, the Bernoulli relation allows to express the water height in the channel at abscissa $x$ by the relation:
+\begin{equation}
+\dfrac{q_0^2}{2 g h(x)^2} + h(x) + z_b(x) = cst
+\end{equation}
+with $z_b$ the bottom elevation. Let's consider a channel of length $L$.
+From the Bernoulli relation, one can express the water depth as a solution of third degree equation, which depend on the
+the flow criticality:
+
+\begin{itemize}
+\item {\bf Sub-critical flow:} 
+\begin{equation}
+ h(x)^3 + \left( z_b(x) - \dfrac{q_0^2}{2g h(L)^2} - h(L) \right) h(x)^2 + \dfrac{q_0^2}{2g} = 0 \quad \forall x \in [0,L]
+\end{equation}
+\
+
+\item {\bf Critical flow:}
+\begin{equation}
+h(x)^3 + \left( z_b(x) - \dfrac{q_0^2}{2g h_c^2} - h_c - z_M \right) h(x)^2 + \dfrac{q_0^2}{2g} = 0 \quad \forall x \in [0,L]  
+\end{equation}
+with $ z_M = \max_{x \in [0,L]}z_b$.
+\
+
+\item {\bf Trans-critical flow:}
+\begin{equation}
+\begin{cases}
+h(x)^3 + \left( z_b(x) - \dfrac{q_0^2}{2g h_c^2} - h_c - z_M \right) h(x)^2 + \dfrac{q_0^2}{2g} = 0 \quad & \text{for  } x < x_{shock}  \\
+h(x)^3 + \left( z_b(x) - \dfrac{q_0^2}{2g h(L)^2} - h(L) \right) h(x)^2 + \dfrac{q_0^2}{2g} = 0 \quad &\text{for  } x > x_{shock} \\
+q_0^2 \left( \dfrac{1}{h(x_{shock}^-)} - \dfrac{1}{h(x_{shock}^+)} \right) + \dfrac{g}{2} \left( h(x_{shock}^-)^2 -h(x_{shock}^+)^2 \right) = 0
+\end{cases}
+\end{equation}
+\end{itemize}
+
+\subsection{Geometry and mesh}
+
+The geometry dimensions of the channel are 2~m wide and 20.5~m long.
+The mesh is regular along channel. It is made up with
+quadrangles split into two triangles.
+It is composed of 2,620 triangular elements (1,452 nodes)
+and the size of triangles ranges between 0.25~m and 0.5~m.
+It is horizontal with a 4~m long bump in its middle
+(see Figure \ref{t2d:bumpsub:fig:mesh}).
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumpsub_mesh0.png}
+ \caption{Mesh of the channel.}
+ \label{t2d:bumpsub:fig:mesh}
+\end{figure}
+
+\subsection{Bathymetry}
+The maximum elevation of
+the bump is 0.2~m (see Figure \ref{t2d:bumpsub:fig:baty}) with
+the bottom $z_b$ describes by the following equation :
+\begin{equation*}
+z_b = \left\{
+\begin{array}{rl}
+  -0.05(x-10)^2~\text{m}& \text{ if 8 m < x < 12 m} \\
+-0.20~\text{m}& \text{ elsewhere}
+\end{array}
+\right.
+\end{equation*}
+
+\begin{figure}[H]
+ \centering
+ \includegraphicsmaybe{[width=0.9\textwidth]}{../img/bumpsub_bathy.png}
+ \caption{Bathymetry in the channel.}
+ \label{t2d:bumpsub:fig:baty}
+\end{figure}
+
+% \begin{figure}[!htbp]
+ % \centering
+ % \includegraphicsmaybe{[width=\textwidth]}{../img/bump_bottom_level.png}
+ % \caption{Profile of the bump.}
+ % \label{t2d:bumpsub:fig:profil}
+% \end{figure}
+
+\subsection{Initial and boundary conditions}
+The initial conditions are a null velocity and an analytical solution for the water depth.
+The boundary conditions are:
+\begin{itemize}
+\item {\bf Sub-critical flow:} 
+\begin{itemize}
+\item At the channel entrance, the flow rate is $Q =  8.858893836~\text{m}^3\text{s}^{-1}$
+(note that the discharge per unit length $q_0=Q/B$,
+$B$ being the channel width).
+The flow rate $Q$ is taken so that the $q_0$ value is equal to the value
+$\sqrt{gh}$ in entrance. 
+\item At the channel outlet, the free surface elevation is $ z_{s} = 1.8~\text{m}$.
+Therefore, the depth
+$\displaystyle{h = z_{s}-z_b = 2~\text{m}}$ with the free surface elevation $z_{s}$.
+\end{itemize}
+%\begin{figure}[H]
+% \centering
+% \includegraphicsmaybe{[width=\textwidth]}{../img/bumpsub_mesh.png}
+% \caption{Mesh and boundary conditions of the subcritical case}
+% \label{t2d:bumpsub:fig:mesh_bnd_sub}
+%\end{figure}
+
+\item {\bf Critical flow:}
+\begin{itemize}
+\item At the channel entrance, the flow rate is $Q = 0.6~\text{m}^3\text{s}^{-1}$. 
+\item At the channel outlet, the free velocity and free water level are
+imposed on the liquid boundary.
+\end{itemize}
+%\begin{figure}[H]
+% \centering
+% \includegraphicsmaybe{[width=\textwidth]}{../img/bumpcri_mesh.png}
+% \caption{Mesh and boundary conditions of the critical case}
+% \label{t2d:bumpsub:fig:mesh_bnd_cri}
+%\end{figure}
+
+\item {\bf Trans-critical flow:}
+\begin{itemize}
+\item  At the channel entrance, the flow rate is $Q = 2~\text{m}^3\text{s}^{-1}$.
+\item  At the channel outlet, the free surface elevation is
+$z_{s} = 0.4~\text{m}$. Therefore, the depth
+$\displaystyle{h = z_{s}-z_b = 0.6~\text{m}}$, with the free surface elevation $z_{s}$.
+\end{itemize}
+%\begin{figure}[H]
+% \centering
+% \includegraphicsmaybe{[width=\textwidth]}{../img/bumptrans_mesh.png}
+% \caption{Mesh and boundary conditions of the transcritical case}
+% \label{t2d:bumpsub:fig:mesh_bnd_trans}
+%\end{figure}
+
+\end{itemize}
+
+
+\subsection{Physical parameters}
+
+No friction is taken into account on the bottom and on the lateral walls in the subcritical and critical cases.
+For the transcritical case a Strickler formula with friction coefficient
+equal to 40~$\text{m}^{1/3}.\text{s}^{-1}$ is imposed.
+Note that the horizontal viscosity turbulent is constant and equal to zero for all cases.
+However instead of prescribing a zero viscosity, no diffusion step could
+have been used (keyword DIFFUSION OF VELOCITY prescribed to NO).
+
+\subsection{Numerical parameters}
+
+To solve advection,
+the characteristics scheme is used on velocities (scheme 1) and
+the conservative PSI scheme is used for the depth (scheme 5).
+In addition, the treatment of linear system is done with a wave equation.
+The implicitation coefficients for depth and velocities are equal to 0.6.
+\telemac{2d} is run
+forward in time until a steady state flow is obtained. The resolution accuracy for the velocity is taken at $10^{-5}$.
+Numerical parameters specific to each case are defined as follows:
+\begin{itemize}
+\item {\bf Sub-critical flow:} 
+The time step is $0.01s$ for a period of $10s$.
+The triangular elements are linear (P1) for velocities and for water depth.
+Note that for numerical resolution, the conjugate gradient 
+is used for solving the propagation step. 
+
+
+\item {\bf Critical flow:}
+The time step is $0.03s$ for a period of $30s$. 
+The triangular elements are linear (P1) for velocities and for water depth.
+Note that for numerical resolution, the conjugate gradientis used for solving the propagation step.
+
+\item {\bf Trans-critical flow:}
+The time step is $0.02s$ for a period of $50s$. 
+The triangular elements are linear 
+(P1, 3 values per element, the corners) for water depth and
+quadratic (6 values per element, the corners and the center of the edges)
+for velocities.
+For numerical resolution, GMRES (Generalized Minimal Residual Method)
+is used for solving the propagation step. 
+
+\end{itemize}
+
+
+
+
+\section{Results}
+
+\subsection{Water depth and Froud number}
+
+In this test case, the numerical results are compared with the
+analytical solution, when the state flow is steady. Furthermore, the computed
+Froude number ($Fr$) is also
+compared with the analytical solution.
+The solution produced by \telemac{2d} is in close agreement with
+the analytical solution as shown on the figure \ref{fig:bumpsub:fig:hfr}.
+
+
+\begin{figure}[H]
+\begin{minipage}[t]{0.5\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumpsub_free_surface.png}
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumpsub_froude_number.png}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumpcri_free_surface.png}
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumpcri_froude_number.png}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumptrans_free_surface.png}
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumptrans_froude_number.png}
+\end{minipage}
+  \caption{Comparison between analytical solution and \telemac{2d}
+ solution for sub-critical, critical and trans-critical flows (up to down)}\label{fig:bumpsub:fig:hfr}
+\end{figure}
+
+\subsection{Velocity}
+
+Velocity norm is presented on \ref{fig:bumpsub:fig:u} for each case.
+
+\begin{figure}[H]
+\begin{minipage}[t]{\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumpsub_velocity_vector.png}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumpcri_velocity_vector.png}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bumptrans_velocity_vector.png}
+\end{minipage}
+  \caption{Velocity field of the steady state flow for sub-critical, critical and trans-critical flows (up to down)}\label{fig:bumpsub:fig:u}
+\end{figure}
+
+\section{Conclusion}
+
+To conclude, this type of channel flow is driven by advection
+and pressure gradient terms. It is adequately reproduced by
+\telemac{2d} in sub-critical flow regime.
+
+
+

@@ -1,0 +1,152 @@
+%----------------------------------------------------------------------------------------------------
+\chapter{Validation}
+%----------------------------------------------------------------------------------------------------
+
+This chapter will describe how to use the validation Python scripts.
+Those scripts are used to define a VnV (Verification and Validation) test case.
+It will describe what to run and what to do with the data from the runs such as
+comparison between reference file and results file, comparison with an
+analytical solution, comparison with data\ldots
+
+%----------------------------------------------------------------------------------------------------
+\section{Structure of Python script}
+\label{ref:descVnvStudy}
+%----------------------------------------------------------------------------------------------------
+
+Each test case is described using a Python script that must start with
+"\verb!vnv_!" and looks like that when empty:
+
+% parameter for Python coloring
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\lstset{language=Python,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={VnvStudy, AbstractVnvStudy,_init,_pre,_check_results,_post},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            %
+}
+
+\begin{lstlisting}
+"""
+Validation script for gouttedo
+"""
+from vvytel.vnv_study import AbstractVnvStudy
+from execution.telemac_cas import TelemacCas, get_dico
+from data_manip.extraction.telemac_file import TelemacFile
+
+class VnvStudy(AbstractVnvStudy):
+    """
+    Class for validation
+    """
+
+    def _init(self):
+        """
+        Defining general parameters
+        """
+        self.rank = 4
+        self.tags = ['telemac2d']
+
+    def _pre(self):
+        """
+        Defining the studies
+        """
+        pass
+
+    def _check_results(self):
+        """
+        Check on run results
+        """
+        pass
+
+    def _post(self):
+        """
+        Post-treatment processes
+        """
+        pass
+\end{lstlisting}
+
+This defines a class named "\verb!VnvStudy!" which inherits from
+"\verb!AbstractVnvStudy!" which is an abstract class for which you need to fill
+the following 4 functions:
+\begin{itemize}
+\item \_init: This is were we define the rank and the tags. The rank defines
+  the importance of the test case the rule for the rank is described below.
+    While the tag is a system to identify was is tested in the case. This list
+    of tags can be find in \verb!validate_telemac.py!
+\item \_pre: This is were we will defined the studies, a study is defined by a
+  steering file and a module.
+\item \_check\_results: This is were we will do checks on the results versus,
+  measurements, analytical solutions, reference files\ldots
+\item \_post: This were we will do the post-treatment we recommand to use
+  function from postel Python module but you can use any Python code.
+\end{itemize}
+
+The rank follow the rules below:
+\begin{itemize}
+\item 0: Minimal validation should last less than an hour and check each
+  module.
+\item 1: More complete validation should last less than 4 hours.
+\item 2: Less than a day (Daily validation).
+\item 3: The additional test launch over the WE.
+\item 4: Very specific cases run only we are making a new release.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------------------
+\section{Where to look for examples}
+%----------------------------------------------------------------------------------------------------
+You can have a look at all the Python script in the examples but here is a
+small list of where to find examples on how to do specific actions:
+\begin{itemize}
+\item For a basic validation case (steering file run in sequential and parallel
+  and comparison of sequential vs reference, parallel vs reference and
+    sequential vs parallle) as well as a couple examples of post-treatment have
+    a look at \verb!examples/telemac2d/gouttedo/vnv_thompson.py!
+\item For an example of a validation against an analytical solutions and the
+  post-treatment to go with that have a look at
+    \verb!examples/telemac2d/thacker/vnv_thacker.py!
+\item For an example of the generation of multiple steering file to test a
+  range of options have a look at
+    \verb!examples/telemac3d/lock-exchange/vnv_lock_exchange_sensibility.py!
+\end{itemize}
+
+For examples of extractions and post-treatment have a look at the notebooks (In
+notebooks at the root of your \telemacsystem). To run them use jupyter notebook
+and run \verb!jupyter notebook notebooks/index.ipynb!.
+
+%----------------------------------------------------------------------------------------------------
+\section{How to run validation}
+%----------------------------------------------------------------------------------------------------
+
+To run validation use the script "\verb!validate_telemac.py!".
+To summarise what you have access to:
+\begin{itemize}
+\item if you pass the script Python file as argument it will run them otherwise
+  it will loop over the ones in the examples folder.
+\item if you add -k/--rank or --tags you can specify for which ranks, tags to
+  run validation.
+\item if you add --vnv-pre/--vnv-run/--vnv-post/--vnv-check-results you can run
+only those steps (you can have more than). Just beware that some are necessary
+for the others (for example you can not do post treatment if you have not run
+the case first). The pre-treatment phase is always run.
+\item if you add --report-name=toto it will generate a csv file at the root of
+  your \telemacsystem{} containing time informations for each step (pre,
+    check\_results) and the run of each study.
+\item if you add --clean or --full-clean instead of running it will delete the
+  files created by the validation script (this will delete the results of the
+    runs).
+\item all the options from \verb!runcode.py!. Those will be passed to each run.
+\end{itemize}
+
+When running "\verb!validate_telemac.py!" on an already ran VnV case the run
+part will not be done if none of the input files (files to read given in the steering file)
+or the steering file itself are newer than one the output files (a file that was
+generated by the run).
+
+To see all the options run \verb!validate_telemac.py -h!.

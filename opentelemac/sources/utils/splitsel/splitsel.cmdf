@@ -1,0 +1,69 @@
+[general]
+path: <root>|sources|utils|splitsel
+module: splitsel
+liborder: special hermes bief splitsel
+name: splitsel
+
+[bief]
+path: <root>|sources|utils|bief
+files: bief_def.f
+  bief.f
+  find_variable.f
+  read_mesh_conn.f
+  user_corrxy.f
+  corrxy.f
+  read_mesh_coord.f
+  read_mesh_info.f
+
+[hermes]
+path: <root>|sources|utils|hermes
+files: interface_hermes.f
+  hash_table.f
+  utils_cgns.F
+  hermes_index_file.f
+  utils_med.F
+  utils_serafin.F
+  lib_vtk_io.F
+  utils_vtk.F
+  add_data.f
+  close_bnd.f
+  close_mesh.f
+  get_data_ntimestep.f
+  get_data_nvar.f
+  get_data_time.f
+  get_data_value.f
+  get_data_var_list.f
+  get_bnd_numbering.f
+  get_bnd_value.f
+  open_bnd.f
+  open_mesh.f
+  get_bnd_ipobo.f
+  get_mesh_connectivity.f
+  get_mesh_coord.f
+  get_bnd_nelem.f
+  get_bnd_npoin.f
+  get_mesh_dimension.f
+  get_mesh_nelem.f
+  get_mesh_nplan.f
+  get_mesh_npoin.f
+  get_mesh_npoin_per_element.f
+  get_mesh_nptir.f
+  get_mesh_title.f
+  set_header.f
+  set_mesh.f
+
+[special]
+path: <root>|sources|utils|special
+files: declarations_special.F
+  plante.F
+  get_free_id.f
+  get_nodes_per_element.f
+  blanc2uscore.f
+  check_allocate.f
+  write_error.f
+  check_call.f
+
+[splitsel]
+path: <root>|sources|utils|splitsel
+files: pair.f
+  splitsel.f

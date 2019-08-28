@@ -1,0 +1,92 @@
+\chapter{Workflow with \soft{git}}
+
+As a conclusion of this document I'll share here my development workflow.
+
+\begin{itemize}
+
+\item First make sure all your shared branches are up-to-date with origin or with the svn branch:
+  \begin{lstlisting}
+    git pull origin
+  \end{lstlisting}
+or
+  \begin{lstlisting}
+    git svn fetch
+    git checkout master
+    git merge remotes/git-svn
+  \end{lstlisting}
+\item Create a new local branch and start working on it (make one branch for each new feature you plan to introduce in the code):
+  \begin{lstlisting}
+    git checkout -b myNewBranch
+  \end{lstlisting}
+  Commit often, making small commits containing one change at a time:
+  \begin{lstlisting}
+    git add filesToAdd.ext
+  \end{lstlisting}
+  Use \important{git add -p} if necessary.
+  \begin{lstlisting}
+    git commit
+  \end{lstlisting}
+  \important{Make sure you have documented all your changes and that you respect the coding rules of the project.}\\
+  \important{ALL THE COMMITS MUST COMPILE for debugging purposes.}
+\item Once your development is finished, create a new branch for the merge with \important{master}:
+  \begin{lstlisting}
+    git checkout -b rebase\_branch
+  \end{lstlisting}
+\item Clean the branch \important{rebase\_branch} using the interactive rebase on the necessary amount of commits (\textit{e.g.} 10):
+  \begin{lstlisting}
+    git rebase -i HEAD~10
+  \end{lstlisting}
+  Follow the text editor instructions to clean the history of \important{rebase\_branch} as you need.
+  The idea is that all the developers don't need to have a trace of all you did step by step in your developments.
+\item Once the branch is clean, make a backup of it
+  \begin{lstlisting}
+    git branch backup
+  \end{lstlisting}
+\item Rebase the branch \important{rebase\_branch} on top of \important{master}:
+  \begin{lstlisting}
+    git rebase master
+  \end{lstlisting}
+\item Solve each conflict \soft{git} encounters during the rebase and \important{make sure that the code compiles before continuing the rebase}.
+\item Once the rebase is finished, update master:
+  \begin{lstlisting}
+    git checkout master
+  \end{lstlisting}
+  \begin{lstlisting}
+    git merge rebase\_branch
+  \end{lstlisting}
+\item \important{Once you have finished and you have checked that the compilation is working and that the test-cases run correctly}, delete the rebase\_branch and the backup branch:
+  \begin{lstlisting}
+    git branch -d rebase\_branch
+    git branch -d backup
+  \end{lstlisting}
+\item When the branch \important{master} is stable, the integration process can start. With \soft{git svn}, perform the merges with the trunk regularly in the \soft{svn} directory, as described in chapter~\ref{sec:gitsvn}.
+\item With \soft{git svn}, after your development was integrated in the trunk, refrech you svn branch :
+To do that efficiently use the following script:
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+mybranch=path_to_branch
+# Moving into the branch folder
+cd \$mybranch
+# Removing all local modifications execpt in the "configs"
+# and "builds"folder
+svn stat|grep -i ? |grep -vi configs/|grep -vi builds|sed -e "s/^?      //g"|tr '\n' ' '|xargs rm -rvf
+# Copying all the stuff from the latest revision of the trunk to the branch
+svn export --force http://svn.opentelemac.org/svn/opentelemac/trunk .
+# Adding all the new files
+svn stat|grep -i ? |grep -vi configs/|grep -vi builds|sed -e "s/^?      //g"|tr '\n' ' '|xargs svn add
+# Committing the fresh version
+svn commit -m "Fresh start from recision rev"
+\end{lstlisting}
+Where $path_to_branch$ must be replaced by the path to your branch and $rev$ by
+the revision of the trunk.
+%
+\\
+\textbf{WARNING}:
+This process will completely erase any modifications you have locally on your
+repository.  The "svn export" command will overwrite your local files with the
+latest version of the trunk.
+%
+Copy the text in a file and run \verb!bash file! with $file$ the name of your
+file. Replace $rev$ by the revision of the trunk.
+\end{itemize}
+

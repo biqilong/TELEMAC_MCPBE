@@ -1,0 +1,62 @@
+!                    ******************************
+                     SUBROUTINE FRAZIL_MASS_ON_BAR
+!                    ******************************
+!
+     &    (RFR0,RFR1,DB,BAR,NBAR,ANG1,FM1,FMT)
+!
+!***********************************************************************
+! KHIONE                                                          V8P0
+!***********************************************************************
+!
+!brief
+!+
+!history  S.E.BOURBAN (HRW)
+!+        14/06/2017
+!+        V7P3
+!+
+!+
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| ANG1           |<--|
+!| BAR            |<--|
+!| DB             |<--|
+!| FM1            |-->|
+!| FMT            |-->|
+!| NBAR           |<--|
+!| RFR0,RFR1      |<--|
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+      USE DECLARATIONS_KHIONE, ONLY : RHOICE,EF0
+!
+      IMPLICIT NONE
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+      INTEGER         , INTENT(IN)    :: NBAR
+      DOUBLE PRECISION, INTENT(IN)    :: RFR0,RFR1,BAR,ANG1,DB
+      DOUBLE PRECISION, INTENT(INOUT) :: FM1,FMT
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+      DOUBLE PRECISION :: RB,DR,AMNU,ASH,RATIO,ADONT,AICE
+!
+!      RB = RFR0/2.0/COS(ANG1)
+      RB = DB/2.0
+      DR = 2*RB - RFR0
+!
+      AMNU = RFR0**2*COS(ANG1)*SIN(ANG1) + 2*ANG1*RB**2 -
+     &       RB**2*COS(2*ANG1)*SIN(2*ANG1)
+      ASH = 2*ANG1*RB**2 - (ANG1*RFR0**2 - RB*RFR0*SIN(ANG1)) ! SHADE AREA
+!
+      IF (RFR1.GT.2*RB) THEN
+        AICE = ANG1*RFR1**2 - AMNU
+      ELSE
+        ADONT = (RFR1**2 - RFR0**2)*ANG1
+        RATIO = (RFR1 - RFR0) / DR
+        AICE = ADONT - RATIO*ASH
+      ENDIF
+!
+      FM1 = AICE*BAR*RHOICE*(1.0 - EF0)
+      FMT = FM1*NBAR
+!
+      END SUBROUTINE FRAZIL_MASS_ON_BAR

@@ -1,0 +1,27 @@
+/----------------------------------------------------------------------
+/                          GAIA
+/----------------------------------------------------------------------
+GEOMETRY FILE = geo_bosse-t2d.slf
+BOUNDARY CONDITIONS FILE = geo_bosse-t2d.cli
+RESULTS FILE = gai_bosse-t2d.slf
+TITLE = 'Cas5'
+NUMBER OF PRIVATE ARRAYS = 1
+VARIABLES FOR GRAPHIC PRINTOUTS =
+'U,S,H,B,E,TOB,M,MU,A'
+MASS-BALANCE = YES
+/----------------------------------------------------------------------
+/ NUMERICAL PARAMETERS
+/----------------------------------------------------------------------
+ZERO = 1e-12
+/----------------------------------------------------------------------
+/ PHYSICAL PARAMETERS
+/----------------------------------------------------------------------
+CLASSES TYPE OF SEDIMENT = NCO
+CLASSES SEDIMENT DENSITY = 2650.0
+BED LOAD FOR ALL SANDS=  YES
+BED-LOAD TRANSPORT FORMULA FOR ALL SANDS = 30  /Engelund Hansen
+SLOPE EFFECT = YES
+/ ONLY DEVIATION TAKEN INTO ACCOUNT IN KOCH AND FLOCHSTRA
+BETA = 0.
+CLASSES SEDIMENT DIAMETERS = 0.000150
+LAYERS NON COHESIVE BED POROSITY = 0.4

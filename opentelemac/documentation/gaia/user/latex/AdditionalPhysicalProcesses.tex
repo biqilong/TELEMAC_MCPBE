@@ -1,0 +1,53 @@
+%-------------------------------------------------------------------------------
+\chapter[Additional Physical Processes]{Additional Physical Processes}
+%-------------------------------------------------------------------------------
+
+\section{Rigid beds}
+Non-erodable beds are treated numerically by limiting the bed erosion and letting incoming sediment pass over. The problem of rigid beds is conceptually trivial but numerically complex.
+
+For finite elements the minimum water depth algorithm allows a natural treatment of rigid
+beds, see~\cite{Hervouet11}. The sediment is managed as a layer with a
+\textcolor{blue}{\sout{depth}} \textcolor{blue}{mass} that must remain positive, and the Exner equation is solved similarly to the shallow water continuity equation in the subroutine {\ttfamily positive\_depths.f} of the \textsc{Bief} library.
+
+The \textcolor{blue}{\sout{space location and position of the rigid bed}} \textcolor{blue}{thickness of the erodible layer} can be modified in the subroutine \textcolor{blue}{\texttt{bed\_init\_user.f}}. \textcolor{blue}{By default, the thickness of the erodible layer is 100 m, then \gaia{} computes automatically the location of the rigid bed}. \textcolor{blue}{\sout{By default, the position of the rigid bed is located at $z=-100$m.}}
+
+\section{Tidal flats}
+Tidal flats are areas of the computational domain where the water depth can become zero during the simulation. For finite elements the minimum water depth algorithm allows a natural treatment of tidal flats, see~\cite{Hervouet11} and the Exner equation is solved similarly to the shallow water continuity equation in the subroutine {\ttfamily positive\_depths.f} of the \textsc{Bief} library.
+
+Improvements of the numerical results where wetting and drying processes are present can be achieved by using the keyword \telkey{MINIMUM DEPTH FOR BEDLOAD} (real type variable, set to {\ttfamily = 1.E-2}m by default), which cancels sediment fluxes to and from dry points.
+
+The default value can be modified by the user. As a guideline, we can suggest a value in the range $[2-3]\times d_{50}$, being $d_{50}$ the median sediment diameter.
+
+A complete treatment of tidal flats is given in the \telemac{2D} users manual.
+
+
+%-------------------------------------------------------------------------------
+\section{Morphological factor}
+%-------------------------------------------------------------------------------
+\textcolor{blue}{This option has not been tested in \gaia{}. Still working? Does it make sense if now the coupling period is always equal to 1?}.
+
+The morphological factor, keyword \telkey{MORPHOLOGICAL FACTOR} (real type, set to {\ttfamily = 1.0} by default), increases the bottom change rates with a constant factor $N$. The new bed level represents a simulation period of $N$ hydrodynamic time steps. For example, using $1$ semi-diurnal tide ($\approx$12 hours) and a morphological factor of $10$ will result in an actual simulated time period of $120$ hours.
+
+In theory, assuming that the morphodynamic changes are small compared to the hydrodynamic changes,
+this approach reduces the computational effort without significant loss of model quality. Further details can be found in~\cite{Knaapen12} and references therein.
+
+%-------------------------------------------------------------------------------
+\section{Sediment Slide}
+%-------------------------------------------------------------------------------
+\textcolor{blue}{Not done. Work in progress.}
+
+An iterative algorithm prevents the bed slope to become greater than the maximum friction angle ($\theta_s \approx 32^\circ-40^\circ$). A rotation of each element is then performed in order to insure: \textit{(i)} mass continuity and \textit{(ii)} bed slope $<$ friction angle: $|\Grad(z_b)| < \tan(\theta_s)$. The subroutine \texttt{maxslope.f} was recently modified to avoid stability issues by controlling the amount of sediment that slides. This quantity was set at 10\% of the quantity needed to achieve the required slopes, therefore slowing down the slope correction.\\
+
+This option is activated by the keyword \texttt{SEDIMENT SLIDE = YES} (logical type variable, set to {\ttfamily = NO} by default). The friction angle can be modified with the keyword {\ttfamily FRICTION ANGLE OF SEDIMENT} (real type variable, {\ttfamily = 40.} by default). Further details can be found in~\cite{ElKadiAbderrezzak201675}.
+
+%-------------------------------------------------------------------------------
+\section{Mass balance considerations}
+%-------------------------------------------------------------------------------
+\textcolor{blue}{To be moved, I don't know yet where...}
+
+The mass balance in \gaia{} is done in two ways. At every time step the evoluted mass per time step ({\ttfamily RMASCLA(ICLA)}) should be the same than the sum of mass over the boundaries in this time step ({\ttfamily MCUMUCLA(ICLA)}), the cumulated mass due to erosion and deposition fluxes from suspension
+({\ttfamily (DEPOSITION\_FLUX(ICLA)-EROSION(ICLA))*DT}) and the mass added by nestor ({\ttfamily MASSNESTOR(ICLA)}). The relative mass error is computed by dividing the absolute mass error by the initial mass of the active layer.
+
+For the final mass balance the evoluted masses, the boundaries masses, the erosion deposition masses and the nestor masses are cumulated over all time steps and balanced. Additionally a mass balance is done over the whole sediment body. The initial mass ({\ttfamily MASS0TOT(ICLA)}) is balanced with the final mass ({\ttfamily MASSTOT(ICLA)}), the cumulated mass due to erosion and deposition fluxes from suspension
+({\ttfamily (DEPOSITION\_FLUX(ICLA)-EROSION(ICLA))*DT}) and the mass added by nestor ({\ttfamily MASSNESTOR(ICLA)}). Again a relative mass error is computed by dividing the absolute mass error by the initial mass.
+In case of a multi-class model the final mass balance is done for every class and also for the sums over all classes.

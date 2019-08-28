@@ -1,0 +1,126 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Telemac Documentation
+%  Example of the TelemacDoc class
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\documentclass[Gaia]{../../data/TelemacDoc} % Default font size and left-justified equations
+%\documentclass[Telemac2D,french]{TelemacDoc} % Default font size and left-justified equations in french
+
+\begin{document}
+
+\let\cleardoublepage\clearpage
+
+%noindent for the whole document
+\setlength\parindent{0pt}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+\title{Gaia}
+\subtitle{User Manual}
+\version{\telmaversion}
+%\author{}
+\author{}
+\date{\today}
+\maketitle
+\clearpage
+
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\thispagestyle{empty}
+
+\TelemacCopyright{}
+
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+
+\pagestyle{empty} % No headers
+
+\tableofcontents% Print the table of contents itself
+
+%\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 0: Contributors
+%----------------------------------------------------------------------------------------
+\pagebreak
+This manual was possible thanks to the contribution of <Yoann Audouin, Tom Benson, Jacques Fontaine, Nicolas Huybrechs, Rebekka Kopmann, Agn\`es Leroy, Matthieu de Linares, Sara Pavan, Chi-Tuan Pham,  Florent Taccone, Pablo Tassi, Regis Whalter>
+\pagebreak
+%----------------------------------------------------------------------------------------
+%	CHAPTER 1: Introduction
+%----------------------------------------------------------------------------------------
+
+\input{./latex/IntroductionGaia}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 2: Bedload transport
+%----------------------------------------------------------------------------------------
+
+\input{./latex/BedloadTransport}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 3: Suspended sediment transport (cohesive & non-cohesive)
+%----------------------------------------------------------------------------------------
+
+\input{./latex/SuspendedSedimentTransport}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 4: Bed structure
+%----------------------------------------------------------------------------------------
+
+\input{./latex/BedStructure}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 5: Waves
+%----------------------------------------------------------------------------------------
+
+\input{./latex/InfluenceWaves}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 6: Additional Physical Processes
+%----------------------------------------------------------------------------------------
+
+\input{./latex/AdditionalPhysicalProcesses}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 7: How To?
+%----------------------------------------------------------------------------------------
+
+\input{./latex/HowTos}
+
+%\input{./latex/Citations}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 8: Appendices /// TO DO BETTER ///
+%----------------------------------------------------------------------------------------
+
+\input{./latex/Appendices}
+
+%----------------------------------------------------------------------------------------
+%	Documents using Gaia
+%----------------------------------------------------------------------------------------
+\input{./latex/WorksUsingGaia.tex}
+
+%---------------------------------------------------------------------------
+% Bibliography
+%---------------------------------------------------------------------------
+%\chapter{Bibliography}
+
+\bibliographystyle{plainnat}
+\bibliography{../../data/biblio}
+
+\end{document}
