@@ -79,11 +79,16 @@ class VnvStudy(AbstractVnvStudy):
                                  1.E-15, 1.E-15, 1.E-15, 1.E-15])
 
         # sequential parallel comparison
-        self.check_epsilons('char_seq:T2DRES', 'char_par:T2DRES', eps=[1e-1])
-        self.check_epsilons('nerd_seq:T2DRES', 'nerd_par:T2DRES', eps=[1e-1])
-        self.check_epsilons('eria_seq:T2DRES', 'eria_par:T2DRES', eps=[1e-1])
-        self.check_epsilons('kin1_seq:T2DRES', 'kin1_par:T2DRES', eps=[1e-1])
-        self.check_epsilons('hllc_seq:T2DRES', 'hllc_par:T2DRES', eps=[1e-1])
+#        self.check_epsilons('char_seq:T2DRES', 'char_par:T2DRES', eps=[1e-1])
+#        self.check_epsilons('nerd_seq:T2DRES', 'nerd_par:T2DRES', eps=[1e-1])
+#        self.check_epsilons('eria_seq:T2DRES', 'eria_par:T2DRES', eps=[1e-1])
+#        self.check_epsilons('kin1_seq:T2DRES', 'kin1_par:T2DRES', eps=[1e-1])
+#        self.check_epsilons('hllc_seq:T2DRES', 'hllc_par:T2DRES', eps=[1e-1])
+        self.check_epsilons('char_seq:T2DRES', 'char_par:T2DRES', eps=[])
+        self.check_epsilons('nerd_seq:T2DRES', 'nerd_par:T2DRES', eps=[])
+        self.check_epsilons('eria_seq:T2DRES', 'eria_par:T2DRES', eps=[])
+        self.check_epsilons('kin1_seq:T2DRES', 'kin1_par:T2DRES', eps=[])
+        self.check_epsilons('hllc_seq:T2DRES', 'hllc_par:T2DRES', eps=[])
 
         # verification of epsilon with analytic solution
         for name, study in self.studies.items():

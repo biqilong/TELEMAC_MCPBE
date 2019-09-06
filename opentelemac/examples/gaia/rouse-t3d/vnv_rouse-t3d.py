@@ -16,7 +16,7 @@ class VnvStudy(AbstractVnvStudy):
         Defines the general parameter
         """
         self.rank = 2
-        self.tags = ['telemac2d', 'gaia']
+        self.tags = ['telemac3d', 'gaia']
 
     def _pre(self):
         """

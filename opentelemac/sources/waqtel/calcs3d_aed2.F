@@ -1,12 +1,12 @@
 !                     ***********************
                       SUBROUTINE CALCS3D_AED2
 !                     ***********************
-     &(NPOIN3,NPOIN2,NPLAN,Z,TA,TEXP,LONGIT,
+     &(NPOIN3,NPOIN2,NPLAN,Z,RHO,TA,TEXP,LONGIT,
      & LATIT,AT,MARDAT,MARTIM,EXTCAED2,RAYAED2)
 !
 !
 !***********************************************************************
-! WAQTEL      V7P3
+! WAQTEL      V8P1
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS WHEN COUPLING WITH AED2 FOR 3D CASE
@@ -41,6 +41,12 @@
 !+        V8P0
 !+   Solar radiation is stored for the T3D-AED2 coupling
 !
+!history  C.-T. PHAM (LNHE)
+!+        31/07/2019
+!+        V8P1
+!+        Density RHO computed in drsurr in TELEMAC-3D and given to
+!+        WAQTEL as optional (none in 2D) rather than computed again
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| AT            |-->| TIME IN SECONDS
 !| EXTCAED2      |<--| EXTINCTION COEFFICIENT CALCULATED BY AED2
@@ -53,13 +59,14 @@
 !| NPOIN2        |-->| NUMBER OF NODES IN THE 2D MESH
 !| NPOIN3        |-->| NUMBER OF NODES IN THE 3D MESH
 !| RAYAED2       |<->| SOLAR RADIATION FOR AED2 COUPLING
+!| RHO           |-->| WATER DENSITY
 !| TEXP          |<--| EXPLICIT SOURCE TERM.
 !| Z             |-->| Z COORDINATES FOR NODES
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
       USE DECLARATIONS_SPECIAL
-      USE DECLARATIONS_WAQTEL,ONLY:NEBU,CP_EAU,RO0,IND_T,IND_S
+      USE DECLARATIONS_WAQTEL,ONLY:NEBU,CP_EAU,IND_T
       USE EXCHANGE_WITH_ATMOSPHERE
 #if defined HAVE_AED2
       USE T3D_AED2
@@ -73,6 +80,7 @@
       INTEGER       , INTENT(IN)    :: NPOIN3,NPOIN2,NPLAN
       INTEGER, INTENT(IN)           :: MARDAT(3),MARTIM(3)
       DOUBLE PRECISION, INTENT(IN)  :: Z(NPOIN3),LATIT,LONGIT,AT
+      DOUBLE PRECISION, INTENT(IN)  :: RHO(NPOIN3)
       TYPE(BIEF_OBJ), INTENT(INOUT) :: TEXP,RAYAED2
       TYPE(BIEF_OBJ), INTENT(IN)    :: TA
       DOUBLE PRECISION, INTENT(INOUT) :: EXTCAED2(NPOIN2,NPLAN)
@@ -80,9 +88,9 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER I,J,K,IPLAN,ITRAC,IERR
-      DOUBLE PRECISION TREEL,SAL,RO,LAMB,RAY_SOL
+      DOUBLE PRECISION LAMB,RAY_SOL
 !
-      INTRINSIC EXP,MAX
+      INTRINSIC EXP
 !
 !----------------------------------------------------------------------
 !
@@ -136,16 +144,16 @@
 !     EXTINCTION COEFFICIENT CALCULATED BY AED2
 !     TAKES INTO ACCOUNT BIOEXTINCTION & CO
 !
-      SAL = 0.D0
+!      SAL = 0.D0
       DO I=1,NPOIN2
         DO IPLAN=1,NPLAN
           J = I + (IPLAN-1)*NPOIN2
-          TREEL=TA%ADR(IND_T)%P%R(NPOIN3-NPOIN2+I)
-          IF (IND_S.NE.0) THEN
-            SAL = TA%ADR(IND_S)%P%R(NPOIN3-NPOIN2+I)
-          ENDIF
-          RO=RO0*(1.D0-(7.D0*(TREEL-4.D0)**2-750.D0*SAL)*1.D-6)
-          LAMB=RO*CP_EAU
+!          TREEL=TA%ADR(IND_T)%P%R(NPOIN3-NPOIN2+I)
+!          IF (IND_S.NE.0) THEN
+!            SAL = TA%ADR(IND_S)%P%R(NPOIN3-NPOIN2+I)
+!          ENDIF
+!          RO=RO0*(1.D0-(7.D0*(TREEL-4.D0)**2-750.D0*SAL)*1.D-6)
+          LAMB=RHO(NPOIN3-NPOIN2+I)*CP_EAU
           TEXP%ADR(IND_T)%P%R(J) =
      &             EXTCAED2(I,IPLAN)
      &            *EXP(EXTCAED2(I,IPLAN)*(Z(J)-Z(I+(NPLAN-1)*NPOIN2)))

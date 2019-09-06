@@ -49,7 +49,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:SISRES',
                             'fis_lazare.slf',
-                            eps=[1.E-6, 1.E-6, 1.E-6, 4.E-5, 4.E-5, 1.E-5, 1.E-9, 1.E-6, 1.E-7])
+                            eps=[1.E-6, 1.E-6, 1.E-6, 4.E-5, 4.E-5, 1.E-5, 1.E-9, 1.E-6, 1.E-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:SISRES',
@@ -64,7 +64,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_lazare.slf',
-                            eps=[1.E-6, 1.E-6, 1.E-6, 4.E-5, 4.E-5, 1.E-7, 1.E-6])
+                            eps=[1.E-6, 1.E-6, 1.E-6, 4.E-5, 4.E-5, 1.E-7, 1.E-5])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',

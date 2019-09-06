@@ -6,7 +6,7 @@
      & CAS_FILE,DICO_FILE)
 !
 !***********************************************************************
-! TELEMAC2D   V8P0
+! TELEMAC2D   V8P1
 !***********************************************************************
 !
 !brief    READS THE STEERING FILE THROUGH A DAMOCLES CALL.
@@ -1280,6 +1280,8 @@
 !
       PARTEL_CONCAT = MOTLOG(ADRESS(3,58))
       IF(NCSIZE.LE.1) PARTEL_CONCAT=.FALSE.
+!     COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED
+      FAIRACCU = MOTLOG(ADRESS(3,59))
 !
       IF(.NOT.DEFZON) NZONE=0
 !

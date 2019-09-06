@@ -29,9 +29,10 @@
 /  - REAL (REEL):
 /       1-6,8-26,28-36,51-67,71-72,77-107,119     OUT OF 85
 /  - LOGICAL (LOGIQUE):
-/       1-2,5-22,31-34,51-51,61-61,69-72,75-87,90-93,118-119     OUT OF 48
+/       1-2,5-22,31-34,51-51,61-61,69-72,75-87,90-93,118-119     OUT OF 49
 /  - CHARACTER (CARACTERE):
-/       1-3,6-14,16-23,25-25,27-35,41-41,50-53,55-79,83-95,100-101     OUT OF 75
+/       1-3,6-11,13-14,16-23,25-25,27-35,41-41,50-53,55-79,83-95,98-98,100-101
+/                                                                OUT OF 75
 /
 /-------------------------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////
@@ -924,7 +925,7 @@ CHOIX =
 'S="cote de surface libre (m)"';
 'B="cote du fond (m)"';
 'TAi="TAi concentrations des traceurs, i numero du traceur"';
-'TA*="TA concentrations des traceurrs de 1 a 9"';
+'TA*="TA concentrations des traceurs de 1 a 9"';
 'TA**="TA concentrations des traceurs de 10 a 99"';
 'F="nombre de Froude"';
 'Q="debit scalaire (m2/s)"';
@@ -950,12 +951,6 @@ CHOIX =
 'US="vitesse de frottement (m/s)"';
 'MAXZ="valeur maximum de la cote de l eau au cours du calcul (m)"';
 'TMXZ="temps correspondant a ce niveau maximum (s)"';
-'K="energie turbulente (J/kg)"';
-'E="dissipation (W/kg)"';
-'D="viscosite turbulente (m2/s)"';
-'A="derive en x (m)"';
-'G="derive en y (m)"';
-'L="nombre de courant"';
 'TAIR="temperature de l air (degre C)"'
 CHOIX1 =
 'U="depth averaged velocity along x axis (m/s)"';
@@ -991,12 +986,6 @@ CHOIX1 =
 'US="friction velocity (m/s)"';
 'MAXZ="maximum value of the free surface elevation (m)"';
 'TMXZ="time corresponding to this maximum elevation (s)"';
-'K="turbulent energy (J/kg)"';
-'E="dissipation (W/kg)"';
-'D="turbulent viscosity (m2/s)"';
-'A="drift along X (m)"';
-'G="drift along Y (m)"';
-'L="courant number"';
 'TAIR="air temperature (degree C)"'
 APPARENCE =
 'DYNLIST'
@@ -1020,7 +1009,7 @@ Les possibilites offertes sont les suivantes :
 \item S : cote de surface libre (m) ;
 \item B : cote du fond (m) ;
 \item TAi : TAi concentrations des traceurs, i numero du traceur ;
-\item TA* : TA concentrations des traceurrs de 1 a 9 ;
+\item TA* : TA concentrations des traceurs de 1 a 9 ;
 \item TA** : TA concentrations des traceurs de 10 a 99 ;
 \item F : nombre de Froude ;
 \item Q : debit scalaire (m$^2$/s) ;
@@ -1046,12 +1035,6 @@ Les possibilites offertes sont les suivantes :
 \item US : vitesse de frottement (m/s) ;
 \item MAXZ : valeur maximum de la cote de l eau au cours du calcul (m) ;
 \item TMXZ : temps correspondant a ce niveau maximum (s) ;
-\item K : energie turbulente (J/kg) ;
-\item E : dissipation (W/kg) ;
-\item D : viscosite turbulente (m$^2$/s) ;
-\item A : derive en X (m) ;
-\item G : derive en Y (m) ;
-\item L : nombre de courant ;
 \item TAIR : temperature de l air ($^{\circ}$C).
 \end{itemize}'
 AIDE1 =
@@ -1095,12 +1078,6 @@ possibilities are the following:
 \item MAXZ: maximum value of the free surface
 elevation during the computation (m),
 \item TMXZ: time corresponding to this maximum elevation (s),
-\item K: turbulent energy (J/kg),
-\item E: dissipation (W/kg),
-\item D: turbulent viscosity (m$^2$/s),
-\item A: drift along x (m),
-\item G: drift along y (m),
-\item L: courant number,
 \item TAIR: air temperature ($^{\circ}$C).
 \end{itemize}'
 /
@@ -7086,7 +7063,8 @@ l''utilisation de traceurs actifs. Les choix possibles sont :
           (et du sediment si present) ;
 \item 4 : BETA donnes par l''utilisateur pour chaque traceur
           (et effets du sediment avec un beta predefini si present);
-\item 5 : fonction du sediment uniquement.
+\item 5 : fonction du sediment uniquement ;
+\item 6 : Jackett et al. 2006.
 \end{itemize}'
 AIDE1 =
 'Gives the type of the law of density used in the case of
@@ -7098,7 +7076,8 @@ active tracers. The possible choices are:
 \item 3: function of the temperature and salinity (and sediment if present),
 \item 4: user-defined BETA coefficients (and effect of the
          sediment with its own behaviour if present),
-\item 5: function of the sediment only.
+\item 5: function of the sediment only,
+\item 6: Jackett et al. 2006.
 \end{itemize}'
 /
 NOM = 'VALEURS DE REFERENCE DES TRACEURS'

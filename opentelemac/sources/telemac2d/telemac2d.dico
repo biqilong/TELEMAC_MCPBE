@@ -25,13 +25,13 @@
 /
 / INDICES IN USE SO FAR:
 /  - INTEGER (ENTIER):
-/       1-19,21-45,47-79,81-108,110-111
+/       1-19,21-45,47-79,81-108,110-112
 /  - REAL (REEL):
 /       1-66,68-77
 /  - LOGICAL (LOGIQUE):
-/       1-58
+/       1-59
 /  - CHARACTER (CARACTERE):
-/       1-3,6-13,15-20,23-29,33-41,54,57-88,90-102
+/       1-3,6-11,13-13,15-20,23-29,33-41,50-53,59-88,90-98,100-103,162
 /
 /-------------------------------------------------------------------------------
 /
@@ -2408,6 +2408,28 @@ Note de principe).'
 AIDE1 =
 'Sets the value of the wind driving coefficient.
 Refer to principle note.'
+/
+NOM = 'COEFFICIENT D''INFLUENCE DU VENT DEPENDANT DE LA VITESSE DU VENT'
+NOM1 = 'COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED'
+TYPE = LOGICAL
+INDEX = 59
+TAILLE = 1
+DEFAUT = NON
+DEFAUT1 = NO
+MNEMO = 'FAIRACCU'
+RUBRIQUE =
+'HYDRO';'PARAMETRES PHYSIQUES HYDRO';'METEOROLOGIE'
+RUBRIQUE1 =
+'HYDRO';'PHYSICAL PARAMETERS HYDRO';'METEOROLOGY'
+NIVEAU = 0
+AIDE =
+'Si OUI, la valeur du coefficient d''entrainement du vent est
+calculee en fonction de la vitesse du vent.
+La valeur de \telkey{COEFFICIENT D''INFLUENCE DU VENT} est ecrasee.'
+AIDE1 =
+'If YES, the value of the wind driving coefficient is computed
+with respect to the wind velocity.
+The value of \telkey{COEFFICIENT OF WIND INFLUENCE} is overwritten.'
 /
 NOM = 'VITESSE DU VENT SUIVANT X'
 NOM1 = 'WIND VELOCITY ALONG X'

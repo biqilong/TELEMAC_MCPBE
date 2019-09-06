@@ -4,7 +4,7 @@
 !                             ***************
 !
 !***********************************************************************
-! WAQTEL      V8P0
+! WAQTEL      V8P1
 !***********************************************************************
 !
 !brief    Interface for TELEMAC3D to AED2 modules (libaed2)
@@ -102,7 +102,7 @@
 !# EXTERNAL VARIABLES
       AED_REAL :: DTAED2 ! MODIF MAG !DTAED2
       AED_REAL :: EPS_AED2=1.D-9 ! MODIF MAG !DTAED2
-      AED_REAL,DIMENSION(:),  POINTER :: TEMP_AED2, SALT, RHO
+      AED_REAL,DIMENSION(:),  POINTER :: TEMP_AED2, SALT, RHO_AED2
       AED_REAL,DIMENSION(:),  POINTER :: H_AED2, Z_AED2
       AED_REAL,DIMENSION(:),  POINTER :: EXTCOEFF, TSS, BIO_DRAG
       AED_REAL,DIMENSION(:),  POINTER :: I_0, WND, AIR_TEMP, RAINAED2 ! MODIF MAG !RAINAED2
@@ -777,7 +777,7 @@
       SALT => SALT_
       TEMP_AED2 => TEMP_
 
-      RHO => RHO_
+      RHO_AED2 => RHO_
       TSS => TSS_
       ACTIVE => ACTIVE_
 
@@ -1026,13 +1026,13 @@
             CASE ( 'salinity' )
               COLUMN(AV)%CELL => SALT(TOP+(COL-1)*NPLAN:BOT+(COL-1)*NPLAN)
             CASE ( 'density' )
-              COLUMN(AV)%CELL => RHO(TOP+(COL-1)*NPLAN:BOT+(COL-1)*NPLAN)
+              COLUMN(AV)%CELL => RHO_AED2(TOP+(COL-1)*NPLAN:BOT+(COL-1)*NPLAN)
             CASE ( 'layer_ht' )
               COLUMN(AV)%CELL => H_AED2(TOP+(COL-1)*NPLAN:BOT+(COL-1)*NPLAN)
 !!$            CASE ( 'temperature' )
 !!$              COLUMN(AV)%CELL => TEMP_AED2(TOP:BOT)
 !!$            CASE ( 'salinity' )    ; COLUMN(AV)%CELL => SALT(TOP:BOT)
-!!$            CASE ( 'densigy' )     ; COLUMN(AV)%CELL => RHO(TOP:BOT)
+!!$            CASE ( 'densigy' )     ; COLUMN(AV)%CELL => RHO_AED2(TOP:BOT)
 !!$            CASE ( 'layer_ht' )    ; COLUMN(AV)%CELL => H_AED2(TOP:BOT)
             CASE ( 'layer_area' )  ; COLUMN(AV)%CELL_SHEET => AREA(COL)
             CASE ( 'rainaed2' )
@@ -1293,10 +1293,11 @@
       IF ( DO_ZONE_AVERAGING ) THEN
         IF (LINK_EXT_PAR) THEN
           CALL CALC_ZONE_AREAS(NCOLS,TEMP_AED2,SALT,H_AED2,AREA,WND,   &
-                               RHO,EXTCOEFF,I_0,PAR,TSS,ACTIVE,RAINAED2)
+                               RHO_AED2,EXTCOEFF,I_0,PAR,TSS,ACTIVE,   &
+                               RAINAED2)
         ELSE
           CALL CALC_ZONE_AREAS(NCOLS,TEMP_AED2,SALT,H_AED2,AREA,WND,   &
-                               RHO,EXTCOEFF,I_0,LPAR,TSS,ACTIVE,       &
+                               RHO_AED2,EXTCOEFF,I_0,LPAR,TSS,ACTIVE,  &
                                RAINAED2)
         ENDIF
       ENDIF
@@ -1368,7 +1369,7 @@
         BOT = BENTH_MAP(COL)
 
 !# COMPUTE BOTTOM SHEAR STRESS FOR THIS COLUMN BASED ON USTAR FROM HOST
-        COL_TAUB = RHO(BOT)*(USTAR_BED(COL)*USTAR_BED(COL))
+        COL_TAUB = RHO_AED2(BOT)*(USTAR_BED(COL)*USTAR_BED(COL))
 
         DO J=1,N_VARS
           DO LEV=TOP,BOT

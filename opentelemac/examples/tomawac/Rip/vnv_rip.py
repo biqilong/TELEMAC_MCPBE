@@ -55,7 +55,7 @@ class VnvStudy(AbstractVnvStudy):
         # T3D Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_4:T3DRES',
-                            eps=[1e-11])
+                            eps=[1e-10])
 
         # WAC Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:WACRES',

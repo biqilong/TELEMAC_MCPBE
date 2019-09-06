@@ -2,11 +2,11 @@
                       SUBROUTINE CALCS3D_THERMICV
 !                     ***************************
 !
-     & (NPOIN3,NPOIN2,NPLAN,Z,TA,TEXP,LONGIT,
+     & (NPOIN3,NPOIN2,NPLAN,Z,RHO,TA,TEXP,LONGIT,
      &  LATIT,AT,MARDAT,MARTIM)
 !
 !***********************************************************************
-! WAQTEL   V7P2
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief   COMPUTES SOURCE TERMS FOR  WAQ THERMIC PROCESS COUPLED WITH T3D
@@ -29,6 +29,12 @@
 !+        TEXP and TIMP are now additive to account for a variety of
 !+        of sources / sinks on a given TRACER
 !
+!history  C.-T. PHAM (LNHE)
+!+        31/07/2019
+!+        V8P1
+!+        Density RHO computed in drsurr in TELEMAC-3D and given to
+!+        WAQTEL as optional (none in 2D) rather than computed again
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| AT             |-->| TIME IN SECONDS
 !| DT             |-->| TIME STEP
@@ -39,6 +45,7 @@
 !| NPLAN          |-->| NUMBER OF VERTICAL PLANES
 !| NPOIN          |-->| NUMBER OF NODES IN THE MESH
 !| PATMOS         |-->| ATMOSPHERIC PRESSURE
+!| RHO            |-->| WATER DENSITY
 !| TETAT          |-->| COEFFICIENT OF IMPLICITATION FOR TRACERS.
 !| TEXP           |-->| EXPLICIT SOURCE TERM.
 !| TN             |-->| TRACERS AT TIME N
@@ -53,7 +60,7 @@
 !
       USE BIEF_DEF
       USE DECLARATIONS_SPECIAL
-      USE DECLARATIONS_WAQTEL,ONLY:NEBU,ZSD,CP_EAU,RO0,IND_T,IND_S
+      USE DECLARATIONS_WAQTEL,ONLY:NEBU,ZSD,CP_EAU,IND_T
       USE EXCHANGE_WITH_ATMOSPHERE
       USE INTERFACE_WAQTEL, EX_CALCS3D_THERMICV => CALCS3D_THERMICV
       IMPLICIT NONE
@@ -63,6 +70,7 @@
       INTEGER, INTENT(IN)           :: NPOIN2,NPOIN3,NPLAN
       INTEGER, INTENT(IN)           :: MARDAT(3),MARTIM(3)
       DOUBLE PRECISION, INTENT(IN)  :: Z(NPOIN3),LATIT,LONGIT,AT
+      DOUBLE PRECISION, INTENT(IN)  :: RHO(NPOIN3)
       TYPE(BIEF_OBJ), INTENT(IN)    :: TA
       TYPE(BIEF_OBJ), INTENT(INOUT) :: TEXP
 !
@@ -71,7 +79,7 @@
 !  LOCAL VARIABLES
 !
       INTEGER          I,J,IPLAN
-      DOUBLE PRECISION TREEL,SAL,RO,LAMB,RAY_SOL,KD
+      DOUBLE PRECISION LAMB,RAY_SOL,KD
 !
       INTRINSIC EXP
 !
@@ -86,16 +94,16 @@
 !       FORMULA FOR TURBID WATER WITH SECCHI LENGTH
 !
         KD  = 1.7D0/ZSD ! 83% OF THE INCIDENT ENERGY IS ABSORBED
-        SAL = 0.D0
+!        SAL = 0.D0
         DO I=1,NPOIN2
           DO IPLAN=1,NPLAN
             J = I + (IPLAN-1)*NPOIN2
-            TREEL=TA%ADR(IND_T)%P%R(NPOIN3-NPOIN2+I)
-            IF (IND_S.NE.0) THEN
-              SAL = TA%ADR(IND_S)%P%R(NPOIN3-NPOIN2+I)
-            ENDIF
-            RO=RO0*(1.D0-(7.D0*(TREEL-4.D0)**2-750.D0*SAL)*1.D-6)
-            LAMB=RO*CP_EAU
+!            TREEL=TA%ADR(IND_T)%P%R(NPOIN3-NPOIN2+I)
+!            IF (IND_S.NE.0) THEN
+!              SAL = TA%ADR(IND_S)%P%R(NPOIN3-NPOIN2+I)
+!            ENDIF
+!            RO=RO0*(1.D0-(7.D0*(TREEL-4.D0)**2-750.D0*SAL)*1.D-6)
+            LAMB=RHO(NPOIN3-NPOIN2+I)*CP_EAU
             TEXP%ADR(IND_T)%P%R(J) = TEXP%ADR(IND_T)%P%R(J) +
      &        KD*EXP(KD*(Z(J)-Z(I+(NPLAN-1)*NPOIN2)))*RAY_SOL/LAMB
 !

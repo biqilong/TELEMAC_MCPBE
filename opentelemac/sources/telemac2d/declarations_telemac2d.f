@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC2D   V7P3
+! TELEMAC2D   V8P1
 !***********************************************************************
 !
 !brief    DECLARATION OF PRINICIPAL TELEMAC2D VARIABLES
@@ -1583,6 +1583,10 @@
 !     IF YES, USE NESTOR
 !
       LOGICAL NESTOR
+!
+!     IF YES, COEFFICIENT OF WIND INFLUENCE VARIES WITH WIND SPEED
+!
+      LOGICAL FAIRACCU
 !
 !-----------------------------------------------------------------------
 !

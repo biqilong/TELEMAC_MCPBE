@@ -30,8 +30,4 @@
 / NUMERICAL OPTIONS
 /----------------------------------------------------------------------/
  ADVECTION-DIFFUSION SCHEME WITH SETTLING VELOCITY : 1 / SET_DIF scheme
-/----------------------------------------------------------------------/
-&ETA
-&FIN
-
 

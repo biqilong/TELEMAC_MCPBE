@@ -50,7 +50,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_depot.slf',
-                            eps=[1.E-9])
+                            eps=[1.E-9, 1.E-9, 1.E-9, 1.E-9, 1.E-5])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T3DRES',

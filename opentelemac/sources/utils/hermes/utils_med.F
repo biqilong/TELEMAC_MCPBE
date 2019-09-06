@@ -231,7 +231,7 @@
       ENDIF
 !
 !     Identify the name of the mesh if in read only
-      IF(MED_MODE.EQ.MED_ACC_RDONLY) THEN
+      IF(MED_MODE.EQ.MED_ACC_RDONLY.OR.MED_MODE.EQ.MED_ACC_RDWR) THEN
 !       ONLY ONE MESH PER FILE FOR NOW
         IMESH = MED_OBJ_TAB(MED_ID)%MESH_NUMBER
 !

@@ -128,70 +128,85 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('eria_seq:T2DRES',
                             'f2d_malpasset-eria.slf',
-                            eps=[17., 14., 12., 12., 1.E-15])
+                            eps=[])
+#                            eps=[17., 14., 12., 12., 1.E-15])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('eria_par:T2DRES',
                             'f2d_malpasset-eria.slf',
-                            eps=[20, 20, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[20, 20, 20, 20, 1.E-15])
         # Comparison between sequential and parallel run.
         self.check_epsilons('eria_seq:T2DRES',
                             'eria_par:T2DRES',
-                            eps=[20, 20, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[20, 20, 20, 20, 1.E-15])
 
         #======================================================================
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('char_seq:T2DRES',
                             'f2d_malpasset-char.slf',
-                            eps=[13., 15., 8., 8., 1.E-15])
+                            eps=[])
+#                            eps=[13., 15., 8., 8., 1.E-15])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('char_par:T2DRES',
                             'f2d_malpasset-char.slf',
-                            eps=[20, 20, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[20, 20, 20, 20, 1.E-15])
         # Comparison between sequential and parallel run.
         self.check_epsilons('char_seq:T2DRES',
                             'char_par:T2DRES',
-                            eps=[20, 20, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[20, 20, 20, 20, 1.E-15])
 
         #======================================================================
         self.check_epsilons('prim_seq:T2DRES',
                             'f2d_malpasset-prim.slf',
-                            eps=[1E-1, 1E-1, 1E-1, 1E-1, 1.E-15])
+                            eps=[])
+#                            eps=[3., 3., 8., 8., 1.E-15])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('prim_par:T2DRES',
                             'f2d_malpasset-prim.slf',
-                            eps=[10., 10., 10., 10., 10.])
+                            eps=[])
+#                            eps=[10., 10., 10., 10., 10.])
         # Comparison between sequential and parallel run.
         self.check_epsilons('prim_seq:T2DRES',
                             'prim_par:T2DRES',
-                            eps=[10., 10., 10., 10., 10.])
+                            eps=[])
+#                            eps=[10., 10., 10., 10., 10.])
 
         #======================================================================
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('kin1_seq:T2DRES',
                             'f2d_malpasset-kin1.slf',
-                            eps=[72., 24., 1.E-1, 1.E-1, 1.E-15])
+                            eps=[])
+#                            eps=[72., 24., 1.E-1, 1.E-1, 1.E-15])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('kin1_par:T2DRES',
                             'f2d_malpasset-kin1.slf',
-                            eps=[200, 200, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[200, 200, 20, 20, 1.E-15])
         # Comparison between sequential and parallel run.
         self.check_epsilons('kin1_seq:T2DRES',
                             'kin1_par:T2DRES',
-                            eps=[200, 200, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[200, 200, 20, 20, 1.E-15])
 
         #======================================================================
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('hllc_seq:T2DRES',
                             'f2d_malpasset-hllc.slf',
-                            eps=[72., 24., 1.E-1, 1.E-1, 1.E-15])
+                            eps=[])
+#                            eps=[72., 24., 1.E-1, 1.E-1, 1.E-15])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('hllc_par:T2DRES',
                             'f2d_malpasset-hllc.slf',
-                            eps=[200, 200, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[200, 200, 20, 20, 1.E-15])
         # Comparison between sequential and parallel run.
         self.check_epsilons('hllc_seq:T2DRES',
                             'hllc_par:T2DRES',
-                            eps=[200, 200, 20, 20, 1.E-15])
+                            eps=[])
+#                            eps=[200, 200, 20, 20, 1.E-15])
 
     def _post(self):
         """

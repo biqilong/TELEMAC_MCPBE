@@ -2365,13 +2365,16 @@
 !
       IF( (DENLAW.EQ.1.AND. IND_T.EQ.0                ) .OR.
      &    (DENLAW.EQ.2.AND.               IND_S.EQ.0  ) .OR.
-     &    (DENLAW.EQ.3.AND.(IND_T.EQ.0.OR.IND_S.EQ.0) )      ) THEN
+     &    (DENLAW.EQ.3.AND.(IND_T.EQ.0.OR.IND_S.EQ.0) ) .OR.
+     &    (DENLAW.EQ.6.AND.(IND_T.EQ.0.OR.IND_S.EQ.0) )      ) THEN
 !
         WRITE(LU,*) 'LECDON: WITH DENSITY LAW = ',DENLAW
-        IF(IND_T.EQ.0.AND.(DENLAW.EQ.1.OR.DENLAW.EQ.3)) THEN
+        IF(IND_T.EQ.0.AND.
+     &     (DENLAW.EQ.1.OR.DENLAW.EQ.3.OR.DENLAW.EQ.6)) THEN
           WRITE(LU,*) '        ONE TRACER MUST BE THE TEMPERATURE'
         ENDIF
-        IF(IND_S.EQ.0.AND.(DENLAW.EQ.2.OR.DENLAW.EQ.3)) THEN
+        IF(IND_S.EQ.0.AND.
+     &     (DENLAW.EQ.2.OR.DENLAW.EQ.3.OR.DENLAW.EQ.6)) THEN
           WRITE(LU,*) '        ONE TRACER MUST BE THE SALINITY'
         ENDIF
         CALL PLANTE(1)

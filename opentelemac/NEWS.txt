@@ -1,12 +1,18 @@
 Trunk
 ===========================
 
+TELEMAC-2D: New keyword COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED
+
+TELEMAC-2D/TELEMAC-3D: TPXO module: S1 constituent taken into account (for TPXO9)
+
 PYTHON3: New validation system now using Python instead of xml structure. For
 more information read the chapter "Validation" in the developer_guide
 
 PYTHON3: New post treatment module postel. All the documentation can be found
 in the notebooks to run them you jupyter notebooks and to lanuch the command
 "jupyter notebook $HOMETEL/notebooks/index.ipynb"
+
+WAQTEL: fix the bug for degradation law in 3D (WATER QUALITY PROCESS = 17)
 
 TELEMAC-3D: Coupling of TELEMAC-3D with GOTM (standard GOTM)
 
@@ -44,14 +50,7 @@ TELEMAC3D : - The variables calculated by tomawac are taken into account for a r
             - 3 new output graphic variables are avalaible US, VS, WS the thress components of stokes velocity.
 	    - One new keyword BOTTOM FRICTION DUE TO WAVES, it allows to take into account the momentum lost by waves due to bottom friction.
 
-
-TELEMAC-3D: add missing choices for output variables in telemac3d.dico
-  - K: turbulent energy (J/kg),
-  - E: dissipation (W/kg),
-  - D: turbulent viscosity (m2/s),
-  - A: drift along X (m),
-  - G: drift along Y (m),
-  - L: courant number,
+TELEMAC-3D: add one missing choice for output variables in telemac3d.dico
   - TAIR: air temperature (degree C).
 
 TELEMAC-3D: Deleted keywords

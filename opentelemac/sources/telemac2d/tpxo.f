@@ -3,7 +3,7 @@
 !                     ***********
 !
 !***********************************************************************
-! TELEMAC2D   V7P2                                   26/01/2016
+! TELEMAC2D   V8P1
 !***********************************************************************
 !
 !brief    Module containing TPXO variables and subroutines
@@ -66,6 +66,11 @@
 !+   Replaced EXTERNAL statements to parallel functions / subroutines
 !+   by the INTERFACE_PARALLEL
 !
+!history  C.-T. PHAM (LNHE)
+!+        28/07/2019
+!+        V8P1
+!+        S1 is now taken into account (for TPXO9)
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !note     THIS FILE IS ORGANISED IN SEVERAL PARTS:
@@ -90,7 +95,7 @@
 !+  AMPLITUDES, FREQUENCIES, ETC. FOR THE PRIMARY TIDAL CONSTITUENTS
 !+  (CURRENTLY 29)
 !
-      INTEGER, PARAMETER :: TPXO_NCMX = 29
+      INTEGER, PARAMETER :: TPXO_NCMX = 30
       CHARACTER(LEN=4) :: TPXO_CONSTID(TPXO_NCMX)
       PARAMETER ( TPXO_CONSTID = (
      &            /'m2  ','s2  ','k1  ','o1  ',
@@ -100,7 +105,7 @@
      &             'rho1','mf  ','mm  ','ssa ',
      &             'm4  ','ms4 ','mn4 ','m6  ',
      &             'm8  ','mk3 ','s6  ','2sm2',
-     &             '2mk3'/) )
+     &             '2mk3','s1  '/) )
 !
 !brief  FOR EACH CONSTITUENT, THE FOLLOWING PARAMETERS ARE GIVEN:
 !+  - ALPHA = CORRECTION FACTOR FOR FIRST ORDER LOAD TIDES
@@ -170,7 +175,7 @@
      &    2.783986021416699D-4,4.215567077271900D-4,
      &    5.620756103029200D-4,2.134400611225540D-4,
      &    4.363323129985823D-4,1.503693060899916D-4,
-     &    2.081166466046360D-4/
+     &    2.081166466046360D-4,2.908882086657216D-4/
      & ) )
 !
 !brief   ASTRONOMICAL ARGUMENTS, OBTAINED WITH RICHARD RAY'S
@@ -211,7 +216,7 @@
      &    1.49909348144841D0,  5.19467263702969D0,
      &    0.643044875526663D0, 1.90456121954902D0,
      &    0.00000000000000D0,  4.55162776150302D0,
-     &    3.29011141748067D0/
+     &    3.29011141748067D0,  0.00000000000000D0/
      & ) )
 !
 !note I AM PUTTING 0 FOR MS2, MN4 ETC. FOR NOW: CORRECT LATER
@@ -232,7 +237,7 @@
 !         FOR M4 JUST USING VALUE FOR SEMI-DIURNALS (NO GOOD REASON!)
      &    0.9540D0,      0.9540D0,      0.9540D0,      0.954D0,
      &    0.9540D0,      0.9540D0,      0.9540D0,      0.954D0,
-     &    0.9540D0/
+     &    0.9540D0,      0.9400D0/
      & ) )
 !      DATA BETA_SE/29*1./
 !
@@ -1267,7 +1272,7 @@
      &( DTIME,PU,PF )
 !
 !***********************************************************************
-! TELEMAC2D   V6P2                                   16/01/2012
+! TELEMAC2D   V8P1
 !***********************************************************************
 !
 !brief
@@ -1300,9 +1305,9 @@
 !     INDEX GIVES CORRESPONDENCE BETWEEN CONSTIT AND RICHARD'S SUBROUTINES
 !     IN CONSTIT   M2,S2,K1,O1,N2,P1,K2,q1,2N2,mu2,nu2,L2,t2,
 !                  J1,M1(no1),OO1,rho1,Mf,Mm,SSA,M4,
-!                  MS4,MN4,M6,M8,MK3,S6,2SM2,2MK3
+!                  MS4,MN4,M6,M8,MK3,S6,2SM2,2MK3,S1
       PARAMETER ( INDEX = (/ 30,35,19,12,27,17,37,10,25,26,28,33,34,
-     &           23,14,24,11,5,3,2,45,46,44,50,54,42,51,40,55 /) )
+     &           23,14,24,11,5,3,2,45,46,44,50,54,42,51,40,55,18 /) )
 !
       INTRINSIC ATAN
 !
@@ -1955,7 +1960,7 @@
       ZMIN_R(15) = 0.0040D0*Z8_R(6) + 0.0074D0*Z8_R(7)  ! lambda2
       ZMIN_R(16) = 0.0131D0*Z8_R(6) + 0.0326D0*Z8_R(7)  ! L2 +
       ZMIN_R(17) = 0.0033D0*Z8_R(6) + 0.0082D0*Z8_R(7)  ! L2 +
-      ZMIN_R(18) = 0.0585D0*Z8_R(7)                   ! t2 +
+      ZMIN_R(18) = 0.0585D0*Z8_R(7)                     ! t2 +
 !
       ZMIN_I(1)  = 0.263D0 *Z8_I(1) - 0.0252D0*Z8_I(2)  ! 2Q1
       ZMIN_I(2)  = 0.297D0 *Z8_I(1) - 0.0264D0*Z8_I(2)  ! sigma1
@@ -1974,7 +1979,7 @@
       ZMIN_I(15) = 0.0040D0*Z8_I(6) + 0.0074D0*Z8_I(7)  ! lambda2
       ZMIN_I(16) = 0.0131D0*Z8_I(6) + 0.0326D0*Z8_I(7)  ! L2 +
       ZMIN_I(17) = 0.0033D0*Z8_I(6) + 0.0082D0*Z8_I(7)  ! L2 +
-      ZMIN_I(18) = 0.0585D0*Z8_I(7)                   ! t2 +
+      ZMIN_I(18) = 0.0585D0*Z8_I(7)                     ! t2 +
 !
       HOUR = (TIME - INT(TIME))*24.D0
       T1 = 15.D0*HOUR

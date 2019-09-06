@@ -73,7 +73,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T3DRES',
                             'f3d_heat_exchange.slf',
-                            eps=[2.E-4, 0.03, 0.03, 0.003, 0.3])
+                            eps=[2.E-4, 0.03, 0.03, 0.004, 0.3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
@@ -83,17 +83,17 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T3DRES',
                             'f3d_heat_exchange_rain_wind.slf',
-                            eps=[1.E-4, 1.E-4, 1.E-5, 1.E-6, 5.E-4])
+                            eps=[2.E-3, 1.E-4, 1.E-4, 1.E-5, 5.E-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:T3DRES',
                             'f3d_heat_exchange_rain_wind.slf',
-                            eps=[1.E-3, 2.E-4, 1.E-4, 1.E-5, 5.E-4])
+                            eps=[2.E-3, 2.E-4, 1.E-4, 1.E-5, 5.E-4])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_3:T3DRES',
                             'vnv_4:T3DRES',
-                            eps=[1.E-3, 2.E-4, 1.E-4, 1.E-5, 5.E-4])
+                            eps=[2.E-3, 2.E-4, 1.E-4, 1.E-5, 6.E-4])
 
 
     def _post(self):

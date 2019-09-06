@@ -54,12 +54,12 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_mersey.slf',
-                            eps=[2e-1, 2e-1, 2e-1, 2e-1, 1e-5])
+                            eps=[2e-1, 3e-1, 2e-1, 2e-1, 1e-5])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',
                             'vnv_2:T2DRES',
-                            eps=[1e-1, 3e-1, 3e-2, 3e-2, 1e-5])
+                            eps=[1e-1, 4e-1, 3e-1, 3e-1, 1e-4])
 
 
     def _post(self):

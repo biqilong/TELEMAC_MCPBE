@@ -15,7 +15,7 @@
      & MAXSCE,NREG,PT_IN_POLY,TNP,AREA_P)
 !
 !***********************************************************************
-! TELEMAC2D   V7P0
+! TELEMAC2D   V8P1
 !***********************************************************************
 !
 !brief    PREPARES THE SOURCE TERMS IN THE CONTINUITY EQUATION
@@ -130,7 +130,7 @@
 !| DSCE           |-->| DISCHARGE OF POINT SOURCES
 !| DT             |-->| TIME STEP IN SECONDS
 !| ENTBUS         |-->| INDICES OF ENTRY OF TUBES IN GLOBAL NUMBERING
-!| FAIR           |-->| FRICTION COEFFICIENT FOR WIND
+!| FAIR           |<->| FRICTION COEFFICIENT FOR WIND
 !| FCOR           |-->| CORIOLIS PARAMETER
 !| FU             |<->| SOURCE TERMS ON VELOCITY U
 !| FV             |<->| SOURCE TERMS ON VELOCITY V
@@ -190,7 +190,8 @@
      &                                   SECCURRENTS,NTRAC,SEC_R,CN,
      &                                   SEC_TAU,T2,T3,T7,ROEAU,CF,S,
      &                                   IELMU,T,ACCROF,RUNOFFOPT,AMC,
-     &                                   T2DFO2,ZF,ZFSLOP,PATMOS
+     &                                   T2DFO2,ZF,ZFSLOP,PATMOS,
+     &                                   FAIRACCU
       USE INTERFACE_TELEMAC2D, EX_PROSOU => PROSOU
       USE M_COUPLING_ESTEL3D
       USE INTERFACE_HERMES
@@ -224,7 +225,8 @@
       INTEGER          , INTENT(IN)    :: NPTH,T2DBI1
       INTEGER          , INTENT(IN)    :: MARDAT(3),MARTIM(3)
       INTEGER          , INTENT(IN)    :: ISCE(NREJET)
-      DOUBLE PRECISION , INTENT(IN)    :: HWIND,AT,FAIR,FCOR
+      DOUBLE PRECISION , INTENT(IN)    :: HWIND,AT,FCOR
+      DOUBLE PRECISION , INTENT(INOUT) :: FAIR
       DOUBLE PRECISION , INTENT(IN)    :: DSCE(NREJET)
       DOUBLE PRECISION , INTENT(IN)    :: GRAV,PHI0,RAIN_MMPD,DT
       CHARACTER(LEN=32), INTENT(IN)    :: VARCLA(NVARCL)
@@ -249,7 +251,7 @@
 !
       INTEGER N,I,IELMH,IELM1,NPOIN,IR,ERR,NP,K,II,IREG,TTL
 !
-      DOUBLE PRECISION PI,WROT,WD,ATH,RAIN_MPS,SURDT,XX
+      DOUBLE PRECISION PI,WROT,WD,ATH,RAIN_MPS,SURDT,XX,ROAIR
 !
       CHARACTER(LEN=32) NOMX,NOMY
       CHARACTER(LEN=8) :: FFORMAT
@@ -337,9 +339,20 @@
 !
 !  ASSUMES HERE THAT THE WIND IS GIVEN IN P1
 !
+        ROAIR = 1.3D0
         DO N=1,NPOIN
           IF (HN%R(N).GT.HWIND) THEN
             WD = SQRT( WINDX%R(N)**2 + WINDY%R(N)**2 )
+            IF(FAIRACCU) THEN
+!             A MORE ACCURATE TREATMENT
+              IF(WD.LE.5.D0) THEN
+                FAIR = ROAIR/ROEAU*0.565D-3
+              ELSEIF (WD.LE.19.22D0) THEN
+                FAIR = ROAIR/ROEAU*(-0.12D0+0.137D0*WD)*1.D-3
+              ELSE
+                FAIR = ROAIR/ROEAU*2.513D-3
+              ENDIF
+            ENDIF
             FU%R(N) = FU%R(N) + FAIR * WINDX%R(N) * WD / HN%R(N)
             FV%R(N) = FV%R(N) + FAIR * WINDY%R(N) * WD / HN%R(N)
           ENDIF

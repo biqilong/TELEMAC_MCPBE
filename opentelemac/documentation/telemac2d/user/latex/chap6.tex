@@ -163,15 +163,19 @@ The logical keyword  \telkey{WIND} is used first of all for determining whether 
 
 
 
- if    $\left \|\vec{U}_{wind} \right \| <$ 5 m/s   then   $a_{wind}  = 0,565 10^{-3}$
+ if    $\left \|\vec{U}_{wind} \right \| <$ 5 m/s   then   $a_{wind}  = 0.565 \times 10^{-3}$
 
- if  5   $< \left \| \vec{U}_{wind}  \right \| < 19,22 m/s$ then    $a_{wind} = (- 0,12 + 0,137 \left \| \vec{U}_{wind}   \right \|) 10^{-3}$
+ if  5   $< \left \| \vec{U}_{wind}  \right \| <$ 19.22 m/s then    $a_{wind} = (- 0.12 + 0.137 \left \| \vec{U}_{wind}   \right \|) 10^{-3}$
 
- if    $\left \| \vec{U}_{wind}  \right \|   > 19,22 m/s $  then     $a_{wind} = 2,513 10^{-3}$
+ if    $\left \| \vec{U}_{wind}  \right \|   >$ 19.22 m/s   then     $a_{wind} = 2.513 \times 10^{-3}$
+
+ This formula can be activated by setting the keyword
+\telkey{COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED} to YES
+(default value is NO).
 
  The parameter \telkey{COEFFICIENT OF WIND INFLUENCE} asked for by \telemac{2D} is: $\frac{{\rho }_{air}}{\mathrm{\rho }}$ $a_{wind}$ and not only $a_{wind}$.
 
- $\rho_{air}$ is approximately 1.2 $kg/m^3$ and $\rho$ is $1000 kg/m^3$. Thus it is necessary to divide the value of a${}_{wind}$ by 1000 to obtain the value of the \telemac{2D} keyword.
+ $\rho_{air}$ is approximately 1.2 kg/m$^3$ and $\rho$ is 1,000 kg/m$^3$. Thus it is necessary to divide the value of a${}_{wind}$ by 1,000 to obtain the value of the \telemac{2D} keyword.
 
  If there are tidal flats or dry zones in the domain, the wind may trigger unphysical velocities as it becomes the only driving term in the equations. To avoid this, wind is cancelled below a threshold value of depth, with the key-word \telkey{THRESHOLD DEPTH FOR WIND}.
 

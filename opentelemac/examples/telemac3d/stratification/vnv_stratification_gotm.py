@@ -40,6 +40,23 @@ class VnvStudy(AbstractVnvStudy):
 
         del cas
 
+        # stratification GOTM Jackett scalar mode
+        self.add_study('vnv_3',
+                       'telemac3d',
+                       't3d_stratification_gotm_Jackett.cas')
+
+
+        # stratification GOTM Jackett parallel mode
+        cas = TelemacCas('t3d_stratification_gotm_Jackett.cas', get_dico('telemac3d'))
+        cas.set('PARALLEL PROCESSORS', 4)
+
+        self.add_study('vnv_4',
+                       'telemac3d',
+                       't3d_stratification_gotm_Jackett_par.cas',
+                       cas=cas)
+
+        del cas
+
 
 
     def _check_results(self):
@@ -60,6 +77,21 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_2:T3DRES',
+                            eps=[1.E-8])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_3:T3DRES',
+                            'f3d_stratification_gotm_Jackett.slf',
+                            eps=[1.E-8])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_4:T3DRES',
+                            'f3d_stratification_gotm_Jackett.slf',
+                            eps=[1.E-8])
+
+        # Comparison between sequential and parallel run.
+        self.check_epsilons('vnv_3:T3DRES',
+                            'vnv_4:T3DRES',
                             eps=[1.E-8])
 
 

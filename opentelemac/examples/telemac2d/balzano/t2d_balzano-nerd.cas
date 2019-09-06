@@ -71,5 +71,3 @@ TREATMENT OF NEGATIVE DEPTHS            = 2
 MASS-LUMPING ON H                       = 1.
 FREE SURFACE GRADIENT COMPATIBILITY     = 0.9
 CONTINUITY CORRECTION                   = YES
-/----------------------------------------------
-&ETA      

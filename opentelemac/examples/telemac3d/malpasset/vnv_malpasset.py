@@ -113,37 +113,44 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T3DRES',
                             'f3d_malpasset-char_p2.slf',
-                            eps=[8.E-1, 2.1E0, 1.3E0, 5.E-1, 7.E-1])
+                            eps=[])
+#                            eps=[8.E-1, 2.1E0, 1.3E0, 5.E-1, 7.E-1])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:T3DRES',
                             'f3d_malpasset-char_p2.slf',
-                            eps=[7.E-1, 1.4E0, 2.1E0, 5.E-1, 1.6E0])
+                            eps=[])
+#                            eps=[7.E-1, 1.4E0, 2.1E0, 5.E-1, 1.6E0])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_3:T3DRES',
                             'vnv_4:T3DRES',
-                            eps=[7.E-1, 2.8E0, 2.3E0, 5.E-1, 1.6E0])
+                            eps=[])
+#                            eps=[7.E-1, 2.8E0, 2.3E0, 5.E-1, 1.6E0])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:T3DRES',
                             'f3d_malpasset-murd_p6.slf',
-                            eps=[2.E-1, 4.1E0, 2.9E0, 8.E-1, 1.1E0])
+                            eps=[])
+#                            eps=[2.E-1, 4.1E0, 2.9E0, 8.E-1, 1.1E0])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_6:T3DRES',
                             'f3d_malpasset-murd_p6.slf',
-                            eps=[2.E-1, 4.8E0, 3.3E0, 1.E0, 1.1E0])
+                            eps=[])
+#                            eps=[2.E-1, 4.8E0, 3.3E0, 1.E0, 1.1E0])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_5:T3DRES',
                             'vnv_6:T3DRES',
-                            eps=[2.E-1, 5.1E0, 3.3E0, 1.E0, 1.1E0])
+                            eps=[])
+#                            eps=[2.E-1, 5.1E0, 3.3E0, 1.E0, 1.1E0])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_8:T3DRES',
                             'f3d_malpasset-fine_p2.slf',
-                            eps=[1.E-1, 2.9E0, 2.6E0, 5.E-1, 3.E-1])
+                            eps=[])
+#                            eps=[1.E-1, 2.9E0, 2.6E0, 5.E-1, 3.E-1])
 
 
     def _post(self):

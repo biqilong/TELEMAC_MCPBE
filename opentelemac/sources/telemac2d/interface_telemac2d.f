@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC2D 7.3
+! TELEMAC2D   V8P1
 !***********************************************************************
 !
 !
@@ -2097,7 +2097,8 @@
       INTEGER          , INTENT(IN)    :: NPTH,T2DBI1
       INTEGER          , INTENT(IN)    :: MARDAT(3),MARTIM(3)
       INTEGER          , INTENT(IN)    :: ISCE(NREJET)
-      DOUBLE PRECISION , INTENT(IN)    :: HWIND,AT,FAIR,FCOR
+      DOUBLE PRECISION , INTENT(IN)    :: HWIND,AT,FCOR
+      DOUBLE PRECISION , INTENT(INOUT) :: FAIR
       DOUBLE PRECISION , INTENT(IN)    :: DSCE(NREJET)
       DOUBLE PRECISION , INTENT(IN)    :: GRAV,PHI0,RAIN_MMPD,DT
       CHARACTER(LEN=32), INTENT(IN)    :: VARCLA(NVARCL)
@@ -2144,7 +2145,8 @@
       INTEGER          , INTENT(IN)    :: NPTH,T2DBI1
       INTEGER          , INTENT(IN)    :: MARDAT(3),MARTIM(3)
       INTEGER          , INTENT(IN)    :: ISCE(NREJET)
-      DOUBLE PRECISION , INTENT(IN)    :: HWIND,AT,FAIR
+      DOUBLE PRECISION , INTENT(IN)    :: HWIND,AT
+      DOUBLE PRECISION , INTENT(INOUT) :: FAIR
       DOUBLE PRECISION , INTENT(IN)    :: DSCE(NREJET)
       DOUBLE PRECISION , INTENT(IN)    :: GRAV,PHI0,RAIN_MMPD,DT
       CHARACTER(LEN=32), INTENT(IN)    :: VARCLA(NVARCL)

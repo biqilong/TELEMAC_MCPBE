@@ -5,10 +5,10 @@
      &(NPOIN3,NPOIN2,TEXP,TIMP,TN,HPROP,U,V,CF,
      & T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12, T2_1,T2_2,T2_3,
      & PATMOS,DIMM,NPLAN,
-     & LATIT,LONGIT,AT,MARDAT,MARTIM,ZPROP)
+     & LATIT,LONGIT,AT,MARDAT,MARTIM,ZPROP,RHO)
 !
 !***********************************************************************
-! WAQTEL      V7P3
+! WAQTEL      V8P1
 !***********************************************************************
 !
 !brief    GIVES CONTRIBUTION OF WAQ PROCESSES TO SOURCE TERMS
@@ -30,6 +30,12 @@
 !+        WAQPROCESS is now a prime number, so that multiple processes
 !+        can be called by multiplication of the prime numbers.
 !
+!history  C.-T. PHAM (LNHE)
+!+        31/07/2019
+!+        V8P1
+!+        Density RHO computed in drsurr in TELEMAC-3D and given to
+!+        WAQTEL as optional (none in 2D) rather than computed again
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| AT             |-->| TIME IN SECONDS
 !| DIMM           |-->| 2D OR 3D
@@ -39,6 +45,7 @@
 !| MAXSCE         |-->| MAXIMUM NUMBER OF SOURCES
 !| MAXTRA         |-->| MAXIMUM NUMBER OF TRACERS
 !| NPLAN          |-->| NUMBER OF VERTICAL PLANES
+!| RHO            |-->| WATER DENSITY
 !| T1,..,T12      |<->| WORKING STRUCTURES
 !| T2_1,T2_2      |<->| 2D WORKING STRUCTURES
 !| TETAT          |-->| COEFFICIENT OF IMPLICITATION FOR TRACERS.
@@ -75,6 +82,8 @@
       TYPE(BIEF_OBJ), INTENT(INOUT) :: T1,T2,T3,T4,T5,T6
       TYPE(BIEF_OBJ), INTENT(INOUT) :: T7,T8,T9,T10,T11,T12
       TYPE(BIEF_OBJ), INTENT(INOUT) :: T2_1,T2_2,T2_3
+!     OPTIONAL
+      TYPE(BIEF_OBJ), INTENT(IN),OPTIONAL :: RHO
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -239,7 +248,7 @@
         ELSEIF(DIMM.EQ.3)THEN
 !         SOURCE TERMS (VOLUME)
           IF(DEBUG.GT.0) WRITE(LU,*) 'CALL OF CALCS3D_THERMICV'
-          CALL CALCS3D_THERMICV(NPOIN3,NPOIN2,NPLAN,ZPROP%R,
+          CALL CALCS3D_THERMICV(NPOIN3,NPOIN2,NPLAN,ZPROP%R,RHO%R,
      &                          TN,TEXP,LONGIT,LATIT,
      &                          AT,MARDAT,MARTIM)
           IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM CALCS3D_THERMICV'
@@ -262,7 +271,7 @@
         ENDIF
         IF(DIMM.EQ.3)THEN
           IF(DEBUG.GT.0) WRITE(LU,*) 'CALL OF CALCS3D_AED2'
-          CALL CALCS3D_AED2(NPOIN3,NPOIN2,NPLAN,ZPROP%R,
+          CALL CALCS3D_AED2(NPOIN3,NPOIN2,NPLAN,ZPROP%R,RHO%R,
      &                      TN,TEXP,LONGIT,LATIT,AT,
      &                      MARDAT,MARTIM,EXTCAED2,RAYAED2)
           IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM CALCS3D_AED2'

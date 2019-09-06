@@ -5,7 +5,7 @@
      &(NFRLIQ)
 !
 !***********************************************************************
-! TELEMAC3D   V7P3
+! TELEMAC3D   V8P1
 !***********************************************************************
 !
 !brief    SPECIFIC BOUNDARY CONDITIONS.
@@ -816,7 +816,7 @@
           BTABOS%ADR(IND_T)%P%TYPR='Q'
 !
           CALL CALCS3D_THERMICS(NPOIN2,NPOIN3,TA,ATABOS,
-     &                          BTABOS,PATMOS,ATMOSEXCH,WIND)
+     &                          BTABOS,PATMOS,ATMOSEXCH,WIND,RHO)
 !
         ENDIF
 !      ENDIF
