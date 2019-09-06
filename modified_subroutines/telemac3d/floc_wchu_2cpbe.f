@@ -58,7 +58,7 @@
          ENDIF  
   
          WCHU%ADR(IMICFLC)%P%R(IPOIN) = 
-     &                       (1.D0/18.D0*9.81*(FLOCMIC_DEN/RHO0-1.D0)
+     &                       (1.D0/18.D0*9.81*(FLOCMIC_DEN-RHO0)
      &                       *FLOCMIC_DIAFIX**2.D0)/DVISC_W
 
          WCHU%ADR(IMICFLC)%P%R(IPOIN) = 
@@ -71,7 +71,7 @@
          ENDIF
   
          WCHU%ADR(IMACFLC)%P%R(IPOIN) = 
-     &              (1.D0/18.D0*9.81*(FLOCMAC_DEN%R(IPOIN)/RHO0-1.D0)
+     &              (1.D0/18.D0*9.81*(FLOCMAC_DEN%R(IPOIN)-RHO0)
      &              *FLOCMAC_DIA%R(IPOIN)**2.D0)/DVISC_W
 
          WCHU%ADR(IMACFLC)%P%R(IPOIN) = 
