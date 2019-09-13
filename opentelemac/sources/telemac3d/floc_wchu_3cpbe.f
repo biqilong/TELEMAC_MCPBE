@@ -24,9 +24,9 @@
      &                                  FLOCMAC_DEN,FLOCMAC_DIA,PRIVE,
      &                                  FLOCMEG_DEN,FLOCMEG_DIA,RHO0
       USE DECLARATIONS_GAIA, ONLY: MCPBE_VER,HINDER,IMICFLC,IMACFLC,
-     &                             IMEGFLC,IMICF_MACF,IMICF_MEGF,
-     &                             FRACDIM_MAC,FRACDIM_MEG,
-     &                             FLOCMIC_DEN,FLOCMEG_DIAFIX
+     &                    IMEGFLC,IMICF_MACF,IMICF_MEGF,FRACDIM_MAC,
+     &                    FRACDIM_MEG,FLOCMIC_DEN,FLOCMEG_DIAFIX,
+     &                    DBPOIN_MCPBE
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
@@ -114,14 +114,21 @@
     
       ENDDO
 
-      WRITE(LU,*) WCHU%ADR(IMICFLC)%P%R(141),
-     &    WCHU%ADR(IMACFLC)%P%R(141),WCHU%ADR(IMICF_MACF)%P%R(141),
-     &    WCHU%ADR(IMEGFLC)%P%R(141),WCHU%ADR(IMICF_MEGF)%P%R(141),
-     &    NC1(141),NC2(141),TA%ADR(IMICFLC)%P%R(141),
-     &    TA%ADR(IMACFLC)%P%R(141),TA%ADR(IMICF_MACF)%P%R(141),
-     &    TA%ADR(IMEGFLC)%P%R(141),TA%ADR(IMICF_MEGF)%P%R(141),
-     &    FLOCMAC_DEN%R(141),FLOCMAC_DIA%R(141),
-     &    FLOCMEG_DEN%R(141),FLOCMEG_DIA%R(141),CVOL(141)
+      IF (DBPOIN_MCPBE.GT.0) THEN
+        WRITE(LU,*) WCHU%ADR(IMICFLC)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(IMACFLC)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(IMEGFLC)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
+     &              NC1(DBPOIN_MCPBE),NC2(DBPOIN_MCPBE),
+     &              TA%ADR(IMICFLC)%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(IMACFLC)%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(IMEGFLC)%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
+     &      FLOCMAC_DEN%R(DBPOIN_MCPBE),FLOCMAC_DIA%R(DBPOIN_MCPBE),
+     &      FLOCMEG_DEN%R(DBPOIN_MCPBE),FLOCMEG_DIA%R(DBPOIN_MCPBE)
+      ENDIF
 !
 !-----------------------------------------------------------------------
 !

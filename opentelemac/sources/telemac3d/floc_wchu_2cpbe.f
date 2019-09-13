@@ -23,7 +23,7 @@
       USE DECLARATIONS_TELEMAC3D, ONLY: PRIVE,RHO0,NPOIN3,TA,WCHU,
      &                                  FLOCMAC_DEN,FLOCMAC_DIA 
       USE DECLARATIONS_GAIA, ONLY: HINDER,IMICFLC,IMACFLC,IMICF_MACF,
-     &                         FRACDIM_MAC,FLOCMIC_DIAFIX,FLOCMIC_DEN
+     &            FRACDIM_MAC,FLOCMIC_DIAFIX,FLOCMIC_DEN,DBPOIN_MCPBE
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -86,11 +86,17 @@
   
       ENDDO
 
-      WRITE(LU,*) WCHU%ADR(IMICFLC)%P%R(141),
-     &    WCHU%ADR(IMACFLC)%P%R(141),WCHU%ADR(IMICF_MACF)%P%R(141),
-     &    NC(141),TA%ADR(IMICFLC)%P%R(141),TA%ADR(IMACFLC)%P%R(141),
-     &    TA%ADR(IMICF_MACF)%P%R(141),FLOCMAC_DEN%R(141),
-     &    FLOCMAC_DIA%R(141),CVOL(141)
+      IF (DBPOIN_MCPBE.GT.0) THEN
+        WRITE(LU,*) WCHU%ADR(IMICFLC)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(IMACFLC)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &              NC(DBPOIN_MCPBE),
+     &              TA%ADR(IMICFLC)%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(IMACFLC)%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &              FLOCMAC_DEN%R(DBPOIN_MCPBE),
+     &              FLOCMAC_DIA%R(DBPOIN_MCPBE)
+      ENDIF
 !
 !-----------------------------------------------------------------------
 !

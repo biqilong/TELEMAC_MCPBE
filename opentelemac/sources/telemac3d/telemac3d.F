@@ -242,7 +242,7 @@
       USE DECLARATIONS_GAIA, ONLY: NSICLA,FLUDP,FLUDPT,FLUER,NSUSP_TEL,
      &                       XMVS0,NUM_ISUSP_ICLA,SETDEP,SLVSED,
      &                       FLOC,FLOC_TYPE,MCPBE_VER,IMICFLC,IMACFLC,
-     &                       IMEGFLC,IMICF_MACF,IMICF_MEGF
+     &                       IMEGFLC,IMICF_MACF,IMICF_MEGF,DBPOIN_MCPBE
       USE DECLARATIONS_WAQTEL,ONLY: TAIR,WAQPROCESS
       USE GOTM_COUPLING
 !
@@ -2039,31 +2039,32 @@
             ENDIF
           ENDIF
 
-          IF(NSUSP_TEL.GT.0) THEN
+          IF(NSUSP_TEL.GT.0 .AND. DBPOIN_MCPBE.GT.0) THEN
             DO ITRAC=IND_SED, IND_SED+NSUSP_TEL-1
               ISUSP=ITRAC-IND_SED+1
               WRITE(LU,*) 'BEFORE EROSION DEPOSITION FLUX OF TRACER ',
      &                                                            ITRAC
               WRITE(LU,*) ISUSP,NAMETRAC(ITRAC)(1:16),
-     &               FLUDP%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(141),
-     &               TA%ADR(ITRAC)%P%R(141),WCHU%ADR(ITRAC)%P%R(141),
-     &               FLUER%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(141)
+     &              FLUDP%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(ITRAC)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(ITRAC)%P%R(DBPOIN_MCPBE),
+     &              FLUER%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(DBPOIN_MCPBE)
             ENDDO
             WRITE(LU,*) 'BEFORE EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MACF
             WRITE(LU,*) IMICF_MACF,NSICLA+1,NAMETRAC(ITRAC)(1:16),
-     &               FLUDP%ADR(NSICLA+1)%P%R(141),
-     &               TA%ADR(IMICF_MACF)%P%R(141),
-     &               WCHU%ADR(IMICF_MACF)%P%R(141),
-     &               FLUER%ADR(NSICLA+1)%P%R(141)
+     &               FLUDP%ADR(NSICLA+1)%P%R(DBPOIN_MCPBE),
+     &               TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &               WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &               FLUER%ADR(NSICLA+1)%P%R(DBPOIN_MCPBE)
             IF(MCPBE_VER.GT.1) THEN
               WRITE(LU,*) 'BEFORE EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MEGF
               WRITE(LU,*) IMICF_MEGF,NSICLA+2,NAMETRAC(ITRAC)(1:16),
-     &               FLUDP%ADR(NSICLA+2)%P%R(141),
-     &               TA%ADR(IMICF_MEGF)%P%R(141),
-     &               WCHU%ADR(IMICF_MEGF)%P%R(141),
-     &               FLUER%ADR(NSICLA+2)%P%R(141)
+     &               FLUDP%ADR(NSICLA+2)%P%R(DBPOIN_MCPBE),
+     &               TA%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
+     &               WCHU%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
+     &               FLUER%ADR(NSICLA+2)%P%R(DBPOIN_MCPBE)
             ENDIF
           ENDIF
 
@@ -2114,30 +2115,31 @@
 
       ENDIF
 
-      IF(NSUSP_TEL.GT.0) THEN
+      IF(NSUSP_TEL.GT.0 .AND. DBPOIN_MCPBE.GT.0) THEN
         DO ITRAC=IND_SED, IND_SED+NSUSP_TEL-1
           ISUSP=ITRAC-IND_SED+1
           WRITE(LU,*) 'AFTER EROSION DEPOSITION FLUX OF TRACER ',ITRAC
           WRITE(LU,*) ISUSP,NAMETRAC(ITRAC)(1:16),
-     &               FLUDP%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(141),
-     &               TA%ADR(ITRAC)%P%R(141),WCHU%ADR(ITRAC)%P%R(141),
-     &               FLUER%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(141)
+     &              FLUDP%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(DBPOIN_MCPBE),
+     &              TA%ADR(ITRAC)%P%R(DBPOIN_MCPBE),
+     &              WCHU%ADR(ITRAC)%P%R(DBPOIN_MCPBE),
+     &              FLUER%ADR(NUM_ISUSP_ICLA(ISUSP))%P%R(DBPOIN_MCPBE)
         ENDDO
         WRITE(LU,*) 'AFTER EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MACF
         WRITE(LU,*) IMICF_MACF,NSICLA+1,NAMETRAC(ITRAC)(1:16),
-     &                FLUDP%ADR(NSICLA+1)%P%R(141),
-     &                TA%ADR(IMICF_MACF)%P%R(141),
-     &                WCHU%ADR(IMICF_MACF)%P%R(141),
-     &                FLUER%ADR(NSICLA+1)%P%R(141)
+     &                FLUDP%ADR(NSICLA+1)%P%R(DBPOIN_MCPBE),
+     &                TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &                WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &                FLUER%ADR(NSICLA+1)%P%R(DBPOIN_MCPBE)
         IF(MCPBE_VER.GT.1) THEN
           WRITE(LU,*) 'AFTER EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MEGF
           WRITE(LU,*) IMICF_MEGF,NSICLA+2,NAMETRAC(ITRAC)(1:16),
-     &                FLUDP%ADR(NSICLA+2)%P%R(141),
-     &                TA%ADR(IMICF_MACF)%P%R(141),
-     &                WCHU%ADR(IMICF_MACF)%P%R(141),
-     &                FLUER%ADR(NSICLA+2)%P%R(141)
+     &                FLUDP%ADR(NSICLA+2)%P%R(DBPOIN_MCPBE),
+     &                TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &                WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &                FLUER%ADR(NSICLA+2)%P%R(DBPOIN_MCPBE)
         ENDIF
       ENDIF
 !
