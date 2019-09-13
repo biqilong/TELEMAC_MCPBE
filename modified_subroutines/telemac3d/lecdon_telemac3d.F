@@ -1371,7 +1371,7 @@
       AD_LINSOLV_DERIVATIVE_CONVERGENCE  = MOTLOG( ADRESS(3,34) )
 !     3D COUPLING
       BOT_MOMENT = MOTLOG(ADRESS(3,69))
-!     
+!
 ! NON-HYDROSTATIC
 !
       CLDYN     = MOTLOG( ADRESS(3,70) )
@@ -2365,13 +2365,16 @@
 !
       IF( (DENLAW.EQ.1.AND. IND_T.EQ.0                ) .OR.
      &    (DENLAW.EQ.2.AND.               IND_S.EQ.0  ) .OR.
-     &    (DENLAW.EQ.3.AND.(IND_T.EQ.0.OR.IND_S.EQ.0) )      ) THEN
+     &    (DENLAW.EQ.3.AND.(IND_T.EQ.0.OR.IND_S.EQ.0) ) .OR.
+     &    (DENLAW.EQ.6.AND.(IND_T.EQ.0.OR.IND_S.EQ.0) )      ) THEN
 !
         WRITE(LU,*) 'LECDON: WITH DENSITY LAW = ',DENLAW
-        IF(IND_T.EQ.0.AND.(DENLAW.EQ.1.OR.DENLAW.EQ.3)) THEN
+        IF(IND_T.EQ.0.AND.
+     &     (DENLAW.EQ.1.OR.DENLAW.EQ.3.OR.DENLAW.EQ.6)) THEN
           WRITE(LU,*) '        ONE TRACER MUST BE THE TEMPERATURE'
         ENDIF
-        IF(IND_S.EQ.0.AND.(DENLAW.EQ.2.OR.DENLAW.EQ.3)) THEN
+        IF(IND_S.EQ.0.AND.
+     &     (DENLAW.EQ.2.OR.DENLAW.EQ.3.OR.DENLAW.EQ.6)) THEN
           WRITE(LU,*) '        ONE TRACER MUST BE THE SALINITY'
         ENDIF
         CALL PLANTE(1)
@@ -2721,9 +2724,11 @@
       IF(INCLUS(COUPLING,'TOMAWACT3D').AND.NONHYD)THEN
 !
         WRITE(LU,190)
- 190    FORMAT(///,1X,'3D COUPLING WITH TOMAWAC IS ONLY POSSIBLE'
-     &               ,'WITH THE HYDROSTATIC HYPOTHESIS',/,1X,///)
-        CALL PLANTE(1)
+        WRITE(LU,191)
+ 190    FORMAT(///,1X,'3D COUPLING WITH TOMAWAC IS BASED ON'
+     &               , ' HYDROSTATIC HYPOTHESIS',/,1X,///)
+ 191    FORMAT(///,1X,'YOU ARE USING NON HYDROSTATIC HYPOTHESIS'
+     &            ,/,1X,///)
       ENDIF
 !
 !-----------------------------------------------------------------------

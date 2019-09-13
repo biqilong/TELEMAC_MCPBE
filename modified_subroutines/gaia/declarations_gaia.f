@@ -818,6 +818,10 @@
 !!    1: 2-class 3-equation model; 2: 3-class 4-equation model;3: 3-class 5-equation model
       INTEGER MCPBE_VER
 !
+!>    PRINT POINT INFO for MCPBE Floculation model: 
+!!    print info at given point, no printout if 0
+      INTEGER DBPOIN_MCPBE
+!
 !>    Type of waves (regular or irregular)
 !
       INTEGER TYPE_HOULE

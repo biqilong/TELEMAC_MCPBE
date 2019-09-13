@@ -1907,6 +1907,24 @@ turbulence (coefficient $b$ of Van Leussen formula).
 Value to be imposed if
 \telkey{INFLUENCE OF TURBULENCE ON SETTLING VELOCITY} = YES.'
 /
+NOM = 'PRINT POINT INFO MCPBE'
+NOM1 = 'PRINT POINT INFO MCPBE'
+TYPE = INTEGER
+INDEX = 79
+TAILLE = 1
+DEFAUT = 0
+DEFAUT1 = 0
+MNEMO = 'DBPOIN\_MCPBE'
+RUBRIQUE = 
+'FORMULE POUR FLOCULATION';'MCPBE VERSION'
+RUBRIQUE1 = 
+'FLOCCULATION FORMULA';'MCPBE VERSION'
+NIVEAU = 1
+AIDE = 
+'Printout info at specific point for MCPBE module'
+AIDE1 = 
+'Printout info at specific point for MCPBE module'
+/
 NOM = 'MCPBE VERSION'
 NOM1 = 'MCPBE VERSION'
 TYPE = INTEGER

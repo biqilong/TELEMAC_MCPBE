@@ -3,7 +3,7 @@
 !                    **********************
 !
 !***********************************************************************
-! TELEMAC3D   V7P1
+! TELEMAC3D   V8P1
 !***********************************************************************
 !
 !brief    PREPARES SOURCE TERMS FOR DIFFUSION OF TRACERS.
@@ -106,7 +106,7 @@
      &   T3_09,T3_10,T3_11,T3_12,T3_13,
      &   T2_01,T2_02,T2_03,
      &   PATMOS,3,NPLAN,
-     &   LATIT,LONGIT,AT,MARDAT,MARTIM,ZPROP)
+     &   LATIT,LONGIT,AT,MARDAT,MARTIM,ZPROP,RHO)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM SOURCE_WAQ'
 !
       ENDIF

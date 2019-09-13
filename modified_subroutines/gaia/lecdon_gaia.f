@@ -326,6 +326,7 @@
 !
       FLOC_TYPE =  MOTINT(ADRESS(1, 61))
       MCPBE_VER = MOTINT(ADRESS(1, 80))
+      DBPOIN_MCPBE = MOTINT(ADRESS(1, 79))
 !
 ! ############### !
 ! REAL KEYWORDS   !
