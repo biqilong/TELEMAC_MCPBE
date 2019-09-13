@@ -16,7 +16,7 @@ class VnvStudy(AbstractVnvStudy):
         Defines the general parameter
         """
         self.rank = 1
-        self.tags = ['telemac3d', 'sisyphe', 'tomawac']
+        self.tags = ['telemac3d', 'tomawac']
 
     def _pre(self):
         """
@@ -97,17 +97,17 @@ class VnvStudy(AbstractVnvStudy):
 
         # NEW COUPLING Comparison with a reference for T3D.
         self.check_epsilons('vnv_3:T3DRES',
-                            'ref_T3D3_littoralcoup.slf',
+                            'f3d_littoralcoup.slf',
                             eps=[1e-8])
 
         # NEW COUPLING Comparison with a reference for WAC
         self.check_epsilons('vnv_3:WACRES',
-                            'ref_tom_couplittoral.slf',
+                            'fom_couplittoral.slf',
                             eps=[1e-8])
 
         # NEW COUPLING Comparison with a reference for T3DHYD
         self.check_epsilons('vnv_3:T3DHYD',
-                            'ref_T3D2_littoralcoup.slf',
+                            'f2d_littoralcoup.slf',
                             eps=[1e-8])
 
         # NEW COUPLING Comparison between sequential and parallel for T3D.

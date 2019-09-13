@@ -12,8 +12,8 @@ TOMAWAC STEERING FILE = 'tom_3Dlittoral.cas'
 BOUNDARY CONDITIONS FILE : geoT3D_littoral566.cli
 GEOMETRY FILE          : geo_littoral.slf
 FORTRAN FILE=user_fortran
-3D RESULT FILE : T3D3_littoral.slf
-2D RESULT FILE : T3D2_littoral.slf
+3D RESULT FILE : r3d_littoral.slf
+2D RESULT FILE : r2d_littoral.slf
 /
 /----------------------------------------------------------------------/
 /     OPTIONS GENERALES

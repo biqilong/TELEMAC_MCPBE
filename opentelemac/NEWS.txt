@@ -1,6 +1,8 @@
 Trunk
 ===========================
 
+TELEMAC-3D: New density law: Jackett et al. (2006)
+
 TELEMAC-2D: New keyword COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED
 
 TELEMAC-2D/TELEMAC-3D: TPXO module: S1 constituent taken into account (for TPXO9)

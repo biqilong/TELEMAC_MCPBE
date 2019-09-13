@@ -142,8 +142,8 @@
       USE DECLARATIONS_TELEMAC3D, ONLY : SPHERI, MAREE, MARDAT, MARTIM,
      &     T2_01, T2_02, T3_05, T3_06, T3_07, T3_08,
      &     DEJALU_TRISOU, WIPDX, WIPDY, USTOKES, VSTOKES, WSTOKES,
-     &     USTX, VSTY, WST1, WST2, UN, VN
-!     
+     &     USTX, VSTY, WST1, WST2, UN, VN, S3D_SEDI
+!
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
@@ -211,6 +211,7 @@
 !
       CHARACTER(LEN=16) NOMX,NOMY
       LOGICAL OKX,OKY
+      LOGICAL ACTIVE_TEMP_SAL, ACTIVE_SED
 !
 !***********************************************************************
 !
@@ -224,8 +225,12 @@
 !-----------------------------------------------------------------------
 !
       YASEM3D = .FALSE.
+      ACTIVE_TEMP_SAL = DENLAW.NE.0.AND.DENLAW.NE.5.AND.NTRAC.GT.0
+      ACTIVE_SED = (INCLUS(COUPLING,'GAIA').OR.S3D_SEDI)
+     &               .AND.NTRAC.GT.0.AND.DENLAW.NE.5
+
 !
-      IF(DENLAW.NE.0.AND.NTRAC.GT.0) THEN
+      IF(ACTIVE_TEMP_SAL.OR.ACTIVE_SED) THEN
 !
       SCV1%TYPR = 'Q'
       SCV2%TYPR = 'Q'

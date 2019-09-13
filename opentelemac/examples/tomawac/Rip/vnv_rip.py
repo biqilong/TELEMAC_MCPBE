@@ -50,22 +50,22 @@ class VnvStudy(AbstractVnvStudy):
         # T3D Comparison with a reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_rip.slf',
-                            eps=[1e-10])
+                            eps=[0.002,0.03,0.01,0.002,5e-6,0.004,0.0003,1e-4])
 
         # T3D Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_4:T3DRES',
-                            eps=[1e-10])
+                            eps=[0.005,0.05,0.022,0.003,5e-6,0.008,0.0007,0.0005])
 
         # WAC Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:WACRES',
                             'fom_rip.slf',
-                            eps=[1e-11])
+                            eps=[0.006,3,1e-11,0.003,0.02,0.02,2e-5,1e-5,0.1,0.6])
 
         # WAC Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:WACRES',
                             'vnv_4:WACRES',
-                            eps=[1e-11])
+                            eps=[0.006,4,1e-11,0.005,0.022,0.02,4e-5,2e-5,0.1,0.8])
 
 
     def _post(self):

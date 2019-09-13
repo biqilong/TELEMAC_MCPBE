@@ -127,32 +127,27 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:T2DRES',
                             'f2d_tide-NEA_prior_type.slf',
-                            eps=[])
-#                            eps=[5.E-2, 3.E-2, 3.E-2, 3.E-2, 5.E-2])
+                            eps=[5.E-1, 4.E-1, 3.E-1, 3.E-1, 4.E-1])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_6:T2DRES',
                             'f2d_tide-NEA_prior_type.slf',
-                            eps=[])
-#                            eps=[6.E-2, 4.E-2, 4.E-2, 4.E-2, 6.E-2])
+                            eps=[6.E-2, 4.E-2, 4.E-2, 4.E-2, 6.E-2])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:T2DRES',
                             'vnv_6:T2DRES',
-                            eps=[])
-#                            eps=[6.E-2, 4.E-2, 4.E-2, 4.E-2, 6.E-2])
+                            eps=[5.E-1, 4.E-1, 2.E-1, 2.E-1, 5.E-1])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_7:T2DRES',
                             'f2d_tide-jmj_real_gen.slf',
-                            eps=[])
-#                            eps=[4.E-4, 5.E-4, 2.E-4, 2.E-4, 6.E-4])
+                            eps=[7.E-4, 6.E-4, 2.E-4, 2.E-4, 9.E-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_8:T2DRES',
                             'f2d_tide-jmj_type_gen.slf',
-                            eps=[])
-#                            eps=[4.E-3, 2.E-3, 3.E-4, 3.E-4, 2.E-3])
+                            eps=[4.E-3, 3.E-3, 3.E-4, 3.E-4, 3.E-3])
 
 
     def _post(self):

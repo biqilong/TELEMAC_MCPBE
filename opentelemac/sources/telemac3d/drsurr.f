@@ -130,6 +130,10 @@
 !
 !***********************************************************************
 !
+!-----------------------------------------------------------------------
+!
+! TRACERS OTHER THAN SEDIMENT
+!
       IF(DENLAW.GE.1.AND.DENLAW.LE.3) THEN
 !
         IF(DENLAW.EQ.1) THEN
@@ -319,6 +323,9 @@
           ENDDO
         ENDIF
 !
+        CALL OS( 'X=CY    ', X=RHO , Y=DELTAR , C=RHO0 )
+        CALL OS( 'X=X+C   ', X=RHO , C=RHO0 )
+!
       ELSEIF(DENLAW.EQ.0.OR.DENLAW.EQ.5) THEN
 !
         CALL OS('X=0     ',X=DELTAR)
@@ -335,35 +342,32 @@
         CALL OS('X=Y     ',X=RHOPOT,Y=RHO)
       ENDIF
 !
-!-----------------------------------------------------------------------
+!     EFFECT OF SEDIMENT
+!     ALWAYS TAKEN INTO ACCOUNT IN THE MOMENTUM EQUATIONS
+!     EXCEPT IF DENLAW = 5
 !
-!     EFFECT OF SEDIMENT IS ALWAYS ADDED HERE, BUT NOT ALWAYS TAKEN INTO
-!     ACCOUNT IN THE MOMENTUM EQUATIONS !!
-!
-!     IF DENLAW=0 (DEFAULT !!):
-!     IT WILL NOT BE TAKEN INTO ACCOUNT: SEE TESTS IN PROSOU.
-!
-!     SEDIMENT (SEDIMENT MUST BE THE LAST TRACER, HENCE NUMBER NTRAC)
-!     ADDS UP THE SEDIMENT EFFECT
-!
-      IF(NSUSP_TEL.GT.0) THEN
-        DO ITRAC = IND_SED,IND_SED+NSUSP_TEL-1
-          ISUSP=ITRAC-IND_SED+1
-          ICLA=NUM_ISUSP_ICLA(ISUSP)
-          CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(ITRAC)%P,
-     &             C=(XMVS0(ICLA)-RHO0)/(RHO0*XMVS0(ICLA)))
-        ENDDO
-      ELSEIF(S3D_SEDI) THEN
-        IF(S3D_MIXTE) THEN
-          CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(NTRAC-1)%P,
-     &                       C=(S3D_RHOS-RHO0)/(RHO0*S3D_RHOS))
-          CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(NTRAC)%P,
-     &                       C=(S3D_RHOS-RHO0)/(RHO0*S3D_RHOS))
-        ELSE
-          CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(NTRAC)%P,
-     &                       C=(S3D_RHOS-RHO0)/(RHO0*S3D_RHOS))
+      IF (DENLAW.NE.5) THEN
+        IF(NSUSP_TEL.GT.0) THEN
+          DO ITRAC = IND_SED,IND_SED+NSUSP_TEL-1
+            ISUSP=ITRAC-IND_SED+1
+            ICLA=NUM_ISUSP_ICLA(ISUSP)
+            CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(ITRAC)%P,
+     &               C=(XMVS0(ICLA)-RHO0)/(RHO0*XMVS0(ICLA)))
+          ENDDO
+        ELSEIF(S3D_SEDI) THEN
+          IF(S3D_MIXTE) THEN
+            CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(NTRAC-1)%P,
+     &                         C=(S3D_RHOS-RHO0)/(RHO0*S3D_RHOS))
+            CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(NTRAC)%P,
+     &                         C=(S3D_RHOS-RHO0)/(RHO0*S3D_RHOS))
+          ELSE
+            CALL OS('X=X+CY  ',X=DELTAR,Y=TA%ADR(NTRAC)%P,
+     &                         C=(S3D_RHOS-RHO0)/(RHO0*S3D_RHOS))
+          ENDIF
         ENDIF
       ENDIF
+!
+!
 !
 !-----------------------------------------------------------------------
 !

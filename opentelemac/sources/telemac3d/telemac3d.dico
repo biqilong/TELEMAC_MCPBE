@@ -2524,14 +2524,16 @@ CHOIX =
 '2="CHEZY"';
 '3="STRICKLER"';
 '4="MANNING"';
-'5="NIKURADSE"'
+'5="NIKURADSE"';
+'6="PARTIAL SLIP"'
 CHOIX1 =
 '0="NO FRICTION"';
 '1="HAALAND"';
 '2="CHEZY"';
 '3="STRICKLER"';
 '4="MANNING"';
-'5="NIKURADSE"'
+'5="NIKURADSE"';
+'6="PARTIAL SLIP"'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
 RUBRIQUE1 =
@@ -6409,7 +6411,7 @@ RUBRIQUE1 =
 NIVEAU = 1
 AIDE = 'Fichier contenant les parametres de GOTM. Utilise avec
 \telkey{MODELE DE TURBULENCE VERTICAL} = 6.'
-AIDE1 = 'File containing parameters of GOTM. Use in combination with 
+AIDE1 = 'File containing parameters of GOTM. Use in combination with
 \telkey{VERTICAL TURBULENCE MODEL} = 6.'
 /
 ////////////////////////////////////////////////////////////////////////
@@ -7054,29 +7056,31 @@ RUBRIQUE1 =
 NIVEAU = 0
 AIDE =
 'Donne le type de loi de densite utilisee dans le cas de
-l''utilisation de traceurs actifs. Les choix possibles sont :
+l''utilisation de traceurs actifs. Le sediment est considere
+actif par defaut. Les choix possibles sont :
 \begin{itemize}
-\item 0 : rien ;
+\item 0 : rien (et du sediment si present) ;
 \item 1 : fonction de temperature (et du sediment si present) ;
 \item 2 : fonction de la salinite (et du sediment si present) ;
 \item 3 : fonction de temperature et salinite
           (et du sediment si present) ;
 \item 4 : BETA donnes par l''utilisateur pour chaque traceur
           (et effets du sediment avec un beta predefini si present);
-\item 5 : fonction du sediment uniquement ;
+\item 5 : le sediment et les autres traceurs sont forces a etre passifs ;
 \item 6 : Jackett et al. 2006.
 \end{itemize}'
 AIDE1 =
 'Gives the type of the law of density used in the case of
-active tracers. The possible choices are:
+active tracers. The sediment is considered active with its own
+law by default. The possible choices are:
 \begin{itemize}
-\item 0: nothing,
+\item 0: nothing (and sediment if present),
 \item 1: function of the temperature (and sediment if present),
 \item 2: function of the salinity (and sediment if present),
 \item 3: function of the temperature and salinity (and sediment if present),
 \item 4: user-defined BETA coefficients (and effect of the
          sediment with its own behaviour if present),
-\item 5: function of the sediment only,
+\item 5: the sediment and other tracers are forced to be passive,
 \item 6: Jackett et al. 2006.
 \end{itemize}'
 /
@@ -8900,7 +8904,7 @@ AIDE1 =
 \item \sisyphe: internal coupling with \sisyphe,
 \item \tomawac: internal coupling with \tomawac, forces are constant
 along the depth,
-\item TOMAWACT3D: internal coupling with \tomawac, forces are 3D, 
+\item TOMAWACT3D: internal coupling with \tomawac, forces are 3D,
 \item \waqtel: internal coupling with \waqtel,
 \item DELWAQ: will yield results file for DELWAQ,
 \item \gaia: internal coupling with \gaia.

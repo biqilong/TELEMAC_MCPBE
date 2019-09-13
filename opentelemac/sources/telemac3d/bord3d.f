@@ -608,8 +608,8 @@
             DO NP=1,NPLAN
               IJK=(NP-1)*NPTFR2+K
               IPOIN2=NBOR2%I(K)
-              UBORL%R(IJK) = -XNEBOR2%R(K)*US2D%R(IPOIN2)
-              VBORL%R(IJK) = -YNEBOR2%R(K)*VS2D%R(IPOIN2)
+              UBORL%R(IJK) = XNEBOR2%R(K)*US2D%R(IPOIN2)
+              VBORL%R(IJK) = YNEBOR2%R(K)*VS2D%R(IPOIN2)
             ENDDO
             IF (NCOTE.NE.0) THEN
               HBOR%R(K) = -WIP%R(NBOR2%I(K))/GRAV+SL3(ICOT,AT,N,INFOGR)

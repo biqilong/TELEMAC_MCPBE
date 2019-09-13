@@ -1371,7 +1371,7 @@
       AD_LINSOLV_DERIVATIVE_CONVERGENCE  = MOTLOG( ADRESS(3,34) )
 !     3D COUPLING
       BOT_MOMENT = MOTLOG(ADRESS(3,69))
-!     
+!
 ! NON-HYDROSTATIC
 !
       CLDYN     = MOTLOG( ADRESS(3,70) )
@@ -2724,9 +2724,11 @@
       IF(INCLUS(COUPLING,'TOMAWACT3D').AND.NONHYD)THEN
 !
         WRITE(LU,190)
- 190    FORMAT(///,1X,'3D COUPLING WITH TOMAWAC IS ONLY POSSIBLE'
-     &               ,'WITH THE HYDROSTATIC HYPOTHESIS',/,1X,///)
-        CALL PLANTE(1)
+        WRITE(LU,191)
+ 190    FORMAT(///,1X,'3D COUPLING WITH TOMAWAC IS BASED ON'
+     &               , ' HYDROSTATIC HYPOTHESIS',/,1X,///)
+ 191    FORMAT(///,1X,'YOU ARE USING NON HYDROSTATIC HYPOTHESIS'
+     &            ,/,1X,///)
       ENDIF
 !
 !-----------------------------------------------------------------------

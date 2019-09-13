@@ -154,13 +154,18 @@ The available values for that keyword \telkey{DENSITY LAW} are:
 
 \item  3: variation of density according to temperature and salinity,
 
-\item  4: variation as a function of the spatial expansion coefficients.
+\item  4: variation as a function of the spatial expansion coefficients,
+
+\item  5: variation of sediment only,
+
+\item  6: Jackett et al. law (2006) with variation of density according to
+          temperature and salinity using a 25 term formula.
 \end{itemize}
 
 With the 1-3 options, the variations are given by the law as defined in
 \telemac{3D}. In such a case, the name of the salinity tracer (expressed in
-kg/m${}^{3}$) shall necessarily begin with SALINI and the name of the
-temperature tracer (in ${}^\circ$C) shall begin with TEMPER.
+kg/m${}^{3}$) shall necessarily begin with SALINIT and the name of the
+temperature tracer (in ${}^\circ$C) shall begin with TEMPERATURE.
 
 With option 4, the term $\frac{\Delta \rho }{\rho _{0} } $ is described by a
 linear function of the $T_i$ tracer of the type:
