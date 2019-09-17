@@ -1264,7 +1264,7 @@ def scan_sources(cfgdir, cfg, bypass):
                                   path.splitext(path.basename(fle))[0] +
                                   cfg['SYSTEM']['sfx_obj'].lower()))
 
-            src_file = open(fle, 'r')
+            src_file = open(fle, 'r', encoding='utf-8')
             if path.splitext(who['file'])[1].lower() in ['.f90', '.f95']:
                 # Strips the F90+ commented lines
                 flines = del_continueds_f90(del_comments(src_file))
@@ -1669,7 +1669,7 @@ def get_principal_wrap_names(dif_file):
     @return pFiles(list) ??? todo
     """
     # Filter most unuseful
-    src_file = open(dif_file, 'r')
+    src_file = open(dif_file, 'r', encoding='utf-8')
     if path.splitext(path.basename(dif_file))[1].lower() in ['.f90', '.f95']:
         # Strips the F90+ commented lines
         flines = del_continueds_f90(del_comments(src_file))

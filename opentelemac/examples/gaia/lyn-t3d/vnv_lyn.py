@@ -67,47 +67,47 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:GAIRES',
                             'gai_ref_lyn.slf',
-                            eps=[1.e-1])
+                            eps=[])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:GAIRES',
                             'gai_ref_lyn.slf',
-                            eps=[1])
+                            eps=[])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:GAIRES',
                             'vnv_2:GAIRES',
-                            eps=[1])
+                            eps=[])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_lyn.slf',
-                            eps=[1.e-1])
+                            eps=[])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T3DRES',
                             'f3d_lyn.slf',
-                            eps=[1])
+                            eps=[])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_2:T3DRES',
-                            eps=[1])
+                            eps=[])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:GAIRES',
                             'gai_ref_lyn_4_classes.slf',
-                            eps=[666])
+                            eps=[])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:GAIRES',
                             'gai_ref_lyn_4_classes.slf',
-                            eps=[666])
+                            eps=[])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_3:GAIRES',
                             'vnv_4:GAIRES',
-                            eps=[666])
+                            eps=[])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T3DRES',

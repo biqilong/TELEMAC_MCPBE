@@ -71,7 +71,8 @@
       DOUBLE PRECISION, INTENT(IN)    :: X(NS),Y(NS)
       DOUBLE PRECISION, INTENT(IN)    :: G,W(3,NS)
       DOUBLE PRECISION, INTENT(IN)    :: DTHAUT(*)
-      DOUBLE PRECISION, INTENT(INOUT) :: CE(NS,3),DT
+      DOUBLE PRECISION, INTENT(IN)    :: DT
+      DOUBLE PRECISION, INTENT(INOUT) :: CE(NS,3)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !

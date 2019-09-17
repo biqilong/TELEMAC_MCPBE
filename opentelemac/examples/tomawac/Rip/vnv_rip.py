@@ -50,7 +50,7 @@ class VnvStudy(AbstractVnvStudy):
         # T3D Comparison with a reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_rip.slf',
-                            eps=[0.002,0.03,0.01,0.002,5e-6,0.004,0.0003,1e-4])
+                            eps=[0.002,0.03,0.01,0.002,5e-6,0.004,0.0003,0.0002])
 
         # T3D Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',

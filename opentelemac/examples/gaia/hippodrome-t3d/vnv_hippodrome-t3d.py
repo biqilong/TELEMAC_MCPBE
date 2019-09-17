@@ -277,12 +277,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:GAIRES',
                             'gai_ref_1COs_consolidation.slf',
-                            eps=[1e-8, 1e-8, 1e-8, 1e-8, 1.e-8, 2.e-4,\
-                                 1e-8, 1e-8, 1e-8, 1e-8, 1.e-7, 1.e-8,\
-                                 1e-8, 1e-8, 1e-8, 1e-8, 1.e-8, 1.e-8,\
-                                 1e-8, 1e-8, 1e-8, 1e-8, 1.e-8, 1.e-8,\
-                                 1e-8, 1e-8, 1e-8, 1e-8, 1.e-8])
-
+                            eps=[])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:GAIRES',
                             'gai_ref_1COs_consolidation.slf',
@@ -296,7 +291,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T3DRES',
                             'f3d_1COs_consolidation.slf',
-                            eps=[1e-8])
+                            eps=[])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:T3DRES',
