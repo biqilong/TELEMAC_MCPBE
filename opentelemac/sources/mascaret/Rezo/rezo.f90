@@ -134,7 +134,7 @@ subroutine  REZO    ( &
    use M_LIAISON_T
    use M_APPORT_PLUIE_T
    use M_KLIAISON_I
-   
+
    !.. Implicit Declarations
    implicit none
 
@@ -270,8 +270,8 @@ subroutine  REZO    ( &
       if(size(Connect%ORIGINEBIEF).gt.1) then
          Matrice%SOLV = 2
       elseif(OptionCasier.eqv..true.) then
-	     Matrice%SOLV = 2
-	  else
+         Matrice%SOLV = 2
+      else
          Matrice%SOLV = 1
       endif
 
@@ -444,7 +444,7 @@ subroutine  REZO    ( &
         dimLiaison = 1
     else
         dimLiaison = size(liaison)
-    endif    
+    endif
 
     allocate( Aliai(dimLiaison) , stat = retour )
    if( RETOUR /= 0 ) then
@@ -481,7 +481,7 @@ subroutine  REZO    ( &
       call TRAITER_ERREUR( Erreur , 'DLIAI' )
       return
    end if
-   
+
    allocate( Qliai(dimLiaison) , stat = retour )
    if( RETOUR /= 0 ) then
       Erreur%Numero = 5
@@ -490,7 +490,7 @@ subroutine  REZO    ( &
       call TRAITER_ERREUR( Erreur , 'QLIAI' )
       return
    end if
-   
+
    ! CALCUL DES CONDITIONS AUX LIMITES
    ! ---------------------------------
    call CCL                    ( &
@@ -570,13 +570,13 @@ subroutine  REZO    ( &
          end if
 
       end do boucle1
-      
+
       ! CARACTERISTIQUES DES LIAISONS
       !------------------------------
       if( OptionCasier ) then
           boucleLiaison : do iLiai = 1 , size(Liaison)
 
-             NumLiai        = iLiai  
+             NumLiai        = iLiai
              appel_KLIAISON = 1
 
              if ( Liaison(iLiai)%NatureLiaison == LIAISON_TYPE_RIVIERE_CASIER ) then
@@ -605,11 +605,11 @@ subroutine  REZO    ( &
                      Impression_sing                             , &
                      UniteListing                                , &
                      Erreur                                        &
-                                                                )         
+                                                                )
 
              if( Erreur%Numero /= 0 ) then
                 return
-             end if                     
+             end if
 
           end do boucleLiaison
       endif
@@ -859,7 +859,7 @@ subroutine  REZO    ( &
 
       end do ! Boucle sur les sections de calcul du bief
    end do ! Boucle sur les biefs
-  
+
    ! Desallocations de tableaux locaux
    !----------------------------------
    deallocate(ASING, stat = retour)
@@ -952,7 +952,7 @@ subroutine  REZO    ( &
       return
    end if
 
-   
+
    ! Fin des traitements
    ! -------------------
 

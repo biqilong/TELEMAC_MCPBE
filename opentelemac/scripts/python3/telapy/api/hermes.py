@@ -23,14 +23,39 @@ TRIANGLE = 10
 BND_SEGMENT = 55
 BND_POINT = 1
 
+def elem2str(elem):
+    """
+    Return string version of elem from variable just before
 
-class HermesFile(object):
+    @param eleme (int) Type of element
+
+    @returns (str) Its name
+    """
+    string = ''
+    if elem == PRISM:
+        string = 'prism'
+    elif elem == TETRAHEDRON:
+        string = 'tetrahedron'
+    elif elem == QUADRANGLE:
+        string = 'quadrangle'
+    elif elem == TRIANGLE:
+        string = 'triangle'
+    elif elem == BND_SEGMENT:
+        string = 'bnd segment'
+    elif elem == BND_POINT:
+        string = 'bnd point'
+    else:
+        string = 'unknown'
+
+    return string
+
+class HermesFile():
     """The Generic Python class for TELEMAC-MASCARET APIs"""
     _hermes = None
     logger = logging.getLogger(__name__)
     _error = 0
 
-    def __init__(self, file_name, fformat=None,
+    def __init__(self, file_name, fformat,
                  access='r', boundary_file=None,
                  log_lvl='INFO'):
         """
@@ -78,7 +103,7 @@ class HermesFile(object):
             else:
                 self.openmode = b'READ     '
                 if not path.exists(self.file_name):
-                    raise TelemacException(
+                    raise TelemacException(\
                             "Could not find {}".format(self.file_name))
         elif 'w' in access:
             self.openmode = b'WRITE    '
@@ -88,8 +113,8 @@ class HermesFile(object):
                     should contain only r and/or w " % access)
 
         self.logger.debug("Opening mesh %s in format %s in mode %s",
-                          self.fformat,
                           self.file_name,
+                          self.fformat,
                           self.openmode)
         self.my_id, self.error = \
                 HermesFile._hermes.open_mesh(self.fformat,
@@ -125,6 +150,10 @@ class HermesFile(object):
             self.typ_elem = None
             self.typ_bnd_elem = None
 
+        self.logger.debug("typ_elem: %s and typ_bnd_elem: %s",
+                          elem2str(self.typ_elem),
+                          elem2str(self.typ_bnd_elem))
+
     @property
     def error(self):
         """Error property
@@ -148,9 +177,9 @@ class HermesFile(object):
                               HermesFile._hermes.get_error_message())
         self._error = 0
 
-    def __del__(self):
+    def close(self):
         """
-        Destructor
+        Closing file
         """
         if self.boundary_file is not None:
             self.logger.debug("Closing bnd file %s", self.boundary_file)
@@ -244,7 +273,7 @@ class HermesFile(object):
         @returns The number of points
         """
 
-        self.logger.debug("Getting number of points")
+        self.logger.debug("Getting number of points %d %d",self.my_id, self.typ_elem)
         npoin, self.error = HermesFile._hermes.get_mesh_npoin(\
                            self.fformat, self.my_id, self.typ_elem)
 
@@ -489,7 +518,7 @@ class HermesFile(object):
 
     def get_data_nvar(self):
         """
-        Retuns the number of variables
+        Returns the number of variables
 
         @returns The number of variables
         """

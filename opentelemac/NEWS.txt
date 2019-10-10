@@ -1,6 +1,14 @@
 Trunk
 ===========================
 
+WAQTEL/AED2: fix the bug of wrong computation of array BENTH4AED2
++ wrong location of the fluxes transmitted to TELEMAC-3D
+
+TELEMAC-2D/TELEMAC-3D/WAQTEL: fix the bug of expected format when using at the same time
+WAQTEL + WIND = YES + OPTION FOR WIND = 2 with an ASCII ATMOSPHERIC DATA FILE
+
+TELEMAC-2D/TELEMAC-3D: fix the bug of unexpected choice for ZONE NUMBER IN GEOGRAPHIC SYSTEM
+
 TELEMAC-3D: New density law: Jackett et al. (2006)
 
 TELEMAC-2D: New keyword COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED
@@ -17,6 +25,13 @@ in the notebooks to run them you jupyter notebooks and to lanuch the command
 WAQTEL: fix the bug for degradation law in 3D (WATER QUALITY PROCESS = 17)
 
 TELEMAC-3D: Coupling of TELEMAC-3D with GOTM (standard GOTM)
+
+TELEMAC-3D/SISYPHE: fix the bug of writing of results at the wrong graphic output 
+
+TELEMAC-3D/WAQTEL: fix the bug of wrong formula for the linearised formula
+at the free surface for ATMOSPHERE-WATER EXCHANGE MODEL = 1
+
+TELEMAC-3D: fix a bug with TKE computation with Spalart Allmaras turbulence model
 
 GAIA : introduction of this new module, that aims at replacing both SISYPHE and SEDI3D.
   The goal is to have:

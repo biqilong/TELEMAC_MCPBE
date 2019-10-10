@@ -85,6 +85,7 @@ Type MODELE_MASCARET_T
     logical                                    :: PerteChargeConfluent
     logical                                    :: OptionCasier
     logical                                    :: OptionTracer
+    logical                                    :: OptionCourlis
     logical, dimension(NB_TOT_VAR)             :: VarSto
     logical, dimension(NB_TOT_VAR)             :: VarCalc
     logical                                    :: ImpressionCalcul
@@ -661,7 +662,7 @@ contains
           dimVar                = 0
       else if ( NomVar == 'Model.NoConvection') then
           TypeVar = 'BOOL'
-          dimVar                = 0          
+          dimVar                = 0
        else if ( NomVar == 'Model.CQMV') then
           TypeVar = 'INT'
           dimVar                = 0
@@ -1380,7 +1381,7 @@ contains
       integer                               :: SET_TAILLE_VAR_MODELE_MASCARET ! different de 0 si erreur
       type(MODELE_MASCARET_T),intent(inout) :: Instance                       ! Instance du type derive dont on souhaite connaitre la taille des differents champs
       character(len= 40),     intent(in)    :: NomVar                         ! Nom de la variable du modele
-	  integer,                intent(in)    :: index1                         ! Valeur du 1er indice utilise pour Profils, Lois, Singularites, Deversoirs, Liaisons, Extremites, Casiers et Confluents
+      integer,                intent(in)    :: index1                         ! Valeur du 1er indice utilise pour Profils, Lois, Singularites, Deversoirs, Liaisons, Extremites, Casiers et Confluents
       integer,                intent(in)    :: NewT1                          ! Nouvelle valeur max du 1er indice
       integer,                intent(in)    :: NewT2                          ! Nouvelle valeur max du 2e  indice
       integer,                intent(in)    :: NewT3                          ! Nouvelle valeur max du 3e  indice
@@ -1837,16 +1838,16 @@ contains
             enddo
          endif
 
-		 ! partie non generee automatiquement mais a la main
+     ! partie non generee automatiquement mais a la main
          if (SIZE(Instance%Profils)/=0) then
-		   err = SET_TAILLE_VAR_PROFIL(Instance%Profils(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+           err = SET_TAILLE_VAR_PROFIL(Instance%Profils(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%Profils'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+      ! fin de la partie non generee automatiquement
        else if (INDEX(NomVar,'Model.VDSection.') > 0) then
          err = SET_TAILLE_VAR_SECTION_PLAN(Instance%SectionPlan, &
                                    NomVar, NewT1, NewT2, NewT3, MessageErreurType)
@@ -1950,7 +1951,7 @@ contains
                 MessageErreur = 'Unable to change the size of Instance%ZonesFrottement'
                 return
             endif
-         enddo   
+         enddo
       else if (INDEX(NomVar,'Model.Graph.') > 0) then
          if (ASSOCIATED(Instance%LoisHydrau)) then
             t1 = SIZE(Instance%LoisHydrau)
@@ -1990,16 +1991,16 @@ contains
               endif
             enddo
          endif
-		 ! partie non generee automatiquement mais a la main
+         ! partie non generee automatiquement mais a la main
          if (SIZE(Instance%LoisHydrau)/=0) then
-		   err = SET_TAILLE_VAR_LOI(Instance%LoisHydrau(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+           err = SET_TAILLE_VAR_LOI(Instance%LoisHydrau(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%LoisHydrau'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+         ! fin de la partie non generee automatiquement
 
       else if (INDEX(NomVar,'Model.Weir.') > 0) then
          if (ASSOCIATED(Instance%Singularites)) then
@@ -2040,16 +2041,16 @@ contains
               endif
             enddo
          endif
-		 ! partie non generee automatiquement mais a la main
+        ! partie non generee automatiquement mais a la main
          if (SIZE(Instance%Singularites)/=0) then
-  		   err = SET_TAILLE_VAR_SINGULARITE(Instance%Singularites(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+           err = SET_TAILLE_VAR_SINGULARITE(Instance%Singularites(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%Singularites'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+        ! fin de la partie non generee automatiquement
 
       else if (INDEX(NomVar,'Model.LateralWeir.') > 0) then
          if (ASSOCIATED(Instance%Deversoirs)) then
@@ -2090,18 +2091,18 @@ contains
               endif
             enddo
          endif
-		 ! partie non generee automatiquement mais a la main
+        ! partie non generee automatiquement mais a la main
          if (SIZE(Instance%Deversoirs)/=0) then
-		   err = SET_TAILLE_VAR_DEVERSOIR(Instance%Deversoirs(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+           err = SET_TAILLE_VAR_DEVERSOIR(Instance%Deversoirs(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%Deversoirs'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+        ! fin de la partie non generee automatiquement
 
-	 else if (INDEX(NomVar,'Model.File.Listing.') > 0) then
+       else if (INDEX(NomVar,'Model.File.Listing.') > 0) then
          err = SET_TAILLE_VAR_FICHIER(Instance%FichierListing, &
                                    NomVar, NewT1, NewT2, NewT3, MessageErreurType)
          if (err /= 0) then
@@ -2148,16 +2149,16 @@ contains
               endif
             enddo
          endif
-		 ! partie non generee automatiquement mais a la main
-		 if (SIZE(Instance%Liaisons)/=0) then
-		   err = SET_TAILLE_VAR_LIAISON(Instance%Liaisons(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+         ! partie non generee automatiquement mais a la main
+         if (SIZE(Instance%Liaisons)/=0) then
+           err = SET_TAILLE_VAR_LIAISON(Instance%Liaisons(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%Liaisons'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+         ! fin de la partie non generee automatiquement
 
       else if (INDEX(NomVar,'Model.File.Result.') > 0) then
          err = SET_TAILLE_VAR_FICHIER(Instance%FichierResultat, &
@@ -2278,16 +2279,16 @@ contains
               endif
             enddo
          endif
-		 ! partie non generee automatiquement mais a la main
+         ! partie non generee automatiquement mais a la main
          if (SIZE(Instance%Extremites)/=0) then
-		   err = SET_TAILLE_VAR_EXTREMITE(Instance%Extremites(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+           err = SET_TAILLE_VAR_EXTREMITE(Instance%Extremites(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%Extremites'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+         ! fin de la partie non generee automatiquement
 
       else if (INDEX(NomVar,'Model.StorageArea.') > 0) then
          if (ASSOCIATED(Instance%Casiers)) then
@@ -2328,16 +2329,16 @@ contains
               endif
             enddo
          endif
-		 ! partie non generee automatiquement mais a la main
+         ! partie non generee automatiquement mais a la main
          if (SIZE(Instance%Casiers)/=0) then
-		   err = SET_TAILLE_VAR_CASIER(Instance%Casiers(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+           err = SET_TAILLE_VAR_CASIER(Instance%Casiers(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%Casiers'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+         ! fin de la partie non generee automatiquement
        else if (INDEX(NomVar,'Model.Tracer.') > 0) then
          err = SET_TAILLE_VAR_MODELE_TRACER(Instance%Tracer, &
                                    NomVar, NewT1, NewT2, NewT3, MessageErreurType)
@@ -2385,16 +2386,16 @@ contains
               endif
             enddo
          endif
- 		 ! partie non generee automatiquement mais a la main
+         ! partie non generee automatiquement mais a la main
          if (SIZE(Instance%Confluents)/=0) then
-		   err = SET_TAILLE_VAR_CONFLUENT(Instance%Confluents(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
+           err = SET_TAILLE_VAR_CONFLUENT(Instance%Confluents(index1), NomVar, NewT2, NewT3, Bidon, MessageErreurType)
            if (err /= 0) then
               SET_TAILLE_VAR_MODELE_MASCARET = err
               MessageErreur = 'Unable to change the size of Instance%Confluents'
               return
            endif
          endif
-		 ! fin de la partie non generee automatiquement
+         ! fin de la partie non generee automatiquement
       else if (INDEX(NomVar,'Model.Inflow.') > 0) then
          if (ASSOCIATED(Instance%Apports)) then
             t1 = SIZE(Instance%Apports)

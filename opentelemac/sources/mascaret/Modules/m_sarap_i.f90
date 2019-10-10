@@ -71,7 +71,7 @@ module M_SARAP_I
          UniteListing, & ! Unite logique du fichier listing
          LoiFrottement,& ! Loi de frottement
   PerteChargeConfluent,& ! Perte de charge automatique aux confluents
-         CQMV        , & ! apport de debit quantite de mvt 
+         CQMV        , & ! apport de debit quantite de mvt
          Erreur        & ! Erreur
                  )
    ! .....................................................................
@@ -125,10 +125,10 @@ use M_PRECISION
    use M_PERSAR_I
    use M_REPAR_I
 
-   !.. Implicit Declarations .. 
+   !.. Implicit Declarations ..
    implicit none
 
-   !.. Donnees/Resultats .. 
+   !.. Donnees/Resultats ..
    real(DOUBLE), dimension(:), intent(inout) :: Z, Q1, Q2
    real(DOUBLE), dimension(:), intent(inout) :: P1, P2
    real(DOUBLE), dimension(:), intent(inout) :: B1, B2, BS
@@ -152,11 +152,11 @@ use M_PRECISION
    real (Double)  , dimension(:,:)  , intent(in   ) :: F1
    ! Debits d apports
    type(APPORT_T), dimension(:)     , intent(in   ) :: Apport
-   real(DOUBLE)  , dimension(:)	   , intent(inout) :: Qdeverse
+   real(DOUBLE)  , dimension(:)     , intent(inout) :: Qdeverse
    real(DOUBLE)  , dimension(:)     , intent(inout) :: Qinjec
    ! Pertes de charge singulieres
    real(DOUBLE), dimension(:)       , intent(in   ) :: PCSing
-   ! Table du connectivite du reseau 
+   ! Table du connectivite du reseau
    type(CONNECT_T)                  , intent(in   ) :: Connect
    ! Algorithme de resolution
    integer, dimension(:)            , intent(in   ) :: Algorithme
@@ -171,7 +171,7 @@ use M_PRECISION
    logical                          , intent(in   ) :: Impression
    integer                          , intent(in   ) :: UniteListing
    integer                          , intent(in   ) :: LoiFrottement
-   integer                          , intent(in   ) :: CQMV 
+   integer                          , intent(in   ) :: CQMV
    logical                          , intent(in   ) :: PerteChargeConfluent
    ! Temps
    real(DOUBLE)                     , intent(in   ) :: Temps

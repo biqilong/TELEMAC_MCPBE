@@ -32,7 +32,7 @@ subroutine CFL2D1( &
 ! VERSION : 8.1.4              EDF-CEREMA
 !***********************************************************************
 !
-!   FONCTION : CALCUL DU PAS DE TEMPS DANS LE CONFLUENT 
+!   FONCTION : CALCUL DU PAS DE TEMPS DANS LE CONFLUENT
 !   -------------    AVEC LES REGLES SUIVANTES :
 !                    - NOMBRE DE COURANT < 0.5
 !                    - NOMBRE DE SOUS ITERATIONS >= 5
@@ -51,10 +51,10 @@ subroutine CFL2D1( &
 ! !  NELMIN   ! TI !  D ! TABLEAU DES CELLULES FONCTION DES SEGMENTS   !
 ! !  DT1D     !  R !  D ! PAS DE TEMPS DANS LE MODELE 1D               !
 ! !  HEPS     !  R !  D ! HAUTEUR D'EAU MINIMALE                       !
-! !___________!____!____!______________________________________________!  
+! !___________!____!____!______________________________________________!
 !
 !                             VARIABLES LOCALES
-! .___________.____.____.______________________________________________.  
+! .___________.____.____.______________________________________________.
 ! !  DIST     !  R !  A ! DISTANCE CENTRES DE CELLULES-SEGMENT         !
 ! !  XNC      !  R !  A ! RAPPORT (U+C)/DIST                           !
 ! !___________!____!____!______________________________________________!
@@ -97,7 +97,7 @@ subroutine CFL2D1( &
    !.. Variables locales ..
    !-----------------------
    real(DOUBLE)   :: VIT1,VIT2,XNC1,XNC2,DIST
-   real(DOUBLE)   :: XNC
+   real(DOUBLE)   :: XNC, HALF_OVER_XNC
    integer        :: NSEGIN
    integer        :: IEL1,IEL2,ISEGIN
    !character(132) :: !arbredappel_old ! arbre d'appel precedent
@@ -127,7 +127,7 @@ subroutine CFL2D1( &
                ( W(3,IEL1) / W(1,IEL1) )**2 ) + &
                dsqrt( GPES * W(1,IEL1) )
       else
-         VIT1 = 0._DOUBLE  
+         VIT1 = 0._DOUBLE
       endif
 
       XNC1 = VIT1 / DIST
@@ -145,7 +145,14 @@ subroutine CFL2D1( &
 
    end do
 
-   DT2D = dmin1( 0.5_DOUBLE / XNC , DT1D / 9.9_DOUBLE )
+   !MS2019 : verif Yoann
+   IF(XNC .GT. 0._DOUBLE)THEN
+     HALF_OVER_XNC = 0.5_DOUBLE / XNC
+   ELSE
+     HALF_OVER_XNC = 2 * (DT1D / 9.9_DOUBLE)
+   ENDIF
+
+   DT2D = dmin1( HALF_OVER_XNC , DT1D / 9.9_DOUBLE )
 
    !------------------
    ! Fin du traitement

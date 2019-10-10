@@ -1,5 +1,5 @@
 !                    **********************************
-                     CHARACTER(LEN=*) FUNCTION MYAIDELU
+                     FUNCTION MYAIDELU
 !                    **********************************
 !
      &( ICOL , LIGNE )
@@ -49,6 +49,7 @@
       USE DECLARATIONS_DAMOCLES
       IMPLICIT NONE
 !
+      CHARACTER(LEN=*) :: MYAIDELU
 !
       INTEGER       ICOL
       CHARACTER(LEN=*) LIGNE

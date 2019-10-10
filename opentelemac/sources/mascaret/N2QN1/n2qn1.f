@@ -470,7 +470,7 @@ c     write (6,'(a,1pd12.5,2x,d12.5)')  "x    = ", (x(i),i=1,2)
       mode=4
       go to 900
   502 continue
-      call flush (lp)
+      flush (lp)
       if (iprint.eq.3) then
           if (mod(itr-1,40).eq.0) write (lp,'(//a/a)',advance="no")
      &       "  iters  simuls  nactiv       f         |gp|/|gp0|",
@@ -505,7 +505,7 @@ c     write (6,'(a,1pd12.5,2x,d12.5)')  "g    = ", (g(i),i=1,2)
       indic2=1
       go to 540
   511 mode=1
-c     . w = - ga(indi^(-1)) 
+c     . w = - ga(indi^(-1))
       call fmani1 (mode,n,ga,w,indi)
       wii=zero
       do i=1,nr
@@ -1885,7 +1885,7 @@ c
 c========0=========0=========0=========0=========0=========0=========0==
 c
       subroutine fuclid (n,x,y,ps,izs,rzs,dzs)
-      implicit real*8 (a-h,o-z)
+      implicit real(selected_real_kind(10,60)) (a-h,o-z)
       dimension x(n),y(n),izs(*),dzs(*)
       real rzs(*)
       ps=0.d0

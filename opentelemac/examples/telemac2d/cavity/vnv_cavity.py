@@ -67,18 +67,17 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
-                # Getting files
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
+        # Getting files
         vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
 
         # Plotting BOTTOM over polyline over records range(0, -1)
-        plot_timeseries_on_polyline(\
-                res_vnv_1_t2dres,
+        vnv_plot1d_polylines(\
                 'BOTTOM',
+                res_vnv_1_t2dres,
                 poly=[[15, 0], [15, 6]],
-                records=range(0, res_vnv_1_t2dres.ntimestep),
+                record=[i for i  in range(0, res_vnv_1_t2dres.ntimestep)],
                 fig_size=(12, 5),
                 fig_name='img/BottomProfile')
 
@@ -121,4 +120,4 @@ class VnvStudy(AbstractVnvStudy):
                    streamlines=True)
 
         # Closing files
-        del res_vnv_1_t2dres
+        res_vnv_1_t2dres.close()

@@ -44,6 +44,9 @@ module M_PLANMA_I
                       ! Parametre
    PresenceZoneStockage , & ! Presence de zone de stockage
           LoiFrottement , & ! Loi de frottement utilisee
+          OptionCourlis , & ! Activation Courlis
+                 varsed , & ! Courlis : profil evolution
+           TempsInitial , & ! Courlis
                  Erreur )
 
    !***********************************************************************
@@ -59,7 +62,7 @@ module M_PLANMA_I
    !
    !   SOUS PROGRAMME APPELANT :    PLANIM
    !   -------------------------
-   !   SOUS-PROGRAMMES APPELES : 
+   !   SOUS-PROGRAMMES APPELES :
    !   -------------------------
    !       - CALAIG : CALCUL DE L'INTEGRALE DE 0 A S DE -1/S*DC/DX (A S CONSTANT)
    !       - CALDEB : CALCUL DE LA DEBITANCE
@@ -110,6 +113,12 @@ module M_PLANMA_I
    logical     ,                   intent(  out) :: PresenceZoneStockage
    integer     ,                   intent(in   ) :: LoiFrottement
    type(ERREUR_T),                 intent(inout) :: Erreur
+   ! Courlis
+   real(DOUBLE)    , dimension(:), pointer       :: varsed
+   real(DOUBLE)                  , intent(in   ) :: TempsInitial
+   logical                       , intent(in   ) :: OptionCourlis
+
+
 
    end subroutine PLANMA
 

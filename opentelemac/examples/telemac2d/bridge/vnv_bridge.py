@@ -123,3 +123,6 @@ class VnvStudy(AbstractVnvStudy):
                    fig_size=(10, 5),
                    fig_name='img/VelocityV_t1',
                    filled_contours=True)
+
+        res_vnv_1_t2dgeo.close()
+        res_vnv_1_t2dres.close()

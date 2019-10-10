@@ -78,7 +78,7 @@ Subroutine Diffu_tracer( &
    integer     , intent(in)                  :: type_cl_amont
    integer     , intent(in)                  :: type_cl_aval
    ! Variables de sortie
-   real(DOUBLE), dimension(:), intent(  out)	:: Conc
+   real(DOUBLE), dimension(:), intent(  out)  :: Conc
    ! Variables locales
    integer :: i ! Compteur
    real(DOUBLE), dimension(:), allocatable :: AAA, BBB, CCC, DDD ! coefficients de la matrice

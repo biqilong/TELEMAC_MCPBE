@@ -123,25 +123,23 @@ class VnvStudy(AbstractVnvStudy):
 
         poly = [[0, 50], [500, 50]]
 
-        poly_number = res_vnv_5_t2dres.discretize_polyline(poly)
-
         # Telemac 2d data
         _, abs_curv, data2d = res_vnv_5_t2dres.get_timeseries_on_polyline(\
-                poly, 'FREE SURFACE', poly_number)
+                'FREE SURFACE', poly)
 
         plot1d(ax, abs_curv, data2d[:, -1],
                plot_label='TELEMAC-2D')
 
         # Telemac 3d Non hydro static data
-        _, abs_curv, poly_z = res_vnv_3_t3dres.get_data_values_on_vertical_plan(\
-                poly, 'ELEVATION Z', poly_number, -1)
+        _, abs_curv, poly_z = res_vnv_3_t3dres.get_data_on_vertical_plane(\
+                'ELEVATION Z', -1, poly)
 
         plot1d(ax, abs_curv, poly_z[:, -1],
                plot_label='TELEMAC-3D Non-Hydrostatic')
 
         # Telemac 3d Non hydro static data
-        _, abs_curv, poly_z = res_vnv_1_t3dres.get_data_values_on_vertical_plan(\
-                poly, 'ELEVATION Z', poly_number, -1)
+        _, abs_curv, poly_z = res_vnv_1_t3dres.get_data_on_vertical_plane(\
+                'ELEVATION Z', -1, poly)
 
         plot1d(ax, abs_curv, poly_z[:, -1],
                plot_label='TELEMAC-3D Hydrostatic')
@@ -187,3 +185,8 @@ class VnvStudy(AbstractVnvStudy):
                    poly=[[0, 50], [500, 50]],
                    fig_size=(10, 3),
                    fig_name='img/MeshV')
+
+        res_vnv_1_t3dres.close()
+        res_vnv_3_t3dres.close()
+        res_vnv_1_t3dhyd.close()
+        res_vnv_5_t2dres.close()

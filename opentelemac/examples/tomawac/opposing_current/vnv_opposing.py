@@ -100,8 +100,8 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot1d, plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
+        from postel.plot1d import plot1d
         import matplotlib.pyplot as plt
                 # Getting files
         vnv_1_wacgeo = self.get_study_file('vnv_1:WACGEO')
@@ -112,13 +112,11 @@ class VnvStudy(AbstractVnvStudy):
 
         poly = [[0, 1], [8, 1]]
 
-        poly_number = res1.discretize_polyline(poly)
-
         _, abs_curv, values1 = \
-           res1.get_timeseries_on_polyline(poly, 'WAVE HEIGHT HM0', poly_number)
+           res1.get_timeseries_on_polyline('WAVE HEIGHT HM0', poly)
 
         _, _, values2 = \
-           res2.get_timeseries_on_polyline(poly, 'WAVE HEIGHT HM0', poly_number)
+           res2.get_timeseries_on_polyline('WAVE HEIGHT HM0', poly)
 
         fig, ax = plt.subplots(figsize=(12, 7))
 
@@ -135,13 +133,12 @@ class VnvStudy(AbstractVnvStudy):
         print(" "*8+"~> Plotting "+fig_name)
         plt.savefig(fig_name)
 
-        # Plotting BOTTOM over polyline over records range(0,
-        # res_vnv_1_wacgeo.ntimestep)
-        plot_timeseries_on_polyline(\
-                res_vnv_1_wacgeo,
+        # Plotting BOTTOM over polyline
+        vnv_plot1d_polylines(\
                 'BOTTOM',
+                res_vnv_1_wacgeo,
                 poly=[[0, 1], [8, 1]],
-                records=range(0, res_vnv_1_wacgeo.ntimestep),
+                record=0,
                 fig_size=(12, 7),
                 fig_name='img/section1d2')
 
@@ -153,6 +150,6 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/mesh')
 
         # Closing files
-        del res_vnv_1_wacgeo
-        del res1
-        del res2
+        res_vnv_1_wacgeo.close()
+        res1.close()
+        res2.close()

@@ -27,21 +27,24 @@ module M_PLANIM_I
 !***********************************************************************
    interface
 
-   subroutine PLANIM      ( &
-                            ! RESULTATS
-                   ProfilPlan , & ! Profils planimetres
-                            ! DONNEES
-                       Profil , & ! Caracteristiques des profils
-                           F1 , &  ! Fonction impulsion
-                            ! Parametres
-              DebProgressifLM , & ! Debordement progressif lit majeur
-              DebProgressifZS , & ! Debordement progressif zones de stockaage
-              ImpressionPlani , & ! Impression du planimetrage
-                 UniteListing , & ! Unite logique listing
-          FrottParoiVerticale , & ! Conservation du frottement sur les parois verticales
-                            ! Code de retour
-                       Erreur & ! Erreur
-                             )
+   subroutine PLANIM               ( &
+! RESULTATS
+               ProfilPlan          , & ! Profils planimetres
+! DONNEES
+               Profil              , & ! Caracteristiques des profils
+               F1                  , &  ! Fonction impulsion
+! Parametres
+               DebProgressifLM     , & ! Debordement progressif lit majeur
+               DebProgressifZS     , & ! Debordement progressif zones de stockaage
+               ImpressionPlani     , & ! Impression du planimetrage
+               UniteListing        , & ! Unite logique listing
+               FrottParoiVerticale , & ! Conservation du frottement sur les parois verticales
+               OptionCourlis       , & ! Activation de Courlis
+               varsed              , & ! Courlis : profil evolution
+               TempsInitial        , & ! Courlis
+! Code de retour
+               Erreur                & ! Erreur
+                                   )
 
    ! **********************************************************************
    !
@@ -83,6 +86,9 @@ module M_PLANIM_I
    !***********************************************************************
 
    !============================= Declarations ===========================
+   use M_MY_CPT_PLANIM          ! Courlis planim counting
+   use M_SHARE_VAR, ONLY: Temps ! Courlis
+   use M_CSUR_I                  ! Courlis
    use M_PRECISION           ! Type DOUBLE
    use M_PARAMETRE_C         ! Parametres de calcul
    use M_MESSAGE_C           ! Liste des messages d'erreur
@@ -108,6 +114,11 @@ module M_PLANIM_I
    logical                            , intent(in   ) :: ImpressionPlani
    integer                            , intent(in   ) :: UniteListing
    type(ERREUR_T)                     , intent(inout) :: Erreur
+
+   ! Courlis
+   real(DOUBLE)                       , intent(in   ) :: TempsInitial
+   real(DOUBLE)        , dimension(:), pointer        :: varsed
+   logical                            , intent(in   ) :: OptionCourlis
 
    end subroutine PLANIM
 

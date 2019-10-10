@@ -61,8 +61,8 @@
         end function dupliqueI2
     end interface
 
-	integer err
-	integer taille , i
+    integer err
+    integer taille , i
 
     DUPLICATE_ETAT = 0
 
@@ -316,79 +316,79 @@
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR1(Source%Tracer%QT, Dest%Tracer%QT)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR1(Source%Tracer%ST, Dest%Tracer%ST)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR1(Source%Tracer%BT, Dest%Tracer%BT)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR1(Source%Tracer%QT_ANT, Dest%Tracer%QT_ANT)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR1(Source%Tracer%ST_ANT, Dest%Tracer%ST_ANT)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR1(Source%Tracer%BT_ANT, Dest%Tracer%BT_ANT)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR1(Source%Tracer%NbCourant, Dest%Tracer%NbCourant)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR2(Source%Tracer%MASS, Dest%Tracer%MASS)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR2(Source%Tracer%FLUMAS, Dest%Tracer%FLUMAS)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR2(Source%Tracer%FLUENT, Dest%Tracer%FLUENT)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR2(Source%Tracer%FLUSOR, Dest%Tracer%FLUSOR)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     err = dupliqueR2(Source%Tracer%FLUSRC, Dest%Tracer%FLUSRC)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-    
+
     ! dupliquer rezomat_t
     Dest%MatriceRezo%SOLV  = Source%MatriceRezo%SOLV
     Dest%MatriceRezo%N  = Source%MatriceRezo%N
@@ -405,42 +405,42 @@
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%IFLAG , Dest%MatriceRezo%IFLAG)
+    err = dupliqueI1(Source%MatriceRezo%IFLAG , Dest%MatriceRezo%IFLAG)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%rowA , Dest%MatriceRezo%rowA)
+    err = dupliqueI1(Source%MatriceRezo%rowA , Dest%MatriceRezo%rowA)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%colA , Dest%MatriceRezo%colA)
+    err = dupliqueI1(Source%MatriceRezo%colA , Dest%MatriceRezo%colA)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%snr , Dest%MatriceRezo%snr)
+    err = dupliqueI1(Source%MatriceRezo%snr , Dest%MatriceRezo%snr)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%rnr , Dest%MatriceRezo%rnr)
+    err = dupliqueI1(Source%MatriceRezo%rnr , Dest%MatriceRezo%rnr)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI2(Source%MatriceRezo%ha , Dest%MatriceRezo%ha)
+    err = dupliqueI2(Source%MatriceRezo%ha , Dest%MatriceRezo%ha)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%noVarDQ , Dest%MatriceRezo%noVarDQ)
+    err = dupliqueI1(Source%MatriceRezo%noVarDQ , Dest%MatriceRezo%noVarDQ)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%noVarDZ , Dest%MatriceRezo%noVarDZ)
+    err = dupliqueI1(Source%MatriceRezo%noVarDZ , Dest%MatriceRezo%noVarDZ)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
@@ -450,27 +450,27 @@
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%noVarDZc , Dest%MatriceRezo%noVarDZc)
+    err = dupliqueI1(Source%MatriceRezo%noVarDZc , Dest%MatriceRezo%noVarDZc)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%typSec , Dest%MatriceRezo%typSec)
+    err = dupliqueI1(Source%MatriceRezo%typSec , Dest%MatriceRezo%typSec)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%headConflu , Dest%MatriceRezo%headConflu)
+    err = dupliqueI1(Source%MatriceRezo%headConflu , Dest%MatriceRezo%headConflu)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%nextSecConflu , Dest%MatriceRezo%nextSecConflu)
+    err = dupliqueI1(Source%MatriceRezo%nextSecConflu , Dest%MatriceRezo%nextSecConflu)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueI1(Source%MatriceRezo%SecSin , Dest%MatriceRezo%SecSin)
+    err = dupliqueI1(Source%MatriceRezo%SecSin , Dest%MatriceRezo%SecSin)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
@@ -510,7 +510,7 @@
        DUPLICATE_ETAT = 1
        return
     endif
-	! FIN dupliquer rezomat_t
+    ! FIN dupliquer rezomat_t
 
     Dest%NBARAD  = Source%NBARAD
 
@@ -536,57 +536,57 @@
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OTB , Dest%Sauve%H2OTB)
+    err = dupliqueR1(Source%Sauve%H2OTB , Dest%Sauve%H2OTB)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OEB , Dest%Sauve%H2OEB)
+    err = dupliqueR1(Source%Sauve%H2OEB , Dest%Sauve%H2OEB)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OSB , Dest%Sauve%H2OSB)
+    err = dupliqueR1(Source%Sauve%H2OSB , Dest%Sauve%H2OSB)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OIC , Dest%Sauve%H2OIC)
+    err = dupliqueR1(Source%Sauve%H2OIC , Dest%Sauve%H2OIC)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OTC , Dest%Sauve%H2OTC)
+    err = dupliqueR1(Source%Sauve%H2OTC , Dest%Sauve%H2OTC)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OEC , Dest%Sauve%H2OEC)
+    err = dupliqueR1(Source%Sauve%H2OEC , Dest%Sauve%H2OEC)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OSC , Dest%Sauve%H2OSC)
+    err = dupliqueR1(Source%Sauve%H2OSC , Dest%Sauve%H2OSC)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OTBS , Dest%Sauve%H2OTBS)
+    err = dupliqueR1(Source%Sauve%H2OTBS , Dest%Sauve%H2OTBS)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%H2OIBS , Dest%Sauve%H2OIBS)
+    err = dupliqueR1(Source%Sauve%H2OIBS , Dest%Sauve%H2OIBS)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%SPREC , Dest%Sauve%SPREC)
+    err = dupliqueR1(Source%Sauve%SPREC , Dest%Sauve%SPREC)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
     endif
-	err = dupliqueR1(Source%Sauve%QPREC , Dest%Sauve%QPREC)
+    err = dupliqueR1(Source%Sauve%QPREC , Dest%Sauve%QPREC)
     if (err /= 0) then
        DUPLICATE_ETAT = 1
        return
@@ -698,10 +698,10 @@
     real(8), dimension(:,:,:), pointer, intent(in)    :: Source     ! Instance du type derive que l'on souhaite dupliquer
     real(8), dimension(:,:,:), pointer, intent(inout) :: Dest       ! etat dupliquer et alloue
 
-	integer err
-	integer taille1, taille2, taille3
+    integer err
+    integer taille1, taille2, taille3
 
-	dupliqueR3 = 0
+    dupliqueR3 = 0
 
     if (ASSOCIATED(Source)) then
        taille1 = size(Source,1)

@@ -25,7 +25,7 @@ subroutine MASCARET( &
                      W , AIRS ,                  & ! Etats du 2D pour les confluents
                      YNODE , UNODE ,CNODE ,      & ! Etats pour Mascaret
                      FLUX ,                      & ! Flux pour le schema de Roe
-                     DebitFlux ,                 & ! Flux de debit 
+                     DebitFlux ,                 & ! Flux de debit
                      JGNODE , JDNODE , IFIGE ,   & ! indice de planimetrage
                      BETA ,                      & ! Coefficient de repartition mineur/majeur
                      FROUD ,                     & ! Nombre de Froude
@@ -70,7 +70,7 @@ subroutine MASCARET( &
                      Impli_Trans , Opt ,         & ! Indicateur pour l'implicitation du solveur
                      PerteElargissementTrans ,   & !Perte de Charge elargissement
                      Boussinesq ,                & ! Ajout des termes non hydrostatiques
-                     CQMV       ,                & ! Apport dans la quantite de mvt 
+                     CQMV       ,                & ! Apport dans la quantite de mvt
                      STOCKAGE ,                  & ! Indicateur de zones de stockage
                      PastempsVariable ,          & ! Indicateur de pas de temps variable
                      NombreCourant ,             & ! Nombre de Courant limite
@@ -317,7 +317,6 @@ subroutine MASCARET( &
    nb_sing  = size( Singularite )
    nb_ext   = size( Connect%NumBiefExtLibre )
    nb_pas   = nbpas
-
    !
    do i = 1 , nb_sect
       QNODE(i) = QMIN(i) + QMAJ(i)
@@ -353,7 +352,7 @@ subroutine MASCARET( &
       VOLS (:) = 0._DOUBLE
 !
 ! La Structure SAUVE contient les variables seravnt au bilan de masse
-! 
+!
       allocate( Sauve%H2OIB(nb_bief) , stat = retour )
       allocate( Sauve%H2OTB(nb_bief) , stat = retour )
       allocate( Sauve%H2OEB(nb_bief) , stat = retour )
@@ -384,9 +383,9 @@ subroutine MASCARET( &
       ZINIT(:) = ZNODE(:)
       DTCFL    = DT
       DTI(:)   = DT
-! 
-!         INITIALISATION DES VARIABLES 
-! 
+!
+!         INITIALISATION DES VARIABLES
+!
       call PRECAL                ( &
           SNODE                  , &
           SMIN                   , &
@@ -479,7 +478,7 @@ subroutine MASCARET( &
       if( Erreur%Numero /= 0 ) then
          return
       endif
-      
+
    elseif( PhaseSimulation == PHASE_TERMINAISON ) then
       if( associated(VOLS) )         deallocate( VOLS )
       if( associated(Sauve%H2OIB) )  deallocate( Sauve%H2OIB )
@@ -628,18 +627,18 @@ subroutine MASCARET( &
             if( KHYLIM == CONDITION_TYPE_DEBIT_IMPOSE ) then
                Q1(IS) = QFIX
                S1(IS) = SNODE(IS) + DT * ( QNODE(IS-1) - QNODE(IS) ) / ( X(IS) - X(IS-1) )
-			   
-			   !
+
+               !
                !   modification SIMBA
                !
-               if( frod.GE.0.99D0 ) then 
+               if( frod.GE.0.99D0 ) then
                   C1    = CELE(IS,S1(IS) ,SectionPlan%S,SectionPlan%B, Erreur)
-			      QFIX = MIN(QFIX, S1(IS) * C1)
+                  QFIX = MIN(QFIX, S1(IS) * C1)
                endif
-			   
-			   Q1(IS) = QFIX	 
+
+               Q1(IS) = QFIX
             endif
-            
+
             !
             ! COTE IMPOSEE
             !
@@ -648,7 +647,6 @@ subroutine MASCARET( &
                if( Erreur%Numero /= 0 ) then
                   return
                endif
-
                YIS = CSURM1( SNODE(IS) , dz(IS) , SectionPlan%S(IS,:) , Erreur )
                if( Erreur%Numero /= 0 ) then
                   return
@@ -810,7 +808,7 @@ subroutine MASCARET( &
                   Q1(IFIN(IP1)) = QNODE(IFIN(IP1))
                endif
             endif
-
+!MS2018 problem evolution Courlis ==> solv by desactivating the option "calcOndesubmersion"?
             if( INDIC(IP1) == -1 ) cycle
             ITEM0(INOEUD) = ITEM0(INOEUD) +1
          endif
@@ -872,12 +870,14 @@ subroutine MASCARET( &
    !      ====================
    ! 1-3  BOUCLE SUR LES BIEFS
    !      ====================
-  
+
    label_boucle_bief2: do IBIEF = 1,nb_bief
 
+!MS2018 mise commentaire probleme evolution
       if( INDIC(IBIEF) == -1 ) cycle
       IDE = IDEB(IBIEF)
       IFI = IFIN(IBIEF)
+
       call RESOL                   (  &
           SNODE                    , &
           QNODE                    , &
@@ -923,7 +923,7 @@ subroutine MASCARET( &
           Impli_Trans              , &
           PerteElargissementTrans  , &
           Boussinesq               , &
-          CQMV                     , & 
+          CQMV                     , &
           Erreur                     &
                                     )
 

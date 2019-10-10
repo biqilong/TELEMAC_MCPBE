@@ -195,21 +195,18 @@ class VnvStudy(AbstractVnvStudy):
         res_bl8 = TelemacFile(self.get_study_file('vnv_bl8:GAIRES'))
         res_bl9 = TelemacFile(self.get_study_file('vnv_bl9:GAIRES'))
 
-        # Discretization of polyline
-        poly_number = res.discretize_polyline(poly)
-
         # Extraction result values
         _, abs_curv, values_poly = \
                 res.get_timeseries_on_polyline(\
-                poly, 'BOTTOM', poly_number)
+                'BOTTOM', poly)
 
         _, _, values_poly_bl8 = \
                 res_bl8.get_timeseries_on_polyline(\
-                poly, 'BOTTOM', poly_number)
+                'BOTTOM', poly)
 
         _, _, values_poly_bl9 = \
                 res_bl9.get_timeseries_on_polyline(\
-                poly, 'BOTTOM', poly_number)
+                'BOTTOM', poly)
 
         fig, ax = plt.subplots(figsize=(10, 7))
 
@@ -234,3 +231,7 @@ class VnvStudy(AbstractVnvStudy):
         print(" "*8+"~> Plotting "+fig_name)
         plt.savefig(fig_name)
         plt.clf()
+
+        res.close()
+        res_bl8.close()
+        res_bl9.close()

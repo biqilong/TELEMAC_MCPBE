@@ -22,24 +22,14 @@ class VnvStudy(AbstractVnvStudy):
         self.refinement_levels = 3
         self.temporary_files = []
 
-        # time parameters:
+        # Duration:
         self.time_period = 6.283185308 # one rotation
         self.duration = self.time_period/4. # 1/4 of the complete rotation
-        self.timestep = self.time_period/1280.
-        self.variable_timestep = True
-        self.CFL = 0.5
 
-        # Variable time step does'nt seem to work properly with FE.
-        # TODO: check Dt computation in TELEMAC with FE.
-        # In this case we set a dt according the CFL on
-        # the finest mesh with dt = CFL*dx/(|U| + sqrt(gH))
-        G = 9.81
-        U0 = 15.
-        H0 = 2.
-        dx_0 = 1.
-        dx_min = dx_0/(2.**self.refinement_levels)
-        sigma = U0 + np.sqrt(G*H0)
-        self.timestep = min(self.CFL*dx_min/sigma, self.timestep)
+        # Time discretization:
+        self.variable_timestep = True
+        self.timestep = self.time_period/640.
+        self.CFL = 0.9
 
     def _pre(self):
         """
@@ -63,7 +53,7 @@ class VnvStudy(AbstractVnvStudy):
         if self.variable_timestep:
             cas.remove('NUMBER OF TIME STEPS')
             cas.set('DURATION', self.duration)
-            cas.set('DESIRED COURANT NUMBER', 0.9)
+            cas.set('DESIRED COURANT NUMBER', self.CFL)
             cas.set('VARIABLE TIME-STEP', self.variable_timestep)
         else:
             cas.set('NUMBER OF TIME STEPS', int(self.duration/self.timestep))
@@ -128,10 +118,7 @@ class VnvStudy(AbstractVnvStudy):
             'ERIA', 'WCHAR', 'PSI', 'PSI PC1', 'PSI PC2', 'PSI LIPS']
 
         if self.variable_timestep:
-            time_label = "$CFL = {}$"\
-                         .format(self.CFL)
-            #time_label = "$CFL = {}$ $(\\Delta t = {:0.3f})$"\
-            #             .format(self.CFL, self.timestep)
+            time_label = "$CFL = {}$".format(self.CFL)
         else:
             time_label = "$\\Delta t = {:0.3f}$".format(self.timestep)
 
@@ -491,7 +478,7 @@ class VnvStudy(AbstractVnvStudy):
                     legend_labels=['$L_\\infty$', '$L_1$', '$L_2$'],
                     x_labels=var_labels_short,
                     y_scale='log',
-                    fig_title='Error time integrals: $\\frac{1}{t_f} \\int_{0}^{t_f} E(t) dt$',
+                    fig_title='Errors',
                     fig_name="img/t2d_cone_errors_tf_finemesh_mesh{}"\
                     .format(j),
                     annotate=True)

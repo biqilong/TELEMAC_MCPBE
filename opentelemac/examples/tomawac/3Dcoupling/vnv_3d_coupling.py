@@ -220,3 +220,9 @@ class VnvStudy(AbstractVnvStudy):
                    fig_size=(12, 7),
                    fig_name='img/resultsTOM3')
 
+
+        res_vnv_1_wacres.close()
+        res_vnv_1_t3dres.close()
+        res_vnv_1_t3dgeo.close()
+        res_vnv_3_t3dres.close()
+        res_vnv_3_wacres.close()

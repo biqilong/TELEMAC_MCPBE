@@ -184,16 +184,17 @@ class VnvStudy(AbstractVnvStudy):
                 fig_name='img/t2d_ritter_hllc_vel_firstobs{}'.format(record),
                 fig_title=time_label)
 
-            vnv_plot2d(\
-                'VELOCITY',
-                hllc_res,
-                record=record,
-                fig_size=(10, 3),
-                fig_name="img/t2d_ritter_hllc_vel2d_firstobs{}".format(record),
-                fig_title=time_label,
-                cbar_label='Velocity norm',
-                contours=True,
-                filled_contours=True)
+            if idx > 0:
+                vnv_plot2d(\
+                    'VELOCITY',
+                    hllc_res,
+                    record=record,
+                    fig_size=(10, 3),
+                    fig_name="img/t2d_ritter_hllc_vel2d_firstobs{}".format(record),
+                    fig_title=time_label,
+                    cbar_label='Velocity norm',
+                    contours=True,
+                    filled_contours=True)
 
         #======================================================================
         # COMPARISON OF NUMERICAL SCHEMES:

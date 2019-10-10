@@ -174,3 +174,7 @@ class VnvStudy(AbstractVnvStudy):
                    ylim=(-10, 0),
                    fig_size=(20, 4),
                    fig_name='img/solit_4planes')
+
+        res_vnv_1_t3dres.close()
+        res_vnv_3_t3dres.close()
+        res_vnv_5_t3dres.close()

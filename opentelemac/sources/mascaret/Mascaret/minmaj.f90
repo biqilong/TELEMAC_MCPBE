@@ -40,7 +40,7 @@ subroutine MINMAJ ( &
 !
 ! VERSION : 8.1.4              EDF-CEREMA
 !***********************************************************************
-!     FONCTION : CALCUL DE LA REPARTITION MINEUR MAJEUR 
+!     FONCTION : CALCUL DE LA REPARTITION MINEUR MAJEUR
 !
 !-----------------------------------------------------------------------
 !                             ARGUMENTS
@@ -77,7 +77,7 @@ subroutine MINMAJ ( &
    !----------------------
    use M_PRECISION
    use M_PARAMETRE_C ! EPS6
-   use M_ERREUR_T    ! ERREUR 
+   use M_ERREUR_T    ! ERREUR
    use M_DICHO_I   ! Interface du sous-programme DICHO
 
    !.. Declarations explicites ..

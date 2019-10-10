@@ -89,3 +89,5 @@ class VnvStudy(AbstractVnvStudy):
             poly=[[0.0, 225.0], [41000.0, 225.0]],
             ref_name='EXACT ELEVATION',
             fig_name='img/figure2')
+
+        res.close()

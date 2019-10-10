@@ -4,7 +4,7 @@
 BUILD_TARGETS=wxml_lib wcml_lib wkml_lib sax_lib dom_lib
 
 VPATH=
-compile_prefix=/home/B61570/opentelemac/git/trunk/sources/mascaret/Fox/objs
+compile_prefix=/home/B61570/opentelemac/trunk/sources/mascaret/Fox/objs
 install_prefix=/usr/local
 LIB_DIR=$(compile_prefix)/lib
 MOD_DIR=$(compile_prefix)/finclude

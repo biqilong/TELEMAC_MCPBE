@@ -130,7 +130,7 @@
      &                                 IFRBJ, IFRTG , IFRRO, IFRIH,
      &                                 DIAGHF, COEFHS, NSITS,  SMOUT,
      &  FMOY, VARIAN, XKMOY, SFROT, SVENT, LVENT, STRIF, VENT, VENSTA,
-     &  LUVEF,  LUVEB, NAMVEF, NAMVEB, FMTVEB, FMTVEF, 
+     &  LUVEF,  LUVEB, NAMVEF, NAMVEB, FMTVEB, FMTVEF,
      &  SBREK,  XDTBRK, NDTBRK, STRIA, PROINF, DF_LIM, LIMIT,
      &  VEGETATION, CBAJ, SDSCU,FREQ, DFREQ, DEPTH,
      &  TETA, TAILF, RAISF, NBOR, NPTFR, LIFBOR,
@@ -379,7 +379,7 @@
 !       3.3 COMPUTES THE MEAN WAVE NUMBER OF THE SPECTRUM
 !       -------------------------------------------------
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE KMOYEN'
-          CALL KMOYEN (XKMOY, XK , F, NF, NPLAN, NPOIN2, 
+          CALL KMOYEN (XKMOY, XK , F, NF, NPLAN, NPOIN2,
      &         TAUX1 , TAUX2 , TAUX3 )
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE KMOYEN'
         ELSEIF (CBAJ.EQ.1) THEN
@@ -719,66 +719,67 @@
             IF (SBREK.GE.3) IFCAR = IFRRO
             IF (SBREK.GE.4) IFCAR = IFRIH
 !
-            GOTO (751,752,753,754,755,756), IFCAR
-            WRITE(LU,*) 'WAVE FREQUENCY NOT EXPECTED......IFCAR=',
-     &                     IFCAR
-            GOTO 759
+            IF (IFCAR.EQ.1) THEN
 !
-!           MEAN FREQUENCY FMOY
-!           - - - - - - - - - - - -
+!             MEAN FREQUENCY FMOY
+!             - - - - - - - - - - - -
+              IF (CBAJ.EQ.1) THEN
+                IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREMOY'
+                CALL FREMOY(TAUX3, F, NF, NPLAN, NPOIN2 )
+                IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREMOY'
+              ELSE
+                DO IP=1,NPOIN2
+                  TAUX3(IP)=FMOY(IP)
+                ENDDO
+              ENDIF
+
+            ELSE IF (IFCAR.EQ.2) THEN
 !
-  751       CONTINUE
-            IF (CBAJ.EQ.1) THEN
-              IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREMOY'
-              CALL FREMOY(TAUX3, F, NF, NPLAN, NPOIN2 )
-              IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREMOY'
+!             MEAN FREQUENCY F01
+!             - - - - - - - - - - -
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREM01'
+              CALL FREM01( TAUX3, F, NF, NPLAN, NPOIN2)
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREM01'
+
+            ELSE IF (IFCAR.EQ.3) THEN
+!
+!             MEAN FREQUENCY F02
+!             - - - - - - - - - - -
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREM02'
+              CALL FREM02( TAUX3, F, NF, NPLAN, NPOIN2)
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREM02'
+
+            ELSE IF (IFCAR.EQ.4) THEN
+!
+!             PEAK FREQUENCY (DISCRETE FREQUENCY WITH MAX VARIANCE)
+!             - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREPIC'
+              CALL FREPIC( TAUX3, F, NF, NPLAN, NPOIN2)
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREPIC'
+
+            ELSE IF (IFCAR.EQ.5) THEN
+!
+!             PEAK FREQUENCY (READ WITH EXPONENT 5)
+!             - - - - - - - - - - - - - - - - - - - - - - - - - -
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FPREAD'
+              CALL FPREAD( TAUX3, F, NF, NPLAN, NPOIN2, 5.D0)
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FPREAD'
+
+            ELSE IF (IFCAR.EQ.6) THEN
+!
+!             PEAK FREQUENCY (READ WITH EXPONENT 8)
+!             - - - - - - - - - - - - - - - - - - - - - - - - - -
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FPREAD'
+              CALL FPREAD( TAUX3, F, NF, NPLAN, NPOIN2, 8.D0)
+              IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FPREAD'
+
             ELSE
-              DO IP=1,NPOIN2
-                TAUX3(IP)=FMOY(IP)
-              ENDDO
+
+              WRITE(LU,*) 'WAVE FREQUENCY NOT EXPECTED......IFCAR=',
+     &                       IFCAR
+              CALL PLANTE(1)
+              STOP
             ENDIF
-            GOTO 759
-!
-!           MEAN FREQUENCY F01
-!           - - - - - - - - - - -
-  752       CONTINUE
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREM01'
-            CALL FREM01( TAUX3, F, NF, NPLAN, NPOIN2)
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREM01'
-            GOTO 759
-!
-!           MEAN FREQUENCY F02
-!           - - - - - - - - - - -
-  753       CONTINUE
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREM02'
-            CALL FREM02( TAUX3, F, NF, NPLAN, NPOIN2)
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREM02'
-            GOTO 759
-!
-!           PEAK FREQUENCY (DISCRETE FREQUENCY WITH MAX VARIANCE)
-!           - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  754       CONTINUE
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREPIC'
-            CALL FREPIC( TAUX3, F, NF, NPLAN, NPOIN2)
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREPIC'
-            GOTO 759
-!
-!           PEAK FREQUENCY (READ WITH EXPONENT 5)
-!           - - - - - - - - - - - - - - - - - - - - - - - - - -
-  755       CONTINUE
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FPREAD'
-            CALL FPREAD( TAUX3, F, NF, NPLAN, NPOIN2, 5.D0)
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FPREAD'
-            GOTO 759
-!
-!           PEAK FREQUENCY (READ WITH EXPONENT 8)
-!           - - - - - - - - - - - - - - - - - - - - - - - - - -
-  756       CONTINUE
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FPREAD'
-            CALL FPREAD( TAUX3, F, NF, NPLAN, NPOIN2, 8.D0)
-            IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FPREAD'
-!
-  759       CONTINUE
 !
         ENDIF
 !
@@ -897,7 +898,7 @@
 !
           IF(VEGETATION) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QVEG'
-            CALL QVEG( TSTOT, TSDER, F, VARIAN, FMOY, XKMOY, NF,     
+            CALL QVEG( TSTOT, TSDER, F, VARIAN, FMOY, XKMOY, NF,
      &                   NPLAN  ,NPOIN2   )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QVEG'
           ENDIF

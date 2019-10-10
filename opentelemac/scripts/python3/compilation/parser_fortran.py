@@ -870,7 +870,7 @@ def parse_principal_main(lines, who, typ, name, args, resu):
             decs['dec'].remove(dec)
     for k in decs:
         whi['vars'][k] = []
-        if type(decs[k]) == type({}):
+        if isinstance(decs[k], dict):
             add_to_list(whi['vars'], k, '')
             whi['vars'][k] = decs[k]
         else:

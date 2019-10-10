@@ -112,4 +112,4 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/bed')
 
         # Closing files
-        del res_vnv_1_sisres
+        res_vnv_1_sisres.close()

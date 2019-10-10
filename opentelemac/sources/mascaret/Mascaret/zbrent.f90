@@ -103,8 +103,8 @@ subroutine ZBRENT( &
    FB = FC1(B)
    if( FB * FA > 0.1_DOUBLE ) then
       if( LNG == 1 .and. Impression ) write(LU,*) 'ZBRENT : FC1(X1)*FC1(X2) EST POSITIF'
-	  Erreur%Numero = 1
-	  return
+      Erreur%Numero = 1
+      return
       !stop
    endif
 

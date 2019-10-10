@@ -1336,9 +1336,9 @@
 !
         DO I=1,NPOIN2
           BENTH4AED2%I(I) = NPLAN
-          DO K=NPLAN-1,1,-1
+          DO K=NPLAN,2,-1
             IF(THICK4AED2%R(K+(I-1)*NPLAN).LT.EPS_AED2) THEN
-              BENTH4AED2%I(I) = K
+              BENTH4AED2%I(I) = K-1
             ENDIF
           ENDDO
         ENDDO

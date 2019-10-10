@@ -118,6 +118,6 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/Velocity_tf_pos')
 
         # Closing files
-        del res_vnv_1_t2dgeo
-        del res_vnv_1_t2dres
-        del res_vnv_2_t2dres
+        res_vnv_1_t2dgeo.close()
+        res_vnv_1_t2dres.close()
+        res_vnv_2_t2dres.close()

@@ -255,16 +255,16 @@
 !-----------------------------------------------------------------------
 !       REFERENCE LEVEL IS LANGUAGE INDEPENDENT
 !     Initialising
-       CALL FIND_VARIABLE(GAI_FILES(GAIGEO)%FMT,GAI_FILES(GAIGEO)%LU,
+      CALL FIND_VARIABLE(GAI_FILES(GAIGEO)%FMT,GAI_FILES(GAIGEO)%LU,
      &  'REFERENCE LEVEL ', ZRL%R,NPOIN,IERR)
-       IF( IERR == 0 ) THEN
-         WRITE(6,*)'-------------------------------------------'
-         WRITE(6,*)
-     &   'Found REFERENCE LEVEL (ZRL) for Nestor in Sis Geometry file'
-         WRITE(6,*)'          max value of ZRL = ',MAXVAL(ZRL%R)
-         WRITE(6,*)'          min value of ZRL = ',MINVAL(ZRL%R)
-         WRITE(6,*)'-------------------------------------------'
-       ENDIF
+      IF( IERR == 0 ) THEN
+        WRITE(6,*)'-------------------------------------------'
+        WRITE(6,*)
+     &  'Found REFERENCE LEVEL (ZRL) for Nestor in Sis Geometry file'
+        WRITE(6,*)'          max value of ZRL = ',MAXVAL(ZRL%R)
+        WRITE(6,*)'          min value of ZRL = ',MINVAL(ZRL%R)
+        WRITE(6,*)'-------------------------------------------'
+      ENDIF
 !
 !-----------------------------------------------------------------------
 !-----------------------------------------------------------------------
@@ -329,12 +329,15 @@
       PASS      = .TRUE.
 !
       SECOND_SUSP_STEP = .FALSE.
-      SUMMCUMUCL= 0.D0
-      SUMRMASCL = 0.D0
-      SUM_DEPOSITION = 0.D0
-      SUM_EROSION = 0.D0
       MASSNESTOR = 0.D0
-      SUMMASSNESTOR = 0.D0
+      IF(BILMA) THEN
+        SUMMCUMUCL= 0.D0
+        SUMBEDLOAD_B = 0.D0
+        SUMRMASCL = 0.D0
+        SUM_DEPOSITION = 0.D0
+        SUM_EROSION = 0.D0
+        SUMMASSNESTOR = 0.D0
+      ENDIF
       XMVE      = XMVE_TEL
       GRAV      = GRAV_TEL
 !

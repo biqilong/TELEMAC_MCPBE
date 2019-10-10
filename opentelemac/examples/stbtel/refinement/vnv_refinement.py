@@ -79,6 +79,6 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/locally_refined_mesh')
 
         # Closing files
-        del res_vnv_global_stbgeo
-        del res_vnv_local_stbres
-        del res_vnv_global_stbres
+        res_vnv_global_stbgeo.close()
+        res_vnv_local_stbres.close()
+        res_vnv_global_stbres.close()

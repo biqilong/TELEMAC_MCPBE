@@ -146,7 +146,7 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/resultsTOM')
 
         # Closing files
-        del res_vnv_1_wacres
-        del res_vnv_1_gaires
-        del res_vnv_1_t2dres
-        del res_vnv_1_t2dgeo
+        res_vnv_1_wacres.close()
+        res_vnv_1_gaires.close()
+        res_vnv_1_t2dres.close()
+        res_vnv_1_t2dgeo.close()

@@ -216,4 +216,4 @@ class VnvStudy(AbstractVnvStudy):
                 annotate_time=True,
                 cbar_label='H')
 
-        del res_seq
+        res_seq.close()

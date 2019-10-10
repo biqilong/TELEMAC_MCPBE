@@ -29,6 +29,7 @@ class Telemac3d(ApiModule):
                  dicofile=None,
                  lang=2, stdout=6,
                  comm=None,
+                 log_lvl='INFO',
                  recompile=True):
         """
         Constructor for Telemac3d
@@ -53,7 +54,7 @@ class Telemac3d(ApiModule):
             dicofile = default_dicofile
         super(Telemac3d, self).__init__("t3d", casfile, user_fortran,
                                         dicofile, lang, stdout, comm,
-                                        recompile)
+                                        recompile, log_lvl=log_lvl)
 
     def __del__(self):
         """

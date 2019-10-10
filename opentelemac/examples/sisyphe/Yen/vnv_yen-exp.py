@@ -93,6 +93,7 @@ class VnvStudy(AbstractVnvStudy):
         triang = slf.tri
         evolution = slf.get_data_value('EVOLUTION', -1)
         evolution_interpolator = tri.LinearTriInterpolator(triang, evolution)
+        slf.close()
 
         ########################################################################
         #

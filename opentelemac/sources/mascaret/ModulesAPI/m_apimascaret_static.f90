@@ -29,7 +29,7 @@ MODULE M_APIMASCARET_STATIC
    integer,  PARAMETER :: NB_MAX_MASCARET           = 1000
    integer,  PARAMETER :: NB_VAR_MASCARET           =  546
    integer,  PARAMETER :: NB_MAX_ETAT_MASCARET_SAUV = 1000
-   
+
    real(8), dimension(6,6,5), save :: ABAQUE
 
    ! Variable commune a tous les instance de MASCARET
@@ -41,45 +41,45 @@ MODULE M_APIMASCARET_STATIC
    character(len=40),   dimension(NB_VAR_MASCARET),  save :: tabNomVar
    character(len=110),  dimension(NB_VAR_MASCARET),  save :: tabDescriptionVar
    logical,             save :: tabNomVarInitialise = .FALSE.
-   
+
    type(ETAT_MASCARET_T), dimension(:), pointer,  save :: ptrTabEtatMascaretSauve => null()
    integer,               dimension(:), pointer,  save :: etatMascaretSauve   => null()
-   
+
   contains
-  
-   function TEST_INIT_AND_ID(Identifiant, NomSubAppelante)
+
+    function TEST_INIT_AND_ID(Identifiant, NomSubAppelante)
       implicit none
 
       integer                          :: TEST_INIT_AND_ID    ! different de 0 si erreur
-	  integer, intent(in )             :: Identifiant         ! Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
-	  character(*), intent(in )        :: NomSubAppelante     ! Nom de la subroutine appelante
+      integer, intent(in )             :: Identifiant         ! Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
+      character(*), intent(in )        :: NomSubAppelante     ! Nom de la subroutine appelante
 
-	  TEST_INIT_AND_ID = 0
-	  
-	  if (Identifiant <= 0) then
-		MsgErreur = NomSubAppelante//' - Id number must be positive'
-		TEST_INIT_AND_ID = 2
-		RETURN
-	  end if
-	  if (Identifiant > NB_MAX_MASCARET) then
-		MsgErreur = NomSubAppelante//' - Id number too high'
-		TEST_INIT_AND_ID = 2
-		RETURN
-	  end if
-	  if (.not. ASSOCIATED(mascaretCree)) then
-		MsgErreur = NomSubAppelante//' - No new Mascaret model'
-		TEST_INIT_AND_ID = 2
-		RETURN
-	  end if
-	  if (mascaretCree(Identifiant) == 0) then
-		ptrMsgsErreurs(Identifiant) = NomSubAppelante//' - Mascaret instance is not created'
-		TEST_INIT_AND_ID = 2
-		RETURN
-	  end if
+      TEST_INIT_AND_ID = 0
 
-	  ptrMsgsErreurs(Identifiant) = ''
-	  
-	  RETURN
-   end function TEST_INIT_AND_ID
+      if (Identifiant <= 0) then
+        MsgErreur = NomSubAppelante//' - Id number must be positive'
+        TEST_INIT_AND_ID = 2
+        RETURN
+      end if
+      if (Identifiant > NB_MAX_MASCARET) then
+        MsgErreur = NomSubAppelante//' - Id number too high'
+        TEST_INIT_AND_ID = 2
+        RETURN
+      end if
+      if (.not. ASSOCIATED(mascaretCree)) then
+        MsgErreur = NomSubAppelante//' - No new Mascaret model'
+        TEST_INIT_AND_ID = 2
+        RETURN
+      end if
+      if (mascaretCree(Identifiant) == 0) then
+        ptrMsgsErreurs(Identifiant) = NomSubAppelante//' - Mascaret instance is not created'
+        TEST_INIT_AND_ID = 2
+        RETURN
+      end if
 
- end module M_APIMASCARET_STATIC
+      ptrMsgsErreurs(Identifiant) = ''
+
+      RETURN
+    end function TEST_INIT_AND_ID
+
+end module M_APIMASCARET_STATIC

@@ -45,9 +45,3 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        # Getting files
-        vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
-        res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
-
-        # Closing files
-        del res_vnv_1_t2dres

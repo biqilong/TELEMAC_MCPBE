@@ -82,8 +82,8 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot1d, plot_vertical_slice
         from postel.plot_vnv import vnv_plot2d
+        from postel.plot1d import plot1d
         import matplotlib.pyplot as plt
         # Getting files
         vnv_1_t3dres = self.get_study_file('vnv_1:T3DRES')
@@ -94,10 +94,10 @@ class VnvStudy(AbstractVnvStudy):
 
         points = [2000., 0.]
 
-        timeseries_z = res_vnv_1_t3dres.get_data_timeseries_on_vertical_segment(\
-                points, 'ELEVATION Z')
-        timeseries_vel = res_vnv_1_t3dres.get_data_timeseries_on_vertical_segment(\
-                points, 'VELOCITY U')
+        timeseries_z = res_vnv_1_t3dres.get_timeseries_on_vertical_segment(\
+                'ELEVATION Z', points)
+        timeseries_vel = res_vnv_1_t3dres.get_timeseries_on_vertical_segment(\
+                'VELOCITY U', points)
 
         fig, ax = plt.subplots(figsize=(12, 7))
 
@@ -117,8 +117,8 @@ class VnvStudy(AbstractVnvStudy):
         plt.clf()
 
         # Plotting vertical section
-        timeseries_conc = res_vnv_1_t3dres.get_data_timeseries_on_vertical_segment(\
-                points, 'COH SEDIMENT1')
+        timeseries_conc = res_vnv_1_t3dres.get_timeseries_on_vertical_segment(\
+                'COH SEDIMENT1', points)
 
         fig, ax = plt.subplots(figsize=(12, 7))
 
@@ -157,21 +157,26 @@ class VnvStudy(AbstractVnvStudy):
 
         # TODO: change cmap
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'COH SEDIMENT1',
-                            poly=[[-2500, 0], [2500, 0]],
-                            record=-1,
-                            fig_size=(12, 7),
-                            fig_name='img/sediment_section')
+        vnv_plot2d(\
+                'COH SEDIMENT1',
+                res_vnv_1_t3dres,
+                poly=[[-2500, 0], [2500, 0]],
+                record=-1,
+                filled_contours=True,
+                fig_size=(12, 7),
+                fig_name='img/sediment_section')
 
         # TODO: change cmap
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'VELOCITY U',
-                            poly=[[-2500, 0], [2500, 0]],
-                            record=-1,
-                            fig_size=(12, 7),
-                            fig_name='img/velocityU_section')
+        vnv_plot2d(\
+                'VELOCITY U',
+                res_vnv_1_t3dres,
+                poly=[[-2500, 0], [2500, 0]],
+                record=-1,
+                filled_contours=True,
+                fig_size=(12, 7),
+                fig_name='img/velocityU_section')
+
         # Closing files
-        del res_vnv_1_t3dres
-        del res_vnv_1_t3dhyd
+        res_vnv_1_t3dres.close()
+        res_vnv_1_t3dhyd.close()

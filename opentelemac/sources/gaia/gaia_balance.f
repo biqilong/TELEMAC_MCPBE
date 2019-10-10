@@ -71,7 +71,7 @@
         ENDDO
 !       evolution of mass with consodilation is logicaly 0
 !>@ to do can be removed if it works
-         CALL OS('X=X+Y   ',X=E,Y=EVOL_MC)
+        CALL OS('X=X+Y   ',X=E,Y=EVOL_MC)
       ENDIF
 !
       IF(SLIDE) THEN

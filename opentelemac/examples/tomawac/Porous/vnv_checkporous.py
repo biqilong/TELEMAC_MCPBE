@@ -98,5 +98,5 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/sans')
 
         # Closing files
-        del res_vnv_1_wacres
-        del res_vnv_sans_wacres
+        res_vnv_1_wacres.close()
+        res_vnv_sans_wacres.close()

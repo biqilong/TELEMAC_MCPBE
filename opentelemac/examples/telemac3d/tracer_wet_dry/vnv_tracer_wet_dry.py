@@ -133,9 +133,8 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_horizontal_slice, plot1d, \
-                plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
+        from postel.plot1d import plot1d
         from os import path
         import matplotlib.pyplot as plt
         #TODO: Replace 111 by ntime steps
@@ -572,9 +571,9 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/mesh')
 
         # Plotting BOTTOM over polyline over records res_vnv_1_t3dgeo.ntimestep
-        plot_timeseries_on_polyline(\
-                res_vnv_1_t3dgeo,
+        vnv_plot1d_polylines(\
                 'BOTTOM',
+                res_vnv_1_t3dgeo,
                 poly=[[0., 50.], [2000., 50.]],
                 fig_size=(10, 10),
                 fig_name='img/bathymetry1D')
@@ -583,9 +582,9 @@ class VnvStudy(AbstractVnvStudy):
         # Plotting water depth for all schemes for point (0., 50.)
         points = [[0., 50.]]
 
-        data1 = res_vnv_1_t3dhyd.get_timeseries_on_points(points, 'WATER DEPTH')
-        data2 = res_vnv_3_t3dhyd.get_timeseries_on_points(points, 'WATER DEPTH')
-        data3 = res_vnv_5_t3dhyd.get_timeseries_on_points(points, 'WATER DEPTH')
+        data1 = res_vnv_1_t3dhyd.get_timeseries_on_points('WATER DEPTH', points)
+        data2 = res_vnv_3_t3dhyd.get_timeseries_on_points('WATER DEPTH', points)
+        data3 = res_vnv_5_t3dhyd.get_timeseries_on_points('WATER DEPTH', points)
 
         fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
@@ -611,9 +610,9 @@ class VnvStudy(AbstractVnvStudy):
         # Plotting velocity u for all schemes for point (0., 50.)
         points = [[0., 50.]]
 
-        data1 = res_vnv_1_t3dhyd.get_timeseries_on_points(points, 'VELOCITY U')
-        data2 = res_vnv_3_t3dhyd.get_timeseries_on_points(points, 'VELOCITY U')
-        data3 = res_vnv_5_t3dhyd.get_timeseries_on_points(points, 'VELOCITY U')
+        data1 = res_vnv_1_t3dhyd.get_timeseries_on_points('VELOCITY U', points)
+        data2 = res_vnv_3_t3dhyd.get_timeseries_on_points('VELOCITY U', points)
+        data3 = res_vnv_5_t3dhyd.get_timeseries_on_points('VELOCITY U', points)
 
         fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
@@ -638,33 +637,50 @@ class VnvStudy(AbstractVnvStudy):
 
         for record, record_val in [(1, 300), (6, 1800), (18, 5400), (48, 14400), (111, 33300)]:
 
-            plot_horizontal_slice(res_vnv_1_t3dres,
-                                  'TRACER 1',
-                                  plane=5,
-                                  record=record,
-                                  fig_size=(20, 3),
-                                  fig_name='img/Tracer{}_LEO_plane6'.format(record_val))
+            vnv_plot2d(\
+                       'TRACER 1',
+                       res_vnv_1_t3dres,
+                       plane=5,
+                       record=record,
+                       filled_contours=True,
+                       fig_size=(20, 3),
+                       fig_name='img/Tracer{}_LEO_plane6'.format(record_val))
 
-        plot_horizontal_slice(res_vnv_1_t3dres,
-                              'TRACER 1',
-                              plane=0,
-                              record=111,
-                              fig_size=(20, 3),
-                              fig_name='img/Tracer33300_LEO_plane1')
+        vnv_plot2d(\
+                  'TRACER 1',
+                  res_vnv_1_t3dres,
+                  plane=0,
+                  record=111,
+                  filled_contours=True,
+                  fig_size=(20, 3),
+                  fig_name='img/Tracer33300_LEO_plane1')
 
-        plot_horizontal_slice(res_vnv_3_t3dres,
-                              'TRACER 1',
-                              plane=5,
-                              record=111,
-                              fig_size=(20, 3),
-                              fig_name='img/Tracer33300_CHAR_plane6')
+        vnv_plot2d(\
+                  'TRACER 1',
+                  res_vnv_3_t3dres,
+                  plane=5,
+                  record=111,
+                  filled_contours=True,
+                  fig_size=(20, 3),
+                  fig_name='img/Tracer33300_CHAR_plane6')
 
-        plot_horizontal_slice(res_vnv_5_t3dres,
-                              'TRACER 1',
-                              plane=5,
-                              record=111,
-                              fig_size=(20, 3),
-                              fig_name='img/Tracer33300_MURD_plane6')
+        vnv_plot2d(\
+                  'TRACER 1',
+                  res_vnv_5_t3dres,
+                  plane=5,
+                  record=111,
+                  filled_contours=True,
+                  fig_size=(20, 3),
+                  fig_name='img/Tracer33300_MURD_plane6')
 
         # Closing files
-        del res_vnv_1_t3dgeo
+        res_vnv_1_t3dgeo.close()
+        res_vnv_1_t3dhyd.close()
+        res_vnv_2_t3dhyd.close()
+        res_vnv_3_t3dhyd.close()
+        res_vnv_4_t3dhyd.close()
+        res_vnv_5_t3dhyd.close()
+        res_vnv_6_t3dhyd.close()
+        res_vnv_1_t3dres.close()
+        res_vnv_3_t3dres.close()
+        res_vnv_5_t3dres.close()

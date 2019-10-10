@@ -25,7 +25,7 @@ subroutine  LIAISON_SEUIL       ( &
 
 ! *********************************************************************
 ! PROGICIEL : MASCARET               S. DELMAS    C. COULET
-!                                                
+!
 !
 ! VERSION : 8.1.4         EDF-CEREMA-ARTELIA
 ! *********************************************************************
@@ -82,7 +82,7 @@ subroutine  LIAISON_SEUIL       ( &
    real(DOUBLE)              , intent(in   ) :: ZAM, ZAV
    type(LIAISON_T)           , intent(inout) :: Liaison
    type(ERREUR_T)            , intent(inout) :: Erreur
-   
+
   !.. Constantes ..
    real(DOUBLE) , parameter :: DZMIN = EPS6 ! tous les termes sont annules lorsque
                                             ! hamont est inferieur ou egal a la constante DZMIN
@@ -94,15 +94,15 @@ subroutine  LIAISON_SEUIL       ( &
                     h2,               &  ! tirant d eau casier2
                     hamont,           &  ! tirant d eau amont
                     haval,            &  ! tirant d eau aval
-                    coef_geom,        &  ! coefficient de l equation de la liaison qui ne depend 
+                    coef_geom,        &  ! coefficient de l equation de la liaison qui ne depend
                                          ! que des caracteristiques geometriques
-                    debit,            &  ! debit brut de la liaison 
+                    debit,            &  ! debit brut de la liaison
                     ddebit_dzamont,   &  ! variation du debit par rapport a Zamont
                     ddebit_dzaval,    &  ! variation du debit par rapport a Zaval
                     C,                &  ! represente une fonction dont le but est de faire tendre
-                                         ! rapidement ddebit_dzamont et ddebit_dzaval vers zero 
-                                         ! lorsque haval/hamont tend vers 1, tout en respectant 
-                                         ! la continuite des derivees; ce coef. est actif lorsque 
+                                         ! rapidement ddebit_dzamont et ddebit_dzaval vers zero
+                                         ! lorsque haval/hamont tend vers 1, tout en respectant
+                                         ! la continuite des derivees; ce coef. est actif lorsque
                                          ! haval/hamont est superieur a la constante COEF
                     dC_dzamont,       &  ! variation de C par rapport a hamont
                     dC_dzaval,        &  ! variation de C par rapport a haval
@@ -110,27 +110,10 @@ subroutine  LIAISON_SEUIL       ( &
                     coef_beta,        &  ! valeur de la fonction BETA en hamont et haval
                     hlim,             &
                     LargeurEcoulement
-                    
+
    integer      :: sens_ecoul            ! repere le sens de l ecoulement
 
-   !.. Fonctions locales ..
-   real(DOUBLE) :: lis
-   lis(X) = -2._DOUBLE * X**3._DOUBLE + 3._DOUBLE * X**2._DOUBLE
-
-   real(DOUBLE) :: dlis
-   dlis(X) = -6._DOUBLE * X**2._DOUBLE + 6._DOUBLE * X
-
-   real(DOUBLE) :: beta
-   beta(X,Y) = ( -1._DOUBLE / ( 1._DOUBLE - Liaison%CoefNoye ) ) * ( Y / X - 1 )
-   ! CoefNoye /= 1 par valeur standart, et test dans PRETRAIT_CASIER
-
-   real(DOUBLE) :: dbetax
-   dbetax(X,Y) = ( -1._DOUBLE / ( 1._DOUBLE - Liaison%CoefNoye ) ) * ( -Y / X**2._DOUBLE )
-
-   real(DOUBLE) :: dbetay
-   dbetay(X,Y) = ( -1._DOUBLE / ( 1._DOUBLE - Liaison%CoefNoye ) ) * ( 1._DOUBLE / X )
-
-   !========================== Instructions ==============================  	
+   !========================== Instructions ==============================
 
    !
    ! INITIALISATIONS
@@ -156,8 +139,8 @@ subroutine  LIAISON_SEUIL       ( &
    if( haval <= 0._DOUBLE ) then
       haval = 0._DOUBLE
    end if
-   
-! DIMINUTION DE LA LARGEUR SI HAMONT FAIBLE  
+
+! DIMINUTION DE LA LARGEUR SI HAMONT FAIBLE
 !    hlim = Liaison%Largeur / 1000
 !    if( hamont < hlim) then
 !        LargeurEcoulement = (hamont * Liaison%Largeur) / hlim
@@ -206,7 +189,35 @@ subroutine  LIAISON_SEUIL       ( &
         BS      = - ddebit_dzamont
 
    end select
-   
+
    return
+
+   contains
+
+     !.. Fonctions locales ..
+     real(DOUBLE) function lis(X)
+       real(DOUBLE), intent(in) :: X
+       lis = -2._DOUBLE * X**3._DOUBLE + 3._DOUBLE * X**2._DOUBLE
+     end function
+
+     real(DOUBLE) function dlis(X)
+       real(DOUBLE), intent(in) :: X
+       dlis = -6._DOUBLE * X**2._DOUBLE + 6._DOUBLE * X
+     end function
+
+     real(DOUBLE) function beta(X,Y)
+       real(DOUBLE), intent(in) :: X,Y
+       beta = ( -1._DOUBLE / ( 1._DOUBLE - Liaison%CoefNoye ) ) * ( Y / X - 1._DOUBLE )
+     end function
+
+     real(DOUBLE) function dbetax(X,Y)
+       real(DOUBLE), intent(in) :: X,Y
+       dbetax = ( -1._DOUBLE / ( 1._DOUBLE - Liaison%CoefNoye ) ) * ( -Y / X**2._DOUBLE )
+     end function
+
+     real(DOUBLE) function dbetay(X,Y)
+       real(DOUBLE), intent(in) :: X,Y
+       dbetay = ( -1._DOUBLE / ( 1._DOUBLE - Liaison%CoefNoye ) ) * ( 1._DOUBLE / X )
+     end function
 
 end subroutine LIAISON_SEUIL

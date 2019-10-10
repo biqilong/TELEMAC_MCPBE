@@ -515,8 +515,8 @@ class AbstractVnvStudy(ABC):
             errs = [err]
 
         # Closing the two files
-        del res1
-        del res2
+        res1.close()
+        res2.close()
 
         # Return errors
         return errs
@@ -531,7 +531,7 @@ class AbstractVnvStudy(ABC):
 
         res = TelemacFile(file1)
         ntimestep = res.ntimestep
-        del res
+        res.close()
 
         return ntimestep
 

@@ -92,5 +92,5 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/results')
 
         # Closing files
-        del res_vnv_5_wacres
-        del res_vnv_5_wacgeo
+        res_vnv_5_wacres.close()
+        res_vnv_5_wacgeo.close()

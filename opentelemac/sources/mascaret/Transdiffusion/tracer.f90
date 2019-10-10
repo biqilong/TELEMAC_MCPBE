@@ -36,7 +36,7 @@ subroutine TRACER (       &
                           !  Modele
                       X , & ! Abscisses des sections de calcul
                  Nbtrac , & ! Nombre de traceurs
-                 Nbsect , & ! Dimension spatiale des tableaux 
+                 Nbsect , & ! Dimension spatiale des tableaux
             Singularite , & ! Singularite
                 Connect , & ! Table de connectivite
                 message , &
@@ -111,7 +111,7 @@ subroutine TRACER (       &
    !.. Declaration Implicite ..
    implicit none
 
-   !.. Arguments .. 
+   !.. Arguments ..
    ! RESULTAT
    real(DOUBLE), dimension(:,:), intent(inout) :: C
    ! DONNEES HYDRAULIQUES
@@ -142,7 +142,7 @@ subroutine TRACER (       &
    integer                      ,intent(inout) :: Nbtrac
    ! DONNEES TEMPORELLES
    real(DOUBLE)                 ,intent(in)    :: TEMPS
-   ! ETATS     
+   ! ETATS
    real(DOUBLE)                 ,intent(in   ) :: DT
    integer                      ,intent(in)    :: IPASS
    !
@@ -204,91 +204,91 @@ subroutine TRACER (       &
             enddo
          enddo
       endif
-	  !*****************************************************************
-	  ! Allocation et initialisation des listes de noeuds amont et aval
-	  !****************************************************************
-	  allocate(NodeTrac%NB_CHILD(nb_noeud),STAT=retour)
+      !*****************************************************************
+      ! Allocation et initialisation des listes de noeuds amont et aval
+      !****************************************************************
+      allocate(NodeTrac%NB_CHILD(nb_noeud),STAT=retour)
       if( retour /= 0 ) then
          Erreur%Numero = 5
          Erreur%ft   = err_5
          Erreur%ft_c = err_5c
          call TRAITER_ERREUR  (Erreur, 'NodeTrac%NB_CHILD')
          !stop
-		 return
+         return
       end if
-	  NodeTrac%NB_CHILD(:) = 0
-	  allocate(NodeTrac%NB_PARENT(nb_noeud),STAT=retour)
+      NodeTrac%NB_CHILD(:) = 0
+      allocate(NodeTrac%NB_PARENT(nb_noeud),STAT=retour)
       if( retour /= 0 ) then
          Erreur%Numero = 5
          Erreur%ft   = err_5
          Erreur%ft_c = err_5c
          call TRAITER_ERREUR  (Erreur, 'NodeTrac%NB_PARENT')
          !stop
-		 return
+         return
       end if
-	  NodeTrac%NB_PARENT(:) = 0
-	  allocate(NodeTrac%CHILD(nb_noeud,nb_noeud),STAT=retour)
+      NodeTrac%NB_PARENT(:) = 0
+      allocate(NodeTrac%CHILD(nb_noeud,nb_noeud),STAT=retour)
       if( retour /= 0 ) then
          Erreur%Numero = 5
          Erreur%ft   = err_5
          Erreur%ft_c = err_5c
          call TRAITER_ERREUR  (Erreur, 'NodeTrac%CHILD')
          !stop
-		 return
+         return
       end if
-	  allocate(NodeTrac%PARENT(nb_noeud,nb_noeud),STAT=retour)
+      allocate(NodeTrac%PARENT(nb_noeud,nb_noeud),STAT=retour)
       if( retour /= 0 ) then
          Erreur%Numero = 5
          Erreur%ft   = err_5
          Erreur%ft_c = err_5c
          call TRAITER_ERREUR  (Erreur, 'NodeTrac%PARENT')
          !stop
-		 return
+         return
       end if
-	  !***********************************************************
+      !***********************************************************
       ! ------- DETERMINATION DE LA CONNEXITE AMONT - AVAL -------
       !***********************************************************
       do inoeud = 1,nb_noeud
-	     do IP = 1,Connect%NbBiefConfluence(inoeud)
+         do IP = 1,Connect%NbBiefConfluence(inoeud)
             num_sect = Connect%NumSectionConfluence(inoeud,IP)
             num_bief = Connect%NumBiefConfluence(inoeud,IP)
             ! Branche amont
             if( Connect%FinBief(num_bief) == num_sect ) then
                num_sect0 = Connect%OrigineBief(num_bief)
-		       do inoeud0 = 1,nb_noeud
-			      arret = .false.
-		          if(inoeud0.ne.inoeud) then
-		             do ip0 = 1,Connect%NbBiefConfluence(inoeud0)
-			            if(num_sect0.eq.Connect%NumSectionConfluence(inoeud0,ip0)) then
-			               arret = .true.
-				        endif
-				        if(arret.eqv..true.) exit
-			         enddo
-			      endif
-			      if(arret.eqv..true.) then
-				     NodeTrac%NB_PARENT(inoeud) = NodeTrac%NB_PARENT(inoeud) + 1
-					 NodeTrac%PARENT(inoeud,NodeTrac%NB_PARENT(inoeud)) = inoeud0
-				  endif
-		       enddo
+               do inoeud0 = 1,nb_noeud
+                  arret = .false.
+                  if(inoeud0.ne.inoeud) then
+                     do ip0 = 1,Connect%NbBiefConfluence(inoeud0)
+                        if(num_sect0.eq.Connect%NumSectionConfluence(inoeud0,ip0)) then
+                           arret = .true.
+                        endif
+                        if(arret.eqv..true.) exit
+                     enddo
+                  endif
+                  if(arret.eqv..true.) then
+                     NodeTrac%NB_PARENT(inoeud) = NodeTrac%NB_PARENT(inoeud) + 1
+                     NodeTrac%PARENT(inoeud,NodeTrac%NB_PARENT(inoeud)) = inoeud0
+                  endif
+               enddo
             endif
             ! Branche aval
-			if( Connect%OrigineBief(num_bief) == num_sect ) then
+            if( Connect%OrigineBief(num_bief) == num_sect ) then
                num_sect0 = Connect%FinBief(num_bief)
-		       do inoeud0 = 1,nb_noeud
-			      arret = .false.
-		          if(inoeud0.ne.inoeud) then
-		             do ip0 = 1,Connect%NbBiefConfluence(inoeud0)
-			            if(num_sect0.eq.Connect%NumSectionConfluence(inoeud0,ip0)) then
-			               arret = .true.
-				        endif
-				        if(arret.eqv..true.) exit
-			         enddo
-			      endif
-			      if(arret.eqv..true.) then
-				     NodeTrac%NB_CHILD(inoeud) = NodeTrac%NB_CHILD(inoeud) + 1
-					 NodeTrac%CHILD(inoeud,NodeTrac%NB_CHILD(inoeud)) = inoeud0
-				  endif
-		       enddo
+               do inoeud0 = 1,nb_noeud
+                  arret = .false.
+                  if(inoeud0.ne.inoeud) then
+                     do ip0 = 1,Connect%NbBiefConfluence(inoeud0)
+                        if(num_sect0.eq.Connect%NumSectionConfluence(inoeud0,ip0)) then
+                           arret = .true.
+                        endif
+                        if(arret.eqv..true.) exit
+                     enddo
+                  endif
+                  if(arret.eqv..true.) then
+                     NodeTrac%NB_CHILD(inoeud) = NodeTrac%NB_CHILD(inoeud) + 1
+                     NodeTrac%CHILD(inoeud,NodeTrac%NB_CHILD(inoeud)) = inoeud0
+                  endif
+               enddo
             endif
          enddo
       enddo
@@ -365,7 +365,7 @@ subroutine TRACER (       &
 
       !==============================================================
       ! Calcul des termes sources explicites volumiques et surfaciques
-      ! ajoutees par l'utilisateur 
+      ! ajoutees par l'utilisateur
       !==============================================================
       CALL CALCSA( S , Source_Tracer , Qinjec , H , X , A , Nbsect , Nbtrac , Erreur )
 
@@ -432,7 +432,7 @@ subroutine TRACER (       &
          TCL1(ip) = 2
          TCL2(ip) = 1
          CL1(ip)   =0.
-         CL2(ip) = 0. 
+         CL2(ip) = 0.
       enddo
 
       ! Boucle sur les traceurs
@@ -461,7 +461,7 @@ subroutine TRACER (       &
          enddo
 
          !==============================================================
-         ! Resolution de l'equation de transport 
+         ! Resolution de l'equation de transport
          ! (boucle sur les noeuds, puis sur les biefs)
          !==============================================================
          do ibief = 1 , nbbief
@@ -482,22 +482,22 @@ subroutine TRACER (       &
                   do IP = 1,NodeTrac%NB_PARENT(inoeud)
                      if(nodeOK(NodeTrac%PARENT(inoeud,IP)).eqv..false.) then
                      arret = .true.
-	                 exit
+                     exit
                   endif
                enddo
                if(arret.eqv..true.) cycle ! un noeud amont n'a pas encore ete traite
- 
+
                ! Recherche du bief aval
                do IP = 1 , Connect%NbBiefConfluence(inoeud)
                   num_sect       = Connect%NumSectionConfluence(inoeud,IP)
                   num_bief       = Connect%NumBiefConfluence(inoeud,IP)
                   aval(num_bief) = .false.
-				  if( Connect%OrigineBief(num_bief) == num_sect ) then ! Branche aval
+                     if( Connect%OrigineBief(num_bief) == num_sect ) then ! Branche aval
                      aval(num_bief) = .true.
                      nbb_aval       = nbb_aval + 1
                   endif
                enddo
-               if( nbb_aval.ge.2 ) then ! Tracer pas prevu pour deffluents ... 
+               if( nbb_aval.ge.2 ) then ! Tracer pas prevu pour deffluents ...
                   Erreur%Numero = 582
                   Erreur%ft     = err_582
                   Erreur%ft_c   = err_582c
@@ -628,7 +628,7 @@ subroutine TRACER (       &
                endif
             enddo ! Fin de la BOUCLE SUR LES NOEUDS
          end do ! Fin de la boucle de repetition
-         
+
          ! CAS D'UN BIEF UNIQUE
          else
 

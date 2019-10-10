@@ -162,7 +162,6 @@ subroutine CALCFL( &
               COU        = CNODE2 / ( X(NOEUD) - X(NOEUD-1) )
               DTI(NOEUD) = CFL / COU
            endif
-
            DTI(NOEUD) = CFL / COU
 
          endif
@@ -210,8 +209,8 @@ subroutine CALCFL( &
    !
    ! DETERMINATION DES CELLULES FIGEES PENDANT KDT
    !      Annulation de cette fonstionnalite
-   ! IFIGE EST BLOQUE A ZERO - DECONNECTE DANS SOLVRO 
-   !  print *,'icompt',icompt 
+   ! IFIGE EST BLOQUE A ZERO - DECONNECTE DANS SOLVRO
+   !  print *,'icompt',icompt
    !  If( Icompt.GE.kmax ) Icompt = 1
 
    do Ibief = 1 , NBBief

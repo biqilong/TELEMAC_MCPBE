@@ -70,6 +70,7 @@ class VnvStudy(AbstractVnvStudy):
         Post-treatment processes
         """
         from postel.plot_actions import plot_mesh2d, plot_var
+        from postel.plot_vnv import vnv_plot2d
         # Getting files
         vnv_1_artres = self.get_study_file('vnv_1:ARTRES')
         res_vnv_1_artres = TelemacFile(vnv_1_artres)
@@ -77,14 +78,22 @@ class VnvStudy(AbstractVnvStudy):
         res_vnv_1_artgeo = TelemacFile(vnv_1_artgeo)
 
         #Plotting mesh
-        plot_mesh2d(res_vnv_1_artgeo,
-                    fig_size=(7, 10),
-                    fig_name='img/Mesh')
+        vnv_plot2d(\
+                'MAILLAGE',
+                res_vnv_1_artgeo,
+                plot_mesh=True,
+                fig_size=(7, 10),
+                fig_name='img/Mesh')
 
 
         # Plotting WAVE HEIGHT at 85
-        plot_var(res_vnv_1_artres,
+        vnv_plot2d(\
                  'WAVE HEIGHT',
+                 res_vnv_1_artres,
                  record=85,
+                 filled_contours=True,
                  fig_size=(7, 10),
-                 fig_name='img/Wave height')
+                 fig_name='img/Wave_height')
+
+        res_vnv_1_artgeo.close()
+        res_vnv_1_artres.close()

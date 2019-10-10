@@ -29,6 +29,7 @@ class Tomawac(ApiModule):
                  dicofile=None,
                  lang=2, stdout=6,
                  comm=None,
+                 log_lvl='INFO',
                  recompile=True):
         """
         Constructor for Tomawac
@@ -52,7 +53,8 @@ class Tomawac(ApiModule):
                 default_dicofile = 'tomawac.dico'
             dicofile = default_dicofile
         super(Tomawac, self).__init__("wac", casfile, user_fortran,
-                                      dicofile, lang, stdout, comm, recompile)
+                                      dicofile, lang, stdout, comm,
+                                      recompile, log_lvl=log_lvl)
 
     def __del__(self):
         """

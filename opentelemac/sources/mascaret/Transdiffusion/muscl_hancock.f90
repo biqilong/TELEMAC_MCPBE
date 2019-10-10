@@ -124,12 +124,12 @@ subroutine MUSCL_HANCOCK( &
       if( CFL.GT.1.d0 ) then
          print*, 'Problem with the Courant–Friedrichs–Lewy condition : '
          print*, '=================================================='
-         print*, 'Index : ',i,'	Abscissa : ', X(i)
+         print*, 'Index : ',i,' Abscissa : ', X(i)
          print*, 'Cell size              : ', dXi(i)
          print*, 'Speed                  : ', U(i)
          print*, 'Time step              : ', DT
          print*, 'Courant number         : ', CFL
-		 exit
+         exit
       end if
    end do
    !

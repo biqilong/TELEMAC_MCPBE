@@ -7,13 +7,12 @@
 # ____/ Imports /__________________________________________________/
 #
 # ~~> dependencies towards standard python
-from os import path
 from data_manip.computation.triangulation import triangulation_from_data
-from postel.plot2d import plot2d_triangle_mesh, plot2d_annotate_bnd,\
-                plot2d_annotate_liq_bnd, plot2d_scalar_map, \
-                plot2d_scalar_filled_contour
+from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines, \
+        vnv_plot1d_history
+from postel.plot2d import plot2d_triangle_mesh, plot2d_scalar_filled_contour, \
+        plot2d_spectrum
 from postel.plot1d import plot1d
-from postel.plot3d import plot3d_scalar_map
 from utils.exceptions import TelemacException
 import argparse
 import matplotlib.pyplot as plt
@@ -25,7 +24,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def add_options_fig(parser):
     """
-    Add options for a figure (x_label, y_label, title, fig_name, fig_size...)
+    Add options for a figure (x_label, y_label, title, fig_name...)
 
     @param parser (ArgumentParser) The parser
 
@@ -37,12 +36,6 @@ def add_options_fig(parser):
         dest="fig_name", default="",
         help="If given the figure will be saved in fig_name instead "\
              "of beeing displayed")
-
-    parser.add_argument(\
-        "--figure-size",
-        dest="fig_size", default=None, type=int, nargs=2,
-        help="Size of the figure generated tuple of integer space "\
-             "separated 20 12")
 
     return parser
 
@@ -310,8 +303,98 @@ def add_options_horizontal_slice(subparser):
     parser = add_options_fig(parser)
     return subparser
 
+def add_options_spe(subparser):
+    """
+    Defines options for spec action
+
+    @param subparser (ArgumentParser) The subparser
+
+    @returns the update subparser
+    """
+    parser = subparser.add_parser('spec',\
+            help='Plot the spectrum of a given point over quandrangle mesh')
+
+    parser.add_argument("input_file", default=None, \
+        help="Name of the input file extension also defines the input format")
+    parser.add_argument(
+        "-p", "--point",
+        dest="point", type=int,
+        help="Number of the point to display")
+    parser.add_argument(
+        "-r", "--record",
+        dest="record", type=int, default=-1,
+        help="Record to display (If -1 is given will return the last one)")
+    parser.add_argument(
+        "-t", "--time",
+        dest="time", type=float, default=None,
+        help="Time to display (will take the closest record)")
+
+    parser = add_options_fig(parser)
+
+    return subparser
+
+def add_options_spe_freq(subparser):
+    """
+    Defines options for spec-freq action
+
+    @param subparser (ArgumentParser) The subparser
+
+    @returns the update subparser
+    """
+    parser = subparser.add_parser('spec-freq',\
+            help='Plot the frequency of the spectrum of given points')
+
+    parser.add_argument("input_file", default=None, \
+        help="Name of the input file extension also defines the input format")
+    parser.add_argument(
+        "-p", "--points",
+        dest="points", default=None, type=int, nargs='*',
+        help="Number of the points to display if none given display them all")
+    parser.add_argument(
+        "-r", "--record",
+        dest="record", type=int, default=-1,
+        help="Record to display (If -1 is given will return the last one)")
+    parser.add_argument(
+        "-t", "--time",
+        dest="time", type=float, default=None,
+        help="Time to display (will take the closest record)")
+
+    parser = add_options_fig(parser)
+
+    return subparser
+
+def add_options_spe_ang(subparser):
+    """
+    Defines options for spec-ang action
+
+    @param subparser (ArgumentParser) The subparser
+
+    @returns the update subparser
+    """
+    parser = subparser.add_parser('spec-ang',\
+            help='Plot the angular dispersion of the spectrum of given points')
+
+    parser.add_argument("input_file", default=None, \
+        help="Name of the input file extension also defines the input format")
+    parser.add_argument(
+        "-p", "--points",
+        dest="points", default=None, type=int, nargs='*',
+        help="Number of the points to display if none given display them all")
+    parser.add_argument(
+        "-r", "--record",
+        dest="record", type=int, default=-1,
+        help="Record to display (If -1 is given will return the last one)")
+    parser.add_argument(
+        "-t", "--time",
+        dest="time", type=float, default=None,
+        help="Time to display (will take the closest record)")
+
+    parser = add_options_fig(parser)
+
+    return subparser
+
 def plot_var(res, var, record=-1, time=None, add_mesh=False,
-             fig_size=None, fig_name=''):
+             fig_name=''):
     """
     Plot a scalar map for the given variable and time record
 
@@ -321,13 +404,12 @@ def plot_var(res, var, record=-1, time=None, add_mesh=False,
     @param time (str) If >= 0.0 will get nearest record to that time (This
     overwrites record)
     @param add_mesh (boolean) If True overlay the mesh on top of the scalar map
-    @param fig_size (2-uple) Size of figure default (12, 7)
     @param fig_name (str) If not empty save the plot in that file instead of
     showing it
     """
     # If time is positive searched for record
     if time is not None:
-        record = res.get_time_record(time)
+        record = res.get_closest_record(time)
         time = res.times[record]
     else:
         time = res.times[record]
@@ -335,31 +417,12 @@ def plot_var(res, var, record=-1, time=None, add_mesh=False,
     if var not in res.varnames:
         raise TelemacException("{} is not in :\n{}".format(var, res.varnames))
 
-    var_value = res.get_data_value(var, record)
-
-    fig, ax = plt.subplots(figsize=fig_size)
-
-    if add_mesh:
-        plot2d_triangle_mesh(ax, res.tri, x_label='X (m)', y_label='Y (m)',
-                             color='k', linewidth=0.1)
-
-    plot2d_scalar_map(fig, ax, res.tri, var_value, data_name=var)
-
-    ax.set_title('%s:\nPlotting at time %f (record %d)'%(\
-                        path.basename(res.file_name),
-                        time,
-                        record))
-
-    if fig_name != '':
-        print(" "*8+"~> Plotting {}".format(fig_name))
-        fig.savefig(fig_name)
-    else:
-        plt.show()
-
-    plt.close(fig)
+    vnv_plot2d(var, res, plot_mesh=add_mesh, record=record,
+               filled_contours=True,
+               fig_name=fig_name)
 
 def plot_mesh2d(res, display_bnd=False,
-                display_liq_bnd=False, fig_size=None, fig_name=''):
+                display_liq_bnd=False, fig_name=''):
     """
     Plot a 2d triangular mesh with either boundary conditions or liquid
     boundary number
@@ -371,7 +434,6 @@ def plot_mesh2d(res, display_bnd=False,
         boundary node
     @param display_liq bnd (boolean) If True display liquidi boundary number
         for each boundary node
-    @param fig_size (2-uple) Size of figure default (12, 7)
     @param fig_name (str) If not empty save the plot in that file instead of
     showing it
     """
@@ -379,38 +441,15 @@ def plot_mesh2d(res, display_bnd=False,
         raise TelemacException(\
                 "bnd_file is mandatory if using --bnd or --liq-bnd")
 
-    fig, ax = plt.subplots(figsize=fig_size)
 
-    # Plot mesh
-    plot2d_triangle_mesh(ax, res.tri, x_label='X (m)', y_label='Y (m)',
-                         color='k', linewidth=0.1)
-
-    if display_bnd:
-        bnd_info = res.get_bnd_info()
-        # Add boundary info
-        plot2d_annotate_bnd(ax, res.tri, bnd_info,
-                            markersize=1.5, marker='o')
-    elif display_liq_bnd:
-        liq_bnd_info = res.get_liq_bnd_info()
-        # Add liquid boundary info
-        plot2d_annotate_liq_bnd(ax, res.tri, liq_bnd_info,
-                                markersize=1.5, marker='x')
-
-    ax.set_title('%s:\n2D mesh (%d triangles, %d nodes)' % (\
-                        path.basename(res.file_name),
-                        len(res.tri.triangles),
-                        len(res.tri.x)))
-    if fig_name != '':
-        print(" "*8+"~> Plotting {}".format(fig_name))
-        fig.savefig(fig_name)
-    else:
-        plt.show()
-
-    plt.close(fig)
+    vnv_plot2d(res.varnames[0], res,
+               plot_mesh=True,
+               annotate_bnd=display_bnd,
+               annotate_liq_bnd=display_liq_bnd,
+               fig_name=fig_name)
 
 def plot_timeseries_on_polyline(\
-        res, var_name, poly, records=None, poly_discret=None,
-        fig_size=None, fig_name=''):
+        res, var_name, poly, records=None, fig_name=''):
     """
     Plot a value over a polyline for a range of time
 
@@ -418,133 +457,30 @@ def plot_timeseries_on_polyline(\
     @param var_name (str) Name of the variable fro which to extract the data
     @param poly (list) List of polyline points
     @param records (list) List of record for which to extrac the data
-    @param poly_discret (list) Number of dicsretization point for each segment
-    of the polyline (if None will use miminal mesh size as step)
-    @param fig_size (2-uple) Size of figure default (12, 7)
     @param fig_name (str) If not empty saving in that file
     """
-    if poly_discret is None:
-        poly_discret = res.discretize_polyline(poly)
-
-    # Getting water depth values over time for each discretized points of the
-    # polyline
-    _, abs_curv, values_polylines = \
-            res.get_timeseries_on_polyline(poly, var_name, poly_discret)
-
-    #Initialising figure
-    fig, ax = plt.subplots(figsize=fig_size)
 
     if records is None:
-        records = range(0, res.ntimestep)
+        records = range(res.ntimestep)
 
-    for record in records:
-        # plot over the polyline of the initial condition
-        plot1d(ax, abs_curv, values_polylines[:, record],
-            x_label='y (m)',
-            y_label=var_name,
-            plot_label='t={} s'.format(res.get_data_time(record)))
-
-    # Displaying legend
-    ax.legend()
-
-    if fig_name != '':
-        print(" "*8+"~> Plotting {}".format(fig_name))
-        fig.savefig(fig_name)
-    else:
-        plt.show()
-
-    plt.close(fig)
+    vnv_plot1d_polylines(var_name, res, poly, record=records,
+                         fig_name=fig_name)
 
 def plot_history(\
-        res, var_name, points, records=None,
-        fig_size=None, fig_name=''):
+        res, var_name, points, fig_name=''):
     """
     Plot values of points over a range of records
 
     @param res (TelemacFile) Struct of the file from which to extract the data
     @param var_name (str) Name of the variable fro which to extract the data
     @param points (list) List of points (x,y) in 2d (x,y,z) in 3d
-    @param records (list) List of record for which to extrac the data
-    @param fig_size (2-uple) Size of figure default (12, 7)
     @param fig_name (str) If not empty saving in that file
     """
-    # Getting water depth values over time for each discretized points of the
-    # polyline
-    data = res.get_timeseries_on_points(points, var_name)
+    vnv_plot1d_history(var_name, res, points=points, fig_name=fig_name)
 
-    #Initialising figure
-    fig, ax = plt.subplots(figsize=fig_size)
-
-    if records is None:
-        records = range(0, res.ntimestep)
-
-    for i, point in enumerate(points):
-        # plot over the polyline of the initial condition
-        plot1d(ax, res.times[records], data[i, :],
-               x_label='time (s)',
-               y_label=var_name,
-               plot_label='point={}'.format(point))
-
-    # Displaying legend
-    ax.legend()
-
-    if fig_name != '':
-        print(" "*8+"~> Plotting {}".format(fig_name))
-        fig.savefig(fig_name)
-    else:
-        plt.show()
-
-    plt.close(fig)
-
-def plot_3d_scalar_map(res, varname, record=-1, time=None,
-                       fig_size=None, fig_name=''):
-    """
-    Plot a scalar map using values as z coordinates
-
-    @param res (TelemacFile) Struct to file from which data will be read
-    @param varname (str) Name of the variable to plot
-    @param record (str) Record to plot
-    @param time (str) If >= 0.0 will get nearest record to that time (This
-    overwrites record)
-    @param fig_size (2-uple) Size of figure
-    @param fig_name (str) If not empty save the plot in that file instead of
-    showing it
-    """
-
-    # If time is positive searched for record
-    if time is not None:
-        rrecord = res.get_time_record(time)
-        ttime = time
-    else:
-        rrecord = record
-        ttime = res.times[record]
-
-    data = res.get_data_value(varname, rrecord)
-
-    # Initialisaing matplotlb figure
-    fig = plt.figure(figsize=fig_size)
-
-    # Adding a 3d axe
-    axe = Axes3D(fig)
-
-    #Plotting mesh
-    plot3d_scalar_map(fig, axe, res.tri, data,
-                      x_label='X (m)', y_label='Y (m)', data_name=varname)
-
-    axe.set_title('{} at time {} (s)'.format(varname, ttime))
-
-    if fig_name != '':
-        print(" "*8+"~> Plotting {}".format(fig_name))
-        fig.savefig(fig_name)
-    else:
-        plt.show()
-
-    plt.close(fig)
-
-def plot_vertical_slice(res, varname, poly, poly_discret=None,
+def plot_vertical_slice(res, varname, poly,
                         record=-1, time=None, add_mesh=False,
-                        xlabel='X(m)', ylabel='Z(m)',
-                        fig_size=None, fig_name=''):
+                        fig_name=''):
     """
     Plot a vertical slice of a 3d mesh
 
@@ -556,47 +492,80 @@ def plot_vertical_slice(res, varname, poly, poly_discret=None,
     @param time (str) If >= 0.0 will get nearest record to that time (This
     overwrites record)
     @param add_mesh (boolean) If True overlay the mesh on top of the scalar map
-    @param fig_size (2-uple) Size of figure
     @param fig_name (str) If not empty save the plot in that file instead of
     showing it
     """
     # If time is positive searched for record
     if time is not None:
-        rrecord = res.get_time_record(time)
+        rrecord = res.get_closest_record(time)
         ttime = time
     else:
         rrecord = record
         ttime = res.times[record]
 
-    # Z should the first variable
-    namez = res.varnames[0]
+    vnv_plot2d(\
+            varname,
+            res,
+            poly=poly,
+            plot_mesh=add_mesh,
+            record=rrecord,
+            filled_contours=True,
+            fig_name=fig_name)
 
-    # Building poly discretization
-    if poly_discret is None:
-        poly_discret = res.discretize_polyline(poly)
 
-    _, abs_curv, values_z = \
-        res.get_data_values_on_vertical_plan(poly, namez, \
-                                             poly_discret, rrecord)
-    _, _, values = \
-        res.get_data_values_on_vertical_plan(poly, varname, \
-                                             poly_discret, rrecord)
+def plot_horizontal_slice(res, varname, plane, record=-1, time=None,
+                          add_mesh=False, fig_name=''):
+    """
+    Plat an horizontal slice of a 3d mesh for given plane number
 
-    mesh = triangulation_from_data(abs_curv, values_z)
+    @param res (TelemacFile) Struct to file from which data will be read
+    @param varname (str) Name of the variable to plot
+    @param plane (int) Number of the plane from which to extrac
+    @param record (str) Record to plot
+    @param time (str) If >= 0.0 will get nearest record to that time (This
+    overwrites record)
+    @param add_mesh (boolean) If True overlay the mesh on top of the scalar map
+    @param fig_name (str) If not empty save the plot in that file instead of
+    showing it
+    """
+    # If time is positive searched for record
+    if time is not None:
+        rrecord = res.get_closest_record(time)
+    else:
+        rrecord = record
 
-    data = values.flatten()
+    if plane < 0:
+        iplane = res.nplan + plane
+    else:
+        iplane = plane
 
-    fig, axe = plt.subplots(figsize=fig_size)
+    vnv_plot2d(varname, res, plane=iplane, plot_mesh=add_mesh,
+               filled_contours=True,
+               record=rrecord, fig_name=fig_name)
 
-    # Add the mesh to the plot if asked for
-    if add_mesh:
-        plot2d_triangle_mesh(axe, mesh, x_label=xlabel, y_label=ylabel)
+def plot_spe(res, point, record=-1, time=None, fig_name=''):
+    """
+    Plotting a specter for a given point
+    """
+    # If time is given searched for record
+    if time is not None:
+        record = res.get_closest_record(time)
+        time = res.times[record]
+    else:
+        time = res.times[record]
 
-    plot2d_scalar_filled_contour(fig, axe, mesh, data, data_name=varname)
+    # Getting name of the variable containing the spectrum for point 2
+    var_name = res.get_spectrum_varname(point)
 
-    title = '{} at time {} (s)'.format(varname, ttime)
-    axe.set_title(title)
-    axe.legend()
+    # Getting value of the spectrum
+    data = res.get_data_value(var_name, record)
+
+    fig, axe = plt.subplots(figsize=(12, 10))
+
+    # Ploting it
+    plot2d_spectrum(fig, axe, res.meshx, res.meshy, res.ikle2, data)
+
+    axe.set_title("At time {}".format(time))
 
     if fig_name != '':
         print(" "*8+"~> Plotting {}".format(fig_name))
@@ -606,48 +575,69 @@ def plot_vertical_slice(res, varname, poly, poly_discret=None,
 
     plt.close(fig)
 
-def plot_horizontal_slice(res, varname, plane, record=-1, time=None,
-                          add_mesh=False, fig_size=None, fig_name=''):
+def plot_spe_freq(res, points=None, record=-1, time=None, fig_name=''):
     """
-    Plat an horizontal slice of a 3d mesh for given plane number
-
-    @param file_name (TelemacFile) Struct to file from which data will be read
-    @param varname (str) Name of the variable to plot
-    @param plane (int) Number of the plane from which to extrac
-    @param record (str) Record to plot
-    @param time (str) If >= 0.0 will get nearest record to that time (This
-    overwrites record)
-    @param add_mesh (boolean) If True overlay the mesh on top of the scalar map
-    @param fig_size (2-uple) Size of figure
-    @param fig_name (str) If not empty save the plot in that file instead of
-    showing it
+    Plotting the frequency for the spectrum on points
     """
-    # If time is positive searched for record
+    # If time is given searched for record
     if time is not None:
-        rrecord = res.get_time_record(time)
-        ttime = time
+        record = res.get_closest_record(time)
+        time = res.times[record]
     else:
-        rrecord = record
-        ttime = res.times[record]
+        time = res.times[record]
 
-    if plane < 0:
-        iplane = res.nplan + plane
-    else:
-        iplane = plane
+    if points is None:
+        points = res.get_list_spectrum_points()
 
-    data = res.get_data_values_on_horizontal_plan(iplane, rrecord, varname)
+    fig, axe = plt.subplots()
 
-    fig, axe = plt.subplots(figsize=fig_size)
-
-    if add_mesh:
-        plot2d_triangle_mesh(axe, res.tri, x_label='X (m)', y_label='Y (m)')
-
-    plot2d_scalar_filled_contour(fig, axe, res.tri, data, data_name=varname)
-
-    title = '{} at time {} (s)'.format(varname, ttime)
-    axe.set_title(title)
+    for point in points:
+        # Getting list of frequencies and spectrum value
+        freq, spectrum = res.get_spectrum(point, record)
+        # Plotting it
+        plot1d(axe, freq, spectrum, plot_label='point {:06d}'.format(point),
+               x_label='Frequencies', y_label='Spectrum')
 
     axe.legend()
+
+    axe.set_title("At time {}".format(time))
+
+    if fig_name != '':
+        print(" "*8+"~> Plotting {}".format(fig_name))
+        fig.savefig(fig_name)
+    else:
+        plt.show()
+
+    plt.close(fig)
+
+def plot_spe_ang(res, points=None, record=-1, time=None, fig_name=''):
+    """
+    Plotting the angular dispersion for the spectrum on points
+    """
+    # If time is given searched for record
+    if time is not None:
+        record = res.get_closest_record(time)
+        time = res.times[record]
+    else:
+        time = res.times[record]
+
+    if points is None:
+        points = res.get_list_spectrum_points()
+
+    fig, axe = plt.subplots(subplot_kw={'projection':'polar'})
+
+    for point in points:
+        # Getting list of frequencies and spectrum value
+        theta, disp = res.get_angular_dispersion(point, record, radian=True)
+        # Plotting it
+        plot1d(axe, theta, disp, plot_label='point {:06d}'.format(point),
+               x_label='Angles', y_label='Angular dispersion')
+        axe.set_theta_zero_location("N")
+        axe.set_theta_direction(-1)
+
+    axe.legend()
+
+    axe.set_title("At time {}".format(time))
 
     if fig_name != '':
         print(" "*8+"~> Plotting {}".format(fig_name))

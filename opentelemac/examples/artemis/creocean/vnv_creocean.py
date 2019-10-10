@@ -72,36 +72,47 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_mesh2d, plot_var
+        from postel.plot_vnv import vnv_plot2d
         # Getting files
         vnv_1_artres = self.get_study_file('vnv_1:ARTRES')
         res_vnv_1_artres = TelemacFile(vnv_1_artres)
 
         #Plotting mesh
-        plot_mesh2d(res_vnv_1_artres,
-                    fig_size=(12, 8),
-                    fig_name='img/Mesh')
+        vnv_plot2d(\
+                'BOTTOM',
+                res_vnv_1_artres,
+                plot_mesh=True,
+                fig_size=(12, 8),
+                fig_name='img/Mesh')
 
 
         # Plotting BOTTOM at 0
-        plot_var(res_vnv_1_artres,
-                 'BOTTOM',
-                 record=0,
-                 fig_size=(12, 8),
-                 fig_name='img/Bathy')
+        vnv_plot2d(\
+                'BOTTOM',
+                res_vnv_1_artres,
+                record=0,
+                filled_contours=True,
+                fig_size=(12, 8),
+                fig_name='img/Bathy')
 
 
         # Plotting WAVE HEIGHT at 0
-        plot_var(res_vnv_1_artres,
+        vnv_plot2d(\
                  'WAVE HEIGHT',
+                 res_vnv_1_artres,
                  record=0,
+                 filled_contours=True,
                  fig_size=(12, 8),
                  fig_name='img/WaveHeight')
 
 
         # Plotting QB at 0
-        plot_var(res_vnv_1_artres,
+        vnv_plot2d(\
                  'QB',
+                 res_vnv_1_artres,
                  record=0,
+                 filled_contours=True,
                  fig_size=(12, 8),
                  fig_name='img/Breaking')
+
+        res_vnv_1_artres.close()

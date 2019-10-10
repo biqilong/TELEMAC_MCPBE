@@ -39,8 +39,8 @@
       integer, intent(in )                         :: Identifiant    ! Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
       character(LEN=255), dimension(*), intent(in) :: TabNomFichier  ! Tableau des noms des fichiers natifs Mascaret a importer
       character(LEN=40),  dimension(*), intent(in) :: TypeNomFichier ! Tableau des type des fichiers natifs Mascaret a importer:
-		                                                                   ! "casier", "geo", "loi", "cas","listing",
-		                                                                   ! "res", "listing_casier", "listing_liaison", "res_casier", "res_liaison"
+                                                                     ! "casier", "geo", "loi", "cas","listing",
+                                                                     ! "res", "listing_casier", "listing_liaison", "res_casier", "res_liaison"
       integer, intent(in )                         :: Taille         ! Taille des 2 tableaux TabNomFichier et TypeNomFichier
       integer, intent(in )                         :: Impress        ! impression sur les fichiers listing (1-> Vrai 0-> Faux)
 
@@ -55,6 +55,11 @@
       Type(FICHIER_T)                        :: FichierLoiHydrau
       Type(FICHIER_T), dimension(:), pointer :: FichiersLois => null() ! type "loi"  exemple Model.loi (pas obligatoire)
       Type(FICHIER_T)                        :: FichierLigne  ! type "lig"  exemple Model.lig (pas obligatoire)
+
+      ! fichiers en entree d'un modele sedimentaire
+      Type(FICHIER_T)                        :: FichierMotCleCourlis ! type "cas"  exemple Model.cas (obligatoire)
+      Type(FICHIER_T)                        :: FichierDicoCourlis ! type "dico"  exemple Model.cas (obligatoire)
+
       ! fichiers sorties d'un modele hydraulique
       Type(FICHIER_T)          :: FichierListing   ! type "listing"  exemple Model.listing (obligatoire)
       Type(FICHIER_T)          :: FichierResultat  ! type "res"      exemple Model.res     (obligatoire)
@@ -109,6 +114,12 @@
       character(LEN=256)          :: MessageErreurType
 
       real(DOUBLE)    , dimension (:,:), pointer :: F1 ! Fonction impusion
+
+      ! Courlis
+      ! MS2019 : Ajout a verifier si les API sont ok avec ces modifs
+
+      real(DOUBLE)    , dimension (:)  , pointer :: varsed ! Courlis : profil evolution
+      real(DOUBLE)                :: TempsInitial
 
       FichierModele%Nom        = ''
       FichierMaillage%Nom      = ''
@@ -184,6 +195,14 @@
       FichierConcInit%Unite      = 45
       FichierParPhy%Unite        = 47
       FichierMeteo%Unite         = 48
+
+      ! Temporary for courlis initialising variable
+      FichierMotCleCourlis%Unite = -1
+      FichierMotCleCourlis%Nom = ''
+      FichierDicoCourlis%Unite = -1
+      FichierDicoCourlis%Nom = ''
+      nullify(varsed)
+      TempsInitial = 0.0
 
       Modele%FichierGeomCasier%Unite = FichierGeomCasier%Unite
       Modele%FichierGeomCasier%Nom   = FichierGeomCasier%Nom
@@ -413,6 +432,7 @@
         Modele%VersionCode, Modele%Noyau                         , &
         FichierModele, FichierMotCle                             , &
         Modele%OptionCasier                                      , &
+        Modele%OptionCourlis, FichierMotCleCourlis, FichierDicoCourlis , &
         Modele%OndeSubm                                          , &
         Modele%CalculValidation, Modele%TypeValidation           , &
         Modele%Regime, Modele%ModeleLit                          , &
@@ -469,7 +489,7 @@
       if (Erreur%Numero /= 0) then
         RetourErreur = Erreur%Numero
         ptrMsgsErreurs(Identifiant) = 'IMPORT_MODELE_MASCARET - PRETRAIT_INTERFACE - '//Erreur%Message
-	       if (Impression) then
+        if (Impression) then
           rewind(FichierListing%Unite)
           close(FichierListing%Unite)
         endif
@@ -549,6 +569,9 @@
                 ImpressionPlani         , & ! Impression du planimetrage
                 FichierListing%Unite    , & ! Unite logique listing
                 Modele%FrottParoiVerticale , & ! Conservation du frottement sur les parois verticales
+                Modele%OptionCourlis           , & ! Activation de Courlis
+                varsed                  , & ! Courlis : profil evolution
+                TempsInitial            , & ! Courlis
                 Erreur                  & ! Erreur
                                     )
       if (Erreur%Numero /= 0) then
@@ -599,7 +622,7 @@
      endif
 
      if (Modele%Noyau == NOYAU_MASCARET) then
-	      nb_pas = Modele%Profils(1)%NbPas
+       nb_pas = Modele%Profils(1)%NbPas
 
        call PLANMA          ( &
             Modele%SectionPlan          , & ! Section planimetrees
@@ -617,6 +640,9 @@
             Modele%CF2                  , & ! Strickler majeur
             Modele%PresenceZoneStockage , & ! Presence de zone de stockage
             Modele%LoiFrottement        , & ! Loi de frottement utilisee
+            Modele%OptionCourlis               , & ! Activation de Courlis
+            varsed                      , & ! Courlis : profil evolution
+            TempsInitial                , & ! Courlis
             Erreur               )
 
        if (Erreur%Numero /= 0) then

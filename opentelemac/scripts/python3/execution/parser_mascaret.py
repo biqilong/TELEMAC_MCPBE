@@ -11,13 +11,15 @@ r"""@author Christophe Coulet
 
     @brief
 """
-from __future__ import print_function
 # _____             ___________________________________________________
 # ____/ Imports /__________________________________________________/
 #
 # ~~> dependencies towards standard python
 import xml.etree.ElementTree as ET
+from os import path
 # ~~> dependencies towards other pytel/modules
+from config import CFGS
+from execution.telemac_cas import TelemacCas
 
 
 def scan_xcas(fle):
@@ -49,22 +51,39 @@ def scan_xcas(fle):
     #looking for "casier"
     if root2.find('parametresCasier') is not None:
         inputfile.append((root2.find('parametresCasier')\
-                                     .find('fichierGeomCasiers').text))
+                               .find('fichierGeomCasiers').text))
 
     #looking for "paramtresPhysique"
     if root2.find('parametresTraceur') is not None:
         root_tracer = root2.find('parametresTraceur')
         if root_tracer.find('parametresConcentrationsInitialesTraceur') is not None:
-            inputfile.append(root_tracer.find('parametresConcentrationsInitialesTraceur').find('fichConcInit').text)
+            inputfile.append(\
+                    root_tracer.find('parametresConcentrationsInitialesTraceur')\
+                               .find('fichConcInit').text)
 
         if root_tracer.find('parametresNumeriquesQualiteEau') is not None:
-            inputfile.append(root_tracer.find('parametresNumeriquesQualiteEau').find('fichParamPhysiqueTracer').text)
-            inputfile.append(root_tracer.find('parametresNumeriquesQualiteEau').find('fichMeteoTracer').text)
+            inputfile.append(root_tracer.find('parametresNumeriquesQualiteEau')\
+                                        .find('fichParamPhysiqueTracer').text)
+            inputfile.append(root_tracer.find('parametresNumeriquesQualiteEau')\
+                                        .find('fichMeteoTracer').text)
 
         lois = root_tracer.find('parametresLoisTraceur').find('loisTracer')
         for loi in lois:
             inputfile.append(loi.find('fichier').text)
 
+    #looking for "Courlis"
+    if root2.find('parametresGeneraux').find('optionCourlis') is not None:
+        inputfile.append((root2.find('parametresGeneraux')\
+                                     .find('fichierMotCleCourlis').text))
+
+        casfile = root2.find('parametresGeneraux')\
+                       .find('fichierMotCleCourlis').text
+        print(casfile)
+        dicofile = path.join(CFGS.get_root(), "sources", "mascaret", "data",
+                             "dico_Courlis.txt")
+
+        cas = TelemacCas(casfile, dicofile)
+        geo_courlis = cas.get('FICHIER DE GEOMETRIE COURLIS')
+        inputfile.append(geo_courlis)
+
     return inputfile
-
-

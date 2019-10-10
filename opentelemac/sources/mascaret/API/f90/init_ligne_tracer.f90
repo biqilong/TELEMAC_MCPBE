@@ -39,8 +39,8 @@ subroutine INIT_LIGNE_TRACER(Erreur, Identifiant, C, Taille, NbTrac, Impression)
    integer, intent(out)                         :: Erreur         ! different de 0 si erreur
    integer, intent(in )                         :: Identifiant    ! Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    integer, intent(in )                         :: Taille         ! Taille de la ligne
-   real(8), dimension(Taille,NbTrac), intent(in):: C              ! Tableau des concentrations initiales
    integer, intent(in )                         :: NbTrac         ! Nombre de traceurs dans l'entree
+   real(8), dimension(Taille,NbTrac), intent(in):: C              ! Tableau des concentrations initiales
    integer, intent(in )                         :: Impression     ! impression sur les fichiers listing (1-> Vrai 0-> Faux)
 
    !-- Scalaires locaux
@@ -60,7 +60,7 @@ subroutine INIT_LIGNE_TRACER(Erreur, Identifiant, C, Taille, NbTrac, Impression)
    Modele = Masc%ModeleMascaret
 
    if (.not.Modele%OptionTracer) return
-   
+
    if (impression .ne. 0) then
       ult = Modele%FichierListing%Unite
       ultrac = Modele%Tracer%FichierListingTracer%Unite
@@ -100,7 +100,7 @@ subroutine INIT_LIGNE_TRACER(Erreur, Identifiant, C, Taille, NbTrac, Impression)
    if (Erreur > 0 ) then
       return
    end if
-   
+
    allocate( Masc%EtatMascaret%Tracer%Ctraceur(nb_sect,Modele%Tracer%Nbtrac) , STAT = Erreur )
    if( Erreur /= 0 ) return
    Masc%EtatMascaret%Tracer%Ctraceur(:,:) = C(:,:)
@@ -153,12 +153,12 @@ subroutine INIT_LIGNE_TRACER(Erreur, Identifiant, C, Taille, NbTrac, Impression)
    if( Erreur /= 0 ) call err_alloc_tr('FLUSRC')
    Masc%EtatMascaret%Tracer%FLUSRC(:,:) = W0    ! W0 = 0._DOUBLE
 
-   
+
    if (Impression .ne. 0) then
       close(ult)
       close(ultrac)
    endif
-   
+
    Erreur = 0
    return
 
@@ -181,7 +181,7 @@ contains
 321   format(/,"===========",/,"=> ERROR <=",/,"===========",/)
    end subroutine err_alloc_tr
 
-   
+
 end subroutine INIT_LIGNE_TRACER
 
 

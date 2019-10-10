@@ -28,7 +28,8 @@ module M_PRETRAIT_I
 
       VersionCode, Noyau                                       , &
       FichierModele, FichierMotCle                             , &
-      OptionCasier,                                              &
+      OptionCasier                                             , &
+      OptionCourlis, FichierMotCleCourlis, FichierDicoCourlis  , &
       OndeSubm                                                 , &
       CalculValidation, TypeValidation                         , &
       Regime, ModeleLit                                        , &
@@ -142,9 +143,9 @@ module M_PRETRAIT_I
    use M_LEC_APPORT_PLUIE_I    ! interface du sous-programme Lec_Apport_Pluie
    use M_CONSTANTES_CASIER_C   ! constantes de calcul propres a CASIER
    use Fox_dom                 ! parser XML Fortran
-   
-   
-   !.. Implicit Declarations .. 
+
+
+   !.. Implicit Declarations ..
    implicit none
 
    ! Parametres generaux
@@ -153,6 +154,9 @@ module M_PRETRAIT_I
    type(FICHIER_T), intent(inout) :: FichierModele
    type(FICHIER_T), intent(inout) :: FichierMotCle
    logical        , intent(  out) :: OptionCasier
+   logical        , intent(  out) :: OptionCourlis
+   type(FICHIER_T), intent(inout) :: FichierMotCleCourlis
+   type(FICHIER_T), intent(inout) :: FichierDicoCourlis
    logical        , intent(  out) :: OndeSubm
    logical        , intent(  out) :: CalculValidation
    logical        , intent(  out) :: PerteChargeConfluent
@@ -231,7 +235,7 @@ module M_PRETRAIT_I
    type(FICHIER_T)               , intent(inout)  :: FichierLigne
    integer                                        :: format_ligne
    type(ZONE_SECHE_T), dimension(:), pointer      :: ZoneSeche
-   type(ZONE_FROT_T) , dimension(:), pointer      :: ZoneFrot 
+   type(ZONE_FROT_T) , dimension(:), pointer      :: ZoneFrot
    ! Utilisation Cray
    logical                                        :: UtilisationCray
    ! Impressions - resultats
@@ -269,10 +273,10 @@ module M_PRETRAIT_I
    ! Pertes de charge singuliere
    real(DOUBLE)       , dimension(:), pointer       :: PCSing
    ! Apports et Deversoirs
-   type(APPORT_T)     , dimension(:), pointer       :: Apport 
+   type(APPORT_T)     , dimension(:), pointer       :: Apport
    type(DEVERSOIR_T)  , dimension(:), pointer       :: Deversoir
    ! Confluents
-   type(CONFLUENT_T)  , dimension(:), pointer       :: Confluent 
+   type(CONFLUENT_T)  , dimension(:), pointer       :: Confluent
    ! Abaques pour le calcul des pertes de charge automatique aux confluences
    real(DOUBLE)    , dimension(6,6,5) , intent(inout) :: Abaque
    type(FICHIER_T)                    , intent(inout) :: FichierAbaque

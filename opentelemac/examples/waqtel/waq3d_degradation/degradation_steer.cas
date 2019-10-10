@@ -1,4 +1,3 @@
-/
 /  steering file
 /  for waqtel module of the Telemac system
 /     here case of DEGRADATION LAW process
@@ -15,10 +14,6 @@ GEOMETRY FILE             = 'geo_waq3d_degradation.slf'
 BOUNDARY CONDITIONS FILE  = 'geo_waq3d_degradation.cli'
 /HYDRODYNAMIC FILE            =
 /MASS-BALANCE                 =
-KINEMATIC WATER VISCOSITY     = 1.E-6
-DISPERSION ALONG THE FLOW     = 1.E-2
-DISPERSION ACROSS THE FLOW    = 1.E-2
-/
 /-----------------------
 / WATER QUALITY PROCESS         = 17
 /   OPTIONS ARE

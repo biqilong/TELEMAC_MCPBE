@@ -93,7 +93,7 @@
       USE INTERFACE_GAIA, EX_INIT_TRANSPORT => INIT_TRANSPORT_GAIA
 !
       USE DECLARATIONS_GAIA, ONLY : NOMBLAY,MPM_ARAY,MPM,NUM_ICLA_ISAND,
-     &                              RATIO_SAND,SANFRA,AVAIL,CSRATIO
+     &                              RATIO_SAND,SANFRA,CSRATIO,NSAND
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -149,9 +149,9 @@
       IF (ICF == 10) THEN
         DO K = 1, NPOIN
           SANFRA(K) = 0.0D0
-          DO I = 1, NSICLA
+          DO I = 1, NSAND
             IF (DCLA(I).LT.2D-3) THEN
-              SANFRA(K) = SANFRA(K) + AVAIL(K,1,I)
+              SANFRA(K) = SANFRA(K) + RATIO_SAND(I,1,K)
             ENDIF
           ENDDO
         ENDDO

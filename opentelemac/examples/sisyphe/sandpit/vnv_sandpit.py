@@ -96,11 +96,10 @@ class VnvStudy(AbstractVnvStudy):
 
         poly = [[50., 0.5], [130., 0.5]]
         res = TelemacFile(self.get_study_file('vnv_scal:SISRES'))
-        poly_number = res.discretize_polyline(poly)
 
         _, abs_curv, values_poly = \
                 res.get_timeseries_on_polyline(\
-                poly, 'BOTTOM', poly_number)
+                'BOTTOM', poly)
 
         fig, ax = plt.subplots(figsize=(10, 7))
 
@@ -121,3 +120,5 @@ class VnvStudy(AbstractVnvStudy):
         print(" "*8+"~> Plotting "+fig_name)
         plt.savefig(fig_name)
         plt.clf()
+
+        res.close()

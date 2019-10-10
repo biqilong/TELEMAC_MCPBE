@@ -164,5 +164,14 @@ module M_CONSTANTES_CALCUL_C
    integer     , parameter :: LOI_FROTTEMENT_COLEBROOK = 3
    integer     , parameter :: LOI_FROTTEMENT_BAZIN     = 4
    integer     , parameter :: LOI_FROTTEMENT_NB_MAX    = 4
+   
+   !***********************************************************************
+   !
+   ! Constantes reperant le  modele du talus (calcul Courlis)
+   !
+   !***********************************************************************
+ 
+   integer     , parameter :: MODELE_TALUS_PENTE      = 1
+   integer     , parameter :: MODELE_TALUS_GLISSEMENT = 2
 
 end module M_CONSTANTES_CALCUL_C

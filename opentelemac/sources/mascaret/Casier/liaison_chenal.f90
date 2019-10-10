@@ -25,9 +25,9 @@ subroutine  LIAISON_CHENAL       ( &
                                 )
 
 ! *********************************************************************
-! PROGICIEL : MASCARET    S. DELMAS    C. COULET    
-!                             
-!                             
+! PROGICIEL : MASCARET    S. DELMAS    C. COULET
+!
+!
 !
 ! VERSION : 8.1.4         EDF-CEREMA-ARTELIA
 ! *********************************************************************
@@ -62,8 +62,8 @@ subroutine  LIAISON_CHENAL       ( &
    use M_TRAITER_ERREUR_I ! Traitement des erreurs
 
    implicit none
-   
-   
+
+
    !.. Formal Arguments ..
    real(DOUBLE)              , intent(  out) :: AS, BS, CS
    real(DOUBLE)              , intent(in   ) :: ZAM, ZAV, ZfAM, ZfAV
@@ -79,22 +79,22 @@ subroutine  LIAISON_CHENAL       ( &
 
    !.. Variables locales ..
    real(DOUBLE) :: h1 , &  ! tirant d eau casier1 (par rapport a la cote moyenne du chenal)
-                   h2 , &  ! tirant d eau casier2 
+                   h2 , &  ! tirant d eau casier2
                hamont , &  ! tirant d eau reel a l'amont physique du chenal
                 haval , &  ! tirant d eau reel a l'aval physique du chenal
                  hmax , &  ! tirant d'eau a l'amont du chenal (par rapport a la cote moy)
                  hmin , &  ! tirant d'eau a l'aval du chenal (par rapport a la cote moy)
                deltaz , &  ! tirant d eau amont - tirant d eau aval
-            coef_geom , &  ! coefficient de l equation de la liaison qui ne depend 
+            coef_geom , &  ! coefficient de l equation de la liaison qui ne depend
                            ! que des caracteristiques geometriques
-               debit ,  &  ! debit brut de la liaison 
+               debit ,  &  ! debit brut de la liaison
       ddebit_dzamont ,  &  ! variation du debit par rapport a Zamont
        ddebit_dzaval ,  &  ! variation du debit par rapport a Zaval
               hmoyen ,  &  ! moyenne de hamont et haval
                    C ,  &  ! represente une fonction dont le but est de faire tendre
-                           ! rapidement ddebit_dzamont et ddebit_dzaval vers zero 
-                           ! lorsque haval/hamont tend vers 1, tout en respectant 
-                           ! la continuite des derivees; ce coef. est actif 
+                           ! rapidement ddebit_dzamont et ddebit_dzaval vers zero
+                           ! lorsque haval/hamont tend vers 1, tout en respectant
+                           ! la continuite des derivees; ce coef. est actif
                            ! lorsque haval/hamont est superieur a la constante COEF
           dC_dzamont , &   ! variation de C par rapport a hamont
            dC_dzaval , &   ! variation de C par rapport a haval
@@ -109,21 +109,6 @@ subroutine  LIAISON_CHENAL       ( &
 
    integer :: sens_ecoul   ! repere du sens de l ecoulement
 
-   !.. Fonctions locales ..
-   real(DOUBLE) :: lis
-   lis(X)      = -2._DOUBLE * X**3._DOUBLE + 3._DOUBLE * X**2._DOUBLE
-
-   real(DOUBLE) :: dlis
-   dlis(X)     = -6._DOUBLE * X**2._DOUBLE + 6._DOUBLE * X
-
-   real(DOUBLE) :: beta
-   beta(X,Y)   = ( -1._DOUBLE / ( 1._DOUBLE - COEF ) ) * ( Y / X - 1._DOUBLE )
-
-   real(DOUBLE) :: dbetax
-   dbetax(X,Y) = ( -1._DOUBLE / ( 1._DOUBLE - COEF ) ) * ( -Y / X**2._DOUBLE )
-
-   real(DOUBLE) :: dbetay
-   dbetay(X,Y) = ( -1._DOUBLE / ( 1._DOUBLE - COEF ) ) * ( 1._DOUBLE / X )
 
    !========================== Instructions ==============================
 
@@ -133,8 +118,8 @@ subroutine  LIAISON_CHENAL       ( &
 
    AS = 0._DOUBLE
    BS = 0._DOUBLE
-   CS = 0._DOUBLE    
-   
+   CS = 0._DOUBLE
+
    h1 = ZAM - Liaison%Cote ! comparaison par rapport a la cote de reference du chenal
    h2 = ZAV - Liaison%Cote ! (cote moyenne)
 
@@ -153,8 +138,8 @@ subroutine  LIAISON_CHENAL       ( &
            Paval      = ZfAM
            sens_ecoul = DE_2_VERS_1
        end if
-            
-   else   ! cas du chenal horizontal 
+
+   else   ! cas du chenal horizontal
       Pamont     = Liaison%Cote
       Paval      = Liaison%Cote
       if( ZAM >= ZAV ) then
@@ -167,7 +152,7 @@ subroutine  LIAISON_CHENAL       ( &
          sens_ecoul = DE_2_VERS_1
       end if
    end if
-   
+
    hamont = CoteAmont - Pamont
    haval  = CoteAval  - Paval
 
@@ -177,14 +162,14 @@ subroutine  LIAISON_CHENAL       ( &
 
     if( haval <= 0._DOUBLE ) then
         haval    = 0._DOUBLE
-        CoteAval = Paval 
+        CoteAval = Paval
     end if
 
     deltaz = CoteAmont - CoteAval  ! On previent les faibles valeurs de deltaz pour eviter les instabilites?
     if( deltaz <= DZMIN ) then
         deltaz = DZMIN
     end if
-    
+
     ! DIMINUTION DE LA LARGEUR SI HAMONT <<< LARGEUR              :::: INDISPENSABLE ::::
     hlim = Liaison%Largeur / 1000
     if( hamont < hlim ) then
@@ -192,12 +177,12 @@ subroutine  LIAISON_CHENAL       ( &
     else
         LargeurEcoulement = Liaison%Largeur
     endif
-    
+
     hmoyen = W12 * ( hamont + haval )
     h      = min(hamont, hmoyen)
 
     coef_geom = ( Liaison%Rugosite * LargeurEcoulement ) / DSQRT( Liaison%Longueur ) ! Longueur /= 0 => PRETRAIT_CASIER
-    
+
     !
     ! CALCUL DE BASE
     ! --------------
@@ -210,7 +195,7 @@ subroutine  LIAISON_CHENAL       ( &
 !    else
 !        ddebit_dzaval  = 0
 !    endif
-      
+
     !
     ! CORRECTION COEFFICIENT BETA / partie a commentariser pour test sur coefficient correcteur
     ! ---------------------------
@@ -256,5 +241,33 @@ subroutine  LIAISON_CHENAL       ( &
    end select
 
    return
+
+   contains
+
+     !.. Fonctions locales ..
+     real(DOUBLE) function lis(X)
+       real(DOUBLE), intent(in) :: X
+       lis = -2._DOUBLE * X**3._DOUBLE + 3._DOUBLE * X**2._DOUBLE
+     end function
+
+     real(DOUBLE) function dlis(X)
+       real(DOUBLE), intent(in) :: X
+       dlis = -6._DOUBLE * X**2._DOUBLE + 6._DOUBLE * X
+     end function
+
+     real(DOUBLE) function beta(X,Y)
+       real(DOUBLE), intent(in) :: X,Y
+       beta = ( -1._DOUBLE / ( 1._DOUBLE - COEF ) ) * ( Y / X - 1._DOUBLE )
+     end function
+
+     real(DOUBLE) function dbetax(X,Y)
+       real(DOUBLE), intent(in) :: X,Y
+       dbetax = ( -1._DOUBLE / ( 1._DOUBLE - COEF ) ) * ( -Y / X**2._DOUBLE )
+     end function
+
+     real(DOUBLE) function dbetay(X,Y)
+       real(DOUBLE), intent(in) :: X,Y
+       dbetay = ( -1._DOUBLE / ( 1._DOUBLE - COEF ) ) * ( 1._DOUBLE / X )
+     end function
 
 end subroutine LIAISON_CHENAL

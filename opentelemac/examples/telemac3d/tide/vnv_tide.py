@@ -141,3 +141,5 @@ class VnvStudy(AbstractVnvStudy):
                    cmap_name='viridis',
                    fig_size=(12, 7),
                    fig_name='img/velocity')
+
+        res.close()

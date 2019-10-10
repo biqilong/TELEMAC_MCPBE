@@ -90,7 +90,7 @@ subroutine LEC_FIC_CONC_INI_TRACER( &
 
    character(132) :: arbredappel_old ! arbre d'appel precedant
 
-   !============================ Instructions ============================== 
+   !============================ Instructions ==============================
    !INITIALISATION
    !==============
    Erreur%Numero = 0
@@ -169,13 +169,13 @@ subroutine LEC_FIC_CONC_INI_TRACER( &
          ! la colonne X etant toujours placee a la meme position
          !------------------------------------------------------
          do j = 1 , nb_trac
-		    if( j.lt.10 ) then
-              CU = 'C'//j_in_letter(j)
-			  rang = index( chaine ,CU)
-			else
-			  CD = 'C'//j_in_letter(j)
-              rang = index( chaine ,CD)
-			endif
+            if( j.lt.10 ) then
+               CU = 'C'//j_in_letter(j)
+               rang = index( chaine ,CU)
+            else
+               CD = 'C'//j_in_letter(j)
+               rang = index( chaine ,CD)
+            endif
             if( rang /= 0 ) then
                pos_c(j) = ivar
             endif

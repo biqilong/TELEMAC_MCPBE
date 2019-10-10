@@ -99,6 +99,6 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/courant')
 
         # Closing files
-        del res_vnv_1_wacres
-        del res_vent
-        del res_courant
+        res_vnv_1_wacres.close()
+        res_vent.close()
+        res_courant.close()

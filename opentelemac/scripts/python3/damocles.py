@@ -323,7 +323,8 @@ def main():
     # Defining which modules to use
     if args.modules is '':
         module_list = ['artemis', 'postel3d', 'stbtel', 'sisyphe',
-                       'telemac2d', 'telemac3d', 'tomawac', 'waqtel']
+                       'telemac2d', 'telemac3d', 'tomawac', 'waqtel',
+                       'gaia', 'khione']
     else:
         module_list = args.modules.split(';')
     # Identify Root value
@@ -350,7 +351,7 @@ def main():
         if args.eficas:
 
             # Creating eficas folder and __init__ if it does not exists
-            eficas_path = path.join(root, 'scripts', 'python27', 'eficas')
+            eficas_path = path.join(root, 'scripts', 'python3', 'eficas')
             if not path.exists(eficas_path):
                 mkdir(eficas_path)
                 with open(path.join(eficas_path, '__init__.py'), 'w') as fobj:

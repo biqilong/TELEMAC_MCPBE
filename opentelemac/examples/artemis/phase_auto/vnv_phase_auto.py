@@ -67,47 +67,29 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
         # Getting files
         vnv_1_artgeo = self.get_study_file('vnv_1:ARTGEO')
         res_vnv_1_artgeo = TelemacFile(vnv_1_artgeo)
         vnv_1_artres = self.get_study_file('vnv_1:ARTRES')
         res_vnv_1_artres = TelemacFile(vnv_1_artres)
 
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[300, 0], [900, 0]],
-                fig_size=(10, 7),
-                fig_name='img/Section1')
+        polys = [[[300, 0], [900, 0]],
+                 [[300, 100], [900, 100]],
+                 [[300, 200], [900, 200]],
+                 [[300, 300], [900, 300]]]
 
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[300, 100], [900, 100]],
-                fig_size=(10, 7),
-                fig_name='img/Section2')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[300, 200], [900, 200]],
-                fig_size=(10, 7),
-                fig_name='img/Section3')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[300, 300], [900, 300]],
-                fig_size=(10, 7),
-                fig_name='img/Section4')
+        for i, poly in enumerate(polys):
+            # Plotting WAVE HEIGHT over polyline over records 0
+            vnv_plot1d_polylines(\
+                    'WAVE HEIGHT',
+                    res_vnv_1_artres,
+                    poly=poly,
+                    fig_size=(10, 7),
+                    fig_name='img/Section{}'.format(i+1))
 
         #Plotting mesh
+        #TODO: add polylines on plot
         vnv_plot2d('',
                    res_vnv_1_artgeo,
                    plot_mesh=True,
@@ -135,5 +117,5 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/Phase_Velocity')
 
         # Closing files
-        del res_vnv_1_artgeo
-        del res_vnv_1_artres
+        res_vnv_1_artgeo.close()
+        res_vnv_1_artres.close()

@@ -100,10 +100,8 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_vertical_slice, plot_horizontal_slice
         from postel.plot_vnv import vnv_plot2d
-        #TODO: Have a look at the MeshV can be improved
-                # Getting files
+        # Getting files
         vnv_3_t3dres = self.get_study_file('vnv_3:T3DRES')
         res_vnv_3_t3dres = TelemacFile(vnv_3_t3dres)
         vnv_1_t3dres = self.get_study_file('vnv_1:T3DRES')
@@ -121,79 +119,95 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/Mesh')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'ELEVATION Z',
-                            poly=[[250, 0], [250, 100]],
-                            record=0,
-                            add_mesh=True,
-                            fig_size=(10, 15),
-                            fig_name='img/MeshV')
+        vnv_plot2d(\
+                   'ELEVATION Z',
+                   res_vnv_1_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=0,
+                   plot_mesh=True,
+                   fig_name='img/MeshV')
 
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'TEMPERATURE',
-                            poly=[[250, 0], [250, 100]],
-                            record=0,
-                            fig_size=(10, 15),
-                            fig_name='img/init_T_tetra')
+        vnv_plot2d(\
+                   'TEMPERATURE',
+                   res_vnv_1_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=0,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/init_T_tetra')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'TEMPERATURE',
-                            poly=[[250, 0], [250, 100]],
-                            record=-1,
-                            fig_size=(10, 15),
-                            fig_name='img/end_T_tetra')
+        vnv_plot2d(\
+                   'TEMPERATURE',
+                   res_vnv_1_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/end_T_tetra')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_3_t3dres,
-                            'TEMPERATURE',
-                            poly=[[250, 0], [250, 100]],
-                            record=0,
-                            fig_size=(10, 15),
-                            fig_name='img/init_T_prism')
+        vnv_plot2d(\
+                   'TEMPERATURE',
+                   res_vnv_3_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=0,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/init_T_prism')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_3_t3dres,
-                            'TEMPERATURE',
-                            poly=[[250, 0], [250, 100]],
-                            record=-1,
-                            fig_size=(10, 15),
-                            fig_name='img/end_T_prism')
+        vnv_plot2d(\
+                   'TEMPERATURE',
+                   res_vnv_3_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/end_T_prism')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'VELOCITY W',
-                            poly=[[250, 0], [250, 100]],
-                            record=0,
-                            fig_size=(10, 15),
-                            fig_name='img/init_V_tetra')
+        vnv_plot2d(\
+                   'VELOCITY W',
+                   res_vnv_1_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=0,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/init_V_tetra')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'VELOCITY W',
-                            poly=[[250, 0], [250, 100]],
-                            record=-1,
-                            fig_size=(10, 15),
-                            fig_name='img/end_V_tetra')
+        vnv_plot2d(\
+                   'VELOCITY W',
+                   res_vnv_1_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/end_V_tetra')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_3_t3dres,
-                            'VELOCITY W',
-                            poly=[[250, 0], [250, 100]],
-                            record=0,
-                            fig_size=(10, 15),
-                            fig_name='img/init_V_prism')
+        vnv_plot2d(\
+                   'VELOCITY W',
+                   res_vnv_3_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=0,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/init_V_prism')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_3_t3dres,
-                            'VELOCITY W',
-                            poly=[[250, 0], [250, 100]],
-                            record=-1,
-                            fig_size=(10, 15),
-                            fig_name='img/end_V_prism')
+        vnv_plot2d(\
+                   'VELOCITY W',
+                   res_vnv_3_t3dres,
+                   poly=[[250, 0], [250, 100]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/end_V_prism')
         # Closing files
-        del res_vnv_3_t3dres
-        del res_vnv_1_t3dres
-        del res_vnv_1_t3dhyd
+        res_vnv_3_t3dres.close()
+        res_vnv_1_t3dres.close()
+        res_vnv_1_t3dhyd.close()

@@ -226,7 +226,7 @@
         INTEGER(KIND=K8), INTENT(IN) :: K
         INTEGER(KIND=K8), INTENT(IN) :: S
         !MAGIC NUMBER FROM MURMURHASH 3
-        INTEGER(KIND=K8),PARAMETER::KMUL=Z'CC9E2D51'
+        INTEGER(KIND=K8)::KMUL
         INTEGER(KIND=K8) :: B
         INTEGER :: H
 #ifdef NAGFOR
@@ -235,10 +235,12 @@
         !VOL.3, SORTING AND SEARCHING, 1973
         DOUBLE PRECISION, PARAMETER :: A=(2.2360679774D0-1D0)/2D0
 !
+        KMUL=Z'CC9E2D51'
         H=FLOOR(DBLE(S) * DMOD(DBLE(K)*A,1D0))
         H=ABS(H)
 #else
 !
+        KMUL=Z'CC9E2D51'
         B = K*KMUL
         B = IEOR(B, ISHFT(B,44))
         B = B*KMUL

@@ -41,7 +41,7 @@ subroutine INIT_ETAT_MASCARET(Erreur, Identifiant, NomFichier, Impression)
 
 
    !-- Scalaires locaux
-   
+
    type(MODELE_MASCARET_T)  :: Model
    type(ETAT_MASCARET_T)    :: Etat
    integer :: retour
@@ -56,12 +56,12 @@ subroutine INIT_ETAT_MASCARET(Erreur, Identifiant, NomFichier, Impression)
    type(ERREUR_T)  :: ErreurLecLigne
 
 
- Erreur = TEST_INIT_AND_ID(Identifiant, 'INIT_ETAT_MASCARET')
- if (Erreur > 0 ) then
-    RETURN
- end if
-	  Model = ptrTabMascaret(Identifiant)%ModeleMascaret
-	  Etat  = ptrTabMascaret(Identifiant)%EtatMascaret
+   Erreur = TEST_INIT_AND_ID(Identifiant, 'INIT_ETAT_MASCARET')
+   if (Erreur > 0 ) then
+      RETURN
+   end if
+   Model = ptrTabMascaret(Identifiant)%ModeleMascaret
+   Etat  = ptrTabMascaret(Identifiant)%EtatMascaret
 
 ! Initialisation a null des pointeurs de l'etat
    if(associated(Etat%DPDZ2)) then
@@ -363,7 +363,7 @@ subroutine INIT_ETAT_MASCARET(Erreur, Identifiant, NomFichier, Impression)
       if (ErreurLecLigne%Numero /= 0) then
          Erreur = ErreurLecLigne%Numero
          ptrMsgsErreurs(Identifiant) = 'INIT_ETAT_MASCARET - LEC_LIGNE_INTERFACE - '//ErreurLecLigne%Message
-	 if (ImpressionLigne) then
+         if (ImpressionLigne) then
             rewind(UniteListing)
             close(UniteListing)
          endif
@@ -423,7 +423,7 @@ subroutine INIT_ETAT_MASCARET(Erreur, Identifiant, NomFichier, Impression)
          ptrMsgsErreurs(Identifiant) = 'INIT_ETAT_MASCARET - Unable to allocate State.Q1'
          return
       endif
-      Etat%Q1(:) = Etat%Q(:)		! permet d'entrer le debit de la ligne d'eau initiale au premier pas de temps
+      Etat%Q1(:) = Etat%Q(:)    ! permet d'entrer le debit de la ligne d'eau initiale au premier pas de temps
 
       if(.not.associated(Etat%V1)) allocate (Etat%V1(nb_sect), STAT = retour)
       if (retour /= 0) then

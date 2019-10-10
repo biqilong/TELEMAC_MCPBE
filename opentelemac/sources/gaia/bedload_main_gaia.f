@@ -31,7 +31,6 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !>@param[in,out] AC          Critical shields parameter
 !>@param[in]     ACLADM      Mean diameter of active layer
-!>@param[in]     AVAIL         Sediment fraction for each layer, class, point
 !>@param[in]     BETA        Coefficient for sloping bed effect (Koch and Flokstra)
 !>@param[in]     BETA2       Coefficient for the deviation  (talmon et al.)
 !>@param[in]     BIJK        Coefficient of the bijker formula
@@ -145,8 +144,8 @@
      &              MASS_SAND_MASKED, EVCL_M_TOT_SAND,
      &              RATIO_EVOL_TOT_SAND,MOFAC_BED,MUDB,F_MUDB,
      &              NESTOR,XKV0,VOLU2D,ZFCL_C,MASSNESTOR,
-     &              NMUD,NSAND,NUM_ISAND_ICLA,NUM_IMUD_ICLA,
-     &              SANFRA,AVAIL
+     &              NMUD,NUM_ISAND_ICLA,NUM_IMUD_ICLA,
+     &              SANFRA
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY: P_DSUM
       IMPLICIT NONE

@@ -36,7 +36,7 @@
 !======================================================================!
 !
       DO IPOIN=1,NPOIN
-         CSTAEQ%R(IPOIN) = 0.D0
+        CSTAEQ%R(IPOIN) = 0.D0
       ENDDO
 !
 !  FOLLOWING LINES NEED TO BE COMMENTED OUT

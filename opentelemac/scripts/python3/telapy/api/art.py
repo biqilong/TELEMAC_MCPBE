@@ -29,6 +29,7 @@ class Artemis(ApiModule):
                  dicofile=None,
                  lang=2, stdout=6,
                  comm=None,
+                 log_lvl='INFO',
                  recompile=True):
         """
         Constructor for Artemis
@@ -52,7 +53,8 @@ class Artemis(ApiModule):
                 default_dicofile = 'artemis.dico'
             dicofile = default_dicofile
         super(Artemis, self).__init__("art", casfile, user_fortran,
-                                      dicofile, lang, stdout, comm, recompile)
+                                      dicofile, lang, stdout, comm,
+                                      recompile, log_lvl=log_lvl)
 
     def __del__(self):
         """

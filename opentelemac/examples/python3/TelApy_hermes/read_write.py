@@ -36,8 +36,8 @@ def read_write(fformat, mesh_file, bnd_file=None, compare=True):
     myfile2.import_from(myfile)
     print('import passed')
 
-    del myfile
-    del myfile2
+    myfile.close()
+    myfile2.close()
 
     # Binary files should be identical
     if compare:

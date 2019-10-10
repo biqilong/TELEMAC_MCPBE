@@ -169,8 +169,8 @@ class VnvStudy(AbstractVnvStudy):
         ylim = [0.5/A, 3.5/A]
 
         # One record every 0.5s i.e. record=9 ~ t=T
-        records = [0, 3, 6, 9]
-        time_labels = ['0', 'T/3', '2T/3', 'T']
+        records = [0, 1, 3, 6, 9]
+        time_labels = ['0', 'T/9', 'T/3', '2T/3', 'T']
 
         for idx, record in enumerate(records):
             time_label = 't='+ time_labels[idx]
@@ -211,25 +211,26 @@ class VnvStudy(AbstractVnvStudy):
                 mask_tidal_flats=True,
                 bathy_contours=True)
 
-            # Plot velocity at different times.
-            vnv_plot2d(\
-                'VELOCITY',
-                nerd_res,
-                record=record,
-                fig_size=(6, 5),
-                fig_name="img/t2d_thacker_nerd_seq_vel_firstobs{}".format(record),
-                var_factor=1./U0,
-                cbar_label='|U|/U0',
-                xlim=xlim, ylim=ylim,
-                vmin=0.75, vmax=1.25, nv=11,
-                x_factor=1./A, y_factor=1./A,
-                x_label='x/a', y_label='y/a',
-                fig_title=time_label,
-                contours=True,
-                filled_contours=True,
-                vectors=True,
-                vectors_scale=20,
-                bathy_contours=True)
+            if idx > 0:
+                # Plot velocity at different times.
+                vnv_plot2d(\
+                    'VELOCITY',
+                    nerd_res,
+                    record=record,
+                    fig_size=(6, 5),
+                    fig_name="img/t2d_thacker_nerd_seq_vel_firstobs{}".format(record),
+                    var_factor=1./U0,
+                    cbar_label='|U|/U0',
+                    xlim=xlim, ylim=ylim,
+                    vmin=0.75, vmax=1.25, nv=11,
+                    x_factor=1./A, y_factor=1./A,
+                    x_label='x/a', y_label='y/a',
+                    fig_title=time_label,
+                    contours=True,
+                    filled_contours=True,
+                    vectors=True,
+                    vectors_scale=20,
+                    bathy_contours=True)
 
         #======================================================================
         # COMPARISON OF NUMERICAL SCHEMES:

@@ -129,7 +129,7 @@
       SUBROUTINE IDENTIFY_ENDIAN_TYPE
 !***********************************************************************
 !
-     &(FILE_NAME,ENDIAN,FILE_ID)
+     &(FILE_NAME,ENDIAN,FILE_ID,IERR)
 !
 !***********************************************************************
 ! HERMES   V7P2
@@ -170,12 +170,13 @@
         INTEGER, INTENT(IN)           :: FILE_ID
         CHARACTER(LEN=*), INTENT(IN)  :: FILE_NAME
         CHARACTER(LEN=13),INTENT(INOUT) :: ENDIAN
+        INTEGER, INTENT(OUT) :: IERR
 !
         INTEGER(KIND=K4) :: I
         LOGICAL :: FILE_EXIST
-        INTEGER :: IERR
 !
         ! IF THE FILE DOES NOT EXIST RETURN BIG OR LITTLE ENDIAN
+        IERR = 0
         INQUIRE(FILE=FILE_NAME,EXIST=FILE_EXIST)
         IF(.NOT.FILE_EXIST) RETURN
 !
@@ -217,7 +218,7 @@
           IF(IERR.NE.0) THEN
             ERROR_MESSAGE = 'ERROR IN '//
      &           TRIM(FILE_NAME)//': '//
-     &           'IDENTIFY_ENDIAN_TYPE:READ:'
+     &           'IDENTIFY_ENDIAN_TYPE: Wrong endian of the file'
             RETURN
           ENDIF
           CLOSE(FILE_ID)
@@ -320,6 +321,7 @@
         INTEGER(KIND=K4) :: B1, B2, IB(10), IDUM, TAG
         INTEGER :: SRF_ID, NTIMESTEP, FD
         CHARACTER(LEN=9) :: SRF_OPENMODE
+        CHARACTER(LEN=200) :: MSG
 #if defined NO_INQUIRE_SIZE
         REAL :: TIME
 #endif
@@ -355,20 +357,22 @@
           SRF_OPENMODE = OPENMODE
         ENDIF
         ! Get the Endian for the file
-        CALL IDENTIFY_ENDIAN_TYPE(FILE_NAME,ENDIAN,FILE_ID)
+        CALL IDENTIFY_ENDIAN_TYPE(FILE_NAME,ENDIAN,FILE_ID, IERR)
+        IF(IERR.NE.0) RETURN
         ! OPEN THE FILE IN STREAM MODE
 #if defined NO_CONVERT_ENDIAN
         OPEN(FILE=FILE_NAME, ACTION=SRF_OPENMODE, UNIT=FILE_ID,
-     &       FORM='UNFORMATTED', ACCESS='STREAM', IOSTAT=IERR)
+     &       FORM='UNFORMATTED', ACCESS='STREAM',
+     &       IOMSG=MSG, IOSTAT=IERR)
 #else
         OPEN(FILE=FILE_NAME, ACTION=SRF_OPENMODE, UNIT=FILE_ID,
      &       FORM='UNFORMATTED', ACCESS='STREAM',CONVERT=ENDIAN,
-     &       IOSTAT=IERR)
+     &       IOMSG=MSG, IOSTAT=IERR)
 #endif
         IF(IERR.NE.0) THEN
           ERROR_MESSAGE = 'ERROR IN '//
      &         TRIM(FILE_NAME)//': '//
-     &         'OPEN_MESH_SRF:OPEN'
+     &         'OPEN_MESH_SRF:OPEN'//'\n'//MSG
           RETURN
         ENDIF
         !
@@ -400,7 +404,7 @@
           IF(IERR.NE.0) THEN
             ERROR_MESSAGE = 'ERROR IN '//
      &           TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
-     &           'OPEN_MESH_SRF:READ'
+     &           'OPEN_MESH_SRF:READNVAR'
             RETURN
           ENDIF
           SRF_OBJ_TAB(SRF_ID)%NVAR = B1 + B2
@@ -413,12 +417,12 @@
           ENDIF
           DO I=1,SRF_OBJ_TAB(SRF_ID)%NVAR
             POS = SRF_OBJ_TAB(SRF_ID)%POS_VARINFO + (I-1)*(4+VAR_SIZE+4)
-            READ(FILE_ID,POS=POS+4,IOSTAT=IERR)
+            READ(FILE_ID,POS=POS+4,IOMSG=msg,IOSTAT=IERR)
      &                      SRF_OBJ_TAB(SRF_ID)%VAR_LIST(I)
             IF(IERR.NE.0) THEN
               ERROR_MESSAGE = 'ERROR IN '//
      &             TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
-     &             'OPEN_MESH_SRF:READ'
+     &             'OPEN_MESH_SRF:READ_VAR_LIST'//'\n'//msg
               RETURN
             ENDIF
           ENDDO
@@ -431,7 +435,7 @@
           IF(IERR.NE.0) THEN
             ERROR_MESSAGE = 'ERROR IN '//
      &           TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
-     &           'OPEN_MESH_SRF:READ'
+     &           'OPEN_MESH_SRF:READ_IB'
             RETURN
           ENDIF
           SRF_OBJ_TAB(SRF_ID)%NPLAN = IB(7)
@@ -461,7 +465,7 @@
           IF(IERR.NE.0) THEN
             ERROR_MESSAGE = 'ERROR IN '//
      &           TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
-     &           'OPEN_MESH_SRF:READ'
+     &           'OPEN_MESH_SRF:READ_NELEM*'
             RETURN
           ENDIF
 
@@ -529,7 +533,7 @@
               IF(IERR.NE.0) THEN
                 ERROR_MESSAGE = 'ERROR IN '//
      &               TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
-     &               'OPEN_MESH_SRF:READ'
+     &               'OPEN_MESH_SRF:READ_IPOBO_VAL'
                 RETURN
               ENDIF
               IF(IDUM.NE.0) SRF_OBJ_TAB(SRF_ID)%NPTFR =
@@ -2503,7 +2507,7 @@
 #if defined NAGFOR
         INTEGER_SIZE=4
 #else
-        INTEGER_SIZE=INT(SIZEOF(I))!SHOULD RETURN A VALUE BETWEEN
+        INTEGER_SIZE=BIT_SIZE(I)/8!SHOULD RETURN A VALUE BETWEEN
                                    !4 OR 8,MAYBE MORE LATER, BUT IT WILL
                                    !FIT INTO AN INT ANYWAY
 #endif

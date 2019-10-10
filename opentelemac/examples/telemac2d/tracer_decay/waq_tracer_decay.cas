@@ -9,11 +9,11 @@ BOUNDARY CONDITIONS FILE  = geo_tracer_decay.cli
 /
 /-----------------------
 / WATER QUALITY PROCESS         = 17
-/   OPIONS ARE
+/   OPTIONS ARE
 /       2- O2 PROCESS
 /       3- BIOMASS PROCESS
 /       5- EUTRO PROCESS
-/       7- MICORPOL PROCESS
+/       7- MICROPOL PROCESS
 /      11- THERMIC PROCESS
 /      13- AED2 LIBRARY
 /      17- DEGRADATION LAW

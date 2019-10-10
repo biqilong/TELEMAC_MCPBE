@@ -18,18 +18,15 @@ decoVNV = {
         + cycler('marker',\
         ['', '', '', '', '', '', \
         '+', '1', '2', '3', '4', 'x',\
-        '+', '1', '2', '3', '4', 'x'])
+        '+', '1', '2', '3', '4', 'x'])\
         + cycler('linestyle',\
         ['-', '-', '-', '-', '-', '-', \
          '-', '-', '-', '-', '-', '-', \
          ':', ':', ':', ':', ':', ':']),
-    'axes.grid': True,
     'axes.labelsize': 14.,
     'axes.labelpad': 4.0,
     'axes.labelcolor': 'black',
     'axes.titlesize': 14,
-#   'lines.markerfacecolor': 'auto',
-#   'lines.markeredgecolor': 'auto',
     'lines.markeredgewidth': 1.0,
     'lines.markersize': 4,
     'grid.color':'b0b0b0',
@@ -70,7 +67,7 @@ decoVNV_markers = {
         + cycler('marker',\
         ['+', '1', '2', '3', '4', 'x', \
          'o', 'v', '^', '<', '>', 's',\
-         '+', '1', '2', '3', '4', 'x',])
+         '+', '1', '2', '3', '4', 'x',])\
         + cycler('linestyle',\
         ['-', '-', '-', '-', '-', '-', \
          '--', '--', '--', '--', '--', '--',\

@@ -84,8 +84,8 @@
           WI = 2.D-3*(TORATIO**7.5D0)
         ELSE
           WI = 14.D0*((1.D0-0.894D0/SQRT(TORATIO))**4.5D0)
-       ENDIF
-       
+        ENDIF
+!
         QSC%R(I)=WCC*WI*RATIO_SAND(I)*((TOB%R(I)*MU%R(I)
      &  /XMVE)**1.5D0)/((XMVS/XMVE-1.D0)*GRAV)
 !       IF VERY LOW TRANSPORT WE IMPOSE QB = 0 (TO AVOID NUMERICAL

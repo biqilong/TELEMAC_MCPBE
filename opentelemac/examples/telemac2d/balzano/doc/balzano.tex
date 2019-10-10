@@ -199,13 +199,11 @@ are specific to the validation run and the type of processors that were used for
 In this section we compare the solution obtained with all the numerical schemes.
 On the figure \ref{fig:balzano:SL} the evolution of the free surface is presented.
 Finite volume schemes handle very well discontinuities and the jumps are well captured.
-On the other hand, finite element schemes performe very badly on this test case with
-the presence of numerical instabilities. Once the hydraulic jump disapears the solutions are smoother
-and slowly converge towards equilibrium. Note that time step is constant with finite element schemes
-($5s$)
-and is larger than what the CFL condition require for finite volume schemes. 
-This may be another explaination for the instabilities observed with finite element schemes. Sensibility on
-time step should be investigated to ensure that instabilities can be avoided.
+On the other hand, finite element schemes are not able to capture the jumps with large timesteps and numerical instabilities
+are visible. Once the hydraulic jump disapears the solutions are smoother
+and slowly converge towards equilibrium due to numerical diffusion.
+%Note that time step is constant with finite element schemes ($5s$)
+%and is larger than what the CFL condition require for finite volume schemes. 
 
 \begin{figure}[H]
 \begin{minipage}[t]{0.5\textwidth}
@@ -220,9 +218,8 @@ time step should be investigated to ensure that instabilities can be avoided.
 \label{fig:balzano:temporalSL}
 \end{figure}
 
-We should observe a sinusoidal depletion of the right-hand side boundary level \cite{Balzano1997}.
+We should observe a sinusoidal depletion of the right-hand side boundary level.
 The evolution of the water level at two different points, P1 ($x=3600$, $y=600$) and P2 ($x=8000$, $y=600$), located in the reservoir and at the right-hand side of the reservoir is plotted in the figure \ref{fig:balzano:temporalSL}.
-The aim is to check that the analytical solution at equilibrium is reached at the end of the simulations.
 For all the tested schemes, the asymptotic evolution in the reservoir is realized and is fast.
 On the right-hand side part of the domain, the water level abruptly falls at the beginning of
 the simulation, and later oscillates around the value $-2~m$,
@@ -351,7 +348,6 @@ This test case shows that \telemac{2d}'s finite volume schemes are capable of si
 Even if they are not particularly relevant during the transition,
 finite element methods are also able to takle this 
 problem with some precautions regarding the choice of numerical parameters.
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

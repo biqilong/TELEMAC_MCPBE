@@ -144,6 +144,7 @@ subroutine STOCK_TRACER( X , &
                     VarSto      , &
                     PHASE_INITIALISATION &
                                )
+
    ! Traitement du probleme spatial 
    ! ------------------------------
    if( OptionSto == STOCKAGE_LISTE_SECTION ) then

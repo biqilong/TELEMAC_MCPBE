@@ -4,8 +4,6 @@ Validation script for gouttedo
 """
 from vvytel.vnv_study import AbstractVnvStudy
 from execution.telemac_cas import TelemacCas, get_dico
-from postel.plot_actions import *
-from postel.plot_vnv import *
 from data_manip.extraction.telemac_file import TelemacFile
 
 class VnvStudy(AbstractVnvStudy):
@@ -69,6 +67,9 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
+        from postel.plot1d import plot1d
+        from postel.plot_vnv import vnv_plot2d
+        import matplotlib.pyplot as plt
                 # Getting files
         vnv_1_wacgeo = self.get_study_file('vnv_1:WACGEO')
         res_vnv_1_wacgeo = TelemacFile(vnv_1_wacgeo)
@@ -115,3 +116,11 @@ class VnvStudy(AbstractVnvStudy):
         fig_name="img/spectrum"
         print(" "*8+"~> Plotting "+fig_name)
         plt.savefig(fig_name)
+
+        res_vnv_1_wacgeo.close()
+        res_vnv_1_wacres.close()
+        spe.close()
+
+        res_vnv_1_wacgeo.close()
+        res_vnv_1_wacres.close()
+        spe.close()

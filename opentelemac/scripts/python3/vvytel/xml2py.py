@@ -140,8 +140,6 @@ Validation script for gouttedo
 """
 from vvytel.vnv_study import AbstractVnvStudy
 from execution.telemac_cas import TelemacCas, get_dico
-from postel.plot_actions import *
-from postel.plot_vnv import *
 
 class VnvStudy(AbstractVnvStudy):
     """

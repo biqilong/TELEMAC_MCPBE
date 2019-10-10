@@ -93,3 +93,5 @@ class VnvStudy(AbstractVnvStudy):
                    plot_mesh=True,
                    fig_size=(12, 7),
                    fig_name='img/mesh')
+
+        res_vnv_1_t3dres.close()

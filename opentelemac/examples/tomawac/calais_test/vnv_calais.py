@@ -172,7 +172,7 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/powerv5p8')
 
         # Closing files
-        del res_vnv_1_wacres
-        del res_vnv_1_wacgeo
-        del res_v5p8
-        del res_v6p0
+        res_vnv_1_wacres.close()
+        res_vnv_1_wacgeo.close()
+        res_v5p8.close()
+        res_v6p0.close()

@@ -2498,6 +2498,19 @@
 !
 !-----------------------------------------------------------------------
 !
+!     COMPATIBILITY BETWEEN OPTWIND AND WAQTEL FOR WIND VELOCITIES
+!     IF AN ASCII ATMOSPHERIC DATA FILE IS GIVEN
+!
+      IF((OPTWIND.EQ.2.OR.OPTWIND.EQ.3).AND.INCLUS(COUPLING,'WAQTEL')
+     &   .AND.T2D_FILES(T2ATMA)%NAME(1:1).NE.' ') THEN
+        WRITE(LU,*) 'WARNING: WIND DATA ARE EXPECTED TO BE COMPATIBLE '
+     &           // 'WITH WAQTEL I.E. WIND VELOCITIES + OTHER METEO '
+     &           // 'DATA. YOU CANNOT RUN WITH ONLY WIND VELOCITIES '
+     &           // 'IN THE ASCII ATMOSPHERIC DATA FILE'
+      ENDIF
+!
+!-----------------------------------------------------------------------
+!
 !  WRITES OUT THE TITLE
 !
       IF(LISTIN) THEN

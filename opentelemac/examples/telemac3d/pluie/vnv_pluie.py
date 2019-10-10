@@ -45,7 +45,7 @@ class VnvStudy(AbstractVnvStudy):
         res = TelemacFile(self.get_study_file('vnv_1:T3DRES'))
 
         node = res.get_closest_node([0, 0], plane=res.nplan-1)
-        data = res.get_timeseries_on_nodes([node], 'ELEVATION Z')[0]
+        data = res.get_timeseries_on_nodes('ELEVATION Z', [node])[0]
         times = res.times
         anal_sol = 10. + times*864000.*1.e-3/86400.
 
@@ -73,6 +73,8 @@ class VnvStudy(AbstractVnvStudy):
         if err > eps:
             raise TelemacException(\
                     "Epsilon reached in results vs analytic solution{}")
+
+        res.close()
 
 
     def _post(self):
@@ -119,11 +121,11 @@ class VnvStudy(AbstractVnvStudy):
         poly_number = res.discretize_polyline(poly)
 
         for record in [0, 1, 2, 3]:
-            _, abs_curv, poly_z = res.get_data_values_on_vertical_plan(\
-                                      poly, 'ELEVATION Z', poly_number, record)
+            _, abs_curv, poly_z = res.get_data_on_vertical_plane(\
+                                      'ELEVATION Z', record, poly, poly_number)
 
-            _, _, data = res.get_data_values_on_vertical_plan(\
-                               poly, 'SALINITY', poly_number, record)
+            _, _, data = res.get_data_on_vertical_plane(\
+                               'SALINITY', record, poly, poly_number)
 
             mesh = triangulation_from_data(abs_curv, poly_z)
 
@@ -138,3 +140,5 @@ class VnvStudy(AbstractVnvStudy):
         fig_name = 'img/res_Sal'
         print(" "*8+"~> Plotting "+fig_name)
         plt.savefig(fig_name)
+
+        res.close()

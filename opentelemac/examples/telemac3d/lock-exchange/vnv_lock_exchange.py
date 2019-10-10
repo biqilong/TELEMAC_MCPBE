@@ -110,3 +110,5 @@ class VnvStudy(AbstractVnvStudy):
                    filled_contours=True,
                    fig_size=None,
                    fig_name='img/lock-exchange_dpwaveq_PSI2_5corr')
+
+        res.close()

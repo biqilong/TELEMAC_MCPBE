@@ -67,18 +67,17 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
                 # Getting files
         vnv_1_wacres = self.get_study_file('vnv_1:WACRES')
         res_vnv_1_wacres = TelemacFile(vnv_1_wacres)
 
         # Plotting WAVE HEIGHT HM0 over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_wacres,
+        vnv_plot1d_polylines(\
                 'WAVE HEIGHT HM0',
+                res_vnv_1_wacres,
                 poly=[[0, 6], [300, 6]],
-                records=[-1],
+                record=-1,
                 fig_size=(12, 7),
                 fig_name='img/section1d')
 
@@ -102,4 +101,4 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/kmoyen')
 
         # Closing files
-        del res_vnv_1_wacres
+        res_vnv_1_wacres.close()

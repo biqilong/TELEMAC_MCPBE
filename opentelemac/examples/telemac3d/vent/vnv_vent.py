@@ -67,9 +67,9 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_vertical_slice, \
-                triangulation_from_data, plot_timeseries_on_polyline
+        from data_manip.computation.triangulation import triangulation_from_data
         from postel.plot2d import plot2d_vectors
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
         import matplotlib.pyplot as plt
                 # Getting files
         vnv_1_t3dres = self.get_study_file('vnv_1:T3DRES')
@@ -78,20 +78,23 @@ class VnvStudy(AbstractVnvStudy):
         res_vnv_1_t3dhyd = TelemacFile(vnv_1_t3dhyd)
 
         # Plotting WATER DEPTH over polyline over records res_vnv_1_t3dhyd.ntimestep
-        plot_timeseries_on_polyline(\
-                res_vnv_1_t3dhyd,
+        vnv_plot1d_polylines(\
                 'WATER DEPTH',
+                res_vnv_1_t3dhyd,
+                record=[i for i in range(0, res_vnv_1_t3dhyd.ntimestep)],
                 poly=[[0, 50], [500, 50]],
                 fig_size=(12, 7),
                 fig_name='img/freeSurface')
 
         # Plotting vertical split
-        plot_vertical_slice(res,
-                            'VELOCITY V',
-                            poly=[[0, 50], [500, 50]],
-                            record=-1,
-                            fig_size=(10, 15),
-                            fig_name='img/fieldVelo')
+        vnv_plot2d(\
+                   'VELOCITY V',
+                   res,
+                   poly=[[0, 50], [500, 50]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(10, 15),
+                   fig_name='img/fieldVelo')
 
         # Ploting vertical slice as vectors
         # TODO: Do a better plot
@@ -104,17 +107,17 @@ class VnvStudy(AbstractVnvStudy):
 
         # slice at initial time step (-1) of the elevation variable
         _, abs_curv, values_poly_z =\
-               res.get_data_values_on_vertical_plan(\
-                 poly_points, 'ELEVATION Z', poly_number, -1)
+               res.get_data_on_vertical_plane(\
+                 'ELEVATION Z', -1, poly_points, poly_number)
 
         # slice at initial time step (-1) of the velocity u variable
         _, _, vel_u =\
-               res.get_data_values_on_vertical_plan(\
-                 poly_points, 'VELOCITY U', poly_number, -1)
+               res.get_data_on_vertical_plane(\
+                 'VELOCITY U', -1, poly_points, poly_number)
         # slice at initial time step (-1) of the velocity v variable
         _, _, vel_v =\
-               res.get_data_values_on_vertical_plan(\
-                 poly_points, 'VELOCITY V', poly_number, -1)
+               res.get_data_on_vertical_plane(\
+                 'VELOCITY V', -1, poly_points, poly_number)
         # creation of a mesh from the elevation value and curvilinear coordinate of the polyline
         mesh = triangulation_from_data(abs_curv, values_poly_z)
 
@@ -133,5 +136,5 @@ class VnvStudy(AbstractVnvStudy):
         plt.clf()
 
         # Closing files
-        del res
-        del res_vnv_1_t3dhyd
+        res.close()
+        res_vnv_1_t3dhyd.close()

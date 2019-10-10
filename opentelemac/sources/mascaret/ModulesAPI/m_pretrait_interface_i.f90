@@ -30,6 +30,7 @@ subroutine  PRETRAIT_INTERFACE                             ( &
   VersionCode, Noyau                                       , &
   FichierModele, FichierMotCle                             , &
   OptionCasier                                             , &
+  OptionCourlis, FichierMotCleCourlis, FichierDicoCourlis  , &
   OndeSubm                                                 , &
   CalculValidation, TypeValidation                         , &
   Regime, ModeleLit                                        , &
@@ -146,6 +147,9 @@ use Fox_dom                 ! parser XML Fortran
   type(FICHIER_T), intent(inout) :: FichierModele
   type(FICHIER_T), intent(inout) :: FichierMotCle
   logical        , intent(  out) :: OptionCasier
+  logical        , intent(  out) :: OptionCourlis
+  type(FICHIER_T), intent(  out) :: FichierMotCleCourlis
+  Type(FICHIER_T), intent(  out) :: FichierDicoCourlis
   logical        , intent(  out) :: OndeSubm
   logical        , intent(  out) :: CalculValidation
   logical        , intent(  out) :: PerteChargeConfluent

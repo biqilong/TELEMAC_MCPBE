@@ -142,3 +142,5 @@ class VnvStudy(AbstractVnvStudy):
                    cmap_name='viridis',
                    fig_size=(12, 7),
                    fig_name='img/tracer_tf')
+
+        res_vnv_1_t3dres.close()

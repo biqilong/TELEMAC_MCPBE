@@ -4,11 +4,10 @@
 # ~~> dependencies towards standard python
 import sys
 import shutil
-from os import path
+from os import path, remove
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 # ~~> dependencies towards other pytel/modules
 from utils.messages import Messages, svn_banner
-from utils.exceptions import TelemacException
 from config import add_config_argument, update_config, CFGS
 
 def create_mascaret_files(cfg, cas):
@@ -21,21 +20,13 @@ def create_mascaret_files(cfg, cas):
         param cfg Configuration object
         param cas Name of the cas file given as argument
     """
-    # Create the FichierCas.txt if it does not exist
-    if not path.isfile("FichierCas.txt"):
-        print('~+> Creating FichierCas.txt')
-        with open("FichierCas.txt", 'w') as fobj:
-            fobj.write("'"+cas+"'\n")
-    # If already there checking that we have the right name inside
-    else:
-        print('~+> Checking FichierCas.txt')
-        with open("FichierCas.txt", 'r') as fobj:
-            cas_file = fobj.readline()
-        if cas_file.strip("'\n") != cas:
-            raise TelemacException(\
-                   'Incorrect CAS file \nIn FichierCas.txt: '
-                   + cas_file.strip("'\n")
-                   + '\nIn argument      : '+cas)
+    # Always creating FichierCas.txt
+    if path.isfile("FichierCas.txt"):
+        remove("FichierCas.txt")
+
+    print('~+> Creating FichierCas.txt')
+    with open("FichierCas.txt", 'w') as fobj:
+        fobj.write("'"+cas+"'\n")
 
     # Copying the abaque file if necessary
     if not path.isfile("Abaques.txt"):
@@ -44,11 +35,20 @@ def create_mascaret_files(cfg, cas):
                                   'Abaques.txt'),
                         "Abaques.txt")
     # Copying the controle file if necessary
-    if not path.isfile("Controle.Txt"):
+    if not path.isfile("Controle.txt"):
         print('~+> Copying Controle.txt')
         shutil.copyfile(path.join(cfg['root'], 'sources', 'mascaret', 'data',
                                   'Controle.txt'),
                         "Controle.txt")
+    # Copying Damocle Courlis dictionnary if necessary
+    if not path.isfile("dico_Courlis.txt"):
+        print('~+> Copying dico_Courlis.txt')
+        shutil.copyfile(path.join(cfg['root'],
+                                  'sources',
+                                  'mascaret',
+                                  'data',
+                                  'dico_Courlis.txt'),
+                        "dico_Courlis.txt")
 
 def run_mascaret():
     """

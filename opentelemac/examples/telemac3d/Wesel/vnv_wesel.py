@@ -80,4 +80,4 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/mesh')
 
         # Closing files
-        del res_vnv_1_t3dres
+        res_vnv_1_t3dres.close()

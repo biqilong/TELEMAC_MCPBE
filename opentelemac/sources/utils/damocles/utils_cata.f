@@ -1082,8 +1082,13 @@
           LCODE_NAME = 'stbtel    '
         ELSE IF(CODE_NAME(1:9).EQ.'POSTEL3D ') THEN
           LCODE_NAME = 'postel3d  '
+        ELSE IF(CODE_NAME(1:9).EQ.'GAIA     ') THEN
+          LCODE_NAME = 'gaia      '
+        ELSE IF(CODE_NAME(1:9).EQ.'KHIONE   ') THEN
+          LCODE_NAME = 'khione    '
         ELSE
-          LCODE_NAME = 'xxxxxxxxxx'
+          WRITE(LU,*) 'UNKNOWN MODULE: ',CODE_NAME
+          CALL PLANTE(1)
         ENDIF
         END FUNCTION
 !

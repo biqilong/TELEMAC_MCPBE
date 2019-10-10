@@ -97,7 +97,7 @@ def rotate(x, y, angle=0., center=[0., 0.]):
     rot00 = np.cos(np.pi*angle/180.)
     rot01 = np.sin(np.pi*angle/180.)
     xnew = rot00*(x - center[0]) + rot01*(y - center[1])
-    ynew =-rot01*(x - center[0]) + rot00*(y - center[1])
+    ynew = -rot01*(x - center[0]) + rot00*(y - center[1])
     return xnew + center[0], ynew + center[1]
 
 def plot2d_annotate_bnd(axe, tri, bnd_info,
@@ -164,7 +164,6 @@ def plot2d_annotate_liq_bnd(axe, tri, liq_bnd_info, colors=None, **kwargs):
 
     if colors is None:
         colors = mpl.pyplot.rcParams['axes.prop_cycle'].by_key()['color']
-    label_bool = [False for i in range(len(colors))]
 
     nliq_bnd = np.max(numliq)
 
@@ -352,7 +351,7 @@ def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
 
         cbar = fig.colorbar(img, ax=axe, cax=cbar_axe, ticks=cbar_ticks)
         cbar.set_label(data_name)
-       
+
     # Set frame default limits
     xlim, ylim = set_frame_limits(mesh)
     axe.set_xlim(xlim[0], xlim[1])
@@ -361,6 +360,8 @@ def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
     # Adding labels
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
+
+    return img
 
 def plot2d_scalar_contour(fig, axe, mesh, data,\
         x_label='', y_label='', data_name='data',\
@@ -405,19 +406,20 @@ def plot2d_scalar_contour(fig, axe, mesh, data,\
             if levels is not None:
                 img = axe.tricontour(mesh, data, levels, cmap=cmap, **kwargs)
             else:
-                img = axe.tricontour(mesh, data, cmap=cmap, **kwargs) 
+                img = axe.tricontour(mesh, data, cmap=cmap, **kwargs)
         else:
             if levels is not None:
-                img = axe.tricontour(mesh, data, levels, colors=colors, **kwargs)
+                img = axe.tricontour(mesh, data, levels, colors=colors,
+                                     **kwargs)
             else:
-                img = axe.tricontour(mesh, data, colors=colors, **kwargs) 
+                img = axe.tricontour(mesh, data, colors=colors, **kwargs)
     elif isinstance(mesh, tuple):
         x, y = mesh
         if colors is None:
             if levels is not None:
                 img = axe.contour(x, y, data, levels, cmap=cmap, **kwargs)
             else:
-                img = axe.contour(x, y, data, cmap=cmap, **kwargs) 
+                img = axe.contour(x, y, data, cmap=cmap, **kwargs)
         else:
             if levels is not None:
                 img = axe.contour(x, y, data, levels, colors=colors, **kwargs)

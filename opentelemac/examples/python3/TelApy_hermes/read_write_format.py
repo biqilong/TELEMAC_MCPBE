@@ -34,8 +34,8 @@ def read_write(mesh_file, fformat, outformat, compare=True):
 
     str_file = str(myfile)
 
-    del myfile
-    del myfile2
+    myfile.close()
+    myfile2.close()
 
     myfile2 = HermesFile(mesh_file2, outformat, 'r')
     str_file2 = str(myfile2)
@@ -43,6 +43,8 @@ def read_write(mesh_file, fformat, outformat, compare=True):
     # Both file should contain the same data
     if compare:
         assert str_file == str_file2
+
+    myfile2.close()
 
 
 if __name__ == "__main__":

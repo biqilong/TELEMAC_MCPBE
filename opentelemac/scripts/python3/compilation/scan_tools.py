@@ -69,7 +69,7 @@ def get_scan_content(fle, root, bypass):
 
     # ~~ Interpret [general] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if 'general' not in cfgfile:
-        raise TelemacException(
+        raise TelemacException(\
              'Could not find the general section in the '
              'cmdf-scan file: ' + fle)
     else:

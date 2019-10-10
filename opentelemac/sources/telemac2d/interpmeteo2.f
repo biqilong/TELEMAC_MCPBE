@@ -128,7 +128,7 @@
 !  READS VARIABLES AND FILLS IN TABENT_IPM2 ARRAY
 !
         DO I=1,NBENR_IPM2
-          READ(NFO,*) (TABENT_IPM2(I,J),J=1,NINPUTVAR)
+          READ(NFO,*,ERR=40) (TABENT_IPM2(I,J),J=1,NINPUTVAR)
         ENDDO
 !
         WRITE(LU,*)'======================================='
@@ -250,6 +250,22 @@
 !
 !-----------------------------------------------------------------------
 !
+      GO TO 200
+!
+!-----------------------------------------------------------------------
+!
+ 40     CONTINUE
+        WRITE(LU,*) 'INTERPMETEO2: PROBLEM TO READ THE ASCII ' //
+     &              'ATMOSPHERIC DATA FILE'
+        WRITE(LU,*) 'THE EXPECTED FORMAT IS 1-TIME 2-TAIR 3-PVAP ' //
+     &              '4-WIND MAGN 5-WIND DIR 6-NEBULO 7-RAY3 ' //
+     &              '8-PATM 9-RAIN'
+        CALL PLANTE(1)
+        STOP
+!
+ 200    CONTINUE
+!
+!-----------------------------------------------------------------------
+!
       RETURN
       END
-

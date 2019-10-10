@@ -43,4 +43,3 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-

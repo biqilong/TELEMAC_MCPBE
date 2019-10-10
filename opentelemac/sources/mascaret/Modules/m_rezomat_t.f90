@@ -58,11 +58,11 @@ TYPE REZOMAT_T
   integer , dimension(:) , pointer :: SecSin        => null() ! Pour chaque section, donne le numero de la singularite presente immediatement apres
   integer , dimension(:) , pointer :: SecLiai       => null() ! Pour chaque section donne le nombre des liaisons
   integer , dimension(:) , pointer :: LiaiSec       => null() ! Pour chaque liaison donne la section Amont renvoit 0 si la liaison est de type C-C
-  real*8  , dimension(:) , pointer :: AFLAG         => null() ! parametres de calcul de Y12M
-  real*8  , dimension(:) , pointer :: valA          => null() ! Valeurs des elements non nuls de la matrice
-  real*8  , dimension(:) , pointer :: b             => null() ! Second membre du systeme d'equations lineaires
-  real*8  , dimension(:) , pointer :: pivot         => null() ! Valeurs des pivots
-  real*8  , dimension(:,:) , pointer :: AB          => null() ! Matrice bande LAPACK
+  real(DOUBLE) , dimension(:) , pointer :: AFLAG         => null() ! parametres de calcul de Y12M
+  real(DOUBLE) , dimension(:) , pointer :: valA          => null() ! Valeurs des elements non nuls de la matrice
+  real(DOUBLE) , dimension(:) , pointer :: b             => null() ! Second membre du systeme d'equations lineaires
+  real(DOUBLE) , dimension(:) , pointer :: pivot         => null() ! Valeurs des pivots
+  real(DOUBLE) , dimension(:,:) , pointer :: AB          => null() ! Matrice bande LAPACK
 
 END TYPE REZOMAT_T
 
@@ -219,7 +219,7 @@ function GET_TYPE_VAR_REZOMAT(NomVar, TypeVar, Categorie, Modifiable, dimVar, Me
      dimVar                = 0
   else if ( NomVar == 'State.Rezomat.LDAB') then
      TypeVar = 'INT'
-     dimVar                = 0   
+     dimVar                = 0
   else if ( NomVar == 'State.Rezomat.IFAIL') then
      TypeVar = 'INT'
      dimVar                = 0
@@ -255,7 +255,7 @@ function GET_TYPE_VAR_REZOMAT(NomVar, TypeVar, Categorie, Modifiable, dimVar, Me
      dimVar                = 1
   else  if ( NomVar == 'State.Rezomat.noVarDZc') then
      TypeVar = 'TABINT'
-     dimVar                = 1   
+     dimVar                = 1
   else  if ( NomVar == 'State.Rezomat.KdNode') then
      TypeVar = 'TABINT'
      dimVar                = 1
@@ -270,7 +270,7 @@ function GET_TYPE_VAR_REZOMAT(NomVar, TypeVar, Categorie, Modifiable, dimVar, Me
      dimVar                = 1
   else  if ( NomVar == 'State.Rezomat.LinkNd') then
      TypeVar = 'TABINT'
-     dimVar                = 1  
+     dimVar                = 1
   else  if ( NomVar == 'State.Rezomat.NdLink') then
      TypeVar = 'TABINT'
      dimVar                = 1
@@ -288,7 +288,7 @@ function GET_TYPE_VAR_REZOMAT(NomVar, TypeVar, Categorie, Modifiable, dimVar, Me
      dimVar                = 1
   else  if ( NomVar == 'State.Rezomat.AB') then
      TypeVar = 'TABDOUBLE'
-     dimVar                = 2   
+     dimVar                = 2
   else
     GET_TYPE_VAR_REZOMAT = 1
     TypeVar = "?"
@@ -301,7 +301,7 @@ function GET_TYPE_VAR_REZOMAT(NomVar, TypeVar, Categorie, Modifiable, dimVar, Me
 end function GET_TYPE_VAR_REZOMAT
 
 ! .................................................................................................................................
-! Permet d'acceder a la taille des valeurs des differents champs du type 
+! Permet d'acceder a la taille des valeurs des differents champs du type
 !                     -- Generer automatiquement --
 ! .................................................................................................................................
 
@@ -320,7 +320,7 @@ end function GET_TYPE_VAR_REZOMAT
       taille2                = 0
       taille3                = 0
       MessageErreur          = ""
-      
+
       if ( NomVar == 'State.Rezomat.SOLV') then
          taille1 = 0
          taille2 = 0
@@ -356,7 +356,7 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.LDAB') then
          taille1 = 0
          taille2 = 0
-         taille3 = 0   
+         taille3 = 0
      else if ( NomVar == 'State.Rezomat.IFAIL') then
          taille1 = 0
          taille2 = 0
@@ -449,7 +449,7 @@ end function GET_TYPE_VAR_REZOMAT
             taille1 = 0
          endif
          taille2 = 0
-         taille3 = 0   
+         taille3 = 0
       else if ( NomVar == 'State.Rezomat.KdNode') then
          if (ASSOCIATED(Instance%typSec)) then
             taille1 = size(Instance%typSec)
@@ -538,7 +538,7 @@ end function GET_TYPE_VAR_REZOMAT
             taille1 = 0
             taille2 = 0
          endif
-         taille3 = 0   
+         taille3 = 0
       else
          GET_TAILLE_VAR_REZOMAT = 1
          taille1                = -1
@@ -549,7 +549,7 @@ end function GET_TYPE_VAR_REZOMAT
    end function GET_TAILLE_VAR_REZOMAT
 
 ! .................................................................................................................................
-! Permet de modifier la taille les variables de type pointeurs fortran 
+! Permet de modifier la taille les variables de type pointeurs fortran
 !                     -- Generer automatiquement --
 ! .................................................................................................................................
 
@@ -795,7 +795,7 @@ end function GET_TYPE_VAR_REZOMAT
               MessageErreur = 'SET_TAILLE_VAR_REZOMAT : Unable to allocate REZOMAT_T.noVarDZc'
               return
            endif
-        endif  
+        endif
       else if ( NomVar == 'State.Rezomat.KdNode') then
         if (ASSOCIATED(Instance%typSec)) then
            t1 = size(Instance%typSec)
@@ -1028,7 +1028,7 @@ end function GET_TYPE_VAR_REZOMAT
    end function SET_TAILLE_VAR_REZOMAT
 
 ! .................................................................................................................................
-! Accesseurs permettant d'acceder aux valeurs des differents champs du type 
+! Accesseurs permettant d'acceder aux valeurs des differents champs du type
 !                     -- Generer automatiquement --
 ! .................................................................................................................................
 
@@ -1056,7 +1056,7 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.pivot') then
          valeur = Instance%pivot(index1)
       else if ( NomVar == 'State.Rezomat.AB') then
-         valeur = Instance%AB(index1,index2)   
+         valeur = Instance%AB(index1,index2)
       else
          GET_DOUBLE_REZOMAT = 1
          valeur                = -9999999.9999
@@ -1079,7 +1079,7 @@ end function GET_TYPE_VAR_REZOMAT
       GET_INT_REZOMAT = 0
       valeur                = -9999
       MessageErreur          = ""
-      
+
       if ( NomVar == 'State.Rezomat.SOLV') then
          valeur = Instance%SOLV
       else if ( NomVar == 'State.Rezomat.N') then
@@ -1097,11 +1097,11 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.KU') then
          valeur = Instance%KU
       else if ( NomVar == 'State.Rezomat.LDAB') then
-         valeur = Instance%LDAB   
+         valeur = Instance%LDAB
       else if ( NomVar == 'State.Rezomat.IFAIL') then
          valeur = Instance%IFAIL
       else if ( NomVar == 'State.Rezomat.ipiv') then
-         valeur = Instance%ipiv(index1)   
+         valeur = Instance%ipiv(index1)
       else if ( NomVar == 'State.Rezomat.IFLAG') then
          valeur = Instance%IFLAG(index1)
       else if ( NomVar == 'State.Rezomat.RowA') then
@@ -1121,7 +1121,7 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.noVarDQl') then
          valeur = Instance%noVarDQl(index1)
       else if ( NomVar == 'State.Rezomat.noVarDZc') then
-         valeur = Instance%noVarDZc(index1)   
+         valeur = Instance%noVarDZc(index1)
       else if ( NomVar == 'State.Rezomat.KdNode') then
          valeur = Instance%typSec(index1)
       else if ( NomVar == 'State.Rezomat.headJunction') then
@@ -1131,9 +1131,9 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.WeirNd') then
          valeur = Instance%SecSin(index1)
       else if ( NomVar == 'State.Rezomat.LinkNd') then
-         valeur = Instance%SecLiai(index1)   
+         valeur = Instance%SecLiai(index1)
       else if ( NomVar == 'State.Rezomat.NdLink') then
-         valeur = Instance%LiaiSec(index1)   
+         valeur = Instance%LiaiSec(index1)
       else
          GET_INT_REZOMAT = 1
          valeur                = -9999
@@ -1171,7 +1171,7 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.pivot') then
          Instance%pivot(index1) = valeur
       else if ( NomVar == 'State.Rezomat.AB') then
-         Instance%AB(index1,index2) = valeur   
+         Instance%AB(index1,index2) = valeur
       else
          SET_DOUBLE_REZOMAT = 1
          MessageErreur         = "SET_DOUBLE_REZOMAT - Unknown variable name"
@@ -1192,7 +1192,7 @@ end function GET_TYPE_VAR_REZOMAT
 
       SET_INT_REZOMAT = 0
       MessageErreur          = ""
-      
+
       if ( NomVar == 'State.Rezomat.SOLV') then
          Instance%SOLV = valeur
       else if ( NomVar == 'State.Rezomat.N') then
@@ -1214,7 +1214,7 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.IFAIL') then
          Instance%IFAIL = valeur
       else if ( NomVar == 'State.Rezomat.ipiv') then
-         Instance%ipiv(index1) = valeur  
+         Instance%ipiv(index1) = valeur
       else if ( NomVar == 'State.Rezomat.IFLAG') then
          Instance%IFLAG(index1) = valeur
       else if ( NomVar == 'State.Rezomat.RowA') then
@@ -1234,7 +1234,7 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.noVarDQl') then
          Instance%noVarDQl(index1) = valeur
       else if ( NomVar == 'State.Rezomat.noVarDZc') then
-         Instance%noVarDZc(index1) = valeur   
+         Instance%noVarDZc(index1) = valeur
       else if ( NomVar == 'State.Rezomat.KdNode') then
          Instance%typSec(index1) = valeur
       else if ( NomVar == 'State.Rezomat.headJunction') then
@@ -1244,7 +1244,7 @@ end function GET_TYPE_VAR_REZOMAT
       else if ( NomVar == 'State.Rezomat.WeirNd') then
          Instance%SecSin(index1) = valeur
       else if ( NomVar == 'State.Rezomat.LinkNd') then
-         Instance%SecLiai(index1) = valeur   
+         Instance%SecLiai(index1) = valeur
       else if ( NomVar == 'State.Rezomat.NdLink') then
          Instance%LiaiSec(index1) = valeur
       else

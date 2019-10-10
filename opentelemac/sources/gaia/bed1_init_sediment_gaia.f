@@ -206,21 +206,21 @@
 !       CHECK PARAMLETER VALUES FOR CONSOLIDATION
         IF(BED_MODEL.EQ.2)THEN
           DO IPOIN=1,NPOIN
-             DO ILAYER = 2,NOMBLAY
-                IF(CONC_MUD(ILAYER,IPOIN).LT.
-     &           CONC_MUD(ILAYER-1,IPOIN))THEN
-                 WRITE(LU,*)'MUD CONCENTRATION OF ILAYER MUST BE',
-     &             ' < TO MUD CONCNTRATION OF ILAYER +1 '
-                 CALL PLANTE(1)
-                 STOP
-                ENDIF
-             ENDDO
-          IF(TRANS_MASS(NOMBLAY,IPOIN).LT.0.D0.OR.
-     &         TRANS_MASS(NOMBLAY,IPOIN).GT.1.D-8)THEN
-               WRITE(LU,*)'MASS TRANSFERT FOR LAST LAYER ',
-     &             'OF CONSOLIDATIONMUST BE EQUAL TO 0'
-               CALL PLANTE(1)
-               STOP
+            DO ILAYER = 2,NOMBLAY
+              IF(CONC_MUD(ILAYER,IPOIN).LT.
+     &        CONC_MUD(ILAYER-1,IPOIN)) THEN
+                WRITE(LU,*)'MUD CONCENTRATION OF ILAYER MUST BE',
+     &          ' < TO MUD CONCNTRATION OF ILAYER +1 '
+                CALL PLANTE(1)
+                STOP
+              ENDIF
+            ENDDO
+            IF(TRANS_MASS(NOMBLAY,IPOIN).LT.0.D0.OR.
+     &        TRANS_MASS(NOMBLAY,IPOIN).GT.1.D-8) THEN
+              WRITE(LU,*)'MASS TRANSFERT FOR LAST LAYER ',
+     &            'OF CONSOLIDATIONMUST BE EQUAL TO 0'
+              CALL PLANTE(1)
+              STOP
             ENDIF
           ENDDO
         ENDIF
@@ -523,44 +523,46 @@
             ENDDO
            ENDDO
         ELSE
-         DO IPOIN = 1,NPOIN
-          DO ILAYER = 1,NOMBLAY
-           XMVS_LAY=0.D0
-           DO ISAND = 1,NSAND ! AVERAGE DENSITY OF SAND FOR THE LAYER
-            XMVS_LAY=XMVS_LAY+
-     &      RATIO_SAND(ISAND,ILAYER,IPOIN)*XMVS0(NUM_ISAND_ICLA(ISAND))
-           ENDDO
-            TERM=0.D0
-            IF(NMUD.GT.0) THEN
-              TERM=RATIO_MUD_SAND(ILAYER,IPOIN)/CONC_MUD(ILAYER,IPOIN)-
-     &        (XKV0(ILAYER)*(1.D0-RATIO_MUD_SAND(ILAYER,IPOIN)))/
-     &        (XMVS_LAY*(1.D0-XKV0(ILAYER)))
-!           TERM REPRESENTS THE DIFFERENCE BETWEEN MUD VOLUME AND VOID
-!           VOLUME
-            ENDIF
-!           DISCR IS POSITIVE WHEN MUD FILLS ALL THE SAND POROSITY
-!           OTHERWISE IS ZERO
-            DISCR=MAX(0.D0,TERM)
-            MASS_TOT = ES(IPOIN,ILAYER)/
-     &      ((1.D0-RATIO_MUD_SAND(ILAYER,IPOIN))/
-     &      (XMVS_LAY*(1.D0-XKV0(ILAYER)))+DISCR)
+          DO IPOIN = 1,NPOIN
+            DO ILAYER = 1,NOMBLAY
+              XMVS_LAY=0.D0
+              DO ISAND = 1,NSAND ! AVERAGE DENSITY OF SAND FOR THE LAYER
+                XMVS_LAY=XMVS_LAY+RATIO_SAND(ISAND,ILAYER,IPOIN)
+     &          *XMVS0(NUM_ISAND_ICLA(ISAND))
+              ENDDO
+              TERM=0.D0
+              IF(NMUD.GT.0) THEN
+                TERM =
+     &            RATIO_MUD_SAND(ILAYER,IPOIN)/CONC_MUD(ILAYER,IPOIN)-
+     &            (XKV0(ILAYER)*(1.D0-RATIO_MUD_SAND(ILAYER,IPOIN)))/
+     &            (XMVS_LAY*(1.D0-XKV0(ILAYER)))
+!             TERM REPRESENTS THE DIFFERENCE BETWEEN MUD VOLUME AND VOID
+!             VOLUME
+              ENDIF
+!             DISCR IS POSITIVE WHEN MUD FILLS ALL THE SAND POROSITY
+!             OTHERWISE IS ZERO
+              DISCR=MAX(0.D0,TERM)
+              MASS_TOT = ES(IPOIN,ILAYER)/
+     &        ((1.D0-RATIO_MUD_SAND(ILAYER,IPOIN))/
+     &        (XMVS_LAY*(1.D0-XKV0(ILAYER)))+DISCR)
 !
-            MASS_MUD_TOT(ILAYER,IPOIN) = RATIO_MUD_SAND(ILAYER,IPOIN)
-     &      *MASS_TOT
-            MASS_SAND_TOT(ILAYER,IPOIN) =
-     &      (1.D0-RATIO_MUD_SAND(ILAYER,IPOIN))*MASS_TOT
-!           COMPUTES MASS FOR EVERY MUD
-            DO IMUD = 1,NMUD
-              MASS_MUD(IMUD,ILAYER,IPOIN) = MASS_MUD_TOT(ILAYER,IPOIN)
-     &        *RATIO_MUD(IMUD,ILAYER,IPOIN)
-            ENDDO
-!           COMPUTES MASS FOR EVERY SAND
-            DO ISAND = 1,NSAND
-              MASS_SAND(ISAND,ILAYER,IPOIN) =
-     &        MASS_SAND_TOT(ILAYER,IPOIN)*RATIO_SAND(ISAND,ILAYER,IPOIN)
+              MASS_MUD_TOT(ILAYER,IPOIN) = RATIO_MUD_SAND(ILAYER,IPOIN)
+     &        *MASS_TOT
+              MASS_SAND_TOT(ILAYER,IPOIN) =
+     &        (1.D0-RATIO_MUD_SAND(ILAYER,IPOIN))*MASS_TOT
+!             COMPUTES MASS FOR EVERY MUD
+              DO IMUD = 1,NMUD
+                MASS_MUD(IMUD,ILAYER,IPOIN) = MASS_MUD_TOT(ILAYER,IPOIN)
+     &          *RATIO_MUD(IMUD,ILAYER,IPOIN)
+              ENDDO
+!             COMPUTES MASS FOR EVERY SAND
+              DO ISAND = 1,NSAND
+                MASS_SAND(ISAND,ILAYER,IPOIN) =
+     &            MASS_SAND_TOT(ILAYER,IPOIN)*
+     &            RATIO_SAND(ISAND,ILAYER,IPOIN)
+              ENDDO
             ENDDO
           ENDDO
-         ENDDO
         ENDIF
 !
 !

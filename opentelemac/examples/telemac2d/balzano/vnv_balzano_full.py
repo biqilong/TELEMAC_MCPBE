@@ -412,7 +412,7 @@ class VnvStudy(AbstractVnvStudy):
         #======================================================================
         # Delete results
         for res in res_list:
-            del res
-        del geom_res
-        del nerd_res
-        del kin1_res
+            res.close()
+        geom_res.close()
+        nerd_res.close()
+        kin1_res.close()

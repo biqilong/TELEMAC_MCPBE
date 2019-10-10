@@ -4,8 +4,10 @@ Contains plot functions wrappers for vnv
 """
 from data_manip.extraction.telemac_file import linspace_poly
 from data_manip.computation.polyline_integrals import compute_segments_tangents
+from data_manip.computation.triangulation import triangulation_from_data
 from postel.plot2d import \
-        plot2d_triangle_mesh, plot2d_annotate_bnd, plot2d_scalar_map, \
+        plot2d_triangle_mesh, plot2d_annotate_bnd, plot2d_annotate_liq_bnd, \
+        plot2d_scalar_map, \
         plot2d_scalar_filled_contour, plot2d_scalar_contour, \
         plot2d_streamlines, plot2d_vectors, mask_triangles, set_extrema
 from postel.plot3d import plot3d_scalar_map
@@ -17,6 +19,58 @@ import matplotlib.pyplot as plt
 # _____             ________________________________________________
 # ____/ BAR PLOTS  /_______________________________________________/
 #
+
+def get_data(res, var_name, record,
+             zslice=None, poly=None, poly_number=None, plane=0):
+    """
+    Macro function to extract 2d info from a telemac file
+
+    Select the right function depending on zslice, poly and plane number.
+
+    @param res (TelemacFile) Structure of telemac file from which to extract
+    @param var_name (str) Name of the variable to extract
+    @param record (int) Record to extract
+    @param zslice (float) value for horizontal slice at z=zslice
+    @param poly (list) Polyline for vertical slice
+    @param poly_number (list) Polygon discretization
+    @param plane (int) Extraction on a specific plane
+
+    @returns (matplotlib.triangulation, np.array) The data mesh, the data
+    """
+    ndim = res.get_mesh_dimension()
+
+    if zslice is not None and poly is None:
+        # Get data on horizontal slice plane
+        scalar = res.get_data_on_horizontal_slice(var_name, record, zslice)
+        return res.tri, scalar
+
+    elif poly is not None and zslice is None:
+        # Get data on vertical slice plane (from polyline)
+        namez = res.varnames[0]
+        if poly_number is None:
+            poly_number = res.discretize_polyline(poly)
+        _, abs_curv, values_z = \
+            res.get_data_on_vertical_plane(\
+                           namez, record, poly, poly_number)
+        _, _, scalar = \
+            res.get_data_on_vertical_plane(\
+                           var_name, record, poly, poly_number)
+        mesh = triangulation_from_data(abs_curv, values_z)
+        return mesh, scalar.flatten()
+
+    elif poly is None and zslice is None:
+        if ndim == 3:
+            # Get data on plane (3D)
+            scalar = res.get_data_on_horizontal_plane(var_name, record, plane)
+
+        elif ndim == 2:
+            # Get data on mesh (2D)
+            scalar = res.get_data_value(var_name, record)
+        return res.tri, scalar
+
+    else:
+        raise TelemacException("Cannot extract from both horizontal and " + \
+                               "vertical slice planes")
 
 def vnv_plotbar(\
          data, fig_size=None,
@@ -91,12 +145,12 @@ def vnv_plotbar(\
                 if annotate_threshold is not None:
                     if y <= annotate_threshold:
                         plt.annotate(\
-                            label, (x,y), textcoords="offset points",
-                            fontsize=10, xytext=(0,5), ha='center')
+                            label, (x, y), textcoords="offset points",
+                            fontsize=10, xytext=(0, 5), ha='center')
                 else:
                     plt.annotate(\
-                        label, (x,y), textcoords="offset points",
-                        fontsize=10, xytext=(0,5), ha='center')
+                        label, (x, y), textcoords="offset points",
+                        fontsize=10, xytext=(0, 5), ha='center')
 
     # Setting y scale
     plt.yscale(y_scale)
@@ -291,7 +345,7 @@ def vnv_plot1d(\
 
 def vnv_plot1d_history(\
         var_name, res,
-        legend_labels='', fig_size=(10, 4), fig_title=None,
+        legend_labels='', fig_size=None, fig_title=None,
         points=None, nodes=None,
         points_labels=None, nodes_labels=None,
         ref_name=None, ref_file=None, ref_label='analytic',
@@ -346,13 +400,13 @@ def vnv_plot1d_history(\
         assert ref_file is None
 
         if points is not None:
-            ref_data = res0.get_timeseries_on_points(points, ref_name)
+            ref_data = res0.get_timeseries_on_points(ref_name, points)
             for i, _ in enumerate(points):
                 ax.plot(res0.times*x_factor, ref_data[i, :]*y_factor,
                         label=ref_label, color='r', ls='--', marker=',')
 
         if nodes is not None:
-            ref_data = res0.get_timeseries_on_nodes(nodes, ref_name)
+            ref_data = res0.get_timeseries_on_nodes(ref_name, nodes)
             for i, _ in enumerate(nodes):
                 ax.plot(res0.times*x_factor, ref_data[i, :]*y_factor,
                         label=ref_label, color='r', ls='--', marker=',')
@@ -371,7 +425,7 @@ def vnv_plot1d_history(\
                 if points_labels is None:
                     points_labels = \
                             ["Point {}".format(point) for point in points]
-                data = res_item.get_timeseries_on_points(points, var_name)
+                data = res_item.get_timeseries_on_points(var_name, points)
                 for i, _ in enumerate(points):
                     ax.plot(res_item.times*x_factor, data[i, :]*y_factor,
                             label=legend_labels[idx] + ' ' + points_labels[i],
@@ -379,7 +433,7 @@ def vnv_plot1d_history(\
             if nodes is not None:
                 if nodes_labels is None:
                     nodes_labels = ["Node {}".format(node) for node in nodes]
-                data = res_item.get_timeseries_on_nodes(nodes, var_name)
+                data = res_item.get_timeseries_on_nodes(var_name, nodes)
                 for i, _ in enumerate(nodes):
                     ax.plot(res_item.times*x_factor, data[i, :]*y_factor,
                             label=legend_labels[idx] + ' ' + nodes_labels[i],
@@ -388,7 +442,7 @@ def vnv_plot1d_history(\
         if points is not None:
             if points_labels is None:
                 points_labels = ["Point {}".format(point) for point in points]
-            data = res.get_timeseries_on_points(points, var_name)
+            data = res.get_timeseries_on_points(var_name, points)
             for i, _ in enumerate(points):
                 ax.plot(res.times*x_factor, data[i, :]*y_factor,
                         label=legend_labels + ' ' + points_labels[i],
@@ -396,7 +450,7 @@ def vnv_plot1d_history(\
         if nodes is not None:
             if nodes_labels is None:
                 nodes_labels = ["Node {}".format(node) for node in nodes]
-            data = res.get_timeseries_on_nodes(nodes, var_name)
+            data = res.get_timeseries_on_nodes(var_name, nodes)
             for i, _ in enumerate(nodes):
                 ax.plot(res.times*x_factor, data[i, :]*y_factor,
                         label=legend_labels + ' ' + nodes_labels[i],
@@ -494,9 +548,9 @@ def vnv_plot1d_polylines(\
     # Set record/time
     if time is not None:
         if isinstance(time, list):
-            record = [res0.get_time_record(time[i]) for i in range(len(time))]
+            record = [res0.get_closest_record(time[i]) for i in range(len(time))]
         else:
-            record = res0.get_time_record(time)
+            record = res0.get_closest_record(time)
     else:
         if isinstance(record, list):
             time = [res0.times[record[i]] for i in range(len(record))]
@@ -522,10 +576,10 @@ def vnv_plot1d_polylines(\
     if plot_bottom:
         if 'BOTTOM' in res0.varnames:
             _, abs_curv, bot_polylines = res0.get_timeseries_on_polyline(
-                poly, 'BOTTOM', poly_number)
+               'BOTTOM', poly, poly_number)
         elif 'FOND' in res0.varnames:
             _, abs_curv, bot_polylines = res0.get_timeseries_on_polyline(
-                poly, 'FOND', poly_number)
+                'FOND', poly, poly_number)
         else:
             raise TelemacException("Need BOTTOM variable to plot bottom")
         ax.plot(abs_curv*x_factor, bot_polylines[:, 0]*y_factor,
@@ -537,7 +591,7 @@ def vnv_plot1d_polylines(\
     # plot reference from variable in res
     if ref_name is not None:
         _, abs_curv, ana_polylines = res0.get_timeseries_on_polyline(
-            poly, ref_name, poly_number)
+            ref_name, poly, poly_number)
         ax.plot(abs_curv*x_factor,
                 ana_polylines[:, record]*y_factor,
                 label=ref_label, color='r', ls='--', marker=',')
@@ -555,27 +609,27 @@ def vnv_plot1d_polylines(\
             if isinstance(var_name, list):
                 _, abs_curv, char_polylines = \
                         res_item.get_timeseries_on_polyline(\
-                    poly, var_name[idx], poly_number)
+                    var_name[idx], poly, poly_number)
                 ax.plot(abs_curv*x_factor, char_polylines[:, record]*y_factor,
                         label=legend_labels[idx], **kwargs)
             else:
                 _, abs_curv, char_polylines = \
                         res_item.get_timeseries_on_polyline(\
-                    poly, var_name, poly_number)
+                    var_name, poly, poly_number)
                 ax.plot(abs_curv*x_factor, char_polylines[:, record]*y_factor,
                         label=legend_labels[idx], **kwargs)
 
     elif isinstance(record, list) or isinstance(record, range):
         for idx, rec in enumerate(record):
             _, abs_curv, char_polylines = res.get_timeseries_on_polyline(
-                poly, var_name, poly_number)
+                var_name, poly, poly_number)
             legend_label = 't={} s'.format(res.get_data_time(rec))
             ax.plot(abs_curv*x_factor, char_polylines[:, rec]*y_factor,
                     label=legend_label, **kwargs)
     else:
         _, abs_curv, char_polylines = \
                 res.get_timeseries_on_polyline(\
-            poly, var_name, poly_number)
+            var_name, poly, poly_number)
         ax.plot(abs_curv*x_factor, char_polylines[:, record]*y_factor,
                 label=legend_labels, **kwargs)
 
@@ -739,7 +793,8 @@ def vnv_plot2d(\
         cbar_label='', cbar_priority='scalar',
         cbar_autoextend=False, cbar_extend='neither',
         plot_mesh=False, plot_only_dry_mesh=False,
-        annotate_bnd=False, annotate_time=False,
+        annotate_bnd=False,
+        annotate_liq_bnd=False, annotate_time=False,
         mask_tidal_flats=False, tidal_flats_threshold=0.005,
         scalar_map=False, filled_contours=False,
         contours=False, colored_contours=False,
@@ -790,6 +845,7 @@ def vnv_plot2d(\
     @param mask_tidal_flats (bool) mask scalar on dry zones
     @param tidal_flats_threshold (float) (default: 0.005)
     @param annotate_bnd (bool) annotate boundary conditions
+    @param annotate_liq_bnd (bool) annotate liquid boundaries
     @param annotate_time (bool) annotate time
     @param scalar_map (bool) plot scalar map (mutualy exclusive with filled
     contours)
@@ -823,7 +879,7 @@ def vnv_plot2d(\
 
     # If time is positive searched for record
     if time is not None:
-        record = res.get_time_record(time)
+        record = res.get_closest_record(time)
     else:
         time = res.times[record]
 
@@ -834,8 +890,8 @@ def vnv_plot2d(\
     # Get scalar data for 2d maps and contours
     if var_name != '':
         if var_type == 'scalar':
-            mesh, scalar = res.get_data(var_name, record, zslice,
-                                        poly, poly_number, plane)
+            mesh, scalar = get_data(res, var_name, record, zslice,
+                                    poly, poly_number, plane)
 
         elif var_type == 'vector' or var_type == 'vector_2d':
             if var_name+' U' in res.varnames and var_name+' V' in res.varnames:
@@ -849,10 +905,10 @@ def vnv_plot2d(\
                 raise TelemacException(\
                         "Vector components not found in result file")
 
-            mesh, vectx = res.get_data(vectx_name, record, zslice,
-                                       poly, poly_number, plane)
-            mesh, vecty = res.get_data(vecty_name, record, zslice,
-                                       poly, poly_number, plane)
+            mesh, vectx = get_data(res, vectx_name, record, zslice,
+                                   poly, poly_number, plane)
+            mesh, vecty = get_data(res, vecty_name, record, zslice,
+                                   poly, poly_number, plane)
 
             scalar = np.sqrt(vectx**2 + vecty**2)
 
@@ -873,12 +929,12 @@ def vnv_plot2d(\
                 raise TelemacException(\
                         "Vector components not found in result file")
 
-            mesh, vectx = res.get_data(vectx_name, record, zslice,
-                                       poly, poly_number, plane)
-            mesh, vecty = res.get_data(vecty_name, record, zslice,
-                                       poly, poly_number, plane)
-            mesh, vectz = res.get_data(vectz_name, record, zslice,
-                                       poly, poly_number, plane)
+            mesh, vectx = get_data(res, vectx_name, record, zslice,
+                                   poly, poly_number, plane)
+            mesh, vecty = get_data(res, vecty_name, record, zslice,
+                                   poly, poly_number, plane)
+            mesh, vectz = get_data(res, vectz_name, record, zslice,
+                                   poly, poly_number, plane)
             scalar = np.sqrt(vectx**2 + vecty**2 + vectz**2)
         else:
             raise TelemacException("Unknown varriable type")
@@ -900,10 +956,10 @@ def vnv_plot2d(\
         else:
             raise TelemacException("Need VELOCITY to plot streamlines/vectors")
 
-        _, velx = res.get_data(velx_name, record, zslice,
-                               poly, poly_number, plane)
-        _, vely = res.get_data(vely_name, record, zslice,
-                               poly, poly_number, plane)
+        _, velx = get_data(res, velx_name, record, zslice,
+                           poly, poly_number, plane)
+        _, vely = get_data(res, vely_name, record, zslice,
+                           poly, poly_number, plane)
         if poly is not None:
             # If extraction along polyline, the x component depends on the
             # polyline tangents and the y component is the vertical velocity.
@@ -925,8 +981,8 @@ def vnv_plot2d(\
                     velx[i] = np.dot(np.asarray([velx[i], vely[i]]),
                                      tangents[j])
 
-            _, velz = res.get_data(velz_name, record, zslice,
-                                   poly, poly_number, plane)
+            _, velz = get_data(res, velz_name, record, zslice,
+                               poly, poly_number, plane)
             vely = velz
 
         velx *= vect_factor
@@ -965,8 +1021,13 @@ def vnv_plot2d(\
 
     # annotate boundaries
     if annotate_bnd:
-        liq_bnd_info = res.get_bnd_info()
-        plot2d_annotate_bnd(ax, mesh, liq_bnd_info, markersize=1.5, marker='o')
+        bnd_info = res.get_bnd_info()
+        plot2d_annotate_bnd(ax, mesh, bnd_info, markersize=1.5, marker='o')
+
+    # annotate boundaries
+    if annotate_liq_bnd:
+        liq_bnd_info = res.get_liq_bnd_info()
+        plot2d_annotate_liq_bnd(ax, mesh, liq_bnd_info, markersize=1.5, marker='o')
 
     # colorbar settings
     if cbar_priority == 'scalar':
@@ -1161,7 +1222,7 @@ def vnv_plot3d(varname, res, record=-1, time=None,
     """
     # If time is positive searched for record
     if time is not None:
-        record = res.get_time_record(time)
+        record = res.get_closest_record(time)
     else:
         time = res.times[record]
 

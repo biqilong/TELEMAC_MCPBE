@@ -108,7 +108,7 @@
 ! THEN, IF NECESSARY, SLIDING IS APPLIED ON THE OTHER LAYERS.
       DO ILAYER=1,NOMBLAY
 !
-      CALL OS('X=0     ',X=EVOL)
+        CALL OS('X=0     ',X=EVOL)
 !
 !       TO CHECK IF ANY SLIDING IS DONE AND SHORTCUT IF NOT
         TEST_GLISS = 0.D0
@@ -180,7 +180,7 @@
 !
 !       ADDING EVOL IN PARALLEL
         IF(NCSIZE.GT.1) THEN
-         CALL PARCOM(EVOL,2,MESH)
+          CALL PARCOM(EVOL,2,MESH)
         ENDIF
 !
         DO I=1,NPOIN
@@ -299,74 +299,74 @@
 
 ! FIRST TRANSFER OF MASS : FROM IG1 TO IR1
             EPAI_GLISS = -QG1*UNSV2D%R(IG1)
-            IF(EPAI_GLISS.GT.0.D0)THEN
+            IF(EPAI_GLISS.GT.0.D0) THEN
 !           IF EPAI_GLISS > ES THE WHOLE LAYER WILL SLIDE. OTHERWISE ONLY A PERCENTAGE OF THE LAYER
              POURCENTAGE_EPAI_TRANSFERT=
      &        max(0.D0,min(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
 !
-             IF(NMUD.GE.1) THEN
-              DO IMUD = 1,NMUD
-               FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
-     &           MASS_MUD(IMUD,ILAYER,IG1)),
-     &           MASS_MUD(IMUD,ILAYER,IG1))
-               FLUX_MASS_MUD(IMUD,ILAYER,IG1)=
-     &           FLUX_MASS_MUD(IMUD,ILAYER,IG1)
-     &           +FLUX_LOC
-               FLUX_MASS_MUD(IMUD,ILAYER,IR1)=
-     &           FLUX_MASS_MUD(IMUD,ILAYER,IR1)
-     &           -FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
-              ENDDO
-             ENDIF
-             IF(NSAND.GE.1) THEN
-              DO ISAND = 1,NSAND
-               FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
-     &           MASS_SAND(ISAND,ILAYER,IG1)),
-     &           MASS_SAND(ISAND,ILAYER,IG1))
-               FLUX_MASS_SAND(ISAND,ILAYER,IG1)=
-     &           FLUX_MASS_SAND(ISAND,ILAYER,IG1)
-     &           +FLUX_LOC
-               FLUX_MASS_SAND(ISAND,ILAYER,IR1)=
-     &           FLUX_MASS_SAND(ISAND,ILAYER,IR1)
-     &           -FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
-              ENDDO
-             ENDIF
+              IF(NMUD.GE.1) THEN
+                DO IMUD = 1,NMUD
+                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+     &              MASS_MUD(IMUD,ILAYER,IG1)),
+     &              MASS_MUD(IMUD,ILAYER,IG1))
+                  FLUX_MASS_MUD(IMUD,ILAYER,IG1)=
+     &              FLUX_MASS_MUD(IMUD,ILAYER,IG1)
+     &              +FLUX_LOC
+                  FLUX_MASS_MUD(IMUD,ILAYER,IR1)=
+     &              FLUX_MASS_MUD(IMUD,ILAYER,IR1)
+     &              -FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
+                ENDDO
+              ENDIF
+              IF(NSAND.GE.1) THEN
+                DO ISAND = 1,NSAND
+                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+     &              MASS_SAND(ISAND,ILAYER,IG1)),
+     &              MASS_SAND(ISAND,ILAYER,IG1))
+                  FLUX_MASS_SAND(ISAND,ILAYER,IG1)=
+     &              FLUX_MASS_SAND(ISAND,ILAYER,IG1)
+     &              +FLUX_LOC
+                  FLUX_MASS_SAND(ISAND,ILAYER,IR1)=
+     &              FLUX_MASS_SAND(ISAND,ILAYER,IR1)
+     &              -FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
+                ENDDO
+              ENDIF
             ENDIF ! ENDIF EPAI_GLISS > 0
 !           END OF TRANSFER FROM IG1 TO IR1
 !
 !!! 2) FROM IG2 TO IR1
             EPAI_GLISS = -QG2*UNSV2D%R(IG2)
-            IF(EPAI_GLISS.GT.0.D0)THEN
-             POURCENTAGE_EPAI_TRANSFERT=
-     &        max(0.D0,min(1.D0,EPAI_GLISS/ES(IG2,ILAYER)))
-             EPAI_GLISS_LAYER=
-     &       POURCENTAGE_EPAI_TRANSFERT*ES(IG2,ILAYER)
+            IF(EPAI_GLISS.GT.0.D0) THEN
+              POURCENTAGE_EPAI_TRANSFERT =
+     &         max(0.D0,min(1.D0,EPAI_GLISS/ES(IG2,ILAYER)))
+              EPAI_GLISS_LAYER =
+     &        POURCENTAGE_EPAI_TRANSFERT*ES(IG2,ILAYER)
 !
-             IF(NMUD.GE.1) THEN
-              DO IMUD = 1,NMUD
-               FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
-     &           MASS_MUD(IMUD,ILAYER,IG2)),
-     &           MASS_MUD(IMUD,ILAYER,IG2))
-               FLUX_MASS_MUD(IMUD,ILAYER,IG2)=
-     &           FLUX_MASS_MUD(IMUD,ILAYER,IG2)
-     &           +FLUX_LOC
-               FLUX_MASS_MUD(IMUD,ILAYER,IR1)=
-     &           FLUX_MASS_MUD(IMUD,ILAYER,IR1)
-     &           -FLUX_LOC*V2DPAR%R(IG2)/V2DPAR%R(IR1)
-              ENDDO
-             ENDIF
-             IF(NSAND.GE.1) THEN
-              DO ISAND = 1,NSAND
-               FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
-     &           MASS_SAND(ISAND,ILAYER,IG2)),
-     &           MASS_SAND(ISAND,ILAYER,IG2))
-               FLUX_MASS_SAND(ISAND,ILAYER,IG2)=
-     &           FLUX_MASS_SAND(ISAND,ILAYER,IG2)
-     &           +FLUX_LOC
-               FLUX_MASS_SAND(ISAND,ILAYER,IR1)=
-     &           FLUX_MASS_SAND(ISAND,ILAYER,IR1)
-     &           -FLUX_LOC*V2DPAR%R(IG2)/V2DPAR%R(IR1)
-              ENDDO
-             ENDIF
+              IF(NMUD.GE.1) THEN
+                DO IMUD = 1,NMUD
+                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+     &              MASS_MUD(IMUD,ILAYER,IG2)),
+     &              MASS_MUD(IMUD,ILAYER,IG2))
+                  FLUX_MASS_MUD(IMUD,ILAYER,IG2) =
+     &              FLUX_MASS_MUD(IMUD,ILAYER,IG2)
+     &              +FLUX_LOC
+                  FLUX_MASS_MUD(IMUD,ILAYER,IR1) =
+     &              FLUX_MASS_MUD(IMUD,ILAYER,IR1)
+     &              -FLUX_LOC*V2DPAR%R(IG2)/V2DPAR%R(IR1)
+                ENDDO
+              ENDIF
+              IF(NSAND.GE.1) THEN
+                DO ISAND = 1,NSAND
+                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+     &              MASS_SAND(ISAND,ILAYER,IG2)),
+     &              MASS_SAND(ISAND,ILAYER,IG2))
+                  FLUX_MASS_SAND(ISAND,ILAYER,IG2)=
+     &              FLUX_MASS_SAND(ISAND,ILAYER,IG2)
+     &              +FLUX_LOC
+                  FLUX_MASS_SAND(ISAND,ILAYER,IR1)=
+     &              FLUX_MASS_SAND(ISAND,ILAYER,IR1)
+     &              -FLUX_LOC*V2DPAR%R(IG2)/V2DPAR%R(IR1)
+                ENDDO
+              ENDIF
             ENDIF ! ENDIF EPAI_GLISS > 0
 !           END OF TRANSFER FROM IG1 TO IR2
 !
@@ -376,44 +376,44 @@
 !           QR1 AND QR2 ONLY USED TO COMPUTE THE RATIO TO KNOW
 !           THE REPARTITION OF QG1 BETWWEN IR1 AND IR2
             EPAI_GLISS = -QG1*UNSV2D%R(IG1)
-            IF(EPAI_GLISS.GT.0.D0)THEN
-             POURCENTAGE_EPAI_TRANSFERT=
-     &         max(0.D0,min(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
-             EPAI_GLISS_LAYER=
-     &         POURCENTAGE_EPAI_TRANSFERT*ES(IG1,ILAYER)
-             IF(NMUD.GE.1) THEN
-              DO IMUD = 1,NMUD
-                FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
-     &            MASS_MUD(IMUD,ILAYER,IG1)),
-     &            MASS_MUD(IMUD,ILAYER,IG1))
-                FLUX_MASS_MUD(IMUD,ILAYER,IG1)=
-     &            FLUX_MASS_MUD(IMUD,ILAYER,IG1)
-     &            +FLUX_LOC
-                FLUX_MASS_MUD(IMUD,ILAYER,IR1)=
-     &            FLUX_MASS_MUD(IMUD,ILAYER,IR1)
-     &            -QR1/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
-                FLUX_MASS_MUD(IMUD,ILAYER,IR2)=
-     &            FLUX_MASS_MUD(IMUD,ILAYER,IR2)
-     &            -QR2/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR2)
-               ENDDO
+            IF(EPAI_GLISS.GT.0.D0) THEN
+              POURCENTAGE_EPAI_TRANSFERT =
+     &          max(0.D0,min(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
+              EPAI_GLISS_LAYER =
+     &          POURCENTAGE_EPAI_TRANSFERT*ES(IG1,ILAYER)
+              IF(NMUD.GE.1) THEN
+                DO IMUD = 1,NMUD
+                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+     &              MASS_MUD(IMUD,ILAYER,IG1)),
+     &              MASS_MUD(IMUD,ILAYER,IG1))
+                  FLUX_MASS_MUD(IMUD,ILAYER,IG1) =
+     &              FLUX_MASS_MUD(IMUD,ILAYER,IG1)
+     &              +FLUX_LOC
+                  FLUX_MASS_MUD(IMUD,ILAYER,IR1) =
+     &              FLUX_MASS_MUD(IMUD,ILAYER,IR1)
+     &              -QR1/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
+                  FLUX_MASS_MUD(IMUD,ILAYER,IR2) =
+     &              FLUX_MASS_MUD(IMUD,ILAYER,IR2)
+     &              -QR2/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR2)
+                ENDDO
               ENDIF
               IF(NSAND.GE.1) THEN
-               DO ISAND = 1,NSAND
-                FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
-     &            MASS_SAND(ISAND,ILAYER,IG1)),
-     &            MASS_SAND(ISAND,ILAYER,IG1))
-                FLUX_MASS_SAND(ISAND,ILAYER,IG1)=
-     &            FLUX_MASS_SAND(ISAND,ILAYER,IG1)
-     &            +FLUX_LOC
-                FLUX_MASS_SAND(ISAND,ILAYER,IR1)=
-     &            FLUX_MASS_SAND(ISAND,ILAYER,IR1)
-     &            -QR1/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
-                FLUX_MASS_SAND(ISAND,ILAYER,IR2)=
-     &            FLUX_MASS_SAND(ISAND,ILAYER,IR2)
-     &            -QR2/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR2)
-               ENDDO
+                DO ISAND = 1,NSAND
+                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+     &              MASS_SAND(ISAND,ILAYER,IG1)),
+     &              MASS_SAND(ISAND,ILAYER,IG1))
+                  FLUX_MASS_SAND(ISAND,ILAYER,IG1) =
+     &              FLUX_MASS_SAND(ISAND,ILAYER,IG1)
+     &              +FLUX_LOC
+                  FLUX_MASS_SAND(ISAND,ILAYER,IR1) =
+     &              FLUX_MASS_SAND(ISAND,ILAYER,IR1)
+     &              -QR1/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR1)
+                  FLUX_MASS_SAND(ISAND,ILAYER,IR2) =
+     &              FLUX_MASS_SAND(ISAND,ILAYER,IR2)
+     &              -QR2/(QR1+QR2)*FLUX_LOC*V2DPAR%R(IG1)/V2DPAR%R(IR2)
+                ENDDO
               ENDIF
-             ENDIF ! ENDIF EPAI_GLISS > 0
+            ENDIF ! ENDIF EPAI_GLISS > 0
 ! END OF CASE IG1 > IR1 AND IR2
 !
           ENDIF ! CASE2
@@ -447,26 +447,27 @@
         ENDIF
 !
 ! UPDATING THE MASSES
-      DO IPOIN = 1,NPOIN
-        IF(NMUD.GE.1) THEN
+!
+        DO IPOIN = 1,NPOIN
+          IF(NMUD.GE.1) THEN
             DO IMUD = 1,NMUD
               MASS_MUD(IMUD,ILAYER,IPOIN) =
      &             MASS_MUD(IMUD,ILAYER,IPOIN)
      &             +FLUX_MASS_MUD(IMUD,ILAYER,IPOIN)
             ENDDO
-        ENDIF
-        IF(NSAND.GE.1) THEN
+          ENDIF
+          IF(NSAND.GE.1) THEN
             DO ISAND = 1,NSAND
               MASS_SAND(ISAND,ILAYER,IPOIN) =
      &             MASS_SAND(ISAND,ILAYER,IPOIN)
      &             +FLUX_MASS_SAND(ISAND,ILAYER,IPOIN)
             ENDDO
-        ENDIF
-      ENDDO
-
-      IF(DEBUG.GT.0) WRITE(LU,*)'BED1_UPDATE'
+          ENDIF
+        ENDDO
+!
+        IF(DEBUG.GT.0) WRITE(LU,*)'BED1_UPDATE'
         CALL BED1_UPDATE(ZR,ZF,VOLU2D)
-      IF(DEBUG.GT.0) WRITE(LU,*)'END BED1_UPDATE'
+        IF(DEBUG.GT.0) WRITE(LU,*)'END BED1_UPDATE'
 
       ENDDO ! ENDLOOP ON NOMBLAY
 !-----------------------------------------------------------------------

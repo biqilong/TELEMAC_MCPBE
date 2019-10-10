@@ -138,7 +138,7 @@ module M_LIAISON_T
 
     end subroutine GET_TAB_VAR_LIAISON
 
-	! Retourne une description du champ du type au niveau de static (independant de l'instance du modele ou de l'etat)
+ ! Retourne une description du champ du type au niveau de static (independant de l'instance du modele ou de l'etat)
     function GET_TYPE_VAR_LIAISON(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
       implicit none
 
@@ -366,7 +366,7 @@ module M_LIAISON_T
       character(LEN=256),     intent(out)   :: MessageErreur                  ! Message d'erreur
 
       integer i, bidon, err
-	  character(LEN=256)                 :: MessageErreurType
+      character(LEN=256)                 :: MessageErreurType
 
       SET_TAILLE_VAR_LIAISON = 0
       MessageErreur          = ""
@@ -454,11 +454,11 @@ module M_LIAISON_T
       else if ( NomVar == 'Model.Link.TimeMaxVelocity') then
          valeur = Instance%TempsVitesseMax
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
- 		  GET_DOUBLE_LIAISON = GET_DOUBLE_LIAISONRC(instance%CaracRC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      GET_DOUBLE_LIAISON = GET_DOUBLE_LIAISONRC(instance%CaracRC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.Link.StoS.') > 0) then
- 		  GET_DOUBLE_LIAISON = GET_DOUBLE_LIAISONCC(instance%CaracCC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      GET_DOUBLE_LIAISON = GET_DOUBLE_LIAISONCC(instance%CaracCC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else
          GET_DOUBLE_LIAISON = 1
          valeur                = -9999999.9999
@@ -489,11 +489,11 @@ module M_LIAISON_T
       else if ( NomVar == 'Model.Link.CulverFlowDir') then
          valeur = Instance%TypeOrifice
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
- 		  GET_INT_LIAISON = GET_INT_LIAISONRC(instance%CaracRC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      GET_INT_LIAISON = GET_INT_LIAISONRC(instance%CaracRC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.Link.StoS.') > 0) then
- 		  GET_INT_LIAISON = GET_INT_LIAISONCC(instance%CaracCC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      GET_INT_LIAISON = GET_INT_LIAISONCC(instance%CaracCC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else
          GET_INT_LIAISON = 1
          valeur                = -9999
@@ -529,7 +529,7 @@ module M_LIAISON_T
       else if ( NomVar == 'Model.Link.Level') then
          Instance%Cote = valeur
       else if ( NomVar == 'Model.Link.MeanLevel') then
-         Instance%CoteMoyenne = valeur   
+         Instance%CoteMoyenne = valeur
       else if ( NomVar == 'Model.Link.CoefCulvertDischarge') then
          Instance%CoefDebitOrifice = valeur
       else if ( NomVar == 'Model.Link.CSection') then
@@ -557,11 +557,11 @@ module M_LIAISON_T
       else if ( NomVar == 'Model.Link.TimeMaxVelocity') then
          Instance%TempsVitesseMax = valeur
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
- 		  SET_DOUBLE_LIAISON = SET_DOUBLE_LIAISONRC(instance%CaracRC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      SET_DOUBLE_LIAISON = SET_DOUBLE_LIAISONRC(instance%CaracRC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.Link.StoS.') > 0) then
- 		  SET_DOUBLE_LIAISON = SET_DOUBLE_LIAISONCC(instance%CaracCC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      SET_DOUBLE_LIAISON = SET_DOUBLE_LIAISONCC(instance%CaracCC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else
          SET_DOUBLE_LIAISON = 1
          MessageErreur         = "SET_DOUBLE_LIAISON - Unknown variable name"
@@ -590,11 +590,11 @@ module M_LIAISON_T
       else if ( NomVar == 'Model.Link.CulverFlowDir') then
          Instance%TypeOrifice = valeur
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
- 		  SET_INT_LIAISON = SET_INT_LIAISONRC(instance%CaracRC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      SET_INT_LIAISON = SET_INT_LIAISONRC(instance%CaracRC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.Link.StoS.') > 0) then
- 		  SET_INT_LIAISON = SET_INT_LIAISONCC(instance%CaracCC, NomVar, index1,&
- 		                                index2, index3, valeur, MessageErreur)
+      SET_INT_LIAISON = SET_INT_LIAISONCC(instance%CaracCC, NomVar, index1,&
+                                    index2, index3, valeur, MessageErreur)
       else
          SET_INT_LIAISON = 1
          MessageErreur         = "SET_INT_LIAISON - Unknown variable name"

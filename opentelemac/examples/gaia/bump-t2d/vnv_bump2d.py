@@ -124,6 +124,8 @@ class VnvStudy(AbstractVnvStudy):
         t_near_end = slf.times[timePos]
         t_near_end = "t = %1.2f h" %(t_near_end/3600)
 
+        slf.close()
+
 
         fig = plt.figure()
         ax=fig.add_subplot(111)

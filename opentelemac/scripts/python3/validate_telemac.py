@@ -27,6 +27,7 @@ from runcode import add_runcode_argument
 TAGS = ["telemac2d",
         "telemac3d",
         "mascaret",
+        "courlis",
         "sisyphe",
         "nestor",
         "tomawac",
@@ -138,7 +139,7 @@ def check_python_rank_tags(py_file, options):
     else:
         raise TelemacException("Missing tag in Python file:\n"+py_file)
 
-    if not tag_ok and options.verbose:
+    if not tags_ok and options.verbose:
         print('\n ~> '+py_file)
         print('     > nothing to do here (tag):')
         print('       File tags: {}'.format(';'.join(tags)))

@@ -100,11 +100,10 @@ class VnvStudy(AbstractVnvStudy):
                          skiprows=4)
 
         poly = [[0., 915.], [1800., 915.]]
-        poly_number = res.discretize_polyline(poly)
 
         poly_coord, _, values  = \
-                res.get_timeseries_on_polyline(poly, 'WAVE HEIGHT',
-                                               poly_number)
+                res.get_timeseries_on_polyline('WAVE HEIGHT',
+                                               poly)
         from scipy.interpolate import interp1d
         x1 = exp[:, 0]
         y1 = exp[:, 1]
@@ -129,6 +128,8 @@ class VnvStudy(AbstractVnvStudy):
                 "Epsilon reached in {} vs {}"\
                 .format('experiment.csv', vnv_1_artres))
 
+        res.close()
+
     def _post(self):
         """
         Post-treatment processes
@@ -144,11 +145,10 @@ class VnvStudy(AbstractVnvStudy):
                          skiprows=4)
 
         poly = [[0., 915.], [1800., 915.]]
-        poly_number = res.discretize_polyline(poly)
 
         poly_coord, abs_curv, values  = \
-                res.get_timeseries_on_polyline(poly, 'WAVE HEIGHT',
-                                               poly_number)
+                res.get_timeseries_on_polyline('WAVE HEIGHT',
+                                               poly)
         from scipy.interpolate import interp1d
         x1 = exp[:, 0]
         y1 = exp[:, 1]
@@ -203,4 +203,4 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/Free_Surface')
 
         # Closing files
-        del res
+        res.close()

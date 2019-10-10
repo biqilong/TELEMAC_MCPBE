@@ -165,8 +165,29 @@
 !           IN THIS CASE THE WIND IS CONSTANT, VALUE GIVEN IN STEERING FILE.
             CALL OV( 'X=C     ' , X=WINDX, C=FUAIR, DIM1=NPOIN)
             CALL OV( 'X=C     ' , X=WINDY, C=FVAIR, DIM1=NPOIN)
-          ELSEIF(OPTWIND.EQ.2) THEN
-            IF(FILES(ATMFILEA)%NAME(1:1).NE.' ') THEN
+!
+          ELSEIF(FILES(ATMFILEA)%NAME(1:1).NE.' ') THEN
+!
+!         WATER QUALITY
+!
+            IF(WATER_QUALITY) THEN
+!           TIME VARYING WATER QUALITY OTHER THAN THERMIC IN 3D
+              IF(ATMOSEXCH.EQ.0) THEN
+                CALL INTERPMETEO2(NWIND,UAIR,VAIR,TA,PATM,NEBU,RAINFALL,
+     &                            PVAP,RAY3,AT,UL)
+!
+                CALL OV('X=C     ', X=WINDX, C=UAIR, DIM1=NPOIN)
+                CALL OV('X=C     ', X=WINDY, C=VAIR, DIM1=NPOIN)
+!
+!           TIME VARYING WATER QUALITY WITH HEAT EXCHANGE WITH ATMOSPHERE
+              ELSEIF(ATMOSEXCH.EQ.1.OR.ATMOSEXCH.EQ.2) THEN
+                CALL INTERPMETEO(WW,UAIR,VAIR,TA,PATM,
+     &                           HREL,NEBU,RAINFALL,EVAPORATION,AT,UL)
+                CALL OV('X=C     ', X=WINDX, C=UAIR, DIM1=NPOIN)
+                CALL OV('X=C     ', X=WINDY, C=VAIR, DIM1=NPOIN)
+              ENDIF
+!
+            ELSEIF(OPTWIND.EQ.2) THEN
 !             JUMPING TWO LINES OF COMMENTS
               READ(UL,*)
               READ(UL,*)
@@ -253,6 +274,8 @@
                 WRITE(LU,*) ' '
                 WRITE(LU,*) 'METEO'
                 WRITE(LU,*) 'ERROR IN THE WIND FILE'
+                WRITE(LU,*) 'THE EXPECTED FORMAT IS 1-TIME 2-WIND X ' //
+     &                      '3-WIND Y'
                 CALL PLANTE(1)
                 STOP
 200             CONTINUE

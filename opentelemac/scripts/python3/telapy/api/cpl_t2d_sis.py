@@ -17,6 +17,7 @@ class CplT2dSis(object):
     def __init__(self, t2d_steering_file,
                  sis_steering_file,
                  user_fortran, stdout=6,
+                 log_lvl='INFO',
                  comm=None, recompile=False):
         """
         Constructor for apiModule
@@ -35,11 +36,13 @@ class CplT2dSis(object):
                              user_fortran=user_fortran,
                              recompile=True,
                              stdout=stdout,
+                             log_lvl=log_lvl,
                              comm=comm)
 
         self.sis = Sisyphe(sis_steering_file,
                            stdout=stdout,
                            comm=comm,
+                           log_lvl=log_lvl,
                            recompile=False)
 
 

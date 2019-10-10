@@ -36,6 +36,9 @@ subroutine PLANMA         ( &
                              ! Parametre
          PresenceZoneStockage , & ! Presence de zone de stockage
                 LoiFrottement , & ! Loi de frottement utilisee
+               OptionCourlis  , & ! Activation de Courlis
+                       varsed , & ! Courlis : profil evolution
+                 TempsInitial , & ! Courlis
                        Erreur )
 
 ! *********************************************************************
@@ -65,6 +68,11 @@ subroutine PLANMA         ( &
    !============================= Declarations ============================
    !.. Modules importes ..
    !----------------------
+   use M_MY_CPT_PLANIM      ! PU2017: Ajout du module pour la variable globale MY_CPT_PLANIM
+!   use M_MY_PLANIM_VAR      ! PU2017: Ajout du module pour la variable globale DELTAH
+   use M_MY_GLOBAL_VAR_SED ! PU2017: Module pour les variables globales contenant les volumes et epaisseurs de sediments transportes
+   use M_SHARE_VAR, ONLY: Temps ! Courlis
+
    use M_PRECISION
    use M_PARAMETRE_C    ! GPES, SEPS
    use M_MESSAGE_C     ! Messages d'erreur
@@ -86,7 +94,7 @@ subroutine PLANMA         ( &
    !.. Arguments ..
    !---------------
    ! Resultat
-   type(SECTION_PLAN_T)          , intent(  out) :: SectionPlan
+   type(SECTION_PLAN_T)          , intent(inout) :: SectionPlan
    ! Donnees
    type(PROFIL_T) , dimension(:) , intent(in   ) :: Profil
    type(PROFIL_PLAN_T)           , intent(in   ) :: ProfilPlan
@@ -122,6 +130,14 @@ subroutine PLANMA         ( &
    real(DOUBLE) :: larg_miroir_droite ! Largeur au miroir profil droit
    real(DOUBLE) :: Trav1(Nbpas)      ! tableau de travail pour CALAIG
 
+   ! Courlis
+   real(DOUBLE)    , dimension(:), pointer      :: varsed
+   real(DOUBLE)                  , intent(in   ):: TempsInitial
+   logical                       , intent(in   ):: OptionCourlis
+   logical                                      :: condition_courlis
+   real(DOUBLE) :: Hthres ! PU2017: Hauteur seuil pour nouveau critere de planimetrage
+
+
    !============================= Instructions ===========================
 
    ! INITIALISATIONS
@@ -130,7 +146,8 @@ subroutine PLANMA         ( &
    retour = 0
    ! ALLOCATION DU TABLEAU SECTION
    !------------------------------
-
+!MS2019 : ajouter une condition sur le lancement de Courlis ou non
+   if(Temps .EQ. TempsInitial) then
    if(.not.associated(DZ)) allocate( DZ(size( X )) , STAT = retour )
    if( retour /= 0 ) then
       Erreur%Numero = 5
@@ -343,6 +360,7 @@ subroutine PLANMA         ( &
       return
    end if
 
+
    ! AUTRES INITIALISATIONS
    !-----------------------
    SectionPlan%CELER(:,1) = 0._DOUBLE
@@ -351,76 +369,91 @@ subroutine PLANMA         ( &
    SectionPlan%DYDX (:,1) = 0._DOUBLE
    SectionPlan%PRESS(:,1) = 0._DOUBLE
    SectionPlan%S1GEO(:,1) = 0._DOUBLE
+ end if
 
    ! Boucle sur les sections
    ! ***********************
    boucle1_section : do isec = 1 , size(X)
-      profil_gauche = IDT(isec)
-      profil_droit  = IDT(isec) + 1
-      ! Boucle sur les pas
-      ! ******************
-      boucle1_pas_de_planim : do ipas = 1 , NbPas
-         ! 1 ) CALCUL DE LA SECTION MOUILLEE
-         ! ---------------------------------
-         ! a) MINEURE
-         surface_gauche = ProfilPlan%S1(profil_gauche,ipas)
-         surface_droite = ProfilPlan%S1(profil_droit,ipas)
-         SectionPlan%S1(isec,ipas) = surface_gauche + ( surface_droite - surface_gauche ) * XDT(isec)
-         ! b) MAJEURE
-         surface_gauche = ProfilPlan%S2(profil_gauche,ipas)
-         surface_droite = ProfilPlan%S2(profil_droit ,ipas)
-         SectionPLan%S2(isec,ipas) = surface_gauche + ( surface_droite - surface_gauche ) * XDT(isec)
-         ! c) TOTALE
-         SectionPlan%S(isec,ipas) = SectionPlan%S1(isec,ipas) + SectionPlan%S2(isec,ipas)
-         ! d) ZONE DE STOCKAGE
-         surface_gauche = ProfilPlan%SS(profil_gauche,ipas)
-         surface_droite = ProfilPlan%SS(profil_droit ,ipas)
-         SectionPlan%SS(isec,ipas) = surface_gauche + (surface_droite - surface_gauche) * XDT(isec)
 
-         if( SectionPlan%SS(isec,ipas) > 10 * SEPS ) then
-            PresenceZoneStockage = .true.
-         endif
+      if(OptionCourlis) then
+        Hthres = fracH*(myZsl(isec)-Profil(isec)%ZRef)
+        condition_courlis = abs(varsed(isec)) > Hthres
+      else
+        condition_courlis = .false.
+      endif
 
 
+      if ( Temps .EQ. TempsInitial .OR. condition_courlis ) then ! PU2017: Changement du critere sur le planimetrage
 
-         ! 2 ) CALCUL DE LA LARGEUR AU MIROIR
-         ! ----------------------------------
-         larg_miroir_gauche = ProfilPlan%B1(profil_gauche,ipas) + &
-                              ProfilPlan%B2(profil_gauche,ipas)
-         larg_miroir_droite = ProfilPlan%B1(profil_droit ,ipas) + &
-                              ProfilPlan%B2(profil_droit ,ipas)
-         SectionPlan%B(isec,ipas) = larg_miroir_gauche + &
-                       (larg_miroir_droite - larg_miroir_gauche) * XDT(isec)
 
-         ! 3 ) CALCUL DE LA DEBITANCE
-         ! --------------------------
-         call CALDEB (           &
-             SectionPlan%DEB   , &
-             SectionPlan%DEB1  , &
-             SectionPlan%DEB2  , &
-             isec              , &
-             ipas              , &
-             ProfilPlan%S1     , &
-             ProfilPlan%S2     , &
-             ProfilPlan%P1     , &
-             ProfilPlan%P2     , &
-             CF1               , &
-             CF2               , &
-             profil_gauche     , &
-             profil_droit      , &
-             XDT(isec)         , &
-             LoiFrottement     , &
-             Erreur              &
-                           )
-         if( Erreur%Numero /= 0 ) then
-            return
-         endif
+        profil_gauche = IDT(isec)
+        profil_droit  = IDT(isec) + 1
+        ! Boucle sur les pas
+        ! ******************
+        boucle1_pas_de_planim : do ipas = 1 , NbPas
+           ! 1 ) CALCUL DE LA SECTION MOUILLEE
+           ! ---------------------------------
+           ! a) MINEURE
+           surface_gauche = ProfilPlan%S1(profil_gauche,ipas)
+           surface_droite = ProfilPlan%S1(profil_droit,ipas)
+           SectionPlan%S1(isec,ipas) = surface_gauche + ( surface_droite - surface_gauche ) * XDT(isec)
+           ! b) MAJEURE
+           surface_gauche = ProfilPlan%S2(profil_gauche,ipas)
+           surface_droite = ProfilPlan%S2(profil_droit ,ipas)
+           SectionPLan%S2(isec,ipas) = surface_gauche + ( surface_droite - surface_gauche ) * XDT(isec)
+           ! c) TOTALE
+           SectionPlan%S(isec,ipas) = SectionPlan%S1(isec,ipas) + SectionPlan%S2(isec,ipas)
+           ! d) ZONE DE STOCKAGE
+           surface_gauche = ProfilPlan%SS(profil_gauche,ipas)
+           surface_droite = ProfilPlan%SS(profil_droit ,ipas)
+           SectionPlan%SS(isec,ipas) = surface_gauche + (surface_droite - surface_gauche) * XDT(isec)
 
-         ! 4 ) CALCUL DE LA CELERITE DES ONDES
-         ! -----------------------------------
-         SectionPlan%CELER(isec,ipas) = DSQRT( GPES * SectionPlan%S(isec,ipas) / SectionPlan%B(isec,ipas) )
+           if( SectionPlan%SS(isec,ipas) > 10 * SEPS ) then
+              PresenceZoneStockage = .true.
+           endif
 
-      end do boucle1_pas_de_planim
+
+
+           ! 2 ) CALCUL DE LA LARGEUR AU MIROIR
+           ! ----------------------------------
+           larg_miroir_gauche = ProfilPlan%B1(profil_gauche,ipas) + &
+                                ProfilPlan%B2(profil_gauche,ipas)
+           larg_miroir_droite = ProfilPlan%B1(profil_droit ,ipas) + &
+                                ProfilPlan%B2(profil_droit ,ipas)
+           SectionPlan%B(isec,ipas) = larg_miroir_gauche + &
+                         (larg_miroir_droite - larg_miroir_gauche) * XDT(isec)
+
+           ! 3 ) CALCUL DE LA DEBITANCE
+           ! --------------------------
+           call CALDEB (           &
+               SectionPlan%DEB   , &
+               SectionPlan%DEB1  , &
+               SectionPlan%DEB2  , &
+               isec              , &
+               ipas              , &
+               ProfilPlan%S1     , &
+               ProfilPlan%S2     , &
+               ProfilPlan%P1     , &
+               ProfilPlan%P2     , &
+               CF1               , &
+               CF2               , &
+               profil_gauche     , &
+               profil_droit      , &
+               XDT(isec)         , &
+               LoiFrottement     , &
+               Erreur              &
+                             )
+           if( Erreur%Numero /= 0 ) then
+              return
+           endif
+
+           ! 4 ) CALCUL DE LA CELERITE DES ONDES
+           ! -----------------------------------
+           SectionPlan%CELER(isec,ipas) = DSQRT( GPES * SectionPlan%S(isec,ipas) / SectionPlan%B(isec,ipas) )
+
+        end do boucle1_pas_de_planim
+
+      end if
 
    end do boucle1_section
 
@@ -428,77 +461,86 @@ subroutine PLANMA         ( &
    ! ********************
    boucle2_bief : do ibief = 1 , size(Connect%OrigineBief)
       boucle2_section : do isec = Connect%OrigineBief(ibief) , Connect%FinBief(ibief)
-         profil_gauche = IDT(isec)
-         profil_droit  = IDT(isec) + 1
-         DZ(isec) = Profil(profil_gauche)%Pas +               &
-              (Profil(profil_droit )%Pas - Profil(profil_gauche)%Pas) * XDT(isec)
-         boucle2_pas_de_planim : do ipas=2,NbPas
-            ! 4 ) CALCUL DE LA PRESSION
-            ! -------------------------
-            SectionPlan%PRESS(isec,ipas) = SectionPlan%PRESS(isec,ipas-1) +  &
-                                  GPES * ( SectionPlan%S(isec,ipas-1) +      &
-                                  SectionPlan%S(isec,ipas) ) *               &
-                                  DZ(isec) / 2._DOUBLE
-            ! 5 ) CALCUL DES INVARIANTS DE RIEMANN ( = INTEGRALE DE (C/S))
-            ! ------------------------------------
-            if( ipas.gt.2 ) then
-               SectionPlan%INV(isec,ipas) =  SectionPlan%INV(isec,ipas-1)  +  &
-                        (SectionPlan%CELER(isec,ipas  ) / SectionPlan%S(isec,ipas  )  +  &
-                         SectionPlan%CELER(isec,ipas-1) / SectionPlan%S(isec,ipas-1)) *  &
-                        (SectionPlan%S(isec,ipas  ) - SectionPlan%S(isec,ipas-1)) /  &
-                                2._DOUBLE
-            else
-               SectionPlan%INV(isec,ipas) = 2._DOUBLE * SQRT(GPES * DZ(isec))
-            endif
-               ! 6 ) CALCUL DES Termes CUBIQUES pour boussinesq 
-            ! ------------------------------------
-            if( ipas.gt.2 ) then
-               SectionPlan%S1GEO(isec,ipas) =  SectionPlan%S1GEO(isec,ipas-1)  +  &
-                                (((ipas-1)*DZ(isec))*SectionPlan%S(isec,ipas-1)   &
-                                +(ipas*DZ(isec))*SectionPlan%S(isec,ipas))*DZ(isec)/2._DOUBLE
-            else
-              SectionPlan%S1GEO(isec,ipas) = 0._DOUBLE
-            endif
-            ! 6 ) CALCUL DE ...
-            !     ( = INTEGRALE DE 0 A S DE (-1/S*DC/DX (A S CONSTANT) )
-            ! -----------------
-            call CALAIG (                     &
-                 SectionPlan%INTE           , &
-                 isec                       , &
-                 ipas                       , &
-                 X                          , &
-                 SectionPlan%S              , &
-                 SectionPlan%CELER          , &
-                 SectionPlan%B              , &
-                 Connect%OrigineBief(ibief) , &
-                 Connect%FinBief(ibief)     , &
-                 Trav1                      , &
-                 NbPas                      , &
-                 Erreur                       &
-                 )
-            if( Erreur%Numero /= 0 ) then
-               return
-            endif
-            ! 7 ) CALCUL DE ...     ( = DY/DX A S CONSTANT)
-            ! -----------------
-            call CALDYG (                    &
-                 SectionPlan%DYDX          , &
-                 isec                      , &
-                 ipas                      , &
-                 SectionPlan%S             , &
-                 X                         , &
-                 Profil%Pas                , &
-                 IDT                       , &
-                 XDT                       , &
-                 Connect%OrigineBief(ibief), &
-                 Connect%FinBief(ibief)    , &
-                 NbPas                     , &
-                 Erreur                      &
-                 )
-            if( Erreur%numero /= 0 ) then
-               return
-            endif
-         end do boucle2_pas_de_planim
+         if(OptionCourlis) then
+           Hthres = fracH*(myZsl(isec)-Profil(isec)%ZRef)
+           condition_courlis = abs(varsed(isec)) > Hthres
+         else
+           condition_courlis = .false.
+         endif
+
+         if ( Temps .EQ. TempsInitial .OR. condition_courlis ) then ! PU2017: Changement du critere sur le planimetrage
+           profil_gauche = IDT(isec)
+           profil_droit  = IDT(isec) + 1
+           DZ(isec) = Profil(profil_gauche)%Pas +               &
+                (Profil(profil_droit )%Pas - Profil(profil_gauche)%Pas) * XDT(isec)
+           boucle2_pas_de_planim : do ipas=2,NbPas
+              ! 4 ) CALCUL DE LA PRESSION
+              ! -------------------------
+              SectionPlan%PRESS(isec,ipas) = SectionPlan%PRESS(isec,ipas-1) +  &
+                                    GPES * ( SectionPlan%S(isec,ipas-1) +      &
+                                    SectionPlan%S(isec,ipas) ) *               &
+                                    DZ(isec) / 2._DOUBLE
+              ! 5 ) CALCUL DES INVARIANTS DE RIEMANN ( = INTEGRALE DE (C/S))
+              ! ------------------------------------
+              if( ipas.gt.2 ) then
+                 SectionPlan%INV(isec,ipas) =  SectionPlan%INV(isec,ipas-1)  +  &
+                          (SectionPlan%CELER(isec,ipas  ) / SectionPlan%S(isec,ipas  )  +  &
+                           SectionPlan%CELER(isec,ipas-1) / SectionPlan%S(isec,ipas-1)) *  &
+                          (SectionPlan%S(isec,ipas  ) - SectionPlan%S(isec,ipas-1)) /  &
+                                  2._DOUBLE
+              else
+                 SectionPlan%INV(isec,ipas) = 2._DOUBLE * SQRT(GPES * DZ(isec))
+              endif
+                 ! 6 ) CALCUL DES Termes CUBIQUES pour boussinesq
+              ! ------------------------------------
+              if( ipas.gt.2 ) then
+                 SectionPlan%S1GEO(isec,ipas) =  SectionPlan%S1GEO(isec,ipas-1)  +  &
+                                  (((ipas-1)*DZ(isec))*SectionPlan%S(isec,ipas-1)   &
+                                  +(ipas*DZ(isec))*SectionPlan%S(isec,ipas))*DZ(isec)/2._DOUBLE
+              else
+                SectionPlan%S1GEO(isec,ipas) = 0._DOUBLE
+              endif
+              ! 6 ) CALCUL DE ...
+              !     ( = INTEGRALE DE 0 A S DE (-1/S*DC/DX (A S CONSTANT) )
+              ! -----------------
+              call CALAIG (                     &
+                   SectionPlan%INTE           , &
+                   isec                       , &
+                   ipas                       , &
+                   X                          , &
+                   SectionPlan%S              , &
+                   SectionPlan%CELER          , &
+                   SectionPlan%B              , &
+                   Connect%OrigineBief(ibief) , &
+                   Connect%FinBief(ibief)     , &
+                   Trav1                      , &
+                   NbPas                      , &
+                   Erreur                       &
+                   )
+              if( Erreur%Numero /= 0 ) then
+                 return
+              endif
+              ! 7 ) CALCUL DE ...     ( = DY/DX A S CONSTANT)
+              ! -----------------
+              call CALDYG (                    &
+                   SectionPlan%DYDX          , &
+                   isec                      , &
+                   ipas                      , &
+                   SectionPlan%S             , &
+                   X                         , &
+                   Profil%Pas                , &
+                   IDT                       , &
+                   XDT                       , &
+                   Connect%OrigineBief(ibief), &
+                   Connect%FinBief(ibief)    , &
+                   NbPas                     , &
+                   Erreur                      &
+                   )
+              if( Erreur%numero /= 0 ) then
+                 return
+              endif
+           end do boucle2_pas_de_planim
+         end if
       end do boucle2_section
    end do boucle2_bief
 
@@ -506,53 +548,63 @@ subroutine PLANMA         ( &
    ! ***********************************************
    boucle3_bief : do ibief = 1 , size(Connect%OrigineBief)
       boucle3_section : do isec = Connect%OrigineBief(ibief), Connect%FinBief(ibief) - 1
-         XD(isec) = ( X(isec+1) + X(isec) ) / 2._DOUBLE
-         ! DETERMINATION DES PROFILS DE DONNES SERVANT A L'INTERPOLATION
-         ! -------------------------------------------------------------
-         if( IDT(isec) == IDT(isec+1) ) then
-            profil_gauche = IDT(isec)
-            profil_droit  = IDT(isec) + 1
+         if(OptionCourlis) then
+           Hthres = fracH*(myZsl(isec)-Profil(isec)%ZRef)
+           condition_courlis = abs(varsed(isec)) > Hthres
          else
-            if( XD(isec) < Profil(IDT(isec+1))%AbsAbs ) then
-               profil_gauche = IDT(isec)
-               profil_droit  = IDT(isec) + 1
-            else
-               profil_gauche = IDT(isec+1)
-               profil_droit  = IDT(isec+1) + 1
-            endif
+           condition_courlis = .false.
          endif
-         DELTAX    = Profil(profil_droit)%AbsAbs - Profil(profil_gauche)%AbsAbs
-         DZD(isec) = (Profil(profil_droit)%Pas *                  &
-                     (XD(isec) - Profil(profil_gauche)%AbsAbs) +  &
-                      Profil(profil_gauche)%Pas *                 &
-                     (Profil(profil_droit)%AbsAbs - XD(isec)) ) / DELTAX
 
-         boucle3_pas_de_planim : do ipas = 1 , NbPas
-            ! 1 ) CALCUL DE LA SECTION MOUILLEE
-            ! ---------------------------------
-            ! a ) MINEURE
-            SectionPlan%SD1(isec,ipas) = ( SectionPlan%S1(isec,ipas) + SectionPlan%S1(isec+1,ipas)) / 2._DOUBLE
-            ! b ) MAJEURE
-            SectionPlan%SD2(isec,ipas) = ( SectionPlan%S2(isec,ipas) + SectionPlan%S2(isec+1,ipas)) / 2._DOUBLE
-            ! c ) TOTALE
-            SectionPlan%SD(isec,ipas)  = ( SectionPlan%S (isec,ipas) + SectionPlan%S (isec+1,ipas)) / 2._DOUBLE
-            ! 2 ) CALCUL DE LA LARGEUR AU MIROIR
-            ! ----------------------------------
-            SectionPLan%BD(isec,ipas)  = ( SectionPlan%B (isec,ipas) + SectionPlan%B (isec+1,ipas)) / 2._DOUBLE
-            ! 3 ) CALCUL DE LA DEBITANCE
-            ! --------------------------
-            SectionPlan%DEBD(isec,ipas) = (SectionPlan%DEB(isec,ipas) + SectionPlan%DEB(isec+1,ipas) ) / 2._DOUBLE
-            ! 4 ) CALCUL DE LA PRESSION
-            ! -------------------------
-            if( ipas == 1 ) then
-               SectionPlan%PRESSD(isec,ipas) = 0._DOUBLE
-            else
-               SectionPlan%PRESSD(isec,ipas) = SectionPLan%PRESSD(isec,ipas-1) + &
-               GPES*( SectionPlan%SD(isec,ipas-1) +             &
-               SectionPlan%SD(isec,ipas) ) *        &
-               DZD(isec) / 2._DOUBLE
-            endif
-         end do   boucle3_pas_de_planim
+         if ( Temps .EQ. TempsInitial .OR. condition_courlis ) then ! PU2017: Changement du critere sur le planimetrage
+
+           XD(isec) = ( X(isec+1) + X(isec) ) / 2._DOUBLE
+           ! DETERMINATION DES PROFILS DE DONNES SERVANT A L'INTERPOLATION
+           ! -------------------------------------------------------------
+           if( IDT(isec) == IDT(isec+1) ) then
+              profil_gauche = IDT(isec)
+              profil_droit  = IDT(isec) + 1
+           else
+              if( XD(isec) < Profil(IDT(isec+1))%AbsAbs ) then
+                 profil_gauche = IDT(isec)
+                 profil_droit  = IDT(isec) + 1
+              else
+                 profil_gauche = IDT(isec+1)
+                 profil_droit  = IDT(isec+1) + 1
+              endif
+           endif
+           DELTAX    = Profil(profil_droit)%AbsAbs - Profil(profil_gauche)%AbsAbs
+           DZD(isec) = (Profil(profil_droit)%Pas *                  &
+                       (XD(isec) - Profil(profil_gauche)%AbsAbs) +  &
+                        Profil(profil_gauche)%Pas *                 &
+                       (Profil(profil_droit)%AbsAbs - XD(isec)) ) / DELTAX
+
+           boucle3_pas_de_planim : do ipas = 1 , NbPas
+              ! 1 ) CALCUL DE LA SECTION MOUILLEE
+              ! ---------------------------------
+              ! a ) MINEURE
+              SectionPlan%SD1(isec,ipas) = ( SectionPlan%S1(isec,ipas) + SectionPlan%S1(isec+1,ipas)) / 2._DOUBLE
+              ! b ) MAJEURE
+              SectionPlan%SD2(isec,ipas) = ( SectionPlan%S2(isec,ipas) + SectionPlan%S2(isec+1,ipas)) / 2._DOUBLE
+              ! c ) TOTALE
+              SectionPlan%SD(isec,ipas)  = ( SectionPlan%S (isec,ipas) + SectionPlan%S (isec+1,ipas)) / 2._DOUBLE
+              ! 2 ) CALCUL DE LA LARGEUR AU MIROIR
+              ! ----------------------------------
+              SectionPLan%BD(isec,ipas)  = ( SectionPlan%B (isec,ipas) + SectionPlan%B (isec+1,ipas)) / 2._DOUBLE
+              ! 3 ) CALCUL DE LA DEBITANCE
+              ! --------------------------
+              SectionPlan%DEBD(isec,ipas) = (SectionPlan%DEB(isec,ipas) + SectionPlan%DEB(isec+1,ipas) ) / 2._DOUBLE
+              ! 4 ) CALCUL DE LA PRESSION
+              ! -------------------------
+              if( ipas == 1 ) then
+                 SectionPlan%PRESSD(isec,ipas) = 0._DOUBLE
+              else
+                 SectionPlan%PRESSD(isec,ipas) = SectionPLan%PRESSD(isec,ipas-1) + &
+                 GPES*( SectionPlan%SD(isec,ipas-1) +             &
+                 SectionPlan%SD(isec,ipas) ) *        &
+                 DZD(isec) / 2._DOUBLE
+              endif
+           end do   boucle3_pas_de_planim
+         end if
       end do      boucle3_section
    end do         boucle3_bief
 

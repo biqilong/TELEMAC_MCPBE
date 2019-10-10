@@ -660,6 +660,15 @@ class VnvStudy(AbstractVnvStudy):
             print(" "*8+"~> Plotting "+fig_name)
             plt.savefig(fig_name)
 
+
+        res_vnv_1_t3dhyd.close()
+        res_vnv_2_t3dhyd.close()
+        res_vnv_3_t3dhyd.close()
+        res_vnv_4_t3dhyd.close()
+        res_vnv_5_t3dhyd.close()
+        res_vnv_6_t3dhyd.close()
+        res_vnv_8_t3dhyd.close()
+
         res = TelemacFile(self.get_study_file('vnv_5:T3DRES'))
 
         for plane in [1, 3, 6]:
@@ -684,3 +693,5 @@ class VnvStudy(AbstractVnvStudy):
                        ylim=[3900, 4550],
                        fig_size=(20, 5),
                        fig_name='img/VelocityMap100_MURD_P6_plane{}'.format(plane))
+
+        res.close()

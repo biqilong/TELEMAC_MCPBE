@@ -119,7 +119,7 @@ character (*), parameter ::                                                &
 err_29  = '("Error while meshing.",/,                             &
           & "The list of nodes cannot be defined  : ",/,&
           & "First cross-section = ",i5,", Last cross-section = ",i5,",    &
-		  & Step = ",g12.3)'
+          & Step = ",g12.3)'
 character (*), parameter ::                                                &
 err_29c = '("Error while meshing First cross-section =",i5,&
           & " Last cross-section =",i5," Step =", g12.3)'
@@ -135,7 +135,7 @@ err_31  = '("Computation error.",/,                                         &
           & "For the time : ",g12.2,/,                                    &
           & "the water depth is not positive",/,                          &
           & "at the cross-section # ",i5,", Reach # ",i3, &
-		  & " Relative abscissa", " X = ",g12.3," : ",/,                 &
+          & " Relative abscissa", " X = ",g12.3," : ",/,                 &
           & "Z = ",g12.3,", Zbottom = ",g12.3)'
 character (*), parameter ::                                                &
 err_31c = '("At time ",g12.2," , water depth <= 0 at the cross-section # ",i5,   &
@@ -169,7 +169,7 @@ character (*), parameter ::                                                &
 err_35  = '("Computation error.",/,                                         &
           & "For the time : ",g12.2,",",/,                                &
           & "The level (m) for the critical point is lesser than the bottom level " &
-		  & "at the cross-section # ",i5,",",/                                                &
+          & "at the cross-section # ",i5,",",/                                                &
           & "Reach # ",i3,", Relative abscissa X = ",g12.3," :",/,&
           & "Zcritical = ",g12.3,", Zbottom = ",g12.3)'
 character (*), parameter ::                                                &
@@ -621,7 +621,7 @@ character (*), parameter ::                                               &
 err_104  = '("Computation error.",/,                                       &
            & "Problem with the width : ALARG = ",f12.9," at node : ",i5,/,&
            & "for the vertical discretisation indices : ",i3," and ",i3)'
-character (*), parameter ::	   			                                  &
+character (*), parameter ::                                                     &
 err_104c = '("Problem with the width : ALARG = ",f12.9," at node : ",i5,&
            & "for the vertical discretisation indices : ",i3," and ",i3)'
 !-------------------------------------------------------------------------
@@ -629,26 +629,26 @@ character (*), parameter ::                                              &
 err_105  = '("Computation error.",/,                                      &
            & "Courant number too large at junction # ",i3,/,  &
            & "Increase the number of iterations.")'
-character (*), parameter ::	   			                                 &
+character (*), parameter ::                                                    &
 err_105c = '("Courant number too large at junction # ",i3)'
 !-------------------------------------------------------------------------
 character (*), parameter ::                                              &
 err_106  = '("Computation error.",/,                                      &
            & "The dichotomy algorithm does not converge.")'
-character (*), parameter ::	   			                                 &
+character (*), parameter ::                                                    &
 err_106c = '("The dichotomy algorithm does not converge.")'
 !-------------------------------------------------------------------------
 character (*), parameter ::                                              &
 err_107  = '("Computation error.",/,                                      &
            & "Problem with the geometry at junction # ",i3)'
-character (*), parameter ::	   			                                 &
+character (*), parameter ::                                                    &
 err_107c = '("Problem with the geometry at junction # ",i3)'
 !-------------------------------------------------------------------------
 character (*), parameter ::                                              &
 err_108  = '("Computation error.",/,                                      &
            & "Negative initial water depth at the cross-section # ",i5,/,&
            & "water depth = ",f9.3)'
-character (*), parameter ::	   			                                 &
+character (*), parameter ::                                                    &
 err_108c = '("Negative initial water depth at the cross-section # ",i5,&
            & " Water depth = ",f9.3)'
 !-------------------------------------------------------------------------
@@ -1385,8 +1385,8 @@ err_386c = '("At least one boundary condition with a graph is necessary")'
 !-------------------------------------------------------------------------
 character (*), parameter ::                                                &
 err_387  = '("Abscissa does not match any reach.",/,      &
-           & "Item ",A)'                                       
-           
+           & "Item ",A)'
+
 character (*), parameter ::                                                &
 err_387c = '("Abscissa does not match any reach")'
 !-------------------------------------------------------------------------
@@ -1397,21 +1397,21 @@ err_500  = '("Error with the parameters file.",/,    &
            & "1 : OPTHYCA (OPTHYCA post-processing)",/,                  &
            & "2 : LIDOP   (RUBENS post-processing) ",/,                  &
            & "3 : LIDONP  (RUBENS post-processing) ")'
-character (*), parameter ::	   			                                 &
+character (*), parameter ::                                                    &
 err_500c  = '("Unknown format for results : ",i3)'
 !-------------------------------------------------------------------------
 character (*), parameter ::                                              &
 err_600  = '("Computation error.",/,                                      &
            & "The water depth is not positive in the reach # ",i3,/,          &
            & "at the relative abscissa : ",f12.3)'
-character (*), parameter ::	   			                                 &
+character (*), parameter ::                                                    &
 err_600c = '("Water Depth <= 0 Reach ",i3," Abscissa ",f12.3)'
 !-------------------------------------------------------------------------
 character (*), parameter ::                                              &
 err_601  = '("Computation error.",/,                                      &
            & "The value of the water level : ",i3," is out of bounds",/,&
            & "[",2f12.3,"] for the graph Z=f(Q).")'
-character (*), parameter ::	   			                                 &
+character (*), parameter ::                                                    &
 err_601c = '("Water level : ",i3," out of bounds",/,                  &
            & "[",f12.3","f12.3,"] graph Z=f(Q).")'
 !-------------------------------------------------------------------------
@@ -1480,5 +1480,135 @@ err_705  = '("Computation error.",/,                                         &
           & "Debord model, operand is not positive : ",g12.2)'
 character (*), parameter ::                                                &
 err_705c = '("Debord model, operand is not positive : ",g12.2)'
+
+! Messages d'erreur de COURLIS
+!-------------------------------------------------------------------------
+character (*), parameter ::                                              &
+err_400 = '("Erreur du nombre de profils lus dans Courlis.",/,        &
+         & "Le nombre de profils du fichier geometrique pour Courlis est de "    &
+         & ,i3,/,"et n''est pas egal au nombre de profils de Mascaret.")'
+character (*), parameter ::                                                &
+err_400c = '("Geometrie Courlis : Nb-Profils_Courlis /= Nb_Profils_Mascaret")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_401 = '("Erreur sur un profil :",/,                                &
+         & "Au profil ",I3,", Courlis compte ",I3," points alors que ",/,        &
+         & "Mascaret en denombre ",I3,".")'
+character (*), parameter ::                                                &
+err_401c = '("Courlis, profil ",I3," : Nb_pts_Courlis /= Nb_pts_Mascaret!")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_402 = '("Erreur sur un profil :",/,                                &
+         & "Au Profil n0",I3," l''abscisse curviligne ne concorde pas",/,        &
+         & "avec celle du profil de Mascaret.")'
+character (*), parameter ::                                                &
+err_402c = '("Courlis, profil",I3,", non-concordance de l''abscisses curviligne.")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_403 = '("Erreur sur un profil :",/,                                &
+         & "Au Profil n0",I3,", point ",I3,", l''abscisse angulaire ne",/,        &
+         & "concorde pas avec celle du profil de Mascaret.")'
+character (*), parameter ::                                                &
+err_403c = '("Courlis, profil",I3,",point",I3," X_Mascaret /= X_Courlis!")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_404 = '("Erreur sur un profil :",/,                                &
+         & "Au Profil n0",I3,", point ",I3,", la cote de l''interface eau-"        &
+         & "sediment",/,"ne concorde pas avec la cote du profil Mascaret.")'
+character (*), parameter ::                                                &
+err_404c = '("Courlis, profil",I3,",point",I3," Y_Mascaret /= Z(1)_Courlis!")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_405 = '("Erreur sur un profil :",/,                                &
+         & "Au profil n0 ",I3," un lit majeur a ete detecte.",/,                &
+         & "Il faut un lit mineur unique.")'
+character (*), parameter ::                                                &
+err_405c = '("Courlis, profil n0 ",I3,", presence d''un lit majeur!")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                            &
+err_406 = '("Erreur sur un profil :",/,                                &
+         & "Au profil n0 ",I3," les interfaces ",I3," et ",I3," se chevauchent.")'
+character (*), parameter ::                                                &
+err_406c = '("Courlis, profil n0 ",I3,", chevauchement d''interfaces!")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_407 = '("Erreur de compatibilite d''options de calcul :",/,        &
+         & A," n''est pas compatible avec l''option COURLIS.")'
+character (*), parameter ::                                                &
+err_407c = '(A," est incompatible avec l''option COURLIS.")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_408 = '("Erreur de parametres pour l''option COURLIS.",/,            &
+         & "Le parametre ",A,/,"doit etre ",A)'
+character (*), parameter ::                                                &
+err_408c = '("Erreur COURLIS : ",A," doit etre ",A)'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_409 = '("WARNING de l''option COURLIS.",/,A,A)'
+character (*), parameter ::                                                &
+err_409c = '("WARNING COURLIS !",A,A)'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_410 = '("Erreur de choix du mode de saisie pour : ",A,/,            &
+         & "Le mode choisi n''est ni par CLAVIER ni par FICHIER.")'
+character (*), parameter ::                                                &
+err_410c = '("Erreur COURLIS : choix errone du mode de saisie pour ",A)'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                               &
+err_411 = '("Erreur de lecture des parametres sedimentaires.",/,        &
+         & "La valeur du parametre ",A," n''est pas correcte.")'
+character (*), parameter ::                                                &
+err_411c = '("Erreur COURLIS (sediments), parametre ",A," incorrect.")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_412 = '("Erreur en lecture du fichier ",A," (format OPTHYCA).",/,    &
+          & "La variable : ",A," n''est pas presente dans le fichier.",/,        &
+          & "Le fichier des concentrations initiales en sable et vase doit ",/,    &
+          & "comporter les variables les abscisses curvilignes (X) et ",/,        &
+          & "les concentrations initiales en vase (CVASE) et en sable (CSABLE).")'
+character (*), parameter ::                                                &
+err_412c = '("Erreur : Fichier ",A," : variable ",A," non presente.")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_413 = '("Erreur en lecture du fichier geometrie Courlis ",A,/,    &
+          & "a la lecture des valeurs du ",I3,"eme profil, au ",I5,"eme point.")'
+character (*), parameter ::                                                &
+err_413c = '("Erreur : Fichier geometrie ",A,": erreur au profil ",I3,", point",I5)'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_414 = '("Erreur : forme de convection non prevue.")'
+character (*), parameter ::                                                &
+err_414c = '("Erreur : forme de convection non prevue.")'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_415  = '("Erreur : La section mouillee du profil ",I3," est negative.")'
+character (*), parameter ::                                                &
+err_415c = '("Erreur : Section mouillee negative au profil ", I3)'
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_416 = '("Loi de concentration n0 ",i3," : ",A,",",/,                &
+         & "Le temps final de cette loi est inferieur au temps de la simulation.")'
+character (*), parameter ::                                                &
+err_416c = '("Tps final de la loi de concentration n0 ",i3," : ",A," < tps de simulation")'
+!-------------------------------------------------------------------------
+!PRE-COURLIS
+!-------------------------------------------------------------------------
+character (*), parameter ::                                                &
+err_430 = '("PRE-COURLIS : Erreur sur un profil ",/,                    &
+         & "Profil n0 ",I3,", interface ",I2," : l''abscisse angulaire",/,        &
+         & "d''une des extremites ne concorde pas avec celle de la 1ere interface.")'
+character (*), parameter ::                                                &
+err_430c = '("PRE-COURLIS : profil",I3,", interface ",I2,                &
+          & "Extremites X_Interface1  /= X_Interface !")'
+!-------------------------------------------------------------------------
+! Convection MS2018 : err_508 existe deja dans ModulesTracer/m_message_tracer_c.f90
+!-------------------------------------------------------------------------
+!character (*), parameter ::                            &
+!err_508  = '("Tracer - Erreur de valeurs de parametres pour l''option convection.",/,    &
+!          & "Le parametre ",A,/,"doit etre ",A)'
+!character (*), parameter ::                                            &
+!err_508c = '("Tracer : ",A," doit etre ",A)'
+!-------------------------------------------------------------------------
+
 
 end module M_MESSAGE_C

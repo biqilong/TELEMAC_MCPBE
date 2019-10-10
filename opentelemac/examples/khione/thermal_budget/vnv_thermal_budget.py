@@ -86,7 +86,7 @@ class VnvStudy(AbstractVnvStudy):
 
         exp = np.loadtxt('data/ref_crissp2d.prn')
 
-        values = res_vnv_1.get_timeseries_on_nodes([95], 'TEMPERATURE')
+        values = res_vnv_1.get_timeseries_on_nodes('TEMPERATURE' ,[95])
 
         fig, ax = plt.subplots(1, 1, figsize=(12, 3))
 
@@ -104,5 +104,5 @@ class VnvStudy(AbstractVnvStudy):
         plt.savefig('img/temperature')
 
         # Closing files
-        del res_vnv_1_t2dgeo
-        del res_vnv_1
+        res_vnv_1_t2dgeo.close()
+        res_vnv_1.close()

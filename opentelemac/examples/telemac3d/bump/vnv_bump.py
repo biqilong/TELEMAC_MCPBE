@@ -91,13 +91,11 @@ class VnvStudy(AbstractVnvStudy):
 
         poly = [[0.24, 1], [21, 1]]
 
-        poly_number = res_vnv_1_t3dhyd.discretize_polyline(poly)
-
         for var_name, plot_name in [('PRIVE 3', 'Analytical solution'),
                                     ('FREE SURFACE', 'TELEMAC-3D'),
                                     ('BOTTOM', 'bottom')]:
             _, abs_curv, data = res_vnv_1_t3dhyd.get_timeseries_on_polyline(\
-                                    poly, var_name, poly_number)
+                                    var_name, poly)
 
             plot1d(ax, abs_curv, data[:, -1],
                    plot_label=plot_name)
@@ -155,3 +153,6 @@ class VnvStudy(AbstractVnvStudy):
                    vectors_scale=40,
                    fig_size=(12, 5),
                    fig_name='img/veloV')
+
+        res_vnv_1_t3dres.close()
+        res_vnv_1_t3dhyd.close()

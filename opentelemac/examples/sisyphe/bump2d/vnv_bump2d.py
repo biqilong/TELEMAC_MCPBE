@@ -204,3 +204,5 @@ class VnvStudy(AbstractVnvStudy):
         plt.savefig(fig_name + ".pdf",dpi=300)
         plt.savefig(fig_name + ".png",dpi=300)
         plt.clf()
+
+        slf.close()

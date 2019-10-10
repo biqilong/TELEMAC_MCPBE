@@ -16,7 +16,7 @@
 !   along with MASCARET-TRACER.  If not, see <http://www.gnu.org/licenses/>
 !
 
-module M_NODE_TRACER_T
+Module M_NODE_TRACER_T
 !***********************************************************************
 ! PROGICIEL : MASCARET-TRACER     F. ZAOUI
 !

@@ -408,7 +408,7 @@ subroutine POST( TAUF                      , &
       endif
 
       if( VarCalc(VAR_ZMAX) ) then
-          if(.not.associated(ZMAX)) then
+         if(.not.associated(ZMAX)) then
             allocate( ZMAX(nb_sect) , STAT = retour )
             if( retour /= 0 ) then
                Erreur%Numero = 5

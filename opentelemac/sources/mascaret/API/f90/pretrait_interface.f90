@@ -27,6 +27,7 @@ subroutine  PRETRAIT_INTERFACE                             ( &
   VersionCode, Noyau                                       , &
   FichierModele, FichierMotCle                             , &
   OptionCasier                                             , &
+  OptionCourlis, FichierMotCleCourlis, FichierDicoCourlis  , &
   OndeSubm                                                 , &
   CalculValidation, TypeValidation                         , &
   Regime, ModeleLit                                        , &
@@ -68,7 +69,7 @@ subroutine  PRETRAIT_INTERFACE                             ( &
   FichierResultatLiaison,& ! fichier des resultats des caracteristiques Liaison
   FichierListingCasier ,&
   FichierListingLiaison,&
-  FichierGeomCasier,	&
+  FichierGeomCasier,  &
   Erreur, &
   FichiersLois, Impression )
 
@@ -156,6 +157,9 @@ use Fox_dom                 ! parser XML Fortran
   type(FICHIER_T), intent(inout) :: FichierModele
   type(FICHIER_T), intent(inout) :: FichierMotCle
   logical        , intent(  out) :: OptionCasier
+  logical        , intent(  out) :: OptionCourlis
+  type(FICHIER_T), intent(  out) :: FichierMotCleCourlis
+  type(FICHIER_T), intent(  out) :: FichierDicoCourlis
   logical        , intent(  out) :: OndeSubm
   logical        , intent(  out) :: CalculValidation
   logical        , intent(  out) :: PerteChargeConfluent
@@ -357,8 +361,8 @@ use Fox_dom                 ! parser XML Fortran
   integer           :: numero_max_loi  ! Numero de loi hydrau lu le + grand
   logical           :: sauvegarde_modele ! flag de sauvegarde du modele
   integer           :: ul              ! Numero d'unite d'un fichier
-  integer             :: nb_casier, num_liaison, iliaison, icasier, ull, ulc
-  integer				:: num_casier_origine, num_casier_fin, ilcc, nb_liaisonCC, nb_liaisonRC, jcasier
+  integer           :: nb_casier, num_liaison, iliaison, icasier, ull, ulc
+  integer           :: num_casier_origine, num_casier_fin, ilcc, nb_liaisonCC, nb_liaisonRC, jcasier
   integer, dimension(:,:), allocatable :: connect_casier
 
 ! Erreur
@@ -519,6 +523,38 @@ use Fox_dom                 ! parser XML Fortran
      return
   endif
   call extractDataContent(champ2,OptionCasier)
+
+! MS2018
+! Courlis coupling (implies a MASCARET-COURLIS coupling)
+! ------------------------------------------------------
+
+  champ2 => item(getElementsByTagname(champ1, "optionCourlis"), 0)
+  if(associated(champ2).eqv..false.) then
+     OptionCourlis = .false.
+  else
+    call extractDataContent(champ2,OptionCourlis)
+  endif
+
+  ! Reading courlis argument only of
+  if(OptionCourlis) then
+    champ2 => item(getElementsByTagname(champ1, "fichierMotCleCourlis"), 0)
+    if(associated(champ2).eqv..false.) then
+        print*,"Parse error => fichierMotCleCourlis"
+        call xerror(Erreur)
+        return
+    endif
+    FichierMotCleCourlis%Nom  = getTextContent(champ2)
+
+    champ2 => item(getElementsByTagname(champ1, "dictionaireCourlis"), 0)
+    if(associated(champ2).eqv..false.) then
+        print*,"Parse error => dictionaireCourlis"
+        call xerror(Erreur)
+        return
+    endif
+    FichierDicoCourlis%Nom  = getTextContent(champ2)
+  endif
+
+! Fin MS2018
 
 ! Perte de charge automatique due aux confluents
 ! ----------------------------------------------
@@ -833,7 +869,7 @@ use Fox_dom                 ! parser XML Fortran
   call extractDataContent(champ2,CritereArret)
   if (CritereArret /= TEMPS_MAXIMUM .and. &
       CritereArret /= NOMBRE_DE_PAS_TEMPS_MAXIMUM .and. &
-	  CritereArret /= COTE_MAXIMALE_AU_POINT_DE_CONTROLE) then
+      CritereArret /= COTE_MAXIMALE_AU_POINT_DE_CONTROLE) then
     Erreur%Numero = 305
     Erreur%ft   = err_305
     Erreur%ft_c = err_305c
@@ -1104,7 +1140,7 @@ use Fox_dom                 ! parser XML Fortran
           Erreur%ft_c = err_312c
           call TRAITER_ERREUR  (Erreur, post_processeur)
           return
-	     endif
+       endif
   end if
 
   if (post_processeur == POST_RUBENS) then
@@ -1125,7 +1161,7 @@ use Fox_dom                 ! parser XML Fortran
       FormatResu2 = FORMAT_STO_OPTHYCA
     endif
   else
-	   FormatResu2 = 0
+     FormatResu2 = 0
   endif
 ! fichier listing
 !----------------
@@ -1400,9 +1436,9 @@ use Fox_dom                 ! parser XML Fortran
 
       iprof = iprof + 1
     end do
-	XDT(isect) = (X(isect) - Profil(iprof)%AbsAbs) /               &
+    XDT(isect) = (X(isect) - Profil(iprof)%AbsAbs) /               &
                  (Profil(iprof + 1)%AbsAbs - Profil(iprof)%AbsAbs)
-	IDT(isect) = iprof
+    IDT(isect) = iprof
 
     iprof_inf = iprof
 
@@ -1590,7 +1626,7 @@ use Fox_dom                 ! parser XML Fortran
        ProfFinBief           , &
        absc_rel_ext_deb_bief , &
        absc_rel_ext_fin_bief , &
-	   InterpLinCoeffFrott   , &
+       InterpLinCoeffFrott   , &
        UniteListing          , &
        document              , &
        Erreur                  & ! Erreur
@@ -1684,7 +1720,7 @@ use Fox_dom                 ! parser XML Fortran
 
                Algorithme         , &
                size(X)            , &
-			   NbExtNoeud         , &
+               NbExtNoeud         , &
                Connect            , &
                impression_reseau  , &
                FichierListing%Unite, &
@@ -1940,22 +1976,22 @@ call LEC_DEVER             ( &
   !========================================================================
 
 
-    call LEC_LIAISON			   (&
-                  Liaison,		    &
+    call LEC_LIAISON         (&
+                  Liaison,    &
                   connect_casier,           &
-                  X,			    &
-                  Profil,		    &
+                  X,          &
+                  Profil,       &
                   ProfDebBief,              &
                   ProfFinBief,              &
                   document,                 &  ! Pointeur vers document XML
-                  Erreur				)
+                  Erreur)
 
     if (Erreur%Numero /= 0) then
           return
     end if
 
   !==========================================================================
-  !		CALCUL DE LA MATRICE DE CONNECTION CASIER - CASIER
+  !   CALCUL DE LA MATRICE DE CONNECTION CASIER - CASIER
   !=========================================================================
 
 

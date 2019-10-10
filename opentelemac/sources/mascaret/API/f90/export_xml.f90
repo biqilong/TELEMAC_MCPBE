@@ -142,8 +142,8 @@ subroutine EXPORT_XML_SAINT_VENANT(RetourErreur, Identifiant, NomFichier)
    integer nbVar, nbTaille
    character(len=255) baliseModeleEtat
    ! Tableau des infos a exporter
-   ! Les tailles sont initialisees a une taille max (50) et 
-   ! la taille reelle est conservee dans une variable  
+   ! Les tailles sont initialisees a une taille max (50) et
+   ! la taille reelle est conservee dans une variable
    character(LEN=40), dimension(50)  :: TabVar         ! Tableau des noms des variables a exporter
    character(LEN=40), dimension(50)  :: TabTailleVar   ! Tableau des tailles de variables a exporter
    character(LEN=40), dimension(50)  :: TabNomTaille   ! Tableau des balises pour les tailles
@@ -166,7 +166,7 @@ subroutine EXPORT_XML_SAINT_VENANT(RetourErreur, Identifiant, NomFichier)
    ! i = i + 1
    ! TabVar(i) = 'Model.Weir.Name'
    ! i = i + 1
-   
+
    ! Variables
    TabVar(i) = 'Model.Connect.FirstNdNum'
    i = i + 1
@@ -349,13 +349,13 @@ subroutine EXPORT_XML_SAINT_VENANT(RetourErreur, Identifiant, NomFichier)
          RETURN
        end if
 
-	   ! write(*,*) TRIM(nomVar), taille1, taille2, taille3
+       ! write(*,*) TRIM(nomVar), taille1, taille2, taille3
        if ( (nomBalise == 'nbPasPlanim').or.(nomBalise == 'nbPtsSing') ) then
          write (tailleChar,'(I10)') taille2
        else
-	     write (tailleChar,'(I10)') taille1
+         write (tailleChar,'(I10)') taille1
        end if
-	   
+
        call EXPORT_USERVAR_XML(erreur, Identifiant, uniteLogique, nomBalise, TypeVar, descrip, tailleChar)
 
    end do
@@ -366,7 +366,7 @@ subroutine EXPORT_XML_SAINT_VENANT(RetourErreur, Identifiant, NomFichier)
    descrip = 'nombre de points de conditions aux limites'
    tailleChar = '2'
    call EXPORT_USERVAR_XML(erreur, Identifiant, uniteLogique, nomBalise, TypeVar, descrip, tailleChar)
-   
+
    ! Ecriture du Flag de convection
    nomBalise = 'FlagConvection'
    descrip = 'Flag de convection'
@@ -387,7 +387,7 @@ subroutine EXPORT_XML_SAINT_VENANT(RetourErreur, Identifiant, NomFichier)
    TypeVar = 'DOUBLE'
    write (tailleChar,'(F6.3)') TETA
    call EXPORT_USERVAR_XML(erreur, Identifiant, uniteLogique, nomBalise, TypeVar, descrip, tailleChar)
-   
+
    ! Ecriture des variables du modele demandees (voir tableau TabVar)
    do i=1, nbVar
       nomVar = TabVar(i)
@@ -568,7 +568,7 @@ subroutine getValeurString(erreur, Identifiant, nomVar, TypeVar, index1, index2,
 
     ! conversion de valDouble en chaine de caractere (valeur) justifie a gauche
      write(doubleString, *) valDouble
-     
+
      valeur = adjustl(doubleString)
 
    elseif ((TypeVar == 'BOOL').OR.(TypeVar == 'TABBOOL')) then

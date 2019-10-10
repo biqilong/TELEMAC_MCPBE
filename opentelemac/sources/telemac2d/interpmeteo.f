@@ -98,7 +98,7 @@
 !  READS VARIABLES AND FILLS IN TABENT_IPM ARRAY
 !
 !       AVOID PART-REF WITH NON-ZERO RANK IN MODE T1V
- 100    READ(NFO,*,END=20) ( DUMMY_IPM(J), J=1, NINPUTVAR )
+ 100    READ(NFO,*,END=20,ERR=40) ( DUMMY_IPM(J), J=1, NINPUTVAR )
         NBENR_IPM = NBENR_IPM + 1
         GO TO 100
 !
@@ -122,7 +122,7 @@
 !
         DO I=1,NBENR_IPM
 !         AD: AVOID PART-REF WITH NON-ZERO RANK IN MODE T1V
-          READ(NFO,*) ( TABENT_IPM(I,J),  J=1, NINPUTVAR )
+          READ(NFO,*,ERR=40) ( TABENT_IPM(I,J),  J=1, NINPUTVAR )
         ENDDO
 !
         WRITE(LU,*)'======================================='
@@ -207,6 +207,25 @@
 !
       EVAPORATION   = TABENT_IPM(POSTAB_IPM,9)
      &     + (TABENT_IPM(POSTAB_IPM+1,9)-TABENT_IPM(POSTAB_IPM,9))*ALPHA
+!
+!-----------------------------------------------------------------------
+!
+      GO TO 200
+!
+!-----------------------------------------------------------------------
+!
+ 40     CONTINUE
+        WRITE(LU,*) 'INTERPMETEO: PROBLEM TO READ THE ASCII ' //
+     &              'ATMOSPHERIC DATA FILE'
+        WRITE(LU,*) 'THE EXPECTED FORMAT IS 1-TIME 2-WIND MAGN ' //
+     &              '3-WIND DIR 4-TAIR 5-PATM 6-HREL 7-NEBULO ' //
+     &              '8-RAIN 9-EVAP'
+        CALL PLANTE(1)
+        STOP
+!
+!-----------------------------------------------------------------------
+!
+ 200    CONTINUE
 !
 !-----------------------------------------------------------------------
 !

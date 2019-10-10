@@ -58,20 +58,18 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
-                # Getting files
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
         vnv_3_t2dres = self.get_study_file('vnv_3:T2DRES')
         res_vnv_3_t2dres = TelemacFile(vnv_3_t2dres)
         vnv_3_t2dgeo = self.get_study_file('vnv_3:T2DGEO')
         res_vnv_3_t2dgeo = TelemacFile(vnv_3_t2dgeo)
 
         # Plotting FREE SURFACE over polyline over records range(0, ntimestep)
-        plot_timeseries_on_polyline(\
-                res_vnv_3_t2dres,
+        vnv_plot1d_polylines(\
                 'FREE SURFACE',
+                res_vnv_3_t2dres,
                 poly=[[0, 50], [500, 50]],
-                records=range(0, res_vnv_3_t2dres.ntimestep),
+                record=[i for i in range(0, res_vnv_3_t2dres.ntimestep)],
                 fig_size=(12, 5),
                 fig_name='img/FreeSurfaceProfiles')
 
@@ -99,5 +97,5 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/FreeSurfacet5')
 
         # Closing files
-        del res_vnv_3_t2dres
-        del res_vnv_3_t2dgeo
+        res_vnv_3_t2dres.close()
+        res_vnv_3_t2dgeo.close()

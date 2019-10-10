@@ -75,7 +75,8 @@ class VnvStudy(AbstractVnvStudy):
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
 
         # Plotting FREE SURFACE over polyline over records [0, 1, 2, 3, 4]
-        vnv_plot1d_polylines('FREE SURFACE',
+        vnv_plot1d_polylines(\
+            'FREE SURFACE',
             res_vnv_1_t2dres, 'Elevation',
             fig_size=(8, 4),
             poly=[[0, 0], [3000., 3000.0]],
@@ -83,7 +84,8 @@ class VnvStudy(AbstractVnvStudy):
             fig_name='img/free_surface')
 
         # Plotting TRACER 1 over polyline over records [0, 1, 2, 3, 4]
-        vnv_plot1d_polylines('TRACER 1',
+        vnv_plot1d_polylines(\
+            'TRACER 1',
             res_vnv_1_t2dres, 'Tracer',
             fig_size=(8, 4),
             poly=[[0, 0], [3000., 3000.0]],
@@ -115,9 +117,9 @@ class VnvStudy(AbstractVnvStudy):
                 vectors=True,
                 vectors_scale=10,
                 fig_size=(6, 5),
-                fig_name=fig_names[idx], 
+                fig_name=fig_names[idx],
                 annotate_time=True)
 
         # Closing files
-        del res_vnv_1_t2dgeo
-        del res_vnv_1_t2dres
+        res_vnv_1_t2dgeo.close()
+        res_vnv_1_t2dres.close()

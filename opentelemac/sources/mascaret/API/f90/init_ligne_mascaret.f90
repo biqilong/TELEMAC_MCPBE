@@ -372,7 +372,7 @@ subroutine  INIT_LIGNE_MASCARET(Erreur, Identifiant, Q, Z, Taille)
       ptrMsgsErreurs(Identifiant) = 'INIT_LIGNE_MASCARET - Unable to allocate State.Q1'
       return
    endif
-   Etat%Q1(:) = Etat%Q(:)		! permet d'entrer le debit de la ligne d'eau initiale au premier pas de temps
+   Etat%Q1(:) = Etat%Q(:)   ! permet d'entrer le debit de la ligne d'eau initiale au premier pas de temps
 
    if(.not.associated(Etat%V1)) allocate (Etat%V1(nb_sect), STAT = retour)
    if (retour /= 0) then

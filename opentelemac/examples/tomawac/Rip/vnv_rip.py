@@ -15,7 +15,7 @@ class VnvStudy(AbstractVnvStudy):
         """
         Defines the general parameter
         """
-        self.rank = 1
+        self.rank = 3
         self.tags = ['telemac3d', 'tomawac']
 
     def _pre(self):
@@ -50,29 +50,28 @@ class VnvStudy(AbstractVnvStudy):
         # T3D Comparison with a reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_rip.slf',
-                            eps=[0.002,0.03,0.01,0.002,5e-6,0.004,0.0003,0.0002])
+                            eps=[0.002, 0.03, 0.01, 0.002, 5e-6, 0.004, 0.0003, 0.0002])
 
         # T3D Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_4:T3DRES',
-                            eps=[0.005,0.05,0.022,0.003,5e-6,0.008,0.0007,0.0005])
+                            eps=[0.005, 0.11, 0.022, 0.006, 5e-6, 0.011, 0.0007, 0.0005])
 
-        # WAC Comparison between sequential and parallel run.
+        # WAC Comparison with a reference file.
         self.check_epsilons('vnv_1:WACRES',
                             'fom_rip.slf',
-                            eps=[0.006,3,1e-11,0.003,0.02,0.02,2e-5,1e-5,0.1,0.6])
+                            eps=[0.006, 3, 1e-11, 0.003, 0.02, 0.02, 2e-5, 1e-5, 0.1, 0.6])
 
         # WAC Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:WACRES',
                             'vnv_4:WACRES',
-                            eps=[0.006,4,1e-11,0.005,0.022,0.02,4e-5,2e-5,0.1,0.8])
+                            eps=[0.007, 12, 1e-11, 0.005, 0.04, 0.02, 4e-5, 2e-5, 0.2, 1.2])
 
 
     def _post(self):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_vertical_slice
         from postel.plot_vnv import vnv_plot2d
                 # Getting files
         vnv_1_t3dres = self.get_study_file('vnv_1:T3DRES')
@@ -89,36 +88,44 @@ class VnvStudy(AbstractVnvStudy):
 
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'VELOCITY U',
-                            poly=[[0, 9], [14.6, 9]],
-                            record=-1,
-                            fig_size=(12, 7),
-                            fig_name='img/Ucoupver1')
+        vnv_plot2d(\
+                   'VELOCITY U',
+                   res_vnv_1_t3dres,
+                   poly=[[0, 9], [14.6, 9]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/Ucoupver1')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'VELOCITY U',
-                            poly=[[11.8, 0], [11.8, 18]],
-                            record=-1,
-                            fig_size=(12, 7),
-                            fig_name='img/Ucoupver2')
+        vnv_plot2d(\
+                   'VELOCITY U',
+                   res_vnv_1_t3dres,
+                   poly=[[11.8, 0], [11.8, 18]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/Ucoupver2')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'VELOCITY U',
-                            poly=[[0, 13.6], [14.6, 13.6]],
-                            record=-1,
-                            fig_size=(12, 7),
-                            fig_name='img/Ucoupver3')
+        vnv_plot2d(\
+                   'VELOCITY U',
+                   res_vnv_1_t3dres,
+                   poly=[[0, 13.6], [14.6, 13.6]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/Ucoupver3')
 
         # Plotting vertical split
-        plot_vertical_slice(res_vnv_1_t3dres,
-                            'USTOKES',
-                            poly=[[0, 13.6], [14.6, 13.6]],
-                            record=-1,
-                            fig_size=(12, 7),
-                            fig_name='img/Ustokes')
+        vnv_plot2d(\
+                   'USTOKES',
+                   res_vnv_1_t3dres,
+                   poly=[[0, 13.6], [14.6, 13.6]],
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/Ustokes')
         # Closing files
-        del res_vnv_1_t3dres
-        del res_rip
+        res_vnv_1_t3dres.close()
+        res_rip.close()

@@ -132,14 +132,12 @@ class VnvStudy(AbstractVnvStudy):
         fig, ax = plt.subplots(1, 1, figsize=(12, 2))
 
         poly = [[0., 75.], [10000., 75.]]
-        poly_number = geo.discretize_polyline(poly)
 
         _, abs_curv, bottoms = \
-                geo.get_timeseries_on_polyline(poly, 'BOTTOM', poly_number)
+                geo.get_timeseries_on_polyline('BOTTOM', poly)
 
         _, abs_curv2, surfaces = \
-                res_vnv_1.get_timeseries_on_polyline(poly, 'FREE SURFACE',
-                                                     poly_number)
+                res_vnv_1.get_timeseries_on_polyline('FREE SURFACE', poly)
 
         plot1d(ax, abs_curv, bottoms[:, 0], color='b',
                plot_label='bottom')
@@ -156,15 +154,12 @@ class VnvStudy(AbstractVnvStudy):
         fig, ax = plt.subplots(1, 1, figsize=(12, 2))
 
         poly = [[0., 75.], [10000., 75.]]
-        poly_number = geo.discretize_polyline(poly)
 
         _, abs_curv, temps = \
-             res_vnv_2.get_timeseries_on_polyline(poly, 'TEMPERATURE',
-                                                  poly_number)
+             res_vnv_2.get_timeseries_on_polyline('TEMPERATURE', poly)
 
         _, abs_curv2, frazils = \
-             res_vnv_2.get_timeseries_on_polyline(poly, 'FRAZIL (CONC)',
-                                                  poly_number)
+             res_vnv_2.get_timeseries_on_polyline('FRAZIL (CONC)', poly)
 
         plot1d(ax, abs_curv, temps[:, 0], color='b',
                plot_label='temperature')
@@ -178,3 +173,8 @@ class VnvStudy(AbstractVnvStudy):
         print(" "*8+"~> Plotting img/frazil-profile")
         plt.savefig('img/frazil-profile')
         plt.clf()
+
+        geo.close()
+        res_vnv_1.close()
+        res_vnv_2.close()
+        res_vnv_3.close()

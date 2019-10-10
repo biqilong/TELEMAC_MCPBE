@@ -153,7 +153,7 @@
       CALL OS('X=-Y    ',X=FLUDPT_ADV,Y=FLUDPT%ADR(J)%P)
 !
       DO I=1,NPOIN
-       IF(HN%R(I).GT.HMIN) THEN
+        IF(HN%R(I).GT.HMIN) THEN
           FLUER_ADV%R(I)=FLUER_ADV%R(I)/HN%R(I)
         ELSE
           FLUER_ADV%R(I)=0.D0

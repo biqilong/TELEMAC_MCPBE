@@ -17,7 +17,7 @@ c  Pourchasser les divisions!
 
 c======================== BITS ==========================:
       BLOCK DATA BITS
-      INTEGER*4 adbitbuf, adbitlbuf
+      INTEGER(SELECTED_INT_KIND(8)) adbitbuf, adbitlbuf
       INTEGER adbitibuf, adbitilbuf
       LOGICAL adbitinlbuf
       COMMON /adbitfbuf/adbitbuf,adbitlbuf,
@@ -33,7 +33,7 @@ c [0,31] are the bit indices we can use in an INTEGER
 
       SUBROUTINE PUSHBIT(bit)
       LOGICAL bit
-      INTEGER*4 adbitbuf, adbitlbuf
+      INTEGER(SELECTED_INT_KIND(8)) adbitbuf, adbitlbuf
       INTEGER adbitibuf, adbitilbuf
       LOGICAL adbitinlbuf
       COMMON /adbitfbuf/adbitbuf,adbitlbuf,
@@ -61,7 +61,7 @@ c
       END
 
       LOGICAL FUNCTION LOOKBIT()
-      INTEGER*4 adbitbuf, adbitlbuf
+      INTEGER(SELECTED_INT_KIND(8)) adbitbuf, adbitlbuf
       INTEGER adbitibuf, adbitilbuf
       LOGICAL adbitinlbuf
       COMMON /adbitfbuf/adbitbuf,adbitlbuf,
@@ -87,7 +87,7 @@ c
       END
 
       LOGICAL FUNCTION POPBIT()
-      INTEGER*4 adbitbuf, adbitlbuf
+      INTEGER(SELECTED_INT_KIND(8)) adbitbuf, adbitlbuf
       INTEGER adbitibuf, adbitilbuf
       LOGICAL adbitinlbuf
       COMMON /adbitfbuf/adbitbuf,adbitlbuf,
@@ -428,7 +428,7 @@ c
 
 c======================= INTEGER*4 =========================:
       BLOCK DATA INTEGERS4
-      INTEGER*4 adi4buf(512), adi4lbuf(512)
+      INTEGER(SELECTED_INT_KIND(8)) adi4buf(512), adi4lbuf(512)
       INTEGER adi4ibuf,adi4ilbuf
       LOGICAL adi4inlbuf
       COMMON /adi4fbuf/adi4buf,adi4lbuf,
@@ -439,7 +439,7 @@ c======================= INTEGER*4 =========================:
       END
 
       SUBROUTINE PUSHINTEGER4(x)
-      INTEGER*4 x, adi4buf(512), adi4lbuf(512)
+      INTEGER(SELECTED_INT_KIND(8)) x, adi4buf(512), adi4lbuf(512)
       INTEGER adi4ibuf,adi4ilbuf
       LOGICAL adi4inlbuf
       COMMON /adi4fbuf/adi4buf,adi4lbuf,
@@ -465,7 +465,7 @@ c
       END
 
       SUBROUTINE LOOKINTEGER4(x)
-      INTEGER*4 x, adi4buf(512), adi4lbuf(512)
+      INTEGER(SELECTED_INT_KIND(8)) x, adi4buf(512), adi4lbuf(512)
       INTEGER adi4ibuf,adi4ilbuf
       LOGICAL adi4inlbuf
       COMMON /adi4fbuf/adi4buf,adi4lbuf,
@@ -496,7 +496,7 @@ c
       END
 
       SUBROUTINE POPINTEGER4(x)
-      INTEGER*4 x, adi4buf(512), adi4lbuf(512)
+      INTEGER(SELECTED_INT_KIND(8)) x, adi4buf(512), adi4lbuf(512)
       INTEGER adi4ibuf,adi4ilbuf
       LOGICAL adi4inlbuf
       COMMON /adi4fbuf/adi4buf,adi4lbuf,
@@ -521,7 +521,7 @@ c
 
 c======================= INTEGER*8 =========================
       BLOCK DATA INTEGERS8
-      INTEGER*8 adi8buf(512), adi8lbuf(512)
+      INTEGER(SELECTED_INT_KIND(16)) adi8buf(512), adi8lbuf(512)
       INTEGER adi8ibuf,adi8ilbuf
       LOGICAL adi8inlbuf
       COMMON /adi8fbuf/adi8buf,adi8lbuf,
@@ -532,7 +532,7 @@ c======================= INTEGER*8 =========================
       END
 
       SUBROUTINE PUSHINTEGER8(x)
-      INTEGER*8 x, adi8buf(512), adi8lbuf(512)
+      INTEGER(SELECTED_INT_KIND(16)) x, adi8buf(512), adi8lbuf(512)
       INTEGER adi8ibuf,adi8ilbuf
       LOGICAL adi8inlbuf
       COMMON /adi8fbuf/adi8buf,adi8lbuf,
@@ -558,7 +558,7 @@ c
       END
 
       SUBROUTINE LOOKINTEGER8(x)
-      INTEGER*8 x, adi8buf(512), adi8lbuf(512)
+      INTEGER(SELECTED_INT_KIND(16)) x, adi8buf(512), adi8lbuf(512)
       INTEGER adi8ibuf,adi8ilbuf
       LOGICAL adi8inlbuf
       COMMON /adi8fbuf/adi8buf,adi8lbuf,
@@ -589,7 +589,7 @@ c
       END
 
       SUBROUTINE POPINTEGER8(x)
-      INTEGER*8 x, adi8buf(512), adi8lbuf(512)
+      INTEGER(SELECTED_INT_KIND(16)) x, adi8buf(512), adi8lbuf(512)
       INTEGER adi8ibuf,adi8ilbuf
       LOGICAL adi8inlbuf
       COMMON /adi8fbuf/adi8buf,adi8lbuf,
@@ -614,7 +614,7 @@ c
 
 c======================= REAL*4 =========================
       BLOCK DATA REALS4
-      REAL*4 adr4buf(512), adr4lbuf(512)
+      REAL(SELECTED_REAL_KIND(5,20)) adr4buf(512), adr4lbuf(512)
       INTEGER adr4ibuf,adr4ilbuf
       LOGICAL adr4inlbuf
       COMMON /adr4fbuf/adr4buf,adr4lbuf,
@@ -625,7 +625,7 @@ c======================= REAL*4 =========================
       END
 
       SUBROUTINE PUSHREAL4(x)
-      REAL*4 x, adr4buf(512), adr4lbuf(512)
+      REAL(SELECTED_REAL_KIND(5,20)) x, adr4buf(512), adr4lbuf(512)
       INTEGER adr4ibuf,adr4ilbuf
       LOGICAL adr4inlbuf
       COMMON /adr4fbuf/adr4buf,adr4lbuf,
@@ -651,7 +651,7 @@ c
       END
 
       SUBROUTINE LOOKREAL4(x)
-      REAL*4 x, adr4buf(512), adr4lbuf(512)
+      REAL(SELECTED_REAL_KIND(5,20)) x, adr4buf(512), adr4lbuf(512)
       INTEGER adr4ibuf,adr4ilbuf
       LOGICAL adr4inlbuf
       COMMON /adr4fbuf/adr4buf,adr4lbuf,
@@ -682,7 +682,7 @@ c
       END
 
       SUBROUTINE POPREAL4(x)
-      REAL*4 x, adr4buf(512), adr4lbuf(512)
+      REAL(SELECTED_REAL_KIND(5,20)) x, adr4buf(512), adr4lbuf(512)
       INTEGER adr4ibuf,adr4ilbuf
       LOGICAL adr4inlbuf
       COMMON /adr4fbuf/adr4buf,adr4lbuf,
@@ -707,7 +707,7 @@ c
 
 c======================= REAL*8 =========================
       BLOCK DATA REALS8
-      REAL*8 adr8buf(512), adr8lbuf(512)
+      REAL(SELECTED_REAL_KIND(10,60)) adr8buf(512), adr8lbuf(512)
       INTEGER adr8ibuf,adr8ilbuf
       LOGICAL adr8inlbuf
       COMMON /adr8fbuf/adr8buf,adr8lbuf,
@@ -718,7 +718,7 @@ c======================= REAL*8 =========================
       END
 
       SUBROUTINE PUSHREAL8(x)
-      REAL*8 x, adr8buf(512), adr8lbuf(512)
+      REAL(SELECTED_REAL_KIND(10,60)) x, adr8buf(512), adr8lbuf(512)
       INTEGER adr8ibuf,adr8ilbuf
       LOGICAL adr8inlbuf
       COMMON /adr8fbuf/adr8buf,adr8lbuf,
@@ -744,7 +744,7 @@ c
       END
 
       SUBROUTINE LOOKREAL8(x)
-      REAL*8 x, adr8buf(512), adr8lbuf(512)
+      REAL(SELECTED_REAL_KIND(10,60)) x, adr8buf(512), adr8lbuf(512)
       INTEGER adr8ibuf,adr8ilbuf
       LOGICAL adr8inlbuf
       COMMON /adr8fbuf/adr8buf,adr8lbuf,
@@ -775,7 +775,7 @@ c
       END
 
       SUBROUTINE POPREAL8(x)
-      REAL*8 x, adr8buf(512), adr8lbuf(512)
+      REAL(SELECTED_REAL_KIND(10,60)) x, adr8buf(512), adr8lbuf(512)
       INTEGER adr8ibuf,adr8ilbuf
       LOGICAL adr8inlbuf
       COMMON /adr8fbuf/adr8buf,adr8lbuf,
@@ -800,7 +800,7 @@ c
 
 c======================= COMPLEX*8 =========================
       BLOCK DATA COMPLEXS8
-      COMPLEX*8 adc8buf(512), adc8lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(5,20)) adc8buf(512), adc8lbuf(512)
       INTEGER adc8ibuf,adc8ilbuf
       LOGICAL adc8inlbuf
       COMMON /adc8fbuf/adc8buf,adc8lbuf,
@@ -811,7 +811,7 @@ c======================= COMPLEX*8 =========================
       END
 
       SUBROUTINE PUSHCOMPLEX8(x)
-      COMPLEX*8 x, adc8buf(512), adc8lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(5,20)) x, adc8buf(512), adc8lbuf(512)
       INTEGER adc8ibuf,adc8ilbuf
       LOGICAL adc8inlbuf
       COMMON /adc8fbuf/adc8buf,adc8lbuf,
@@ -837,7 +837,7 @@ c
       END
 
       SUBROUTINE LOOKCOMPLEX8(x)
-      COMPLEX*8 x, adc8buf(512), adc8lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(5,20)) x, adc8buf(512), adc8lbuf(512)
       INTEGER adc8ibuf,adc8ilbuf
       LOGICAL adc8inlbuf
       COMMON /adc8fbuf/adc8buf,adc8lbuf,
@@ -868,7 +868,7 @@ c
       END
 
       SUBROUTINE POPCOMPLEX8(x)
-      COMPLEX*8 x, adc8buf(512), adc8lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(5,20)) x, adc8buf(512), adc8lbuf(512)
       INTEGER adc8ibuf,adc8ilbuf
       LOGICAL adc8inlbuf
       COMMON /adc8fbuf/adc8buf,adc8lbuf,
@@ -893,7 +893,7 @@ c
 
 c======================= COMPLEX*16 =========================
       BLOCK DATA COMPLEXS16
-      COMPLEX*16 adc16buf(512), adc16lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(10,60)) adc16buf(512), adc16lbuf(512)
       INTEGER adc16ibuf,adc16ilbuf
       LOGICAL adc16inlbuf
       COMMON /adc16fbuf/adc16buf,adc16lbuf,
@@ -904,7 +904,8 @@ c======================= COMPLEX*16 =========================
       END
 
       SUBROUTINE PUSHCOMPLEX16(x)
-      COMPLEX*16 x, adc16buf(512), adc16lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(10,60)) x, adc16buf(512),
+     +                                   adc16lbuf(512)
       INTEGER adc16ibuf,adc16ilbuf
       LOGICAL adc16inlbuf
       COMMON /adc16fbuf/adc16buf,adc16lbuf,
@@ -930,7 +931,8 @@ c
       END
 
       SUBROUTINE LOOKCOMPLEX16(x)
-      COMPLEX*16 x, adc16buf(512), adc16lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(10,60)) x, adc16buf(512),
+     +                                   adc16lbuf(512)
       INTEGER adc16ibuf,adc16ilbuf
       LOGICAL adc16inlbuf
       COMMON /adc16fbuf/adc16buf,adc16lbuf,
@@ -961,7 +963,8 @@ c
       END
 
       SUBROUTINE POPCOMPLEX16(x)
-      COMPLEX*16 x, adc16buf(512), adc16lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(10,60)) x, adc16buf(512),
+     +                                   adc16lbuf(512)
       INTEGER adc16ibuf,adc16ilbuf
       LOGICAL adc16inlbuf
       COMMON /adc16fbuf/adc16buf,adc16lbuf,
@@ -987,7 +990,7 @@ c
 C=========== MEASUREMENT OF PUSH/POP TRAFFIC ==========
 
       BLOCK DATA MEMTRAFFIC
-      INTEGER*8 mmftraffic,mmftrafficM
+      INTEGER(SELECTED_INT_KIND(16)) mmftraffic,mmftrafficM
       COMMON /mmcomtraffic/mmftraffic,mmftrafficM
       DATA mmftraffic/0/
       DATA mmftrafficM/0/
@@ -995,7 +998,7 @@ C=========== MEASUREMENT OF PUSH/POP TRAFFIC ==========
 
       subroutine addftraffic(n)
       INTEGER n
-      INTEGER*8 mmftraffic,mmftrafficM
+      INTEGER(SELECTED_INT_KIND(16)) mmftraffic,mmftrafficM
       COMMON /mmcomtraffic/mmftraffic,mmftrafficM
 c
       mmftraffic = mmftraffic+n
@@ -1020,7 +1023,7 @@ c
       END
 
       SUBROUTINE PRINTTRAFFIC()
-      INTEGER*8 mmftraffic,mmftrafficM
+      INTEGER(SELECTED_INT_KIND(16)) mmftraffic,mmftrafficM
       COMMON /mmcomtraffic/mmftraffic,mmftrafficM
       CALL printctraffic()
       CALL printftrafficinc(mmftrafficM, 1000000, mmftraffic)
@@ -1033,8 +1036,8 @@ c 1001  format(a,i6,a,i6,a)
 C ============ PRINTING THE SIZE OF STACKS AND BUFFERS ==========
 
       SUBROUTINE PRINTBUFFERTOP()
-      integer*4 SMALLSTACKSIZE
-      integer*4 size
+      integer(SELECTED_INT_KIND(8)) SMALLSTACKSIZE
+      integer(SELECTED_INT_KIND(8)) size
 
       size = SMALLSTACKSIZE()
       print *,'Buffer size:',size,' bytes i.e. ',size/1024.0,' Kbytes'
@@ -1051,12 +1054,12 @@ c      INTEGER adl4ibuf,adl4ilbuf
 c      LOGICAL adl4inlbuf
 c      COMMON /adl4fbuf/adl4buf,adl4lbuf,
 c     +       adl4ibuf,adl4ilbuf,adl4inlbuf
-      INTEGER*4 adi4buf(512), adi4lbuf(512)
+      INTEGER(SELECTED_INT_KIND(8)) adi4buf(512), adi4lbuf(512)
       INTEGER adi4ibuf,adi4ilbuf
       LOGICAL adi4inlbuf
       COMMON /adi4fbuf/adi4buf,adi4lbuf,
      +       adi4ibuf,adi4ilbuf,adi4inlbuf
-      INTEGER*8 adi8buf(512), adi8lbuf(512)
+      INTEGER(SELECTED_INT_KIND(16)) adi8buf(512), adi8lbuf(512)
       INTEGER adi8ibuf,adi8ilbuf
       LOGICAL adi8inlbuf
       COMMON /adi8fbuf/adi8buf,adi8lbuf,
@@ -1066,12 +1069,12 @@ c           INTEGER adi16ibuf,adi16ilbuf
 c           LOGICAL adi16inlbuf
 c           COMMON /adi16fbuf/adi16buf,adi16lbuf,
 c          +       adi16ibuf,adi16ilbuf,adi16inlbuf
-      REAL*4 adr4buf(512), adr4lbuf(512)
+      REAL(SELECTED_REAL_KIND(5,20)) adr4buf(512), adr4lbuf(512)
       INTEGER adr4ibuf,adr4ilbuf
       LOGICAL adr4inlbuf
       COMMON /adr4fbuf/adr4buf,adr4lbuf,
      +       adr4ibuf,adr4ilbuf,adr4inlbuf
-      REAL*8 adr8buf(512), adr8lbuf(512)
+      REAL(SELECTED_REAL_KIND(10,60)) adr8buf(512), adr8lbuf(512)
       INTEGER adr8ibuf,adr8ilbuf
       LOGICAL adr8inlbuf
       COMMON /adr8fbuf/adr8buf,adr8lbuf,
@@ -1091,12 +1094,12 @@ c           INTEGER adc4ibuf,adc4ilbuf
 c           LOGICAL adc4inlbuf
 c           COMMON /adc4fbuf/adc4buf,adc4lbuf,
 c          +       adc4ibuf,adc4ilbuf,adc4inlbuf
-      COMPLEX*8 adc8buf(512), adc8lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(5,20)) adc8buf(512), adc8lbuf(512)
       INTEGER adc8ibuf,adc8ilbuf
       LOGICAL adc8inlbuf
       COMMON /adc8fbuf/adc8buf,adc8lbuf,
      +       adc8ibuf,adc8ilbuf,adc8inlbuf
-      COMPLEX*16 adc16buf(512), adc16lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(10,60)) adc16buf(512), adc16lbuf(512)
       INTEGER adc16ibuf,adc16ilbuf
       LOGICAL adc16inlbuf
       COMMON /adc16fbuf/adc16buf,adc16lbuf,
@@ -1106,8 +1109,8 @@ c           INTEGER adc32ibuf,adc32ilbuf
 c           LOGICAL adc32inlbuf
 c           COMMON /adc32fbuf/adc32buf,adc32lbuf,
 c          +       adc32ibuf,adc32ilbuf,adc32inlbuf
-      integer*4 smallstacksize
-c     
+      integer(SELECTED_INT_KIND(8)) smallstacksize
+c
       smallstacksize = 0
       smallstacksize = smallstacksize + (ads1ibuf-1)*1
 c           smallstacksize = smallstacksize + (adl4ibuf-1)*4
@@ -1138,12 +1141,12 @@ c      INTEGER adl4ibuf,adl4ilbuf
 c      LOGICAL adl4inlbuf
 c      COMMON /adl4fbuf/adl4buf,adl4lbuf,
 c     +       adl4ibuf,adl4ilbuf,adl4inlbuf
-      INTEGER*4 adi4buf(512), adi4lbuf(512)
+      INTEGER(SELECTED_INT_KIND(8)) adi4buf(512), adi4lbuf(512)
       INTEGER adi4ibuf,adi4ilbuf
       LOGICAL adi4inlbuf
       COMMON /adi4fbuf/adi4buf,adi4lbuf,
      +       adi4ibuf,adi4ilbuf,adi4inlbuf
-      INTEGER*8 adi8buf(512), adi8lbuf(512)
+      INTEGER(SELECTED_INT_KIND(16)) adi8buf(512), adi8lbuf(512)
       INTEGER adi8ibuf,adi8ilbuf
       LOGICAL adi8inlbuf
       COMMON /adi8fbuf/adi8buf,adi8lbuf,
@@ -1153,12 +1156,12 @@ c           INTEGER adi16ibuf,adi16ilbuf
 c           LOGICAL adi16inlbuf
 c           COMMON /adi16fbuf/adi16buf,adi16lbuf,
 c          +       adi16ibuf,adi16ilbuf,adi16inlbuf
-      REAL*4 adr4buf(512), adr4lbuf(512)
+      REAL(SELECTED_REAL_KIND(5,20)) adr4buf(512), adr4lbuf(512)
       INTEGER adr4ibuf,adr4ilbuf
       LOGICAL adr4inlbuf
       COMMON /adr4fbuf/adr4buf,adr4lbuf,
      +       adr4ibuf,adr4ilbuf,adr4inlbuf
-      REAL*8 adr8buf(512), adr8lbuf(512)
+      REAL(SELECTED_REAL_KIND(10,60)) adr8buf(512), adr8lbuf(512)
       INTEGER adr8ibuf,adr8ilbuf
       LOGICAL adr8inlbuf
       COMMON /adr8fbuf/adr8buf,adr8lbuf,
@@ -1178,12 +1181,12 @@ c           INTEGER adc4ibuf,adc4ilbuf
 c           LOGICAL adc4inlbuf
 c           COMMON /adc4fbuf/adc4buf,adc4lbuf,
 c          +       adc4ibuf,adc4ilbuf,adc4inlbuf
-      COMPLEX*8 adc8buf(512), adc8lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(5,20)) adc8buf(512), adc8lbuf(512)
       INTEGER adc8ibuf,adc8ilbuf
       LOGICAL adc8inlbuf
       COMMON /adc8fbuf/adc8buf,adc8lbuf,
      +       adc8ibuf,adc8ilbuf,adc8inlbuf
-      COMPLEX*16 adc16buf(512), adc16lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(10,60)) adc16buf(512), adc16lbuf(512)
       INTEGER adc16ibuf,adc16ilbuf
       LOGICAL adc16inlbuf
       COMMON /adc16fbuf/adc16buf,adc16lbuf,
@@ -1193,9 +1196,10 @@ c           INTEGER adc32ibuf,adc32ilbuf
 c           LOGICAL adc32inlbuf
 c           COMMON /adc32fbuf/adc32buf,adc32lbuf,
 c          +       adc32ibuf,adc32ilbuf,adc32inlbuf
-      integer*4 bsize,lookbsize
-      integer*4 cblocks, csize, lookcblocks, lookcsize
-c     
+      integer(SELECTED_INT_KIND(8)) bsize,lookbsize
+      integer(SELECTED_INT_KIND(8)) cblocks, csize, lookcblocks,
+     +                              lookcsize
+c
       call getbigcsizes(cblocks,csize,lookcblocks,lookcsize)
       write (6,'(a,i8,a,i5,a,i8,a,i5,a)')
      +     'MAIN C stack size :',cblocks,'B +',csize,
@@ -1250,7 +1254,7 @@ c
 
 C FOR INTERNAL DEBUGS ONLY:
       SUBROUTINE SHOWALLSTACKS()
-      INTEGER*4 adbitbuf, adbitlbuf
+      INTEGER(SELECTED_INT_KIND(8)) adbitbuf, adbitlbuf
       INTEGER adbitibuf, adbitilbuf
       LOGICAL adbitinlbuf
       COMMON /adbitfbuf/adbitbuf,adbitlbuf,
@@ -1260,22 +1264,22 @@ C FOR INTERNAL DEBUGS ONLY:
       LOGICAL ads1inlbuf
       COMMON /ads1fbuf/ads1buf,ads1lbuf,
      +       ads1ibuf,ads1ilbuf,ads1inlbuf
-      INTEGER*4 adi4buf(512), adi4lbuf(512)
+      INTEGER(SELECTED_INT_KIND(8)) adi4buf(512), adi4lbuf(512)
       INTEGER adi4ibuf,adi4ilbuf
       LOGICAL adi4inlbuf
       COMMON /adi4fbuf/adi4buf,adi4lbuf,
      +       adi4ibuf,adi4ilbuf,adi4inlbuf
-      INTEGER*8 adi8buf(512), adi8lbuf(512)
+      INTEGER(SELECTED_INT_KIND(16)) adi8buf(512), adi8lbuf(512)
       INTEGER adi8ibuf,adi8ilbuf
       LOGICAL adi8inlbuf
       COMMON /adi8fbuf/adi8buf,adi8lbuf,
      +       adi8ibuf,adi8ilbuf,adi8inlbuf
-      REAL*4 adr4buf(512), adr4lbuf(512)
+      REAL(SELECTED_REAL_KIND(5,20)) adr4buf(512), adr4lbuf(512)
       INTEGER adr4ibuf,adr4ilbuf
       LOGICAL adr4inlbuf
       COMMON /adr4fbuf/adr4buf,adr4lbuf,
      +       adr4ibuf,adr4ilbuf,adr4inlbuf
-      REAL*8 adr8buf(512), adr8lbuf(512)
+      REAL(SELECTED_REAL_KIND(10,60)) adr8buf(512), adr8lbuf(512)
       INTEGER adr8ibuf,adr8ilbuf
       LOGICAL adr8inlbuf
       COMMON /adr8fbuf/adr8buf,adr8lbuf,
@@ -1285,12 +1289,12 @@ c           INTEGER adr16ibuf,adr16ilbuf
 c           LOGICAL adr16inlbuf
 c           COMMON /adr16fbuf/adr16buf,adr16lbuf,
 c          +       adr16ibuf,adr16ilbuf,adr16inlbuf
-      COMPLEX*8 adc8buf(512), adc8lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(5,20)) adc8buf(512), adc8lbuf(512)
       INTEGER adc8ibuf,adc8ilbuf
       LOGICAL adc8inlbuf
       COMMON /adc8fbuf/adc8buf,adc8lbuf,
      +       adc8ibuf,adc8ilbuf,adc8inlbuf
-      COMPLEX*16 adc16buf(512), adc16lbuf(512)
+      COMPLEX(SELECTED_REAL_KIND(10,60)) adc16buf(512), adc16lbuf(512)
       INTEGER adc16ibuf,adc16ilbuf
       LOGICAL adc16inlbuf
       COMMON /adc16fbuf/adc16buf,adc16lbuf,
@@ -1362,7 +1366,7 @@ c              adi16buf(adi16ibuf) = x
 c              adi16ibuf = adi16ibuf+1
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE LOOKINTEGER16(x)
 c           INTEGER*16 x, adi16buf(512), adi16lbuf(512)
 c           INTEGER adi16ibuf,adi16ilbuf
@@ -1393,7 +1397,7 @@ c                 x = adi16buf(adi16ilbuf)
 c              ENDIF
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE POPINTEGER16(x)
 c           INTEGER*16 x, adi16buf(512), adi16lbuf(512)
 c           INTEGER adi16ibuf,adi16ilbuf
@@ -1429,7 +1433,7 @@ c           DATA adr16ibuf/1/
 c           DATA adr16ilbuf/-1/
 c           DATA adr16inlbuf/.FALSE./
 c           END
-c     
+c
 c           SUBROUTINE PUSHREAL16(x)
 c           REAL*16 x, adr16buf(512), adr16lbuf(512)
 c           INTEGER adr16ibuf,adr16ilbuf
@@ -1455,7 +1459,7 @@ c              adr16buf(adr16ibuf) = x
 c              adr16ibuf = adr16ibuf+1
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE LOOKREAL16(x)
 c           REAL*16 x, adr16buf(512), adr16lbuf(512)
 c           INTEGER adr16ibuf,adr16ilbuf
@@ -1486,7 +1490,7 @@ c                 x = adr16buf(adr16ilbuf)
 c              ENDIF
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE POPREAL16(x)
 c           REAL*16 x, adr16buf(512), adr16lbuf(512)
 c           INTEGER adr16ibuf,adr16ilbuf
@@ -1548,7 +1552,7 @@ c              adr32buf(adr32ibuf) = x
 c              adr32ibuf = adr32ibuf+1
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE LOOKREAL32(x)
 c           REAL*32 x, adr32buf(512), adr32lbuf(512)
 c           INTEGER adr32ibuf,adr32ilbuf
@@ -1579,7 +1583,7 @@ c                 x = adr32buf(adr32ilbuf)
 c              ENDIF
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE POPREAL32(x)
 c           REAL*32 x, adr32buf(512), adr32lbuf(512)
 c           INTEGER adr32ibuf,adr32ilbuf
@@ -1641,7 +1645,7 @@ c              adc4buf(adc4ibuf) = x
 c              adc4ibuf = adc4ibuf+1
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE LOOKCOMPLEX4(x)
 c           COMPLEX*4 x, adc4buf(512), adc4lbuf(512)
 c           INTEGER adc4ibuf,adc4ilbuf
@@ -1672,7 +1676,7 @@ c                 x = adc4buf(adc4ilbuf)
 c              ENDIF
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE POPCOMPLEX4(x)
 c           COMPLEX*4 x, adc4buf(512), adc4lbuf(512)
 c           INTEGER adc4ibuf,adc4ilbuf
@@ -1734,7 +1738,7 @@ c              adc32buf(adc32ibuf) = x
 c              adc32ibuf = adc32ibuf+1
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE LOOKCOMPLEX32(x)
 c           COMPLEX*32 x, adc32buf(512), adc32lbuf(512)
 c           INTEGER adc32ibuf,adc32ilbuf
@@ -1765,7 +1769,7 @@ c                 x = adc32buf(adc32ilbuf)
 c              ENDIF
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE POPCOMPLEX32(x)
 c           COMPLEX*32 x, adc32buf(512), adc32lbuf(512)
 c           INTEGER adc32ibuf,adc32ilbuf
@@ -1842,7 +1846,7 @@ c              adz9buf(adz9ibuf) = x
 c              adz9ibuf = adz9ibuf+1
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE LOOKTTTT9(x)
 c           TTTT*9 x, adz9buf(512), adz9lbuf(512)
 c           INTEGER adz9ibuf,adz9ilbuf
@@ -1873,7 +1877,7 @@ c                 x = adz9buf(adz9ilbuf)
 c              ENDIF
 c           ENDIF
 c           END
-c     
+c
 c           SUBROUTINE POPTTTT9(x)
 c           TTTT*9 x, adz9buf(512), adz9lbuf(512)
 c           INTEGER adz9ibuf,adz9ilbuf

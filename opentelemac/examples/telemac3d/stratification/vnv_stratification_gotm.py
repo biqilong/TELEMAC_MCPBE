@@ -162,16 +162,16 @@ class VnvStudy(AbstractVnvStudy):
 
         poly_number = res.discretize_polyline(poly)
 
-        _, abs_curv, poly_z0 = res.get_data_values_on_vertical_plan(\
-                                  poly, 'ELEVATION Z', poly_number, 0)
-        _, abs_curv, poly_z1 = res.get_data_values_on_vertical_plan(\
-                                  poly, 'ELEVATION Z', poly_number, -1)
+        _, abs_curv, poly_z0 = res.get_data_on_vertical_plane(\
+                                  'ELEVATION Z', 0, poly, poly_number)
+        _, abs_curv, poly_z1 = res.get_data_on_vertical_plane(\
+                                  'ELEVATION Z', -1, poly, poly_number)
 
-        _, _, data0 = res.get_data_values_on_vertical_plan(\
-                           poly, 'NUZ FOR VELOCITY', poly_number, 0)
+        _, _, data0 = res.get_data_on_vertical_plane(\
+                           'NUZ FOR VELOCITY', 0, poly, poly_number)
 
-        _, _, data1 = res.get_data_values_on_vertical_plan(\
-                           poly, 'NUZ FOR VELOCITY', poly_number, -1)
+        _, _, data1 = res.get_data_on_vertical_plane(\
+                           'NUZ FOR VELOCITY', -1, poly, poly_number)
         mesh0 = triangulation_from_data(abs_curv, poly_z0)
         mesh1 = triangulation_from_data(abs_curv, poly_z1)
 
@@ -192,3 +192,5 @@ class VnvStudy(AbstractVnvStudy):
         print(" "*8+"~> Plotting "+fig_name)
         plt.savefig(fig_name)
         plt.clf()
+
+        res.close()

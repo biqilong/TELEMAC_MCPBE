@@ -218,7 +218,7 @@ class VnvStudy(AbstractVnvStudy):
             plt.savefig('img/'+title + ".png")
             plt.clf()
 
-            del slf
+            slf.close()
 
         def yen_contour(file_name, in_title):
             """
@@ -275,6 +275,8 @@ class VnvStudy(AbstractVnvStudy):
             plt.savefig('img/' + title + ".pdf", dpi=300)
             plt.savefig('img/' + title + ".png", dpi=300)
             plt.clf()
+
+            slf.close()
 
         yen(self.get_study_file('vnv_1:GAIRES'), 'gaia_yen-exp')
         yen_contour(self.get_study_file('vnv_1:GAIRES'), 'gaia_yen-exp')

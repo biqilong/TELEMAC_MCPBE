@@ -34,7 +34,7 @@ subroutine SOURCE(          &
                          COTR , &
                          SGEO , &
                         SGEOD , &
-                       PRGEOD , & 
+                       PRGEOD , &
                        DEBGED , &
                        FRTIMP , &
                           DZD , &
@@ -43,7 +43,7 @@ subroutine SOURCE(          &
                         NSECG , &
                        NMLARG , &
       PerteElargissementTrans , &
-                         CQMV , & 
+                         CQMV , &
                        Erreur  &
                                )
 
@@ -52,7 +52,7 @@ subroutine SOURCE(          &
 !
 ! VERSION : 8.1.4              EDF-CEREMA
 !***********************************************************************
-!   FONCTION : RESOLUTION DES EQUATIONS DE SAINT VENANT 
+!   FONCTION : RESOLUTION DES EQUATIONS DE SAINT VENANT
 !                      PAR UN SCHEMA DE ROE
 !
 !-----------------------------------------------------------------------
@@ -159,7 +159,7 @@ subroutine SOURCE(          &
    Erreur%Numero = 0
 
    Z = 2._DOUBLE / ( X(NOEUD+1) - X(NOEUD) )
-   SAPP = 0.D0 
+   SAPP = 0.D0
 
    ! CALCUL DES APPORTS DE DEBIT
    ! ---------------------------
@@ -199,9 +199,9 @@ subroutine SOURCE(          &
       JD = JG+1
       IF( JD.GT.NMLARG ) then
          Erreur%Numero = 1
-		 Erreur%Message = 'The number of steps for the vertical discretisation of the cross-sections is insufficient : &
+         Erreur%Message = 'The number of steps for the vertical discretisation of the cross-sections is insufficient : &
                         &non-convergent algorithm (check the Courant Number)'
-		 return
+         return
       Endif
       DY = HGPRI - real( JG - 1 , DOUBLE ) * DZ(NOEUD)
       !
@@ -222,7 +222,7 @@ subroutine SOURCE(          &
 
    SOTILD(2) = -DSDX * CTILD * CTILD
 
-   !      TERME SOURCE CENTRE 
+   !      TERME SOURCE CENTRE
    if( NOEUD > NSECG ) then
       SOPRIM(1) = 0._DOUBLE
       SOPRIM(2) = -PRG + PRD
@@ -258,7 +258,7 @@ subroutine SOURCE(          &
       endif
    endif
 
-   !   PRISE EN COMPTE DES PERTES DE CHARGE SINGULIERES 
+   !   PRISE EN COMPTE DES PERTES DE CHARGE SINGULIERES
    SMIL  = ( SNODE(NOEUD) + SNODE(NOEUD+1) ) / 2._DOUBLE
    UMIL  = BETA * ( UNODE(NOEUD) + UNODE(NOEUD+1) ) / 2._DOUBLE
    SPERT = PCSing(NOEUD) * (UMIL*UMIL) * SMIL
@@ -266,7 +266,7 @@ subroutine SOURCE(          &
    ! PERTES DE CHARGES AUTOMATIQUES
    VG = UNODE(NOEUD)
    VD = UNODE(NOEUD+1)
-   If( PerteElargissementTrans ) then 
+   If( PerteElargissementTrans ) then
       IF( (VG.GT.VD) .and. abs(PCSing(NOEUD)).LT.EPS6 ) THEN
          SPERT = 0.3D0 * SMIL * ( ( BETA * ( VG - VD ) )**2 )
       endif
@@ -278,14 +278,14 @@ subroutine SOURCE(          &
       SPERT = -SPERT
    ENDIF
    !
-   !  Ajout des termes dus aux apports de debit dans la quantite de mvt 
+   !  Ajout des termes dus aux apports de debit dans la quantite de mvt
    !
-   ! 
-   if( CQMV.EQ.1 ) then 
+   !
+   if( CQMV.EQ.1 ) then
       SAPP = UMIL*SOTILD(1)
-   endif 
+   endif
    SOFROT(2) = SOFROT(2) + Z * SPERT / 2._DOUBLE + SAPP
- 
+
    !------------------
    ! Fin du traitement
    !------------------

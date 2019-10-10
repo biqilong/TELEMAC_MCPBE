@@ -19,7 +19,8 @@
 subroutine  PRETRAIT                                       ( &
   VersionCode, Noyau                                       , &
   FichierModele, FichierMotCle                             , &
-  OptionCasier,                                              &
+  OptionCasier                                             , &
+  OptionCourlis, FichierMotCleCourlis, FichierDicoCourlis  , &
   OndeSubm                                                 , &
   CalculValidation, TypeValidation                         , &
   Regime, ModeleLit                                        , &
@@ -71,7 +72,7 @@ subroutine  PRETRAIT                                       ( &
 
 ! *********************************************************************
 ! PROGICIEL : MASCARET       S. MANDELKERN - N. GOUTAL
-!                            F. ZAOUI  
+!                            F. ZAOUI
 !
 ! VERSION : 8.1.4              EDF-CEREMA
 ! *********************************************************************
@@ -137,7 +138,7 @@ subroutine  PRETRAIT                                       ( &
    use M_LEC_APPORT_PLUIE_I    ! interface du sous-programme Lec_Apport_Pluie
    use M_CONSTANTES_CASIER_C   ! constantes de calcul propres a CASIER
    use Fox_dom                 ! parser XML Fortran
-   
+
    !.. Implicit Declarations ..
    implicit none
 
@@ -147,6 +148,9 @@ subroutine  PRETRAIT                                       ( &
    type(FICHIER_T), intent(inout) :: FichierModele
    type(FICHIER_T), intent(inout) :: FichierMotCle
    logical        , intent(  out) :: OptionCasier
+   logical        , intent(  out) :: OptionCourlis
+   type(FICHIER_T), intent(inout) :: FichierDicoCourlis
+   type(FICHIER_T), intent(inout) :: FichierMotCleCourlis
    logical        , intent(  out) :: OndeSubm
    logical        , intent(  out) :: CalculValidation
    logical        , intent(  out) :: PerteChargeConfluent
@@ -162,7 +166,7 @@ subroutine  PRETRAIT                                       ( &
    real(DOUBLE), intent(  out) :: FroudeLim
    Logical     , intent(  out) :: FrottementImplicite
    Logical     , intent(  out) :: PerteElargissementTrans
-   Logical     , intent(  out) :: Boussinesq 
+   Logical     , intent(  out) :: Boussinesq
    Logical     , intent(  out) :: NoConvection
    Integer     , intent(  out) :: CQMV
    Logical     , intent(  out) :: Impli_Trans,Opt
@@ -327,7 +331,7 @@ subroutine  PRETRAIT                                       ( &
    type(DOMconfiguration), pointer :: config
    type(DOMException) :: ex
    integer :: ios
-   
+
    !========================== Instructions =============================
    ! INITIALISATION
    ! --------------
@@ -352,7 +356,7 @@ subroutine  PRETRAIT                                       ( &
    endif
    element => getDocumentElement(document)
    !print *, 'element principal = ',getLocalName(element)
-   
+
    champ1 => item(getElementsByTagname(document, "parametresImpressionResultats"), 0)
    if(associated(champ1).eqv..false.) then
        print*,"Parse error => parametresImpressionResultats"
@@ -525,6 +529,38 @@ subroutine  PRETRAIT                                       ( &
       write(UniteListing, 10044) 'NON'
    endif
 
+   ! MS2018 : Courlis integration
+   ! Courlis Coupling (implies a MASCARET-COURLIS coupling)
+   ! ------------------------------------------------------
+   champ2 => item(getElementsByTagname(champ1, "optionCourlis"), 0)
+   if(associated(champ2).eqv..false.) then
+     optionCourlis = .false.
+   else
+     call extractDataContent(champ2,OptionCourlis)
+     write(*,*) OptionCourlis
+     if( OptionCourlis ) then
+       write(UniteListing, 10047) 'OUI'
+     else
+       write(UniteListing, 10047) 'NON'
+     endif
+     champ2 => item(getElementsByTagname(champ1, "fichierMotCleCourlis"), 0)
+     if(associated(champ2).eqv..false.) then
+       print*,"Parse error => fichierMotCleCourlis"
+       call xerror(Erreur)
+       return
+     endif
+     FichierMotCleCourlis%Nom  = getTextContent(champ2)
+     write(*,*) FichierMotCleCourlis%Nom
+     champ2 => item(getElementsByTagname(champ1, "dictionaireCourlis"), 0)
+     if(associated(champ2).eqv..false.) then
+       print*,"Parse error => dictionaireCourlis"
+       call xerror(Erreur)
+       return
+     endif
+     FichierDicoCourlis%Nom  = getTextContent(champ2)
+     ! Fin MS2018
+   endif
+
    ! Perte de charge automatique due aux confluents
    ! ----------------------------------------------
    champ1 => item(getElementsByTagName(document, "parametresModelePhysique"), 0)
@@ -586,7 +622,7 @@ subroutine  PRETRAIT                                       ( &
    if( OndeSubm ) then
       write(UniteListing,10050)
    endif
-   ! 
+   !
    ! Modelisation de type Boussinesq
    ! -------------------------------
    champ2 => item(getElementsByTagname(champ1, "termesNonHydrostatiques"), 0)
@@ -596,8 +632,8 @@ subroutine  PRETRAIT                                       ( &
        return
    endif
    call extractDataContent(champ2,Boussinesq)
-   
-   ! 
+
+   !
    ! Empechement du torrentiel pour REZO
    ! -----------------------------------
    champ2 => item(getElementsByTagname(champ1, "attenuationConvection"), 0)
@@ -609,7 +645,7 @@ subroutine  PRETRAIT                                       ( &
    call extractDataContent(champ2,NoConvection)
 
    !
-   ! Apport de debit dans la quantite de mvt 
+   ! Apport de debit dans la quantite de mvt
    ! -------------------------------
    champ2 => item(getElementsByTagname(champ1, "apportDebit"), 0)
    if(associated(champ2).eqv..false.) then
@@ -925,7 +961,7 @@ subroutine  PRETRAIT                                       ( &
          return
       endif
       call extractDataContent(champ3,Calage_constantes%Precis)
-      
+
       ! Zone de frottements
       champ2 => item(getElementsByTagname(champ1, "zones"), 0)
       if(associated(champ2).eqv..false.) then
@@ -958,7 +994,7 @@ subroutine  PRETRAIT                                       ( &
           call TRAITER_ERREUR( Erreur , 'rtab' )
           return
       end if
-      
+
       champ3 => item(getElementsByTagname(champ2, "absDebZone"), 0)
       if(associated(champ3).eqv..false.) then
          print*,"Parse error => absDebZone"
@@ -969,7 +1005,7 @@ subroutine  PRETRAIT                                       ( &
       do i = 1 , nb_zone_frottement
          Calage_frott(i)%Abscdeb_zone_frott = rtab(i)
       enddo
-      
+
       champ3 => item(getElementsByTagname(champ2, "absFinZone"), 0)
       if(associated(champ3).eqv..false.) then
          print*,"Parse error => absFinZone"
@@ -1032,7 +1068,7 @@ subroutine  PRETRAIT                                       ( &
       do i = 1 , nb_zone_frottement
          Calage_frott(i)%Valeur_coeff_maj = rtab(i)
       enddo
-      
+
       champ3 => item(getElementsByTagname(champ2, "coefLitMajBinf"), 0)
       if(associated(champ3).eqv..false.) then
          ! Valeurs par defaut (Kmin=1)
@@ -1064,7 +1100,7 @@ subroutine  PRETRAIT                                       ( &
       enddo
 
       deallocate(rtab)
-      
+
       ! Crues
       champ2 => item(getElementsByTagname(champ1, "listeCrues"), 0)
       if(associated(champ2).eqv..false.) then
@@ -1097,14 +1133,14 @@ subroutine  PRETRAIT                                       ( &
          call TRAITER_ERREUR( Erreur , 'Calage_crues.NbApports' )
          return
       end if
-      
+
       champ3 => item(getElementsByTagname(champ2, "crues"), 0)
       if(associated(champ3).eqv..false.) then
          print*,"Parse error => crues"
          call xerror(Erreur)
          return
       endif
-      
+
       Do i = 1 , Calage_crues%Nb_crue
          champ4 => item(getElementsByTagname(champ3, "structureParametresCrueCalageAutomatique"), i-1 )
          if(associated(champ4).eqv..false.) then
@@ -1241,9 +1277,9 @@ subroutine  PRETRAIT                                       ( &
                 Calage_Crues%apport_X(i,j) = rtab(j)
              enddo
 
-             deallocate(rtab) 
+             deallocate(rtab)
          endif
-         
+
          allocate( rtab(Calage_crues%Nmes(i)) , STAT = retour )
          if( retour /= 0 ) then
             Erreur%Numero = 5
@@ -1252,7 +1288,7 @@ subroutine  PRETRAIT                                       ( &
             call TRAITER_ERREUR( Erreur , 'rtab' )
             return
          end if
-         
+
          champ5 => item(getElementsByTagname(champ4, "absMesures"), 0 )
          if(associated(champ5).eqv..false.) then
             print*,"Parse error => absMesures"
@@ -1263,7 +1299,7 @@ subroutine  PRETRAIT                                       ( &
          do j = 1 , Calage_crues%Nmes(i)
             Calage_crues%Xmesu(i,j) = rtab(j)
          enddo
-         
+
          champ5 => item(getElementsByTagname(champ4, "coteMesures"), 0 )
          if(associated(champ5).eqv..false.) then
             print*,"Parse error => coteMesures"
@@ -1288,7 +1324,7 @@ subroutine  PRETRAIT                                       ( &
          deallocate(rtab)
 
       enddo
-      
+
    endif
 !--TAPENADE
    !=============================================================
@@ -2251,7 +2287,7 @@ subroutine  PRETRAIT                                       ( &
    if( OptionStockage == STOCKAGE_LISTE_SECTION ) then
 
       write(UniteListing,10434) nb_site
-      
+
       allocate( SectionStockage(nb_site) , STAT = retour )
       if( retour /= 0 ) then
          Erreur%Numero = 5
@@ -2277,7 +2313,7 @@ subroutine  PRETRAIT                                       ( &
           call TRAITER_ERREUR( Erreur , 'rtab' )
           return
       end if
-      
+
       champ3 => item(getElementsByTagname(champ2, "branche"), 0)
       if(associated(champ3).eqv..false.) then
          print*,"Parse error => branche"
@@ -2292,7 +2328,7 @@ subroutine  PRETRAIT                                       ( &
        return
       endif
       call extractDataContent(champ3,rtab)
-      
+
       do isect = 1 , nb_site
 
          num_branche = itab(isect)
@@ -2303,7 +2339,7 @@ subroutine  PRETRAIT                                       ( &
             call TRAITER_ERREUR( Erreur , isect )
             return
          end if
- 
+
          abscisse_rel = rtab(isect)
 
          write(UniteListing,10436) isect , num_branche , abscisse_rel
@@ -2329,10 +2365,10 @@ subroutine  PRETRAIT                                       ( &
          endif
 
       end do
-      
+
       deallocate(itab)
       deallocate(rtab)
-      
+
    endif
 
    !
@@ -2579,7 +2615,7 @@ subroutine  PRETRAIT                                       ( &
      absc_rel_ext_deb_bief , & ! Abscisse de l'extremite debut du bief
      absc_rel_ext_fin_bief , & ! Abscisse de l'extremite debut du bief
      FichierListing%Unite  , &
-     document              , & ! Pointeur vers document XML     
+     document              , & ! Pointeur vers document XML
      Erreur                  & ! Erreur
                            )
    if( Erreur%Numero /= 0 ) then
@@ -2664,7 +2700,7 @@ subroutine  PRETRAIT                                       ( &
      document            , & ! Pointeur vers document XML
      Erreur                & ! Erreur
                          )
-                         
+
    if( Erreur%numero /= 0 ) then
       return
    endif
@@ -2786,7 +2822,7 @@ subroutine  PRETRAIT                                       ( &
          return
       endif
       FichierListingCasier%Nom = getTextContent(champ3)
-      
+
       open(unit=ulc, file=FichierListingCasier%Nom, access='SEQUENTIAL', &
            action='WRITE'           , form='FORMATTED'       , iostat=RETOUR      , &
            position='rewind'        , status='REPLACE'     )
@@ -2805,7 +2841,7 @@ subroutine  PRETRAIT                                       ( &
          return
       endif
       FichierListingLiaison%Nom = getTextContent(champ3)
-      
+
       ull                       = FichierListingLiaison%Unite
 
       open(unit=ull, file=FichierListingLiaison%Nom, access='SEQUENTIAL', &
@@ -2896,7 +2932,7 @@ subroutine  PRETRAIT                                       ( &
                 Profil,           &
                 ProfDebBief,      &
                 ProfFinBief,      &
-                document,         & ! Pointeur vers document XML                
+                document,         & ! Pointeur vers document XML
                 Erreur       )
       if( Erreur%Numero /= 0 ) then
          return
@@ -2963,15 +2999,15 @@ subroutine  PRETRAIT                                       ( &
       !==========================================================================
       do icasier = 1 , size(Casier)
          nb_liaisonRC = 0
-         
+
          do iliaison = 1, size(Liaison)
             if ( Liaison(iliaison)%NatureLiaison == LIAISON_TYPE_RIVIERE_CASIER ) then
                 if ( Liaison(iliaison)%CaracRC%NumCasier == icasier ) then
-                    nb_liaisonRC =  nb_liaisonRC + 1  
+                    nb_liaisonRC =  nb_liaisonRC + 1
                 endif
             endif
          enddo
-         
+
          allocate( Casier(icasier)%LiaisonRC(nb_liaisonRC,2) , STAT = retour )
          if( retour /= 0 ) then
             Erreur%Numero = 5
@@ -2980,7 +3016,7 @@ subroutine  PRETRAIT                                       ( &
             call TRAITER_ERREUR( Erreur , 'de definition des liaisons riviere-casier' )
             return
          end if
-        
+
          ! Affectation des numeros de sections et liaisons associes
          ilcc = 1
          do iliaison = 1 , size(Liaison)
@@ -2994,7 +3030,7 @@ subroutine  PRETRAIT                                       ( &
             endif
          enddo
       end do
-      
+
       !========================================================================
       !                       LECTURE DE LA VARIABLE APPORTPLUIE
       !========================================================================
@@ -3002,7 +3038,7 @@ subroutine  PRETRAIT                                       ( &
                  ApportPluie,       &
                  size(Casier),      &
                  LoiHydrau,         &
-                 document,          & ! Pointeur vers document XML                 
+                 document,          & ! Pointeur vers document XML
                  ulc,&
                  Erreur)
       if( Erreur%Numero /= 0 ) then
@@ -3013,7 +3049,7 @@ subroutine  PRETRAIT                                       ( &
 
    !call destroy(document)
    !call destroy(config)
-   
+
    !Erreur%arbredappel = !arbredappel_old
 
    return
@@ -3037,6 +3073,7 @@ subroutine  PRETRAIT                                       ( &
    10044 format ('Presence de casier                              : ',A)
    10045 format ('Calcul auto des pertes de charge aux confluents : ',A)
    10046 format ('Perte automatique aux elargissements transcritique : ',A)
+   10047 format ('Option courlis                                  : ',A)
    10050 format ('Calcul d''onde de submersion')
    10060 format ('Calcul de validation')
    10070 format ('Type de validation : ',i3)
@@ -3144,21 +3181,21 @@ subroutine  PRETRAIT                                       ( &
    return
 
    end subroutine projeter
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
+
    end subroutine xerror
 
 end subroutine PRETRAIT

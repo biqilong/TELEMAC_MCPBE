@@ -67,8 +67,7 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_3d_scalar_map
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot3d
                 # Getting files
         vnv_th_1_t3dres = self.get_study_file('vnv_th_1:T3DRES')
         res_vnv_th_1_t3dres = TelemacFile(vnv_th_1_t3dres)
@@ -90,49 +89,22 @@ class VnvStudy(AbstractVnvStudy):
                    fig_size=(10, 5),
                    fig_name='img/MeshV_th')
 
+
+        records = [(0, '0'),
+                   (2, '08'),
+                   (4, '16'),
+                   (6, '24'),
+                   (8, '32'),
+                   (10, '40')]
+
         # Plotting 3d scalar map for WATER DEPTH at 0
-        plot_3d_scalar_map(res_vnv_th_1_t3dhyd,
-                           'WATER DEPTH',
-                           record=0,
-                           fig_size=(10, 15),
-                           fig_name='img/water_depth_th_0')
+        for record, name in records:
+            vnv_plot3d(\
+                       'WATER DEPTH',
+                       res_vnv_th_1_t3dhyd,
+                       record=record,
+                       fig_size=(10, 15),
+                       fig_name='img/water_depth_th_'+name)
 
-
-        # Plotting 3d scalar map for WATER DEPTH at 2
-        plot_3d_scalar_map(res_vnv_th_1_t3dhyd,
-                           'WATER DEPTH',
-                           record=2,
-                           fig_size=(10, 15),
-                           fig_name='img/water_depth_th_08')
-
-
-        # Plotting 3d scalar map for WATER DEPTH at 4
-        plot_3d_scalar_map(res_vnv_th_1_t3dhyd,
-                           'WATER DEPTH',
-                           record=4,
-                           fig_size=(10, 15),
-                           fig_name='img/water_depth_th_16')
-
-
-        # Plotting 3d scalar map for WATER DEPTH at 6
-        plot_3d_scalar_map(res_vnv_th_1_t3dhyd,
-                           'WATER DEPTH',
-                           record=6,
-                           fig_size=(10, 15),
-                           fig_name='img/water_depth_th_24')
-
-
-        # Plotting 3d scalar map for WATER DEPTH at 8
-        plot_3d_scalar_map(res_vnv_th_1_t3dhyd,
-                           'WATER DEPTH',
-                           record=8,
-                           fig_size=(10, 15),
-                           fig_name='img/water_depth_th_32')
-
-
-        # Plotting 3d scalar map for WATER DEPTH at 10
-        plot_3d_scalar_map(res_vnv_th_1_t3dhyd,
-                           'WATER DEPTH',
-                           record=10,
-                           fig_size=(10, 15),
-                           fig_name='img/water_depth_th_40')
+        res_vnv_th_1_t3dres.close()
+        res_vnv_th_1_t3dhyd.close()

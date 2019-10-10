@@ -9,9 +9,9 @@ from __future__ import print_function
 #
 # ~~> dependencies towards standard python
 from struct import unpack
-import numpy as np
 # ~~> dependencies towards other pytel/modules
 from utils.exceptions import TelemacException
+import numpy as np
 
 def lit_header_opt(resultfile):
     """

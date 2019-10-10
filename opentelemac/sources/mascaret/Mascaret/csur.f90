@@ -103,15 +103,19 @@ function CSUR( &
    JG = int( TIRANT / DZ(NOEUD) ) + 1
    JD = JG + 1
 
+   ! MS2018 : Adaptation for Courlis (deposition optimisation) must be validate
    if( JD > NMLARG ) then
       Erreur%Numero = 100
       Erreur%ft   = err_100
       Erreur%ft_c = err_100c
+      JG = NMLARG-1
+      JD = JG + 1
       !  call TRAITER_ERREUR  (Erreur, TIRANT, DZ(NOEUD)*(NMLARG-1), NOEUD)
       !   !arbredappel_old    = trim(!Erreur%arbredappel)
       ! !Erreur%arbredappel = trim(!Erreur%arbredappel)//'=>CSUR'
-      return
+!      return
    endif
+   ! end MS2018
 
    DY = TIRANT - real( JG - 1 , DOUBLE ) * DZ(NOEUD)
 

@@ -69,7 +69,7 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_mesh2d, plot_var
+        from postel.plot_vnv import vnv_plot2d
         # Getting files
         vnv_1_artgeo = self.get_study_file('vnv_1:ARTGEO')
         res_vnv_1_artgeo = TelemacFile(vnv_1_artgeo)
@@ -77,31 +77,42 @@ class VnvStudy(AbstractVnvStudy):
         res_vnv_1_artres = TelemacFile(vnv_1_artres)
 
         #Plotting mesh
-        plot_mesh2d(res_vnv_1_artgeo,
-                    fig_size=(8, 8),
-                    fig_name='img/Mesh')
+        vnv_plot2d(\
+                 'BOTTOM',
+                 res_vnv_1_artgeo,
+                 plot_mesh=True,
+                 fig_size=(8, 8),
+                 fig_name='img/Mesh')
 
 
         # Plotting WAVE HEIGHT at 0
-        plot_var(res_vnv_1_artres,
+        vnv_plot2d(\
                  'WAVE HEIGHT',
+                 res_vnv_1_artres,
                  record=0,
+                 filled_contours=True,
                  fig_size=(8, 8),
                  fig_name='img/WaveHeight')
 
 
         # Plotting REAL POTENTIAL at 0
-        plot_var(res_vnv_1_artres,
+        vnv_plot2d(\
                  'REAL POTENTIAL',
+                 res_vnv_1_artres,
                  record=0,
+                 filled_contours=True,
                  fig_size=(8, 8),
                  fig_name='img/RealPotential')
 
 
         # Plotting IMAG POTENTIAL at 0
-        plot_var(res_vnv_1_artres,
+        vnv_plot2d(\
                  'IMAG POTENTIAL',
+                 res_vnv_1_artres,
                  record=0,
+                 filled_contours=True,
                  fig_size=(8, 8),
                  fig_name='img/ImagPotential')
 
+        res_vnv_1_artgeo.close()
+        res_vnv_1_artres.close()

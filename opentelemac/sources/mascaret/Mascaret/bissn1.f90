@@ -76,9 +76,9 @@ SUBROUTINE BISSN1( &
       !PRINT * , ' **************'
       !PRINT * , ' STOP KM1=' , KM1
       !STOP
-	  Erreur%Numero  = 1
-	  Erreur%Message = 'Error in the linear solver BISSN1 (variable KM1)'
-	  return
+    Erreur%Numero  = 1
+    Erreur%Message = 'Error in the linear solver BISSN1 (variable KM1)'
+    return
    ENDIF
 
    IF( NFU.NE.1 ) THEN
@@ -87,16 +87,16 @@ SUBROUTINE BISSN1( &
       !PRINT * , ' **************'
       !PRINT * , ' STOP NFU=' , NFU
       !STOP
-	  Erreur%Numero  = 1
-	  Erreur%Message = 'Error in the linear solver BISSN1 (variable NFU)'
-	  return
+    Erreur%Numero  = 1
+    Erreur%Message = 'Error in the linear solver BISSN1 (variable NFU)'
+    return
    ENDIF
 
    DO 30 K = 2 , KM1
 
       KM2 = K - 1
       CALL INVMAT( IBD , B(1:,KM2) , 2 , K , Erreur )
-	  IF(Erreur%Numero.ne.0) RETURN
+      IF(Erreur%Numero.ne.0) RETURN
       CALL PROMAT( EK , A(1:,K) , IBD , 2 )
       CALL PROMAT( FK , EK , C(1:,K - 1) , 2 )
 
@@ -123,7 +123,7 @@ SUBROUTINE BISSN1( &
 
    CALL INVMAT( IDET , DET , 2 , KM , Erreur )
    IF(Erreur%Numero.ne.0) RETURN
-   
+
    IF( DABS( X(1,KM) ).LE.1.D-15 ) GOTO 40
 
    CALL PROMVT( YD , A(1:,KM) , X(1:,KM1) , 2 )

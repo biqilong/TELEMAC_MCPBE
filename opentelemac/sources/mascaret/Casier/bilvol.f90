@@ -23,11 +23,11 @@ subroutine BILVOL( Casier , Liaison , dt , Erreur )
 !
 ! VERSION : 8.1.4              EDF-CEREMA
 !
-! CALCUL DU BILAN ENTREE - SORTIE DANS UN CASIER  
+! CALCUL DU BILAN ENTREE - SORTIE DANS UN CASIER
 !*******************************************************************
 !
 !   FICHIERS ENTREE/SORTIE :  --
-!   ----------------------      
+!   ----------------------
 !   SOUS PROGRAMMES APPELANTS : - CALCCASIER
 !   ---------------------------
 !   SOUS PROGRAMMES APPELES :    --
@@ -55,7 +55,7 @@ subroutine BILVOL( Casier , Liaison , dt , Erreur )
    integer      :: iliaison
    !character(132) :: arbredappel_old ! Arbre d'appel precedent l'entree du sous programme
 
-   !========================== Instructions ==============================   
+   !========================== Instructions ==============================
    !
    ! INITIALISATIONS
    ! ---------------
@@ -72,7 +72,8 @@ subroutine BILVOL( Casier , Liaison , dt , Erreur )
    enddo
 
    Casier%Bilan = Casier%Bilan + 0.5_DOUBLE * ( debit + debit_precedent ) * dt
-   if( Casier%Volume.gt.EPS6 ) then
+   !MS2019 replacement of .gt. by .lt. (must be confirmed)
+   if( Casier%Volume.lt.EPS6 ) then
       Casier%BilanErreur = 0
    else
       Casier%BilanErreur = dabs( 100.D0 - ( 100.D0 * Casier%Bilan ) / Casier%Volume )

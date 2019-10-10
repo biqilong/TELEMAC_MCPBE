@@ -550,7 +550,7 @@
       INTEGER, INTENT(INOUT) :: NUMERO
       INTEGER, INTENT(INOUT) :: LNG
       !
-      CHARACTER*9 :: MOTPRO(15)
+      CHARACTER(LEN=9) :: MOTPRO(15)
       PARAMETER ( MOTPRO = (/
      & 'NOM      ','TYPE     ','INDEX    ','TAILLE   ','DEFAUT   ',
      & 'AIDE     ','CHOIX    ','RUBRIQUE ','NIVEAU   ','MNEMO    ',

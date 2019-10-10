@@ -31,6 +31,7 @@ class Telemac2d(ApiModule):
                  dicofile=None,
                  lang=2, stdout=6,
                  comm=None,
+                 log_lvl='INFO',
                  recompile=True):
         """
         Constructor for Telemac2d
@@ -55,7 +56,7 @@ class Telemac2d(ApiModule):
             dicofile = default_dicofile
         super(Telemac2d, self).__init__("t2d", casfile, user_fortran,
                                         dicofile, lang, stdout,
-                                        comm, recompile)
+                                        comm, recompile, log_lvl=log_lvl)
         self.hsave = None
         self.usave = None
         self.vsave = None

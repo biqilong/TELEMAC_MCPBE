@@ -730,9 +730,6 @@ subroutine STO_LIDOP  ( &
    !character(132) :: !arbredappel_old           ! Arbre d'appel d'avant l'entree dans la procedure
    character(33)  :: chaine_date                 ! Chaine contenant la date
    character :: tab
-#ifndef __NAG__
-   equivalence (tab, i9)
-#endif
 
    !============================ Instructions ==============================
    ! INITIALISATION
@@ -742,11 +739,8 @@ subroutine STO_LIDOP  ( &
    !Erreur%arbredappel = trim(!Erreur%arbredappel)//'=>STO_LIDOP'
    ul = FichierResultat%Unite
 
-#ifdef __NAG__
-   tab = char(9)   
-#else
+   tab = transfer(i9, tab)
    i9 = 9
-#endif
 
    if( PhaseSimulation == PHASE_INITIALISATION ) then
 

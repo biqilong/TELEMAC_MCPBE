@@ -37,7 +37,7 @@ def volume_calculation(ikle, variable, coord_x, coord_y, x_ref=0):
         volume_point[elem[1]] += surface / 3.0 * (variable[elem[1]] - x_ref)
         volume_point[elem[2]] += surface / 3.0 * (variable[elem[2]] - x_ref)
 
-    return volume_point.sum(), surface_point, volume_point
+    return float(volume_point.sum()), surface_point, volume_point
 
 
 def compute_fv_cell_area(tri):

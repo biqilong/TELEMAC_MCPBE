@@ -208,4 +208,4 @@ class VnvStudy(AbstractVnvStudy):
                        xlim=(0, 30),
                        ylim=(-4, 0),
                        fig_name='img/lock-exchange_{}'.format(name))
-            del res
+            res.close()

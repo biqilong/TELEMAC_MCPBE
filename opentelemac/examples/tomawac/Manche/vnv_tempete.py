@@ -171,9 +171,9 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/directionref')
 
         # Closing files
-        del res_vnv_2_wacres
-        del res_vnv_1_wacres
-        del res_vnv_2_wacgeo
-        del res_vnv_1_wacgeo
-        del res_v1p3
-        del ref
+        res_vnv_2_wacres.close()
+        res_vnv_1_wacres.close()
+        res_vnv_2_wacgeo.close()
+        res_vnv_1_wacgeo.close()
+        res_v1p3.close()
+        ref.close()

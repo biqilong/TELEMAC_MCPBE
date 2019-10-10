@@ -11,7 +11,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def plot3d_scalar_map(fig, axe, mesh, data,\
         x_label='', y_label='', data_name='data',\
-        vmin=None, vmax=None, nv=10,  levels=None, \
+        vmin=None, vmax=None, nv=10, levels=None, \
         colorbar=True, cbar_ticks=None, cbar_axe=None, \
         cmap_name='jet', **kwargs):
     """
@@ -21,7 +21,7 @@ def plot3d_scalar_map(fig, axe, mesh, data,\
 
     @param fig (matplotlib.figure) matplotlib figure structure
     @param axe (matplotlib.axes3d) matplotlib axes on which to draw
-    @param mesh (matplotlib.tri.Triangulation or tuple) 
+    @param mesh (matplotlib.tri.Triangulation or tuple)
     triangular mesh or regular x,y grid
     @param data (numpy.array) Value to plot
     @param data_name (string) Name of the data to display

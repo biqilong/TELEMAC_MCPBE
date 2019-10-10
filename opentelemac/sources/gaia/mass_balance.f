@@ -11,7 +11,10 @@
 !***********************************************************************
 !
 !>@brief Computes the mass balance of the bed.
-!
+!!       For each time step the mass balance is done for each class and
+!!       for the sum over all classes.
+!!       For the last time step the mass balance is done with cumulated
+!!       variables, for each class and for the sum over all classes.
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !>@param[in]     CHARR    Logical, bedload or not
 !>@param[in]     DT       Time step
@@ -40,7 +43,8 @@
      &                              FLUDP, SUMMCUMUCL, SUMRMASCL,
      &                              SUM_EROSION,SUM_DEPOSITION,
      &                              MASSNESTOR,SUMMASSNESTOR,
-     &                              MASS0ACT,NESTOR
+     &                              MASS0ACT,NESTOR,BEDLOAD_B_FLUX,
+     &                              SUMBEDLOAD_B_FLUX,SUMBEDLOAD_B
 !
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY: P_DSUM
@@ -65,11 +69,10 @@
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER I,IFRLIQ,IPTFR,ICLA,K
+      INTEGER I,IFRLQ,IPTFR,ICLA,K
       DOUBLE PRECISION LOST,RELATI,DENOM
       DOUBLE PRECISION RCUMU,FLUXTCLA
       DOUBLE PRECISION MCUMUCLA(NSICLM),RMASCLA(NSICLM)
-      DOUBLE PRECISION FLT_BOUND(MAXFRO)
       DOUBLE PRECISION EROSION_FLUX(NSICLM),DEPOSITION_FLUX(NSICLM)
       DOUBLE PRECISION SUMMASSTOT,SUMMASS0TOT
       DOUBLE PRECISION SUMRMASCLA,SUMMCUMUCLA
@@ -82,7 +85,7 @@
 !     COMPUTES EROSION AND DEPOSITION FLUX PER CLASS EVOLUTION
 !     FOR THIS TIME STEP
 !     NOTE: EROSION AND DEPOSITION FLUX MUST BE 0 IF THERE IS
-!     NO SUSPSENSION
+!     NO SUSPENSION
 !
       IF(NSICLA.GT.0) THEN
         DO ICLA=1,NSICLA
@@ -139,24 +142,41 @@
           ENDIF
           IF(NCSIZE.GT.1) RMASCLA(ICLA) = P_DSUM(RMASCLA(ICLA))
 !
-!         COMPUTES THE FREE FLUXES BY CLASS AND THE CUMULATED FLUXES
-!         PER CLASS AND ALTOGETHER
+!         COMPUTES THE FREE FLUXES BY CLASS, FOR EVERY BOUNDARY:
+!         BEDLOAD_B_FLUX
+!         FLUXTCLA CONTAINS THE SUM OF BEDLOAD_B_FLUX OVER BOUNDARIES
 !
           FLUXTCLA = 0.D0
           IF(NFRLIQ.GT.0.AND.CHARR) THEN
+            DO IFRLQ=1,NFRLIQ
+              BEDLOAD_B_FLUX(IFRLQ,ICLA) = 0.D0
+            ENDDO
             IF(NPTFR.GT.0) THEN
               DO IPTFR=1,NPTFR
-                IFRLIQ = NUMLIQ(IPTFR)
-                IF(IFRLIQ.GT.0) THEN
+                IFRLQ = NUMLIQ(IPTFR)
+                IF(IFRLQ.GT.0) THEN
+                  BEDLOAD_B_FLUX(IFRLQ,ICLA) =
+     &            BEDLOAD_B_FLUX(IFRLQ,ICLA)+FLBCLA%ADR(ICLA)%P%R(IPTFR)
                   FLUXTCLA = FLUXTCLA + FLBCLA%ADR(ICLA)%P%R(IPTFR)
                 ENDIF
               ENDDO
             ENDIF
-            IF(NCSIZE.GT.1) FLUXTCLA = P_DSUM(FLUXTCLA)
+            IF(NCSIZE.GT.1) THEN
+              FLUXTCLA = P_DSUM(FLUXTCLA)
+              DO I=1,NFRLIQ
+                BEDLOAD_B_FLUX(I,ICLA) = P_DSUM(BEDLOAD_B_FLUX(I,ICLA))
+              ENDDO
+            ENDIF
           ENDIF
+!
+!         COMPUTES THE CUMULATED FLUXES PER CLASS
 !
           MCUMUCLA(ICLA) = -FLUXTCLA
           SUMMCUMUCL(ICLA) = SUMMCUMUCL(ICLA) + MCUMUCLA(ICLA)*DT
+          DO IFRLQ=1,NFRLIQ
+            SUMBEDLOAD_B(IFRLQ,ICLA) = SUMBEDLOAD_B(IFRLQ,ICLA) +
+     &                                 BEDLOAD_B_FLUX(IFRLQ,ICLA)*DT
+          ENDDO
           SUMRMASCL(ICLA) = SUMRMASCL(ICLA) + RMASCLA(ICLA)
           SUM_DEPOSITION(ICLA) = SUM_DEPOSITION(ICLA)
      &                           + DEPOSITION_FLUX(ICLA)*DT
@@ -188,12 +208,17 @@
           SUMDEPOTOT = 0.D0
           SUMLOST = 0.D0
           SUMNESTOR = 0.D0
+          IF(NFRLIQ.GT.0) THEN
+            DO IFRLQ=1,NFRLIQ
+              SUMBEDLOAD_B_FLUX(IFRLQ) = 0.D0
+            ENDDO
+          ENDIF
 !
 !         BALANCE FOR EACH CLASS
 !
           DO I=1,NSICLA
 !           EROSION AND DEPOSITION FLUX MUST BE 0 IF THERE IS
-!           NO SUSPSENSION
+!           NO SUSPENSION
             LOST = RMASCLA(I)+(-MCUMUCLA(I) + EROSION_FLUX(I)
      &             - DEPOSITION_FLUX(I))*DT - MASSNESTOR(I)
             WRITE(LU,*)
@@ -201,6 +226,14 @@
             WRITE(LU,2001) I
             WRITE(LU,2010) RMASCLA(I)
             WRITE(LU,3031) MCUMUCLA(I)
+            IF(NFRLIQ.GT.0.AND.CHARR) THEN
+              DO IFRLQ=1,NFRLIQ
+                WRITE(LU,3033) IFRLQ,-BEDLOAD_B_FLUX(IFRLQ,I)
+!               SUMS FLUXES OVER ALL CLASSES
+                SUMBEDLOAD_B_FLUX(IFRLQ) = SUMBEDLOAD_B_FLUX(IFRLQ)
+     &                            + BEDLOAD_B_FLUX(IFRLQ,I)
+              ENDDO
+            ENDIF
             WRITE(LU,2112) EROSION_FLUX(I)
             WRITE(LU,2113) DEPOSITION_FLUX(I)
             WRITE(LU,2910) MASSTOT(I)
@@ -214,6 +247,9 @@
 !           RK: IS RELATIVE TO THE INITIAL MASS IN ACTIVE LAYER
             DENOM = MAX(RMASCLA(I),(MCUMUCLA(I) + EROSION_FLUX(I)
      &                              -DEPOSITION_FLUX(I))*DT)
+!
+!           UPDATES VARIABLES FOR BALANCE OVER ALL CLASSES
+!
             SUMMASSTOT = SUMMASSTOT + MASSTOT(I)
             SUMMASS0TOT = SUMMASS0TOT + MASS0TOT(I)
             SUMMASS0ACT = SUMMASS0ACT + MASS0ACT(I)
@@ -237,6 +273,11 @@
             WRITE(LU,2002)
             WRITE(LU,3010) SUMRMASCLA
             WRITE(LU,3031) SUMMCUMUCLA
+            IF(NFRLIQ.GT.0.AND.CHARR) THEN
+              DO IFRLQ=1,NFRLIQ
+                WRITE(LU,3033) IFRLQ,-SUMBEDLOAD_B_FLUX(IFRLQ)
+              ENDDO
+            ENDIF
             WRITE(LU,2112) SUMEROSTOT
             WRITE(LU,2113) SUMDEPOTOT
             WRITE(LU,2910) SUMMASSTOT
@@ -263,6 +304,11 @@
             SUMDEPOTOT = 0.D0
             SUMLOST = 0.D0
             SUMNESTOR = 0.D0
+            IF(NFRLIQ.GT.0) THEN
+              DO IFRLQ=1,NFRLIQ
+                SUMBEDLOAD_B_FLUX(IFRLQ) = 0.D0
+              ENDDO
+            ENDIF
 !
 !         BALANCE FOR EACH CLASS
 !
@@ -276,6 +322,13 @@
               WRITE(LU,2001) I
               WRITE(LU,3010) SUMRMASCL(I)
               WRITE(LU,3032) SUMMCUMUCL(I)
+              IF(NFRLIQ.GT.0.AND.CHARR) THEN
+                DO IFRLQ=1,NFRLIQ
+                  WRITE(LU,3034) IFRLQ,-SUMBEDLOAD_B(IFRLQ,I)
+                  SUMBEDLOAD_B_FLUX(IFRLQ) = SUMBEDLOAD_B_FLUX(IFRLQ)
+     &                              + SUMBEDLOAD_B(IFRLQ,I)
+                ENDDO
+              ENDIF
               WRITE(LU,2114) SUM_EROSION(I)
               WRITE(LU,2115) SUM_DEPOSITION(I)
               WRITE(LU,2028) MASS0TOT(I)
@@ -320,6 +373,11 @@
               WRITE(LU,2002)
               WRITE(LU,3010) SUMRMASCLA
               WRITE(LU,3032) SUMMCUMUCLA
+              IF(NFRLIQ.GT.0.AND.CHARR) THEN
+                DO IFRLQ=1,NFRLIQ
+                  WRITE(LU,3034) IFRLQ,-SUMBEDLOAD_B_FLUX(IFRLQ)
+                ENDDO
+              ENDIF
               WRITE(LU,2114) SUMEROSTOT
               WRITE(LU,2115) SUMDEPOTOT
               WRITE(LU,2028) SUMMASS0TOT
@@ -383,6 +441,10 @@
      &       ,G16.7,'  ( KG/S  >0 = ENTERING )')
 3032  FORMAT(5X,'CUMULATED BOUNDARIES BEDLOAD MASS         = ',G16.7,
      &          '  ( KG )')
+3033  FORMAT(5X,'BEDLOAD FLUX BOUNDARY ',I4,'                = ', G16.7
+     &      ,'  ( KG/S  >0 = ENTERING )')
+3034  FORMAT(5X,'CUMULATED BEDLOAD BOUNDARY ',I4,'           = ', G16.7
+     &      ,'  ( KG )')
 2031  FORMAT(5X,'CUMULATED LOST MASS (INI-FINAL+FLUXES)    = ',
      & G16.7,'  ( KG )')
 

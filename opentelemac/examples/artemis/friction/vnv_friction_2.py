@@ -69,8 +69,7 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
         # Getting files
         vnv_1_artres = self.get_study_file('vnv_1:ARTRES')
         res_vnv_1_artres = TelemacFile(vnv_1_artres)
@@ -78,19 +77,19 @@ class VnvStudy(AbstractVnvStudy):
         res_vnv_1_artgeo = TelemacFile(vnv_1_artgeo)
 
         # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
+        vnv_plot1d_polylines(\
                 'WAVE HEIGHT',
+                res_vnv_1_artres,
                 poly=[[0, 0.6], [19.9, 0.6]],
                 fig_size=(10, 7),
-                fig_name='img/Section')
+                fig_name='img/Section_2')
 
         #Plotting mesh
         vnv_plot2d('',
                    res_vnv_1_artgeo,
                    plot_mesh=True,
                    fig_size=(12, 4),
-                   fig_name='img/Mesh2')
+                   fig_name='img/Mesh_2')
 
 
         # Plotting WAVE HEIGHT at 0
@@ -99,8 +98,8 @@ class VnvStudy(AbstractVnvStudy):
                    record=0,
                    filled_contours=True,
                    fig_size=(12, 4),
-                   fig_name='img/Wave_height2')
+                   fig_name='img/Wave_height_2')
 
         # Closing files
-        del res_vnv_1_artres
-        del res_vnv_1_artgeo
+        res_vnv_1_artres.close()
+        res_vnv_1_artgeo.close()

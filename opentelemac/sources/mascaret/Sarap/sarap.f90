@@ -135,7 +135,7 @@ subroutine SARAP ( &
    real(DOUBLE) ,dimension (:,:)    , intent(in   ) :: F1
    ! Debits d apports
    type(APPORT_T), dimension(:)     , intent(in   ) :: Apport
-   real(DOUBLE)	, dimension(:)     , intent(inout) :: Qdeverse
+   real(DOUBLE) , dimension(:)     , intent(inout) :: Qdeverse
    real(DOUBLE)     , dimension(:) , intent(inout):: QInjec
    ! Pertes de charge singulieres
    real(DOUBLE), dimension(:)       , intent(in   ) :: PCSing

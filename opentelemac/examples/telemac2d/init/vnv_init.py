@@ -283,5 +283,5 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/Turb_Visco_tf')
 
         # Closing files
-        del res_vnv_cin_seq_t2dgeo
-        del res_vnv_cin_seq_t2dres
+        res_vnv_cin_seq_t2dgeo.close()
+        res_vnv_cin_seq_t2dres.close()

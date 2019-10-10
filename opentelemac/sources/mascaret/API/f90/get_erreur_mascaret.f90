@@ -48,8 +48,8 @@
       RETURN
     end if
     if (.not. ASSOCIATED(mascaretCree)) then
-	  MsgErreur = 'GET_ERREUR_MASCARET - Aucun Mascaret de cree'
-	  Erreur = 2
+      MsgErreur = 'GET_ERREUR_MASCARET - Aucun Mascaret de cree'
+      Erreur = 2
       RETURN
     end if
     if (.not. ASSOCIATED(ptrMsgsErreurs)) then

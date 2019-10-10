@@ -141,4 +141,4 @@ class VnvStudy(AbstractVnvStudy):
             filled_contours=True)
 
         # Closing files
-        del res
+        res.close()

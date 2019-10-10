@@ -1,12 +1,14 @@
+"""
+Contains classe to parse mascaret files
+"""
 from collections import OrderedDict
 import csv
 import logging
 import struct
 import os
-import numpy as np
 from math import sqrt
-
 from utils.exceptions import MascaretException
+import numpy as np
 
 
 class Reach:
@@ -18,11 +20,11 @@ class Reach:
     section ([Section]) list of sections
     """
 
-    def __init__(self, id, name=None):
-        self.id = id
+    def __init__(self, my_id, name=None):
+        self.id = my_id
         self.name = name
         if self.name is None:
-            self.name = 'Reach_%i' % id
+            self.name = 'Reach_%i' % my_id
         self.sections = OrderedDict()
         self.nsections = 0
         self._n = None
@@ -60,11 +62,13 @@ class Reach:
         try:
             return section_ids.index(section_id)
         except ValueError:
-            raise MascaretException('Section identifier %i is not found.\n'
-                                    'Possible section identifiers are:\n%s' % (section_id, section_ids))
+            raise MascaretException('Section identifier %i is not found.\n'\
+                                    'Possible section identifiers are:\n%s' \
+                                    % (section_id, section_ids))
 
     def __repr__(self):
-        return 'Reach #%i (%s) with %i sections' % (self.id, self.name, self.nsections)
+        return 'Reach #%i (%s) with %i sections' % \
+                (self.id, self.name, self.nsections)
 
     # Enable iteration over section list
     def __iter__(self):
@@ -98,19 +102,17 @@ class Section:
     axis (numpy 1D-array) coordinates of hydraulic axis
     x (numpy 1D-array) point coordinates along x axis
     y (numpy 1D-array) point coordinates along y axis
-    distances (numpy 1D-array) cumulative distance from first point along the profile
+    distances (numpy 1D-array) cumulative distance from first point along the
+    profile
     nb_points (int) number of points
     limits ({limit_name: point_numbering}) position of limits
     """
 
-    def __init__(self, id, pk, name=None):
-        self.id = id
-        self.name = name
-
-        self.id = id
+    def __init__(self, my_id, pk, name=None):
+        self.id = my_id
         self.name = name
         if self.name is None:
-            self.name = 'Profil_%i' % id
+            self.name = 'Profil_%i' % my_id
         self.pk = pk
 
         self.axis = None
@@ -124,7 +126,8 @@ class Section:
 
     def set_points_from_trans(self, dist_array, z_array):
         if len(dist_array) != len(z_array):
-            raise MascaretException('set_points_from_trans: Input arrays have not the same length')
+            raise MascaretException(\
+                 'set_points_from_trans: Input arrays have not the same length')
         self.allocate(len(dist_array))
         for i, (dist, z) in enumerate(zip(dist_array, z_array)):
             if i == 0:
@@ -136,8 +139,9 @@ class Section:
             self.set_point(i, self.pk, dist, z, limit)
 
     def set_points_from_xyz(self, x_list, y_list, z_list):
-        if not (len(x_list) == len(y_list) == len(z_list)):
-            raise MascaretException('set_points_from_xyz: Input arrays have not the same length')
+        if not len(x_list) == len(y_list) == len(z_list):
+            raise MascaretException(\
+                   'set_points_from_xyz: Input arrays have not the same length')
         self.allocate(len(x_list))
         for i, (x, y, z) in enumerate(zip(x_list, y_list, z_list)):
             if i == 0:
@@ -221,7 +225,7 @@ class Section:
 class MascaretFileParent:
     """
     Parse MascaretFile ('opt' or 'rub')
-    /!\ Encoding is not checked and depends on system configuration
+    Warning: Encoding is not checked and depends on system configuration
     """
 
     logger = logging.getLogger(__name__)
@@ -229,10 +233,12 @@ class MascaretFileParent:
     def __init__(self, file_name, access='r', log_lvl='INFO'):
         """
         Constructor for MascaretFile
-        /!\ Only suited for results at cross-sections (not adapted to Casier or Traceur outputs)
+        Warning Only suited for results at cross-sections (not adapted to
+        Casier or Traceur outputs)
 
         @param file_name (str) Name of the file
-        @param access (str) Access to the file ('r' for read 'w' for write, add 'b' for binary file)
+        @param access (str) Access to the file ('r' for read 'w' for write, add
+        'b' for binary file)
 
         Attributs:
         - file_name: file name
@@ -395,11 +401,11 @@ class MascaretFileParent:
             vars_indexes = self.varnames_dict['id']
         outfile.write('[variables]\n')
         for i in vars_indexes:
-            outfile.write('"{0}";"{1}";"{2}";0\n'.format(self.varnames_dict['names'][i],
-                                                         self.varnames_dict['abbr'][i],
-                                                         self.varnames_dict['units'][i]
-                                                         )
-                          )
+            outfile.write('"{0}";"{1}";"{2}";0\n'.format(\
+                    self.varnames_dict['names'][i],
+                    self.varnames_dict['abbr'][i],
+                    self.varnames_dict['units'][i])
+                         )
         outfile.write('[resultats]\n')
 
     def write_optfile_frame(self, outfile, res, time):
@@ -413,8 +419,9 @@ class MascaretFileParent:
             id = self.reaches[key].get_section_id_list()
             pk = self.reaches[key].get_section_pk_list()
             for id, pk, val in zip(id, pk, res[key]):
-                outfile.write('{0};"{1:2}";"{2:5}";{3};{4} \n'.format(time, key, id, pk,
-                                                                      ";".join([str(var) for var in val])))
+                outfile.write('{0};"{1:2}";"{2:5}";{3};{4} \n'\
+                                 .format(time, key, id, pk,
+                                         ";".join([str(var) for var in val])))
 
     def write_optfile(self, outfile_name, times_indexes=None, vars_indexes=None):
         """
@@ -529,7 +536,8 @@ class Opthyca(MascaretFileParent):
     def __init__(self, file_name, access='r', log_lvl='INFO'):
         """
         Constructor for Opthyca file
-        /!\ Only suited for results at cross-sections (not adapted to Casier or Traceur outputs)
+        Warning: Only suited for results at cross-sections (not adapted to
+        Casier or Traceur outputs)
 
         @param file_name Name of the file
         @param access Access to the file ('r' for read 'w' for write)
@@ -559,7 +567,8 @@ class Opthyca(MascaretFileParent):
                 name, abbr, unit, _ = row.split(';')
             except ValueError:
                 self.error('Variable description is not readable')
-            self.add_variable(name.strip('\"'), unit.strip('\"'), abbr.strip('\"'))
+            self.add_variable(name.strip('\"'), unit.strip('\"'),
+                              abbr.strip('\"'))
             row = self.read_line()
         self._position_first_frame = self._file.tell()
 
@@ -567,7 +576,8 @@ class Opthyca(MascaretFileParent):
         """Interpret a line containing some results"""
         row = self.read_line()
         try:
-            time_str, bief_name, _, pk_str, values_str = row.split(';', maxsplit=4)
+            time_str, bief_name, _, pk_str, values_str = \
+                    row.split(';', maxsplit=4)
         except ValueError:
             self.error('Number of values (separated by a semi-colon) has to be more than 4!')
 
@@ -637,7 +647,8 @@ class Opthyca(MascaretFileParent):
 
     def get_series(self, reach_id, section_id, vars_indexes=None):
         """
-        Get values for all variables for a give reach index and a given section index
+        Get values for all variables for a give reach index and a given section
+        index
         @param reach_id (int) reach index
         @param section_id (int) section index
         @param vars_indexes (list) List of variable names
@@ -761,7 +772,8 @@ class Rubens(MascaretFileParent):
         self._file.read(4)
 
         # First and last section of reaches block
-        # Defining format to read first and last point (depends on the number of reaches)
+        # Defining format to read first and last point (depends on the number
+        # of reaches)
         fmt = self.endians+'%ii' % self.nreaches
 
         # First Fortran tag
@@ -813,7 +825,8 @@ class Rubens(MascaretFileParent):
         except FileNotFoundError:
             self.logger.warning('Mascaret dico file is missing !')
             for i, varname in enumerate(self.varnames):
-                self.add_variable('Rub_long_name_unknown_' + str(i), 'Rub_unit_unknown_' + str(i), varname)
+                self.add_variable('Rub_long_name_unknown_' + str(i),
+                                  'Rub_unit_unknown_' + str(i), varname)
 
     def get_reaches(self):
         """Read geometry"""
@@ -876,7 +889,8 @@ class Rubens(MascaretFileParent):
 
     def get_series(self, reach_id, section_id, vars_indexes=None):
         """
-        Get values for all variables for a give reach index and a given section index
+        Get values for all variables for a give reach index and a given section
+        index
         @param reach_id (int) reach index
         @param section_id (int) section index
         @param vars_indexes (list) List of variable names

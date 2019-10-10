@@ -29,7 +29,7 @@ subroutine LEC_LOI    ( &
 
 ! *********************************************************************
 ! PROGICIEL : MASCARET       S. MANDELKERN
-!                            F. ZAOUI                      
+!                            F. ZAOUI
 !
 ! VERSION : 8.1.4              EDF-CEREMA
 ! *********************************************************************
@@ -44,7 +44,7 @@ subroutine LEC_LOI    ( &
    use M_TRAITER_ERREUR_I    ! Traitement de l'errreur
    use M_LEC_HYDRAU_I        ! Interface de sous-programme
    use Fox_dom               ! parser XML Fortran
-   
+
    implicit none
    ! Arguments
    type(LOI_T)    , dimension(:), pointer       :: LoiHydrau
@@ -123,7 +123,7 @@ subroutine LEC_LOI    ( &
       call xerror(Erreur)
       return
    endif
-   
+
    do iloi = 1 , nb_loi
 
       champ3 => item(getElementsByTagname(champ2, "structureParametresLoi"), iloi-1)
@@ -139,7 +139,7 @@ subroutine LEC_LOI    ( &
          return
       endif
       LoiHydrau(iloi)%Nom  = getTextContent(champ4)
-      
+
       champ4 => item(getElementsByTagname(champ3, "type"), 0)
       if(associated(champ4).eqv..false.) then
          print*,"Parse error => type"
@@ -147,7 +147,7 @@ subroutine LEC_LOI    ( &
          return
       endif
       call extractDataContent(champ4,LoiHydrau(iloi)%Type)
-      
+
       if( LoiHydrau(iloi)%Type < 1 .or. LoiHydrau(iloi)%Type > LOI_TYPE_NB_MAX ) then
          Erreur%Numero = 317
          Erreur%ft     = err_317
@@ -169,7 +169,7 @@ subroutine LEC_LOI    ( &
          return
       endif
       call extractDataContent(champ5,mode_entree_loi)
-      
+
       if( mode_entree_loi /= SAISIE_PAR_FICHIER .and. mode_entree_loi /= SAISIE_PAR_CLAVIER ) then
          Erreur%Numero = 318
          Erreur%ft     = err_318
@@ -190,7 +190,7 @@ subroutine LEC_LOI    ( &
             call xerror(Erreur)
             return
          endif
-         FichierLoiHydrau%Nom = getTextContent(champ5) 
+         FichierLoiHydrau%Nom = getTextContent(champ5)
          if( impression_hydrau ) then
             write(UniteListing,10030) 'PAR FICHIER' , FichierLoiHydrau%Nom
          endif
@@ -304,21 +304,21 @@ subroutine LEC_LOI    ( &
   10090 format (f12.3)
 
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
-   end subroutine xerror      
+
+   end subroutine xerror
 
 end subroutine LEC_LOI

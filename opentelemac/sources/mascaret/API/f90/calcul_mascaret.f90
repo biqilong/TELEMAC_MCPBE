@@ -113,7 +113,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
    integer :: phase_tracer
    real(DOUBLE)  :: DTImpression    ! pas de temps d'impression
    real(DOUBLE)  :: Temps           ! Temps courant
-   real(double)  :: Temps1          ! Temps suivant
+   real(DOUBLE)  :: Temps1          ! Temps suivant
    type(FICHIER_T) :: FichierResultat
    type(FICHIER_T) :: FichierResultat2
    type(FICHIER_T) :: FichierListing
@@ -170,6 +170,11 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
    type(ERREUR_T)           :: Erreur
    type(MODELE_MASCARET_T)  :: Modele
    type(ETAT_MASCARET_T)    :: Etat
+
+ ! Variables Courlis
+
+   real(DOUBLE)    , dimension(:), pointer :: varsed ! Courlis : profil evolution
+
 !
 ! Instructions
 !
@@ -349,13 +354,16 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
                 Impression              , & ! Impression du planimetrage
                 FichierListing%Unite    , & ! Unite logique listing
                 Modele%FrottParoiVerticale , & ! Conservation du frottement sur les parois verticales
+                Modele%OptionCourlis    , & ! Activation Courlis
+                varsed                  , & ! Courlis : Profil Evolution
+                TempsInitial            , & ! Courlis
                 Erreur                  & ! Erreur
                                       )
 
     if (Erreur%Numero /= 0) then
       RetourErreur = Erreur%Numero
       ptrMsgsErreurs(Identifiant) = 'CALCUL_MASCARET - PLANIM - '//TRIM(Erreur%Message)
-	  if (Impression) then
+      if (Impression) then
         rewind(FichierListing%Unite)
         close(FichierListing%Unite)
         if (Modele%OptionCasier) close(FichierListingCasier%Unite)
@@ -423,6 +431,9 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
             Modele%CF2                  , & ! Strickler majeur
             Modele%PresenceZoneStockage , & ! Presence de zone de stockage
             Modele%LoiFrottement        , & ! Loi de frottement utilisee
+            Modele%OptionCourlis               , & ! Activation Courlis
+            varsed                      , & ! Courlis : profil evolution
+            TempsInitial                , & ! Courlis
             Erreur               )
       if (Erreur%Numero /= 0) then
         RetourErreur = Erreur%Numero
@@ -702,7 +713,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
             if (Erreur%Numero /= 0) then
              RetourErreur = Erreur%Numero
              ptrMsgsErreurs(Identifiant) = 'CALCUL_MASCARET - CLPLUIE - '//TRIM(Erreur%Message)
-	            if (Impression) then
+             if (Impression) then
                rewind(FichierListingCasier%Unite)
                close(FichierListingCasier%Unite)
                rewind(FichierListingLiaison%Unite)
@@ -776,7 +787,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
           if (Erreur%Numero /= 0) then
             RetourErreur = Erreur%Numero
             ptrMsgsErreurs(Identifiant) = 'CALCUL_MASCARET - SARAP - '//TRIM(Erreur%Message)
-	           if (Impression) then
+            if (Impression) then
               rewind(FichierListing%Unite)
               close(FichierListing%Unite)
               if (Modele%OptionCasier) close(FichierListingCasier%Unite)
@@ -846,7 +857,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
           if (Erreur%Numero /= 0) then
             RetourErreur = Erreur%Numero
             ptrMsgsErreurs(Identifiant) = 'CALCUL_MASCARET - REZO - '//TRIM(Erreur%Message)
-	           if (Impression) then
+            if (Impression) then
               rewind(FichierListing%Unite)
               close(FichierListing%Unite)
               if (Modele%OptionCasier) close(FichierListingCasier%Unite)
@@ -946,7 +957,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
           if (Erreur%Numero /= 0) then
              RetourErreur = Erreur%Numero
              ptrMsgsErreurs(Identifiant) = 'CALCUL_MASCARET - MASCARET - '//TRIM(Erreur%Message)
-	     if (Impression) then
+             if (Impression) then
                 rewind(FichierListing%Unite)
                 close(FichierListing%Unite)
                 if (Modele%OptionCasier) close(FichierListingCasier%Unite)
@@ -1460,7 +1471,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
     select case (Etat%phaseSimulation)
 
     case (PHASE_INITIALISATION)
-	   if(Modele%Noyau == NOYAU_MASCARET .and. Etat%phaseSimulation == PHASE_INITIALISATION) then
+      if(Modele%Noyau == NOYAU_MASCARET .and. Etat%phaseSimulation == PHASE_INITIALISATION) then
          test_fin = .true.
       endif
       Etat%phaseSimulation = PHASE_CALCUL
@@ -1500,7 +1511,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
 !                   EMAX            , &
 !                   ZVRAI , QVRAI   , &
 !                   Etat%XFRON           , &
-!				   Etat%Qdeverse        , &
+!                   Etat%Qdeverse        , &
 !                   TEMPS           , &
 !                   Modele%Connect         , &
 !                   FichierRepriseEcr , &
@@ -1534,11 +1545,11 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
                  Etat%V2(:) = 0._DOUBLE
               end where
               if (Modele%OptionCasier) then
-	         if (Impression) then
-    	            rewind(FichierListingCasier%Unite)
-    	            close(FichierListingCasier%Unite)
-    	            rewind(FichierListingLiaison%Unite)
-    	            close(FichierListingLiaison%Unite)
+                 if (Impression) then
+                    rewind(FichierListingCasier%Unite)
+                    close(FichierListingCasier%Unite)
+                    rewind(FichierListingLiaison%Unite)
+                    close(FichierListingLiaison%Unite)
                  end if
                  DO i=1, nbCasier
                     Etat%Casiers(i)%Cote        = Modele%Casiers(i)%Cote
@@ -1550,7 +1561,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
                     Etat%Casiers(i)%DzCas       = Modele%Casiers(i)%DzCas
                     Etat%Casiers(i)%CoteMax     = Modele%Casiers(i)%CoteMax
                     Etat%Casiers(i)%TempsMax    = Modele%Casiers(i)%TempsMax
-		 END DO
+                 END DO
 
                  DO i=1, nbLiaison
                     Etat%Liaisons(i)%DebitEchange    = Modele%Liaisons(i)%DebitEchange
@@ -1564,7 +1575,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
                     Etat%Liaisons(i)%DQDZaval    = Modele%Liaisons(i)%CaracCC%DQDZaval
                     Etat%Liaisons(i)%DQDZcasier  = Modele%Liaisons(i)%CaracRC%DQDZcasier
                     Etat%Liaisons(i)%DQDZriviere = Modele%Liaisons(i)%CaracRC%DQDZriviere
-		 END DO
+                 END DO
 
               end if ! endif (Modele%OptionCasier)
               if (Impression) then

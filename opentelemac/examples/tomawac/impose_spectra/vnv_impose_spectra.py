@@ -127,7 +127,7 @@ class VnvStudy(AbstractVnvStudy):
             IKLE1 = SerafinFile1.ikle2
             VarName1 = SerafinFile1.varnames
             VarUnits1 = SerafinFile1.varunits
-            t_series1 = SerafinFile1.tags['times']
+            t_series1 = SerafinFile1.times
             #Read mesh data 2
             NPOIN2 = SerafinFile2.npoin2
             X2 = SerafinFile2.meshx
@@ -136,7 +136,7 @@ class VnvStudy(AbstractVnvStudy):
             IKLE2 = SerafinFile2.ikle2
             VarName2 = SerafinFile2.varnames
             VarUnits2 = SerafinFile2.varunits
-            t_series2 = SerafinFile2.tags['times']
+            t_series2 = SerafinFile2.times
             # Get time
             t_read1 = np.searchsorted(t_series1,t_series1[t_read])
             t_read2 = np.searchsorted(t_series2,t_series2[t_read])
@@ -187,6 +187,9 @@ class VnvStudy(AbstractVnvStudy):
                if not passed:
                    raise TelemacException(\
                           "Epsilon reached in {} vs {}".format(f1, f2))
+
+            SerafinFile1.close()
+            SerafinFile2.close()
             return all_err
 
         errs = compare_diff_mesh(\
@@ -315,14 +318,14 @@ class VnvStudy(AbstractVnvStudy):
                     ['Oceanic - Reference','Coastal - Reference','Oceanic - Coastal'],
                     res.varnames,
                     self.res_errs, [1e-2,1e-2,1e-2,1e-2,1e-2])
-        del res
+        res.close()
 
         res = TelemacFile(self.get_study_file('vnv_1:WACLEO'))
         write_table('tab_spe.tex',
                     ['Oceanic - Reference','Coastal - Reference','Oceanic - Coastal'],
                     res.varnames,
                     self.spe_errs, [1e-7]*21)
-        del res
+        res.close()
 
         # Plotting vertical split
         # TODO: Improvment to be done on plot (not nice)
@@ -333,43 +336,41 @@ class VnvStudy(AbstractVnvStudy):
 
         poly = [[-200., 100.], [200., 100.]]
 
-        poly_number = res_coa.discretize_polyline(poly)
-
         record = -1
 
         for var_name in ['WAVE HEIGHT HM0', 'MEAN PERIOD TMOY', 'WAVE SPREAD']:
-            _, abs_curv, values_coa =\
-                res_coa.get_timeseries_on_polyline(poly, var_name, poly_number)
+            _, abs_curv_coa, values_coa =\
+                res_coa.get_timeseries_on_polyline(var_name, poly)
 
-            _, _, values_oce =\
-                res_oce.get_timeseries_on_polyline(poly, var_name, poly_number)
+            _, abs_curv_oce, values_oce =\
+                res_oce.get_timeseries_on_polyline(var_name, poly)
 
-            _, _, values_ref_coa =\
-                ref_coa.get_timeseries_on_polyline(poly, var_name, poly_number)
+            _, abs_curv_ref_coa, values_ref_coa =\
+                ref_coa.get_timeseries_on_polyline(var_name, poly)
 
-            _, _, values_ref_oce =\
-                ref_oce.get_timeseries_on_polyline(poly, var_name, poly_number)
+            _, abs_curv_ref_oce, values_ref_oce =\
+                ref_oce.get_timeseries_on_polyline(var_name, poly)
 
             fig, ax = plt.subplots()
 
-            plot1d(ax, abs_curv, values_ref_oce[:, record],
+            plot1d(ax, abs_curv_ref_oce, values_ref_oce[:, record],
                    x_label='y (m)',
                    y_label=var_name.lower(),
                    plot_label='Oceanic Reference',
                    marker='+')
 
-            plot1d(ax, abs_curv, values_ref_coa[:, record],
+            plot1d(ax, abs_curv_ref_coa, values_ref_coa[:, record],
                    x_label='y (m)',
                    y_label=var_name.lower(),
                    plot_label='Coastal Reference',
                    marker='o')
 
-            plot1d(ax, abs_curv, values_oce[:, record],
+            plot1d(ax, abs_curv_oce, values_oce[:, record],
                    x_label='y (m)',
                    y_label=var_name.lower(),
                    plot_label='Oceanic Modelled')
 
-            plot1d(ax, abs_curv, values_coa[:, record],
+            plot1d(ax, abs_curv_coa, values_coa[:, record],
                    x_label='y (m)',
                    y_label=var_name.lower(),
                    plot_label='Coastal Modelled')
@@ -378,3 +379,8 @@ class VnvStudy(AbstractVnvStudy):
             fig_name = 'img/{}'.format(var_name.lower().replace(' ', '_'))
             plt.savefig(fig_name)
             plt.clf()
+
+        ref_oce.close()
+        ref_coa.close()
+        res_oce.close()
+        res_coa.close()

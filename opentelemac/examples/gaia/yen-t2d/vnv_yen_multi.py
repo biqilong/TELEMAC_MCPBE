@@ -30,7 +30,7 @@ class VnvStudy(AbstractVnvStudy):
 
 
         # yen-exp_multi T2D+GAI scalar mode
-        for bed_form in [2, 3, 4, 5, 6, 7, 30, 9]:
+        for bed_form in [2, 3, 4, 5, 6, 7, 10, 30, 9]:
             t2d_steering_file = 't2d_yen-exp_multi{}.cas'.format(bed_form)
             gai_steering_file = 'gaia_yen-exp_multi{}.cas'.format(bed_form)
 
@@ -147,6 +147,15 @@ class VnvStudy(AbstractVnvStudy):
                             'f2d_multi7.slf',
                             eps=[1e-3])
 
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_multi10:GAIRES',
+                            'gai_ref_multi10.slf',
+                            eps=[1e-3])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_multi10:T2DRES',
+                            'f2d_multi10.slf',
+                            eps=[1e-3])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_multi30:GAIRES',
                             'gai_ref_multi30.slf',
@@ -291,7 +300,7 @@ class VnvStudy(AbstractVnvStudy):
             plt.savefig('img/'+title + ".png")
             plt.clf()
 
-            del slf
+            slf.close()
 
         def yen_contour(file_name, in_title):
             """
@@ -349,7 +358,9 @@ class VnvStudy(AbstractVnvStudy):
             plt.savefig('img/' + title + ".png", dpi=300)
             plt.clf()
 
-        for bed_form in [1, 2, 3, 4, 5, 6, 7, 30, 9]:
+            slf.close()
+
+        for bed_form in [1, 2, 3, 4, 5, 6, 7, 10, 30, 9]:
             res_file = self.get_study_file('vnv_multi{}:GAIRES'.format(bed_form))
             title = 'gaia_yen-exp_multi{}'.format(bed_form)
             yen(res_file, title)
@@ -360,3 +371,5 @@ class VnvStudy(AbstractVnvStudy):
             title = 'gaia_yen-exp_multi1_hid{}'.format(hid_form)
             yen(res_file, title)
             yen_contour(res_file, title)
+
+

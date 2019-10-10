@@ -69,79 +69,33 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot_timeseries_on_polyline
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines
         # Getting files
         vnv_1_artgeo = self.get_study_file('vnv_1:ARTGEO')
         res_vnv_1_artgeo = TelemacFile(vnv_1_artgeo)
         vnv_1_artres = self.get_study_file('vnv_1:ARTRES')
         res_vnv_1_artres = TelemacFile(vnv_1_artres)
 
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[10, 18], [20, 18]],
-                fig_size=(10, 7),
-                fig_name='img/Section1')
+        polys = [[[10, 18], [20, 18]],
+                 [[10, 17], [20, 17]],
+                 [[10, 16], [20, 16]],
+                 [[10, 15], [0, 15]],
+                 [[10, 14], [20, 14]],
+                 [[14.75, 8], [14.75, 20]],
+                 [[15.75, 8], [15.75, 20]],
+                 [[16.75, 8], [16.75, 20]]]
 
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[10, 17], [20, 17]],
-                fig_size=(10, 7),
-                fig_name='img/Section2')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[10, 16], [20, 16]],
-                fig_size=(10, 7),
-                fig_name='img/Section3')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[10, 15], [0, 15]],
-                fig_size=(10, 7),
-                fig_name='img/Section4')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[10, 14], [20, 14]],
-                fig_size=(10, 7),
-                fig_name='img/Section5')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[14.75, 8], [14.75, 20]],
-                fig_size=(10, 7),
-                fig_name='img/Section6')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[15.75, 8], [15.75, 20]],
-                fig_size=(10, 7),
-                fig_name='img/Section7')
-
-        # Plotting WAVE HEIGHT over polyline over records 0
-        plot_timeseries_on_polyline(\
-                res_vnv_1_artres,
-                'WAVE HEIGHT',
-                poly=[[16.75, 8], [16.75, 20]],
-                fig_size=(10, 7),
-                fig_name='img/Section8')
+        for i, poly in  enumerate(polys):
+            # Plotting WAVE HEIGHT over polyline over records 0
+            vnv_plot1d_polylines(\
+                    'WAVE HEIGHT',
+                    res_vnv_1_artres,
+                    poly=poly,
+                    fig_size=(10, 7),
+                    fig_name='img/Section{}'.format(i+1))
 
         #Plotting mesh
+        #TODO: Plot mesh and the polylines ?
         vnv_plot2d('',
                    res_vnv_1_artgeo,
                    plot_mesh=True,
@@ -169,5 +123,5 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/WaveHeight')
 
         # Closing files
-        del res_vnv_1_artgeo
-        del res_vnv_1_artres
+        res_vnv_1_artgeo.close()
+        res_vnv_1_artres.close()

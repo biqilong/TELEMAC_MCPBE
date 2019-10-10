@@ -272,3 +272,5 @@ class VnvStudy(AbstractVnvStudy):
         plt.savefig(title + ".pdf")
         plt.savefig(title + ".png")
         plt.clf()
+
+        slf.close()

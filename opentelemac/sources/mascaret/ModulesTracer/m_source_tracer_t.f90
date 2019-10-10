@@ -45,6 +45,8 @@ module M_SOURCE_TRACER_T
       real (DOUBLE),dimension(:),pointer :: Apport_source  => null() ! Apport par la source pour chaque traceur (conc, flux volum ou surf selon le cas)
       logical       :: SuperpositionApport ! Si superposition a un apport hydrau
       integer       :: NumeroApport        ! Numero de l'apport hydrau associe
+      real(DOUBLE)  :: debit_source    ! quantite de source
+      integer       :: Numero_traceur  ! Numero du traceur correspondant
    END TYPE SOURCE_TRACER_T
 
 contains

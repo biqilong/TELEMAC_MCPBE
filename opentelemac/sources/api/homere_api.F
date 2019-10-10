@@ -63,7 +63,7 @@
         PRINT*
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #if defined HAVE_MPI
-        IF(PARALLEL.GT.1) THEN
+        IF(PARALLEL.GE.1) THEN
            ! Partitioning method to use 1: metis
            PMETHOD=1
            ! Initialising mpi
@@ -81,8 +81,10 @@
              STOP
            ENDIF
            CALL MPI_BARRIER(COMM,IERR)
-           CALL GET_SHORT
-           CALL SPLIT_GEO
+           IF(PARALLEL.GT.1) THEN
+             CALL GET_SHORT
+             CALL SPLIT_GEO
+           ENDIF
         ENDIF
 #else
         RANK = -1
@@ -104,9 +106,11 @@
         ENDIF
 
 #if defined HAVE_MPI
-        IF(PARALLEL.GT.1) THEN
+        IF(PARALLEL.GE.1) THEN
           CALL MPI_BARRIER(COMM,IERR)
-          CALL MERGE_RES
+          IF(PARALLEL.GT.1) THEN
+            CALL MERGE_RES
+          ENDIF
           CALL MPI_FINALIZE(IERR)
         ENDIF
 #endif

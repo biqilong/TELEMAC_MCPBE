@@ -22,7 +22,7 @@ def main():
     chdir(path.join(root, 'examples', 'mascaret', 'Test1'))
     # Model create
     masc = Mascaret()
-    masc.create_mascaret(iprint=0)
+    masc.create_mascaret(iprint=1)
 
     #  Mascaret files & import
     files_name = ['sarap.xcas', 'geometrie', 'hydrogramme.loi',

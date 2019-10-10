@@ -20,13 +20,15 @@ class VnvStudy(AbstractVnvStudy):
         self.refinement_levels = 4
         self.temporary_files = []
 
-        # time parameters:
+        # Duration:
         self.time_period = 4.4857
         self.time_coef = 2.
         self.duration = self.time_period/self.time_coef
+
+        # Time discretization:
         self.variable_timestep = True
         self.timestep = 2.65e-3
-        self.CFL = 0.8
+        self.CFL = 0.9
 
         # Numerical schemes tested:
         self.treatment_of_the_linear_system = 2
@@ -56,14 +58,17 @@ class VnvStudy(AbstractVnvStudy):
             cas.set('GEOMETRY FILE', geo_file)
             cas.set('BOUNDARY CONDITIONS FILE', bnd_file)
             cas.set('RESULTS FILE', "r2d-thacker_0.slf")
-            cas.set('DURATION', self.duration)
-            cas.set('TIME STEP', self.timestep)
             cas.set('TREATMENT OF THE LINEAR SYSTEM',\
                 self.treatment_of_the_linear_system)
+            cas.set('TIME STEP', self.timestep)
 
             if self.variable_timestep:
+                cas.remove('NUMBER OF TIME STEPS')
+                cas.set('DURATION', self.duration)
                 cas.set('DESIRED COURANT NUMBER', self.CFL)
                 cas.set('VARIABLE TIME-STEP', self.variable_timestep)
+            else:
+                cas.set('NUMBER OF TIME STEPS', int(self.duration/self.timestep))
 
             self.add_study('{}_mesh0'.format(sc), 'telemac2d',\
                            't2d_thacker-{}.cas'.format(sc), cas=cas)
@@ -85,7 +90,7 @@ class VnvStudy(AbstractVnvStudy):
                 # add run i
                 cas.set('GEOMETRY FILE', output_file+".slf")
                 cas.set('BOUNDARY CONDITIONS FILE', output_file+".cli")
-                cas.set('RESULTS FILE', "r2d-thacker_ {}.slf".format(i+1))
+                cas.set('RESULTS FILE', "r2d-thacker_{}.slf".format(i+1))
                 cas.set('TREATMENT OF THE LINEAR SYSTEM',\
                     self.treatment_of_the_linear_system)
 
@@ -548,7 +553,7 @@ class VnvStudy(AbstractVnvStudy):
                 absc, errors_H_L2_allschemes,
                 fig_size=(9, 5),
                 legend_labels=self.schemes,
-                y_label='$\\frac{1}{t_f} \\int_{0}^{t_f} E_i dt$',
+                y_label='$E_i$',
                 x_label='$\\sqrt{N_i/N_0}$',
                 fig_title='Errors $L_2$ on H with {}'\
                 .format(time_label),
@@ -727,7 +732,7 @@ class VnvStudy(AbstractVnvStudy):
                 absc, errors_H_L2_allschemes,
                 fig_size=(9, 5),
                 legend_labels=self.schemes,
-                y_label='$\\frac{1}{t_f} \\int_{0}^{t_f} E_i dt$',
+                y_label='$E_i$',
                 x_label='$\\sqrt{N_i/N_0}$',
                 fig_title='Errors $L_2$ on H with {}'\
                 .format(time_label),

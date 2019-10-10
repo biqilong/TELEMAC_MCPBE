@@ -340,7 +340,7 @@ class ApiModule(object):
 
     def set_case(self, init=True):
         """
-           Read the steering file and run allocation
+           Read the steering file
 
            @param init (boolean) If true calling p_init
         """

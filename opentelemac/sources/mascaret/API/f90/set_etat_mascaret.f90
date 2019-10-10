@@ -74,6 +74,7 @@
       RETURN
     end if
 
+    !TODO: ask why it was commented
     !if (etatMascaretSauve(IdentifiantEtat) /= Identifiant) then
     !  ptrMsgsErreurs(Identifiant) = 'SET_ETAT_MASCARET - Mauvais identifiant Etat : Etat sauve pas de la bonne instance'
     !  MsgErreur = 'SET_ETAT_MASCARET - Mauvais identifiant Etat : Etat sauve pas de la bonne instance'
