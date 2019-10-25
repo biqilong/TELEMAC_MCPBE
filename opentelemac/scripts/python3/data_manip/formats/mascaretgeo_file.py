@@ -22,31 +22,36 @@ class MascaretGeoFile:
     """
     OUTPUT_FLOAT_FMT = '%.6f'
 
-    def __init__(self, file_name, fformat=None):
+    def __init__(self, file_name, fformat=None, mode='read'):
         """
         @param file_name (str) file name
         @param fformat (str) file format ('opt' or 'rub')
+        @param mode (str) define the mode for the class, 'read' by default to read a file,
+                          anything else to create a file
         """
         self.file_name = file_name
         self.reaches = OrderedDict()
 
-        # File format information
-        if fformat is None:
-            self.fformat = os.path.splitext(file_name)[1][1:]
-        else:
-            self.fformat = fformat.lower().strip()
-        if self.fformat not in ('geo', 'georef'):
-            raise NotImplementedError('Format `%s` not supported, only geo and georef formats are supported as input' %
-                                      self.fformat)
-        self.has_ref = 'ref' in self.fformat
-
         # Layers for sediments (Courlis)
-        self.has_layers = self.fformat.endswith('C')
         self.nlayers = 0
         self.layer_names = []
 
-        # Load file content
-        self.load()
+        if mode=='read':
+            # File format information
+            if fformat is None:
+                self.fformat = os.path.splitext(file_name)[1][1:]
+            else:
+                self.fformat = fformat.lower().strip()
+            if self.fformat not in ('geo', 'georef'):
+                raise NotImplementedError('Format `%s` not supported, only geo and georef formats are supported as input' %
+                                          self.fformat)
+            self.has_ref = 'ref' in self.fformat
+
+            # Layers for sediments (Courlis)
+            self.has_layers = self.fformat.endswith('C')
+
+            # Load file content
+            self.load()
 
     def load(self):
         """
@@ -197,7 +202,8 @@ class MascaretGeoFile:
         self.layer_names.append(name)
         for _, reach in self.reaches.items():
             for section in reach:
-                section.add_layer(thickness)
+                thickness_table = [thickness for i in range(section.nb_points)]
+                section.add_layer(thickness_table)
 
     def summary(self):
         txt = '~> %s\n' % self

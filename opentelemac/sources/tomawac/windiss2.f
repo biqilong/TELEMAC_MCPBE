@@ -13,7 +13,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !                    *****************
  
-       USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
+      USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
      &   TETA, DEUPI, ROAIR, ROEAU, USDPI,
      &   TWOLD, USOLD
 !

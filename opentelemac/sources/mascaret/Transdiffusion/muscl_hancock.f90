@@ -161,7 +161,14 @@ subroutine MUSCL_HANCOCK( &
          endif
 
          beta = 2.d0 / ( 1.d0 - ( U(i) * DT / dXi(i) ) )
-         xsi  = ( 2.d0 * beta ) / ( 1.d0 - w + ( 1.d0 + w ) * r )
+
+         !MS2019 handle an infinity case
+         IF( W == 1.d0 .AND. r == 0.d0) THEN
+           xsi = 3.d0
+         ELSE
+           xsi  = ( 2.d0 * beta ) / ( 1.d0 - w + ( 1.d0 + w ) * r )
+         ENDIF
+
          if( r.LE.0.d0 ) then
             penteS(i) = 0.d0
          elseif( ( r.GE.0.d0 ).and.( r.LE.0.5d0 ) ) then

@@ -27,9 +27,23 @@ class VnvStudy(AbstractVnvStudy):
         self.duration = self.time_period/4. # 1/4 of the complete rotation
 
         # Time discretization:
-        self.variable_timestep = True
-        self.timestep = self.time_period/640.
+        # WARNING: variable timestep not fully fonctionnal with FE methods atm.
+        self.variable_timestep = False
         self.CFL = 0.9
+        #----------------------------------------------------------------------
+        self.timestep = self.time_period/640.
+        #print("CONSTANT TIME STEP FIXED TO : {}".format(self.timestep))
+        #----------------------------------------------------------------------
+        # Manual CFL condition computation to determine timestep:
+        dx_0 = 1. # dx_0 ~= Lx/Nx0 = 20/20
+        dx_min = dx_0/(2.**self.refinement_levels) #dx on the finest mesh
+        um = 15. # max(U) = Uanalytic(x=20, y=20) = 14.1421
+        hm = 2.  # max(h) = h0
+        sigma = abs(um) + np.sqrt(9.81*hm)
+        self.timestep = min(self.timestep, self.CFL*dx_min/sigma)
+        print("CFL: {} TIME STEP FIXED TO : {}"\
+            .format(self.CFL, self.timestep))
+        #----------------------------------------------------------------------
 
     def _pre(self):
         """
@@ -110,12 +124,12 @@ class VnvStudy(AbstractVnvStudy):
         var_list = [
             'CHARACT_STRONG',
             'N_SCHEME', 'N_SCHEME   COR1', 'N_SCHEME   COR2', 'LIMP N_SCHEME',
-            'ERIA SCHEME', 'CHARACT_WEAK',
+            'NERD SCHEME', 'CHARACT_WEAK',
             'PSI_SCHEME', 'PSI_SCHEME COR1', 'PSI_SCHEME COR2', 'LIPS_SCHEME']
 
         var_labels_short = [
             'SCHAR', 'N', 'N PC1', 'N PC2', 'N LIPS',
-            'ERIA', 'WCHAR', 'PSI', 'PSI PC1', 'PSI PC2', 'PSI LIPS']
+            'NERD', 'WCHAR', 'PSI', 'PSI PC1', 'PSI PC2', 'PSI LIPS']
 
         if self.variable_timestep:
             time_label = "$CFL = {}$".format(self.CFL)

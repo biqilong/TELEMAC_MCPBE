@@ -198,12 +198,8 @@ are specific to the validation run and the type of processors that were used for
 
 In this section we compare the solution obtained with all the numerical schemes.
 On the figure \ref{fig:balzano:SL} the evolution of the free surface is presented.
-Finite volume schemes handle very well discontinuities and the jumps are well captured.
-On the other hand, finite element schemes are not able to capture the jumps with large timesteps and numerical instabilities
-are visible. Once the hydraulic jump disapears the solutions are smoother
-and slowly converge towards equilibrium due to numerical diffusion.
-%Note that time step is constant with finite element schemes ($5s$)
-%and is larger than what the CFL condition require for finite volume schemes. 
+Kinetic and HLLC schemes handle very well discontinuities and the jumps are well captured.
+CHAR, NERD and ERIA schemes are not able to capture the jumps with large timesteps and numerical oscillations are visible when the drying occurs. Once the hydraulic jump disapears the solutions are smoother and slowly converge towards equilibrium due to numerical diffusion.
 
 \begin{figure}[H]
 \begin{minipage}[t]{0.5\textwidth}
@@ -243,8 +239,7 @@ Velocity values can also be compared in the reservoir (P1) and at the right-hand
 In the reservoir, there is an abrupt acceleration at the beginning of the simulation, followed by an
 abrupt deceleration, towards a permanent regime establishment (zero velocity).
 At the right-hand side of the channel, the same acceleration and deceleration
-phases are followed by an oscillation around a zero velocity for all schemes,
-except for ERIA which tends to a permanent regime everywhere in the channel.
+phases are followed by an oscillation around a zero velocity for all schemes.
 
 %TODO
 
@@ -265,21 +260,18 @@ except for ERIA which tends to a permanent regime everywhere in the channel.
 %\label{fig:balzano:temporalSL_withFriction}
 %\end{figure}
 
-\subsection{Positivity and maximum}
+\subsection{Positivity of the water depth}
 
 The minimum value of the water depth are checked during all simulation. 
-The maximum value is computed as well, in order to check the respect of the maximum principle (or monotonicity). 
 Results are showed on figure \ref{t2d:balzano:minmax}. 
-No negative values are recorded, which shows that the positivity is fulfilled.
 In the case of finite volume schemes, positivity is ensured withouth additionnal treatment.
 With finite element schemes the positivity is ensured with a treatment of negative depths
 during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD and 3 for ERIA scheme).
 
 \begin{figure}[H]
 \centering
-\includegraphicsmaybe{[width=0.85\textwidth]}{../img/t2d_balzano_maxT.png}
-\includegraphicsmaybe{[width=0.85\textwidth]}{../img/t2d_balzano_minT.png}
-\caption{Maximum and minimum values of water depths.}
+\includegraphicsmaybe{[width=0.9\textwidth]}{../img/t2d_balzano_minT.png}
+\caption{Minimum values of water depths.}
 \label{t2d:balzano:minmax}
 \end{figure}
 
@@ -290,7 +282,7 @@ $M_{initial} - M_{final}$ and presented in figure \ref{fig:balzano:massbalance}.
 
 \begin{figure}[h!]
   \centering
-  \includegraphicsmaybe{[width=0.95\textwidth]}{../img/Mass_balance.png}
+  \includegraphicsmaybe{[width=0.9\textwidth]}{../img/Mass_balance.png}
   \caption{Balzano mass balance}\label{fig:balzano:massbalance}
 \end{figure}
 
@@ -344,10 +336,8 @@ on the other hand, linked to the velocity variations.
 %
 \section{Conclusion}
 
-This test case shows that \telemac{2d}'s finite volume schemes are capable of simulating severe drying problems.
-Even if they are not particularly relevant during the transition,
-finite element methods are also able to takle this 
-problem with some precautions regarding the choice of numerical parameters.
+This test case shows that \telemac{2d} schemes are capable of simulating severe drying problems
+with some precautions regarding the choice of numerical parameters.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

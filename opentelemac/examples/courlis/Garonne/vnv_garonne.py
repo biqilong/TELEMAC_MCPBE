@@ -1,13 +1,13 @@
 
 """
-Validation script for gouttedo
+Validation script for Garonne
 """
 from vvytel.vnv_study import AbstractVnvStudy
 from execution.telemac_cas import TelemacCas, get_dico
 
 class VnvStudy(AbstractVnvStudy):
     """
-    Class for validation of Thompson
+    Class for validation of Garonne
     """
 
     def _init(self):

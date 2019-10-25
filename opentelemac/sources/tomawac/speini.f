@@ -365,12 +365,12 @@
               WRITE(LU,*)'WRONG VALUE FOR ANGULAR DISTRIBUTION FUNCTION'
               CALL PLANTE(1)
             ENDIF
-         ELSE
-             DO JF=1,NF
-                DO JP=1,NPLAN
-                   F(IP,JP,JF)=0.D0
-                ENDDO
-             ENDDO
+          ELSE
+            DO JF=1,NF
+              DO JP=1,NPLAN
+                F(IP,JP,JF)=0.D0
+              ENDDO
+            ENDDO
           ENDIF
 !
         ENDDO ! IP

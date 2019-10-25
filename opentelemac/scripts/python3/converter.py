@@ -18,6 +18,10 @@ from data_manip.conversion.dat2vtu import convert_drogues_file_to_vtu, \
 from data_manip.conversion.stbtel_converter import run_converter, \
                                                    stbtel_converter_parser
 from data_manip.conversion.sis2gaia import sis2gaia_parser, sis2gaia
+from data_manip.extraction.extract_ptravers_res_to_geoc import \
+        extract_ptravers_res_to_geoc, extrac_ptraver_parser
+from pretel.convert_listing_courlis import\
+        convert_listing_courlis, convert_courlis_parser
 from pretel.generate_atm import generate_atm, generate_atm_parser
 from pretel.convert_to_bnd import generate_bnd, generate_bnd_parser
 from pretel.stbtel_refine import run_refine, stbtel_refine_parser
@@ -68,6 +72,8 @@ def main():
     subparser = stbtel_refine_parser(subparser)
     subparser = sis2gaia_parser(subparser)
     subparser = xml2py_parser(subparser)
+    subparser = extrac_ptraver_parser(subparser)
+    subparser = convert_courlis_parser(subparser)
 
     options = parser.parse_args()
 
@@ -109,6 +115,14 @@ def main():
         sis2gaia(options.sis_cas, options.gaia_cas)
     elif options.command == "xml2py":
         xml2py(options.input_file, options.out_file, options.skip)
+    elif options.command == "extract_ptravers_res_to_geoc":
+        extract_ptravers_res_to_geoc(options.args, options.outputFileName,
+                                     options.record)
+    elif options.command == "convert_listing_courlis":
+        convert_listing_courlis(options.args, options.outputFileName,
+                                options.write_opt, options.budget,
+                                options.txt_format, options.csv_format,
+                                options.xlsx_format, options.time_check)
     else:
         parser.print_help()
 

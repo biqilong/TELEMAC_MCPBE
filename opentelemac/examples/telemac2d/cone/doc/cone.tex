@@ -95,7 +95,7 @@ slice plane $(x,y=10,z)$ at $t=T/2$ and $t=T$ on figure \ref{t2d:cone:1dslice}.
 \end{minipage}
 \begin{minipage}[t]{0.50\textwidth}
  \centering
- \includegraphicsmaybe{[width=0.95\textwidth]}{../img/figure_ERIA.png}
+ \includegraphicsmaybe{[width=0.95\textwidth]}{../img/figure_NERD.png}
 \end{minipage}
 \begin{minipage}[t]{0.50\textwidth}
  \centering
@@ -188,7 +188,7 @@ The error norms integrated over time for one rotation of the cone are reported i
 \subsection{Convergence}
 To assess the accuracy of the schemes, computation of error on one mesh is not sufficient.
 In this section a mesh convergence is carried out for each numerical scheme. From a starting mesh
-with $441$ points and $800$ elements with divide by 4 each triangles recursively to generates new meshes.
+with $441$ points and $800$ elements we divide by 4 each triangles recursively to generates new meshes.
 The first 4 meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}. 
 
 \begin{figure}[h!]
@@ -213,16 +213,10 @@ The first 4 meshes used in the convergence study are presented on figure \ref{t2
 \end{figure}
 
 Final time is set to $t_f=T/4$.
-With decreasing space step we adjust time step to ensure a constant CFL for each mesh increment.
-The CFL is computed with the max of eigen values of the shallow water system.
-
-\
-
+Time step is set to ensure a constant CFL for each mesh increment.
 Strong characteristics, N and PSI schemes converge at first order with a slope slightly inferior to one.
-LIPS and predictor-corrector (PC) schemes as well as ERIA have steeper slope of convergence comprised 
-between one and two. PC2 schemes converge with a CFL close to one but PC1, LIPS and ERIA require smaller 
-timestep to converge. Results are shown with a CFL of $0.5$ for which ERIA and LIPS start to diverge on  the
-fourth mesh.
+LIPS and predictor-corrector (PC) schemes as well as NERD have steeper slope of convergence comprised 
+between one and two.
 Convergence slopes of error in $L^1$, $L^2$ and $L^\infty$ norm at final time
 are plotted for each numerical scheme on figure \ref{t2d:cone:mesh_convergence}.
 
@@ -270,18 +264,16 @@ are plotted for each numerical scheme on figure \ref{t2d:cone:mesh_convergence}.
 \end{minipage}
 \begin{minipage}[t]{\textwidth}
  \centering
- \includegraphicsmaybe{[width=0.5\textwidth]}{../img/t2d_cone_errors_tf_finemesh_ERIA.png}
+ \includegraphicsmaybe{[width=0.5\textwidth]}{../img/t2d_cone_errors_tf_finemesh_NERD.png}
 \end{minipage}
   \caption{Mesh convergence of numerical schemes}
  \label{t2d:cone:mesh_convergence}
 \end{figure}
 
-Convergence slopes of time integrated error in $L^2$ norm are compared on figure \ref{t2d:cone:error_timeintegrals}.
+Convergence slopes in $L^2$ norm are compared on figure \ref{t2d:cone:error_timeintegrals}.
 Error with strong characteristics, N and PSI schemes are of the same magnitude as well as 
-LIPS, PC, ERIA.
+LIPS, PC, NERD.
 Errors on the finest mesh are presented in figure \ref{t2d:cone:error_timeintegrals_mesh3}.
-
-
 
 \begin{figure}[h!]
 \centering
@@ -300,7 +292,7 @@ Errors on the finest mesh are presented in figure \ref{t2d:cone:error_timeintegr
 %--------------------------------------------------------------------------------------------------
 
 \section{Conclusion}
-\telemac{2d} is able to model passive scalar transport problems in shallow water flows. This test shows that to get higher accuracy and monotonicity in passive scalar transport cases the predictor-corrector distributive schemes (N PC2, PSI PC2) are the most appropriate schemes as long as the time step is carefully chosen depending on element size.
+\telemac{2d} is able to model passive scalar transport problems in shallow water flows. 
 
 
 

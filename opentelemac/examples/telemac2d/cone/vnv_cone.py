@@ -80,18 +80,18 @@ class VnvStudy(AbstractVnvStudy):
             'CHARACT_STRONG',
             'N_SCHEME', 'LIMP N_SCHEME',
             'N_SCHEME   COR1', 'N_SCHEME   COR2',
-            'ERIA SCHEME', 'CHARACT_WEAK',
+            'NERD SCHEME', 'CHARACT_WEAK',
             'PSI_SCHEME', 'LIPS_SCHEME',
             'PSI_SCHEME COR1', 'PSI_SCHEME COR2']
         res_labels = [
             'STRONG CHARACTERISTICS',
             'N', 'N LIPS', 'N PC1', 'N PC2',
-            'ERIA', 'WEAK CHARACTERISTICS',
+            'NERD', 'WEAK CHARACTERISTICS',
             'PSI', 'PSI LIPS', 'PSI PC1', 'PSI PC2']
         res_labels_short = [
             'SCHAR',
             'N', 'N LIPS', 'N PC1', 'N PC2',
-            'ERIA', 'WCHAR',
+            'NERD', 'WCHAR',
             'PSI', 'PSI LIPS', 'PSI PC1', 'PSI PC2']
 
         vnv_plot1d_polylines(\

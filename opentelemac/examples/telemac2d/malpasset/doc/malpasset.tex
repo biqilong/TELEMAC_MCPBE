@@ -194,10 +194,10 @@ Depending on the system of equation and on the method of resolution, wave propag
 \end{figure}
 
 On figures \ref{fig:malpasset:velocities} the velocity field after $100s$ of simulation is presented 
-in the vicinity of the dam. It is obvious that with the wave equation option and P1P1 discretization, 
-finite element schemes are not stable. Oscillations are visible on both water depth and velocity.
+in the vicinity of the dam. With the wave equation option and P1P1 discretization, 
+numerical oscillations are visible on both water depth and velocity.
 Using primitive equation with quasi bubble elements on velocity allow to obtain beter results, at a higher cost.
-However somme unstabilities are still visible. On the other hand, finite volume schemes produce better results without any instability.
+However numerical oscillations are still visible.
 
 \begin{figure}[H]
 %\begin{minipage}[t]{0.5\textwidth}
@@ -340,19 +340,17 @@ Here, the schemes are compared on profiles upstream (Figure \ref{fig:malpasset:u
 \end{figure}
 
 
-\subsection{Positivity and maximum}
+\subsection{Positivity of the water depth}
 
 The positivity of the used schemes can be checked for all cases. In order to achieve this, the minimum value of the water depth during the whole simulation, and on all the points of the mesh, is transcribed in figure \ref{fig:malpasset:minmax}.
-The maximum value is computed as well, in order to check the respect of the maximum principle (or monotonicity). 
 In the case of finite volume schemes, positivity is ensured withouth additionnal treatment.
 With finite element schemes the positivity is ensured with a treatment of negative depths
 during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD and 3 for ERIA scheme).
 
 \begin{figure}[H]
 \centering
-\includegraphicsmaybe{[width=0.8\textwidth]}{../img/maxT.png}
 \includegraphicsmaybe{[width=0.8\textwidth]}{../img/minT.png}
-\caption{Maximum and minimum values of water depths}
+\caption{Minimum values of water depths}
 \label{fig:malpasset:minmax}
 \end{figure}
 
@@ -371,9 +369,4 @@ Figure \ref{fig:malpasset:lostvol} shows that all used schemes are mass conserva
 
 \section{Conclusion}
 \telemac{2d} is capable of simulating the propagation of a dam break wave in a river valley initially dry.
-The recommanded scheme with the most accurate results for this type of applications is the kinetic scheme,
-or any finite volume scheme. They give the lowest errors and are stable.
-Unfortunately, the simulation time with this scheme can be high, due to adaptative time step required to
-fulfill the stability condition.
-One could therefore choose finite element schemes, sacrifying stability to get better cpu times.
-Note that the treatment of negative depth is mandatory with finite element schemes to avoid negative depths and ensure mass conservation.
+

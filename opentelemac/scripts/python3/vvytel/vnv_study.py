@@ -546,7 +546,7 @@ class AbstractVnvStudy(ABC):
         self._pre()
         end_time = time.time()
         # Updating action_time information
-        self.action_time['pre'] = [True, end_time - start_time, self.rank]
+        self.action_time['pre'] = [True, end_time - start_time]
 
     def run(self):
         """
@@ -555,47 +555,52 @@ class AbstractVnvStudy(ABC):
         import subprocess
         for name, study in self.studies.items():
             # Setting default values for action
-            self.action_time[name] = [False, 0.0, self.rank]
+            self.action_time[name] = [False, 0.0]
             start_time = time.time()
             self._run_case(name, study)
             end_time = time.time()
             # Updating action_time information
-            self.action_time[name] = [True, end_time - start_time, self.rank]
+            self.action_time[name] = [True, end_time - start_time]
 
         for name, command in self.commands.items():
             # Running bash command
+            self.action_time[name] = [False, 0.0]
+            start_time = time.time()
             print("\n   ~> Running {}: \n{}\n".format(name, command))
             ret = subprocess.check_call(command, shell=True)
 
             if ret != 0:
                 raise TelemacException(\
                     "The command below crashed: \n{}".format(command))
+            end_time = time.time()
+            # Updating action_time information
+            self.action_time[name] = [True, end_time - start_time]
 
     def check_results(self):
         """
         Running verification and validation on the results of the studies
         """
         # Setting default values for action
-        self.action_time['vnv'] = [False, 0.0, self.rank]
+        self.action_time['vnv'] = [False, 0.0]
         start_time = time.time()
         # Running user defined pre-treatment
         self._check_results()
         end_time = time.time()
         # Updating action_time information
-        self.action_time['vnv'] = [True, end_time - start_time, self.rank]
+        self.action_time['vnv'] = [True, end_time - start_time]
 
     def post(self):
         """
         Post treatment on the results of the studies
         """
         # Setting default values for action
-        self.action_time['post'] = [False, 0.0, self.rank]
+        self.action_time['post'] = [False, 0.0]
         start_time = time.time()
         # Running user defined pre-treatment
         self._post()
         end_time = time.time()
         # Updating action_time information
-        self.action_time['post'] = [True, end_time - start_time, self.rank]
+        self.action_time['post'] = [True, end_time - start_time]
 
     @abstractmethod
     def _init(self):

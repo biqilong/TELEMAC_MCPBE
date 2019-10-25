@@ -370,10 +370,9 @@ CHAR scheme is the least accurate for this example with the chosen time step siz
 Numerical diffusion is also noticeable for WAF, HLLC and KIN1 schemes, and a phase difference appears between their results and the analytical solution.
 NERD and ERIA are in good agreement with the analytical solution, keeping in mind that to reach that accuracy they actually perform sub-iterations.
 
-\subsection{Positivity and maximum}
+\subsection{Positivity of water depth}
 
 The minimum value of the water depth are checked after one rotation. 
-The maximum value is computed as well, in order to check the respect of the maximum principle (or monotonicity). 
 Results are showed on figure \ref{t2d:thacker:minmax}. 
 No negative values are recorded, which shows that the positivity is fulfilled.
 In the case of finite volume schemes, positivity is ensured withouth additionnal treatment.
@@ -382,9 +381,8 @@ during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD
 
 \begin{figure}[H]
 \centering
-\includegraphicsmaybe{[width=0.85\textwidth]}{../img/t2d_thacker_maxT.png}
-\includegraphicsmaybe{[width=0.85\textwidth]}{../img/t2d_thacker_minT.png}
-\caption{Maximum and minimum values of water depths after one rotation of the cone.}
+\includegraphicsmaybe{[width=0.9\textwidth]}{../img/t2d_thacker_minT.png}
+\caption{Minimum values of water depths after one rotation of the cone.}
 \label{t2d:thacker:minmax}
 \end{figure}
 
@@ -397,7 +395,7 @@ All the schemes provide a satisfying mass conservation.
 
 \begin{figure}[H]
 \centering
-  \includegraphicsmaybe{[width=0.8\textwidth]}{../img/t2d_thacker_mass_balance.png}
+  \includegraphicsmaybe{[width=0.9\textwidth]}{../img/t2d_thacker_mass_balance.png}
   \caption{Mass loss for the tested schemes on the Thacker case.}
 \label{fig:thacker:VoLTime}
 \end{figure}
@@ -448,7 +446,7 @@ and the mean energy in time stays lower than the initial one during the whole si
 
 To assess the accuracy of the schemes, computation of error on one mesh is not sufficient.
 In this section a mesh convergence is carried out for each numerical scheme. From a starting mesh
-with $121$ points and $200$ elements with divide by 4 each triangles recursively to generates new meshes.
+with $121$ points and $200$ elements we divide by 4 each triangles recursively to generates new meshes.
 The first and last meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}. 
 
 \begin{figure}[h!]
@@ -526,13 +524,10 @@ are plotted for each numerical scheme on figure \ref{t2d:thacker:mesh_convergenc
  \label{t2d:thacker:mesh_convergence_H}
 \end{figure}
 
-With a CFL of $0.8$ All finite volume schemes converge with a order of convergence near one for
+Finite volume schemes converge with a order of convergence near one for
 first order kinetic, HLLC and WAF and slightly steeper than one for second order kinetic scheme.
-However, with the same constraint on time step, it much harder to acheive convergence with finite element schemes.
-On the few first meshes, convergence is around second order slope, but the schemes diverge when reaching mesh 4.
-Time step needs to be further decreased (very low CFL number) to reach convergence. 
-Moreover, it should be noted that sub-iterations in distributive schemes do not ensure convergence. As 
-a consequence, time step needs to be carefully chosen we using these schemes.
+For finite element schemes, CHAR scheme does not convergence whereas LEOP, NERD and ERIA schemes
+exibit a slope of convergence comprised between one and two.
 
 %\newpage
 %\begin{figure}[H]
@@ -761,9 +756,7 @@ some comparison of water depth and velocity field are presented. Elements where 
 
 \section{Conclusion}
 \telemac{2d} is capable of simulating the wet/dry moving transitions with good
-accuracy and conservation of mass, energy and positivity. Although finite element schemes 
-seems less diffusive in the first place, it is easier to achieve convergence with 
-finite volume schemes. 
+accuracy and conservation of mass, energy and positivity of the water depth. 
 
 
 

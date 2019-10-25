@@ -27,8 +27,6 @@ from config import CFGS
 # _____                  ___________________________________________
 # ____/ General Toolbox /__________________________________________/
 #
-DEBUG = False
-
 LIST_LIBS = ['api', \
     'telemac3d', \
     'telemac2d', \
@@ -105,7 +103,7 @@ def compile_mascaret_dependencies(rebuild, homeres):
         homeres['HOMERE_MASCARET']['add'].append((path.dirname(obj_name),
                                                   obj_name, 'mascaret'))
 
-def create_obj_files(oname, oprog, odict, mes, tasks, bypass, homeres):
+def create_obj_files(oname, oprog, odict, mes, tasks, bypass, homeres, verbose):
     """
     Start the process to compile obj files
 
@@ -116,6 +114,7 @@ def create_obj_files(oname, oprog, odict, mes, tasks, bypass, homeres):
     @param tasks (list) Pool of process to run
     @param bypass (boolean) If True bypass errors
     @param homeres (dict) Tree dependencies of the main program
+    @param verbose (bool) If true display command
 
     @returns True if nothign was done (i.e. file up to date)
     """
@@ -174,7 +173,7 @@ def create_obj_files(oname, oprog, odict, mes, tasks, bypass, homeres):
     cmd = cmd.replace('<f95name>', path.join(odict['path'], oname))
     cmd = cmd.replace('<config>', obj_dir).replace('<root>', cfg['root'])
 
-    if DEBUG:
+    if verbose:
         print(cmd)
     # ~~> remove ghosts
     out = mes.clean_cmd(tasks)
@@ -189,7 +188,7 @@ def create_obj_files(oname, oprog, odict, mes, tasks, bypass, homeres):
     return out
 
 def create_lib_files(lname, lmdul, lprog, mprog, mes, tasks,
-                     bypass, homeres):
+                     bypass, homeres, verbose):
     """
     Starts the process to compile a library
 
@@ -201,6 +200,7 @@ def create_lib_files(lname, lmdul, lprog, mprog, mes, tasks,
     @param tasks (list) Pool of process to run
     @param bypass (boolean) If True bypass errors
     @param homeres (dict) Tree dependencies of the main program
+    @param verbose (bool) If true display command
     """
     # ~~ Assumes that all objects are in <config> ~~~~~~~~~~~~~~~~~~~
     # /!\ why path.basename(lname) ?
@@ -294,14 +294,14 @@ def create_lib_files(lname, lmdul, lprog, mprog, mes, tasks,
         cmd = cmd.replace('<objs>', obj_files)
     cmd = cmd.replace('<libname>', lib_file)
 
-    if DEBUG:
+    if verbose:
         print(cmd)
     mes.start_cmd(tasks, \
         (cmd, bypass, Array('c', b' '*10000), Value('i', 0)), \
         lib_file.replace(path.dirname(cfg['root']), '...'))
     return False
 
-def create_exe_files(ename, emdul, eprog, mes, bypass, homeres):
+def create_exe_files(ename, emdul, eprog, mes, bypass, homeres, verbose):
     """
     Compile an executable
 
@@ -311,6 +311,7 @@ def create_exe_files(ename, emdul, eprog, mes, bypass, homeres):
     @param mes (Messages) Structure for execution
     @param bypass (boolean) If True bypass errors
     @param homeres (dict) Tree dependencies of the main program
+    @param verbose (bool) If true display command
 
     @returns True if nothign was done (i.e. file up to date)
     """
@@ -451,7 +452,7 @@ def create_exe_files(ename, emdul, eprog, mes, bypass, homeres):
     # <exename> and <objs> ... still to be replaced
     xecmd = xecmd.replace('<config>', lib_dir).replace('<root>', cfg['root'])
 
-    if DEBUG:
+    if verbose:
         print(cmd)
     tail, code = mes.run_cmd(cmd, bypass)
     if tail != b'':
@@ -479,7 +480,7 @@ def create_exe_files(ename, emdul, eprog, mes, bypass, homeres):
 
     return False
 
-def create_pyd_files(yname, yfile, ymdul, yprog, mes, bypass, homeres):
+def create_pyd_files(yname, yfile, ymdul, yprog, mes, bypass, homeres, verbose):
     """
     Generates pyd files (alternate method to compile_api)
 
@@ -490,6 +491,7 @@ def create_pyd_files(yname, yfile, ymdul, yprog, mes, bypass, homeres):
     @param mes (Messages) Structure for execution
     @param bypass (boolean) If True bypass errors
     @param homeres (dict) Tree dependencies of the main program
+    @param verbose (bool) If true display command
     """
 
     cfgname = CFGS.cfgname
@@ -612,7 +614,7 @@ def create_pyd_files(yname, yfile, ymdul, yprog, mes, bypass, homeres):
 
     lib_files = lib_file + ' ' + lib_files
 
-    if DEBUG:
+    if verbose:
         print(cmd)
     _, code = mes.run_cmd(cmd, False)
     if code != 0:
@@ -867,7 +869,7 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
     @param f2py_name Name of the f2py executable (f2py by default)
     @param fcompiler Name of the fortran compiler
     @param compiler Name of the c compiler
-    @param silent If True f2py is run in silent mode
+    @param silent If True f2py is run in silent mode and commad are not displayed
     @param f2py_opt Addtional options passed to f2py (option --opt)
     """
 
@@ -880,7 +882,7 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
     # First step of call to f2py
     cmd = '{} --quiet -h {} -m _{} {} {}' \
         .format(f2py_name, pyf_file, name, source_list, skip_source)
-    if DEBUG:
+    if not silent:
         print(cmd)
     try:
         output = check_output(cmd, shell=True, stderr=STDOUT)
@@ -889,7 +891,7 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
                 'Error during first part of f2py for {} {} \n'
                 '{}'.format(name, execpt.returncode, execpt.output))
     if not silent:
-        print(output)
+        print(output.decode('utf-8'))
     print("    ~> First part of f2py for {} passed".format(name))
 
     pwd = getcwd()
@@ -909,6 +911,8 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
                 include=path.join(api_dir, 'include'),
                 ld_flags=ld_flags,
                 f2py_opt=f2py_opt)
+    if not silent:
+        print(cmd)
     try:
         output = check_output(cmd, shell=True, stderr=STDOUT)
     except CalledProcessError as execpt:
@@ -916,7 +920,7 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
                 'Error during second part of f2py for {} {} \n'
                 '{}'.format(name, execpt.returncode, execpt.output))
     if not silent:
-        print(output)
+        print(output.decode('utf-8'))
     print("    ~> Second part of f2py of %s passed"%name)
     chdir(pwd)
 
@@ -931,7 +935,7 @@ def compile_api_files(silent, static=False, hermes_only=False):
     """
     cfgname = CFGS.cfgname
     cfg = CFGS.configs[cfgname]
-    print('\nCompiling the API \n'+'~'*72+'\n')
+    print('\nBuilding the Python API \n'+'~'*72+'\n')
 
     source_api, source_hermes = generate_api()
     print("    ~> Wrap_api built")
@@ -1103,7 +1107,7 @@ def update_cmdf(bypass, cleanup):
                 put_scan_content(for_cmd, cfg['root'], fixe_list)
 
 
-def compile_cmdf(ncsize, modules):
+def compile_cmdf(ncsize, modules, verbose):
     """
     Compile files for each cmdf
 
@@ -1203,7 +1207,7 @@ def compile_cmdf(ncsize, modules):
                                         pth + sep + obj)[0],
                              'path': pth},
                             mes, tasks,
-                            bypass, homeres)
+                            bypass, homeres, verbose)
                     for _, _, err, _, file_name in out:
                         if err == '':
                             pbar.write('    - completed: ' + file_name, ibar)
@@ -1233,7 +1237,7 @@ def compile_cmdf(ncsize, modules):
                 if 'homere_' in item.lower():
                     prog = prog.split('homere_')[1]
                 f = create_lib_files(lib, mod, item, prog,
-                                     mes, tasks, bypass, homeres)
+                                     mes, tasks, bypass, homeres, verbose)
                 # ~~> waiting for the remaining queued jobs to complete
                 out = mes.flush_cmd(tasks)
                 for _, _, err, _, file_name in out:
@@ -1257,7 +1261,7 @@ def compile_cmdf(ncsize, modules):
                         prog = prog.split('homere_')[1]
                     found_exe = create_exe_files(item, mod,
                                                  prog, mes,
-                                                 bypass, homeres)
+                                                 bypass, homeres, verbose)
                     if found_exe:
                         print('        +> There is no need to create '
                               'the associate executable')
@@ -1282,7 +1286,7 @@ def compile_cmdf(ncsize, modules):
                     prog = prog.split('homere_')[1]
                 found_pyd = create_pyd_files(item, f, mod,
                                              prog, mes, bypass,
-                                             homeres)
+                                             homeres, verbose)
                 if found_pyd:
                     print('        +> There is no need to create '
                           'the associate python module')

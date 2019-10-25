@@ -13,7 +13,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !                    *****************
  
-       USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
+      USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
      & DEUPI, CMOUT3,CMOUT4, CMOUT5, CMOUT6, VARIAN, FMOY, XKMOY,
      & DEPTH, USOLD, PROINF, GRAVIT
 !

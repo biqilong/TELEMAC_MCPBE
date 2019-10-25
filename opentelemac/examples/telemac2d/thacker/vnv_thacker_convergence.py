@@ -62,6 +62,7 @@ class VnvStudy(AbstractVnvStudy):
                 self.treatment_of_the_linear_system)
             cas.set('TIME STEP', self.timestep)
 
+            # timestep options
             if self.variable_timestep:
                 cas.remove('NUMBER OF TIME STEPS')
                 cas.set('DURATION', self.duration)
@@ -70,10 +71,11 @@ class VnvStudy(AbstractVnvStudy):
             else:
                 cas.set('NUMBER OF TIME STEPS', int(self.duration/self.timestep))
 
+            # add study
             self.add_study('{}_mesh0'.format(sc), 'telemac2d',\
                            't2d_thacker-{}.cas'.format(sc), cas=cas)
 
-            # Generate refined geometries:
+            # generate refined geometries:
             input_file = geo_file
 
             for i in range(self.refinement_levels):
@@ -91,8 +93,6 @@ class VnvStudy(AbstractVnvStudy):
                 cas.set('GEOMETRY FILE', output_file+".slf")
                 cas.set('BOUNDARY CONDITIONS FILE', output_file+".cli")
                 cas.set('RESULTS FILE', "r2d-thacker_{}.slf".format(i+1))
-                cas.set('TREATMENT OF THE LINEAR SYSTEM',\
-                    self.treatment_of_the_linear_system)
 
                 self.add_study('{}_mesh{}'.format(sc, i+1), 'telemac2d',
                                't2d_thacker-{}_{}.cas'.format(sc, i+1), cas=cas)
@@ -580,8 +580,7 @@ class VnvStudy(AbstractVnvStudy):
                     legend_labels=['$L_\\infty$', '$L_1$', '$L_2$'],
                     x_labels=self.schemes,
                     y_scale='log',
-                    fig_title='Error on H time integrals: '\
-                    '$\\frac{1}{t_f} \\int_{0}^{t_f} E(t) dt$',
+                    fig_title='Error on H at $t=t_f$'
                     fig_name="img/t2d_thacker_errors_tf_mesh{}"\
                     .format(j),
                     annotate=True)
@@ -759,8 +758,7 @@ class VnvStudy(AbstractVnvStudy):
                     legend_labels=['$L_\\infty$', '$L_1$', '$L_2$'],
                     x_labels=self.schemes,
                     y_scale='log',
-                    fig_title='Error on H time integrals: '\
-                    '$\\frac{1}{t_f} \\int_{0}^{t_f} E(t) dt$',
+                    fig_title='Error on H at $t=t_f$',
                     fig_name="img/t2d_thacker_errors_tf_finemesh_mesh{}"\
                     .format(j),
                     annotate=True)

@@ -13,7 +13,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !                    *****************
  
-       USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
+      USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
      &   TETA, BETAM, DECAL, XKAPPA, DEUPI, GRAVIT, ROAIR, ROEAU, 
      &   TWOLD, USOLD, Z0OLD
 !

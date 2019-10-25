@@ -484,7 +484,8 @@ def vnv_plot1d_history(\
 def vnv_plot1d_polylines(\
         var_name, res,
         legend_labels='', fig_size=None, fig_title=None,
-        ref_name=None, ref_file=None, ref_label='analytic',
+        ref_name=None, ref_file=None, ref_data=None,
+        ref_label='analytic',
         poly=None, poly_number=None, record=0, time=None,
         fig_name='',
         xlim=None, ylim=None,
@@ -502,6 +503,7 @@ def vnv_plot1d_polylines(\
     @param legend_labels (str or list) label of each result *
     @param fig_size (list) figure size
     @param ref_name (str) name of the reference variable (in first res)
+    @param ref_data (np.array) numpy array containing reference values
     @param ref_file (str) name of the file containing reference values
     @param ref_label (str) label of the reference
     @param poly (list) list of points defining the polyline
@@ -590,14 +592,24 @@ def vnv_plot1d_polylines(\
 
     # plot reference from variable in res
     if ref_name is not None:
+        assert ref_data is None
+        assert ref_file is None
         _, abs_curv, ana_polylines = res0.get_timeseries_on_polyline(
             ref_name, poly, poly_number)
         ax.plot(abs_curv*x_factor,
                 ana_polylines[:, record]*y_factor,
                 label=ref_label, color='r', ls='--', marker=',')
 
+    # plot reference from array
+    if ref_data is not None:
+        assert ref_name is None
+        assert ref_file is None
+        ax.plot(ref_data[:, 0]*x_factor, ref_data[:, 1]*y_factor,
+                label=ref_label, color='r', ls='--', marker=',')
+
     # plot reference from file
     if ref_file is not None:
+        assert ref_data is None
         assert ref_name is None
         ref_data = np.loadtxt(ref_file)
         ax.plot(ref_data[:, 0]*x_factor, ref_data[:, 1]*y_factor,

@@ -10,13 +10,13 @@ import sys
 import time
 from os import path, walk, chdir, remove
 from argparse import ArgumentParser
-from collections import OrderedDict
 from shutil import rmtree
 # ~~> dependencies towards other pytel/modules
 from utils.messages import Messages, svn_banner
 from utils.files import check_sym_link
 from utils.exceptions import TelemacException
 from vvytel.run_notebook import run_notebook
+from vvytel.report_class import Report
 from config import update_config, CFGS
 from runcode import add_runcode_argument
 
@@ -44,34 +44,6 @@ TAGS = ["telemac2d",
         "full_valid",
         "med"]
 
-def get_report_path(report_name, type_valid):
-    """
-    Build report full path $HOMETEL/[report_name]_[config]_[version]_[type_valid]_[date].csv
-    where:
-    - report_name is the one given as argument
-    - config is the name of the configuration for which the validation is run
-    - version is the version of the code
-    - type_valid is the one given as argument
-    - date is the data at which the report is written
-
-    @param report_name (str) Name given to the report
-    @param type_valid (str) Type of validation (notebook, examples...)
-
-
-    @returns (str) The path
-    """
-
-    full_report_name = "{}_{}_{}_{}_{}.csv".format(\
-                            report_name,
-                            CFGS.cfgname,
-                            CFGS.configs[CFGS.cfgname].get('version', 'trunk'),
-                            type_valid,
-                            time.strftime("%Y-%m-%d-%Hh%Mmin%Ss",
-                                          time.localtime(time.time())))
-
-    report_path = path.join(CFGS.get_root(), full_report_name)
-
-    return report_path
 
 def check_python_rank_tags(py_file, options):
     """
@@ -154,7 +126,7 @@ def run_validation_python(cfg, options, report, xcpts):
 
     @param cfg (Dict) Configuration information
     @parma options (ArgumentParser) List of arguments
-    @param report (OrderedDict) Time of actions
+    @param report (Report) Time of actions
     @param xcpts () Error handler
     """
     # Building list of files to run
@@ -190,19 +162,6 @@ def run_validation_python(cfg, options, report, xcpts):
                   .format(ifile+1, n_files, py_file.replace(root, '<root>')))
             run_python(py_file, options, report, xcpts)
 
-
-    if options.report_name != '':
-        report_path = get_report_path(options.report_name, 'examples')
-        print("    Writting report: "+report_path)
-        with open(report_path, 'w') as f:
-            header = "Python file;rank;action_name,duration,passed\n"
-            f.write(header)
-            for py_file, action_time in report.items():
-                for action, res in action_time.items():
-                    llist = [py_file, str(res[2]), action,
-                             str(res[1]), str(res[0])]
-                    f.write(';'.join(llist)+'\n')
-
 def clean_vnv_working_dir(py_file, full=False):
     """
     Clean the working directory
@@ -227,7 +186,7 @@ def run_python(py_file, options, report, xcpts):
 
     @param py_file (str) Name of the Python file to run
     @param options (ArgumentParser) Options of the script
-    @param report (Dict) Contains execution time
+    @param report (Report) Contains execution time
     @param xcpts () Error Handler
     """
     try:
@@ -259,7 +218,6 @@ def run_python(py_file, options, report, xcpts):
         # Pre-treatment part
         # It is always done
         my_vnv_study.pre()
-        report[abs_py_file] = my_vnv_study.action_time
 
         # Cleaning ?
         if options.cleanup or options.full_cleanup:
@@ -270,24 +228,21 @@ def run_python(py_file, options, report, xcpts):
         if options.vnv_run:
             chdir(val_dir)
             my_vnv_study.run()
-            report[abs_py_file].update(my_vnv_study.action_time)
 
             # cleaning temporary files (if no post):
             if not options.vnv_post:
                 for ffile in my_vnv_study.temporary_files:
-                   remove(path.join(val_dir, ffile))
+                    remove(path.join(val_dir, ffile))
 
         # Check part
         if options.vnv_check:
             chdir(val_dir)
             my_vnv_study.check_results()
-            report[abs_py_file].update(my_vnv_study.action_time)
 
         # Post_treatment part
         if options.vnv_post:
             chdir(val_dir)
             my_vnv_study.post()
-            report[abs_py_file].update(my_vnv_study.action_time)
 
             # cleaning temporary files:
             for ffile in my_vnv_study.temporary_files:
@@ -299,6 +254,12 @@ def run_python(py_file, options, report, xcpts):
                                  'msg':str(exc)}])
         else:
             raise exc
+    finally:
+        #Updating report information
+        if my_vnv_study is not None:
+            for action, actions in my_vnv_study.action_time.items():
+                report.add_action(abs_py_file, my_vnv_study.rank,
+                                  action, actions[1], actions[0])
 
 
 def run_validation_notebooks(options, report, xcpts):
@@ -340,24 +301,14 @@ def run_validation_notebooks(options, report, xcpts):
             run_notebook(nb_file, options.nb_timeout,
                          update_nb=options.nb_update)
             end = time.time()
-            report[nb_file] = [end-start, True]
+            report.add_notebook(nb_file, end-start, True)
         except Exception as exc:
             if options.bypass:
-                report[nb_file] = [0.0, False]
+                report.add_notebook(nb_file, 0.0, False)
                 xcpts.add_messages([{'name':nb_file,
                                      'msg':str(exc)}])
             else:
                 raise exc
-
-    if options.report_name != '':
-        report_path = get_report_path(options.report_name, 'notebooks')
-        print("    Writting report: "+report_path)
-        with open(report_path, 'w') as f:
-            header = "Python file;action_name,duration,passed\n"
-            f.write(header)
-            for nb_file, nb_time in report.items():
-                llist = [nb_file, str(nb_time[1]), str(nb_time[0])]
-                f.write(';'.join(llist)+'\n')
 
 def set_parser():
     """
@@ -540,13 +491,24 @@ def main():
     xcpts = Messages()
 
     # ~~~~ Reporting summary ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    report = OrderedDict()
+    if options.notebook:
+        type_valid = 'notebooks'
+    else:
+        type_valid = 'examples'
+
+    report = Report(options.report_name, type_valid)
+
+    # ~~~ Running validation
     cfg = config_corrections(options, CFGS.cfgname)
 
     if options.notebook:
         run_validation_notebooks(options, report, xcpts)
     else:
         run_validation_python(cfg, options, report, xcpts)
+
+    # Writting report
+    if options.report_name != '':
+        report.write()
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # ~~~~ Reporting errors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

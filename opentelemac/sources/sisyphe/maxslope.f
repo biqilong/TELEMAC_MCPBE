@@ -45,7 +45,8 @@
 !history R KOPMANN (BAW)
 !+        18/05/2018
 !+        V7P3
-!+   Angle will reduced to avoid changes below active layer
+!+   Angle will reduced to avoid changes below active layer only in case
+!+   of multi grain
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| EVOL           |<->| WORK ARRAY, THEN EVOLUTION DUE TO SLIDE
@@ -143,19 +144,11 @@
 !
           L=MIN(1.D0,TANSL/MAX(SQRT(A**2+B**2),1.D-8))
 !
-!         L LIMITED DUE TO NON-ERODABLE BEDS AND ACTIVE LAYER THICKNESS:
-!         ZF MUST NOT GO BELOW ZR OR ACTIVE LAYER
+!         L LIMITED DUE TO NON-ERODABLE BEDS : ZF MUST NOT GO BELOW ZR
 !
-!          IF(ZF(I1).GT.ZC) L=MAX(L,(ZR(I1)-ZC)/MAX(ZF(I1)-ZC,1.D-8))
-!          IF(ZF(I2).GT.ZC) L=MAX(L,(ZR(I2)-ZC)/MAX(ZF(I2)-ZC,1.D-8))
-!          IF(ZF(I3).GT.ZC) L=MAX(L,(ZR(I3)-ZC)/MAX(ZF(I3)-ZC,1.D-8))
-          EZ1 = MAX(ZR(I1),ZF(I1)-ES(I1,1))
-          EZ2 = MAX(ZR(I2),ZF(I2)-ES(I2,1))
-          EZ3 = MAX(ZR(I3),ZF(I3)-ES(I3,1))
-          IF(ZF(I1).GT.ZC) L=MAX(L,(EZ1-ZC)/MAX(ZF(I1)-ZC,1.D-8))
-          IF(ZF(I2).GT.ZC) L=MAX(L,(EZ2-ZC)/MAX(ZF(I2)-ZC,1.D-8))
-          IF(ZF(I3).GT.ZC) L=MAX(L,(EZ3-ZC)/MAX(ZF(I3)-ZC,1.D-8))
-
+          IF(ZF(I1).GT.ZC) L=MAX(L,(ZR(I1)-ZC)/MAX(ZF(I1)-ZC,1.D-8))
+          IF(ZF(I2).GT.ZC) L=MAX(L,(ZR(I2)-ZC)/MAX(ZF(I2)-ZC,1.D-8))
+          IF(ZF(I3).GT.ZC) L=MAX(L,(ZR(I3)-ZC)/MAX(ZF(I3)-ZC,1.D-8))
 !
 !         BUILDS THE RIGHT-HAND SIDE
 !

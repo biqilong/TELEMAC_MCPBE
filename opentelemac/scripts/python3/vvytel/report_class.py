@@ -9,234 +9,261 @@ from __future__ import print_function
 # ____/ Imports /__________________________________________________/
 #
 # ~~> dependencies towards standard python
-import time
-from os import path, walk, remove
-from copy import deepcopy
-# ~~> dependencies towards other pytel/modules
-from utils.files import move_file2file, put_file_content
+import time as ttime
+from os import path, sep
+from utils.exceptions import TelemacException
+from config import CFGS
+from collections import OrderedDict
 
-# _____                        _____________________________________
-# ____/ Primary Class: Report /____________________________________/
-#
+def plot_bar_report_time(data, title, fig_name=''):
+    """
+    Plot of stat from report
+
+    @param data (dict) Dictionary from compute stat
+    @param title (str) Title of the figure
+    @param fig_name (str) If given save figure instead of displaying it
+    """
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    pre_times = [item['pre'] for item in data.values()]
+    run_times = [item['run'] for item in data.values()]
+    vnv_times = [item['vnv'] for item in data.values()]
+    post_times = [item['post'] for item in data.values()]
+
+    ind = np.arange(len(data))
+    width = 0.35
+
+    p_pre = plt.bar(ind, pre_times, width)
+    p_run = plt.bar(ind, run_times, width, bottom=pre_times)
+    p_vnv = plt.bar(ind, vnv_times, width, bottom=np.add(pre_times, run_times))
+    bottom = np.add(np.add(pre_times, run_times), vnv_times)
+    p_post = plt.bar(ind, post_times, width, bottom=bottom)
+
+    plt.ylabel('times (s)')
+    plt.title(title)
+    plt.xticks(ind, data.keys(), rotation=90, ha="center")
+    plt.legend((p_pre[0], p_run[0], p_vnv[0], p_post[0]),
+               ('pre', 'run', 'vnv', 'post'))
+
+    if fig_name != '':
+        plt.savefig(fig_name)
+    else:
+        plt.show()
+    plt.clf()
+
+def get_report_path(report_name, type_valid):
+    """
+    Build report full path
+    $HOMETEL/[report_name]_[config]_[version]_[type_valid]_[date].csv
+    where:
+    - report_name is the one given as argument
+    - config is the name of the configuration for which the validation is run
+    - version is the version of the code
+    - type_valid is the one given as argument
+    - date is the data at which the report is written
+
+    @param report_name (str) Name given to the report
+    @param type_valid (str) Type of validation (notebook, examples...)
+
+
+    @returns (str) The path
+    """
+
+    full_report_name = "{}_{}_{}_{}_{}.csv".format(\
+                            report_name,
+                            CFGS.cfgname,
+                            CFGS.configs[CFGS.cfgname].get('version', 'trunk'),
+                            type_valid,
+                            ttime.strftime("%Y-%m-%d-%Hh%Mmin%Ss",
+                                           ttime.localtime(ttime.time())))
+
+    report_path = path.join(CFGS.get_root(), full_report_name)
+
+    return report_path
 
 class Report(object):
     """
-     @brief The principal object in Report is self.reports.
-     It has the following structure:
-        { "repname" :
-          { "xmlfile1":{},"xmlfile2":{},... }
-        }
-     where each "xmlfile" dict has the following keys:
-        [ '', '', '' ]
-     and where the various "root" are roots to a particular branch of
-     the system.
-
+    Reader/writer for validation report
     """
-    # Constant definition
-    comment = '#'
-    delimiter = ','
-    # Arbitrary associations between report headers and
-    # the return of the XML keys
-    heads = [\
-        'XML Name',
-        'Author',
-        'Contact',
-        'Total Duration (s)',
-        'Action Name',
-        'XML Path',
-        'Action Type',
-        'Action Failed',
-        'Action Warned',
-        'Action Rank',
-        'Action Updated',
-        'Action Result',
-        'Action Meta-Data']
-    hkeys = [\
-        'file',
-        'author',
-        'contact',
-        'duration',
-        'xref',
-        'path',
-        'type',
-        'fail',
-        'warn',
-        'rank',
-        'updt',
-        'value',
-        'title']
 
-
-    def __init__(self, repname):
+    def __init__(self, name, type_valid):
         """
-          @brief Initialisation
-          @param  repname (string) a user defined name, which will distinguish
-                         one report from another
-        """
-        self.reports = {}
-        # > file_fields makes up the name of the report file,
-        # stored at the root of the system
-        self.file_fields = ['[version]',
-                            repname,
-                            time.strftime("%Y-%m-%d-%Hh%Mmin%Ss",
-                                          time.localtime(time.time()))]
 
-
-    def add(self, repname, root, version):
+        @param name (str) Name of the report (full_path will be build from
+        there)
+        @param type_valid (str) Type of validation (examples, notebooks..)
+        name
+        @param file_name (str)
         """
-          @brief Adds a new report to the list of reports.
-          @param repname (string) report user defined middle name, which
-                                  will distinguish one report from another
-          @param root (string) the root of a particular system branch
-          @param version (string) end name, could be svn version number
-        """
-        if repname == '':
-            return {}
 
-        # ~~> Current file name
-        self.file_fields[0] = version
-        self.file_fields[1] = repname
-        file_name = path.join(root, '_'.join(self.file_fields) + '.csv')
-        if not repname in self.reports:
-            self.reports.update({repname: {'head':[], 'core':{}, 'file':[]}})
-        if file_name not in self.reports[repname]['file']:
-            self.reports[repname]['file'].append(file_name)
-        # ~~> Possible existing file name
-        dirpath, _, files = next(walk(root))
-        for fle in files:
-            l_name, l_ext = path.splitext(fle)
-            if l_ext != '.csv':
-                continue
-            l_name = l_name.split('_')
-            if len(l_name) < 3:
-                continue
-            if l_name[0] == version and repname in l_name[1]:
-                if path.join(dirpath, fle) != file_name:
-                    print('      +> Moving existing: ' + l_name[2] + ' to ' + \
-                            path.basename(file_name))
-                    try:
-                        self.reports[repname].update(\
-                            {'head':self.load_head(path.join(dirpath, fle))})
-                        self.reports[repname].update(\
-                            {'core':self.load_core(path.join(dirpath, fle))})
-                        move_file2file(path.join(dirpath, fle), file_name)
-                    except Exception:
-                        print('      ... I could not make sense of your '\
-                              'previous report: ' + fle + ' so I deleted it ')
-                        remove(path.join(dirpath, fle))
+        if type_valid not in ['examples', 'notebooks']:
+            raise TelemacException(\
+                    "Unknown validation type: {}".format(type_valid))
 
-        return self.reports[repname]['core']
+        self.type_valid = type_valid
+        self.values = OrderedDict()
+        if name != '':
+            self.file_name = get_report_path(name, type_valid)
+        else:
+            self.file_name = ''
 
-    def load_head(self, file_name):
+    def add_notebook(self, nb_file, time, passed):
         """
-          @brief Loads header of a report.
-          @param file_name (string) report file name
-          @returns current header
+        Adding a notebook to the report
+
+        @param nb_file (str) Name of the notebook
+        @param time (float) execution time
+        @param passed (bool) If the notebook worked
         """
-        l_list = []
-        fle = open(file_name, 'r')
-        for line in fle:
-            if line[0] == self.comment:
-                l_list.append(line.strip())
+        if self.type_valid != 'notebooks':
+            raise TelemacException(\
+                    'add_action is only possible for a notebooks report')
+
+        self.values[nb_file] = {\
+                'time':time,
+                'passed':passed}
+
+    def add_action(self, file_name, rank, action, time, passed):
+        """
+        Add a new action to the report
+
+        @param file_name (str) Name of the file for which the action
+        @param action (str) Name of the action
+        @param time (float) Time to run the action
+        @param passed (bool) If the action worked
+        """
+        if self.type_valid != 'examples':
+            raise TelemacException(\
+                    'add_action is only possible for an example report')
+
+        if file_name not in self.values:
+            self.values[file_name] = OrderedDict()
+
+        self.values[file_name][action] = {\
+                'rank':rank,
+                'time':time,
+                'passed':passed}
+
+    def read(self, file_name=None):
+        """
+        Read data from existing file
+
+        @param file_name (str) Name of the file to read from (by default will
+        use the name from class)
+        """
+        if file_name is None:
+            file_name = self.file_name
+
+        with open(file_name, 'r') as f:
+            header = f.readline().split(';')
+            if header[0] == 'Notebook file':
+                self.type_valid = 'notebooks'
+                for line in f:
+                    nb_file, time, passed = line.split(';')
+                    self.add_notebook(nb_file, float(time), passed == 'True')
             else:
-                break
-        fle.close()
-        return l_list
-
-    def load_core(self, file_name):
-        """
-          @brief Loads core of a report.
-          @param file_name (string) report file name
-          @returns current core
-        """
-        l_casesl = {}
-        headrow = []
-        corerow = ''
-        # ~~> Opening
-        fle = open(file_name, 'r')
-        # ~~> Parsing head row
-        for line in fle:
-            if line[0] == self.comment:
-                continue
-            if headrow == []:
-                headrow = line.split(self.delimiter)
-            else:
-                corerow = line.replace('"', '').split(self.delimiter)
-                case_name = corerow[self.hkeys.index('file')]
-                if case_name not in l_casesl:
-                    # name of the xml file
-                    l_casesl.update({case_name: {'casts': []}})
-                l_casesl[case_name]['file'] = \
-                        path.join(corerow[self.hkeys.index('path')], case_name)
-                l_casesl[case_name]['duration'] = \
-                        float(corerow[self.hkeys.index('duration')])
-                cast = {}
-                cast.update({'type': corerow[self.hkeys.index('type')]})
-                if corerow[self.hkeys.index('fail')] != '':
-                    cast.update(\
-                    {'fail':
-                     ('true' in corerow[self.hkeys.index('fail')].lower())})
-                if corerow[self.hkeys.index('warn')] != '':
-                    cast.update(\
-                    {'warn':
-                     ('true' in corerow[self.hkeys.index('warn')].lower())})
-                if corerow[self.hkeys.index('updt')] != '':
-                    cast.update(\
-                    {'updt':
-                     ('true' in corerow[self.hkeys.index('updt')].lower())})
-                cast.update({'value': corerow[self.hkeys.index('value')]})
-                cast.update({'rank': corerow[self.hkeys.index('rank')]})
-                cast.update({'title': corerow[self.hkeys.index('title')]})
-                cast.update({'xref': corerow[self.hkeys.index('xref')]})
-                l_casesl[case_name]['casts'].append(cast)
-        # ~~> closure
-        fle.close()
-        return l_casesl
-
-# /!\ TODO:(JCP) Update with CSV call functionalities (?)
-    def dump(self):
-        """
-          @brief Dump validation reports in CSV.
-        """
-        if self.reports == {}:
-            return
-        contents = {}
-        # ~~> Copy the default header in all files
-        for rep_name in self.reports:
-            for file_name in self.reports[rep_name]['file']:
-                if file_name not in contents:
-                    content = deepcopy(self.reports[rep_name]['head'])
-                    content.append(self.delimiter.join(self.heads))
-                    contents.update({file_name: content})
-        # ~~> Line template for those absenties
-        emptyline = []
-        for _ in self.heads:
-            emptyline.append('')
-        # ~~> Copy the core passed/failed vallues
-        # repname  (could be "Validation-Summary")
-        for rep_name in sorted(self.reports):
-            # filename (root dependant)
-            for file_name in sorted(self.reports[rep_name]['file']):
-                # case name (could bumpflu.xml)
-                for case_name in sorted(self.reports[rep_name]['core']):
-                    for cast in \
-                        self.reports[rep_name]['core'][case_name]['casts']:
-                        line = deepcopy(emptyline)
-                        for key in cast:
-                            if key == "graph_title":
-                                line[self.hkeys.index("title")] = \
-                                        '"' + str(cast[key]) + '"'
-                            else:
-                                line[self.hkeys.index(key)] = \
-                                        '"' + str(cast[key]) + '"'
-                        report = self.reports[rep_name]['core'][case_name]
-                        line[self.hkeys.index('file')] = case_name
-                        line[self.hkeys.index('path')] = \
-                                path.dirname(report['file'])
-                        line[self.hkeys.index('duration')] = \
-                                str(report['duration'])
-                        contents[file_name].append(self.delimiter.join(line))
-        for file_name in contents:
-            put_file_content(file_name, contents[file_name])
+                self.type_valid = 'examples'
+                for line in f:
+                    py_file, rank, action, time, passed = line.split(';')
+                    self.add_action(py_file, int(rank), action, float(time),
+                                    passed == 'True')
 
 
+    def write(self, file_name=None):
+        """
+        Write content of class into a file
+
+        @param file_name (str) Name of the output file (by default will take
+        name used with Report was initialised)
+        """
+
+        if file_name is None:
+            file_name = self.file_name
+
+        if self.type_valid == 'examples':
+            header = "Python file;rank;action_name;duration;passed\n"
+            with open(file_name, 'w') as f:
+                f.write(header)
+                for file_name, actions in self.values.items():
+                    for action_name, action_info in actions.items():
+                        llist = [file_name,
+                                 str(action_info['rank']),
+                                 action_name,
+                                 str(action_info['time']),
+                                 str(action_info['passed'])]
+                        f.write(';'.join(llist)+'\n')
+        elif self.type_valid == 'notebooks':
+            header = "Notebook file;duration;passed\n"
+            with open(file_name, 'w') as f:
+                f.write(header)
+                for file_name, actions in self.values.items():
+                    llist = [file_name,
+                             str(actions['time']),
+                             str(actions['passed'])]
+                    f.write(';'.join(llist)+'\n')
+
+    def compute_stats(self):
+        """
+        Will compute stats from the report info
+        """
+
+        module_time = {}
+        rank_time = {}
+        per_module_time = {}
+
+        for py_file, actions in self.values.items():
+            module = get_module_from_path(py_file)
+            if module not in module_time:
+                module_time[module] = \
+                        {'pre':0.0, 'run':0.0, 'vnv':0.0, 'post':0.0}
+                per_module_time[module] = {}
+            short_name = path.basename(py_file)
+            per_module_time[module][short_name] = \
+                        {'pre':0.0, 'run':0.0, 'vnv':0.0, 'post':0.0}
+            for action, data in actions.items():
+                rank = data['rank']
+                time = data['time']
+                if rank not in rank_time:
+                    rank_time[rank] = \
+                            {'pre':0.0, 'run':0.0, 'vnv':0.0, 'post':0.0}
+                if action not in ['pre', 'vnv', 'post']:
+                    per_module_time[module][short_name]['run'] += time
+                    module_time[module]['run'] += time
+                    rank_time[rank]['run'] += time
+                else:
+                    per_module_time[module][short_name][action] += time
+                    module_time[module][action] += time
+                    rank_time[rank][action] += time
+
+        return per_module_time, module_time, rank_time
+
+    def plot_stats(self):
+        """
+        Plot stat from
+        """
+        per_module_time, module_time, rank_time = self.compute_stats()
+
+        plot_bar_report_time(\
+                 module_time,
+                 'Execution time per module',
+                 fig_name='module_time.png')
+        plot_bar_report_time(\
+                rank_time,
+                'Execution time per rank',
+                fig_name='rank_time.png')
+
+        for module, time in per_module_time.items():
+            plot_bar_report_time(\
+                    time,
+                    'Exuction time per vnv_*.py for '+module,
+                    fig_name=module+'_time.png')
+
+
+def get_module_from_path(file_name):
+    """
+    extract module from path
+    """
+    names = file_name.split(sep)
+    i = names.index('examples')
+    return names[i+1]

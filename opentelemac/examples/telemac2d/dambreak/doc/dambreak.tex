@@ -236,10 +236,11 @@ water depth and velocity. Comparisons are shown on figure \ref{fig:ritter:compar
   \label{fig:ritter:comparison}
 \end{figure}
 
-Finite volume schemes are able to track the rarefaction wave with a good precision and are capable of
-handling wet/dry tyransition smoothly. As for finite element schemes tested, results are not as good, especially at 
-the wet/dry transition and oscillations are visible on the wet/dry transition.
-The worst results are obtained with the characteristics which is not capable of reproducing the analytic solution.
+Kinetic and HLLC schemes are able to track the rarefaction wave with a good precision and are capable of
+handling wet/dry tyransition smoothly.
+NERD and ERIA are also are able to track the rarefaction wave schemes 
+but exibit oscillations on the wet/dry transition. 
+Finally characteristics are not capable to reproduce the analytic solution.
 
 \subsection{Accuracy}
 
@@ -287,26 +288,22 @@ $L^2$ errors time series and time integrated $L^1$, $L^2$ and $L^\infty$ errors 
 \end{figure}
 
 For water depth, first order kinetic scheme, HLLC, NERD and ERIA exibit similar errors but kinetic and HLLC are more precise on velocity.
-Finally the time integrated errors shows that finite volume are the most precise schemes, especially the second order kinetic scheme.
+Finally the time integrated errors show that Kinetic schemes and HLLC are the most precise schemes, especially the second order kinetic scheme.
 This is to be put in perspective with CPU time presented previously \ref{fig:ritter:cputime}.
 
-\subsection{Positivity and maximum}
+\subsection{Positivity of the water depth}
 
 The minimum value of the water depth are checked during the whole simulation. 
-The maximum value is computed as well, in order to check the respect of the maximum principle (or monotonicity). 
-Results are showed on figure \ref{t2d:ritter:minmax}. 
+Results are showed on figure \ref{t2d:ritter:minmax}.
 
 \begin{figure}[H]
 \centering
-\includegraphicsmaybe{[width=0.8\textwidth]}{../img/t2d_ritter_maxT.png}
 \includegraphicsmaybe{[width=0.8\textwidth]}{../img/t2d_ritter_minT.png}
-\caption{Maximum and minimum values of water depths after one rotation of the cone.}
+\caption{Minimum values of water depths after one rotation of the cone.}
 \label{t2d:ritter:minmax}
 \end{figure}
 
-None of the finite element schemes respect the maximum principle, and recorded values of water depth exceeds $1$.
-This is not the case for finite volume schemes.
-Secondly, no negative values are recorded, which shows that the positivity is fulfilled.
+No negative values are recorded, which shows that the positivity is fulfilled.
 In the case of finite volume schemes, positivity is ensured withouth additionnal treatment.
 With finite element schemes the positivity is ensured with a treatment of negative depths
 during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD and 3 for ERIA scheme).
@@ -362,6 +359,8 @@ The following quantities are studied:
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
 \section{Results for Stoker}
 
 \subsection{Computation time}
@@ -442,10 +441,9 @@ water depth and velocity. Comparisons are shown on figure \ref{fig:stoker:compar
   \label{fig:stoker:comparison}
 \end{figure}
 
-Finite volume schemes are able to track the rarefaction wave and the shock with a good precision.
-As for finite element schemes tested, results are not as good, especially on the showk,
-where oscillations are visible.
-The worst results are obtained with the characteristics which is not capable of reproducing the analytic solution.
+Kinetic and HLLC schemes are able to track the rarefaction wave and the shock with a good precision.
+Characteristics, NERD and ERIA schemes exibit numerical oscillations on the shock.
+The worst results are obtained with the characteristics which is not capable of reproducing the analytic solution both in terms of water levels and velocity.
 
 \subsection{Accuracy}
 
@@ -492,23 +490,19 @@ $L^2$ errors time series and time integrated $L^1$, $L^2$ and $L^\infty$ errors 
   \label{fig:stoker:ErrNumV}
 \end{figure}
 
-\subsection{Positivity and maximum}
+\subsection{Positivity of the water depth}
 
 The minimum value of the water depth are checked during the whole simulation. 
-The maximum value is computed as well, in order to check the respect of the maximum principle (or monotonicity). 
 Results are showed on figure \ref{t2d:stoker:minmax}. 
 
 \begin{figure}[H]
 \centering
-\includegraphicsmaybe{[width=0.8\textwidth]}{../img/t2d_stoker_maxT.png}
 \includegraphicsmaybe{[width=0.8\textwidth]}{../img/t2d_stoker_minT.png}
-\caption{Maximum and minimum values of water depths after one rotation of the cone.}
+\caption{Minimum values of water depths after one rotation of the cone.}
 \label{t2d:stoker:minmax}
 \end{figure}
 
-None of the finite element schemes respect the maximum principle, and recorded values of water depth exceeds $1$.
-This is not the case for finite volume schemes.
-Secondly, no negative values are recorded, which shows that the positivity is fulfilled.
+No negative values are recorded, which shows that the positivity is fulfilled.
 In the case of finite volume schemes, positivity is ensured withouth additionnal treatment.
 With finite element schemes the positivity is ensured with a treatment of negative depths
 during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD and 3 for ERIA scheme).
@@ -567,8 +561,7 @@ The following quantities are studied:
 \section{ Conclusions}
 
 With the tested dambreak cases, we have shown that \telemac{2d} is able to reproduce the propagation
-of rarefaction and shock waves in good accordance with analytic solutions. This is particularly the case when using
-finite volume schemes, that are very well suited for this task. 
+of rarefaction and shock waves in good accordance with analytic solutions. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reference}

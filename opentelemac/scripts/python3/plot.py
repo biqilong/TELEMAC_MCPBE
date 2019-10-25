@@ -21,7 +21,24 @@ from postel.plot_actions import \
         add_options_spe, plot_spe
 from postel.plot_vnv import vnv_plot3d
 from data_manip.extraction.telemac_file import TelemacFile
+from vvytel.report_class import Report
 from argparse import ArgumentParser
+
+
+def add_options_report(subparser):
+    """
+    Defines options for var action
+
+    @param subparser (ArgumentParser) The subparser
+
+    @returns the update subparser
+    """
+    parser = subparser.add_parser('report',\
+            help='Plot data from validation report')
+    parser.add_argument("report_file", default=None, \
+        help="Name of the report file")
+
+    return subparser
 
 # _____             ________________________________________________
 # ____/ MAIN CALL  /_______________________________________________/
@@ -45,6 +62,7 @@ def main():
     subparser = add_options_spe(subparser)
     subparser = add_options_spe_freq(subparser)
     subparser = add_options_spe_ang(subparser)
+    subparser = add_options_report(subparser)
 
 
     options = parser.parse_args()
@@ -109,6 +127,16 @@ def main():
         plot_spe_ang(res, options.points, options.record, options.time,
                      options.fig_name)
         res.close()
+    elif command == 'report':
+
+        rep = Report('', 'examples')
+
+        rep.read(file_name=options.report_file)
+
+        rep.plot_stats()
+
+        del rep
+
     else:
         parser.print_help()
 

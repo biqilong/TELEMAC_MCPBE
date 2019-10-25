@@ -13,8 +13,8 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !                    *****************
  
-       USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
-     & DEUPI, VARIAN, FMOY, XKMOY, CMOUT1, CMOUT2, GRAVIT, PROINF
+      USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
+     &DEUPI, VARIAN, FMOY, XKMOY, CMOUT1, CMOUT2, GRAVIT, PROINF
 !
       IMPLICIT NONE
 !
@@ -41,7 +41,6 @@
           DO IP=1,NPOIN2
             AUX = (FREQ(JF)/FMOY(IP))**2
             TAUX1=C1 * VARIAN(IP)**2 * FMOY(IP)**9
-            write(*,*) 'TAUX1',TAUX1
             BETAMOU=TAUX1*AUX*(1.D0-CMOUT2+CMOUT2*AUX)
             DO JP=1,NPLAN
               FWX(IP)=FWX(IP)+((XK(IP,JF)/SIGMA)*SINTET(JP)

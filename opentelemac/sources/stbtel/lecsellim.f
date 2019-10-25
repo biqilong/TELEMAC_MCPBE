@@ -52,7 +52,7 @@
       CALL GET_BND_VALUE(FFORMAT, NLIM, TYP_BND_ELEM, NPTFR, LIHBOR,
      &                   LIUBOR, LIVBOR, HBOR, UBOR(:,1), VBOR(:,1),
      &                   CHBORD, .FALSE., LIHBOR, HBOR, HBOR, HBOR,
-     &                   IDUM, IERR)
+     &                   NPTFR, IERR)
       WRITE(LU,*) 'NPTFR FROM LECSELLIM ', NPTFR
       CALL CHECK_CALL(IERR, 'LECSELIM:GET_BND_VALUE')
 

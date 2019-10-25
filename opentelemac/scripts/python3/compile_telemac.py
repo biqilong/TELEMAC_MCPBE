@@ -82,6 +82,10 @@ Work with all active configurations.
         dest="ncsize", default=0,
         help="set the number of core used for the parallel "
              "compilation of objects")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true",
+        dest="verbose", default=False,
+        help="If given will print every command")
     options = parser.parse_args()
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -123,12 +127,12 @@ Work with all active configurations.
             modules = []
         else:
             modules = options.modules.split(".")
-        compile_cmdf(options.ncsize, modules)
+        compile_cmdf(options.ncsize, modules, options.verbose)
 
         # Compiling api if asked for
         cfg_opt = cfg.get('options', [])
         if 'api' in cfg_opt:
-            compile_api_files(silent=True,
+            compile_api_files(silent=not options.verbose,
                               static='static' in cfg_opt,
                               hermes_only='hermes_only' in cfg_opt)
 

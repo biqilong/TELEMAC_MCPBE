@@ -309,6 +309,9 @@ subroutine MASCARET( &
    !     ===============
    Erreur%Numero = 0
    retour        = 0
+   DO i = 1, 20
+      INDIC(i) = 0
+   ENDDO
    !  !arbredappel_old    = trim(!Erreur%arbredappel)
    !  !Erreur%arbredappel = trim(!Erreur%arbredappel)//'=>MASCARET'
 
