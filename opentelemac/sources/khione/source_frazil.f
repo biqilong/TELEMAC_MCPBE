@@ -38,7 +38,7 @@
       USE DECLARATIONS_KHIONE, ONLY : ICEPROCESS,IND_F,IND_T,ICETYPE,
      &                SUMPH, PHCL,PHRI,PHPS,PHIB,PHIE,PHIH,PHIP,
      &                ANFEM,THETA0,THETA1,BETA1,VBB,THIFEMS,THIFEMF,HUN,
-     &                SURF_EF,TCR
+     &                SURF_EF,TCR,BCH
       USE METEO_KHIONE,        ONLY : SYNC_METEO,
      &                            WINDX,WINDY,TAIR,TDEW,CLDC,VISBI,PLUIE
       USE THERMAL_KHIONE,      ONLY : THERMAL_FLUXES,ICOVER_GROWTH,
@@ -67,7 +67,7 @@
       DOUBLE PRECISION, PARAMETER :: EPS=1.D-2
       DOUBLE PRECISION            :: CONSTSS
       DOUBLE PRECISION            :: VMAG,WMAG, SRCT,SRCF
-      DOUBLE PRECISION            :: B1,B2,B3, FHC,HIN
+      DOUBLE PRECISION            :: B2,B3, FHC,HIN
 !
       INTRINSIC MAX
 !
@@ -225,8 +225,7 @@
      &                S,S,S,S,S,S,MESH,.FALSE.,S )
 !       /!\ TODO: PARALELISATION
 !
-        B1 = 15.D0              ! /!\ TODO: USER CALIBRATION PARAMETER
-        B2 = B1 - 5.87D0 * LOG(B1)
+        B2 = BCH - 5.87D0 * LOG(BCH)
         DO I = 1,NPOIN
 !
 ! ~~>     WIND SPEED EFFECTS ON ICE
@@ -235,7 +234,7 @@
           VMAG = SQRT( U%R(I)**2 + V%R(I)**2 )
 !
 ! ~~> CRITICAL AIR TEMPERATURE FOR BORDER ICE GROWTH
-          B3 = B2 + 5.87D0 * LOG( MAX( B1, 2.D0*SQRT(T1%R(I)) ) )
+          B3 = B2 + 5.87D0 * LOG( MAX( BCH, 2.D0*SQRT(T1%R(I)) ) )
           TCR%R(I) = TN%ADR(IND_T)%P%R(I) +
      &       SUMPH%R(I) / ( 1130.D0 * VMAG + B3 * WMAG )
           IF( ( TCR%R(I).LT.0.3D0*TAIR%R(I) ).AND.

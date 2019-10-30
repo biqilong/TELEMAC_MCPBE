@@ -22,11 +22,13 @@
 /
  WATER DENSITY                 = 1000.
  KINEMATIC WATER VISCOSITY     = 1.E-6
+/
 / 4: MODEL WITH COMPLETE BALANCE WITH ICE
  ATMOSPHERE-WATER EXCHANGE MODEL = 4
 /
 / DIFFERENT DEFAULT BETWEEN TELEMAC-2D AND KHIONE
- WATER SPECIFIC HEAT = 4.1855E+03
+ WATER SPECIFIC HEAT           = 4180.
+ AIR SPECIFIC HEAT             = 1002.
 /
 /----------------------------------------------------------------------
 /

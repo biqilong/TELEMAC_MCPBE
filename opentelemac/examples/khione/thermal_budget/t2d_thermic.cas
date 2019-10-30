@@ -54,7 +54,7 @@
 /  PHYSICAL PARAMETERS
 /----------------------------------------------------
 /
- ASCII ATMOSPHERIC DATA FILE  = 't2d_meteo.lqd'
+ ASCII ATMOSPHERIC DATA FILE  = 't2d_meteo_stlaurent.lqd'
 /
  LAW OF BOTTOM FRICTION           = 0
  LATITUDE OF ORIGIN POINT         = 44.73

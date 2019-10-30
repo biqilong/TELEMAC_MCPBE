@@ -20,9 +20,10 @@
 !>@param[in,out] AC            Critical shields parameter
 !>@param[in]     ACLADM        Mean diameter of active layer
 !>@param[in]     BIJK          Coefficient of the bijker formula
-!>@param[in,out] CALFA         Cosinus of the angle between mean flow and transport
+!>@param[in,out] CALFA_CL      Cosinus of the angle between mean flow and transport
 !>@param[in]     CF            Quadratic friction coefficient
 !>@param[in]     CHARR         Bedload
+!>@param[in]     CODE          Name of calling programme (telemac2d or 3d)
 !>@param[in,out] COEFPN        Correction of transport for sloping bed effect
 !>@param[in,out] CSTAEQ        Sediment equilibrium concentration
 !>@param[in]     DCLA          Diameter dm for each class
@@ -34,6 +35,7 @@
 !>@param[in]     HN            Water depth
 !>@param[in]     HOULE         Logical, for wave effects
 !>@param[in]     HW            Wave height
+!>@param[in]     H_TEL         Water depth from tel h (n+1)
 !>@param[in]     ICF           Bed-load or total load transport formulas
 !>@param[in]     IELMT         Number of elements
 !>@param[in]     KARMAN        Von karman constant
@@ -49,9 +51,11 @@
 !>@param[in,out] QSCL          Suspended load transport rate
 !>@param[in,out] QSCL_C        Bedload transport rate
 !>@param[in,out] QSCL_S        Suspended load transport rate
+!>@param[in,out] QSXC          Bedload transport rate along x
+!>@param[in,out] QSYC          Bedload transport rate along y
 !>@param[in]     QS_C          Bedload transport rate
 !>@param[in]     RATIO_SAND    Mass fraction of sand
-!>@param[in,out] SALFA         Sinus of the angle between transport rate and current
+!>@param[in,out] SALFA_CL      Sinus of the angle between transport rate and current
 !>@param[in]     SECCURRENT    Logical, parametrisation for secondary currents
 !>@param[in]     SEDCO         Logical, sediment cohesive or not
 !>@param[in]     SLOPEFF       Formula for slope effect
@@ -60,7 +64,7 @@
 !>@param[in,out] T10           Work bief_obj structure
 !>@param[in,out] T11           Work bief_obj structure
 !>@param[in,out] T12           Work bief_obj structure
-!>@param[in,out] T13           Work bief_obj structure
+!>@param[in,out] T14           Work bief_obj structure
 !>@param[in,out] T2            Work bief_obj structure
 !>@param[in,out] T3            Work bief_obj structure
 !>@param[in,out] T4            Work bief_obj structure
@@ -78,13 +82,15 @@
 !>@param[in]     TW            Wave period
 !>@param[in,out] U2D           Mean flow velocity x-direction
 !>@param[in]     UNLADM        Mean diameter of active stratum layer
+!>@param[in]     U3D           3D velocity sent by telemac 3d (u)
 !>@param[in,out] UNORM         Norm of the mean flow velocity
 !>@param[in]     UW            Orbital wave velocity
 !>@param[in,out] V2D           Mean flow velocity y-direction
+!>@param[in]     V3D           3D velocity sent by telemac 3d (v)
 !>@param[in]     VCE           Water viscosity
 !>@param[in]     TOCD          Critical shear stress
 !>@param[in]     XMVE          Fluid density
-!>@param[in]     XMVS          Water density
+!>@param[in]     XMVS0         Water density
 !>@param[in]     XWC           Settling velocity
 !>@param[in]     ZERO          Zero
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

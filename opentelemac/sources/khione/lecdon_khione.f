@@ -16,6 +16,11 @@
 !+        Coupling TELEMAC-2D with KHIONE (ice modelling component)
 !+        Initial developments
 !
+!history  F. SOUILLE (EDF)
+!+        30/09/2019
+!+        V8P0
+!+        Updated variables and sections
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| FILE_DESC      |-->| STORES THE FILES 'SUBMIT' ATTRIBUTES
 !|                |   | IN DICTIONARIES. IT IS FILLED BY DAMOCLES.
@@ -263,11 +268,19 @@
 !     SOLAR CONSTANT
       SIO       = MOTREA( ADRESS(2,33) )     !? solar constant
 !     __________________________________________________________________
-!     HEAT EXCHANGE COEFFICIENTS WITH AIR
+!     HEAT EXCHANGE CALIBRATION COEFFICIENTS
+!     (ATMOSPHERE-WATER EXCHANGE MODEL=3)
       LIN_WATAIR = MOTREA( ADRESS(2, 18) )   ! replaces HWA
       CST_WATAIR = MOTREA( ADRESS(2, 20) )   ! replaces ALPW
       LIN_ICEAIR = MOTREA( ADRESS(2, 19) )   ! replaces HIA
       CST_ICEAIR = MOTREA( ADRESS(2, 21) )   ! replaces ALP
+!     __________________________________________________________________
+!     HEAT EXCHANGE CALIBRATION COEFFICIENTS
+!     (ATMOSPHERE-WATER EXCHANGE MODEL=4)
+      COEF_PHIB = MOTREA( ADRESS(2, 56) )
+      COEF_PHIE = MOTREA( ADRESS(2, 57) )
+      COEF_PHIH = MOTREA( ADRESS(2, 58) )
+      COEF_PHIP = MOTREA( ADRESS(2, 59) )
 !     __________________________________________________________________
 !     METEOROLOGY, IN CASE ABSENT FROM METEO FILES
       CST_TAIR  = MOTREA( ADRESS(2, 41) )
@@ -293,6 +306,14 @@
 !     WATER PROPERTY RELATED KEYWORDS
 !
 !
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+!     FREEZEUP RELATED KEYWORDS
+!
+      VNU  = MOTREA( ADRESS(2,24) )      ! NUSSELT NUMBER
+      DF   = MOTREA( ADRESS(2,27) )      ! LENGTH OF A-AXIS OF A FRAZIL CRYSTAL(M)
+      DE   = MOTREA( ADRESS(2,28) )      ! FRAZIL CRYSTAL THICKNESS(M)
+      CV0  = MOTREA( ADRESS(2,40) )      ! THRESHOLD OF FRAZIL CONCENTRATION FOR THERMAL GROWTH
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -309,10 +330,30 @@
       DARCYRUB = MOTREA(ADRESS(2,14))   ! (1.) DARCY COEFFICIENT IN RUBBLE ICE
 !
       CA0 = MOTREA(ADRESS(2,38))        ! (1E-4) initial surface ice conc.
-      VCRBOR = MOTREA(ADRESS(2,99))     ! (0.07) critical velocity for border ice
 !
       IFROT = MOTINT( ADRESS(1, 8) )    ! (0.04) manning coefficient
       FICE =  MOTREA( ADRESS(2, 4) )    ! (4) manning's law
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+!     STATIC BORDER ICE RELATED KEYWORDS
+!
+!
+      BCH = MOTREA( ADRESS(2,98) )       ! (15) CHANNEL WIDTH FOR THE COMPUTATION OF SURFACE WATER TEMPERATURE
+      TC = MOTREA( ADRESS(2,71) )        ! (-1.1) CRITICAL WATER SURFACE TEMPERATURE FOR BORDER ICE FORMATION
+      VCRBOR = MOTREA(ADRESS(2,99))      ! (0.07) THRESHOLD VELOCITY FOR STATIC BORDER ICE
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+!     DYNAMIC BORDER ICE RELATED KEYWORDS
+!
+      VCRBOM = MOTREA(ADRESS(2,73))      ! (0.4) THRESHOLD VELOCITY ABOVE WHICH DYNAMIC BORDER ICE WILL NOT FORM
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+!     SKIM ICE RELATED KEYWORDS
+!
+      VCRSKM = MOTREA( ADRESS(2,72) )    ! CRITICAL VELOCITY ABOVE WHICH SKIM ICE WILL NOT FORM (M/S)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -346,19 +387,15 @@
 !       VCRSKM = MOTREA( ADRESS(2,32) )
 !       VCRBOM = MOTREA( ADRESS(2,33) )
 !       ANMAXBORDER = MOTREA( ADRESS(2,34) )
-!
+
 !       HI0 = MOTREA( ADRESS(2,35) )
 !       HF0 = MOTREA( ADRESS(2,36) )
 !       ANMAXFRA = MOTREA( ADRESS(2,37) )
 !       ANMINFRA = MOTREA( ADRESS(2,38) )
 !
-      VNU  = MOTREA( ADRESS(2,24) )      ! NUSSELT NUMBER
-      DF   = MOTREA( ADRESS(2,27) )      ! LENGTH OF A-AXIS OF A FRAZIL CRYSTAL(M)
-      DE   = MOTREA( ADRESS(2,28) )      ! FRAZIL CRYSTAL THICKNESS(M)
       AF   = MOTREA( ADRESS(2,29) )      ! (1.) DEPOSITION COEFFICIENT OF FRAZIL ON THE BAR
       SURF_EF  = MOTREA( ADRESS(2,39) )  ! POROSITY OF SURFACE ICE
       TC_WT = MOTREA( ADRESS(2,44) )     ! => XKWP: (0.56594) WATER-ICE THERMAL CONDUCTIVITY
-!      CV0  = MOTREA( ADRESS(2,40) )     ! => CV0: THRESHOLD FRAZIL CONCENTRATION FOR SETTLING
 !
 !       STPV = MOTREA( ADRESS(2,51) )
 !       CRIFR = MOTREA( ADRESS(2,52) )
@@ -459,8 +496,6 @@
       SGMA = MOTREA( ADRESS(2,69) )       ! BOLTZMANN CONSTANT (WM-2K-4)
       TMELT = MOTREA( ADRESS(2,70) )      ! FREEZING POINT OF WATER
 
-      TC = MOTREA( ADRESS(2,71) )         ! CRITICAL WATER SURFACE TEMPERATURE FOR BORDER ICE FORMATION
-      VCRSKM = MOTREA( ADRESS(2,72) )     ! CRITICAL VELOCITY ABOVE WHICH SKIM ICE WILL NOT FORM (M/S)
 !
       ANFEM0 = MOTREA( ADRESS(2,74) )     ! (1.) MAXIMUM CONCENTRATION FOR BORDER ICE FORMATION
       THIFEM0 = MOTREA( ADRESS(2,75) )    ! (0.01) INITIAL SKIM ICE THICKNESS(M)
@@ -516,8 +551,6 @@
 
       DTBMF = MOTREA(ADRESS(2,97))        ! /!\ REMOVE: (900.) TIME INTERVAL FOR OUTPUT ICE FORCE ON THE BOOM
 !     ANMAXSKIM = MOTREA(ADRESS(2,98))    ! (1.0) MAXIMUM CONCENTRATION FOR SKIM ICE RUN
-      VCRBOR = MOTREA(ADRESS(2,99))       ! (0.07) THRESHOLD VELOCITY ABOVE WHICH STATIC BORDER ICE WILL NOT FORM
-      VCRBOM = MOTREA(ADRESS(2,73))       ! (0.4) THRESHOLD VELOCITY ABOVE WHICH DYNAMIC BORDER ICE WILL NOT FORM
 !
       ILINKSWITCH = MOTLOG(ADRESS(3,7))   ! CREATE LINK FILE
 !      ICEDYNAMICS = MOTLOG(ADRESS(3,9))  ! /!\ REMOVED

@@ -17,6 +17,11 @@
 !+        Coupling TELEMAC-2D with KHIONE (ice modelling component)
 !+        Initial developments
 !
+!history  F. SOUILLE (EDF)
+!+        30/09/2019
+!+        V8P0
+!+        Fixed name and unit of frazil (conc to volumic fraction)
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| NAMETRAC |<--| ARRAY OF NAMES OF TRACERS
 !| NTRAC    |-->| MODIFYING NUMBER OF TRACER IF NECESARY
@@ -80,7 +85,7 @@
 !     1. ~~> FRAZIL
         CALL ADDTRACER(NAMETRAC,NTRAC,
      &    IND_F,
-     &    'FRASIL (CONC)   ','FRAZIL (CONC)   ','  mgIce/l       ')
+     &    'FRASIL          ','FRAZIL          ','VOLUME FRACTION ')
 !     2. ~~> TEMPERATURE
         CALL ADDTRACER(NAMETRAC,NTRAC,
      &    IND_T,

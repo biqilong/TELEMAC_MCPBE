@@ -12,9 +12,8 @@
 !>@brief Initialise bed sediment layout
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!>@param[in,out] CONC_MUD  Mud concentration for each layer
 !>@param[in,out] ELAY      Thickness of surface layer
-!>@param[in,out] ES  LAYER Thicknesses as double precision
+!>@param[in,out] ES        Thicknesses as double precision
 !>@param[in]     NOMBLAY   Number of bed layers
 !>@param[in]     NPOIN     Number of points
 !>@param[in]     NSICLA    Number of sediment classes
@@ -22,7 +21,7 @@
 !>@param[in]     MAXVAR    Maximum number of output variables
 !>@param[in]     VOLU2D    Integral of test functions (not assembled in
 !!                         parallel)
-!>@param[in]     XMVS      Sediment density
+!>@param[in]     XMVS0     Sediment density
 !>@param[in]     ZF        Elevation of bottom
 !>@param[out]    ZR        Non erodable bed
 !>@param[in]     DEBU      Flag, restart on sedimentological file
@@ -101,7 +100,7 @@
 !
 !       USER CAN CHANGE THE THICKNESS OF SEDIMENT HERE
 !       (REPLACES SUBROUTINE NOEROD)
-!       GRADED SEDIMENT: USER CAN DEFINE AN INTIAL STRTIFICATION
+!       GRADED SEDIMENT: USER CAN DEFINE AN INITIAL STRATIFICATION
 !       DEFINED BY LAYER THICKNESS AND COMPOSITION FOR EACH STRATUM
 !
 !       POROSITY IS DEFINED (KEYWORD) FOR STRATUMS.
@@ -203,7 +202,7 @@
           ENDDO
 !
         ENDIF
-!       CHECK PARAMLETER VALUES FOR CONSOLIDATION
+!       CHECK PARAMETER VALUES FOR CONSOLIDATION
         IF(BED_MODEL.EQ.2)THEN
           DO IPOIN=1,NPOIN
             DO ILAYER = 2,NOMBLAY

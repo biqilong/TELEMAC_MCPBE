@@ -2,8 +2,6 @@
                      SUBROUTINE CONLIT_GAIA
 !                    **********************
 !
-     &(NBOR,AT)
-!
 !***********************************************************************
 ! GAIA
 !***********************************************************************
@@ -15,10 +13,6 @@
 !!       to also impose liebor = ksort at these nodes !
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NBOR           |-->| GLOBAL NUMBER OF BOUNDARY POINT
-!| AT             |-->| TEMPS (s)
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       USE BIEF
       USE DECLARATIONS_GAIA
       USE DECLARATIONS_TELEMAC
@@ -26,13 +20,6 @@
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY : P_IMAX, P_ISUM, P_DSUM
       IMPLICIT NONE
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!
-      INTEGER, INTENT(IN)          :: NBOR(NPTFR)
-      DOUBLE PRECISION, INTENT(IN) :: AT
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER I,K,IFRLIQ,IRANK,ISAND
       INTEGER YADEB(MAXFRO)
@@ -102,7 +89,7 @@
         ENDIF
 ! COMPUTE THE SUM OF THE EXITING VOLUMES OF SEDIMENT AT EACH NODE FOR EACH SIZE FRACTION
         IF(LIQBOR%I(K).EQ.KSORT) THEN
-           IF(AT.LE.2.0E-2) THEN ! ONLY FOR INITIALIZATION PURPOSES
+           IF(AT0.LE.2.0E-2) THEN ! ONLY FOR INITIALIZATION PURPOSES
              DO I=1, NSICLA
                QOUT(I)=0.D0
              ENDDO

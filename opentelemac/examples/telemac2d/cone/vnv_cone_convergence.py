@@ -41,8 +41,8 @@ class VnvStudy(AbstractVnvStudy):
         hm = 2.  # max(h) = h0
         sigma = abs(um) + np.sqrt(9.81*hm)
         self.timestep = min(self.timestep, self.CFL*dx_min/sigma)
-        print("CFL: {} TIME STEP FIXED TO : {}"\
-            .format(self.CFL, self.timestep))
+        #print("CFL: {} TIME STEP FIXED TO : {}"\
+        #    .format(self.CFL, self.timestep))
         #----------------------------------------------------------------------
 
     def _pre(self):

@@ -22,7 +22,7 @@
 /  GENERAL INFORMATIONS - OUTPUTS
 /----------------------------------------------------
 /
- VARIABLES FOR GRAPHIC PRINTOUTS  = 'U,V,H,S,T*'
+ VARIABLES FOR GRAPHIC PRINTOUTS  = 'U,V,H,B,S,T*'
 /
  GRAPHIC PRINTOUT PERIOD          = 30
  LISTING PRINTOUT PERIOD          = 600
@@ -39,7 +39,7 @@
 /    IT IS THE FIRST IN THE LIST
  NUMBER OF TRACERS = 2
  NAMES OF TRACERS = 'TEMPERATURE     oC              ';
-                    'FRAZIL (CONC)   mg/l            '
+                    'FRAZIL          VOLUME FRACTION '
  DIFFUSION OF TRACERS                 = NO
  COEFFICIENT FOR DIFFUSION OF TRACERS = 0.
 /

@@ -2,9 +2,14 @@
 """
 Validation script for flume_frazil
 """
+import datetime
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+from postel.deco_vnv import decoVNV, decoVNV_1d
 from vvytel.vnv_study import AbstractVnvStudy
 from execution.telemac_cas import TelemacCas, get_dico
 from data_manip.extraction.telemac_file import TelemacFile
+from data_manip.computation.datetimes import compute_datetimes
 
 class VnvStudy(AbstractVnvStudy):
     """
@@ -15,7 +20,7 @@ class VnvStudy(AbstractVnvStudy):
         """
         Defines the general parameter
         """
-        self.rank = 0
+        self.rank = 1
         self.tags = ['telemac2d', 'waqtel', 'khione']
 
     def _pre(self):
@@ -23,17 +28,15 @@ class VnvStudy(AbstractVnvStudy):
         Defining the studies
         """
 
-        # flow down a flat flume (initial steady state)
+        # initial steady state
         self.add_study('vnv_1',
                        'telemac2d',
                        't2d_frazil_ini.cas')
-
 
         # thermal model with fazil ice growth (serial)
         self.add_study('vnv_2',
                        'telemac2d',
                        't2d_frazil.cas')
-
 
         # thermal model with fazil ice growth (parallel)
         cas = TelemacCas('t2d_frazil.cas', get_dico('telemac2d'))
@@ -47,26 +50,24 @@ class VnvStudy(AbstractVnvStudy):
         del cas
 
 
-
     def _check_results(self):
         """
         Post-treatment processes
         """
-
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_longflume.slf',
-                            eps=[1.E-1])
+                            eps=[1.E-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T2DRES',
                             'f2d_longflume.slf',
-                            eps=[1.E-1])
+                            eps=[1.E-3])
 
         # Comparison between serial and parallel run.
         self.check_epsilons('vnv_2:T2DRES',
                             'vnv_3:T2DRES',
-                            eps=[1.E-6])
+                            eps=[1.])
 
 
     def _post(self):
@@ -74,107 +75,182 @@ class VnvStudy(AbstractVnvStudy):
         Post-treatment processes
         """
         from postel.plot_actions import plot1d, plot2d_scalar_filled_contour
-        from postel.plot_vnv import vnv_plot2d
-        import matplotlib.pyplot as plt
+        from postel.plot_vnv import vnv_plot1d, vnv_plot2d,\
+            vnv_plot1d_history, vnv_plot1d_polylines
 
-        geo = TelemacFile(self.get_study_file('vnv_1:T2DGEO'))
+        geo, _ = self.get_study_res('vnv_1:T2DGEO', load_bnd=True)
         res_vnv_1 = TelemacFile(self.get_study_file('vnv_1:T2DRES'))
         res_vnv_2 = TelemacFile(self.get_study_file('vnv_2:T2DRES'))
         res_vnv_3 = TelemacFile(self.get_study_file('vnv_3:T2DRES'))
 
+        #======================================================================
+        # DESCRIPTION PLOTS:
+        #
         #Plotting mesh
-        vnv_plot2d('',
-                   geo,
-                   plot_mesh=True,
-                   fig_size=(18, 2),
-                   fig_name='img/mesh',
-                   x_label='Length [m]',
-                   y_label='Width [m]')
+        vnv_plot2d(\
+            'BOTTOM',
+            geo,
+            record=0,
+            plot_mesh=True,
+            annotate_bnd=True,
+            filled_contours=False,
+            fig_size=(14, 2.5),
+            fig_name='img/mesh',
+            x_label='$x$ $(m)$',
+            y_label='$y$ $(m)$',)
 
         # Plotting bottom
-        vnv_plot2d('BOTTOM',
-                   geo,
-                   record=0,
-                   filled_contours=True,
-                   fig_size=(18, 2),
-                   fig_name='img/bottom',
-                   x_label='Length [m]',
-                   y_label='Width [m]',
-                   cbar_label='Bed level [m]')
+        vnv_plot2d(\
+            'BOTTOM',
+            geo,
+            record=0,
+            filled_contours=True,
+            fig_size=(14, 2.5),
+            fig_name='img/bottom',
+            x_label='$x$ $(m)$',
+            y_label='$y$ $(m)$',
+            cbar_label='Bottom (m)')
 
+        #======================================================================
+        # FIRST OBSERVATION:
+        #
         # Plotting frazil map
-        vnv_plot2d('FRAZIL (CONC)',
-                   res_vnv_2,
-                   record=-1,
-                   filled_contours=True,
-                   fig_size=(18, 2),
-                   fig_name='img/frazil-map',
-                   x_label='Length [m]',
-                   y_label='Width [m]',
-                   cbar_label='Frazil concentration [si]')
+        vnv_plot2d(\
+            'FRAZIL',
+            res_vnv_2,
+            record=-1,
+            filled_contours=True,
+            fig_size=(14, 2.5),
+            fig_name='img/Cf-2d_scalarmap',
+            x_label='$x$ $(m)$',
+            y_label='$y$ $(m)$',
+            cbar_label='$C_f$ (volume fraction)')
 
+        # Plotting temperature map
+        vnv_plot2d(\
+            'TEMPERATURE',
+            res_vnv_2,
+            record=-1,
+            filled_contours=True,
+            fig_size=(14, 2.5),
+            fig_name='img/T-2d_scalarmap',
+            x_label='$x$ $(m)$',
+            y_label='$y$ $(m)$',
+            cbar_label='$T$ $(^\circ C)$')
+
+        #----------------------------------------------------------------------
         # Plotting difference between scal and parallel run
-        fig, ax = plt.subplots(1, 1, figsize=(18, 2))
+        fig, ax = plt.subplots(1, 1, figsize=(14, 2.5))
 
-        val_scal = res_vnv_2.get_data_value('FRAZIL (CONC)', -1)
-        val_par = res_vnv_3.get_data_value('FRAZIL (CONC)', -1)
+        val_scal = res_vnv_2.get_data_value('FRAZIL', -1)
+        val_par = res_vnv_3.get_data_value('FRAZIL', -1)
         diff = val_scal - val_par
 
         plot2d_scalar_filled_contour(fig, ax, res_vnv_2.tri, diff,
-                                     data_name='Frazil concentration [si]')
+                                     data_name='$C_f$ (volume fraction)')
 
-        print(" "*8+"~> Plotting img/frazil-dif")
-        plt.savefig('img/frazil-dif')
+        print(" "*8+"~> Plotting img/Cf-dif")
+        plt.savefig('img/Cf-dif')
         plt.clf()
 
+        #----------------------------------------------------------------------
+        # Plot timeseries on points:
+        xpos = [1000.*i for i in range(2, 10, 1)]
 
+        for x in xpos:
+            plot1d_history_TCf(\
+                res=res_vnv_2,
+                points=[[x, 75.]],
+                xlim=[datetime.datetime(2016, 12, 2, 0, 0, 0),
+                      datetime.datetime(2016, 12, 2, 4, 0, 0)],
+                fig_name='img/timeseries_TCf_at_xy={}_75'.format(int(x)))
+
+        #----------------------------------------------------------------------
         # Plotting profile
-        fig, ax = plt.subplots(1, 1, figsize=(12, 2))
+        vnv_plot1d_polylines(\
+            'FREE SURFACE',
+            res_vnv_2,
+            legend_labels='free surface',
+            record=-1, 
+            poly=[[0., 75.], [10000., 75.]],
+            poly_number=[50],
+            fig_size=(10, 3),
+            y_label='$z$ $(m)$',
+            x_label='$x$ $(m)$',
+            fig_name='img/profile_elevation',
+            plot_bottom=True)
 
-        poly = [[0., 75.], [10000., 75.]]
+        tf = res_vnv_2.times[-1]
+        times = [tf/10., 2.*tf/10., 3.*tf/10., 4.*tf/10.,  5.*tf/10., tf]
 
-        _, abs_curv, bottoms = \
-                geo.get_timeseries_on_polyline('BOTTOM', poly)
+        vnv_plot1d_polylines(\
+            'TEMPERATURE',
+            res_vnv_2,
+            legend_labels='',
+            time=times,
+            poly=[[0., 75.], [10000., 75.]],
+            poly_number=[150],
+            fig_size=(10, 4),
+            y_label='$T$ $(\degree C)$',
+            x_label='$x$ $(m)$',
+            fig_name='img/profile_T',
+            plot_bottom=False)
 
-        _, abs_curv2, surfaces = \
-                res_vnv_1.get_timeseries_on_polyline('FREE SURFACE', poly)
+        vnv_plot1d_polylines(\
+            'FRAZIL',
+            res_vnv_2,
+            legend_labels='',
+            time=times,
+            poly=[[0., 75.], [10000., 75.]],
+            poly_number=[150],
+            fig_size=(10, 4),
+            y_label='$C_f$ (volume fraction)',
+            x_label='$x$ $(m)$',
+            fig_name='img/profile_Cf',
+            plot_bottom=False)
 
-        plot1d(ax, abs_curv, bottoms[:, 0], color='b',
-               plot_label='bottom')
-        plot1d(ax, abs_curv2, surfaces[:, -1], color='r',
-               plot_label='surface')
+        #======================================================================
+        # SENSIBILITY TO PHYSICAL AND NUMERICAL PARAMETERS:
+        #
+        #TODO
 
-        ax.legend()
 
-        print(" "*8+"~> Plotting img/l-section")
-        plt.savefig('img/l-section')
-        plt.clf()
+        # Closing files
+        del geo
+        del res_vnv_1
+        del res_vnv_2
+        del res_vnv_3
 
-        # Plotting frazil profile
-        fig, ax = plt.subplots(1, 1, figsize=(12, 2))
+def plot1d_history_TCf(res, points, xlim=None, fig_name=''):
+    """
+    Plot 1d timeseries of temperature and frazil
+    """
+    # plot initialization
+    plt.style.use('default')
+    plt.rcParams.update(decoVNV)
+    plt.rcParams.update(decoVNV_1d)
+    fig, ax = plt.subplots(1, 1, figsize=(10, 4))
+    axb = ax.twinx()
+    # get data values
+    T = res.get_timeseries_on_points('TEMPERATURE', points)
+    C = res.get_timeseries_on_points('FRAZIL', points)
+    # get datetimes
+    datetimes = compute_datetimes(res.times,
+                                  initial_date=res.datetime)
+    # plot both T and Cf
+    ax.plot(datetimes, T[0, :], label='Temperature', color='#002d74')
+    axb.grid()
+    axb.plot(datetimes, C[0, :], label='Frazil', color='#e85113')
+    # set labels
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%H"))
+    if xlim is not None:
+        ax.set_xlim(xlim[0], xlim[1])
+    ax.set_xlabel('t (h)')
+    ax.set_ylabel('$T$ $(\degree C)$')
+    axb.set_ylabel('$C_f$ (volume fraction)')
+    ax.legend(loc=3)
+    axb.legend(loc=4)
+    # save figure:
+    print(" "*8+"~> Plotting {}".format(fig_name))
+    fig.savefig(fig_name)
 
-        poly = [[0., 75.], [10000., 75.]]
-
-        _, abs_curv, temps = \
-             res_vnv_2.get_timeseries_on_polyline('TEMPERATURE', poly)
-
-        _, abs_curv2, frazils = \
-             res_vnv_2.get_timeseries_on_polyline('FRAZIL (CONC)', poly)
-
-        plot1d(ax, abs_curv, temps[:, 0], color='b',
-               plot_label='temperature')
-        plot1d(ax, abs_curv2, frazils[:, 0], color='k',
-               plot_label='frazil t=0')
-        plot1d(ax, abs_curv2, frazils[:, -1], color='r',
-               plot_label='frazil t=-1')
-
-        ax.legend()
-
-        print(" "*8+"~> Plotting img/frazil-profile")
-        plt.savefig('img/frazil-profile')
-        plt.clf()
-
-        geo.close()
-        res_vnv_1.close()
-        res_vnv_2.close()
-        res_vnv_3.close()

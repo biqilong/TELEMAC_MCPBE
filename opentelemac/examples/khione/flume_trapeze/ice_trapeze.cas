@@ -1,0 +1,38 @@
+/----------------------------------------------------------------------
+/
+/ This case validates the interaction of the KHIONE component
+/   with wetting and drying processes, specifically the thermal budget
+/
+/ Steering file for the hydrodynamics: KHIONE
+/
+/----------------------------------------------------------------------
+/  FILES
+/----------------------------------------------------
+/
+ GEOMETRY FILE                = 'geo_trapeze.slf'
+ BOUNDARY CONDITIONS FILE     = 'geo_trapeze.cli'
+/
+/----------------------------------------------------------------------
+/  METEOROLOGY PARAMETERS ( ICE PROCESS = 2 )
+/----------------------------------------------------
+/
+/ AIR TEMPERATURE      = -10.0
+/
+/----------------------------------------------------------------------
+/  PHYSICAL PROPERTIES FOR HEAT EXCHANGES 
+/----------------------------------------------------
+/
+ SOLAR CONSTANT = 0.
+ WATER-AIR HEAT EXCHANGE CONSTANT = -500.
+ WATER-AIR HEAT EXCHANGE COEFFICIENT = 0.0
+/
+/----------------------------------------------------------------------
+/  PHYSICAL PROPERTIES FOR THERMAL GROWTH
+/----------------------------------------------------
+/
+ NUSSELT NUMBER = 4.
+ REPRESENTATIVE FRAZIL CRYSTAL LENGTH = 2.0E-3
+ REPRESENATTIVE FRAZIL CRYSTAL THICKNESS = 3.0E-4
+ THRESHOLD OF FRAZIL CONCENTRATION FOR THERMAL GROWTH = 1.0E-8
+/
+/----------------------------------------------------------------------

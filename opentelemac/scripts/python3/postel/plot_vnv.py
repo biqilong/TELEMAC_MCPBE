@@ -798,7 +798,7 @@ def vnv_plot2d(\
         var_type='scalar', var_factor=1.0,
         vect_name='VELOCITY', vect_factor=1.0,
         x_factor=1.0, y_factor=1.0,
-        xlim=None, ylim=None,
+        xlim=None, ylim=None, aspect_ratio='auto',
         x_label='x (m)', y_label='y (m)',
         vmin=None, vmax=None, nv=None,
         cmap_name='jet', cbar=True, cbar_ticks=None,
@@ -1022,6 +1022,9 @@ def vnv_plot2d(\
     plt.style.use('default')
     plt.rcParams.update(decoVNV)
     fig, ax = plt.subplots(1, 1, figsize=fig_size)
+
+    # aspect ratio:
+    ax.set_aspect(aspect_ratio)
 
     # mesh
     if plot_mesh:

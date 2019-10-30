@@ -580,7 +580,7 @@ class VnvStudy(AbstractVnvStudy):
                     legend_labels=['$L_\\infty$', '$L_1$', '$L_2$'],
                     x_labels=self.schemes,
                     y_scale='log',
-                    fig_title='Error on H at $t=t_f$'
+                    fig_title='Error on H at $t=t_f$',
                     fig_name="img/t2d_thacker_errors_tf_mesh{}"\
                     .format(j),
                     annotate=True)

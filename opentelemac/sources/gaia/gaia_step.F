@@ -54,17 +54,20 @@
 !>@param  [in]      GRAFCOUNT  PERIOD OF GRAPHICAL OUTPUTS
 !>@param  [in]      GRCOMP     COUNTER FOR GRAPHICAL OUTPUTS
 !>@param  [in]      H_TEL      WATER DEPTH FROM TEL H (N+1)
+!>@param  [in]      HW_TEL     SIGNIFICANT WAVE HEIGHT
 !>@param  [in,out]  KS_TEL     BED ROUGHNESS SENT TO TELEMAC
 !>@param  [in]      LISTCOUNT  PERIODE DE SORTIE LISTING
 !>@param  [in]      LOOPCOUNT  NUMERO DE L'ITERATION
-!>@param  [in]      UW_TEL     ORBITAL VELOCITY
 !>@param  [in,out]  SUSP_TEL   LOGICAL, SUSPENDED LOAD OR NOT: Sent to TELEMAC
 !>@param  [in]      TELNIT     NUMBER OF TELEMAC ITERATIONS
 !>@param  [in]      T_TEL      CURRENT TIME IN CALLING PROGRAMME
+!>@param  [in]      THETAW_TEL WAVE DURECTION (DEG WRT OX AXIS)
+!>@param  [in]      TW_TEL     MEAN WAVE PERIOD
 !>@param  [in]      U3D, V3D   3D VELOCITY SENT BY TELEMAC 3D
 !>@param  [in,out]  UETCAR     SQUARE OF THE FRICTION VELOCITY
 !!                             (COUPLING WITH TEL 3D)
 !>@param  [in]      U_TEL      U VELOCITY FROM TELEMAC
+!>@param  [in]      UW_TEL     ORBITAL WAVE VELOCITY
 !>@param  [in]      VISC_TEL   VELOCITY DIFFUSIVITY (TELEMAC-2D)
 !>@param  [in]      V_TEL      V VELOCITY FROM TELEMAC
 !!                             IS DM1*GRAD(ZCONV), SEE SOLSYS.

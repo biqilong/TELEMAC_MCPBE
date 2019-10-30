@@ -171,6 +171,9 @@
 ! 22  DYNAMIC ICE GROWTH AREA AS A FRACTION OF THE NODE AREA
       CALL ADDBLO(VARSOR,DWB)
 !
+! 23  THERMAL BUDGET: PRECIPITATION HEAT FLUX
+      CALL ADDBLO(VARSOR,PHIP)
+!
 !-----------------------------------------------------------------------
 !
 !     DIFFERENTIATED VARIABLES

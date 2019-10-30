@@ -16,6 +16,11 @@
 !+        V7P2
 !+        Initial developments
 !
+!history  F. SOUILLE (EDF)
+!+        30/09/2019
+!+        V8P0
+!+        Added coefficients for full heat budget
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -52,6 +57,11 @@
 !+   V7P2
 !+   Initial implementation
 !
+!history  F. SOUILLE (EDF)
+!+        30/09/2019
+!+        V8P01
+!+        Added coefficients for full heat budget
+!
 !reference
 !+
 !
@@ -72,7 +82,8 @@
 !
       USE DECLARATIONS_WAQTEL,      ONLY: BOLTZ,CP_EAU,ATMOSEXCH
       USE DECLARATIONS_KHIONE,      ONLY: LH_ICE,CP_ICE,TMELT,
-     &  LIN_WATAIR,CST_WATAIR,LIN_ICEAIR,CST_ICEAIR
+     &  LIN_WATAIR,CST_WATAIR,LIN_ICEAIR,CST_ICEAIR,
+     &  COEF_PHIB, COEF_PHIE, COEF_PHIH, COEF_PHIP
       USE EXCHANGE_WITH_ATMOSPHERE, ONLY: LEAP,DAYNUM
       USE METEO_KHIONE,             ONLY: WINDZ
 !
@@ -85,7 +96,7 @@
       DOUBLE PRECISION, INTENT(IN)    :: TWAT,CONSTSS,ANFEM
       DOUBLE PRECISION, INTENT(IN)    :: TAIR,TDEW,CC,VISB,WIND,PLUIE
       DOUBLE PRECISION, INTENT(IN)    :: DT,AT,DEPTH
-      DOUBLE PRECISION, INTENT(INOUT) :: SUMPH, SRCT, PHCL,PHRI
+      DOUBLE PRECISION, INTENT(INOUT) :: SUMPH,SRCT,PHCL,PHRI
       DOUBLE PRECISION, INTENT(INOUT) :: PHPS,PHIB,PHIE,PHIH,PHIP
       DOUBLE PRECISION, INTENT(IN)    :: LAMBD0
 !
@@ -184,7 +195,7 @@
 !
 !-----------------------------------------------------------------------
 !
-!     LINEAR HEAT TRANSFER FOR AIR-WATER INTERFACE ONLY, + = HEAT LOSS
+!     LINEAR HEAT TRANSFER FOR AIR-WATER INTERFACE ONLY
 !
       IF( ATMOSEXCH.EQ.3 ) THEN
         IF(CICE.EQ.1) THEN  ! ICE
@@ -193,10 +204,12 @@
           PHIH = - CST_WATAIR - ( TAIR-TWAT )*LIN_WATAIR
         ENDIF
         SUMPH = PHPS - PHIH
-      ELSEIF( ATMOSEXCH.EQ.4 ) THEN
 !
 !-----------------------------------------------------------------------
 !
+!     FULL BUDGET FOR AIR-WATER INTERFACE
+!
+      ELSEIF( ATMOSEXCH.EQ.4 ) THEN
 !       FBH 2016-11
         TAK = TAIR + 273.16  ! TAK = AIR TEMPERATURE
         TSK = TWAT + 273.16  ! TSK = WATER TEMP
@@ -244,6 +257,7 @@
         PHBR = 0.03D0 * PHBA
 ! EFFECTIVE BACK RADIATION
         PHIB = PHBR + PHBW - PHBA
+        PHIB = COEF_PHIB*PHIB
 
 !  EVAPORATIVE HEAT FLUX AND CONVECTIVE HEAT FLUX
         AKN = 8.D0 + 0.35D0 * (TWAT - TAIR)
@@ -254,8 +268,10 @@
 !   HEAT TRANSFER BETWEEN ICE AND WATER IS CALCULATED USING HIW (FROM FHC)
         !   EVAPORATION
         PHIE = (1.56D0*AKN + 6.08D0 * VA) * (ES1-EA1)*4.1855D0/8.64D0
+        PHIE = COEF_PHIE*PHIE
         !  CONDUCTIVE HEAT TRANSFER
         PHIH = (AKN + 3.9D0*VA) * (TSK-TAK)*4.1855D0/8.64D0
+        PHIH = COEF_PHIH*PHIH
 
 !  HEAT TRANSFER DUE TO PRECIPITATION
 
@@ -295,6 +311,7 @@
             ENDIF
           ENDIF
         ENDIF
+        PHIP = COEF_PHIP*PHIP
 !
 !    SUMMATION AND OUTPUT /!\ this is now done outside in SOURCE_RICED2D
         SUMPH = PHPS - PHIB - PHIE - PHIH - PHIP

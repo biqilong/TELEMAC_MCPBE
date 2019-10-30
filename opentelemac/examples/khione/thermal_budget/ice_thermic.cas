@@ -18,7 +18,7 @@
 /  GENERAL INFORMATIONS - OUTPUTS
 /----------------------------------------------------
 /
- VARIABLES FOR GRAPHIC PRINTOUTS  = 'PHIH,PHIB'
+ VARIABLES FOR GRAPHIC PRINTOUTS  = 'PHPS, PHIB, PHIE, PHIH, PHIP'
 /
  GRAPHIC PRINTOUT PERIOD          = 1
  LISTING PRINTOUT PERIOD          = 1
@@ -31,22 +31,29 @@
 / INITIAL CONDITIONS              = PARTICULAR
 /
 /----------------------------------------------------------------------
-/  METEOROLOGY PARAMETERS ( ICE PROCESS = 2 )
+/  CST METEOROLOGY PARAMETERS
+/  (USE IF NO METEO.lqd IN T2D STEERING FILE)
 /----------------------------------------------------
 /
- AIR TEMPERATURE      = -10.0
- DEWPOINT TEMPERATURE =   0.0
- CLOUD COVER          =   0.0
- VISIBILITY           =   1.E9
+/ AIR TEMPERATURE      = -10.0
+/ DEWPOINT TEMPERATURE =   0.0
+/ CLOUD COVER          =   0.0
+/ VISIBILITY           =   1.E9
 /
- RAIN                 =   0.0
+/ RAIN                 =   0.0
 /
- WIND XY-COMPONENTS   =   5.;3.
- RELATIVE MODEL ELEVATION FROM MEAN SEA LEVEL = 80.
+/ WIND XY-COMPONENTS   =   0.;0.
+/ RELATIVE MODEL ELEVATION FROM MEAN SEA LEVEL = 0.
 /
 /----------------------------------------------------------------------
-/  PHYSICAL PROPERTIES
+/  CALIBRATION COEFFICIENT FOR HEAT EXCHANGES
 /----------------------------------------------------
+/
+ SOLAR CONSTANT = 1380.
+ COEFFICIENT FOR CALIBRATION OF BACK RADIATION = 1.
+ COEFFICIENT FOR CALIBRATION OF EVAPORATIVE HEAT TRANSFERT = 1.
+ COEFFICIENT FOR CALIBRATION OF CONDUCTIVE HEAT TRANSFERT = 1.
+ COEFFICIENT FOR CALIBRATION OF PRECIPITATION HEAT TRANSFERT = 1.
 /
 /----------------------------------------------------------------------
 /

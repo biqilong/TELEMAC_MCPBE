@@ -40,6 +40,8 @@
 !>@param[in,out] KS_TEL     Total bed roughness sent to telemac
 !>@param[in,out] MU         Correction factor for bed roughness
 !>@param[in]     NPOIN      Number of points
+!>@param[in]     THETAC     Current direction
+!>@param[in]     THETAW     Waves direction
 !>@param[in,out] TOB        Bed shear stress (total friction)
 !>@param[in,out] TOBW       Wave induced shear stress
 !>@param[in,out] TOBCW_MEAN Wave + current mean shear stress

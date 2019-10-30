@@ -18,16 +18,19 @@
 !>@param  [in,out]  CHARR_TEL  LOGICAL, BED LOAD OR NOT: Sent to TELEMAC-2D
 !>@param  [in]      CODE       NAME OF CALLING PROGRAMME (TELEMAC2D OR 3D)
 !>@param  [in]      DT_TEL     TIME STEP FROM TELEMAC
+!>@param  [in]      HW_TEL     SIGNIFICANT WAVE HEIGHT
 !>@param  [in,out]  KS_TEL     BED ROUGHNESS SENT TO TELEMAC
 !>@param  [in]      LISTCOUNT  PERIODE DE SORTIE LISTING
 !>@param  [in]      LOOPCOUNT  NUMERO DE L'ITERATION
-!>@param  [in]      UW_TEL     ORBITAL VELOCITY
-!>@param  [in]      STAGE       INTEGER, TO STATE WHICH PART OF THE SUBROUTINE
+!>@param  [in]      STAGE      INTEGER, TO STATE WHICH PART OF THE SUBROUTINE
 !!                             IS PASSED
 !>@param  [in,out]  SUSP_TEL   LOGICAL, SUSPENDED LOAD OR NOT: Sent to TELEMAC
 !>@param  [in]      T_TEL      CURRENT TIME IN CALLING PROGRAMME
+!>@param  [in]      THETAW_TEL WAVE DURECTION (DEG WRT OX AXIS)
+!>@param  [in]      TW_TEL     MEAN WAVE PERIOD
 !>@param  [in,out]  UETCAR     SQUARE OF THE FRICTION VELOCITY
 !!                             (COUPLING WITH TEL 3D)
+!>@param  [in]      UW_TEL     ORBITAL WAVE VELOCITY
 !>@param  [in]      V_TEL      V VELOCITY FROM TELEMAC
 !!                             IS DM1*GRAD(ZCONV), SEE SOLSYS.
 !>@param  [in,out]  ZF_TEL     BOTTOM ELEVATION OF THE CALLING TELEMAC
@@ -202,7 +205,7 @@
 !     TREATS THE BOUNDARY CONDITIONS
 !
       IF(DEBUG.GT.0) WRITE(LU,*) 'CONLIT_GAIA'
-      CALL CONLIT_GAIA(MESH%NBOR%I,AT0)
+      CALL CONLIT_GAIA
       IF(DEBUG.GT.0) WRITE(LU,*) 'END CONLIT_GAIA'
 !
 ! =======================================================================

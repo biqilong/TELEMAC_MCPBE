@@ -79,26 +79,21 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
-        # Comparison with the last time frame of the reference file.
-        self.check_epsilons('hllc_seq:T2DRES', 'f2d_stoker-hllc.slf',
-                            eps=[1e-1])
-
         # sequential parallel comparison
         self.check_epsilons('char_seq:T2DRES', 'char_par:T2DRES', eps=[10.])
         self.check_epsilons('nerd_seq:T2DRES', 'nerd_par:T2DRES', eps=[10.])
         self.check_epsilons('eria_seq:T2DRES', 'eria_par:T2DRES', eps=[10.])
-        self.check_epsilons('kin1_seq:T2DRES', 'kin1_par:T2DRES', eps=[1e-1])
-        self.check_epsilons('kin2_seq:T2DRES', 'kin2_par:T2DRES', eps=[1e-1])
-        self.check_epsilons('hllc_seq:T2DRES', 'hllc_par:T2DRES', eps=[1e-1])
+        self.check_epsilons('kin1_seq:T2DRES', 'kin1_par:T2DRES', eps=[1.])
+        self.check_epsilons('kin2_seq:T2DRES', 'kin2_par:T2DRES', eps=[1.])
 
         # verification of epsilon with analytic solution
-        self.check_epsilons('hllc_seq:T2DRES', 'hllc_seq:T2DRES',
+        self.check_epsilons('kin1_seq:T2DRES', 'kin1_seq:T2DRES',
                             var1='WATER DEPTH', var2='ANALYTIC SOL H',
                             eps=[1.])
-        self.check_epsilons('hllc_seq:T2DRES', 'hllc_seq:T2DRES',
+        self.check_epsilons('kin1_seq:T2DRES', 'kin1_seq:T2DRES',
                             var1='VELOCITY U', var2='ANALYTIC SOL U',
                             eps=[2.])
-        self.check_epsilons('hllc_seq:T2DRES', 'hllc_seq:T2DRES',
+        self.check_epsilons('kin1_seq:T2DRES', 'kin1_seq:T2DRES',
                             var1='VELOCITY V', var2='ANALYTIC SOL V',
                             eps=[2.])
 
@@ -114,8 +109,8 @@ class VnvStudy(AbstractVnvStudy):
         #======================================================================
         # GET TELEMAC RESULT FILES:
         #
-        geom_res, _ = self.get_study_res('hllc_seq:T2DGEO', load_bnd=True)
-        hllc_res, _ = self.get_study_res('hllc_seq:T2DRES')
+        geom_res, _ = self.get_study_res('kin1_seq:T2DGEO', load_bnd=True)
+        kin1_res, _ = self.get_study_res('kin1_seq:T2DRES')
 
         # Load all results as a list:
         res_list, res_labels = self.get_study_res(module='T2D', whitelist=['seq'])
@@ -136,7 +131,7 @@ class VnvStudy(AbstractVnvStudy):
         # Plot initial condition in slice plane:
         vnv_plot1d_polylines(\
             'WATER DEPTH',
-            hllc_res,
+            kin1_res,
             'initial water depth',
             fig_size=(5, 3),
             record=0,
@@ -149,25 +144,25 @@ class VnvStudy(AbstractVnvStudy):
         records = [0, 50, 100, 150, 200]
 
         for idx, record in enumerate(records):
-            time_label = 't={:.2f}'.format(hllc_res.times[record])
+            time_label = 't={:.2f}'.format(kin1_res.times[record])
 
             # Plot water depth at different times.
             vnv_plot1d_polylines(\
                 'WATER DEPTH',
-                hllc_res,
-                'HLLC',
+                kin1_res,
+                'KIN1',
                 record=record,
                 fig_size=(6, 5),
                 ref_name='ANALYTIC SOL H',
-                fig_name='img/t2d_stoker_hllc_depth_firstobs{}'.format(record),
+                fig_name='img/t2d_stoker_kin1_depth_firstobs{}'.format(record),
                 fig_title=time_label)
 
             vnv_plot2d(\
                 'WATER DEPTH',
-                hllc_res,
+                kin1_res,
                 record=record,
                 fig_size=(10, 3),
-                fig_name="img/t2d_stoker_hllc_depth2d_firstobs{}".format(record),
+                fig_name="img/t2d_stoker_kin1_depth2d_firstobs{}".format(record),
                 cbar_label='Water depth',
                 vmin=0.2,
                 vmax=1.,
@@ -179,21 +174,21 @@ class VnvStudy(AbstractVnvStudy):
             # Plot velocity at different times.
             vnv_plot1d_polylines(\
                 'VELOCITY U',
-                hllc_res,
-                'HLLC',
+                kin1_res,
+                'KIN1',
                 record=record,
                 fig_size=(6, 5),
                 ref_name='ANALYTIC SOL U',
-                fig_name='img/t2d_stoker_hllc_vel_firstobs{}'.format(record),
+                fig_name='img/t2d_stoker_kin1_vel_firstobs{}'.format(record),
                 fig_title=time_label)
 
             if idx > 0:
                 vnv_plot2d(\
                     'VELOCITY',
-                    hllc_res,
+                    kin1_res,
                     record=record,
                     fig_size=(10, 3),
-                    fig_name="img/t2d_stoker_hllc_vel2d_firstobs{}".format(record),
+                    fig_name="img/t2d_stoker_kin1_vel2d_firstobs{}".format(record),
                     fig_title=time_label,
                     cbar_label='Velocity norm',
                     vmin=0.,
@@ -215,7 +210,7 @@ class VnvStudy(AbstractVnvStudy):
         #----------------------------------------------------------------------
         # Accuracy of free surface (1D slice):
         for idx, record in enumerate(records):
-            time_label = 't={:.2f}'.format(hllc_res.times[record])
+            time_label = 't={:.2f}'.format(kin1_res.times[record])
 
             vnv_plot1d_polylines(\
                 'WATER DEPTH',
@@ -701,4 +696,4 @@ class VnvStudy(AbstractVnvStudy):
         for res in res_list:
             del res
         del geom_res
-        del hllc_res
+        del kin1_res

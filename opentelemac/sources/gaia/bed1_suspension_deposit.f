@@ -13,7 +13,6 @@
 !!        Update of mass bed evolution due to deposition.
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!>@param[in] CA    Bottom concentration [kg/m^3]
 !>@param[in] CODE  Hydrodynamic code in case of coupling
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !

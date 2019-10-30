@@ -20,6 +20,11 @@
 !+        V7P3
 !+   Initial implementation with heat fluxes as an example.
 !
+!history  F.SOUILLE (EDF)
+!+        30/09/2019
+!+        V8P0
+!+   Added new outputs
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| MNEMO          |<--| MNEMONIC FOR 'VARIABLES FOR GRAPHIC OUTPUTS'
 !| TEXTE          |<--| SEE ABOVE
@@ -53,7 +58,6 @@
         TEXTE (4 ) = 'EFFECTIVE SOLRAD[SI]            '
         TEXTE (5 ) = 'EVAPO HEAT FLUX [SI]            '
         TEXTE (6 ) = 'CONDUC HEAT FLUX[SI]            '
-!
         TEXTE (7 ) = 'FRAZIL THETA0   [SI]            '
         TEXTE (8 ) = 'FRAZIL THETA1   [SI]            '
         TEXTE (9 ) = 'REENTRAINMENT   [SI]            '
@@ -70,6 +74,7 @@
         TEXTE (20) = 'TOTAL ICE THICK.M               '
         TEXTE (21) = 'CHARACTERISTICS                 '      !   ICETYPE
         TEXTE (22) = 'DYNAMIC GROWTH  FRACTION OF AREA'      !       DWB
+        TEXTE (23) = 'PRECIP HEAT FLUX[SI]            '
 !
 ! TEXTPR IS USED TO READ PREVIOUS COMPUTATION FILES.
 ! IN GENERAL TEXTPR=TEXTE BUT YOU CAN FOLLOW UP A COMPUTATION
@@ -82,7 +87,6 @@
         TEXTPR(4 ) = 'EFFECTIVE SOLRAD[SI]            '
         TEXTPR(5 ) = 'EVAPO HEAT FLUX [SI]            '
         TEXTPR(6 ) = 'CONDUC HEAT FLUX[SI]            '
-!
         TEXTPR(7 ) = 'FRAZIL THETA0   [SI]            '
         TEXTPR(8 ) = 'FRAZIL THETA1   [SI]            '
         TEXTPR(9 ) = 'REENTRAINMENT   [SI]            '
@@ -99,6 +103,7 @@
         TEXTPR(20) = 'TOTAL ICE THICK.M               '
         TEXTPR(21) = 'CHARACTERISTICS                 '
         TEXTPR(22) = 'DYNAMIC GROWTH  FRACTION OF AREA'
+        TEXTE (23) = 'PRECIP HEAT FLUX[SI]            '
 !
 !-----------------------------------------------------------------------
 !
@@ -112,7 +117,6 @@
         TEXTE (4 ) = 'EFFECTIVE SOLRAD[SI]            '
         TEXTE (5 ) = 'EVAPO HEAT FLUX [SI]            '
         TEXTE (6 ) = 'CONDUC HEAT FLUX[SI]            '
-!
         TEXTE (7 ) = 'FRAZIL THETA0   [SI]            '
         TEXTE (8 ) = 'FRAZIL THETA1   [SI]            '
         TEXTE (9 ) = 'REENTRAINMENT   [SI]            '
@@ -129,6 +133,7 @@
         TEXTE (20) = 'TOTAL ICE THICK.M               '
         TEXTE (21) = 'CARACTERISTIQUES                '
         TEXTE (22) = 'DYNAMIC GROWTH  FRACTION OF AREA'
+        TEXTE (23) = 'PRECIP HEAT FLUX[SI]            '
 !
 ! TEXTPR SERT A LA LECTURE DES FICHIERS DE CALCULS PRECEDENTS
 ! A PRIORI TEXTPR=TEXTE MAIS ON PEUT ESSAYER DE FAIRE UNE SUITE
@@ -140,7 +145,6 @@
         TEXTPR(4 ) = 'EFFECTIVE SOLRAD[SI]            '
         TEXTPR(5 ) = 'EVAPO HEAT FLUX [SI]            '
         TEXTPR(6 ) = 'CONDUC HEAT FLUX[SI]            '
-!
         TEXTPR(7 ) = 'FRAZIL THETA0   [SI]            '
         TEXTPR(8 ) = 'FRAZIL THETA1   [SI]            '
         TEXTPR(9 ) = 'REENTRAINMENT   [SI]            '
@@ -157,6 +161,7 @@
         TEXTPR(20) = 'TOTAL ICE THICK.M               '
         TEXTPR(21) = 'CARACTERISTIQUES                '
         TEXTPR(22) = 'DYNAMIC GROWTH  FRACTION OF AREA'
+        TEXTE (23) = 'PRECIP HEAT FLUX[SI]            '
 !
       ENDIF
 !
@@ -214,9 +219,11 @@
 !
       MNEMO(22)  = 'COV_DYN '
 !
+      MNEMO(23)   = 'PHIP    '
+!
 !     THE LAST RANK
 !
-      ILAST = 22
+      ILAST = 23
       INEXT = ILAST+1
 !
 !-----------------------------------------------------------------------
