@@ -12,6 +12,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
+      USE COUPLE_MOD
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_TOMAWAC
       USE INTERFACE_TOMAWAC, EX_WAC_INIT => WAC_INIT
@@ -206,6 +207,23 @@
       DO IP=1,NPOIN2
         DZHDT(IP)=0.D0
       ENDDO
+
+!      RECEIVE DATA FROM TELEMAC
+!                                                       WAC2
+      IF ((PART.EQ.0).AND.INCLUS(COUPLING,'TOMAWAC2')) THEN
+        CALL RECEIVE_COUPLE(1,NPOIN2,NVARTEL2TOM,TEL2TOM)
+        CPL_WAC_DATA%U_TEL => U_TEL
+        CPL_WAC_DATA%V_TEL => V_TEL
+        CPL_WAC_DATA%H_TEL => H_TEL
+        CPL_WAC_DATA%FX_WAC => FX_WAC
+        CPL_WAC_DATA%FY_WAC => FY_WAC
+        CPL_WAC_DATA%UV_WAC => UV_WAC
+        CPL_WAC_DATA%VV_WAC => VV_WAC
+        CPL_WAC_DATA%DIRMOY_TEL => DIRMOY_TEL
+        CPL_WAC_DATA%HM0_TEL => HM0_TEL
+        CPL_WAC_DATA%TPR5_TEL => TPR5_TEL
+        CPL_WAC_DATA%ORBVEL_TEL => ORBVEL_TEL
+      ENDIF
 !
       IF(SUIT) THEN
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE LECSUI'
@@ -444,6 +462,11 @@
 !
 !     CASE OF TRIPLE COUPLING, INITIAL CONDITIONS
 !
+!                                                       WAC2
+      IF (INCLUS(COUPLING,'TOMAWAC2')) THEN
+        CALL OS('X=0     ',X=FX_WAC)
+        CALL OS('X=0     ',X=FY_WAC)
+      ENDIF
       IF ((INCLUS(COUPLING,'SISYPHE').OR.INCLUS(COUPLING,'GAIA'))
      &  .AND.PART.EQ.WAC_CPL_INIT) THEN
 !       3 VARIABLES THAT WILL BE TRANSMITTED TO SISYPHE OR GAIA

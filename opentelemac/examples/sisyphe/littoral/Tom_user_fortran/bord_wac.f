@@ -62,8 +62,8 @@
 !
       DO IFF=1,NF
         DO IPLAN=1,NPLAN
-          DUMMY(IPLAN,IFF) = P_DMAX(DUMMY(IPLAN,IFF))+
-     &                       P_DMIN(DUMMY(IPLAN,IFF))
+          DUMMY(IPLAN,IFF) = P_DMAX(DUMMY(IPLAN,IFF))
+!     &                    + P_DMIN(DUMMY(IPLAN,IFF))
         ENDDO
       ENDDO
 !

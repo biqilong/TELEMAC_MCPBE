@@ -1,0 +1,41 @@
+/----------------------------------------------------------------------
+/
+/ This case validates the effect of ice cover on the hydrodynamics
+/    in a long flume.
+/
+/ Setting up a steady state hydrodynamics for use as continuation file
+/
+/ Steering file for the hydrodynamics: WAQTEL
+/
+/----------------------------------------------------------------------
+/  FILES
+/----------------------------------------------------
+/
+ GEOMETRY FILE                = 'geo_longflume.slf'
+ BOUNDARY CONDITIONS FILE     = 'geo_longflume.cli'
+/
+/----------------------------------------------------------------------
+/  THERMAL PARAMETERS ( WATER QUALITY PROCESS = 1 )
+/----------------------------------------------------
+/
+ WATER DENSITY                 = 1000.
+ KINEMATIC WATER VISCOSITY     = 1.E-6
+ DISPERSION ALONG THE FLOW     = 1.E-2
+ DISPERSION ACROSS THE FLOW    = 1.E-2
+/ 3: MODEL BASED ON A LINEAR APPROACH TO HEAT EXCHANGE WITH THE
+/    SURFACE WATER (WITH THE SOLAR CONSTANT SET TO ZERO)
+ ATMOSPHERE-WATER EXCHANGE MODEL = 0
+/
+ COEFFICIENT TO CALIBRATE THE ATMOSPHERE-WATER EXCHANGE MODEL = 0.0025
+/
+/ THERMIC PROCESS
+/
+ WATER SPECIFIC HEAT                                = 4180.
+ AIR SPECIFIC HEAT                                  = 1002.
+/ COEFFICIENTS OF AERATION FORMULA                   = 0.0025;0.0025
+ COEFFICIENT OF CLOUDING RATE                       = 0.2
+ COEFFICIENTS FOR CALIBRATING ATMOSPHERIC RADIATION = 0.85
+ COEFFICIENTS FOR CALIBRATING SURFACE WATER RADIATION = 0.97
+/
+/----------------------------------------------------------------------
+/

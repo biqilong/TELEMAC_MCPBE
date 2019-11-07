@@ -38,7 +38,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_island.slf',
-                            eps=[])
+                            eps=[1.E-8])
 
 
     def _post(self):

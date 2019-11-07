@@ -57,6 +57,9 @@ def check_python_rank_tags(py_file, options):
     try:
         # Code foor Python 3.5+
         import importlib.util
+        import sys
+        # This allow Python script decalared in the example folder to be loaded
+        sys.path.append(val_dir)
         spec = importlib.util.spec_from_file_location("vnv_module", py_file)
         vnv_stuff = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(vnv_stuff)
@@ -116,6 +119,9 @@ def check_python_rank_tags(py_file, options):
         print('     > nothing to do here (tag):')
         print('       File tags: {}'.format(';'.join(tags)))
         print('       Options tags: {}'.format(options.tags))
+
+    # Cleaning up sys.path
+    sys.path.remove(val_dir)
 
     return tags_ok and rank_ok
 
@@ -204,6 +210,9 @@ def run_python(py_file, options, report, xcpts):
         try:
             # Code foor Python 3.5+
             import importlib.util
+            # This allow Python script decalared in the example folder to be loaded
+            import sys
+            sys.path.append(val_dir)
             spec = importlib.util.spec_from_file_location("vnv_module", py_file)
             vnv_stuff = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(vnv_stuff)
@@ -260,6 +269,9 @@ def run_python(py_file, options, report, xcpts):
             for action, actions in my_vnv_study.action_time.items():
                 report.add_action(abs_py_file, my_vnv_study.rank,
                                   action, actions[1], actions[0])
+    # Cleaning up sys.path
+    if val_dir in sys.path:
+        sys.path.remove(val_dir)
 
 
 def run_validation_notebooks(options, report, xcpts):

@@ -435,6 +435,7 @@ files: bief_def.f
   read_partel_info.f
   leclim.f
   proxim.f
+  couple_mod.F
 
 [damocles]
 path: <root>|sources|utils|damocles

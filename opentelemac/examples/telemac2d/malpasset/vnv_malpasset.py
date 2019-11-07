@@ -686,8 +686,8 @@ class VnvStudy(AbstractVnvStudy):
             annotate=True)
 
         #======================================================================
-        # Delete results
+        # Closing files
+        geo.close()
+        kin1_res.close()
         for res in res_list:
-            del res
-        del geo
-        del kin1_res
+            res.close()

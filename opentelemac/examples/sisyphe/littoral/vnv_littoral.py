@@ -16,7 +16,7 @@ class VnvStudy(AbstractVnvStudy):
         Defines the general parameter
         """
         self.rank = 0
-        self.tags = ['telemac2d', 'sisyphe', 'tomawac', 'fortrandebug', 'nagdebug']
+        self.tags = ['telemac2d', 'sisyphe', 'tomawac']
 
     def _pre(self):
         """
@@ -36,6 +36,35 @@ class VnvStudy(AbstractVnvStudy):
         self.add_study('vnv_2',
                        'telemac2d',
                        't2d_littoral_par.cas',
+                       cas=cas)
+        del cas
+
+        # littoral T2D+TOM+SIS tel2tom 'scalar' en fait 2 proc mode
+        self.add_study('vnv_3',
+                       'telemac2d',
+                       't2d_tel2tom_same.cas')
+        
+        cas = TelemacCas('t2d_tel2tom_same.cas', get_dico('telemac2d'))
+        cas.set('PARALLEL PROCESSORS', 4)
+
+        self.add_study('vnv_4',
+                       'telemac2d',
+                       't2d_tel2tom_same_par.cas',
+                       cas=cas)
+
+        del cas
+        
+        # littoral T2D+TOM+SIS tel2tom2 'scalar' en fait 2 proc mode
+        self.add_study('vnv_5',
+                       'telemac2d',
+                       't2d_tel2tom_different.cas')
+        
+        cas = TelemacCas('t2d_tel2tom_different.cas', get_dico('telemac2d'))
+        cas.set('PARALLEL PROCESSORS', 4)
+
+        self.add_study('vnv_6',
+                       'telemac2d',
+                       't2d_tel2tom_different_par.cas',
                        cas=cas)
 
         del cas
@@ -92,6 +121,98 @@ class VnvStudy(AbstractVnvStudy):
                             'vnv_2:WACRES',
                             eps=[1e-9])
 
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_3:SISRES',
+                            'ref_sis_littoral.slf',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_4:SISRES',
+                            'ref_sis_littoral.slf',
+                            eps=[1e-9])
+
+        # Comparison between sequential and parallel run.
+        self.check_epsilons('vnv_3:SISRES',
+                            'vnv_4:SISRES',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_3:T2DRES',
+                            'ref_t2d_littoral.slf',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_4:T2DRES',
+                            'ref_t2d_littoral.slf',
+                            eps=[1e-9])
+
+        # Comparison between sequential and parallel run.
+        self.check_epsilons('vnv_3:T2DRES',
+                            'vnv_4:T2DRES',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_3:WACRES',
+                            'ref_tom_littoral.slf',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_4:WACRES',
+                            'ref_tom_littoral.slf',
+                            eps=[1e-9])
+
+        # Comparison between sequential and parallel run.
+        self.check_epsilons('vnv_3:WACRES',
+                            'vnv_4:WACRES',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_5:SISRES',
+                            'ref_sis_different.slf',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_6:SISRES',
+                            'ref_sis_different.slf',
+                            eps=[2e-2])
+
+        # Comparison between sequential and parallel run.
+        self.check_epsilons('vnv_5:SISRES',
+                            'vnv_6:SISRES',
+                            eps=[2e-2])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_5:T2DRES',
+                            'ref_t2d_different.slf',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_6:T2DRES',
+                            'ref_t2d_different.slf',
+                            eps=[2e-2])
+
+        # Comparison between sequential and parallel run.
+        self.check_epsilons('vnv_5:T2DRES',
+                            'vnv_6:T2DRES',
+                            eps=[2e-2])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_5:WACRES',
+                            'ref_tom_different.slf',
+                            eps=[1e-9])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_6:WACRES',
+                            'ref_tom_different.slf',
+                            eps=[2e-1])
+
+        # Comparison between sequential and parallel run.
+        self.check_epsilons('vnv_5:WACRES',
+                            'vnv_6:WACRES',
+                            eps=[2e-1])
+
+
+        
 
     def _post(self):
         """
@@ -107,6 +228,20 @@ class VnvStudy(AbstractVnvStudy):
         res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
         vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
+
+        vnv_3_wacres = self.get_study_file('vnv_3:WACRES')
+        res_vnv_3_wacres = TelemacFile(vnv_3_wacres)
+        vnv_3_sisres = self.get_study_file('vnv_3:SISRES')
+        res_vnv_3_sisres = TelemacFile(vnv_3_sisres)
+        vnv_3_t2dres = self.get_study_file('vnv_3:T2DRES')
+        res_vnv_3_t2dres = TelemacFile(vnv_3_t2dres)
+
+        vnv_5_wacres = self.get_study_file('vnv_5:WACRES')
+        res_vnv_5_wacres = TelemacFile(vnv_5_wacres)
+        vnv_5_sisres = self.get_study_file('vnv_5:SISRES')
+        res_vnv_5_sisres = TelemacFile(vnv_5_sisres)
+        vnv_5_t2dres = self.get_study_file('vnv_5:T2DRES')
+        res_vnv_5_t2dres = TelemacFile(vnv_5_t2dres)
 
         #Plotting mesh
         vnv_plot2d('',
@@ -141,9 +276,64 @@ class VnvStudy(AbstractVnvStudy):
                    filled_contours=True,
                    fig_size=(12, 7),
                    fig_name='img/resultsTOM')
+        
+        # Plotting VELOCITY U at -1
+        vnv_plot2d('VELOCITY U',
+                   res_vnv_3_t2dres,
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/resultsTEL2TOM')
+
+
+        # Plotting BED SHEAR STRESS at -1
+        vnv_plot2d('BED SHEAR STRESS',
+                   res_vnv_3_sisres,
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/resultsSISTEL2TOM')
+
+
+        # Plotting WAVE HEIGHT HM0 at -1
+        vnv_plot2d('WAVE HEIGHT HM0',
+                   res_vnv_3_wacres,
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/resultsTOM2TEL')
+        # Plotting VELOCITY U at -1
+        
+        vnv_plot2d('VELOCITY U',
+                   res_vnv_5_t2dres,
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/resultsTEL2TOMdiff')
+
+
+        # Plotting BED SHEAR STRESS at -1
+        vnv_plot2d('BED SHEAR STRESS',
+                   res_vnv_5_sisres,
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/resultsSISTEL2TOMdiff')
+
+
+        # Plotting WAVE HEIGHT HM0 at -1
+        vnv_plot2d('WAVE HEIGHT HM0',
+                   res_vnv_5_wacres,
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(12, 7),
+                   fig_name='img/resultsTOM2TELdiff')
 
         # Closing files
         res_vnv_1_wacres.close()
         res_vnv_1_sisres.close()
         res_vnv_1_t2dgeo.close()
         res_vnv_1_t2dres.close()
+        res_vnv_3_wacres.close()
+        res_vnv_3_sisres.close()
+        res_vnv_3_t2dres.close()

@@ -49,38 +49,33 @@ class VnvStudy(AbstractVnvStudy):
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:SISRES',
-                            'vnv_1:SISRES',
-                            eps=[])
-
-        # Comparison with the last time frame of the reference file.
-        self.check_epsilons('vnv_1:SISRES',
                             'fis_bosse-t2d.slf',
-                            eps=[])
+                            eps=[4.E-5])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:SISRES',
                             'fis_bosse-t2d.slf',
-                            eps=[])
+                            eps=[4.E-5])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:SISRES',
                             'vnv_2:SISRES',
-                            eps=[])
+                            eps=[4.E-5])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_bosse-t2d.slf',
-                            eps=[])
+                            eps=[2.E-5])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_bosse-t2d.slf',
-                            eps=[])
+                            eps=[2.E-5])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',
                             'vnv_2:T2DRES',
-                            eps=[])
+                            eps=[2.E-5])
 
 
     def _post(self):

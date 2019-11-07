@@ -27,7 +27,7 @@
  LISTING PRINTOUT PERIOD          = 600
  MASS-BALANCE                     = YES
  TIME STEP                        = 1.
- NUMBER OF TIME STEPS             = 14400
+ NUMBER OF TIME STEPS             = 7200
  INFORMATION ABOUT SOLVER         = YES
 /
 /----------------------------------------------------------------------
@@ -48,9 +48,9 @@
 /  BOUNDARY CONDITIONS
 /----------------------------------------------------
 /
- PRESCRIBED FLOWRATES          = -5.0  ;  5.0
- PRESCRIBED ELEVATIONS         =  2.5  ;  2.5
- VELOCITY PROFILES             =  4    ;  4
+ PRESCRIBED FLOWRATES          = -10.0  ;  10.0
+ PRESCRIBED ELEVATIONS         =  2.5   ;  2.5
+ VELOCITY PROFILES             =  4     ;  4
 /
  CONTINUITY CORRECTION         = YES
 / OPTION FOR LIQUID BOUNDARIES  =  2    ;  1
@@ -81,15 +81,15 @@
 /
  FREE SURFACE GRADIENT COMPATIBILITY   = 0.9
  IMPLICITATION FOR DEPTH               = 0.6
- IMPLICITATION FOR VELOCITY            = 1.0      /!\ modified !
+ IMPLICITATION FOR VELOCITY            = 0.6
 /
  MASS-LUMPING ON H = 1
  H CLIPPING = YES
 / MINIMUM VALUE OF DEPTH = 0.001
 /
  SOLVER = 2
- SOLVER ACCURACY                         = 1.E-8  /!\ added !
- MAXIMUM NUMBER OF ITERATIONS FOR SOLVER = 250    /!\ added !
+ SOLVER ACCURACY                         = 1.E-8
+ MAXIMUM NUMBER OF ITERATIONS FOR SOLVER = 250
 /
 /----------------------------------------------------------------------
 /

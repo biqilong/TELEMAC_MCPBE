@@ -129,7 +129,7 @@
           IF(SEDTYPE.EQ.'CO') THEN
             WRITE(CHAR2,'(I2)') ICO
             ICO = ICO + 1
-            CALL ADDTRACER(NAMETRAC,NTRAC,K,
+            CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
      &                       'SEDIMENT COH' //ADJUSTL(CHAR2)//'  ',
      &                       'COH SEDIMENT' //ADJUSTL(CHAR2)//'  ',
      &                       'g/l             ')
@@ -137,7 +137,7 @@
             IF(SUSP) THEN
               WRITE(CHAR2,'(I2)') INCO
               INCO = INCO + 1
-              CALL ADDTRACER(NAMETRAC,NTRAC,K,
+              CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
      &                       'SEDIMENT NCOH' //ADJUSTL(CHAR2)//' ',
      &                       'NCOH SEDIMENT' //ADJUSTL(CHAR2)//' ',
      &                       'g/l             ')

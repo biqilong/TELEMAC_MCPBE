@@ -91,19 +91,19 @@
 !    &                             * (1-0.001/H%R(IPOIN))/DNUVIV)
 !       ENDIF 
 
-        KL_CAP(IPOIN) = GAMMA_F*(1+OMG1)*(1.0D-6/SHR_G(IPOIN))
+        KL_CAP(IPOIN) = GAMMA_F*(1+OMG1)*(1.D-6/SHR_G(IPOIN))
      &         **0.5D0/NC2(IPOIN)**(1.D0/FRACDIM_MEG)
-        DIN(IPOIN) = 2.0D-3
+        DIN(IPOIN) = 2.D-3
 
         IF(BIOGR_MAX .NE. 0) THEN
           BIOGR(IPOIN) = BIOGR_MAX*DIN(IPOIN)/(DIN(IPOIN)+DIN_HS)
 !         DT IN GAIA CAN BE DIFFERENT FROM DT_TEL IF MORFAC IS APPLIED
           FLOCMIC_DIA%R(IPOIN) = FLOCMIC_DIA%R(IPOIN)
-     &                      +DT*BIOGR(IPOIN)*FLOCMIC_DIA%R(IPOIN)
-     &                      *(1.D0-FLOCMIC_DIA%R(IPOIN)/KL_CAP(IPOIN))
+     &                   +DT*BIOGR(IPOIN)* FLOCMIC_DIA%R(IPOIN) 
+     &                   *(1-FLOCMIC_DIA%R(IPOIN)/KL_CAP(IPOIN))
         END IF 
 
-        FLOCMIC_VOL=(1.D0/6.D0)*3.14159D0*FLOCMIC_DIA%R(IPOIN)**3.D0
+        FLOCMIC_VOL=(1.D0/6.D0)*PI*FLOCMIC_DIA%R(IPOIN)**3.D0
 
         CNUM_P(IPOIN) = 
      &         TA%ADR(IMICFLC)%P%R(IPOIN)/(FLOCMIC_VOL*FLOCMIC_DEN)
@@ -133,34 +133,34 @@
 !       COLLISION FREQUENCY  
         BETA_PP(IPOIN) = (1.D0/6.D0)*(FLOCMIC_DIA%R(IPOIN) 
      &                  +FLOCMIC_DIA%R(IPOIN))**3.D0*SHR_G(IPOIN) ! TURBULENT SHEAR
-     &                  +2.D0*KBOLZ*TEMPSTD/(3.D0*VMU)*4.0D0      ! BROWIAN MOTION
+     &                  +2.D0*KBOLZ*TEMPSTD/(3.D0*VMU)*4.D0       ! BROWIAN MOTION
             
         BETA_PF1(IPOIN) = (1.D0/6.D0)*(FLOCMIC_DIA%R(IPOIN)
-     &           +FLOCMAC_DIA%R(IPOIN))**3.0D0*SHR_G(IPOIN)     ! TURBULENT SHEAR
+     &           +FLOCMAC_DIA%R(IPOIN))**3.D0*SHR_G(IPOIN)      ! TURBULENT SHEAR
      &           +2.D0*KBOLZ*TEMPSTD/(3.D0*VMU)                 ! BROWIAN MOTION
      &           *(1.D0/FLOCMIC_DIA%R(IPOIN)+1.D0/FLOCMAC_DIA%R(IPOIN))
-     &           *(FLOCMIC_DIA%R(IPOIN)+FLOCMAC_DIA%R(IPOIN))**2.0D0
-     &     +3.1415926/4.0D0*(FLOCMIC_DIA%R(IPOIN)+FLOCMAC_DIA%R(IPOIN))
-     &           *ABS(WCHU_P-WCHU_F1)                           ! DIFFERENTIAL SETTLING
+     &           *(FLOCMIC_DIA%R(IPOIN)+FLOCMAC_DIA%R(IPOIN))
+     &           +PI/4.D0*(FLOCMIC_DIA%R(IPOIN)+FLOCMAC_DIA%R(IPOIN))
+     &           **2.D0*ABS(WCHU_P-WCHU_F1)                     ! DIFFERENTIAL SETTLING
             
         BETA_PF2(IPOIN) = (1.D0/6.D0)*(FLOCMIC_DIA%R(IPOIN)
-     &           +FLOCMEG_DIA%R(IPOIN))**3.0D0*SHR_G(IPOIN)
+     &           +FLOCMEG_DIA%R(IPOIN))**3.D0*SHR_G(IPOIN)
      &           +2.D0*KBOLZ*TEMPSTD/(3.D0*VMU)
      &           *(1.D0/FLOCMIC_DIA%R(IPOIN)+1.D0/FLOCMEG_DIA%R(IPOIN))
      &           *(FLOCMIC_DIA%R(IPOIN)+FLOCMEG_DIA%R(IPOIN))
-     &     +3.1415926/4.0D0*(FLOCMIC_DIA%R(IPOIN)+FLOCMEG_DIA%R(IPOIN))
-     &           **2.0D0*ABS(WCHU_P-WCHU_F2)
+     &           +PI/4.D0*(FLOCMIC_DIA%R(IPOIN)+FLOCMEG_DIA%R(IPOIN))
+     &           **2.D0*ABS(WCHU_P-WCHU_F2)
             
         BETA_F1F1(IPOIN) = SHR_G(IPOIN)*(1.D0/6.D0)
      &      *(FLOCMAC_DIA%R(IPOIN)+FLOCMAC_DIA%R(IPOIN))**3.D0
-     &      +2.D0*KBOLZ*TEMPSTD/(3.D0*VMU)*4.D0  
+     &      +2.D0*KBOLZ*TEMPSTD/(3.D0*VMU)*4.D0
             
         BETA_F1F2(IPOIN) = SHR_G(IPOIN)*(1.D0/6.D0)
      &      *(FLOCMAC_DIA%R(IPOIN)+FLOCMEG_DIA%R(IPOIN))**3.D0
      &      +2.D0*KBOLZ*TEMPSTD/(3.D0*VMU)
      &      *(1.D0/FLOCMAC_DIA%R(IPOIN)+1.D0/FLOCMEG_DIA%R(IPOIN))
-     &      *(FLOCMAC_DIA%R(IPOIN)+FLOCMEG_DIA%R(IPOIN))+3.1415926/4.D0
      &      *(FLOCMAC_DIA%R(IPOIN)+FLOCMEG_DIA%R(IPOIN))
+     &      +PI/4.D0*(FLOCMAC_DIA%R(IPOIN)+FLOCMEG_DIA%R(IPOIN))
      &      **2.D0*ABS(WCHU_F1-WCHU_F2)
             
         BETA_F2F2(IPOIN) = SHR_G(IPOIN)*(1.D0/6.D0)
@@ -173,17 +173,17 @@
      &                  -FLOCMIC_DIA%R(IPOIN))/FLOCMIC_DIA%R(IPOIN))
      &                  **(3.D0-FRACDIM_MAC)*(VMU*SHR_G(IPOIN)
      &                  *FLOCMAC_DIA%R(IPOIN)**2.D0/BRK_FY)
-     &                  **BRK_Q
-!    &                  **(C1+C2*FLOCMAC_DIA%R(IPOIN)/((VMU*1.D-3)
-!    &                  **3.D0/EP%R(IPOIN))**0.25D0)
+   !   &                  **BRK_Q
+     &                  **(C1+C2*FLOCMAC_DIA%R(IPOIN)/((VMU*1.D-3)
+     &                  **3.D0/EP%R(IPOIN))**0.25D0)
 
         BRK_SH2(IPOIN) = BRK_EFF*SHR_G(IPOIN)*((FLOCMEG_DIA%R(IPOIN)
      &                  -FLOCMIC_DIA%R(IPOIN))/FLOCMIC_DIA%R(IPOIN))
      &                  **(3.D0-FRACDIM_MEG)*(VMU*SHR_G(IPOIN)
      &                  *FLOCMEG_DIA%R(IPOIN)**2.D0/BRK_FY)
-     &                  **BRK_Q
-!    &                  **(C1+C2*FLOCMEG_DIA%R(IPOIN)/((VMU*1.D-3)
-!    &                  **3.D0/EP%R(IPOIN))**0.25D0)
+   !   &                  **BRK_Q
+     &                  **(C1+C2*FLOCMEG_DIA%R(IPOIN)/((VMU*1.D-3)
+     &                  **3.D0/EP%R(IPOIN))**0.25D0)
         
 !       CALCULATE THE AGGREGATION AND BREAKAGE KERNELS
         ABSS_P(IPOIN) = -0.5D0*AGG_ALPHA*BETA_PP(IPOIN)
@@ -220,22 +220,22 @@
           ABSS_F2(IPOIN) = 0.5D0*AGG_ALPHA*BETA_F1F1(IPOIN)
      &      *CNUM_F1(IPOIN)*CNUM_F1(IPOIN)/(NC2(IPOIN)/NC1(IPOIN)-1.D0)
      &      -0.5D0*AGG_ALPHA*BETA_F2F2(IPOIN)
-     &      *CNUM_F2(IPOIN)*CNUM_F2(IPOIN)      
-     &      +(BRK_K3-1.D0)* BRK_SH2(IPOIN)*CNUM_F2(IPOIN)       
+     &      *CNUM_F2(IPOIN)*CNUM_F2(IPOIN)
+     &      +(BRK_K3-1.D0)*BRK_SH2(IPOIN)*CNUM_F2(IPOIN)
         ENDIF
 
         ABSS_T2(IPOIN) = AGG_ALPHA*BETA_PF2(IPOIN)
      &                 *CNUM_P(IPOIN)*CNUM_F2(IPOIN)
      &                 +0.5D0*AGG_ALPHA*BETA_F1F1(IPOIN)
      &                 *CNUM_F1(IPOIN)*CNUM_F1(IPOIN)
-     &                 *NC2(IPOIN)/(NC2(IPOIN)/NC1(IPOIN)-1.0D0)
+     &                 *NC2(IPOIN)/(NC2(IPOIN)/NC1(IPOIN)-1.D0)
      &                 +NC1(IPOIN)*AGG_ALPHA*BETA_F1F2(IPOIN)
      &                 *CNUM_F1(IPOIN)*CNUM_F2(IPOIN)
      &                 -(1.D0-BRKFRAC_F2)*NC2(IPOIN)
      &                 *BRK_SH2(IPOIN)*CNUM_F2(IPOIN)
 
         S0TA%ADR(IMICFLC)%P%R(IPOIN) = MAX(
-     &                       ABSS_P (IPOIN)*FLOCMIC_VOL*FLOCMIC_DEN,
+     &                       ABSS_P(IPOIN)*FLOCMIC_VOL*FLOCMIC_DEN,
      &                       -TA%ADR(IMICFLC)%P%R(IPOIN)/DT)
         S0TA%ADR(IMACFLC)%P%R(IPOIN) = MAX(
      &                       ABSS_F1(IPOIN)*FLOCMIC_VOL*FLOCMIC_DEN,
@@ -249,7 +249,7 @@
         S0TA%ADR(IMICF_MEGF)%P%R(IPOIN) = MAX(
      &                       ABSS_T2(IPOIN)*FLOCMIC_VOL*FLOCMIC_DEN,
      &                       -TA%ADR(IMICF_MEGF)%P%R(IPOIN)/DT)
-      
+
       ENDDO
 
 

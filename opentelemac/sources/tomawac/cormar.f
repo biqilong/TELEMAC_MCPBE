@@ -2,7 +2,7 @@
                      SUBROUTINE CORMAR
 !                    *****************
 !
-     &( PART, U_TEL, V_TEL, H_TEL )
+     &( PART, UTEL, VTEL, HTEL )
 !
 !***********************************************************************
 ! TOMAWAC   V7P3                                   27/07/2017
@@ -49,7 +49,7 @@
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| AT             |-->| COMPUTATION TIME
-!| H_TEL          |-->| TELEMAC WATER DEPTH
+!| HTEL          |-->| TELEMAC WATER DEPTH
 !| LT             |-->| NUMBER OF THE TIME STEP CURRENTLY SOLVED
 !| NVCOU          |<--| NUMBER OF VARIABLES OF THE FORMATTED CURRENT FILE
 !| NVHMA          |<--| N.OF VARIABLES OF THE FORMATTED WATER LEVEL FILE
@@ -58,8 +58,8 @@
 !| TC2            |<--| TIME T2 IN THE CURRENT FILE
 !| TM1            |<--| TIME T1 IN THE WATER LEVEL FILE
 !| TM2            |<--| TIME T2 IN THE WATER LEVEL FILE
-!| U_TEL          |-->| X-AXIS TELEMAC CURRENT SPEED
-!| V_TEL          |-->| Y-AXIS TELEMAC CURRENT SPEED
+!| UTEL          |-->| X-AXIS TELEMAC CURRENT SPEED
+!| VTEL          |-->| Y-AXIS TELEMAC CURRENT SPEED
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
@@ -75,7 +75,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER, INTENT(IN)        :: PART
-      TYPE(BIEF_OBJ), INTENT(IN) :: U_TEL,V_TEL,H_TEL
+      TYPE(BIEF_OBJ), INTENT(IN) :: UTEL,VTEL,HTEL
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -115,8 +115,8 @@
       ENDIF
 !
       IF(PART.EQ.WAC_CPL_RUN) THEN
-        CALL OV('X=Y     ', X=UC, Y=U_TEL%R, DIM1=NPOIN2)
-        CALL OV('X=Y     ', X=VC, Y=V_TEL%R, DIM1=NPOIN2)
+        CALL OV('X=Y     ', X=UC, Y=UTEL%R, DIM1=NPOIN2)
+        CALL OV('X=Y     ', X=VC, Y=VTEL%R, DIM1=NPOIN2)
       ENDIF
 !
 !     UPDATES THE WATER DEPTH AT TIME 'AT' IF NOT FOUND IN CURRENT FILE
@@ -152,10 +152,10 @@
 !       water depth time gradient is updated
 !       SDEPTH has still water depth values of the previous time step)
         DO IP=1,NPOIN2
-          DZHDT(IP)=(H_TEL%R(IP)-DEPTH(IP))/(NIT*DT)
+          DZHDT(IP)=(HTEL%R(IP)-DEPTH(IP))/(NIT*DT)
         ENDDO
 !       water depth is updated
-        CALL OV('X=Y     ', X=DEPTH, Y=H_TEL%R, DIM1=NPOIN2)
+        CALL OV('X=Y     ', X=DEPTH, Y=HTEL%R, DIM1=NPOIN2)
       ENDIF
 !
 !     UPDATES THE CURRENT AND WATER DEPTH GRADIENTS AT TIME 'AT'

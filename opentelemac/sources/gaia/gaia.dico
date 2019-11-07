@@ -2910,9 +2910,9 @@ COMPORT =
 'DISPLAY %SUSPENSION% = OUI'
 NIVEAU = 2
 AIDE =
-'Contrainte critique de depot (m/s)'
+'Contrainte critique de depot (Pa)'
 AIDE1 =
-'Critical shear stress for deposition (m/s)'
+'Critical shear stress for deposition (Pa)'
 /
 NOM = 'CONSTANTE DE PARTHENIADES PAR COUCHE'
 NOM1 = 'LAYERS PARTHENIADES CONSTANT'

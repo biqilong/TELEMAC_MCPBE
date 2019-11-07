@@ -641,6 +641,7 @@ files: bief_def.f
   gettriebe.f
   gettriseg.f
   gettri.f
+  couple_mod.F
 
 [damocles]
 path: <root>|sources|utils|damocles

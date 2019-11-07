@@ -132,7 +132,7 @@
 !       1. ~~> TEMPERATURE
         IF( IND_T.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_T,
+     &      IND_T,.TRUE.,
      &      'TEMPERATURE     ','TEMPERATURE     ','   oC           ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_T
@@ -153,7 +153,7 @@
 !       2. ~~> SALINITY
         IF( IND_S.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_S,
+     &      IND_S,.TRUE.,
      &      'SALINITE        ','SALINITY        ','   g/l          ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_S
@@ -164,7 +164,7 @@
         NWAQ_AED2 = NWQVARS
         DO I = 1,NWQVARS
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      RANK_AED2(I),
+     &      RANK_AED2(I),.TRUE.,
      &      NAMESAED2(I),NAMESAED2(I),'   mmol/m3      ')
           IF( RANK_AED2(I).EQ.NTRAC ) THEN
             WAQTR = WAQTR + 1
@@ -189,7 +189,7 @@
 !       1. ~~> DISSOLVED O2
         IF( IND_O2.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_O2,
+     &      IND_O2,.TRUE.,
      &      'O2 DISSOUS      ','DISSOLVED O2    ','   mgO2/l       ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_O2
@@ -199,7 +199,7 @@
 !       2. ~~> ORGANIC LOAD
         IF( IND_OL.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_OL,
+     &      IND_OL,.TRUE.,
      &      'CHARGE ORGANIQUE','ORGANIC LOAD    ','   mgO2/l       ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_OL
@@ -209,7 +209,7 @@
 !       3. ~~> NH4 LOAD
         IF( IND_NH4.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_NH4,
+     &      IND_NH4,.TRUE.,
      &      'CHARGE NH4      ','NH4 LOAD        ','   mgNH4/l      ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_NH4
@@ -228,7 +228,7 @@
 !       1. ~~> PHYTO BIOMASS
         IF( IND_PHY.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC, NTRAC,
-     &      IND_PHY,
+     &      IND_PHY,.TRUE.,
      &      'BIOMASSE PHYTO  ','PHYTO BIOMASS   ',' micro_g/l      ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_PHY
@@ -238,7 +238,7 @@
 !       2. ~~> DISSOLVED PO4
         IF( IND_PO4.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_PO4,
+     &      IND_PO4,.TRUE.,
      &      'PO4 DISSOUS     ','DISSOLVED PO4   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_PO4
@@ -248,7 +248,7 @@
 !       3. ~~> POR NON ASSIM
         IF( IND_POR.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_POR,
+     &      IND_POR,.TRUE.,
      &      'POR NON ASSIMILE','POR NON ASSIM   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_POR
@@ -258,7 +258,7 @@
 !       4. ~~> DISSOLVED NO3
         IF( IND_NO3.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_NO3,
+     &      IND_NO3,.TRUE.,
      &      'NO3 DISSOUS     ','DISSOLVED NO3   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_NO3
@@ -268,7 +268,7 @@
 !       5. ~~> NOR NON ASSIM
         IF( IND_NOR.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_NOR,
+     &      IND_NOR,.TRUE.,
      &      'NOR NON ASSIMILE','NOR NON ASSIM   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_NOR
@@ -287,7 +287,7 @@
 !       1. ~~> PHYTO BIOMASS
         IF( IND_PHY.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_PHY,
+     &      IND_PHY,.TRUE.,
      &      'BIOMASSE PHYTO  ','PHYTO BIOMASS   ',' micro_g/l      ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_PHY
@@ -297,7 +297,7 @@
 !       2. ~~> DISSOLVED PO4
         IF( IND_PO4.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_PO4,
+     &      IND_PO4,.TRUE.,
      &      'PO4 DISSOUS     ','DISSOLVED PO4   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_PO4
@@ -307,7 +307,7 @@
 !       3. ~~> POR NON ASSIMIL
         IF( IND_POR.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_POR,
+     &      IND_POR,.TRUE.,
      &      'POR NON ASSIMILE','POR NON ASSIMIL ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_POR
@@ -317,7 +317,7 @@
 !       4. ~~> DISSOLVED NO3
         IF( IND_NO3.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_NO3,
+     &      IND_NO3,.TRUE.,
      &      'NO3 DISSOUS     ','DISSOLVED NO3   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_NO3
@@ -327,7 +327,7 @@
 !       5. ~~> NOR NON ASSIM
         IF( IND_NOR.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_NOR,
+     &      IND_NOR,.TRUE.,
      &      'NOR NON ASSIMILE','NOR NON ASSIM   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_NOR
@@ -337,7 +337,7 @@
 !       6. ~~> NH4 LOAD
         IF( IND_NH4.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_NH4,
+     &      IND_NH4,.TRUE.,
      &      'CHARGE NH4      ','NH4 LOAD        ','   mgNH4/l      ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_NH4
@@ -347,7 +347,7 @@
 !       7. ~~> ORGANIC LOAD
         IF( IND_OL.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_OL,
+     &      IND_OL,.TRUE.,
      &      'CHARGE ORGANIQUE','ORGANIC LOAD    ','   mgO2/l       ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_OL
@@ -357,7 +357,7 @@
 !       8. ~~> DISSOLVED O2
         IF( IND_O2.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_O2,
+     &      IND_O2,.TRUE.,
      &      'O2 DISSOUS      ','DISSOLVED O2    ','   mgO2/l       ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_O2
@@ -376,7 +376,7 @@
 !       1. ~~> SUSPENDED LOAD
         IF( IND_SS.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_SS,
+     &      IND_SS,.TRUE.,
      &      'MAT. EN SUSP.   ','SUSPENDED LOAD  ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_SS
@@ -386,7 +386,7 @@
 !       2. ~~> BED SEDIMENTS
         IF( IND_SF.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_SF,
+     &      IND_SF,.TRUE.,
      &      'SEDIMENT DU FOND','BED SEDIMENTS   ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_SF
@@ -396,7 +396,7 @@
 !       3. ~~> MICRO POLLUTANT
         IF( IND_C.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_C,
+     &      IND_C,.TRUE.,
      &      'MICRO POLLUANT  ','MICRO POLLUTANT ','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_C
@@ -406,7 +406,7 @@
 !       4. ~~> ABS. SUSP. LOAD.
         IF( IND_CSS.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_CSS,
+     &      IND_CSS,.TRUE.,
      &      'MES ABSORBEE    ','ABS. SUSP. LOAD.','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_CSS
@@ -416,7 +416,7 @@
 !       5. ~~> ABSORB. BED SED.
         IF( IND_CSF.EQ.0 ) THEN
           CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      IND_CSF,
+     &      IND_CSF,.TRUE.,
      &      'SED. FOND. ABS. ','ABSORB. BED SED.','   mg/l         ')
           WAQTR = WAQTR + 1
           RANKTR(WAQTR) = IND_CSF

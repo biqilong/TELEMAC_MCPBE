@@ -57,7 +57,7 @@
       USE DECLARATIONS_KHIONE, ONLY:ICEPROCESS,ANFEM,THIFEMF,THIFEMS,
      &                              DWB,ANFEM0,IT1,IT2,T1,
      &                              ICETYPE,VCRBOR,VCRBOM,TCR,VZ,
-     &                              LH_ICE,LIN_WATAIR,TC
+     &                              LH_ICE,LIN_WATAIR,TC,TMELT
       USE METEO_KHIONE       ,ONLY: TAIR
       IMPLICIT NONE
 !
@@ -65,7 +65,7 @@
 !
       TYPE(BIEF_MESH),  INTENT(INOUT) :: MESH
       TYPE(BIEF_OBJ),   INTENT(IN)    :: U,V,TWAT
-      DOUBLE PRECISION, INTENT(IN)    :: ROEAU, DT
+      DOUBLE PRECISION, INTENT(IN)    :: ROEAU,DT
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -110,7 +110,7 @@
           VB = MAX( 0.D0, -0.025D0*TCR%R(I) + 0.005D0 )
 !         BORDER ICE THICKNESS /!\ TODO: DOUBLE CHECK VALIDITY
           THICK = THIFEMS%R(I)+THIFEMF%R(I)
-!         VELOCITY CRITERIA FOR NORDER ICE GROWTH
+!         VELOCITY CRITERIA FOR DYNAMIC BORDER ICE GROWTH
           USTAR = MAX( 0.175D0, VMAG / MAX(VCRBOM,1.D-12) )
 !
 !         IT1 IS USED AS A STATIC ICE MASK DEFINING NODES FOR WHICH
@@ -123,7 +123,7 @@
           IT1%I(I) = 0
 !
 !     > THRESHOLDS FOR STATIC BORDER ICE FORMATION
-          IF( TCR%R(I).LE.TC .AND.              ! THERMAL PROPERTY
+          IF( TCR%R(I).LE.(TC-TMELT%R(I)) .AND. ! THERMAL PROPERTY
      &        VB.GT.1.1*VZ%R(I) .AND.           ! BOYANT VS. TURBULANCE
      &        VMAG.LT.VCRBOR ) THEN             ! CRITICAL VELOCITY
             IF( INT(IT/3)*3 .NE. IT ) THEN
@@ -229,7 +229,7 @@
             ELSE
 !           NOT PART OF THE DYNAMIC ICE COVER
               ICETYPE%I(I) = ICETYPE%I(I) * 7         !=> INSTANT SWITCH
-              THIFEMS%R(I) = 0.D0                !=> no need for THIFEM0
+              THIFEMS%R(I) = 0.D0
               THIFEMF%R(I) = 0.D0
               ANFEM%R(I) = ANFEM0
 !
@@ -239,7 +239,7 @@
           ELSEIF( IT2%I(I).EQ.2 ) THEN
             IF( INT(IT/5)*5 .NE. IT ) THEN
               ICETYPE%I(I) = ICETYPE%I(I) * 5         !=> INSTANT SWITCH
-              THIFEMS%R(I) = 0.D0                !=> no need for THIFEM0
+              THIFEMS%R(I) = 0.D0
               THIFEMF%R(I) = 0.D0
               ANFEM%R(I) = ANFEM0
             ENDIF

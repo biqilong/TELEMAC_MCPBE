@@ -24,6 +24,7 @@
 !
       USE BIEF
       USE DECLARATIONS_KHIONE
+      USE FREEZEUP_KHIONE, ONLY : MELTING_POINT
       USE DECLARATIONS_WAQTEL, ONLY : RO0
 !
       USE DECLARATIONS_SPECIAL
@@ -31,15 +32,15 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      LOGICAL          :: LISTIN
-      INTEGER          :: NPOIN,RECORD, I
-      DOUBLE PRECISION :: AT
-!
-      TYPE(BIEF_OBJ)   , INTENT(INOUT) :: H
+      LOGICAL         , INTENT(IN)    :: LISTIN
+      INTEGER         , INTENT(IN)    :: NPOIN
+      INTEGER         , INTENT(INOUT) :: RECORD
+      DOUBLE PRECISION, INTENT(INOUT) :: AT
+      TYPE(BIEF_OBJ)  , INTENT(INOUT) :: H
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER TROUVE(MAXVAR)
+      INTEGER TROUVE(MAXVAR), I
       TROUVE = 0
 !
 !-----------------------------------------------------------------------
@@ -80,6 +81,8 @@
 !
 !     MORE ICE THAN WATER AT SURFACE IF ANFEM(I) > 0.5
       CALL OS('X=C     ', X=ANFEM, C=0.D0 )
+!     TOTAL ICE THICKNESS
+      CALL OS('X=C     ', X=THIFEM, C=0.D0 )
 !     SOLID ICE THICKNESS
       CALL OS('X=C     ', X=THIFEMS, C=0.D0 )
 !     FRAZIL ICE THICKNESS
@@ -102,6 +105,9 @@
 !     VERTICAL TURBULENT INTENSITY
       CALL OS('X=C     ', X=VZ, C=0.D0 )
 !
+!     FREEZING POINT OF WATER ( 0.oC BY DEFAULT )
+      CALL OS('X=C     ', X=TMELT, C=CST_TMELT )
+
 !-----------------------------------------------------------------------
 !
 !   STATIC ICE COVER
@@ -271,8 +277,8 @@
 !
 !!        READ ICE BOUNDARY FILE
 !        CALL READIBD_ICE2D
-!     &(IQBD,IQBFILE,CNISLD,DARCYILD,DARCYRUB,ANMAX,AN0,THI0,THI0F,HPI0,
-!     & FRIC1,FRIC2,WDCA,CNI,CNIMAX,PHI,PJ,MSBD,IQBJB,IBDF,KPBD,KPBD1,
+!     &(IQBD,IQBFILE,FICE,DARCYILD,DARCYRUB,ANMAX,AN0,THI0,THI0F,HPI0,
+!     & FRIC1,FRIC2,WDCA,FICE,FICE_MAX,PHI,PJ,MSBD,IQBJB,IBDF,KPBD,KPBD1,
 !     & NPBD,XFEM%R,YFEM%R,NPOIN,ANB,QIB,XBFLX,YBFLX,DLFLX,SLPB,ITBDF,
 !     & TIMICE,FLXITM,PMI0,PMI0F,MAXFRO)
 !        WRITE(*,*) 'BACK FROM READIBD_ICE2D'

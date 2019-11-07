@@ -49,32 +49,32 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_seq:GAIRES',
                             'gai_ref_guenter.slf',
-                            eps=[])
+                            eps=[1.E-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_par:GAIRES',
                             'gai_ref_guenter.slf',
-                            eps=[])
+                            eps=[1.E-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_seq:GAIRES',
                             'vnv_par:GAIRES',
-                            eps=[])
+                            eps=[1.1E-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_seq:T2DRES',
                             'f2d_guenter.slf',
-                            eps=[])
+                            eps=[1.3E-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_par:T2DRES',
                             'f2d_guenter.slf',
-                            eps=[])
+                            eps=[1.4E-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_seq:T2DRES',
                             'vnv_par:T2DRES',
-                            eps=[])
+                            eps=[1.4E-3])
 
 
     def _post(self):

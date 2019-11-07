@@ -9,20 +9,20 @@ OPTION FOR THE SOLVER FOR K-EPSILON MODEL  = 4
 VELOCITY DIFFUSIVITY                    = 1.E-6
 /
 LAW OF BOTTOM FRICTION                = 4
-FRICTION COEFFICIENT                  = 0.026
+FRICTION COEFFICIENT                  = 0.024
 /
 /---------------------------------------------------------------------
 / EQUATIONS, BOUNDARY CONDITIONS
 /---------------------------------------------------------------------
 /
 PRESCRIBED FLOWRATES  = 4.2475;0.0
-PRESCRIBED ELEVATIONS = 0.0;0.8
+PRESCRIBED ELEVATIONS = 0.0;0.9
 /
 /---------------------------------------------------------------------
 / EQUATIONS, INITIAL CONDITIONS
 /---------------------------------------------------------------------
 /
-/INITIAL DEPTH      = 0.08
+/INITIAL DEPTH      = 0.09
 /INITIAL CONDITIONS = 'CONSTANT DEPTH'
 /---------------------------------------------------------------------
 / INPUT-OUTPUT, FILES
@@ -31,9 +31,10 @@ PRESCRIBED ELEVATIONS = 0.0;0.8
 BOUNDARY CONDITIONS FILE = geo_seccurrents.cli
 RESULTS FILE             = r2d_seccurrents.slf
 GEOMETRY FILE            = geo_seccurrents.slf
+RESULTS FILE FORMAT      = 'SERAFIND'
 /
 COMPUTATION CONTINUED     = YES
-PREVIOUS COMPUTATION FILE = restart
+PREVIOUS COMPUTATION FILE = restart.slf
 INITIAL TIME SET TO ZERO  = YES
 CONTINUITY CORRECTION     = YES
 /
@@ -54,7 +55,7 @@ VARIABLES FOR GRAPHIC PRINTOUTS =
 / NUMERICAL PARAMETERS
 /---------------------------------------------------------------------
 /
-SOLVER ACCURACY                 = 1.E-6
+SOLVER ACCURACY                 = 1.E-8
 SOLVER                          = 1
 /
 NUMBER OF TIME STEPS = 3000
@@ -67,7 +68,7 @@ LISTING PRINTOUT PERIOD = 300
 /TURBULENCE MODEL = 1  COEFFICIENT FOR DIFFUSION OF TRACERS = 1.D0
 /
 TREATMENT OF THE LINEAR SYSTEM : 2
-TIDAL FLATS : YES
+TIDAL FLATS : NO
 TREATMENT OF NEGATIVE DEPTHS : 2
 MASS-LUMPING ON H       : 1.
 MASS-LUMPING ON VELOCITY : 1.

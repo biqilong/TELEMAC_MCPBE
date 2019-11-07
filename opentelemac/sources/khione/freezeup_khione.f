@@ -14,6 +14,11 @@
 !+        11/11/2017
 !+        V7P3
 !+        Initial developments
+!+
+!history  F. SOUILLE (EDF)
+!+        30/09/2019
+!+        V8P0
+!+        Added freezing temperature
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,7 +27,7 @@
       IMPLICIT NONE
 !
       PRIVATE
-      PUBLIC :: SUPER_COOLING,CLOGGED_ON_BAR
+      PUBLIC :: SUPER_COOLING,CLOGGED_ON_BAR,MELTING_POINT
 !
 !=======================================================================
 !
@@ -36,8 +41,8 @@
                      SUBROUTINE SUPER_COOLING
 !                    ************************
 !
-     &  ( TWAT,FRZL,SRCT,SRCF, THETA0,THETA1,BETA1,VBB,THIFEMF,HUN,
-     &    CONSTSS,ANFEM, DT,VMAG,DEPTH, ISBAR )
+     &  ( TWAT,FRZL,TFRZ,SRCT,SRCF,THETA0,THETA1,BETA1,VBB,THIFEMF,HUN,
+     &    CONSTSS,ANFEM,DT,VMAG,DEPTH,ISBAR )
 !
 !***********************************************************************
 ! BIEF   V7P2
@@ -71,7 +76,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION, INTENT(IN)     :: TWAT,FRZL,CONSTSS,ANFEM
+      DOUBLE PRECISION, INTENT(IN)     :: TWAT,FRZL,TFRZ,CONSTSS,ANFEM
       DOUBLE PRECISION, INTENT(IN)     :: THETA0,THETA1,BETA1
       DOUBLE PRECISION,INTENT(INOUT)   :: SRCT,SRCF
       DOUBLE PRECISION, INTENT(IN)     :: DT,VMAG,DEPTH,VBB,THIFEMF,HUN
@@ -96,15 +101,15 @@
       ENDIF
       VNF = MAX( VNF, 1.D0 )   ! IF( VNF.LT.1.D0 ) VNF = 1.D0
 !
-      IF( TWAT.LT.0.D0 ) THEN
-        QF = VNU*TC_WT/DE * ( 0.0-TWAT ) * AF0*VNF
+      IF( TWAT.LT.TFRZ ) THEN
+        QF = VNU*TC_WT/DE * ( TFRZ-TWAT ) * AF0*VNF
         DELVF = QF/RHO_ICE/LH_ICE ! THERMAL GROWTH OF FRAZIL
       ELSE
         IF( FRZL.LE.CV0 ) THEN  ! CHANGE TO FRZL.LE.CV0, TW WILL CHANGE
           QF = 0.0              ! TW >= 0 AND CV <= CV0, QF = 0
           DELVF = 0.0           ! TEMPERAURE CHANGED IN FE CALCS
         ELSEIF (FRZL.GT.CV0 .AND. TWAT.NE.0.0) THEN
-          QF = VNU*TC_WT/DE*(0.0-TWAT)*AF0*VNF
+          QF = VNU*TC_WT/DE*( TFRZ-TWAT )*AF0*VNF
           DELVF = QF/RHO_ICE/LH_ICE  ! DECAY OF FRAZIL CONCENTRATION
           IF( DELVF.LT.(-FRZL/DT) ) THEN
             DELVF = -FRZL/DT  ! MAX AMOUNT OF DECAY IS AVAILABLE FRAZIL
@@ -118,7 +123,7 @@
 !
 !     SOURCE TERM FOR WATER TEMPERATURE
       SRCT = CONSTSS*QF/( 1-FRZL ) +
-     &  QF/RHO_ICE/LH_ICE*( 0.0-TWAT )/( 1-FRZL )
+     &  QF/RHO_ICE/LH_ICE*( TFRZ-TWAT )/( 1-FRZL )
 !
 !     SOURCE TERM FOR FRAZIL CONCENTRATION
       IF( ISBAR ) THEN
@@ -212,6 +217,49 @@
 !-----------------------------------------------------------------------
 !
       END SUBROUTINE CLOGGED_ON_BAR
+!
+!=======================================================================
+!
+!     ***************************************
+      DOUBLE PRECISION FUNCTION MELTING_POINT
+!     ***************************************
+!
+     &  ( SAL )
+!
+!***********************************************************************
+! BIEF   V7P2
+!***********************************************************************
+!
+!brief    Computes the melting point as a function of salinity
+!
+!reference:
+!+   Millero, F.J. “Freezing point of seawater”. In “Eighth Report of
+!+     the Joint Panel on Oceanographic Tables and Standards”,
+!+     UNESCO Tech. Pap. Mar. Sci. No.28, Annex 6. UNESCO, Paris, 1978
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| SAL   |-->| SALINITY CONCENTRATION
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+      IMPLICIT NONE
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+      DOUBLE PRECISION, INTENT(IN)     :: SAL
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+!
+      MELTING_POINT =
+     &  -0.0575*SAL + 0.001710523*( SAL**1.5D0 )
+     &  -0.0002154996*( SAL**2 )
+!    &  -0.00753 * PRESSURE BELOW SURFACE
+!
+      RETURN
+!
+!-----------------------------------------------------------------------
+!
+      END FUNCTION MELTING_POINT
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !

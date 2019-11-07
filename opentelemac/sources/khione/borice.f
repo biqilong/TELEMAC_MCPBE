@@ -304,7 +304,6 @@
           DO K = 1,NPTFR
             IF( LIUBOR(K).EQ.KLOG ) THEN
               N = MESH%NBOR%I(K)
-              IF( NCSIZE.GT.1 ) N = MESH%KNOLG%I(N)
               IF( ICETYPE%I(N).EQ.1 ) ICETYPE%I(N) = 2
             ENDIF
           ENDDO

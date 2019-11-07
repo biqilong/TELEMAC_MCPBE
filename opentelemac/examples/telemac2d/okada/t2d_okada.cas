@@ -10,7 +10,7 @@ BOUNDARY CONDITIONS FILE : geo_okada.cli
 GEOMETRY FILE            : geo_okada.slf
 RESULTS FILE             : r2d_okada.slf
 /----------------------------------------------------------------------/
-VARIABLES FOR GRAPHIC PRINTOUTS : 'S,U,V,B'
+VARIABLES FOR GRAPHIC PRINTOUTS : 'S,U,V,B,MAXZ,TMXZ,MAXV,TMXV'
 TIME STEP = 5.0
 NUMBER OF TIME STEPS = 360
 GRAPHIC PRINTOUT PERIOD = 60

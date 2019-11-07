@@ -69,7 +69,7 @@ def compute_diff(data1, data2, relative=False):
         diff = data1 - data2
         for i, _ in enumerate(diff):
             if abs(diff[i]) > 1e-42:
-                a_max = np.max(abs(data1[i]), abs(data2[i]))
+                a_max = max(abs(data1[i]), abs(data2[i]))
                 diff[i] = diff[i]/a_max
             else:
                 diff[i] = 0.0

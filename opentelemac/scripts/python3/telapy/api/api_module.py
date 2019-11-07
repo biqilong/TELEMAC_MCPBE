@@ -532,7 +532,8 @@ class ApiModule(object):
         varnames = []
         varinfo = []
         # Reordering string array for variable names
-        tmp = getattr(self.mod_handle_var, "vname_"+self.name)
+        attr_name = "vname_"+self.name
+        tmp = getattr(self.mod_handle_var, attr_name)
         for j in range(var_len):
             for i in range(nb_var):
                 varnames.append(tmp[i][j])

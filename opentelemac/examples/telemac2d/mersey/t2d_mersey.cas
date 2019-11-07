@@ -38,7 +38,8 @@ RESULTS FILE             = r2d_mersey.slf
 /
 TITLE                            = 'MERSEY ESTUARY'
 VARIABLES FOR GRAPHIC PRINTOUTS  = 'U,V,S,B,H'
-GRAPHIC PRINTOUT PERIOD          = 894
+/GRAPHIC PRINTOUT PERIOD          = 894
+GRAPHIC PRINTOUT PERIOD          = 6
 LISTING PRINTOUT PERIOD          = 20
 TIME STEP                        = 50.
 NUMBER OF TIME STEPS             = 894

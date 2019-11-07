@@ -1,0 +1,123 @@
+/----------------------------------------------------------------------
+/
+/ This case validates the growth and transport of frazil ice in a
+/    long flume.
+/
+/ Setting up a steady state hydrodynamics for use as continuation file
+/
+/ Steering file for the hydrodynamics: TELEMAC-2D
+/
+ TITLE = 'WATER FLOWING DOWN A LONG FLUME'
+/
+/----------------------------------------------------------------------
+/  FILES
+/----------------------------------------------------
+/
+ GEOMETRY FILE                = 'geo_longflume.slf'
+ BOUNDARY CONDITIONS FILE     = 'geo_longflume.cli'
+ RESULTS FILE                 = 'r2d_longflume.slf'
+/
+/ FORTRAN FILE = 'fortran'
+/----------------------------------------------------------------------
+/  GENERAL INFORMATIONS - OUTPUTS
+/----------------------------------------------------
+/
+ VARIABLES FOR GRAPHIC PRINTOUTS  = 'U,V,H,B,S,T*'
+/
+ GRAPHIC PRINTOUT PERIOD          = 30
+ LISTING PRINTOUT PERIOD          = 600
+ MASS-BALANCE                     = YES
+ TIME STEP                        = 2.
+ NUMBER OF TIME STEPS             = 18000
+ INFORMATION ABOUT SOLVER         = YES
+/
+/----------------------------------------------------------------------
+/  TRACER(S)
+/----------------------------------------------------
+/ => WHILE KHIONE CAN ACTIVATE TEMPERATURE AND FRAZIL,
+/    NAMING THE FIRST TRACER AS TEMPERATURE MAKES SURE
+/    IT IS THE FIRST IN THE LIST
+ NUMBER OF TRACERS = 3
+ NAMES OF TRACERS = 'TEMPERATURE     oC              ';
+                    'SALINITY        ppt             ';
+                    'FRAZIL          VOLUME FRACTION '
+ DIFFUSION OF TRACERS                 = NO
+ COEFFICIENT FOR DIFFUSION OF TRACERS = 0.
+/
+/----------------------------------------------------------------------
+/  INITIAL CONDITIONS
+/----------------------------------------------------
+/
+ ORIGINAL DATE OF TIME      = 2016;12;2
+ ORIGINAL HOUR OF TIME      = 0;0;0
+ INITIAL TIME SET TO ZERO   = YES
+/
+ COMPUTATION CONTINUED      = YES
+ PREVIOUS COMPUTATION FILE  = 'ini_longflume.slf'
+/
+ INITIAL VALUES OF TRACERS  = 5.E-2 ; 5.0 ; 0.0
+/
+/----------------------------------------------------------------------
+/  BOUNDARY CONDITIONS
+/----------------------------------------------------
+/
+ PRESCRIBED FLOWRATES          = 0.0    ; 300
+ PRESCRIBED ELEVATIONS         = 6.6265 ;  0.0
+ VELOCITY PROFILES             = 1      ;  1                /!\ added !
+/
+ CONTINUITY CORRECTION      = YES
+/
+/ BOUND1 ( TEMPERATURE; SALINITY ; FRAZIL ); BOUND2 ...
+ PRESCRIBED TRACERS VALUES  =     0.0;5.;0.0   ;  5.E-2;5.;0.0
+/
+/----------------------------------------------------------------------
+/  PHYSICAL PARAMETERS
+/----------------------------------------------------
+/
+ TIDAL FLATS = NO
+/
+ LAW OF BOTTOM FRICTION  = 4
+ FRICTION COEFFICIENT    = 0.025
+/
+ TURBULENCE MODEL        = 1
+/
+/ VELOCITY DIFFUSIVITY  = 1.
+/ OPTION FOR THE DIFFUSION OF VELOCITIES = 2
+/
+/----------------------------------------------------------------------
+/  NUMERICAL PARAMETERS
+/----------------------------------------------------
+/
+ DISCRETIZATIONS IN SPACE        = 11;11
+ TYPE OF ADVECTION               =  1;5;4
+ SUPG OPTION                     =  1;0;1
+/
+ FREE SURFACE GRADIENT COMPATIBILITY   = 0.9
+ IMPLICITATION FOR DEPTH               = 1.0
+ IMPLICITATION FOR VELOCITY            = 1.0
+/
+ MASS-LUMPING ON H = 1
+ H CLIPPING = YES
+/ MINIMUM VALUE OF DEPTH = 0.001
+/
+ SOLVER ACCURACY                         = 1.E-8
+ MAXIMUM NUMBER OF ITERATIONS FOR SOLVER = 250
+/
+/----------------------------------------------------------------------
+/  THERMIC PROCESS
+/----------------------------------------------------
+/
+/ NOTE:
+/   YOU NEED WAQTEL TO INITIATE SOME OF THE WATER PROPERTIES
+/   BUT YOU DO NOT NEED ANY OF ITS WAQTEL PROCESSES
+/
+ COUPLING WITH          = 'WAQTEL;KHIONE'
+/
+ WAQTEL STEERING FILE   = 'waq_frazil.cas'
+ WATER QUALITY PROCESS  = 1
+/
+ KHIONE STEERING FILE   = 'ice_frazil.cas'
+ ICE PROCESSES  = 2
+/
+/----------------------------------------------------------------------
+/

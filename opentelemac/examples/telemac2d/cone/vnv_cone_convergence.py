@@ -10,7 +10,7 @@ from config import CFGS
 
 class VnvStudy(AbstractVnvStudy):
     """
-    Class for mesh convergence of cone 
+    Class for mesh convergence of cone
     """
 
     def _init(self):
@@ -151,9 +151,9 @@ class VnvStudy(AbstractVnvStudy):
         #======================================================================
         # COMPUTE ERRORS:
         #
-        ERRORS = True                # with analytic sol on each mesh 
+        ERRORS = True                # with analytic sol on each mesh
         ERRORS_ON_FINE_MESH = True   # with analytic sol on fine mesh
-        ERRORS_TIME_INTEGRALS = True # with analytic sol on each mesh 
+        ERRORS_TIME_INTEGRALS = True # with analytic sol on each mesh
         #                              and integrated in time (unsteady case)
         #
         #----------------------------------------------------------------------
@@ -164,9 +164,9 @@ class VnvStudy(AbstractVnvStudy):
 
         #----------------------------------------------------------------------
         # COMPUTE ERROR TIME INTEGRALS:
-        # Errors are computed in user fortran at each timestep and timeseries 
-        # are then retreived from txt files. Error time integrals are computed 
-        # from error timeseries. 
+        # Errors are computed in user fortran at each timestep and timeseries
+        # are then retreived from txt files. Error time integrals are computed
+        # from error timeseries.
         #
         if ERRORS_TIME_INTEGRALS:
             # Error lists of all tracers
@@ -302,7 +302,7 @@ class VnvStudy(AbstractVnvStudy):
                     .format(j),
                     annotate=True)
 
-        #----------------------------------------------------------------------    
+        #----------------------------------------------------------------------
         # COMPUTE ERRORS AT FNAL TIME
         # CASE I: error computed with analytic solution on each mesh
         #
@@ -329,7 +329,7 @@ class VnvStudy(AbstractVnvStudy):
                     massm = np.genfromtxt(massm_file)
 
                     # Compute diff
-                    data = res.get_data_value(var, -1) 
+                    data = res.get_data_value(var, -1)
                     ref = res.get_data_value('ANALYTIC SOL T', -1)
                     diff = compute_diff(data, ref, relative=False)
 
@@ -394,7 +394,7 @@ class VnvStudy(AbstractVnvStudy):
 
                     # Interpolation on fine mesh
                     res_fine = res_list[-1]
-                    data = res.get_data_value(var, -1) 
+                    data = res.get_data_value(var, -1)
                     data_interp = mtri.LinearTriInterpolator(res.tri, data)
                     data_fine = data_interp(res_fine.tri.x, res_fine.tri.y)
                     ref_fine = res_fine.get_data_value('ANALYTIC SOL T', -1)
@@ -530,5 +530,4 @@ class VnvStudy(AbstractVnvStudy):
         #======================================================================
         # Delete results
         for res in res_list:
-            del res
-
+            res.close()

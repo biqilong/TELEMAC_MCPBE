@@ -1,0 +1,254 @@
+\chapter{MICROPOL Module}
+
+The MICROPOL module simulates the outcome of a micropollutant (radioelement or heavy metal)
+in the three compartments considered to be of major importance in a river ecosystem:
+water, suspended particulate matter (S.P.M.) and the bottom sediments.
+Each of these compartments represents an homogeneous class:
+S.P.M. and sediments taken into account represent the grain-size class of clays and silts
+(cohesive-type fine sediments, of about < 20-25 $\mu$m diameter),
+likely to attach the majority of micropollutants.\\
+
+Thanks to its capacity for adsorption and desorption of micropollutants,
+suspended particulate matter (S.P.M.) is one of the first links in the chain of contamination.
+Suspended particulate matter is carried and dispersed in the mass of water
+like a tracer and is also subject to the laws of sedimentary physics:
+it settles in calm waters and produces bottom sediments,
+and can be re-suspended by a strong flow.
+Deposits cannot move. They are treated as tracers that can be neither advected
+nor dispersed by the mass of water, but are likely to be re-suspended.\\
+
+The model considers 5 tracers:
+
+\begin{itemize}
+\item suspended matter (SS),
+\item bottom sediments (SF), neither advected nor dispersed,
+\item dissolved form of micropollutant,
+\item the fraction adsorbed by suspended particulate matter,
+\item the fraction adsorbed by bottom sediments, neither advected nor dispersed.
+\end{itemize}
+
+\subsubsection{Notes, and limitations of the MICROPOL module}
+
+\begin{itemize}
+\item whether in suspension or deposited on the bottom, the matter is considered
+  to be a passive tracer:
+  in other words, it does not influence the flow (no feedback).
+  This hypothesis involves that the depth of deposits must be negligible compared
+  to the depth of water (the bed is assumed to be unmodified).
+\item there is no direct adsorption/desorption of dissolved micropollutants
+  on the deposited matter, only on the suspended particulate matter
+  (the model assumes a preponderance of water – S.P.M. exchanges over direct water
+  – bottom sediment exchanges).
+  Bottom sediments only become radioactive by means of polluted S.P.M. deposition. 
+\end{itemize}
+
+\section{Suspended matter}
+
+\subsection{Description of phenomena}
+
+The model describing the evolution of S.P.M. and bottom sediments involved in MICROPOL
+is a classic representation of the laws of deposition and re-suspension
+of cohesive types of S.P.M., that are the laws of Krone \cite{krone_flume_1962}
+and Partheniades \cite{partheniades_erosion_deposition_1965}.\\
+
+Both processes require the knowledge of two characteristic constants:
+
+\begin{itemize}
+\item deposition occurs when shear stress on the bottom $\tau_b$,
+  which varies according to the flow rate, becomes less than a threshold value $\tau_s$,
+  known as the shear stress critical for sedimentation.
+  It is then assumed that the S.P.M. sediments at a constant velocity $w$
+  (known as the settling velocity or velocity of sedimentation),
+\item re-suspension occurs when a new threshold $\tau_r$,
+  known as the shear stress critical for re-suspension, is exceeded.
+  Its importance is weighted by a constant $e$, the rate of erosion characteristic
+  of deposited S.P.M. (also known as the Partheniades constant).
+\end{itemize}
+
+\subsection{Equations}
+
+These phenomena translate into the following expressions of deposition flux ($SED$) and erosion ($RS$),
+in kg/m$^2$/s:
+
+\begin{equation}
+  SED = \left\{
+    \begin{array}{ccl}
+      wSS \left( 1 - \frac{\tau_b}{\tau_s} \right) & \rm{if} & \tau_b < \tau_s\\
+      0 & \rm{if} & \tau_b \ge \tau_s
+    \end{array}
+    \right .
+\end{equation}
+
+\begin{equation}
+  RS = \left\{
+    \begin{array}{ccl}
+      e \left( \frac{\tau_b}{\tau_r} -1 \right) \varepsilon(SF) & \rm{if} & \tau_b > \tau_r\\
+      0 & \rm{if} & \tau_b \le \tau_r
+    \end{array}
+    \right .
+\end{equation}
+
+where $\varepsilon(x)$ is a function such that $\varepsilon(x) = 0$
+if $x = 0$ and $\varepsilon(x) = 1$ else.\\
+
+The bottom shear stress $\tau_b$ (in Pa) is given by $\tau_b = \frac{1}{2} \rho C_f U^2$,
+with $C_f$ = the friction coefficient and $U^2$ the square of the velocity.\\
+
+The equations of the evolution of S.P.M. tracers (variable $SS$)
+and bottom sediments (variable $SF$) are as follows:\\
+
+Tracer $\#$1: suspended particulate matter
+
+\begin{equation}
+  F(SS) = \frac{RS-SED}{h}.
+\end{equation}
+
+Tracer $\#$2: bottom sediments (tracer neither advected nor diffused)\\
+
+\begin{equation}
+  \frac{\partial (SF)}{\partial t} = SED - RS.
+\end{equation}
+
+The model relating to S.P.M. therefore has four parameters: the velocity of sedimentation $w$,
+the rate of erosion $e$, the critical stress of deposition $\tau_s$
+and the critical stress of erosion $\tau_r$.
+
+\section{Micropollutants}
+
+\subsection{Description of phenomena}
+
+The model representing the evolution of micropollutants assumes
+that the transfers of micropollutants (radioelement, metal)
+between the dissolved and particulate phases correspond to either
+direct adsorption or ionic exchanges modeled by a reversible reaction,
+of kinetic order 1 \cite{ciffroy_doubs_1995}.
+In the case of direct adsorption, the reaction can be represented in the form of the following formula:\\
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{graphics/image60.png}
+\end{figure}
+
+%$R^\ast +.- S    k_1/k_{-1}     R - S^\ast$
+
+with R$^\ast$ = micropollutant in dissolved form, – S = surface site associated with S.P.M.,
+R–S$^{\ast}$ = adsorbed micropollutant.\\
+
+It is a reversible reaction, controlled by velocities of adsorption ($k_1$ in l/g/s)
+and desorption ($k_{-1}$ in s$^{-1}$).
+It leads to an equilibrium, and then a distribution of micropollutant
+between the dissolved and particulate phase described
+by the distribution coefficient $K_d$ (in l/g):
+
+\begin{equation}
+  K_d = \frac{[R-S^\ast]}{[R^\ast]} = \frac{k_1}{k_{-1}},
+\end{equation}
+
+where [R$^\ast$] is the activity (or concentration of micropollutant)
+in dissolved phase (in Bq/m$^3$ or kg/m$^3$), [R-S$^\ast$] is the activity
+(or concentration of micropollutant) associated to S.P.M. (in Bq/kg or kg/kg).\\
+
+Once adsorbed, the fixed micropollutants act like S.P.M. (deposition, re-suspension)
+and can also produce areas of polluted sediment.\\
+
+The model includes a law of exponential decay (radioactive decay type) of micropollutant
+concentrations in each compartment of the modeled ecosystem,
+through a constant written $L$ (expressed in s$^{-1}$).\\
+
+\subsection{Equations}
+
+The system includes an equation for each of the micropollutant phases, namely 3 tracers:
+
+\begin{itemize}
+\item $C$: concentration of micropollutants in water (Bq/m$^3$),
+\item $C_s$: concentration of micropollutants adsorbed by S.P.M. (Bq/kg) (dry weight),
+\item $C_f$: concentration of micropollutants adsorbed by bottom sediments (Bq/kg).
+\end{itemize}
+
+Note: The unit of concentration chosen for the demonstration is Bq/m$^3$,
+but it could also be written in kg/m$^3$ (for example, in the case of a metal).\\
+
+The internal sources of each of these tracers correspond to the phenomena
+of adsorption/desorption, deposition/re-suspension and exponential decay.
+Taking these phenomena into account leads to the following equations
+in each of the three compartments, water, S.P.M. and bottom sediments
+(with section \ref{waq_models} notations):
+
+\begin{itemize}
+\item dissolution phase
+\begin{equation}
+  F(C) = -k_{-1}.SS (K_d.C - C_s ) - L.C,
+\end{equation}
+
+\item adsorption by suspended particulate matter phase
+\begin{equation}
+  F(SS.C_s) = k_{-1}.SS (K_d.C - C_s ) + \frac{RS.C_f-SED.C_s}{h} - L.SS.C_s,
+\end{equation}
+
+\item adsorption by bottom sediments phase (tracer neither advected nor diffused)
+\begin{equation}
+  \frac{\partial (SF.C_f)}{\partial t} = SED.C_s - RS.C_f - L.SF.C_f.
+\end{equation}
+
+\end{itemize}
+
+Setting the new variables as: $C_{ss}$  = $SS.C_s$, in Bq/m$^3$ of water,
+$C_{ff} = SF.C_f$, in Bq/m$^2$ of bottom sediments,
+and $SEDP = \frac{SED}{SS} = w \left (1-\frac{\tau_b}{\tau_s} \right)$
+if $\tau_b < \tau_s$ or 0 otherwise, the equations thus become:\\
+
+Tracer $\#$3: dissolution phase
+
+\begin{equation}
+  F(C) = -k_{-1}.SS.K_d.C + k_{-1}.C_{SS} - L.C.
+\end{equation}
+
+Tracer $\#$4: phase of adsorption by suspended particulate matter
+
+\begin{equation}
+  F(C_{SS}) = k_{-1}.K_d.SS.C - k_{-1}.C_{SS} + \frac{\frac{RS}{SF}C_{ff}-SEDP.C_{SS}}{h}- L.C_{SS}.
+\end{equation}
+
+Tracer $\#$5: phase of adsorption by bottom sediments
+
+\begin{equation}
+  \frac{\partial C_{ff}}{\partial t} = SEDP.C_{SS} - \frac{RS}{SF} C_{ff} - L.C_{ff}.
+\end{equation}
+
+Terms with $SF$ as denominator are nullified when $SF$ is equal to 0.\\
+
+Therefore, there are three parameters of the micropollutant model:
+the distribution coefficient at equilibrium $K_d$,
+the kinetic constant of desorption $k_{-1}$,
+and the exponential decay constant $L$ (radioactive decay, for example).
+In total, the MICROPOL model thus includes 7 physical parameters.
+
+\section{Solved equations}
+
+Thus, noting $C_1 = SS$, $C_2 = SF$, $C_3 =C$, $C_4 = C_{ss}$, $C_5 = C_{ff}$ ,
+
+the matrices (5 $\times$ 5) $[\lambda]$ and $[\mu]$ containing the coefficients
+$\lambda_i^j$ and $\mu_i^j$ are written as:
+
+$$  \lambda = 
+  \begin{pmatrix}
+    0 & 0 & 0 & 0 & 0\\
+    SEDP & 0 & 0 & 0 & 0\\
+    0 & 0 & -L -k_{-1}.SS.K_d & k_{-1} & 0\\
+    0 & 0 & -k_{-1}.K_d.SS & -k_{-1} - L & 0\\
+    0 & 0 & 0 & SEDP & -\frac{RS}{SF}-L
+  \end{pmatrix}
+$$  
+
+$$  \mu = 
+  \begin{pmatrix}
+    -SEDP & 0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0 & 0\\
+    0 & 0 & 0 & -SEDP & \frac{RS}{SF}\\
+    0 & 0 & 0 & 0 & 0
+  \end{pmatrix}
+$$  
+
+Note the case where $SF$ = 0: $C_{ff} = 0$, $\lambda_5^5 = 0$ and $\mu_4^5 = 0$.
+The only non-zero terms $\lambda_i^0$ and $\mu_i^0$ are $\lambda_2^0 = -RS$ and $\mu_2^0 = RS$.

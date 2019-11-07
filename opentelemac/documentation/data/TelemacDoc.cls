@@ -64,6 +64,7 @@
 \DeclareOption{Telemac3D}{\colorlet{ColorBase1}{T3D}}
 \DeclareOption{Sisyphe}{\colorlet{ColorBase1}{Sand}}
 \DeclareOption{Gaia}{\colorlet{ColorBase1}{Sand}}
+\DeclareOption{Nestor}{\colorlet{ColorBase1}{Sand}}
 \DeclareOption{Tomawac}{\colorlet{ColorBase1}{OceanWaveBlue}}
 \DeclareOption{Artemis}{\colorlet{ColorBase1}{LightOceanGreen}}
 \DeclareOption{Postel3D}{\colorlet{ColorBase1}{BostonUniversityRed}}
@@ -134,6 +135,7 @@
 \newcommand{\TelApy}{{\scshape TelApy}\xspace}
 \newcommand{\salome}{{\scshape Salome}\xspace}
 \newcommand{\gaia}{{\scshape Gaia}\xspace}
+\newcommand{\nestor}{{\scshape Nestor}\xspace}
 
 \newcommand{\fortran}{Fortran\xspace}
 \newcommand{\python}{Python\xspace}

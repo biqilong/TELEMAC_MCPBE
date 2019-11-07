@@ -77,32 +77,32 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_pildepon.slf',
-                            eps=[])
+                            eps=[1.E-6, 1.E-7, 1.E-6, 1.E-7, 1.E-8, 3.E-5, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:T2DRES',
                             'f2d_pildepon.slf',
-                            eps=[])
+                            eps=[1.E-6, 1.E-7, 1.E-6, 1.E-7, 1.E-8, 3.E-5, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-6])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',
                             'vnv_4:T2DRES',
-                            eps=[])
+                            eps=[1.E-6, 1.E-7, 1.E-6, 1.E-7, 1.E-8, 3.E-5, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_pildepon_qua.slf',
-                            eps=[])
+                            eps=[1.E-4, 1.E-4, 2.E-4, 2.E-4, 1.E-8])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:T2DRES',
                             'f2d_pildepon_qua.slf',
-                            eps=[])
+                            eps=[1.E-3, 2.E-3, 6.E-5, 6.E-5, 1.E-8])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_2:T2DRES',
                             'vnv_5:T2DRES',
-                            eps=[])
+                            eps=[9.E-4, 2.E-3, 2.E-4, 2.E-4, 1.E-8])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T2DRES',
@@ -248,8 +248,8 @@ class VnvStudy(AbstractVnvStudy):
                 fig_name='img/Velocity_arrows_'+res_labels[idx])
 
         # Closing files
-        del res_vnv_1_t2dgeo
-        del res_vnv_1_t2dres
+        res_vnv_1_t2dgeo.close()
+        res_vnv_1_t2dres.close()
 
         # Plot forces:
         file_path = path.join(self.get_vnv_working_dir('vnv_1'), 'massb_A.txt')

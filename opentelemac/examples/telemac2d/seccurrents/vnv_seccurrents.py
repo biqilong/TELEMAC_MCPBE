@@ -23,7 +23,7 @@ class VnvStudy(AbstractVnvStudy):
         """
 
         # seccurrents scalar mode
-        self.add_study('vnv_1',
+        self.add_study('vnv_seq',
                        'telemac2d',
                        't2d_seccurrents.cas')
 
@@ -32,7 +32,7 @@ class VnvStudy(AbstractVnvStudy):
         cas = TelemacCas('t2d_seccurrents.cas', get_dico('telemac2d'))
         cas.set('PARALLEL PROCESSORS', 4)
 
-        self.add_study('vnv_2',
+        self.add_study('vnv_par',
                        'telemac2d',
                        't2d_seccurrents_par.cas',
                        cas=cas)
@@ -47,19 +47,25 @@ class VnvStudy(AbstractVnvStudy):
         """
 
         # Comparison with the last time frame of the reference file.
-        self.check_epsilons('vnv_1:T2DRES',
+        self.check_epsilons('vnv_seq:T2DRES',
                             'f2d_seccurrents.slf',
-                            eps=[])
+                            eps=[1e-6])
 
         # Comparison with the last time frame of the reference file.
-        self.check_epsilons('vnv_2:T2DRES',
+        self.check_epsilons('vnv_par:T2DRES',
                             'f2d_seccurrents.slf',
-                            eps=[])
+                            eps=[1., 1., 1.e-2, 1.e-2,
+                                 1.e-6, 10., 1.e-1, 1.,
+                                 1., 1.e-1, 1.e-1, 100.,
+                                 100., 10.])
 
         # Comparison between sequential and parallel run.
-        self.check_epsilons('vnv_1:T2DRES',
-                            'vnv_2:T2DRES',
-                            eps=[])
+        self.check_epsilons('vnv_seq:T2DRES',
+                            'vnv_par:T2DRES',
+                            eps=[1., 1., 1.e-2, 1.e-2,
+                                 1.e-6, 10., 1.e-1, 1.,
+                                 1., 1.e-1, 1.e-1, 100.,
+                                 100., 10.])
 
 
     def _post(self):

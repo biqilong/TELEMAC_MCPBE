@@ -126,7 +126,8 @@ def plot2d_annotate_bnd(axe, tri, bnd_info,
                       'Prescribed UV (4,6,6)':           [4, 6, 6],
                       'Prescribed UV and H (5,6,6)':     [5, 6, 6],
                       'Incident waves (1,1,1)':          [1, 1, 1],
-                      'Custom (0,0,0)':                  [0, 0, 0]}
+                      'Custom (0,0,0)':                  [0, 0, 0],
+                      'Free boundaries (4,4,4)':          [4, 4, 4]}
     labels = []
     handles = []
     for i in range(nbnd_poin):

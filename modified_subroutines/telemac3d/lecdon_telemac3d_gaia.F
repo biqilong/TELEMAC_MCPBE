@@ -151,7 +151,7 @@
           IF(SEDTYPE.EQ.'CO') THEN
             WRITE(CHAR2,'(I2)') ICO
             ICO = ICO + 1
-            CALL ADDTRACER(NAMETRAC,NTRAC,K,
+            CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
      &                       'SEDIMENT COH' //ADJUSTL(CHAR2)//'  ',
      &                       'COH SEDIMENT' //ADJUSTL(CHAR2)//'  ',
      &                       'g/l             ')
@@ -159,7 +159,7 @@
             IF(SUSP) THEN
               WRITE(CHAR2,'(I2)') INCO
                 INCO = INCO + 1
-                CALL ADDTRACER(NAMETRAC,NTRAC,K,
+                CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
      &                         'SEDIMENT NCOH' //ADJUSTL(CHAR2)//' ',
      &                         'NCOH SEDIMENT' //ADJUSTL(CHAR2)//' ',
      &                         'g/l             ')
@@ -208,19 +208,19 @@
         
 !       ADD EXTRA TRACERS FOR THE MCPBE FLOCCULATION MODEL
         IF(MCPBE_VER.EQ.1) THEN
-          CALL ADDTRACER(NAMETRAC,NTRAC,K,
+          CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
      &                       'MICFLC IN MACFLC','MICFLC IN MACFLC',
      &                       'g/l             ')
           IMICF_MACF = K
           WRITE(LU,*) 'TRACER',K,'IS ADDED AS ',NAMETRAC(IMICF_MACF)
         ENDIF
         IF(MCPBE_VER.GE.2) THEN
-          CALL ADDTRACER(NAMETRAC,NTRAC,K,
+          CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
      &                       'MICFLC IN MACFLC','MICFLC IN MACFLC',
      &                       'g/l             ')
           IMICF_MACF = K
           WRITE(LU,*) 'TRACER',K,'IS ADDED AS ',NAMETRAC(IMICF_MACF)
-          CALL ADDTRACER(NAMETRAC,NTRAC,K,
+          CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
      &                       'MICFLC IN MEGFLC','MICFLC IN MEGFLC',
      &                       'g/l             ')
           IMICF_MEGF = K

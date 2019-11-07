@@ -2,7 +2,7 @@
                      SUBROUTINE CONDIW
 !                    *****************
 !
-     &( PART, U_TEL, V_TEL, H_TEL )
+     &( PART, UTEL, VTEL, HTEL )
 !
 !***********************************************************************
 ! TOMAWAC   V7P1
@@ -55,7 +55,7 @@
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| AT             |<--| COMPUTATION TIME
-!| H_TEL          |-->| TELEMAC WATER DEPTH
+!| HTEL          |-->| TELEMAC WATER DEPTH
 !| LT             |-->| NUMBER OF THE TIME STEP CURRENTLY SOLVED
 !| NVCOU          |---| NUMBER OF VARIABLES OF THE CURRENT FILE
 !| NVHMA          |<--| N.OF VARIABLES OF THE WATER LEVEL FILE
@@ -67,8 +67,8 @@
 !| TM2            |<--| TIME T2 IN THE WATER LEVEL FILE
 !| TV1            |<--| TIME T1 IN THE WIND FILE
 !| TV2            |<--| TIME T2 IN THE WIND FILE
-!| U_TEL          |-->| X-AXIS TELEMAC CURRENT SPEED
-!| V_TEL          |-->| Y-AXIS TELEMAC CURRENT SPEED
+!| UTEL          |-->| X-AXIS TELEMAC CURRENT SPEED
+!| VTEL          |-->| Y-AXIS TELEMAC CURRENT SPEED
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_TELEMAC
@@ -83,7 +83,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER, INTENT(IN)             :: PART
-      TYPE(BIEF_OBJ), INTENT(IN)      :: U_TEL,V_TEL,H_TEL
+      TYPE(BIEF_OBJ), INTENT(IN)      :: UTEL,VTEL,HTEL
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -211,9 +211,9 @@
       ENDIF
 !
       IF(PART.EQ.WAC_CPL_INIT) THEN
-        CALL OS('X=Y     ', X=SDEPTH, Y=H_TEL)
-        CALL OV('X=Y     ', X=UC, Y=U_TEL%R, DIM1=NPOIN2)
-        CALL OV('X=Y     ', X=VC, Y=V_TEL%R, DIM1=NPOIN2)
+        CALL OS('X=Y     ', X=SDEPTH, Y=HTEL)
+        CALL OV('X=Y     ', X=UC, Y=UTEL%R, DIM1=NPOIN2)
+        CALL OV('X=Y     ', X=VC, Y=VTEL%R, DIM1=NPOIN2)
       ENDIF
 !
 !-----------------------------------------------------------------------

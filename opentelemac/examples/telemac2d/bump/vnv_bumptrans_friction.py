@@ -217,10 +217,6 @@ class VnvStudy(AbstractVnvStudy):
             vectors=True, vectors_scale=30,
             grid_resolution=[10, 10])
 
-        # Closing files
-        del geom
-        del res
-
         #======================================================================
         # COMPARISON OF NUMERICAL SCHEMES:
         #
@@ -355,6 +351,8 @@ class VnvStudy(AbstractVnvStudy):
             annotate=True)
 
         #======================================================================
-        # Delete results
+        # Closing files
+        geom.close()
+        res.close()
         for res in res_list:
-            del res
+            res.close()

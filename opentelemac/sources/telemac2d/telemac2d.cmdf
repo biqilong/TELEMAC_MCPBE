@@ -1,7 +1,7 @@
 [general]
 path: <root>|sources|telemac2d
 module: telemac2d
-liborder: special damocles parallel hermes bief waqtel nestor ad stbtel tomawac sisyphe khione gaia telemac2d
+liborder: special damocles hermes parallel bief waqtel nestor ad stbtel tomawac sisyphe khione gaia telemac2d
 name: telemac2d
 
 [ad]
@@ -541,6 +541,7 @@ files: bief_def.f
   read_submit.f
   sortie.f
   addtracer.f
+  couple_mod.F
 
 [damocles]
 path: <root>|sources|utils|damocles

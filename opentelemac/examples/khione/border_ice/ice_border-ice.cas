@@ -19,8 +19,8 @@
 /
  VARIABLES FOR GRAPHIC PRINTOUTS  = 'ICETYPE,COV_THT,COV_DYN'
 /
- GRAPHIC PRINTOUT PERIOD          = 120
- LISTING PRINTOUT PERIOD          = 360
+ GRAPHIC PRINTOUT PERIOD          = 600
+ LISTING PRINTOUT PERIOD          = 600
 /
 /----------------------------------------------------------------------
 /  METEOROLOGY PARAMETERS ( ICE PROCESS = 2 )
@@ -66,8 +66,8 @@
 /----------------------------------------------------
 /
 / FRICTION LAW FOR WATER-ICE INTERACTION:
- LAW OF BOTTOM FRICTION = 4 /(Manning)
- FRICTION COEFFICIENT = 0.04
+ LAW OF ICE COVER FRICTION = 4 /(Manning)
+ FRICTION COEFFICIENT             = 0.02
 /
 /----------------------------------------------------------------------
 /

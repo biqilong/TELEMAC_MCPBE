@@ -4,6 +4,7 @@ Validation script for digue
 """
 from vvytel.vnv_study import AbstractVnvStudy
 from execution.telemac_cas import TelemacCas, get_dico
+from data_manip.extraction.telemac_file import TelemacFile
 
 class VnvStudy(AbstractVnvStudy):
     """
@@ -49,17 +50,17 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_digue.slf',
-                            eps=[])
+                            eps=[1.E-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_digue.slf',
-                            eps=[])
+                            eps=[1.E-6])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',
                             'vnv_2:T2DRES',
-                            eps=[])
+                            eps=[1.E-6])
 
 
     def _post(self):
@@ -67,3 +68,38 @@ class VnvStudy(AbstractVnvStudy):
         Post-treatment processes
         """
 
+        from postel.plot_vnv import vnv_plot2d
+                # Getting files
+#        vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
+#        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
+        res_vnv_1_t2dgeo, _ = self.get_study_res('vnv_1:T2DGEO', load_bnd=True)
+        vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
+        res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
+
+        #Plotting mesh
+        vnv_plot2d('',
+                   res_vnv_1_t2dgeo,
+                   plot_mesh=True,
+                   annotate_bnd=True,
+                   fig_size=(10, 8),
+                   fig_name='img/Mesh')
+        
+        # Plotting BOTTOM at 0
+        vnv_plot2d('BOTTOM',
+                   res_vnv_1_t2dres,
+                   record=0,
+                   filled_contours=True,
+                   fig_size=(10, 8),
+                   fig_name='img/Bathy')
+
+
+        # Plotting FREE SURFACE at -1
+        vnv_plot2d('FREE SURFACE',
+                   res_vnv_1_t2dres,
+                   record=-1,
+                   filled_contours=True,
+                   fig_size=(10, 8),
+                   fig_name='img/FreeSurface_tf')
+        # Closing files
+        res_vnv_1_t2dgeo.close()
+        res_vnv_1_t2dres.close()

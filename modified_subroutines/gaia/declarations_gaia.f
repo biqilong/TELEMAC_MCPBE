@@ -451,8 +451,21 @@
 !
       DOUBLE PRECISION,DIMENSION(:,:), ALLOCATABLE :: FLUER_PUR_MUD
       DOUBLE PRECISION,DIMENSION(:,:), ALLOCATABLE :: FLUER_PUR_SAND
-!
+
       DOUBLE PRECISION,DIMENSION(:,:), ALLOCATABLE :: FLUER_MIX
+!
+!>    Bedload boundary flux for every class (kg/s): variable for mass balance
+!
+      DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: BEDLOAD_B_FLUX
+!
+!>    Cumulated bedload on boundary for every class (kg): variable for mass balance
+!
+      DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: SUMBEDLOAD_B
+!
+!>    Sum over classes of bedload boundary flux or cumulated bedload:
+!     variable for mass balance
+!
+      DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: SUMBEDLOAD_B_FLUX
 !
 !-----------------------------------------------------------------------
 !

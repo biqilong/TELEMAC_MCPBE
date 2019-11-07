@@ -612,9 +612,8 @@ GOING TO BE COMPARED WITH.'
 
 /......
 
-/
-NOM = 'LOI DE FROTTEMENT SUR LE FOND'
-NOM1 = 'LAW OF BOTTOM FRICTION'
+NOM = 'LOI DE FROTTEMENT SOUS LE COUVERT DE GLACE'
+NOM1 = 'LAW OF ICE COVER FRICTION'
 TYPE = INTEGER
 INDEX = 8
 TAILLE = 1
@@ -647,7 +646,7 @@ AIDE1 =
 The possible laws are as follows (refer to the Principle note): 0: no
 friction against bottom, 1: Haaland''s formula 2: CHEZY''s formula 3:
 STRICKLER''s formula 4: MANNING''s formula 5: NIKURADSE''s formula'
-/
+
 NOM = 'COEFFICIENT DE FROTTEMENT'
 NOM1 = 'FRICTION COEFFICIENT'
 TYPE = REAL
@@ -676,6 +675,58 @@ according to the selected formula (Chezy, Strickler, etc.) :
                     3 : Strickler coefficient
                     4 : Manning coefficient
                     5 : Nikuradse grain size'
+
+NOM = 'COEFFICIENT DE FROTTEMENT MAXIMAL'
+NOM1 = 'MAXIMAL FRICTION COEFFICIENT'
+TYPE = REEL
+MNEMO = 'FICE_MAX'
+INDEX = 52
+TAILLE = 1
+DEFAUT = 0.04
+DEFAUT1 = 0.04
+RUBRIQUE = ''
+RUBRIQUE1 = ''
+NIVEAU = 0
+AIDE = 
+'Fixe le coefficient de frottement maximal lorsque la celui-ci depend
+de l''epaisseur du couvert de glace'
+AIDE1 =
+'Sets the maximal friction coefficient when it depends linearly on the
+ice cover thickness'
+
+NOM = 'LOI POUR LE COEFFICIENT DE FROTTEMENT'
+NOM1 = 'LAW FOR FRICTION COEFFICIENT'
+TYPE = INTEGER
+INDEX = 16
+TAILLE = 1
+DEFAUT = 0
+DEFAUT1 = 0
+MNEMO = 'IFICE'
+NIVEAU = 0
+CHOIX =
+'0="COEF DE FRICTION CONSTANT"';
+'1="COEF DE FRICTION LINEAIRE"'
+CHOIX1 =
+'0="CONSTANT FRICTION COEF"';
+'1="LINEAR FRICTION COEF"'
+AIDE = 
+'Selectionne entre un coefficient de friction constant ou variable
+lineairement en fonction de l''epaisseur du couvert de glace.'
+AIDE1 =
+'Selection between constant friction coefficient of linearly dependant
+on ice cover thickness'
+
+NOM = 'EPAISSEUR DE COUVERT DE GLACE CARACTERISTIQUE'
+NOM1 = 'EQUIVALENT SURFACE ICE THICKNESS'
+TYPE = REEL
+MNEMO = 'THIE'
+INDEX = 75
+TAILLE = 0
+DEFAUT = 0.001
+DEFAUT1 = 0.001
+RUBRIQUE = ''
+RUBRIQUE1 = ''
+NIVEAU = 2
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 /
@@ -1048,50 +1099,14 @@ NIVEAU = 2
 
 /......
 
-NOM = 'RUGOSITE MINIMALE DU COUVERT DE GLACE'
-NOM1 = 'MINIMUM ICE COVER ROUGHNESS'
-TYPE = REEL
-MNEMO = 'CNI\_MIN'
-INDEX = 99
-TAILLE = 0
-DEFAUT = 0.02
-DEFAUT1 = 0.02
-RUBRIQUE = ''
-RUBRIQUE1 = ''
-NIVEAU = 2
-
-NOM = 'RUGOSITE DE LA GLACE SEULE'
-NOM1 = 'ICE ISLAND ROUGHNESS'
-TYPE = REEL
-MNEMO = 'CNISLD'
-INDEX = 51
-TAILLE = 0
-DEFAUT = 0.02
-DEFAUT1 = 0.02
-RUBRIQUE = ''
-RUBRIQUE1 = ''
-NIVEAU = 2
-
-NOM = 'RUGOSITE MAXIMALE DU COUVERT DE GLACE'
-NOM1 = 'MAXIMUM ICE COVER ROUGHNESS'
-TYPE = REEL
-MNEMO = 'CNI\_MAX'
-INDEX = 52
-TAILLE = 0
-DEFAUT = 0.06
-DEFAUT1 = 0.06
-RUBRIQUE = ''
-RUBRIQUE1 = ''
-NIVEAU = 2
-
 NOM = 'EPAISSEUR INITIALE DU COUVERT DE GLACE'
 NOM1 = 'INITIAL ICE COVER THICKNESS'
 TYPE = REEL
 MNEMO = 'THI0'
 INDEX = 53
 TAILLE = 0
-DEFAUT = 0.2
-DEFAUT1 = 0.2
+DEFAUT = 0.001
+DEFAUT1 = 0.001
 RUBRIQUE = ''
 RUBRIQUE1 = ''
 NIVEAU = 2
@@ -2103,7 +2118,7 @@ NIVEAU = 2
 NOM = 'FREEZING POINT OF WATER'
 NOM1 = 'FREEZING POINT OF WATER'
 TYPE = REEL
-MNEMO = 'TMELT'
+MNEMO = 'CST\_TMELT'
 INDEX = 70
 TAILLE = 0
 DEFAUT = 0.
@@ -2156,18 +2171,6 @@ INDEX = 74
 TAILLE = 0
 DEFAUT = 1.0
 DEFAUT1 = 1.0
-RUBRIQUE = ''
-RUBRIQUE1 = ''
-NIVEAU = 2
-
-NOM = 'INITIAL SKIM ICE THICKNESS(M)'
-NOM1 = 'INITIAL SURFACE ICE THICKNESS'
-TYPE = REEL
-MNEMO = 'THIFEM0'
-INDEX = 75
-TAILLE = 0
-DEFAUT = 0.001
-DEFAUT1 = 0.001
 RUBRIQUE = ''
 RUBRIQUE1 = ''
 NIVEAU = 2

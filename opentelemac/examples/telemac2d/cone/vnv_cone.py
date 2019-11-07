@@ -327,6 +327,6 @@ class VnvStudy(AbstractVnvStudy):
         #======================================================================
         # Delete results
         for res in res_list:
-            del res
-        del res_vnv_1_t2dres
-        del geom_res
+            res.close()
+        res_vnv_1_t2dres.close()
+        geom_res.close()

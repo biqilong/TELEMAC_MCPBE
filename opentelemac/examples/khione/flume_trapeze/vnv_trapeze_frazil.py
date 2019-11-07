@@ -179,7 +179,7 @@ class VnvStudy(AbstractVnvStudy):
             'FREE SURFACE',
             res_vnv_2,
             legend_labels='free surface',
-            record=-1, 
+            record=-1,
             poly=[[0., 18.], [400., 18.]],
             poly_number=[50],
             fig_size=(10, 3),
@@ -224,10 +224,10 @@ class VnvStudy(AbstractVnvStudy):
 
 
         # Closing files
-        del geo
-        del res_vnv_1
-        del res_vnv_2
-        del res_vnv_3
+        geo.close()
+        res_vnv_1.close()
+        res_vnv_2.close()
+        res_vnv_3.close()
 
 def plot1d_history_TCf(res, points, xlim=None, fig_name=''):
     """
@@ -261,4 +261,6 @@ def plot1d_history_TCf(res, points, xlim=None, fig_name=''):
     # save figure:
     print(" "*8+"~> Plotting {}".format(fig_name))
     fig.savefig(fig_name)
-
+    # Close figure:
+    fig.clf()
+    plt.close()

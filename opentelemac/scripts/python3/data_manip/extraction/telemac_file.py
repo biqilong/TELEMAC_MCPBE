@@ -549,8 +549,9 @@ class TelemacFile(HermesFile):
             raise TelemacException('Warning the dimension of the result '\
                                    'file is greater than 2')
         data_interp = mtri.LinearTriInterpolator(self.tri, values)
-        for i, point in enumerate(points):
-            res[i] = data_interp(point[0], point[1])
+        pt_x = [ pt[0] for pt in points]
+        pt_y = [ pt[1] for pt in points]
+        res = data_interp(pt_x, pt_y)
         return res
 
     def _get_data_on_3d_points(self, varname, record, points):
@@ -743,8 +744,9 @@ class TelemacFile(HermesFile):
                 values = self.get_data_on_horizontal_plane(\
                                                 varname, record, plan)
                 data_interp = mtri.LinearTriInterpolator(self.tri, values)
-                for i, point in enumerate(polygone_discretized_points):
-                    values_polylines[i, plan] = data_interp(point[0], point[1])
+                pt_x = [pt[0] for pt in polygone_discretized_points]
+                pt_y = [pt[1] for pt in polygone_discretized_points]
+                values_polylines[:, plan] = data_interp(pt_x, pt_y)
         else:
             raise TelemacException('Warning the extraction on a polyline'\
                                    ' of 2d points')

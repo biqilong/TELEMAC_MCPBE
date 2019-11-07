@@ -804,4 +804,4 @@ class VnvStudy(AbstractVnvStudy):
         #======================================================================
         # Delete results
         for res in res_list:
-            del res
+            res.close()

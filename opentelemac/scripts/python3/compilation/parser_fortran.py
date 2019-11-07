@@ -1694,7 +1694,7 @@ def filter_principal_wrap_names(u_names, s_files):
     """
     o_files = {}
     for s_file in s_files:
-        src_file = open(s_file, 'r')
+        src_file = open(s_file, 'r', encoding='utf-8')
         if path.splitext(path.basename(s_file))[1].lower() in ['.f90', '.f95']:
             flines = del_continueds_f90(del_comments(src_file))
         else:

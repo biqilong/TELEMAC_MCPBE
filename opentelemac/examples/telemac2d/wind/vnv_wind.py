@@ -111,5 +111,5 @@ class VnvStudy(AbstractVnvStudy):
             grid_resolution=[10, 10])
 
         # Closing files
-        del geom
-        del res_vnv_1_t2dres
+        geom.close
+        res_vnv_1_t2dres.close()

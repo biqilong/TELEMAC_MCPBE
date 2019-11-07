@@ -819,25 +819,101 @@
       NEIGB  => SNEIGB%I
       NB_CLOSE => SNB_CLOSE%I
 
+!-----------------------------------------------------------------------
+!
+! NEW TELEMAC TO TOMAWAC COUPLING
+
+
+      !COUPLING VARIABLES
+      IF(INCLUS(COUPLING,'TOMAWAC2')) THEN
+!                                                       WAC2
+      ! TODO SOMETHING FOR QUASI BUBBLE DISCRETISATION
+        CALL BIEF_ALLVEC(1,U_TEL ,     'U_TEL ',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,V_TEL ,     'H_TEL ',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,H_TEL ,     'H_TEL ',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,ORBVEL_TEL ,'ORBVEL',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,FX_WAC ,    'FX_WAC',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,FY_WAC ,    'FY_WAC',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,UV_WAC ,    'UV_WAC',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,VV_WAC ,    'VV_WAC',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,DIRMOY_TEL ,'DIRTEL',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,HM0_TEL ,   'HM0TEL',IELM2 , 1 , 2 ,MESH)
+        CALL BIEF_ALLVEC(1,TPR5_TEL ,  'TPRTEL',IELM2 , 1 , 2 ,MESH)
+
+!        NVARTOM2TEL = 0
+!        NVARTEL2TOM = 0
+
+        ! SENDING TEST VARIABLES
+!        CALL ALLBLO(TEL2TOM ,'TEL2TO')
+!        CALL ADDBLO(TEL2TOM,SPRIVE)
+!        CALL ALLBLO(TOM2TEL ,'TOM2TE')
+!        CALL ADDBLO(TOM2TEL,SPRIVE)
+!        CALL ADDBLO(TOM2TEL,SPRIVE)
+!        NVARTOM2TEL = 2
+!        NVARTEL2TOM = 1
+!        CALL OS('X=0     ',X=U_TEL)
+!        CALL OS('X=0     ',X=V_TEL)
+!        CALL OS('X=C     ',X=H_TEL,C=-10.0D0)
+
+        ! SENDING VARIABLES TO TOMAWAC
+        CALL ALLBLO(TEL2TOM ,'TEL2TO')
+        CALL ADDBLO(TEL2TOM,U_TEL)
+        CALL ADDBLO(TEL2TOM,V_TEL)
+        CALL ADDBLO(TEL2TOM,H_TEL)
+        NVARTEL2TOM = 3
+        ! RECEIVING VARIABLES FROM TOMAWAC
+        NVARTOM2TEL = 0
+        CALL ALLBLO(TOM2TEL ,'TOM2TE')
+        IF (COPSIS_TEL) THEN
+          CALL ADDBLO(TOM2TEL,DIRMOY_TEL)
+          CALL ADDBLO(TOM2TEL,HM0_TEL)
+          CALL ADDBLO(TOM2TEL,TPR5_TEL)
+          CALL ADDBLO(TOM2TEL,ORBVEL_TEL)
+          ORBVEL_TEL%R = 0.0D0
+          TPR5_TEL%R   = 0.0D0
+          HM0_TEL%R    = 0.0D0
+          DIRMOY_TEL%R = 0.0D0
+          NVARTOM2TEL  = NVARTOM2TEL + 4
+        ENDIF
+        IF (COUROU_TEL) THEN
+          CALL ADDBLO(TOM2TEL,FX_WAC)
+          CALL ADDBLO(TOM2TEL,FY_WAC)
+          FX_WAC%R = 0.0D0
+          FY_WAC%R = 0.0D0
+          NVARTOM2TEL = NVARTOM2TEL + 2
+        ENDIF
+        ! WIND CHECK IS THIS IS POSSIBLE
+        IF (VENT_TEL) THEN
+          CALL ADDBLO(TOM2TEL,UV_WAC)
+          CALL ADDBLO(TOM2TEL,VV_WAC)
+          UV_WAC%R = 0.0D0
+          VV_WAC%R = 0.0D0
+          NVARTOM2TEL = NVARTOM2TEL + 2
+        ENDIF
+
+!
+!-----------------------------------------------------------------------
+      ELSEIF (.NOT.INCLUS(COUPLING,'TOMAWAC') ) THEN 
       ! Dummy association for stand alone tomawac
-      CPL_WAC_DATA%U_TEL => SZF
-      CPL_WAC_DATA%V_TEL => SZF
-      CPL_WAC_DATA%H_TEL => SZF
-      CPL_WAC_DATA%WIPDXW => SZF
-      CPL_WAC_DATA%WIPDYW => SZF
-      CPL_WAC_DATA%USTW => SZF
-      CPL_WAC_DATA%VSTW => SZF
-      CPL_WAC_DATA%ZTELW => SZF
-      CPL_WAC_DATA%WSTW => SZF
-      CPL_WAC_DATA%WIPW => SZF
-      CPL_WAC_DATA%FDXW => SZF
-      CPL_WAC_DATA%FDYW => SZF
-      CPL_WAC_DATA%FBXW => SZF
-      CPL_WAC_DATA%FBYW => SZF
-      CPL_WAC_DATA%CFWCW => SZF
-      CPL_WAC_DATA%FDKW => SZF
-      CPL_WAC_DATA%FWX => SZF
-      CPL_WAC_DATA%FWY => SZF
+        CPL_WAC_DATA%U_TEL => SZF
+        CPL_WAC_DATA%V_TEL => SZF
+        CPL_WAC_DATA%H_TEL => SZF
+        CPL_WAC_DATA%WIPDXW => SZF
+        CPL_WAC_DATA%WIPDYW => SZF
+        CPL_WAC_DATA%USTW => SZF
+        CPL_WAC_DATA%VSTW => SZF
+        CPL_WAC_DATA%ZTELW => SZF
+        CPL_WAC_DATA%WSTW => SZF
+        CPL_WAC_DATA%WIPW => SZF
+        CPL_WAC_DATA%FDXW => SZF
+        CPL_WAC_DATA%FDYW => SZF
+        CPL_WAC_DATA%FBXW => SZF
+        CPL_WAC_DATA%FBYW => SZF
+        CPL_WAC_DATA%CFWCW => SZF
+        CPL_WAC_DATA%FDKW => SZF
+        CPL_WAC_DATA%FWX => SZF
+        CPL_WAC_DATA%FWY => SZF
+      ENDIF
 !
 !***********************************************************************
 !

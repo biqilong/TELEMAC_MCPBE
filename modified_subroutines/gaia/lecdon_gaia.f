@@ -611,6 +611,9 @@
       SPHERI       = .FALSE.
 !
       BILMA        = MOTLOG( ADRESS(3,  1) )
+      IF(BILMA) THEN
+        ALLOCATE(SUMBEDLOAD_B_FLUX(MAXFRO))
+      ENDIF
       BANDEC       = MOTLOG( ADRESS(3,  3) )
       VALID        = MOTLOG( ADRESS(3,  4) )
 !     DTVAR        = MOTLOG( ADRESS(3,  5) )
@@ -786,10 +789,10 @@
       ENDIF
 !
       IF(NSAND.EQ.0.AND.ICR.NE.0)THEN
-         WRITE(LU,*)'WITH NO SAND:'
-         WRITE(LU,*)'SKIN FRICTION CORRECTION MUST BE EQUAL TO 0'
-         CALL PLANTE(1)
-         STOP
+        WRITE(LU,*)'WITH NO SAND:'
+        WRITE(LU,*)'SKIN FRICTION CORRECTION MUST BE EQUAL TO 0'
+        CALL PLANTE(1)
+        STOP
       ENDIF
 !
       IF(NUMSTRAT.GE.2.AND.NSAND.GT.0) THEN

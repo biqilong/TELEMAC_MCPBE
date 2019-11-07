@@ -684,6 +684,23 @@
 !     BLOCK OF VARIABLES FOR OUTPUT
 !
       TYPE(BIEF_OBJ), TARGET :: VARSOR
+!                                                       WAC2
+!     
+!     BLOCK OF VARIABLES FOR SENDING TO TOMAWAC
+!
+      TYPE(BIEF_OBJ), TARGET :: TEL2TOM
+!
+!     BLOCK OF VARIABLES FOR RECEIVING FROM TOMAWAC
+!
+      TYPE(BIEF_OBJ), TARGET :: TOM2TEL
+!
+!     NR OF VARIBLES SEND TO TOMAWAC
+!
+      INTEGER :: NVARTEL2TOM
+!
+!     NR OF VARIBLES RECEIVED FROM TOMAWAC
+!
+      INTEGER :: NVARTOM2TEL
 !
 !-----------------------------------------------------------------------
 !

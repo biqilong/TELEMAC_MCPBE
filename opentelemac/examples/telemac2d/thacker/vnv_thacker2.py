@@ -610,7 +610,7 @@ class VnvStudy(AbstractVnvStudy):
 
         #======================================================================
         # Delete results
+        geom_res.close()
+        nerd_res.close()
         for res in res_list:
-            del res
-        del geom_res
-        del nerd_res
+            res.close()

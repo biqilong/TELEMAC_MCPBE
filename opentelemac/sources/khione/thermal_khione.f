@@ -20,6 +20,7 @@
 !+        30/09/2019
 !+        V8P0
 !+        Added coefficients for full heat budget
+!+        Added freezing temperature
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,7 +43,7 @@
                      SUBROUTINE THERMAL_FLUXES
 !                    *************************
 !
-     &  ( TAIR,TWAT,SRCT,TDEW,CC,VISB,WIND,PLUIE,
+     &  ( TAIR,TWAT,TFRZ,SRCT,TDEW,CC,VISB,WIND,PLUIE,
      &    SUMPH, PHCL,PHRI,PHPS,PHIB,PHIE,PHIH,PHIP,
      &    CONSTSS,ANFEM,DT,AT,DEPTH, MARDAT,MARTIM, LAMBD0 )
 !
@@ -61,6 +62,7 @@
 !+        30/09/2019
 !+        V8P01
 !+        Added coefficients for full heat budget
+!+        Added freezing temperature
 !
 !reference
 !+
@@ -81,7 +83,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_WAQTEL,      ONLY: BOLTZ,CP_EAU,ATMOSEXCH
-      USE DECLARATIONS_KHIONE,      ONLY: LH_ICE,CP_ICE,TMELT,
+      USE DECLARATIONS_KHIONE,      ONLY: LH_ICE,CP_ICE,
      &  LIN_WATAIR,CST_WATAIR,LIN_ICEAIR,CST_ICEAIR,
      &  COEF_PHIB, COEF_PHIE, COEF_PHIH, COEF_PHIP
       USE EXCHANGE_WITH_ATMOSPHERE, ONLY: LEAP,DAYNUM
@@ -93,7 +95,7 @@
 !
       INTEGER, INTENT(IN)             :: MARDAT(3),MARTIM(3)
 !
-      DOUBLE PRECISION, INTENT(IN)    :: TWAT,CONSTSS,ANFEM
+      DOUBLE PRECISION, INTENT(IN)    :: TWAT,CONSTSS,ANFEM,TFRZ
       DOUBLE PRECISION, INTENT(IN)    :: TAIR,TDEW,CC,VISB,WIND,PLUIE
       DOUBLE PRECISION, INTENT(IN)    :: DT,AT,DEPTH
       DOUBLE PRECISION, INTENT(INOUT) :: SUMPH,SRCT,PHCL,PHRI
@@ -199,7 +201,7 @@
 !
       IF( ATMOSEXCH.EQ.3 ) THEN
         IF(CICE.EQ.1) THEN  ! ICE
-          PHIH = - CST_ICEAIR - ( TAIR-TMELT )*LIN_ICEAIR
+          PHIH = - CST_ICEAIR - ( TAIR-TFRZ )*LIN_ICEAIR
         ELSE              ! OPEN WATER
           PHIH = - CST_WATAIR - ( TAIR-TWAT )*LIN_WATAIR
         ENDIF
@@ -343,7 +345,7 @@
                      SUBROUTINE ICOVER_GROWTH
 !                    ************************
 !
-     &  ( TAIR,TWAT, SUMPH, ANFEM,THIFEMS,THIFEMF,
+     &  ( TAIR,TWAT,TFRZ, SUMPH, ANFEM, THIFEMS,THIFEMF,
      &    EPK,HS1, HIN,FHC, DT )
 !
 !***********************************************************************
@@ -366,7 +368,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_WAQTEL,      ONLY: BOLTZ
-      USE DECLARATIONS_KHIONE,      ONLY: TMELT,RHO_ICE,
+      USE DECLARATIONS_KHIONE,      ONLY: RHO_ICE,
      &  LH_ICE, SURF_EF, TC_S,TC_BI,
      &  LIN_ICEAIR
       USE EXCHANGE_WITH_ATMOSPHERE, ONLY: LEAP,DAYNUM
@@ -376,7 +378,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       DOUBLE PRECISION, INTENT(IN)    :: EPK,FHC,HS1
-      DOUBLE PRECISION, INTENT(IN)    :: TAIR,TWAT, SUMPH
+      DOUBLE PRECISION, INTENT(IN)    :: TAIR,TWAT,TFRZ,SUMPH
       DOUBLE PRECISION, INTENT(IN)    :: DT
       DOUBLE PRECISION, INTENT(INOUT) :: ANFEM,HIN,THIFEMS,THIFEMF
 !
@@ -387,12 +389,12 @@
 !
 !-----------------------------------------------------------------------
 !
-!     PHIH = - CST_ICEAIR - ( TAIR-TMELT )*LIN_ICEAIR
+!     PHIH = - CST_ICEAIR - ( TAIR-TFRZ )*LIN_ICEAIR
 !     PHIH = - CST_WATAIR - ( TAIR-TWAT )*LIN_WATAIR
-!     SUMPH = PHPS + CST_ICEAIR + ( TAIR-TMELT )*LIN_ICEAIR
+!     SUMPH = PHPS + CST_ICEAIR + ( TAIR-TFRZ )*LIN_ICEAIR
 !     GROWTH OF ICE COVER DUE TO COLD SURFACE AIR TEMPERATURE
 !
-      IF( TAIR.LT.TMELT ) THEN
+      IF( TAIR.LT.TFRZ ) THEN
 !
         DH = MAX( 0.D0, - SUMPH * ( DT/RHO_ICE/LH_ICE ) /
      &    ( THIFEMS*LIN_ICEAIR/TC_BI + 1.D0 + HS1*LIN_ICEAIR/TC_S ) )
@@ -420,7 +422,7 @@
 !
 !     MELTING OF ICE COVER DUE TO WARM SURFACE AIR TEMPERATURE
 !
-      IF( TAIR.GT.TMELT ) THEN
+      IF( TAIR.GT.TFRZ ) THEN
         DH = MIN( 0.D0, - SUMPH * DT /( RHO_ICE*LH_ICE ) )
         B1 = THIFEMS
         B2 = B1 + HIN*( 1.D0-EPK )
@@ -447,8 +449,8 @@
 !
 !     MELTING OF ICE COVER DUE TO WARM UNDER WATER TEMPERATURE
 !
-      IF( TWAT.GT.TMELT ) THEN
-        DH = FHC * ( TWAT-TMELT ) * DT / ( RHO_ICE * LH_ICE )
+      IF( TWAT.GT.TFRZ ) THEN
+        DH = FHC * ( TWAT-TFRZ ) * DT / ( RHO_ICE * LH_ICE )
         B1 = THIFEMF*( 1.D0-SURF_EF )
         B2 = B1 + HIN*( 1.D0-EPK )
         B3 = B2 + THIFEMS
@@ -671,7 +673,7 @@
 !               ******************************************
                 DOUBLE PRECISION FUNCTION FRAZIL_HEAT_COEF
 !               ******************************************
-     &(DH,U,TWW)
+     &(DH,U,TWAT,TFRZ)
 !
 !***********************************************************************
 ! KHIONE   V7P3
@@ -687,7 +689,8 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| DH      |-->|
 !| U       |-->|
-!| TWW     |-->|
+!| TWAT    |-->| WATER TEMPERATURE
+!| TFRZ    |-->| FREEZING POINT FOR WATER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_KHIONE, ONLY: TC_WT,XNU,CWI1,CIW1,ATA
@@ -696,7 +699,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION DH,U,TWW
+      DOUBLE PRECISION DH,U,TWAT,TFRZ
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -718,9 +721,9 @@
         FRAZIL_HEAT_COEF = ATA*TC_WT/DH
 !
 !     TURBULENT FLOW
-      ELSEIF(TWW.GT.0.D0) THEN ! WATER TEMP.>0.0
+      ELSEIF( TWAT.GT.TFRZ ) THEN ! WATER TEMP.>TFRZ
         FRAZIL_HEAT_COEF = CWI1*U**0.8/DH**0.2 ! CWI1 = 1448
-      ELSE ! WATER TEMP.<0.0
+      ELSE ! WATER TEMP.<TFRZ
         FRAZIL_HEAT_COEF = CIW1*U**0.8/DH**0.2 ! CIW1 = 1118
       ENDIF
 !

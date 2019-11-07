@@ -50,27 +50,27 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_culm.slf',
-                            eps=[])
+                            eps=[0.05, 0.04, 0.01, 0.01, 1.E-8])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_culm.slf',
-                            eps=[])
+                            eps=[0.05, 0.03, 0.01, 0.01, 1e-8])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',
                             'vnv_2:T2DRES',
-                            eps=[])
-
+                             eps=[0.03, 0.03, 0.006, 0.006, 1.E-8])
 
     def _post(self):
         """
         Post-treatment processes
         """
-        from postel.plot_vnv import vnv_plot2d
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_history
         # Getting files
-        vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
-        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
+ #        vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
+ #        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
+        res_vnv_1_t2dgeo, _ = self.get_study_res('vnv_1:T2DGEO', load_bnd=True)
         vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
 
@@ -78,6 +78,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_plot2d('',
                    res_vnv_1_t2dgeo,
                    plot_mesh=True,
+                   annotate_bnd=True,
                    fig_size=(7, 7),
                    fig_name='img/Mesh')
 
@@ -108,6 +109,17 @@ class VnvStudy(AbstractVnvStudy):
                    filled_contours=True,
                    fig_size=(7, 7),
                    fig_name='img/Velocity')
+
+        # Plotting at point (7841.22;6842.13)
+        vnv_plot1d_history(\
+                'FREE SURFACE',
+                res_vnv_1_t2dres,
+                'FREE SURFACE',
+                points=[[7841.22, 6842.13]],
+                fig_size=(7, 5),
+                fig_name='img/timeserie',
+                xlim=[0., 60000],
+                ylim=[23.7, 24.3])
 
         # Closing files
         res_vnv_1_t2dgeo.close()

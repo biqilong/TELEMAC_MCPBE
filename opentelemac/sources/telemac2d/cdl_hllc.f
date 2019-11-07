@@ -225,6 +225,8 @@
                 ENDIF
               ENDIF
             ELSE !THIS IS A SUPERCRITICAL OUTFLOW (NO NEED FOR GIVEN H)
+              UG = 0.D0
+              VG = 0.D0
               IF(.NOT.DEJA.AND.ENTET)THEN
                 WRITE(LU,61) NUMLIQ%I(K),ABS(UNN)/MAX(EPS,C1)
                 DEJA=.TRUE.

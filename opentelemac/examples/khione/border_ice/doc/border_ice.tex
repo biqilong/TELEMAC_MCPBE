@@ -23,7 +23,7 @@ The mesh of the domain was created with a uniform density and with $23960$ eleme
 
 \subsection{Initial conditions}
 
-A hydrodynamics steady state condition is established first separately to reach a constant and uniform élévation of $2.5m$ and a constant and uniform discharge of $5m^3/s$.
+A hydrodynamics steady state condition is established first separately to reach a constant and uniform élévation of $2.5m$ and a constant and uniform discharge of $10m^3/s$.
 Water temperature is initially set at $-0.005^\circ C$ and frazil volume fraction at $10^{-4}$. These values are also used for the upstream boundary condition.
 
 \subsection{Boundary conditions}
@@ -60,7 +60,7 @@ Air temperature is set to a constant of $-10^{\circ}$ during the simulation.
 
 In order to balance the slope and the discharge through the flume, a Manning friction law is used, with a coefficient of $0.025$. Within the \waqtel steering file, water and air specific heat are set to $1002J.kg^{-1}.K^{-1}$ and $4180 J.kg^{-1}.K^{-1}$.
 
-Border ice formation is triggered by three conditions. Water surface temperature $T_{ws}$ must be inferior to critical temperature $T_{cr}$ defined by $-1.1^{\circ} C$ by default. Local depth averaged velocity must be inferior to a critical velocity $U_{cr}$ defined by $0.07 m/s$ by default. Finally frazil buoyancy velocity $U_b$ must be superior to the local vertical turbulence velocity $U'_z$. $T_{cr}$ and $U_{cr}$ can be modified in the \khione steering file via the following keywords:
+Border ice formation is triggered by three conditions. Water surface temperature $T_{ws}$ must be inferior to  $T_f-T_{cr}$, with $T_f$ the fusion temperature of water and $T_{cr}$ an empirical critical temperature defined by $-1.1^{\circ} C$ by default. Aditionnally, local depth averaged velocity must be inferior to a critical velocity $U_{cr}$ defined by $0.07 m/s$ by default. Finally frazil buoyancy velocity $U_b$ must be superior to the local vertical turbulence velocity $U'_z$. $T_{cr}$ and $U_{cr}$ can be modified in the \khione steering file via the following keywords:
 \begin{itemize}
 	\item\textit{CRITICAL VELOCITY FOR STATIC BORDER ICE = 0.07}
 	\item\textit{CRITICAL WATER TEMPERATURE FOR STATIC BORDER ICE = -1.1}
@@ -82,19 +82,19 @@ The time step is set to $1s$ and the number of timestep is set to $7200$ which l
 \end{minipage}
 \begin{minipage}[t]{\textwidth}
  \centering
- \includegraphicsmaybe{[width=\textwidth]}{../img/U-2d_scalarmap_2h.png}
+ \includegraphicsmaybe{[width=\textwidth]}{../img/U-2d_scalarmap_120min.png}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}
  \centering
- \includegraphicsmaybe{[width=\textwidth]}{../img/T-2d_scalarmap_2h.png}
+ \includegraphicsmaybe{[width=\textwidth]}{../img/T-2d_scalarmap_120min.png}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}
  \centering
- \includegraphicsmaybe{[width=\textwidth]}{../img/Cf-2d_scalarmap_2h.png}
+ \includegraphicsmaybe{[width=\textwidth]}{../img/Cf-2d_scalarmap_120min.png}
 \end{minipage}
 \begin{minipage}[t]{\textwidth}
  \centering
- \includegraphicsmaybe{[width=\textwidth]}{../img/Hg-2d_scalarmap_2h.png}
+ \includegraphicsmaybe{[width=\textwidth]}{../img/Hg-2d_scalarmap_120min.png}
 \end{minipage}
   \caption{Results at final time}\label{fig:res}
 \end{figure}

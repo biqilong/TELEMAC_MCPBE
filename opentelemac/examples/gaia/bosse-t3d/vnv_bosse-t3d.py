@@ -59,22 +59,22 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:GAIRES',
                             'vnv_2:GAIRES',
-                            eps=[1.e-2])
+                            eps=[1.e-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_bosse-t3d.slf',
-                            eps=[1.e-3])
+                            eps=[1.e-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T3DRES',
                             'f3d_bosse-t3d.slf',
-                            eps=[1.e-3])
+                            eps=[1.e-6])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_2:T3DRES',
-                            eps=[1.e-3])
+                            eps=[1.e-6])
 
 
     def _post(self):

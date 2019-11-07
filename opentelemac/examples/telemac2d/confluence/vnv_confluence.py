@@ -23,7 +23,7 @@ class VnvStudy(AbstractVnvStudy):
         """
 
         # confluence scalar mode
-        self.add_study('vnv_1',
+        self.add_study('vnv_seq',
                        'telemac2d',
                        't2d_confluence.cas')
 
@@ -32,7 +32,7 @@ class VnvStudy(AbstractVnvStudy):
         cas = TelemacCas('t2d_confluence.cas', get_dico('telemac2d'))
         cas.set('PARALLEL PROCESSORS', 4)
 
-        self.add_study('vnv_2',
+        self.add_study('vnv_par',
                        'telemac2d',
                        't2d_confluence_par.cas',
                        cas=cas)
@@ -47,19 +47,19 @@ class VnvStudy(AbstractVnvStudy):
         """
 
         # Comparison with the last time frame of the reference file.
-        self.check_epsilons('vnv_1:T2DRES',
+        self.check_epsilons('vnv_seq:T2DRES',
                             'f2d_confluence.slf',
-                            eps=[])
+                            eps=[1.e-6])
 
         # Comparison with the last time frame of the reference file.
-        self.check_epsilons('vnv_2:T2DRES',
+        self.check_epsilons('vnv_par:T2DRES',
                             'f2d_confluence.slf',
-                            eps=[])
+                            eps=[1.e-6])
 
         # Comparison between sequential and parallel run.
-        self.check_epsilons('vnv_1:T2DRES',
-                            'vnv_2:T2DRES',
-                            eps=[])
+        self.check_epsilons('vnv_seq:T2DRES',
+                            'vnv_par:T2DRES',
+                            eps=[1.e-6])
 
 
     def _post(self):
@@ -69,12 +69,12 @@ class VnvStudy(AbstractVnvStudy):
         from postel.plot_vnv import vnv_plot2d
 
         # Getting files
-        res_vnv_1_t2dgeo, _ = self.get_study_res('vnv_1:T2DGEO', load_bnd=True)
-        res_vnv_1_t2dres, _ = self.get_study_res('vnv_1:T2DRES')
+        res_vnv_seq_t2dgeo, _ = self.get_study_res('vnv_seq:T2DGEO', load_bnd=True)
+        res_vnv_seq_t2dres, _ = self.get_study_res('vnv_seq:T2DRES')
 
         #Plotting mesh
         vnv_plot2d('',
-                   res_vnv_1_t2dgeo,
+                   res_vnv_seq_t2dgeo,
                    plot_mesh=True,
                    fig_size=(9, 3),
                    fig_name='img/mesh',
@@ -82,7 +82,7 @@ class VnvStudy(AbstractVnvStudy):
 
         #Plotting mesh
         vnv_plot2d('',
-                   res_vnv_1_t2dgeo,
+                   res_vnv_seq_t2dgeo,
                    xlim=[-6.5, -4.0],
                    ylim=[0., 1.1],
                    plot_mesh=True,
@@ -91,7 +91,7 @@ class VnvStudy(AbstractVnvStudy):
 
         # Plotting BOTTOM at 0
         vnv_plot2d('BOTTOM',
-                   res_vnv_1_t2dres,
+                   res_vnv_seq_t2dres,
                    record=0,
                    filled_contours=True,
                    fig_size=(9, 3),
@@ -99,7 +99,7 @@ class VnvStudy(AbstractVnvStudy):
 
         # Plotting WATER DEPTH at -1
         vnv_plot2d('WATER DEPTH',
-                   res_vnv_1_t2dres,
+                   res_vnv_seq_t2dres,
                    record=-1,
                    filled_contours=True,
                    fig_size=(9, 3),
@@ -107,7 +107,7 @@ class VnvStudy(AbstractVnvStudy):
 
         # Plotting VELOCITY at -1
         vnv_plot2d('VELOCITY',
-                   res_vnv_1_t2dres,
+                   res_vnv_seq_t2dres,
                    record=-1,
                    filled_contours=True,
                    fig_size=(9, 3),
@@ -115,7 +115,7 @@ class VnvStudy(AbstractVnvStudy):
 
         # Plotting VELOCITY at -1
         vnv_plot2d('VELOCITY',
-                   res_vnv_1_t2dres,
+                   res_vnv_seq_t2dres,
                    xlim=[-6.5, -4.0],
                    ylim=[0., 1.1],
                    record=-1,
@@ -127,5 +127,5 @@ class VnvStudy(AbstractVnvStudy):
                    fig_name='img/velocity_strm')
 
         # Closing files
-        del res_vnv_1_t2dgeo
-        del res_vnv_1_t2dres
+        res_vnv_seq_t2dgeo.close()
+        res_vnv_seq_t2dres.close()

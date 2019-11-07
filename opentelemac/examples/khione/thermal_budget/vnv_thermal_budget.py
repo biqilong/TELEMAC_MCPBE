@@ -124,6 +124,9 @@ class VnvStudy(AbstractVnvStudy):
         ax.legend()
         print(" "*8+"~> Plotting img/thermal_fluxes")
         plt.savefig('img/thermal_fluxes')
+        # Close figure:
+        fig.clf()
+        plt.close()
 
         #Plotting comparison with CRISSP2D
         exp = np.loadtxt('data/ref_crissp2d.prn')
@@ -139,8 +142,11 @@ class VnvStudy(AbstractVnvStudy):
         ax.legend()
         print(" "*8+"~> Plotting img/temperature")
         plt.savefig('img/temperature')
+        # Close figure:
+        fig.clf()
+        plt.close()
 
         # Closing files
-        del geo
-        del res_vnv_1
-        del res_ice_1
+        geo.close()
+        res_vnv_1.close()
+        res_ice_1.close()

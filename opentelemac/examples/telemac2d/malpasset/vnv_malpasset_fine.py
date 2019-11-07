@@ -182,7 +182,7 @@ class VnvStudy(AbstractVnvStudy):
 
         # find case rfo file
         rfo_file = path.join(
-            self.get_vnv_working_dir('fine'), 
+            self.get_vnv_working_dir('fine'),
             'rfo_malpasset-fine.txt')
 
         # read rfo file
@@ -228,5 +228,5 @@ class VnvStudy(AbstractVnvStudy):
 
         #======================================================================
         # Delete results
-        del geo
-        del res
+        geo.close()
+        res.close()

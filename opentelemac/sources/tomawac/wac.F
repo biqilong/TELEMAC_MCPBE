@@ -76,6 +76,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
+      USE COUPLE_MOD
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_TOMAWAC
       USE INTERFACE_TOMAWAC, EX_WAC => WAC
@@ -91,7 +92,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 !
       DOUBLE PRECISION DT_MIN,DT_MAX
-      INTEGER          DUMMY,LT_WAC, IREC
+      INTEGER          DUMMY,LT_WAC, IREC, IERR
 !
       INTEGER LT1
       INTEGER DATE(3),TIME(3),IP
@@ -187,7 +188,10 @@
           IF(DEBUG.GT.0)WRITE(LU,*)'BACK FROM  READ_SPECTRA_COORDS'
         ENDIF
 !
-!
+        IF (INCLUS(COUPLING,'TOMAWAC2')) THEN
+          CALL GET_MESH_NPTIR(WAC_FILES(WACGEO)%FMT,
+     &       WAC_FILES(WACGEO)%LU,NPTIR,IERR)
+        ENDIF
 !=====C
 !     2 LECTURE DES CONDITIONS LIMITES ET INDICES DES POINTS FRONTIERES
 !=====C================================================================
@@ -228,8 +232,26 @@
           IF(DT.LE.CPL_WAC_DATA%DT_TEL*CPL_WAC_DATA%PERCOU_WAC) THEN
             NIT = NINT(CPL_WAC_DATA%DT_TEL*CPL_WAC_DATA%PERCOU_WAC/DT)
           ENDIF
-        ENDIF
-!     Fin COUPLAGE
+        
+!       RECEIVE DATA FROM TOMAWAC
+!                                                       WAC2
+          IF(INCLUS(COUPLING,'TOMAWAC2')) THEN
+            IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE RECEIVE_COUPLE'
+            CALL RECEIVE_COUPLE(1,NPOIN2,NVARTEL2TOM,TEL2TOM)
+            IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE RECEIVE_COUPLE'
+            CPL_WAC_DATA%U_TEL => U_TEL
+            CPL_WAC_DATA%V_TEL => V_TEL
+            CPL_WAC_DATA%H_TEL => H_TEL
+            CPL_WAC_DATA%FX_WAC => FX_WAC
+            CPL_WAC_DATA%FY_WAC => FY_WAC
+            CPL_WAC_DATA%UV_WAC => UV_WAC
+            CPL_WAC_DATA%VV_WAC => VV_WAC
+            CPL_WAC_DATA%DIRMOY_TEL => DIRMOY_TEL
+            CPL_WAC_DATA%HM0_TEL => HM0_TEL
+            CPL_WAC_DATA%TPR5_TEL => TPR5_TEL
+            CPL_WAC_DATA%ORBVEL_TEL => ORBVEL_TEL
+          ENDIF
+        ENDIF!     Fin COUPLAGE
 !
 !     COUPLAGE TELEMAC-TOMAWAC : LT est defini comme le numero de pas
 !     de temps effectifs de TOMAWAC. La variable LT_WAC
@@ -639,6 +661,14 @@
 #endif
 !
 !------------------------------------------------------------------
+!------------------------------------------------------------------------
+!
+!   SEND DATA BACK TO TELEMAC
+!
+!                                                       WAC2
+      IF (INCLUS(COUPLING,'TOMAWAC2')) THEN
+        CALL SEND_COUPLE(2,NPOIN2,NVARTOM2TEL,TOM2TEL)
+      ENDIF
 !
       RETURN
       END

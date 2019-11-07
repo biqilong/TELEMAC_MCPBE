@@ -80,3 +80,4 @@ SOLVER                            = 1
 IMPLICITATION FOR DEPTH           = 1.
 IMPLICITATION FOR VELOCITY        = 1.
 MASS-LUMPING ON H                 = 1.
+SOLVER ACCURACY                   = 1.e-10

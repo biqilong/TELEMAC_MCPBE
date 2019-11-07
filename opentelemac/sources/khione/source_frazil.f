@@ -2,8 +2,8 @@
                      SUBROUTINE SOURCE_FRAZIL
 !                    ************************
 !
-     &( NPOIN,TEXP,TN,HPROP,U,V, T1,S,MESH,
-     &  DT,AT,MARDAT,MARTIM, LAMBD0 )
+     &( NPOIN,TEXP,TN,HPROP,U,V,T1,S,MESH,
+     &  DT,AT,MARDAT,MARTIM,LAMBD0 )
 !
 !***********************************************************************
 ! KHIONE   V7P2                                             02/11/2016
@@ -35,15 +35,17 @@
       USE BIEF
       USE DECLARATIONS_SPECIAL
       USE DECLARATIONS_WAQTEL, ONLY : RO0,CP_EAU
-      USE DECLARATIONS_KHIONE, ONLY : ICEPROCESS,IND_F,IND_T,ICETYPE,
+      USE DECLARATIONS_KHIONE, ONLY : ICEPROCESS,IND_F,IND_T,IND_S,
+     &                ICETYPE,
      &                SUMPH, PHCL,PHRI,PHPS,PHIB,PHIE,PHIH,PHIP,
-     &                ANFEM,THETA0,THETA1,BETA1,VBB,THIFEMS,THIFEMF,HUN,
-     &                SURF_EF,TCR,BCH
+     &                ANFEM,THETA0,THETA1,BETA1,VBB,
+     &                THIFEM,THIFEMS,THIFEMF,HUN,
+     &                TMELT,SURF_EF,TCR,BCH
       USE METEO_KHIONE,        ONLY : SYNC_METEO,
      &                            WINDX,WINDY,TAIR,TDEW,CLDC,VISBI,PLUIE
       USE THERMAL_KHIONE,      ONLY : THERMAL_FLUXES,ICOVER_GROWTH,
      &                                FRAZIL_HEAT_COEF
-      USE FREEZEUP_KHIONE,     ONLY : SUPER_COOLING
+      USE FREEZEUP_KHIONE,     ONLY : SUPER_COOLING,MELTING_POINT
 !
       IMPLICIT NONE
 !
@@ -92,6 +94,17 @@
 !     NOTE THAT "AT" FROM DIFSOU IS AREADY TOO FAR GONE
       CALL SYNC_METEO(AT-DT)
 !
+!=======================================================================
+!
+!     MELTING POINT
+!
+!-----------------------------------------------------------------------
+!
+      IF( IND_S.NE.0 ) THEN
+        DO I = 1,NPOIN
+          TMELT%R(I) = MELTING_POINT( TN%ADR(IND_S)%P%R(I) )
+        ENDDO
+      ENDIF
 !
 !=======================================================================
 !
@@ -116,7 +129,7 @@
 !
 ! ~~>       ATMOSPHERIC HEAT FLUXES
             CALL THERMAL_FLUXES( TAIR%R(I),TN%ADR(IND_T)%P%R(I),
-     &        SRCT,
+     &        TMELT%R(I), SRCT,
      &        TDEW%R(I),CLDC%R(I),VISBI%R(I),WMAG,PLUIE%R(I),
      &        SUMPH%R(I), PHCL%R(I),PHRI%R(I),
      &        PHPS%R(I),PHIB%R(I),PHIE%R(I),PHIH%R(I),PHIP%R(I),
@@ -131,7 +144,7 @@
 ! ~~>       SUPERCOOLING AND FRAZIL ICE GROWTH
             CALL SUPER_COOLING(
      &        TN%ADR(IND_T)%P%R(I),TN%ADR(IND_F)%P%R(I),
-     &        SRCT,SRCF,
+     &        TMELT%R(I),SRCT,SRCF,
      &        THETA0%R(I),THETA1%R(I),BETA1%R(I),
      &        VBB%R(I),THIFEMF%R(I),HUN%R(I),
      &        CONSTSS,ANFEM%R(I), DT,VMAG,HPROP%R(I),.FALSE.  )
@@ -146,12 +159,17 @@
               FHC = 0.D0
               IF( TN%ADR(IND_T)%P%R(I).GT.0.D0 ) THEN
                 FHC = FRAZIL_HEAT_COEF(
-     &            2*HPROP%R(I),VMAG,TN%ADR(IND_T)%P%R(I) )
+     &            2*HPROP%R(I),VMAG,TN%ADR(IND_T)%P%R(I),TMELT%R(I) )
               ENDIF
 !
+!             COMPUTING ICE COVER THERMAL GROWTH
               CALL ICOVER_GROWTH( TAIR%R(I),TN%ADR(IND_T)%P%R(I),
-     &          SUMPH%R(I), ANFEM%R(I),THIFEMS%R(I),THIFEMF%R(I),
+     &          TMELT%R(I),SUMPH%R(I),
+     &          ANFEM%R(I),THIFEMS%R(I),THIFEMF%R(I),
      &          SURF_EF,(0.D0), HIN,FHC, DT )
+!
+!             COMPUTING TOTAL ICE THICKNESS
+              THIFEM%R(I) = THIFEMS%R(I) + THIFEMF%R(I) + HUN%R(I)
 !
             ENDIF
 !
@@ -167,6 +185,18 @@
             ENDIF
 !
 ! ~~>       TODO: HEAT FLUXES BETWEEN WATER AND ICE
+!!            IF( ANFEM%R(I).GT.0.5D0 ) THEN
+!             CONSIDER ICE EFFECTS
+!              DH = 2.D0*HPROP%R(I)
+!            ELSE
+!             DOES NOT CONSIDER ICE EFFECTS
+!              DH = 4.D0*HPROP%R(I)
+!            ENDIF
+!            PHIW%R(I) = - ( TN%ADR(IND_T)%P%R(I)-TMELT%R(I) ) *
+!     &        FRAZIL_HEAT_COEF( DH,VMAG,TN%ADR(IND_T)%P%R(I)-TMELT%R(I) )
+!
+!            TEXP%ADR(IND_T)%P%R(I) = TEXP%ADR(IND_T)%P%R(I) +
+!     &        CONSTSS*PHIW%R(I)*ANFEM%R(I) / HPROP%R(I)
 !
           ELSE
 !

@@ -2,7 +2,7 @@
                          SUBROUTINE ADDTRACER
 !                        ********************
 !
-     &  (NAMETRAC,MTRAC,ITRAC,NAME1,NAME2,UNIT0)
+     &  (NAMETRAC,MTRAC,ITRAC,ADD,NAME1,NAME2,UNIT0)
 !
 !
 !***********************************************************************
@@ -29,6 +29,7 @@
 !| NAME1,NAME2    |-->| NAMES IN FRENCH AND ENGLISH OF THE TRACER TO ADD
 !| NAMETRAC       |<->| TABLE CONTAINING TRACERS' NAMES
 !| UNIT0          |-->| UNIT OF THE TRACER TO ADD
+!| ADD            |-->| OPTIONAL: WHETHER TO ADD THE TRACER OR NOT
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_SPECIAL
@@ -42,6 +43,7 @@
       INTEGER,           INTENT(INOUT):: MTRAC,ITRAC
       CHARACTER(LEN=32), INTENT(INOUT):: NAMETRAC(*)
       CHARACTER(LEN=16), INTENT(IN)   :: NAME1,NAME2,UNIT0
+      LOGICAL,           INTENT(IN)   :: ADD
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -56,7 +58,7 @@
           ITRAC = I
         ENDIF
       ENDDO
-      IF( ITRAC.EQ.0 ) THEN
+      IF( ITRAC.EQ.0 .AND. ADD) THEN
         MTRAC = MTRAC + 1
         ITRAC = MTRAC
         IF(LNG.EQ.LNG_FR)THEN

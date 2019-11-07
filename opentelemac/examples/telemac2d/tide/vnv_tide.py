@@ -224,5 +224,5 @@ class VnvStudy(AbstractVnvStudy):
             grid_resolution=[50, 50])
 
         # Closing files
-        del geom
-        del res
+        geom.close()
+        res.close()

@@ -47,10 +47,6 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-!     TODO: THIS SHOULD BE MOVED TO DECLARATIONS_KHIONE,
-!     EVEN IF SOME ARE DUPLICATED IN TELEMAC
-!      INTEGER :: IND_F,IND_T
-!
       LOGICAL :: FOUND
 !
 !-----------------------------------------------------------------------
@@ -74,7 +70,7 @@
 !
 !-----------------------------------------------------------------------
 !
-!     ADDING RELEVANT TRACERS WHEN RELEVANT
+!     ADDING TRACERS WHEN RELEVANT
 !
 !     2.: THERMAL BUDGET WITH FRAZIL PRODUCTION
       IF( ( 2*INT(ICEPROCESS/2) .EQ. ICEPROCESS ).OR.
@@ -84,12 +80,16 @@
 !
 !     1. ~~> FRAZIL
         CALL ADDTRACER(NAMETRAC,NTRAC,
-     &    IND_F,
+     &    IND_F,.TRUE.,
      &    'FRASIL          ','FRAZIL          ','VOLUME FRACTION ')
 !     2. ~~> TEMPERATURE
         CALL ADDTRACER(NAMETRAC,NTRAC,
-     &    IND_T,
+     &    IND_T,.TRUE.,
      &    'TEMPERATURE     ','TEMPERATURE     ','   oC           ')
+!     3. ~~> SALINITY
+        CALL ADDTRACER(NAMETRAC,NTRAC,
+     &    IND_S,.FALSE.,
+     &    'SALINITE        ','SALINITY        ','   ppt          ' )
 !
 !     3.: STATIC ICE COVER
       ELSEIF( 3*INT(ICEPROCESS/3) .EQ. ICEPROCESS ) THEN

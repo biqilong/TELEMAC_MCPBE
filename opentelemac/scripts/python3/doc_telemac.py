@@ -308,7 +308,7 @@ use the options --validation/reference/user/release/theory to compile only one
         # all modules
         module_list = ['artemis', 'stbtel', 'sisyphe',
                        'telemac2d', 'telemac3d', 'tomawac', 'waqtel',
-                       'telapy', 'mascaret', 'gaia']
+                       'telapy', 'mascaret', 'gaia', 'nestor']
     if options.misc != '':
         misc_list = options.misc.split(',')
         module_list = []
@@ -356,7 +356,7 @@ use the options --validation/reference/user/release/theory to compile only one
                                    case+'\n'
                 todo.append('validation')
         if options.reference or doall:
-            if code_name not in ['telapy', 'mascaret']:
+            if code_name not in ['telapy', 'mascaret', 'nestor']:
                 # Path to the dictionary
                 dictionary = path.join(root, 'sources', code_name,
                                        code_name+'.dico')
@@ -380,7 +380,7 @@ use the options --validation/reference/user/release/theory to compile only one
                 todo.append('user')
         if options.theory_guide or doall:
             # theory guide only available for telemac3d
-            if code_name in ['telemac3d', 'mascaret']:
+            if code_name in ['telemac3d', 'mascaret', 'waqtel']:
                 todo.append('theory_guide')
         for doc_type in todo:
             doc_dir = path.join(root, 'documentation',

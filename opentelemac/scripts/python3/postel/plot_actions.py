@@ -419,6 +419,7 @@ def plot_var(res, var, record=-1, time=None, add_mesh=False,
 
     vnv_plot2d(var, res, plot_mesh=add_mesh, record=record,
                filled_contours=True,
+               aspect_ratio="equal",
                fig_name=fig_name)
 
 def plot_mesh2d(res, display_bnd=False,
@@ -446,6 +447,7 @@ def plot_mesh2d(res, display_bnd=False,
                plot_mesh=True,
                annotate_bnd=display_bnd,
                annotate_liq_bnd=display_liq_bnd,
+               aspect_ratio="equal",
                fig_name=fig_name)
 
 def plot_timeseries_on_polyline(\
@@ -510,6 +512,7 @@ def plot_vertical_slice(res, varname, poly,
             plot_mesh=add_mesh,
             record=rrecord,
             filled_contours=True,
+            aspect_ratio="equal",
             fig_name=fig_name)
 
 
@@ -541,6 +544,7 @@ def plot_horizontal_slice(res, varname, plane, record=-1, time=None,
 
     vnv_plot2d(varname, res, plane=iplane, plot_mesh=add_mesh,
                filled_contours=True,
+               aspect_ratio="equal",
                record=rrecord, fig_name=fig_name)
 
 def plot_spe(res, point, record=-1, time=None, fig_name=''):

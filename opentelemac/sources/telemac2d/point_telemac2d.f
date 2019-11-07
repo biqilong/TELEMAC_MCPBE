@@ -981,7 +981,6 @@
 !
 !     VARIABLES TRANSMITTED FROM TOMAWAC TO SISYPHE
 !
-! CV     IF(INCLUS(COUPLING,'SISYPHE').AND.INCLUS(COUPLING,'TOMAWAC')) THEN
       IF(INCLUS(COUPLING,'TOMAWAC')) THEN
         CALL BIEF_ALLVEC(1,DIRMOY,'DIRMOY',IELMH,1,1,MESH)
         CALL BIEF_ALLVEC(1,HM0   ,'HM0   ',IELMH,1,1,MESH)
@@ -1473,6 +1472,48 @@
         CALL BIEF_ALLVEC_IN_BLOCK(PHAS,NPERIAF,1,'PHAS  ',
      &                            IELM1,1,2,MESH)
       ENDIF
+      
+      
+!-----------------------------------------------------------------------
+!
+! NEW TELEMAC TO TOMAWAC COUPLING
+!                                                       WAC2
+
+      NVARTOM2TEL = 0
+      NVARTEL2TOM = 0
+      IF(INCLUS(COUPLING,'TOMAWAC2')) THEN
+
+        ! SENDING VARIABLES TO TOMAWAC
+        CALL ALLBLO(TEL2TOM ,'TEL2TO')
+        CALL ADDBLO(TEL2TOM,U)
+        CALL ADDBLO(TEL2TOM,V)
+        CALL ADDBLO(TEL2TOM,H)
+        NVARTEL2TOM = 3
+        ! RECEIVING VARIABLES FROM TOMAWAC
+
+        CALL ALLBLO(TOM2TEL ,'TOM2TE')
+        NVARTOM2TEL = 0
+        IF (INCLUS(COUPLING,'SISYPHE')) THEN
+          CALL ADDBLO(TOM2TEL,DIRMOY)
+          CALL ADDBLO(TOM2TEL,HM0)
+          CALL ADDBLO(TOM2TEL,TPR5)
+          CALL ADDBLO(TOM2TEL,ORBVEL)
+          NVARTOM2TEL = NVARTOM2TEL + 4
+        ENDIF
+        IF(COUROU) THEN
+          CALL ADDBLO(TOM2TEL,FXWAVE)
+          CALL ADDBLO(TOM2TEL,FYWAVE)
+          NVARTOM2TEL = NVARTOM2TEL + 2
+        ENDIF
+        ! WIND CHECK IS THIS IS POSSIBLE
+        IF (VENT) THEN
+          CALL ADDBLO(TOM2TEL,WINDX)
+          CALL ADDBLO(TOM2TEL,WINDY)
+          NVARTOM2TEL = NVARTOM2TEL + 2
+        ENDIF
+      ENDIF
+
+
 !
 !-----------------------------------------------------------------------
 !

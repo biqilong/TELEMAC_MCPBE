@@ -23,8 +23,8 @@
 /
  VARIABLES FOR GRAPHIC PRINTOUTS  = 'B,U,V,H,S,T*'
 /
- GRAPHIC PRINTOUT PERIOD          = 120
- LISTING PRINTOUT PERIOD          = 360
+ GRAPHIC PRINTOUT PERIOD          = 600
+ LISTING PRINTOUT PERIOD          = 600
  MASS-BALANCE                     = YES
  TIME STEP                        = 1.
  NUMBER OF TIME STEPS             = 7200
@@ -59,9 +59,9 @@
 /  BOUNDARY CONDITIONS
 /----------------------------------------------------
 /
- PRESCRIBED FLOWRATES          = -5.0  ;  5.0
- PRESCRIBED ELEVATIONS         =  2.5  ;  2.5
- VELOCITY PROFILES             =  4    ;  4
+ PRESCRIBED FLOWRATES          = -10.0  ; 10.0
+ PRESCRIBED ELEVATIONS         =   2.5  ;  2.5
+ VELOCITY PROFILES             =   4    ;  4
 /
  CONTINUITY CORRECTION         = YES
 / OPTION FOR LIQUID BOUNDARIES  =  2    ;  1
@@ -97,7 +97,7 @@
 /
  FREE SURFACE GRADIENT COMPATIBILITY   = 0.9
  IMPLICITATION FOR DEPTH               = 0.6
- IMPLICITATION FOR VELOCITY            = 1.0      /!\ modified !
+ IMPLICITATION FOR VELOCITY            = 0.6
 / IMPLICITATION COEFFICIENT OF TRACERS  = 0.6
 /
  MASS-LUMPING ON H = 1
@@ -105,8 +105,8 @@
 / MINIMUM VALUE OF DEPTH = 0.001
 /
  SOLVER = 2
- SOLVER ACCURACY                         = 1.E-8  /!\ added !
- MAXIMUM NUMBER OF ITERATIONS FOR SOLVER = 250    /!\ added !
+ SOLVER ACCURACY                         = 1.E-8
+ MAXIMUM NUMBER OF ITERATIONS FOR SOLVER = 250
 /
 / SOLVER FOR DIFFUSION OF TRACERS         = 7
 / ACCURACY FOR DIFFUSION OF TRACERS       = 1.E-8

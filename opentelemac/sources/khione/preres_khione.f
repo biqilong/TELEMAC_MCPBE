@@ -99,16 +99,6 @@
       ENDIF
 !
 !=======================================================================
-!     COMPUTES THE TOTAL ICE THICKNESS
-!=======================================================================
-!
-      IF( (LEO.AND.SORLEO(20)).OR.(IMP.AND.SORIMP(20)) ) THEN
-        DO I = 1,NPOIN
-          T6%R(I) = THIFEMS%R(I) + THIFEMF%R(I) + HUN%R(I)
-        ENDDO
-      ENDIF
-!
-!=======================================================================
 !     CONVERTER ICE CHARACTERISTICS (PRIME NUMBER) INTO ITS REAL PART
 !=======================================================================
 !

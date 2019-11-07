@@ -2,10 +2,6 @@
 """
 Validation script for flume_frazil
 """
-import datetime
-import matplotlib.dates as mdates
-import matplotlib.pyplot as plt
-from postel.deco_vnv import decoVNV, decoVNV_1d
 from vvytel.vnv_study import AbstractVnvStudy
 from execution.telemac_cas import TelemacCas, get_dico
 from data_manip.extraction.telemac_file import TelemacFile
@@ -41,12 +37,24 @@ class VnvStudy(AbstractVnvStudy):
         # thermal model with fazil ice growth (parallel)
         cas = TelemacCas('t2d_frazil.cas', get_dico('telemac2d'))
         cas.set('PARALLEL PROCESSORS', 4)
-
         self.add_study('vnv_3',
                        'telemac2d',
                        't2d_frazil_par.cas',
                        cas=cas)
+        del cas
 
+        # thermal model with fazil ice growth and salinity (serial)
+        self.add_study('vnv_4',
+                       'telemac2d',
+                       't2d_frazil_sal.cas')
+
+        # thermal model with fazil ice growth and salinity (parallel)
+        cas = TelemacCas('t2d_frazil_sal.cas', get_dico('telemac2d'))
+        cas.set('PARALLEL PROCESSORS', 4)
+        self.add_study('vnv_5',
+                       'telemac2d',
+                       't2d_frazil_sal_par.cas',
+                       cas=cas)
         del cas
 
 
@@ -69,19 +77,37 @@ class VnvStudy(AbstractVnvStudy):
                             'vnv_3:T2DRES',
                             eps=[1.])
 
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_4:T2DRES',
+                            'f2d_longflume_sal.slf',
+                            eps=[1.E-3])
+
+        # Comparison with the last time frame of the reference file.
+        self.check_epsilons('vnv_5:T2DRES',
+                            'f2d_longflume_sal.slf',
+                            eps=[1.E-3])
+
+        # Comparison between serial and parallel run.
+        self.check_epsilons('vnv_4:T2DRES',
+                            'vnv_5:T2DRES',
+                            eps=[1.])
+
 
     def _post(self):
         """
         Post-treatment processes
         """
-        from postel.plot_actions import plot1d, plot2d_scalar_filled_contour
-        from postel.plot_vnv import vnv_plot1d, vnv_plot2d,\
-            vnv_plot1d_history, vnv_plot1d_polylines
+        from postel.plot_actions import plot2d_scalar_filled_contour
+        from postel.plot_vnv import vnv_plot2d,\
+            vnv_plot1d_polylines
+        import datetime
+        import matplotlib.pyplot as plt
 
         geo, _ = self.get_study_res('vnv_1:T2DGEO', load_bnd=True)
         res_vnv_1 = TelemacFile(self.get_study_file('vnv_1:T2DRES'))
         res_vnv_2 = TelemacFile(self.get_study_file('vnv_2:T2DRES'))
         res_vnv_3 = TelemacFile(self.get_study_file('vnv_3:T2DRES'))
+        res_vnv_4 = TelemacFile(self.get_study_file('vnv_4:T2DRES'))
 
         #======================================================================
         # DESCRIPTION PLOTS:
@@ -136,7 +162,7 @@ class VnvStudy(AbstractVnvStudy):
             fig_name='img/T-2d_scalarmap',
             x_label='$x$ $(m)$',
             y_label='$y$ $(m)$',
-            cbar_label='$T$ $(^\circ C)$')
+            cbar_label=r'$T$ $(^\circ C)$')
 
         #----------------------------------------------------------------------
         # Plotting difference between scal and parallel run
@@ -153,78 +179,100 @@ class VnvStudy(AbstractVnvStudy):
         plt.savefig('img/Cf-dif')
         plt.clf()
 
-        #----------------------------------------------------------------------
-        # Plot timeseries on points:
-        xpos = [1000.*i for i in range(2, 10, 1)]
-
-        for x in xpos:
-            plot1d_history_TCf(\
-                res=res_vnv_2,
-                points=[[x, 75.]],
-                xlim=[datetime.datetime(2016, 12, 2, 0, 0, 0),
-                      datetime.datetime(2016, 12, 2, 4, 0, 0)],
-                fig_name='img/timeseries_TCf_at_xy={}_75'.format(int(x)))
 
         #----------------------------------------------------------------------
-        # Plotting profile
-        vnv_plot1d_polylines(\
-            'FREE SURFACE',
-            res_vnv_2,
-            legend_labels='free surface',
-            record=-1, 
-            poly=[[0., 75.], [10000., 75.]],
-            poly_number=[50],
-            fig_size=(10, 3),
-            y_label='$z$ $(m)$',
-            x_label='$x$ $(m)$',
-            fig_name='img/profile_elevation',
-            plot_bottom=True)
+        res_list = [res_vnv_2, res_vnv_4]
+        res_labels = ['', '_sal']
 
-        tf = res_vnv_2.times[-1]
-        times = [tf/10., 2.*tf/10., 3.*tf/10., 4.*tf/10.,  5.*tf/10., tf]
+        for idx, res in enumerate(res_list):
 
-        vnv_plot1d_polylines(\
-            'TEMPERATURE',
-            res_vnv_2,
-            legend_labels='',
-            time=times,
-            poly=[[0., 75.], [10000., 75.]],
-            poly_number=[150],
-            fig_size=(10, 4),
-            y_label='$T$ $(\degree C)$',
-            x_label='$x$ $(m)$',
-            fig_name='img/profile_T',
-            plot_bottom=False)
+            # Plot timeseries on points:
+            xpos = [1000.*i for i in range(2, 10, 1)]
+            for x in xpos:
+                plot1d_history_TCf(\
+                    res=res,
+                    points=[[x, 75.]],
+                    xlim=[datetime.datetime(2016, 12, 2, 0, 0, 0),
+                          datetime.datetime(2016, 12, 2, 4, 0, 0)],
+                    fig_name='img/timeseries_TCf{}_at_xy={}_75'\
+                        .format(res_labels[idx], int(x)))
 
-        vnv_plot1d_polylines(\
-            'FRAZIL',
-            res_vnv_2,
-            legend_labels='',
-            time=times,
-            poly=[[0., 75.], [10000., 75.]],
-            poly_number=[150],
-            fig_size=(10, 4),
-            y_label='$C_f$ (volume fraction)',
-            x_label='$x$ $(m)$',
-            fig_name='img/profile_Cf',
-            plot_bottom=False)
+            # Plotting profiles
+            vnv_plot1d_polylines(\
+                'FREE SURFACE',
+                res,
+                legend_labels='free surface',
+                record=-1, 
+                poly=[[0., 75.], [10000., 75.]],
+                poly_number=[50],
+                fig_size=(10, 3),
+                y_label='$z$ $(m)$',
+                x_label='$x$ $(m)$',
+                fig_name='img/profile_elevation{}'.format(res_labels[idx]),
+                plot_bottom=True)
+
+            tf = res_vnv_2.times[-1]
+            times = [tf/10., 2.*tf/10., 3.*tf/10., 4.*tf/10.,  5.*tf/10., tf]
+
+            vnv_plot1d_polylines(\
+                'TEMPERATURE',
+                res,
+                legend_labels='',
+                time=times,
+                poly=[[0., 75.], [10000., 75.]],
+                poly_number=[150],
+                fig_size=(10, 4),
+                y_label='$T$ $(\degree C)$',
+                x_label='$x$ $(m)$',
+                fig_name='img/profile_T{}'.format(res_labels[idx]),
+                plot_bottom=False)
+
+            vnv_plot1d_polylines(\
+                'FRAZIL',
+                res,
+                legend_labels='',
+                time=times,
+                poly=[[0., 75.], [10000., 75.]],
+                poly_number=[150],
+                fig_size=(10, 4),
+                y_label='$C_f$ (volume fraction)',
+                x_label='$x$ $(m)$',
+                fig_name='img/profile_Cf{}'.format(res_labels[idx]),
+                plot_bottom=False)
+
+            if 'SALINITY' in res.varnames:
+                vnv_plot1d_polylines(\
+                    'SALINITY',
+                    res,
+                    legend_labels='',
+                    time=times,
+                    poly=[[0., 75.], [10000., 75.]],
+                    poly_number=[150],
+                    fig_size=(10, 4),
+                    y_label='$S$ (ppt)',
+                    x_label='$x$ $(m)$',
+                    fig_name='img/profile_S{}'.format(res_labels[idx]),
+                    plot_bottom=False)
 
         #======================================================================
         # SENSIBILITY TO PHYSICAL AND NUMERICAL PARAMETERS:
         #
         #TODO
 
-
         # Closing files
-        del geo
-        del res_vnv_1
-        del res_vnv_2
-        del res_vnv_3
+        geo.close()
+        res_vnv_1.close()
+        res_vnv_2.close()
+        res_vnv_3.close()
+        res_vnv_4.close()
 
 def plot1d_history_TCf(res, points, xlim=None, fig_name=''):
     """
     Plot 1d timeseries of temperature and frazil
     """
+    import matplotlib.dates as mdates
+    import matplotlib.pyplot as plt
+    from postel.deco_vnv import decoVNV, decoVNV_1d
     # plot initialization
     plt.style.use('default')
     plt.rcParams.update(decoVNV)
@@ -246,11 +294,13 @@ def plot1d_history_TCf(res, points, xlim=None, fig_name=''):
     if xlim is not None:
         ax.set_xlim(xlim[0], xlim[1])
     ax.set_xlabel('t (h)')
-    ax.set_ylabel('$T$ $(\degree C)$')
+    ax.set_ylabel(r'$T$ $(\degree C)$')
     axb.set_ylabel('$C_f$ (volume fraction)')
     ax.legend(loc=3)
     axb.legend(loc=4)
     # save figure:
     print(" "*8+"~> Plotting {}".format(fig_name))
     fig.savefig(fig_name)
-
+    # Close figure:
+    fig.clf()
+    plt.close()

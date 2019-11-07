@@ -21,6 +21,11 @@
 !+        V7P2
 !+        INITIAL DEVELOPMENTS
 !
+!history  F. SOUILLE (EDF)
+!+        30/10/2019
+!+        V8P0
+!+        Updated friction source term
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| NPOIN      |-->| NUMBER OF NODES IN THE MESH
 !| FU         |<->| SOURCE TERMS ON VELOCITY U
@@ -36,9 +41,9 @@
       USE DECLARATIONS_SPECIAL
       USE DECLARATIONS_WAQTEL, ONLY: RO0
       USE DECLARATIONS_KHIONE, ONLY: ICEPROCESS,RHO_ICE,RHO_AIR,
-     &                               CA0,CNI_MIN,CNI_MAX, U_ICE,V_ICE,
-     &                               H_ICE, VZ, IFROT,ICESTR,
-     &                               TIWX,TIWY,ANFEM, THI0,
+     &                               CA0,FICE,FICE_MAX,U_ICE,V_ICE,
+     &                               H_ICE,VZ,IFROT,IFICE,ICESTR,
+     &                               TIWX,TIWY,ANFEM,THIE,
      &                               THIFEMS,THIFEMF,
      &                               HUN,DCOVX,DCOVY
 !
@@ -142,116 +147,57 @@
 !
 ! ~~>   PREPARATORY WORK
 !
+!       COMPUTATION OF TOTAL ICE THICKNESS
         CALL OS( 'X=Y+Z   ', X=T2,Y=THIFEMS,Z=THIFEMF )
         CALL OS( 'X=X+Y   ', X=T2,Y=HUN)
-        CALL OS( 'X=Y+Z   ', X=T1,Y=H,Z=ZF)
-        CALL OS( 'X=Y+CZ  ', X=T1,Y=T1,Z=T2,C=RHO_ICE/RO0 )
-        CALL VECTOR(DCOVX,'=','GRADF          X',U%ELM,1.D0,T1,
-     &    S,S,S,S,S,MESH,MSK,T3)
-        CALL VECTOR(DCOVY,'=','GRADF          Y',U%ELM,1.D0,T1,
-     &    S,S,S,S,S,MESH,MSK,T3)
-        IF(NCSIZE.GT.1) THEN
-          CALL PARCOM(DCOVX,2,MESH)
-          CALL PARCOM(DCOVY,2,MESH)
+!
+!       COMPUTATION OF SURFACE ICE GRADIENTS (TODO)
+!        CALL OS( 'X=Y+Z   ', X=T1,Y=H,Z=ZF)
+!        CALL OS( 'X=Y+CZ  ', X=T1,Y=T1,Z=T2,C=RHO_ICE/RO0 )
+!        CALL VECTOR(DCOVX,'=','GRADF          X',U%ELM,1.D0,T1,
+!     &    S,S,S,S,S,MESH,MSK,T3)
+!        CALL VECTOR(DCOVY,'=','GRADF          Y',U%ELM,1.D0,T1,
+!     &    S,S,S,S,S,MESH,MSK,T3)
+!        IF(NCSIZE.GT.1) THEN
+!          CALL PARCOM(DCOVX,2,MESH)
+!          CALL PARCOM(DCOVY,2,MESH)
+!        ENDIF
+!        CALL OS( 'X=XY    ',X=DCOVX,Y=UNSV2D )
+!        CALL OS( 'X=XY    ',X=DCOVY,Y=UNSV2D )
+!
+!       UPDATE FRICTION IF LINEAR FRICTION COEF LAW IS SELECTED
+        IF (IFICE .EQ. 1) THEN
+          CALL OS( 'X=CY    ', X=ICESTR, Y=T2, C=( FICE/THIE ) )
+          CALL OS( 'X=+(Y,C)', X=ICESTR, Y=ICESTR, C=FICE )
+          CALL OS( 'X=-(Y,C)', X=ICESTR, Y=ICESTR, C=FICE_MAX )
         ENDIF
-        CALL OS( 'X=XY    ',X=DCOVX,Y=UNSV2D )
-        CALL OS( 'X=XY    ',X=DCOVY,Y=UNSV2D )
 !
-! ~~>   UPDATE FRICTION COEFFICIENT
+        CALL FRICTION_KHIONE(NPOIN,IFROT,GRAV,KARMAN,ICESTR,T1,H,U,V)
 !
-        CALL OS( 'X=CY    ', X=ICESTR, Y=T2, C=( CNI_MIN/THI0 ) )
-        CALL OS( 'X=+(Y,C)', X=ICESTR, Y=ICESTR, C=CNI_MIN )
-        CALL OS( 'X=-(Y,C)', X=ICESTR, Y=ICESTR, C=CNI_MAX )
-!
+!       COMPUTATION WATER ELEVATION
         CALL OS( 'X=+(Y,C)', X=T3, Y=H, C=EPS )
-!
-        CALL FRICTION_KHIONE( NPOIN,IFROT,GRAV,KARMAN,ICESTR,T1,H,U,V )
 !
 ! ~~>   EFFECT OF THE ICE COVER ON THE HYDRODYNAMICS
         DO I = 1,NPOIN
+!         T1: ICE FRICTION COEFFICIENT
+!         T2: TOTAL ICE THICKNESS
+!         T3: WATER DEPTH
 !
-! ~~>     LOCAL STATIC PRESSURE IN LIEU OF ICE THICKNESSES
-          IF( H%R(I).GT.EPS ) THEN
-!
-            PATMOS%R(I) = PATMOS%R(I) + GRAV * RHO_ICE * T2%R(I)
-!
-          ENDIF
-!
-! ~~>     LOCAL ICE COVER SHEAR FRICTION
-!
-!         SP_ICE = SQRT( U_ICE%R(I)**2 + V_ICE%R(I)**2 )
           SP_EAU = SQRT( U%R(I)**2 + V%R(I)**2 )
           IF( H%R(I).LT.EPS ) SP_EAU =
      &      MAX( SP_EAU, SQRT(GRAV*(EPS-H%R(I))*H%R(I)/EPS) )
-!         DWIX = U%R(I)-U_ICE%R(I)
-!         DWIY = V%R(I)-V_ICE%R(I)
-!         SP_DWI = SQRT( DWIX**2 + DWIY**2 )
 !
+! ~~>     UPDATE SOURCE TERM WITH ICE COVER FRICTION
           FU%R(I) = FU%R(I) - 0.5D0 * T1%R(I)*SP_EAU*U%R(I) / T3%R(I)
           FV%R(I) = FV%R(I) - 0.5D0 * T1%R(I)*SP_EAU*V%R(I) / T3%R(I)
 !
-        ENDDO
-!
-      ENDIF
-!
-      RETURN
-!
-!=======================================================================
-!
-      IF( INT(ICEPROCESS/3)*3 .EQ. ICEPROCESS ) THEN
-! ~~>   STRESSES AND SEAPAGE
-!
-        DO I = 1,NPOIN
-!
+! ~~>     LOCAL STATIC PRESSURE INCREASE DUE TO ICE THICKNESS
           IF( H%R(I).GT.EPS ) THEN
-!            CODE GENERALISATION: REMOVING JAMFEM, CNISLD AND IFUND
-!
-            SP_ICE = SQRT( U_ICE%R(I)**2 + V_ICE%R(I)**2 )
-            SP_EAU = SQRT( U%R(I)**2 + V%R(I)**2 )
-            DWIX = U%R(I)-U_ICE%R(I)
-            DWIY = V%R(I)-V_ICE%R(I)
-            SP_DWI = SQRT( DWIX**2 + DWIY**2 )
-            IF( H%R(I).LT.EPS ) SP_DWI =
-     &        MAX( SP_DWI, SQRT(GRAV*(EPS-H%R(I))*H%R(I)/EPS) )
-!
-            APPI = 1.0
-            IF( T2%R(I).LE.THI0 ) APPI = ANFEM%R(I)
-!
-            IF( SP_EAU .LT. 1.D-12 ) THEN
-              COEF = 1.D0
-            ELSE
-!             TODO: why these two lines ?
-              COEF = ( ICESTR%R(I) / MAX(CHESTR%R(I),1.D-6) )**2
-              COEF = SIGN( (APPI*COEF*SP_DWI**2/SP_EAU**2)**0.75,
-     &                      SP_EAU-SP_ICE )
-              COEF = MAX( COEF,-0.5D0 )
-              COEF = 1.D0/( 1.D0+COEF )
-            ENDIF
-!
-            IF( APPI.GT.CA0 .AND. COEF.LT.1.D0 .AND.
-     &          SP_DWI.GT.EPS ) THEN
-!             FRACTION OF TOTAL WATER DEPTH BY BED
-              H_ICE%R(I) = H%R(I)*( 1.D0 - COEF )
-!             FRACTION BY ICE
-              CWP = GRAV * ICESTR%R(I)**2 /( H_ICE%R(I)**0.33333 )
-            ELSE
-              H_ICE%R(I) = 0.0
-              CWP        = 0.0
-            ENDIF
-!
-            TIWX%R(I) = CWP*DWIX*SP_DWI*APPI
-            TIWY%R(I) = CWP*DWIY*SP_DWI*APPI
-!
-! ~~>     SEEPAGE
-!
-!
-            ELSE
-              TIWX%R(I) = 0.D0
-              TIWY%R(I) = 0.D0
-              H_ICE%R(I) = H%R(I)
-            ENDIF
-!
+            PATMOS%R(I) = PATMOS%R(I) + GRAV * RHO_ICE * T2%R(I)
+          ENDIF
         ENDDO
+!
+! ~~>   SEEPAGE (TODO)
 !
       ENDIF
 !
