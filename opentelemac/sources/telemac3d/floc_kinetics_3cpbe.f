@@ -39,10 +39,10 @@
       DOUBLE PRECISION, DIMENSION(NPOIN3) :: DIN,KL_CAP,BIOGR
       DOUBLE PRECISION :: FLOCMIC_VOL,WCHU_P,WCHU_F1,WCHU_F2
 !
-      DOUBLE PRECISION, PARAMETER :: BIOGR_MAX =  0
-      DOUBLE PRECISION, PARAMETER :: OMG1      =  0.0467
-      DOUBLE PRECISION, PARAMETER :: GAMMA_F   =  0.6
-      DOUBLE PRECISION, PARAMETER :: DIN_HS    =  0
+      DOUBLE PRECISION, PARAMETER :: BIOGR_MAX =  0.D0
+      DOUBLE PRECISION, PARAMETER :: OMG1      =  0.0467D0
+      DOUBLE PRECISION, PARAMETER :: GAMMA_F   =  0.6D0
+      DOUBLE PRECISION, PARAMETER :: DIN_HS    =  0.D0
       DOUBLE PRECISION, PARAMETER :: VMU       =  1.002D-3
       DOUBLE PRECISION, PARAMETER :: C1        =  0.5D0
       DOUBLE PRECISION, PARAMETER :: C2        =  0.5D0
@@ -95,12 +95,12 @@
      &         **0.5D0/NC2(IPOIN)**(1.D0/FRACDIM_MEG)
         DIN(IPOIN) = 2.D-3
 
-        IF(BIOGR_MAX .NE. 0) THEN
+        IF(BIOGR_MAX .NE. 0.D0) THEN
           BIOGR(IPOIN) = BIOGR_MAX*DIN(IPOIN)/(DIN(IPOIN)+DIN_HS)
 !         DT IN GAIA CAN BE DIFFERENT FROM DT_TEL IF MORFAC IS APPLIED
           FLOCMIC_DIA%R(IPOIN) = FLOCMIC_DIA%R(IPOIN)
-     &                   +DT*BIOGR(IPOIN)* FLOCMIC_DIA%R(IPOIN) 
-     &                   *(1-FLOCMIC_DIA%R(IPOIN)/KL_CAP(IPOIN))
+     &                   +DT*BIOGR(IPOIN)*FLOCMIC_DIA%R(IPOIN) 
+     &                   *(1.D0-FLOCMIC_DIA%R(IPOIN)/KL_CAP(IPOIN))
         END IF 
 
         FLOCMIC_VOL=(1.D0/6.D0)*PI*FLOCMIC_DIA%R(IPOIN)**3.D0
@@ -173,17 +173,17 @@
      &                  -FLOCMIC_DIA%R(IPOIN))/FLOCMIC_DIA%R(IPOIN))
      &                  **(3.D0-FRACDIM_MAC)*(VMU*SHR_G(IPOIN)
      &                  *FLOCMAC_DIA%R(IPOIN)**2.D0/BRK_FY)
-   !   &                  **BRK_Q
-     &                  **(C1+C2*FLOCMAC_DIA%R(IPOIN)/((VMU*1.D-3)
-     &                  **3.D0/EP%R(IPOIN))**0.25D0)
+     &                  **BRK_Q
+   !  &                  **(C1+C2*FLOCMAC_DIA%R(IPOIN)/((VMU*1.D-3)
+   !  &                  **3.D0/EP%R(IPOIN))**0.25D0)
 
         BRK_SH2(IPOIN) = BRK_EFF*SHR_G(IPOIN)*((FLOCMEG_DIA%R(IPOIN)
      &                  -FLOCMIC_DIA%R(IPOIN))/FLOCMIC_DIA%R(IPOIN))
      &                  **(3.D0-FRACDIM_MEG)*(VMU*SHR_G(IPOIN)
      &                  *FLOCMEG_DIA%R(IPOIN)**2.D0/BRK_FY)
-   !   &                  **BRK_Q
-     &                  **(C1+C2*FLOCMEG_DIA%R(IPOIN)/((VMU*1.D-3)
-     &                  **3.D0/EP%R(IPOIN))**0.25D0)
+     &                  **BRK_Q
+   !  &                  **(C1+C2*FLOCMEG_DIA%R(IPOIN)/((VMU*1.D-3)
+   !  &                  **3.D0/EP%R(IPOIN))**0.25D0)
         
 !       CALCULATE THE AGGREGATION AND BREAKAGE KERNELS
         ABSS_P(IPOIN) = -0.5D0*AGG_ALPHA*BETA_PP(IPOIN)
@@ -215,7 +215,12 @@
      &      *BRK_SH2(IPOIN)*CNUM_F2(IPOIN)
 
         IF(MCPBE_VER .EQ. 2) THEN
-          ABSS_F2(IPOIN) = 0.D0
+!          ABSS_F2(IPOIN) = 0.D0
+          ABSS_F2(IPOIN) = 0.5D0*AGG_ALPHA*BETA_F1F1(IPOIN)
+     &      *CNUM_F1(IPOIN)*CNUM_F1(IPOIN)/(NC2(IPOIN)/NC1(IPOIN)-1.D0)
+     &      -0.5D0*AGG_ALPHA*BETA_F2F2(IPOIN)
+     &      *CNUM_F2(IPOIN)*CNUM_F2(IPOIN)
+     &      +(BRK_K3-1.D0)*BRK_SH2(IPOIN)*CNUM_F2(IPOIN)          
         ELSEIF(MCPBE_VER .EQ. 3) THEN  
           ABSS_F2(IPOIN) = 0.5D0*AGG_ALPHA*BETA_F1F1(IPOIN)
      &      *CNUM_F1(IPOIN)*CNUM_F1(IPOIN)/(NC2(IPOIN)/NC1(IPOIN)-1.D0)
