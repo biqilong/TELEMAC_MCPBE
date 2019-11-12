@@ -49,7 +49,7 @@ def get_file_format(key, cas):
     return 'SERAFIN'
 
 
-class ApiModule(object):
+class ApiModule():
     """The Generic Python class for TELEMAC-MASCARET APIs"""
     _api = None
     logger = logging.getLogger(__name__)
@@ -83,6 +83,7 @@ class ApiModule(object):
         self.tri = None
         self.coordx = None
         self.coordy = None
+        self.rank = 0
         self.parallel_run = False
 
         if log_lvl == 'INFO':
@@ -93,7 +94,6 @@ class ApiModule(object):
             i_log = logging.CRITICAL
         logging.basicConfig(level=i_log)
         # User Fortran MUST be loaded before apit2d importation
-        self.rank = 0
         if comm is not None:
             self.rank = comm.Get_rank()
             self.parallel_run = comm.Get_size() > 1
@@ -215,6 +215,9 @@ class ApiModule(object):
                 self.partitionning_step()
             self.comm.Barrier()
 
+        # Array used for numbering in parallel
+        self._knolg = None
+        self._nachb = None
 
     @property
     def error(self):
@@ -410,7 +413,7 @@ class ApiModule(object):
         for itime in range(ntimesteps):
             self.logger.debug('%d: beginning run_timestep %d', self.rank,
                               itime)
-            self._error = self.run_one_time_step()
+            self.run_one_time_step()
             self.logger.debug('%d: ending run_timestep %d', self.rank, itime)
 
         return ntimesteps
@@ -614,15 +617,17 @@ class ApiModule(object):
 
         return value
 
+
     def set(self, varname, value, i=-1, j=-1, k=-1, global_num=True):
         """
-        Get the value of a variable of Telemac 2D
+        Set the value of a variable of the telemac-mascare module
 
-        @param varname Name of the variable
-        @param i index on first dimension
-        @param j index on second dimension
-        @param k index on third dimension
-        @param global_num Are the index on local/global numbering
+        @param varname (str) Name of the variable
+        @param value (int/bool/str/double) the value to set
+        @param i (int) index on first dimension
+        @param j (int) index on second dimension
+        @param k (int) index on third dimension
+        @param global_num (bool) Are the index on local/global numbering
 
         @retuns variable value
         """
@@ -688,7 +693,8 @@ class ApiModule(object):
         """
         Retrieves all the values from a variable into a numpy array
 
-        @param Name of the variable
+        @param varname (str) Name of the variable
+        @param block_index (int) Get block index in block variable
 
         @returns A numpy array containing the values
         """
@@ -749,7 +755,7 @@ class ApiModule(object):
         dim1, dim2, dim3, self._error = self.get_var_size(self.my_id, varname)
         if not(b"DOUBLE" in var_type or b"INTEGER" in var_type):
             raise TelemacException(\
-                    "get_array only works for integer and double"+\
+                    "set_array only works for integer and double"+\
                     "arrays not for {}".format(var_type))
 
         if ndim == 1:
@@ -1060,3 +1066,277 @@ class ApiModule(object):
                         print(" - Missing dim3")
 
         return var_info
+
+    #
+    # Parallel run dedicated functions
+    #
+
+    def _set_parallel_array(self):
+        """
+        Load knolg and nachb if necessary
+        """
+        if self._knolg is None:
+            self._knolg = self.get_array('MODEL.KNOLG') -1
+
+        if self._nachb is None:
+            self._nachb = self.get_array('MODEL.NACHB')
+            # Switching to count from zero for point index
+            self._nachb[:, 0] -= 1
+
+    def l2g(self, i):
+        """
+        Local to global numbering
+
+        @param i (int) Local index
+
+        @retuns The global index associated
+        """
+        self._set_parallel_array()
+
+        size = self._knolg.shape
+
+        if i >= size:
+            raise TelemacException(\
+              "Index {} higher than number of local point {}".format(i, size))
+
+        return self._knolg[i]
+
+    def g2l(self, i):
+        """
+        Global to local numbering
+
+        @param i (int) Global index
+
+        @retuns The local index if it is on the partition -1 otherwise
+        """
+        self._set_parallel_array()
+
+        #TODO:  add checks that i < npoin_global
+
+        idx = np.where(self._knolg == i)
+        if len(idx) == 0:
+            # This means that the index in not in knolg
+            local_i = -1
+        else:
+            local_i = idx[0]
+
+        return local_i
+
+    def mpi_get(self, varname, i=-1, root=-1):
+        """
+        Get the value of a variable using global numbering
+
+        @param varname (str) Name of the variable
+        @param i (int) Global index on first dimension
+        @param root (int) If given only root will have value
+
+        @retuns (double) variable value
+        """
+
+        if not self.parallel_run:
+            return self.get(varname, i)
+
+        from mpi4py import MPI
+
+        vartype, _, ndim, _, _, _, _, _, self._error = \
+            self.get_var_type(varname.encode('utf-8'))
+        dim1, dim2, dim3, self._error = \
+                self.get_var_size(self.my_id, varname.encode('utf-8'))
+        # If we have a string the first dimension is the size of the string
+        if vartype != b'DOUBLE':
+            raise TelemacException(\
+                    "mpi_get only works with double")
+
+        # TODO: Handle blocks ?
+        if ndim != 1:
+            raise TelemacException(\
+                    "mpi_get only works with 1 dimension arrays")
+
+        local_i = self.g2l(i)
+
+        if local_i != -1:
+            tmp, self._error = \
+                 self.api_get_double(self.my_id, varname, False,
+                                     local_i+1, 0, 0)
+            local_value = np.array(tmp, dtype=np.float64)
+        else:
+            local_value = np.zeros(1, dtype=np.float64)
+        value = np.zeros((1), dtype=np.float64)
+
+        # Gathering data back
+        if root != -1:
+            if self.rank != root:
+                value = None
+            self.comm.Reduce(local_value, value, op=MPI.SUM, root=root)
+            if self.rank != root:
+                return None
+
+            return value[0]
+        else:
+            self.comm.Allreduce(local_value, value, op=MPI.SUM)
+
+            return value[0]
+
+    def mpi_set(self, varname, value, i=-1, root=-1):
+        """
+        Get the value of a variable using global numbering
+
+        @param varname (str) Name of the variable
+        @param i (int) Global index on first dimension
+        @param value (double) variable value
+        @param root (int) If given only root has the value
+        """
+
+        if not self.parallel_run:
+            return self.set(varname, i)
+
+        from mpi4py import MPI
+
+        vartype, _, ndim, _, _, _, _, _, self._error = \
+            self.get_var_type(varname.encode('utf-8'))
+        # If we have a string the first dimension is the size of the string
+        if vartype != b'DOUBLE':
+            raise TelemacException(\
+                    "mpi_get only works with double")
+
+        # TODO: Handle blocks ?
+        if ndim != 1:
+            raise TelemacException(\
+                    "mpi_get only works with 1 dimension arrays")
+
+        # Broadcasting value to all processors
+        if root != -1:
+            if self.rank != root:
+                value = None
+            value = self.comm.bcast(value, root=root)
+
+        local_i = self.g2l(i)
+
+        if local_i != -1:
+            self._error = \
+                 self.api_set_double(self.my_id, varname, value, False,
+                                     local_i+1, 0, 0)
+
+    def mpi_get_npoin(self):
+        """
+        Return the number of global point
+        """
+        from mpi4py import MPI
+        self._set_parallel_array()
+
+        value = np.amax(self._knolg) + 1
+
+        npoin = self.comm.allreduce(value, MPI.MAX)
+
+        return npoin
+
+    def mpi_get_array(self, varname, block_index=0, root=-1):
+        """
+        Get global array of a variable of the telemac-mascaret module
+
+        @param varname (str) Name of the variable
+        @param block_index (int) Get block index in block variable
+        @param root (int) If given only root will have the full array
+
+        @returns (np.array) array on the gloabl mesh
+        """
+        from mpi4py import MPI
+
+        if not self.parallel_run:
+            return self.get_array(varname, block_index)
+
+        local_array = self.get_array(varname, block_index)
+
+        self._set_parallel_array()
+
+        npoin_global = self.mpi_get_npoin()
+
+        # Special treatment for telemac3d as we can have 2d or 3d arrays
+        npoin = self.get('MODEL.NPOIN')
+        if self.name == 't3d':
+            nplan = self.get('MODEL.NPLAN')
+            npoin2 = npoin//nplan
+            if local_array.shape == (npoin2,):
+                npoin_global = npoin_global//nplan
+                npoin = npoin2
+
+        # Array containing data for local partition
+        lres = np.zeros(npoin_global, dtype=np.float64)
+
+        # Array containing the reduced data
+        if root != -1:
+            if self.rank == root:
+                gres = np.zeros(npoin_global, dtype=np.float64)
+            else:
+                gres = None
+        else:
+            gres = np.zeros(npoin_global, dtype=np.float64)
+
+        # Filling local res with
+        lres[self._knolg[:npoin]] = local_array
+        # For all interface node only keep the value for the node with the
+        # lower rank Setting the others to zero
+        # No need for specific treatment for 2D array in telemac3d nachb is
+        # always on the 2d mesh
+        idx = np.where(self._nachb[:, 1] <= self.rank)[0]
+        lres[self._knolg[self._nachb[idx, 0]]] = 0.0
+
+        if root != -1:
+            self.comm.Reduce(lres, gres, op=MPI.SUM, root=root)
+        else:
+            self.comm.Allreduce(lres, gres, op=MPI.SUM)
+
+        return gres
+
+    def mpi_set_array(self, varname, values, block_index=0, root=-1):
+        """
+        Set the global arary given as argument over all the processors
+
+        @param varname (str) Name of the variable
+        @param value (np.array) Array of size npoin_global contain the values
+        to set
+        @param block_index (int) Get block index in block variable
+        @param root (int) If given only root wil have the full array
+        """
+        from mpi4py import MPI
+
+        if not self.parallel_run:
+            return self.set_array(varname, values)
+
+        self._set_parallel_array()
+
+        npoin_global = self.mpi_get_npoin()
+
+        npoin = self.get('MODEL.NPOIN')
+        if self.name == 't3d':
+            nplan = self.get('MODEL.NPLAN')
+            npoin2 = npoin//nplan
+            if root != -1:
+                if self.rank != root:
+                    values_size = None
+                values_size = self.comm.bcast(values_size, root=root)
+            else:
+                values_size = values.shape[0]
+
+            if values_size == npoin_global//nplan:
+                npoin_global = npoin_global//nplan
+                npoin = npoin2
+
+        # If only on processor has the value broadcasting it to all
+        if root != -1:
+            if self.rank != root:
+                values = np.zeros(npoin_global, dtype=np.float64)
+            self.comm.Bcast(values, root=root)
+
+        # Checking that the values have the right size
+        if values.shape != (npoin_global,):
+            raise TelemacException(\
+                    "Error in size of values is {} should be {}"\
+                    .format(values.shape, (npoin_global)))
+
+        # Array containing data for local partition
+        lvalues = np.zeros(npoin, dtype=np.float64)
+
+        lvalues[:] = values[self._knolg[:npoin]]
+
+        self.set_array(varname, lvalues)

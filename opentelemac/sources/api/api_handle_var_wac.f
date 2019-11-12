@@ -20,7 +20,7 @@
         ! Size of the string containing the information about a variable
         INTEGER, PARAMETER :: WAC_INFO_LEN=200
         ! The maximum number of variable
-        INTEGER, PARAMETER :: NB_VAR_WAC=13
+        INTEGER, PARAMETER :: NB_VAR_WAC=15
         CHARACTER(LEN=WAC_VAR_LEN),ALLOCATABLE :: VNAME_WAC(:)
         CHARACTER(LEN=WAC_INFO_LEN),ALLOCATABLE :: VINFO_WAC(:)
 !
@@ -96,6 +96,12 @@
         IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
           VALEUR(1:SIZE(INST%MESH%IKLE%I)) =
      &    INST%MESH%IKLE%I(1:SIZE(INST%MESH%IKLE%I))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NACHB') THEN
+          VALEUR(1:SIZE(INST%MESH%NACHB%I)) =
+     &         INST%MESH%NACHB%I(1:SIZE(INST%MESH%NACHB%I))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KNOLG') THEN
+          VALEUR(1:INST%MESH%KNOLG%DIM1) =
+     &         INST%MESH%KNOLG%I(1:INST%MESH%KNOLG%DIM1)
         ! <get_integer_array>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -120,6 +126,12 @@
         IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
           INST%MESH%IKLE%I(1:SIZE(INST%MESH%IKLE%I))
      &    = VALEUR(1:SIZE(INST%MESH%IKLE%I))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NACHB') THEN
+          INST%MESH%NACHB%I(1:SIZE(INST%MESH%NACHB%I)) =
+     &    VALEUR(1:SIZE(INST%MESH%NACHB%I))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KNOLG') THEN
+          INST%MESH%KNOLG%I(1:INST%MESH%KNOLG%DIM1) =
+     &    VALEUR(1:INST%MESH%KNOLG%DIM1)
         ! <set_integer_array>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -261,6 +273,11 @@
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
           VALEUR = INST%MESH%IKLE%I((INDEX2-1)*INST%MESH%IKLE%DIM1
      &                               + INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NACHB') THEN
+          VALEUR = INST%MESH%NACHB%I((INDEX2-1)*INST%NBMAXNSHARE
+     &          + INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KNOLG') THEN
+          VALEUR = INST%MESH%KNOLG%I(INDEX1)
         ! <get_integer>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -549,6 +566,11 @@
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE')THEN
            DIM1 = INST%MESH%IKLE%DIM2
            DIM2 = INST%MESH%IKLE%DIM1
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NACHB')THEN
+          DIM1 = INST%NPTIR
+          DIM2 = INST%NBMAXNSHARE
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KNOLG') THEN
+          DIM1 = INST%MESH%KNOLG%DIM1
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.BOTTOM') THEN
           DIM1 = SIZE(INST%ZF)
         ! <get_var_size>
@@ -633,6 +655,18 @@
           VARTYPE = 'INTEGER'
           READONLY = .TRUE.
           NDIM = 2
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NACHB') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .TRUE.
+          NDIM = 2
+          GETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.KNOLG') THEN
+          VARTYPE = 'INTEGER'
+          READONLY = .TRUE.
+          NDIM = 1
           GETPOS = RUN_ALLOCATION_POS
           SETPOS = RUN_ALLOCATION_POS
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.X') THEN
@@ -746,6 +780,13 @@
           I = I + 1
           VNAME_WAC(I) = 'MODEL.IKLE'
           VINFO_WAC(I) = 'CONNECTIVITY TABLE BETWEEN ELEMENT AND NODES'
+          I = I + 1
+          VNAME_WAC(I) = 'MODEL.NACHB'
+          VINFO_WAC(I) = 'NUMBERS OF PROC CONTAINING A GIVEN POINT'
+          I = I + 1
+          VNAME_WAC(I) = 'MODEL.KNOLG'
+          VINFO_WAC(I) =
+     &         'GIVES THE INITIAL GLOBAL NUMBER OF A LOCAL POINT'
           I = I + 1
           VNAME_WAC(I) = 'MODEL.NELEM'
           VINFO_WAC(I) = 'NUMBER OF ELEMENT IN THE MESH'

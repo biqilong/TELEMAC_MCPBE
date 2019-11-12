@@ -49,7 +49,10 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_seq:T2DRES',
                             'f2d_seccurrents.slf',
-                            eps=[1e-6])
+                            eps=[1., 1., 1.e-2, 1.e-2,
+                                 1.e-6, 10., 1.e-1, 1.,
+                                 1., 1.e-1, 1.e-1, 100.,
+                                 100., 10.])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_par:T2DRES',

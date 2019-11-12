@@ -459,11 +459,14 @@
 !-----------------------------------------------------------------------
 !  NAME OF THE VARIABLES FOR THE RESULTS AND GEOMETRY FILES :
 !-----------------------------------------------------------------------
-!
+! 
+      MNEMO = '        '
       CALL NOMVAR_ARTEMIS(TEXTE,TEXTPR,MNEMO)
 !
 ! LOGICAL ARRAY FOR OUTPUT
 !
+      SORLEO = .FALSE.
+      SORIMP = .FALSE.
       CALL SORTIE(VARDES , MNEMO , 100 , SORLEO )
       CALL SORTIE(VARIMP , MNEMO , 100 , SORIMP )
 !

@@ -1,5 +1,10 @@
 Trunk
 ===========================
+TELAPY: New function mpi_get, mpi_get_array (and set equivalent) to get array
+over global mesh
+
+Release V8P1R0 (xx/xx/xxxx)
+===========================
 
 WAQTEL/AED2: fix the bug of wrong computation of array BENTH4AED2
 + wrong location of the fluxes transmitted to TELEMAC-3D

@@ -4,6 +4,7 @@ Validation script for wind_txy
 """
 from vvytel.vnv_study import AbstractVnvStudy
 from execution.telemac_cas import TelemacCas, get_dico
+from data_manip.extraction.telemac_file import TelemacFile
 
 class VnvStudy(AbstractVnvStudy):
     """
@@ -99,4 +100,26 @@ class VnvStudy(AbstractVnvStudy):
         """
         Post-treatment processes
         """
+        from postel.plot_vnv import vnv_plot2d, vnv_plot1d_history
 
+        vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
+        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
+
+        vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
+        res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
+
+        vnv_plot2d('',
+                   res_vnv_1_t2dgeo,
+                   plot_mesh=True,
+#                   annotate_bnd=True,
+#                   annotate_liq_bnd=True,
+                   fig_size=(5, 1),
+                   fig_name='img/Mesh')
+        # Plotting FREE SURFACE at t= 600s
+        vnv_plot2d('FREE SURFACE',
+                   res_vnv_1_t2dres,
+                   time=600,
+                   plot_mesh=True,
+                   filled_contours=True,
+                   fig_size=(5, 1),
+                   fig_name='img/FreeSurface600')

@@ -39,11 +39,12 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_ARTEMIS, EX_NOMVAR_ARTEMIS => NOMVAR_ARTEMIS
+      USE DECLARATIONS_ARTEMIS, ONLY : MAXVAR
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
-      CHARACTER(LEN=32) TEXTE(26),TEXTPR(26)
-      CHARACTER(LEN=8)  MNEMO(26)
+      CHARACTER(LEN=32) :: TEXTE(MAXVAR),TEXTPR(MAXVAR)
+      CHARACTER(LEN=8) :: MNEMO(MAXVAR)
 !
 !-----------------------------------------------------------------------
 !

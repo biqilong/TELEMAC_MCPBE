@@ -72,7 +72,17 @@ class VnvStudy(AbstractVnvStudy):
         vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
         vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
-        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
+        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo, bnd_file='T2DCLI')
+
+        vnv_plot1d_polylines(\
+                'BOTTOM',
+                res_vnv_1_t2dres,
+                poly=[[0, 5], [46, 5]],
+                record=1,
+                legend_labels='bottom',
+                ylim=[-0.7, 0.1],             
+                fig_size=(12, 5),
+                fig_name='img/Bottom')
 
         # Plotting FREE SURFACE over polyline over records range(0, res_vnv_1_t2dres.ntimestep)
         vnv_plot1d_polylines(\
@@ -80,6 +90,8 @@ class VnvStudy(AbstractVnvStudy):
                 res_vnv_1_t2dres,
                 poly=[[0, 5], [46, 5]],
                 record=[i for i in range(0, res_vnv_1_t2dres.ntimestep)],
+                legend_labels=['t=0s','t=100s','t=200s','t=300s'],
+                ylim=[-0.7, 0.1],             
                 fig_size=(12, 5),
                 fig_name='img/FreeSurface_Y5')
 

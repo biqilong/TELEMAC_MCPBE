@@ -54,6 +54,12 @@
         TYPE(BIEF_OBJ), POINTER :: U
         TYPE(BIEF_OBJ), POINTER :: V
         TYPE(BIEF_OBJ), POINTER :: W
+
+        TYPE(BIEF_OBJ), POINTER :: AK
+        TYPE(BIEF_OBJ), POINTER :: EP
+        TYPE(BIEF_OBJ), POINTER :: AKN
+        TYPE(BIEF_OBJ), POINTER :: EPN
+        
         DOUBLE PRECISION, POINTER :: FLUX_BOUNDARIES(:)
         DOUBLE PRECISION, POINTER :: COTIMP(:)
         DOUBLE PRECISION, POINTER :: DEBIMP(:)
@@ -104,6 +110,10 @@
         DOUBLE PRECISION, POINTER :: CTIDE
         DOUBLE PRECISION, POINTER :: CTIDEV
         DOUBLE PRECISION, POINTER :: MSL
+
+        INTEGER         :: NBMAXNSHARE
+        INTEGER,        POINTER :: NPTIR
+        INTEGER,        POINTER :: NPLAN
         !<new_var>
 !
 
@@ -211,6 +221,10 @@
         INSTANCE_LIST_T3D(ID)%U      =>  U
         INSTANCE_LIST_T3D(ID)%V      =>  V
         INSTANCE_LIST_T3D(ID)%W      =>  W
+        INSTANCE_LIST_T3D(ID)%AK      =>  AK
+        INSTANCE_LIST_T3D(ID)%EP      =>  EP
+        INSTANCE_LIST_T3D(ID)%AK      =>  AKN
+        INSTANCE_LIST_T3D(ID)%EP      =>  EPN
         ! For allocatable arrays nag crashes if we try to point towards
         ! an unallocated array
         IF(ALLOCATED(FLUX_BOUNDARIES)) THEN
@@ -262,6 +276,10 @@
         INSTANCE_LIST_T3D(ID)%CTIDE  => CTIDE
         INSTANCE_LIST_T3D(ID)%CTIDEV => CTIDEV
         INSTANCE_LIST_T3D(ID)%MSL  => MSL
+
+        INSTANCE_LIST_T3D(ID)%NPTIR => NPTIR
+        INSTANCE_LIST_T3D(ID)%NBMAXNSHARE = NBMAXNSHARE
+        INSTANCE_LIST_T3D(ID)%NPLAN => NPLAN
         ! <new_link>
 !
       END SUBROUTINE UPDATE_INSTANCE_T3D

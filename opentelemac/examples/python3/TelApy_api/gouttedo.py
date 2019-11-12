@@ -41,14 +41,16 @@ def main(recompile=True):
     ntimesteps = study.get("MODEL.NTIMESTEPS")
     for _ in range(ntimesteps):
         study.run_one_time_step()
+
         tmp = study.get_array("MODEL.IKLE")
         study.set_array("MODEL.IKLE", tmp)
         tmp2 = study.get_array("MODEL.IKLE")
         diff = abs(tmp2 - tmp)
         assert np.amax(diff) == 0
-        tmp = study.get_array("MODEL.WATERDEPTH")
-        study.set_array("MODEL.WATERDEPTH", tmp)
-        tmp2 = study.get_array("MODEL.WATERDEPTH")
+
+        tmp = study.mpi_get_array("MODEL.WATERDEPTH")
+        study.mpi_set_array("MODEL.WATERDEPTH", tmp)
+        tmp2 = study.mpi_get_array("MODEL.WATERDEPTH")
         diff = abs(tmp2 - tmp)
         assert np.amax(diff) < 1e-8
     # Ending the run

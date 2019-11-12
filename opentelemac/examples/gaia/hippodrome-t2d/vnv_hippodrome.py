@@ -139,182 +139,182 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:GAIRES',
                             'gai_ref_1NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:GAIRES',
                             'gai_ref_1NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:GAIRES',
                             'vnv_2:GAIRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_1NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_1NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',
                             'vnv_2:T2DRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:GAIRES',
                             'gai_ref_1NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-2])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:GAIRES',
                             'gai_ref_1NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-2])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_3:GAIRES',
                             'vnv_4:GAIRES',
-                            eps=[])
+                            eps=[1.e-2])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T2DRES',
                             'f2d_1NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:T2DRES',
                             'f2d_1NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_3:T2DRES',
                             'vnv_4:T2DRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:GAIRES',
                             'gai_ref_4NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_6:GAIRES',
                             'gai_ref_4NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_5:GAIRES',
                             'vnv_6:GAIRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:T2DRES',
                             'f2d_4NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_6:T2DRES',
                             'f2d_4NCOb.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_5:T2DRES',
                             'vnv_6:T2DRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_7:GAIRES',
                             'gai_ref_4NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_8:GAIRES',
                             'gai_ref_4NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_7:GAIRES',
                             'vnv_8:GAIRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_7:T2DRES',
                             'f2d_4NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_8:T2DRES',
                             'f2d_4NCOb_vf.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_7:T2DRES',
                             'vnv_8:T2DRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_9:GAIRES',
                             'gai_ref_4NCOb_strat_vf.slf',
-                            eps=[])
+                            eps=[2.e-2])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_10:GAIRES',
                             'gai_ref_4NCOb_strat_vf.slf',
-                            eps=[])
+                            eps=[1.e-1])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_9:GAIRES',
                             'vnv_10:GAIRES',
-                            eps=[])
+                            eps=[1.e-1])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_9:T2DRES',
                             'f2d_4NCOb_strat_vf.slf',
-                            eps=[])
+                            eps=[2.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_10:T2DRES',
                             'f2d_4NCOb_strat_vf.slf',
-                            eps=[])
+                            eps=[1.e-2])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_9:T2DRES',
                             'vnv_10:T2DRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_13:GAIRES',
                             'gai_ref_1COs.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_14:GAIRES',
                             'gai_ref_1COs.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_13:GAIRES',
                             'vnv_14:GAIRES',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_13:T2DRES',
                             'f2d_1COs.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_14:T2DRES',
                             'f2d_1COs.slf',
-                            eps=[])
+                            eps=[1.e-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_13:T2DRES',
                             'vnv_14:T2DRES',
-                            eps=[])
+                            eps=[1.e-3])
 
 
     def _post(self):
