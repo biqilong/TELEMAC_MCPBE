@@ -965,8 +965,8 @@
       ENDIF
 !
 !     MORPHOLOGICAL FACTOR
-      IF( ((abs(MOFAC - 1.D0).GT.1E-8) .OR.
-     &    (abs(MOFAC_BED - 1.D0).GT.1E-8))
+      IF( ((ABS(MOFAC - 1.D0).GT.1E-8) .OR.
+     &    (ABS(MOFAC_BED - 1.D0).GT.1E-8))
      &  .AND.BED_MODEL.NE.1)THEN
         WRITE(LU,*)'MORPHOLOGICAL FACTOR IS NOT RECOMMANDED
      &              WITH BED MODEL AND CONSOLIDATION

@@ -22,7 +22,7 @@
 !
 !
 !history  R. KOPMANN (BAW)
-!+        25/02/2019 
+!+        25/02/2019
 !+        V7P2
 !+  Considering a new case: only 1 fraction occurs, must have value 1
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -143,11 +143,11 @@
         ENDIF
       ENDDO
       IF(SUMF.EQ.0.D0) THEN
-         PRO_F(J,PRO_MAX(J),I) = 1.D0
+        PRO_F(J,PRO_MAX(J),I) = 1.D0
       ENDIF
 
       IF(SUMF2.EQ.0.D0) THEN
-         PRO_F(J,PRO_MAX(J)-1,I) = 1.D0
+        PRO_F(J,PRO_MAX(J)-1,I) = 1.D0
       ENDIF
 !
 !-----------------------------------------------------------------------

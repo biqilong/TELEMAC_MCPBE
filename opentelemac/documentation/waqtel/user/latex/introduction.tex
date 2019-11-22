@@ -1,14 +1,22 @@
 \chapter{Introduction}
 
-Waqtel (WAter Quality for TELemac) is a component of the Telemac-Mascaret system (TMS) which focuses on the water quality 
-aspects. It was developped to allow the TMS's users to tackle water quality problems together with hydrodynamics.\newline
-Up to release V7P0, \telemac{2D} and \telemac{3D} were coupled with DELWAQ, the Deltares water quality code. This coupling,
-though working well for simple and medium sized models, was not suitable and cumbersome for big models. The main issue 
-related to the use of Telemac-DELWAQ was the uncompatible parallelization of both codes. \newline
-To overcome this issue and in order to fully benefit from the parallelization effciency of the TMS, the development team
+\waqtel (WAter Quality for TELemac) is a component of the Telemac-Mascaret system (TMS)
+which focuses on the water quality aspects.
+It was developped to allow the TMS's users to tackle water quality problems
+together with hydrodynamics.
+
+Up to release V7P0, \telemac{2D} and \telemac{3D} were coupled with DELWAQ,
+the Deltares water quality code.
+This coupling, though working well for simple and medium sized models,
+was not suitable and cumbersome for big models.
+The main issue related to the use of \telemac-DELWAQ was
+the uncompatible parallelization of both codes.
+
+To overcome this issue and in order to fully benefit
+from the parallelization efficiency of the TMS, the development team
 introduced a first version of \waqtel in the V7P1 release. 
 
-Waqtel is developed by the LNHE (Laboratoire National d'Hydraulique et
+\waqtel is developed by the LNHE (Laboratoire National d'Hydraulique et
 Environnement) of the Research and Development Division of EDF (EDF-R\&D). As
 for previous versions, the 7.1 release of the code complies with the Quality
 Assurance procedures of scientific and technical softwares of EDF-R\&D. It is a
@@ -20,7 +28,7 @@ the performance and limitations of the software, situating the field of
 application. These tests are also used in the development of the software and are
 checked at every new release.
 
-\section{Position of the \telemac{3d} code within the telemac modelling system}
+\section{Position of the \waqtel code within the telemac modelling system}
 
 The \waqtel software is part of the TELEMAC modelling system developed by
 the LNHE of EDF R\&D. TELEMAC is a set of modelling tools allowing to treat
@@ -29,7 +37,8 @@ tracers and sedimentology.
 \newline
 \waqtel, unlike other compnents of the TMS, can not be run in a stand-alone mode.
 To run a \waqtel model, it is necessary to run \telemac{2D} or \telemac{3D} coupled 
-with \waqtel using the keyword COUPLING WITH= 'WAQTEL' (in french: COUPLAGE AVEC ='WAQTEL')
+with \waqtel using the keyword \telkey{COUPLING WITH} = 'WAQTEL'
+(in French: \telkey{COUPLAGE AVEC} ='WAQTEL').
 
 The pre-processing and post-processing of simulations can be done either
 directly within the TELEMAC system or with different software that present an
@@ -37,25 +46,25 @@ interface of communication with the system. We can particularly mention the
 following tools:
 
 \begin{itemize}
-\item The FUDAA-PREPRO software, developed from the FUDAA platform
+\item the FUDAA-PREPRO software, developed from the FUDAA platform
 by the CEREMA's Recherche, Informatique et Modélisation Department, covers all
 the pre-processing tasks involved by the achievement of a numerical hydraulic
 study, as well as a graphical post-processing tool,
-\item The Blue Kenue software, developed the Hydraulic Canadian
+\item the Blue Kenue software, developed the Hydraulic Canadian
 Center, proposes a powerful mesh generation tool and a user-friendly
 post-processing tool,
-\item The Janet software, developed by Smile Consult GmbH, which offers among
+\item the Janet software, developed by Smile Consult GmbH, which offers among
 others, a mesh generation tool,
-\item The ParaView software, developed by Sandia National Laboratories, Los
+\item the ParaView software, developed by Sandia National Laboratories, Los
 Alamos National Laboratory and Kitware, which enables to visualise 3D results,
 big data in particular and is open source,
-\item The SALOME-HYDRO software based on the SALOME platform, developed by EDF,
+\item the SALOME-HYDRO software based on the SALOME platform, developed by EDF,
 CEA and OPENCASCADE which enables to handle raw data (bathymetry, maps,
 pictures, LIDAR\ldots) until the mesh generation.
 The post-processing tool ParaViS available in the SALOME platform is based on
 the ParaView software and can visualise 1D, 2D or 3D results.
 A first version of SALOME-HYDRO has been available since Spring 2016,
-\item The QGIS software, which is an open source Geographic Information System.
+\item the QGIS software, which is an open source Geographic Information System.
 \end{itemize}
 
 
@@ -78,10 +87,10 @@ for programming in the Telemac system~» \cite{HervouetProg2009}.
 The procedure to be carried out in that case comprises the steps of:
 
 \begin{itemize}
-\item Recovering the standard version of the user subroutine(s) as supplied in
+\item recovering the standard version of the user subroutine(s) as supplied in
 the distribution and copying it into the current directory,
-\item Amending the subroutine(s) according to the model to be constructed,
-\item Concatenating the whole set of subroutines into a single FORTRAN file
+\item amending the subroutine(s) according to the model to be constructed,
+\item concatenating the whole set of subroutines into a single FORTRAN file
 which will be compiled during the \telemac{2D} or \telemac{3D} launching process.
 \end{itemize}
 

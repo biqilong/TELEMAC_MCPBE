@@ -75,11 +75,11 @@
      &       +VOLNESTORCL(I))
         ENDIF
         IF(KORR.GT.0.D0) THEN
-         DO J=1,NPOIN
-           DO K = 1, PRO_MAX(J)
-             PRO_F(J,K,I) = PRO_F(J,K,I)/KORR
-           ENDDO
-         ENDDO
+          DO J=1,NPOIN
+            DO K = 1, PRO_MAX(J)
+              PRO_F(J,K,I) = PRO_F(J,K,I)/KORR
+            ENDDO
+          ENDDO
         ENDIF
       END DO ! I=1,NSICLA
 !

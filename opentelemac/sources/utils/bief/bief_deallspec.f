@@ -12,7 +12,7 @@
 !
 !history  N.DURAND (HRW)
 !+        14/01/19
-!+        
+!+
 !+   Original
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,8 +35,8 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       DO I=1,NSPE
-         DEALLOCATE(SPEC%ADR(I)%SOUTER)
-         NULLIFY(SPEC%ADR(I)%SOUTER)
+        DEALLOCATE(SPEC%ADR(I)%SOUTER)
+        NULLIFY(SPEC%ADR(I)%SOUTER)
       ENDDO
       DEALLOCATE(SPEC%ADR)
       NULLIFY(SPEC%ADR)

@@ -32,7 +32,6 @@
       USE BIEF
       USE DECLARATIONS_TELEMAC2D
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -54,7 +53,7 @@
       DOUBLE PRECISION ZFA, ZFB
       DOUBLE PRECISION H_A, H_B, HMINI
 !
-      INTRINSIC MAX,SQRT,ABS
+      INTRINSIC MAX
 !
 !-----------------------------------------------------------------------
 !

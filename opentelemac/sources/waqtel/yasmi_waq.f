@@ -123,10 +123,10 @@
         YASMI(IND_SF) = YASMI(IND_SF) .OR. .FALSE.
 !       MICRO POLLUTANT
         YASMI(IND_C) = .TRUE.
-!       ABS. SUSP. LOAD
+!       ADSORBED SUSPENSION LOAD
         YASMI(IND_CSS) = .TRUE.
-!       ABSORB. BED SED
-        YASMI(IND_CSF) = YASMI(IND_CSF) .OR. .FALSE.
+!       ADSORBED BED SED
+        YASMI(IND_CSF) = .TRUE.
 !
         FOUND = .TRUE.
       ENDIF

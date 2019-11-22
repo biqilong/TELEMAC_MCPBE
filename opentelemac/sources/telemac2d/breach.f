@@ -34,7 +34,7 @@
 !
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY : P_ISUM,P_DMAX,P_DMIN,
-     &                               P_DSUM,P_IMAX,P_IMIN
+     &                               P_DSUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

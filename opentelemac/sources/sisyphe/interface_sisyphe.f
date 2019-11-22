@@ -770,7 +770,7 @@
       END INTERFACE
 !
       INTERFACE
-       SUBROUTINE USER_CONDIM_SISYPHE
+        SUBROUTINE USER_CONDIM_SISYPHE
      & (U      , V       , QU    , QV   , H    , ZF , Z ,
      &  ESOMT  , THETAWR ,  Q    , HWR  , TWR  ,
      &  X      , Y       , NPOIN , AT   , PMAREE)

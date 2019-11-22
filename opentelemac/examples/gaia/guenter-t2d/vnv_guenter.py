@@ -54,7 +54,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_par:GAIRES',
                             'gai_ref_guenter.slf',
-                            eps=[1.E-3])
+                            eps=[1.2E-3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_seq:GAIRES',

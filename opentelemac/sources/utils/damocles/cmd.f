@@ -261,7 +261,7 @@
         WRITE(LU,FMT26) NMOT2(1),NMAXR(1)
         WRITE(LU,FMT28) NMOT2(2),NMAXR(2)
         WRITE(LU,FMT30) NMOT2(3),NMAXR(3)
-        WRITE(LU,FMT26) NMOT2(4),NMAXR(4)
+        WRITE(LU,FMT32) NMOT2(4),NMAXR(4)
         WRITE(LU,*)'-------------------------------------'
         WRITE(LU,FMT34) NMOT2(1)+NMOT2(2)+NMOT2(3)+NMOT2(4)
         WRITE(LU,*)'====================================='

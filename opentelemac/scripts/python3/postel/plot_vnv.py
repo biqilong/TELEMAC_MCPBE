@@ -224,6 +224,10 @@ def vnv_plotbar_cpu_times(\
                 idx = par_cases.index(name)
                 par_times[idx] = item[1]
 
+    if len(seq_cases) == 0 or len(par_cases) ==0:
+        print("Doing nothing did not found any times")
+        return
+
     # plot
     pos = np.arange(len(seq_cases))
     p_2 = plt.bar(pos-bar_width/2., seq_times, bar_width, **kwargs)

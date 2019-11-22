@@ -69,7 +69,7 @@ def run_refine(input_file, output_file, root_dir, bnd_file):
     if root_dir is not None:
         path_stbtel = os.path.join(root_dir, "scripts",
                                    "python3", path_stbtel)
-    stbtel_args = [path_stbtel, cas_name]
+    stbtel_args = [path_stbtel, cas_name, "--mpi"]
     if root_dir is not None:
         stbtel_args += ["-r", root_dir]
     print("Calling: " + " ".join(stbtel_args))

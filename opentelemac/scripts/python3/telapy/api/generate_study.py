@@ -151,7 +151,7 @@ def get_jdc_dict_var_as_tuple(jdc_dict, varname):
     """
     if varname not in jdc_dict:
         return tuple()
-    elif not isinstance(jdc_dict[varname], types.TupleType):
+    elif not isinstance(jdc_dict[varname], tuple):
         return (jdc_dict[varname],)
     else:
         return jdc_dict[varname]
@@ -279,9 +279,10 @@ def build_var_info(jdc):
     """
     from telapy.api.t2d import Telemac2d
 
-    steering_file = jdc['STEERING_FILE']
+    with open('dummy.cas', 'w') as f:
+        f.write('/Dummy steering file')
 
-    t2d = Telemac2d(steering_file)
+    t2d = Telemac2d('dummy.cas')
 
     VARINFO.update(t2d.generate_var_info())
 
@@ -435,16 +436,16 @@ def generate_study_yacs(jdc):
     # Adding inputs
     for name, typ, val in zip(input_names, input_types, input_val):
         # Identify yacs type and converting default value
-        if typ == "DOUBLE":
+        if typ == b"DOUBLE":
             vartyp = type_dble
             varval = float(val)
-        elif typ == "STRING":
+        elif typ == b"STRING":
             vartyp = type_string
             varval = val
-        elif typ == "INTEGER":
+        elif typ == b"INTEGER":
             vartyp = type_int
             varval = int(val)
-        elif typ == "BOOLEAN":
+        elif typ == b"BOOLEAN":
             vartyp = type_bool
             varval = bool(val)
         else:
@@ -455,13 +456,13 @@ def generate_study_yacs(jdc):
     # Adding outputs
     for name, typ in zip(output_names, output_types):
         # Identify yacs type
-        if typ == "DOUBLE":
+        if typ == b"DOUBLE":
             vartyp = type_dble
-        elif typ == "STRING":
+        elif typ == b"STRING":
             vartyp = type_string
-        elif typ == "INTEGER":
+        elif typ == b"INTEGER":
             vartyp = type_int
-        elif typ == "BOOLEAN":
+        elif typ == b"BOOLEAN":
             vartyp = type_dble
         else:
             raise TelemacException("Unknow type %s for %s" % (typ, name))

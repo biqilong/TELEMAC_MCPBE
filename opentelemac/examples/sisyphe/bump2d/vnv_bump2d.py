@@ -49,7 +49,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:SISRES',
                             'fis_bump2d-t2d.slf',
-                            eps=[1.e-9])
+                            eps=[4.e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:SISRES',

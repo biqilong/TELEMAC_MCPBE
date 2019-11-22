@@ -140,5 +140,31 @@ class VnvStudy(AbstractVnvStudy):
             fig_name='img/FreeSurfacetf',
             filled_contours=True)
 
+        vnv_plot2d(\
+            'AMPLI PERIOD  1', res,
+            time=178800,
+            fig_title='Amplitude wave at t=178800s',
+            fig_size=(8, 6),
+            x_factor=1/10000.,
+            y_factor=1/10000.,
+            x_label='$x/10^4$',
+            y_label='$y/10^4$',
+                   vmin=0, vmax=4, nv=21,
+            fig_name='img/ampli',
+            filled_contours=True)
+        
+        vnv_plot2d(\
+            'PHASE PERIOD  1', res,
+            time=178800,
+            fig_title='Phase wave at t=178800s',
+            fig_size=(8, 6),
+            x_factor=1/10000.,
+            y_factor=1/10000.,
+            x_label='$x/10^4$',
+            y_label='$y/10^4$',
+                   vmin=0, vmax=360, nv=21,
+            fig_name='img/phase',
+            filled_contours=True)
+
         # Closing files
         res.close()

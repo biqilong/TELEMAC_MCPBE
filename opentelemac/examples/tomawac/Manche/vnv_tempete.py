@@ -68,7 +68,8 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between results from calculated geometry and reference value.
         self.check_epsilons('vnv_1:WACRES',
                             'ref_tom_calc.slf',
-                            eps=[0.008, 0.3, 1e-8, 1e-8, 1e-8, 0.008, 0.006, 0.03])
+                             eps=[0.02, 19, 1e-8, 1e-8, 1e-8, 0.008, 0.01, 0.03])
+#                            eps=[0.008, 0.3, 1e-8, 1e-8, 1e-8, 0.008, 0.006, 0.03])
 
         # Comparison between scalar and parallel.
         self.check_epsilons('vnv_1:WACRES',

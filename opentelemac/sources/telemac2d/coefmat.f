@@ -56,7 +56,7 @@
       DOUBLE PRECISION A,B,C,D,AA,BB
       INTEGER I,J
 !
-      INTRINSIC COS,SIN,ACOS
+      INTRINSIC COS,SIN
 !
 !-----------------------------------------------------------------------
 !

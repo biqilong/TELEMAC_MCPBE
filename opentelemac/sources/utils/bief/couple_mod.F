@@ -1,13 +1,11 @@
-! todo
-!3.) Ckeck clean compilation
-!4.) Add default values for variables (+ check?)
-!3.) ADAPT TELEMAC3D
-!
-
       MODULE COUPLE_MOD
+!******************************************************************
+! THAT MODULE CONTAINS THE SUBROUTINES NEEDED TO EXCHANGE VALUES OF VARIABLE
+! BETWEEN TWO MODULES (TILL NOW TELEMAC2D AND TOMAWAC) WHEN THEY DEAL
+! WITH DIFFERENT MESH.     
 ! ASSUMPTIONS:
 ! SAME NUMBER OF PROCESSES ON BOTH COUPLED MODELS
-!
+!******************************************************************
 
       USE BIEF
       USE DECLARATIONS_SPECIAL
@@ -27,11 +25,11 @@
 
         ! LIST WITH FOR EACH PROCESS
         ! LOCAL NODE ID WHERE TO PUT DATA THAT IS RECEIVED
-        ! THIRD DIMENSION IS USED TO HAVE INFLEUNCE OF MULTIPLE POINTS. 
+        ! THIRD DIMENSION IS USED TO HAVE INFLUENCE OF MULTIPLE POINTS. 
         ! E.G. FOR INTERPOLATION
         INTEGER, POINTER, DIMENSION(:,:,:)   :: RECV_MAP
 
-        !NUMBER OF POINTS TO SEND TO OTHER PROCESSESA
+        !NUMBER OF POINTS TO SEND TO OTHER PROCESSES
         INTEGER, POINTER, DIMENSION(:)   :: POIN2SEND
         !NUMBER OF POINTS TO SRECEIVE FROM OTHER PROCESSES
         INTEGER, POINTER, DIMENSION(:)   :: POIN2RECV
@@ -71,8 +69,11 @@
 
       TYPE (COUPLE_DATA_TYPE), ALLOCATABLE, DIMENSION(:) :: CPLD
       INTEGER :: NRCOUPLE
+! MAXIMUM OF MODULES COUPLING 2 ARE NEEDED FOR THE MOMENT       
       INTEGER, PARAMETER :: MAXCOUPLE = 4
+! MAXIMUM OF VARIABLES TO EXCHANGE      
       INTEGER, PARAMETER :: MAXVAR    = 10
+! MAXIMUM OF POINTS TO INTERPOLATE ON A POINT ON THE OTHER MESH. 
       INTEGER, PARAMETER :: MAXNPP    = 20
 
       LOGICAL :: DO_COUPLE = .FALSE.
@@ -84,40 +85,25 @@
      &    SEND_COUPLE, RECEIVE_COUPLE, END_COUPLE, DO_COUPLE
 
       CONTAINS
-      ! SUBROUTINE DEFINITION
+      
 !                    **********************
                      SUBROUTINE INIT_COUPLE
 !                    **********************
      &()
 !
 !***********************************************************************
-! TELEMAC   V7P3                                   31/08/2015
-!***********************************************************************
-!
 !BRIEF    CONSTRUCTOR FOR COUPLING ROUTINE
 !
-!
-!history  A BREUGEM (IMDC)
-!+        22/05/2018
-!+        V7p3
-!+
-!
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NRCOUPLE          |-->| NUMBER OF COUPLINGS
-
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       INTEGER :: ICOUPLE, IERR
 !
 !-----------------------------------------------------------------------
 !
-      !INITIALIZE COUPLING DATA
+!INITIALIZE COUPLING DATA
 
       DO_COUPLE = .TRUE.
       NRCOUPLE =  0
@@ -141,22 +127,16 @@
      &(MESH_SEND,CID)
 !
 !***********************************************************************
-! TELEMAC   V7P3                                   31/08/2015
-!***********************************************************************
 !
 !BRIEF    .
 !
+!NOTE: SENDER MUST BE ADDED BEFORE RECIEVER IS ADDED
 !
-!NOTE: SENDER MUST BE ADDED BEFORE REEIEVER IS ADDED
-!history  A BREUGEM (IMDC)
-!+        22/05/2018
-!+        V7p3
-!+
+
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| CID          |-->| ID OF THE COUPLING (STARTS AT 1)
 !| MESH_SEND    |-->| MESH (LOCAL) OF THE SENDER
-
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
@@ -165,7 +145,6 @@
 !
       INTEGER         , INTENT(IN)   :: CID
       TYPE (BIEF_MESH), INTENT(IN)   :: MESH_SEND
-
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
@@ -175,21 +154,18 @@
 !
 !-----------------------------------------------------------------------
 !
-!      call p_sync
-
       ALLOCATE(CPLD(CID)%REQLIST(NCSIZE-1),STAT=IERR)
       CALL CHECK_ALLOCATE(IERR,'REQLIST')
 
       ALLOCATE (RECV_BUF(NCSIZE),STAT=IERR)
       CALL CHECK_ALLOCATE(IERR,'RECV_BUF')
       RECV_BUF = 0
-      !COUNT NUMBER OF COUPINGS
+      !COUNT NUMBER OF COUPLINGS
       NRCOUPLE = NRCOUPLE +1
       NPOIN = MESH_SEND%NPOIN
 
       !ADD NUMBER OF POINTS OF SENDER TO ALL PROCESSES
       SEND_BUF(1) = NPOIN
-
 
 #if defined (HAVE_MPI)
       CALL MPI_ALLGATHER(SEND_BUF, 1, MPI_INTEGER, RECV_BUF, 1,
@@ -203,7 +179,6 @@
         WRITE (LU,*) 'ALL TO ALL PROBLEM IN ADD_SENDER'
         CALL PLANTE(1)
       ENDIF
-
 
       CALL P_SYNC
 
@@ -234,7 +209,6 @@
       RETURN
       END SUBROUTINE
 
-      !
 !-----------------------------------------------------------------------
 !
 !                    ***********************
@@ -243,26 +217,17 @@
      &        (FILE_RECV,RECV_VAR,CID,NPOIN,SEND_NODE,NPP)
 !
 !***********************************************************************
-! TELEMAC   V7P3                                   31/08/2015
-!***********************************************************************
 !
 !BRIEF    READS THE VARIABLE(S) IN THE SELAFIN CONTAINING THE MAPPING
 !         BETWEEN TWO COUPLED MODELS
 !
-!
-!history  A BREUGEM (IMDC)
-!+        22/05/2018
-!+        V7p3
-!+
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| MESH_RECV         |-->| MESH (LOCAL) OF THE RECEIVER
-!| FILE_RECV         |-->| FILE WITH INFORMATION FROM WHERE TO RECEIVE DATA
-!| RECV_VAR          |-->| NAME OF VARIABLE  WHICH CONTAINS THE NODE NR OF THE SENDER
-!| CID               |-->| ID OF THE COUPLING (STARTS AT 1)
-!| NPOIN             |-->| NUMBER OF 2D MESH POINTS
-!| SEND_NODE         |<--| ARRAY
-!| NPP               |<--| MAXIMUM NUMBER OF NODES USED IN DETERMINATION OF A NODE
+!>@param[in] FILE_RECV    FILE WITH INFORMATION FROM WHERE TO RECEIVE DATA
+!>@param[in] RECV_VAR     NAME OF VARIABLE  WHICH CONTAINS THE NODE NR OF THE SENDER
+!>@param[in] CID          ID OF THE COUPLING (STARTS AT 1)
+!>@param[in] NPOIN        NUMBER OF 2D MESH POINTS
+!>@param[in] SEND_NODE    ARRAY OF NODES SEND
+!>@param[in] NPP          MAXIMUM NUMBER OF NODES USED IN DETERMINATION OF A NODE
 
 
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -281,17 +246,14 @@
       CHARACTER(LEN=16), ALLOCATABLE :: VAR_LIST(:)
       CHARACTER(LEN=16), ALLOCATABLE :: UNIT_LIST(:)
       CHARACTER(LEN=16) :: VARNAME
-
-
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       INTEGER :: IERR,  NVAR, IVAR, INUM, I, INDVAR, IPOIN
       DOUBLE PRECISION :: TMP
 
-
       ! DETERMINE NUMBER OF POINTS USED IN INTERPOLATIONS   (FROM FIND_VARIABLE)
 
-      ! READ VARAIBLE NAMES FORM SLF FILE
+      ! READ VARIABLE NAMES FROM SLF FILE
       CALL GET_DATA_NVAR(FILE_RECV%FMT,FILE_RECV%LU,NVAR,IERR)
       CALL CHECK_CALL(IERR, 'FIND_VARIABLE:GET_DATA_NVAR')
       ALLOCATE(VAR_LIST(NVAR),STAT=IERR)
@@ -316,8 +278,8 @@
 
 !      CALL DEBUG_INFO('INUM: ',inum)
 
-      ! LOOK FOR THE HIEGHEST VARIABLE NUMBER.
-      ! IT IS ASSUMED THAT VARIABLES ARE NUMBERERD CONTINUOUSLY
+      ! LOOK FOR THE HIGHEST VARIABLE NUMBER.
+      ! IT IS ASSUMED THAT VARIABLES ARE NUMBERED CONTINUOUSLY
       ! THIS IS CHECKED LATER WHEN READING THE VARIABLES
       NPP = 0
       DO IVAR = 1,NVAR
@@ -336,8 +298,7 @@
       DEALLOCATE(UNIT_LIST)
 
 !----------------------------------------------------------------------
-
-! ALLOCATE MEMOMRY FOR WEIGHTS AND SEND NODES
+! ALLOCATE MEMORY FOR WEIGHTS AND SEND NODES
 
       ALLOCATE(SEND_NODE(NPOIN,NPP),STAT=IERR)
       CALL CHECK_ALLOCATE(IERR,'SEND_NODE')
@@ -383,8 +344,6 @@
 
       RETURN
       END SUBROUTINE
-
-
 !
 !-----------------------------------------------------------------------
 !
@@ -393,25 +352,11 @@
 !                    ***********************
      &         (MESH_RECV,FILE_RECV,RECV_VAR,CID)
 !
-!***********************************************************************
-! TELEMAC   V7P3                                   31/08/2015
-!***********************************************************************
-!
-!BRIEF    .
-!
-!
-!history  A BREUGEM (IMDC)
-!+        22/05/2018
-!+        V7p3
-!+
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| MESH_RECV         |-->| MESH (LOCAL) OF THE RECEIVER
 !| FILE_RECV         |-->| FILE WITH INFORMATION FROM WHERE TO RECEIVE DATA
 !| RECV_VAR          |-->| NAME OF VARIABLE  WHICH CONTAINS THE NODE NR OF THE SENDER
 !| CID               |-->| ID OF THE COUPLING (STARTS AT 1)
-
-
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
@@ -422,7 +367,6 @@
       TYPE(BIEF_FILE) ,  INTENT(IN) :: FILE_RECV
       TYPE(BIEF_MESH),   INTENT(IN) :: MESH_RECV
       CHARACTER(LEN=16), INTENT(IN) :: RECV_VAR
-
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       INTEGER :: IERR, NPOIN , IPROC, IP_S, IP_R, IP_P
@@ -440,7 +384,6 @@
       !1.) LOCAL NODE NR
       !2.) PROCES ID
       INTEGER, ALLOCATABLE, DIMENSION(:,:,:) :: RECV_LIST
-
 !
 !-----------------------------------------------------------------------
 !
@@ -448,7 +391,6 @@
 
       NPOIN = MESH_RECV%NPOIN
       MAXP  = CPLD(CID)%MAXPOIN
-
 
       ! READ WEIGHTS AND NODEINDICES FROM SELAFIN FILE
       CALL READ_RECV(FILE_RECV,RECV_VAR,CID,NPOIN,SEND_NODE,NPP)
@@ -461,7 +403,6 @@
 
       ALLOCATE(TMP_KNOLG(MAXP),STAT=IERR)
       CALL CHECK_ALLOCATE(IERR,'TMP_KNOLG')
-
 
 !     FIND CORRESPONDING LOCAL NUMBERS ON SENDER
 !     (ONLY WORKS IF SENDER IS ALREADY ADDED)
@@ -496,10 +437,8 @@
         ENDDO   ! IP_P
       ENDDO ! IPROC
 
-
 !----------------------------------------------------------------------
 ! BUILD UP SEND LIST AND RECEIVE LIST
-
 
       !COMMUNICATED DATA
       ALLOCATE(CPLD(CID)%SEND_MAP(MAXP,NCSIZE),STAT=IERR)
@@ -516,7 +455,6 @@
       CALL CHECK_ALLOCATE(IERR,'POIN2SEND')
       ALLOCATE(CPLD(CID)%POIN2RECV(NCSIZE),STAT=IERR)
       CALL CHECK_ALLOCATE(IERR,'POIN2RECV')
-
 
       ALLOCATE(DO_SEND(NCSIZE,MAXP),STAT=IERR)
       DO_SEND = .FALSE.
@@ -565,7 +503,6 @@
         CPLD(CID)%POIN2RECV(IPROC) = NSEND(IPROC)
       ENDDO
 
-
 !----------------------------------------------------------------------
 
       ! COMMUNICATE NUMBER OF POINTS TO OTHER PROCESSES
@@ -600,8 +537,6 @@
       ENDIF
 
 !----------------------------------------------------------------------
-
-
 !     COMMUNICATE SEND LIST TO SENDER  (DUMMY VALUES ARE ALSO COPIED)
       IREQ = 0
       DO IPROC = 0,NCSIZE-1
@@ -747,29 +682,18 @@
 !                    **********************
      &(CID,NPOIN,NVAR,VARCOUPLE)
 !
-!***********************************************************************
-! TELEMAC   V7P3                                   31/08/2015
-!***********************************************************************
-!
 !BRIEF    .
 !
-!
-!history  A BREUGEM (IMDC)
-!+        22/05/2018
-!+        V7p3
-!+
 !
 ! NOTES: IT IS ASSUMED THAT THE RECEIVE CALL FOLLOWS THE SEND CALL
 !         AND THAT TWO CONSECUTIVE SENDS DO NOT OCCUR. HOWEVER, THIS IS
 !         NOT CHECKED
 !
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NPOIN         |-->| NUMBER OF POINTS
-!| NVAR          |-->| NUMBER OF VARIABLES
-!| CID           |-->| COUPLE ID
-!| VARCOUPLE     |-->| STRUCTURE WITH VARIABLES TO BE SEND
-
+!>@param[in] NPOIN         NUMBER OF POINTS
+!>@param[in] NVAR          NUMBER OF VARIABLES
+!>@param[in] CID           COUPLE ID
+!>@param[in] VARCOUPLE     STRUCTURE WITH VARIABLES TO BE SEND
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
@@ -778,12 +702,10 @@
 !
       INTEGER       , INTENT(IN) :: NPOIN, NVAR,CID
       TYPE(BIEF_OBJ), INTENT(IN) :: VARCOUPLE
-
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       INTEGER :: IPOIN, IVAR, I, ITMP, NP, IPROC,IP,IPB, DUMMY
       INTEGER :: IREQ, ITAG , NPV, NOERR
-
 !
 !-----------------------------------------------------------------------
 
@@ -878,20 +800,14 @@
 !                    *************************************
      &               (CID,NPOIN,NVAR,VARCOUPLE,DEFAULT_VAL)
 !
-!***********************************************************************
-! TELEMAC   V7P3                                   31/08/2015
-!***********************************************************************
-!
 !BRIEF    .
 !
-!
-!history  A BREUGEM (IMDC)
-!+        22/05/2018
-!+        V7p3
-!+
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NUMIN          |-->| MINIMUM VISCSA IF CLIPPING
+!>@param[in]     NPOIN       NUMBER OF POINTS
+!>@param[in]     NVAR        NUMBER OF VARIABLES
+!>@param[in]     CID         COUPLE ID
+!>@param[in/out] VARCOUPLE   STRUCTURE WITH VARIABLES TO BE SEND
+!>@param[in]     DEFAULT_VAL DEFAULT VALUE (IF NOT 0)                                
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
@@ -997,36 +913,19 @@
 !                    *********************
                      SUBROUTINE END_COUPLE
 !                    *********************
+!     
+!BRIEF  DEALLOCATE VARIABLE NEEDED FOR COUPLING
 !
-!***********************************************************************
-! TELEMAC   V7P3                                   31/08/2015
-!***********************************************************************
-!
-!BRIEF    .
-!
-!
-!history  A BREUGEM (IMDC)
-!+        22/05/2018
-!+        V7p3
-!+
-!
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!
-
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       INTEGER :: ICPL, IERR
 !
 !-----------------------------------------------------------------------
 !
-      !DEACCLOCATE DATA FROM COUPLING STRUCTERES
-      ! TODO CHECK
+      !DEACCLOCATE DATA FROM COUPLING STRUCTURES
 
       DO  ICPL =1,NRCOUPLE
         !MAPPING
@@ -1054,9 +953,18 @@
       RETURN
       END SUBROUTINE
 
-
 !-----------------------------------------------------------------------
       SUBROUTINE DEBUG_INFO (DEBUG_STRING,DEBUG_INT)
+
+!BRIEF  PRINT INFORMATION ABOUT A VARIABLE.
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!>@param[in] DEBUG_STRING   MESH (LOCAL) OF THE RECEIVER
+!>@param[in] DEBUG_INT    FILE_RECV   FILE WITH INFORMATION FROM WHERE TO RECEIVE DATA
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+      IMPLICIT NONE
+      
       CHARACTER (LEN=*), INTENT(IN) :: DEBUG_STRING
       INTEGER, OPTIONAL, INTENT(IN) :: DEBUG_INT
       WRITE (LU,*) ''

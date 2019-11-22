@@ -57,7 +57,7 @@
 !
       INTEGER M,I,J,K,N
 !
-      INTRINSIC COS,SIN,ACOS,MOD,ATAN2
+      INTRINSIC COS,SIN,MOD,ATAN2
 !
 !-----------------------------------------------------------------------
 !

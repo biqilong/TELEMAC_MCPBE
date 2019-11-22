@@ -90,7 +90,7 @@
 !+        06/12/2018
 !+        V7P2
 !+   add new variable ZRL (reference level for Nestor)
-!                     
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
@@ -312,7 +312,7 @@
       ALLOCATE(IVIDE(NPOIN,NOMBLAY+1)) ! FRACTION OF EACH CLASS FOR EACH LAYER
 !
       ALLOCATE(SANFRA(NPOIN)) ! SAND FRACTION CONTENT
-!     
+!
 !
       CALL ALLBLO(MASKTR, 'MASKTR') ! MASK OF THE BOUNDARY CONDITIONS
       CALL ALLBLO(EBOR  , 'EBOR  ') ! BOUNDARY CONDITIONS
@@ -576,7 +576,8 @@
           CALL ADDBLO(VARSOR,VARCL%ADR(I)%P)
 !         added 1 to include wave orbital velocities
 !         SORLEO(27+MAX(4,NPRIV)+NSICLA*(NOMBLAY+4)+NOMBLAY+I)=.TRUE.
-          SORLEO(29+MAX(4,NPRIV)+NSICLA*(NOMBLAY+4)+2*NOMBLAY+I)=.TRUE.  ! 28+1;  reference level for Nestor   
+          ! 28+1;  reference level for Nestor
+          SORLEO(29+MAX(4,NPRIV)+NSICLA*(NOMBLAY+4)+2*NOMBLAY+I)=.TRUE.
         ENDDO
       ENDIF
 !
@@ -586,7 +587,7 @@
 !
 !     DIFFERENTIATED VARIABLES
 !
-      K = 29+MAX(4,NPRIV)+NSICLA*(NOMBLAY+4)+2*NOMBLAY+VARCL%N ! 28+1;  reference level for Nestor  
+      K = 29+MAX(4,NPRIV)+NSICLA*(NOMBLAY+4)+2*NOMBLAY+VARCL%N ! 28+1;  reference level for Nestor
 !
       IF( NADVAR.GT.0 ) THEN
         CALL ALLBLO(ADVAR ,'ADVAR ')

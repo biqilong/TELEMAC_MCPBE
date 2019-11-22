@@ -52,6 +52,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
         res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
 
+        # TODO: Plot figures from documentation
         #Plotting FREE SURFACE on [7.5, 0] over records range(0, res_vnv_1_t2dres.ntimestep)
         vnv_plot1d_history(\
                 'FREE SURFACE',

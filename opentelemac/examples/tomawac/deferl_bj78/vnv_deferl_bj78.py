@@ -68,7 +68,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:WACRES',
                             'fom_bj15.slf',
-                            eps=[1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 1e-8])
+                            eps=[1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 2e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1bis:WACRES',
@@ -78,7 +78,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:WACRES',
                             'fom_bj15.slf',
-                            eps=[1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 1e-8])
+                            eps=[1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 2e-4])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:WACRES',
@@ -88,7 +88,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:WACRES',
                             'fom_deferl3.slf',
-                            eps=[1e-8])
+                            eps=[1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 1e-8, 2e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:WACRES',

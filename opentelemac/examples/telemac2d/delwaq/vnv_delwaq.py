@@ -49,7 +49,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_delwaq.slf',
-                            eps=[0.1, 0.07, 0.007, 0.007, 1.E-9, 0.04])
+                            eps=[0.12, 0.07, 0.013, 0.013, 1.E-9, 0.08])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',

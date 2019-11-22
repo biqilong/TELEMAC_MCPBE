@@ -77,7 +77,6 @@
 !
       INTEGER                       :: I, ITER
       DOUBLE PRECISION              :: TIERS
-      DOUBLE PRECISION              :: SUR30
       DOUBLE PRECISION              :: UNORM, INLOG, AUX
       DOUBLE PRECISION              :: OLDUST, OLDCF
       DOUBLE PRECISION              :: RE, UST, DW, DWPLUS
@@ -90,7 +89,6 @@
 !=======================================================================!
 !
       TIERS = 1.D0/3.D0
-      SUR30 = 1.D0/30.D0
       SELECT CASE (KFROT)
 !
 ! NO FRICTION

@@ -43,7 +43,7 @@
       USE INTERFACE_HERMES
       USE DECLARATIONS_SPECIAL
 !
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_IMAX,P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_DSUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -69,7 +69,6 @@
       INTEGER                       :: TROUVE(MAXVAR+10)
       INTEGER                       :: ISAND,IPOIN,IMUD,ICLA
       DOUBLE PRECISION              :: AT !only used for wave
-      LOGICAL                       :: YAZR
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       INTEGER, ALLOCATABLE          :: NULLT(:)
       DOUBLE PRECISION, ALLOCATABLE :: NULLD(:)
@@ -363,7 +362,6 @@
 !
 !     RESUMES GAIA COMPUTATION
 !
-      YAZR=.FALSE.
       IF(GAI_FILES(GAIPRE)%NAME(1:1).NE.' ')  THEN
 !
 !       READS THE HYDRO AND SEDIMENTOLOGICAL VARIABLES
@@ -377,7 +375,6 @@
         IF(DEBUG.GT.0) WRITE(LU,*) 'RESCUE_GAIA'
         CALL RESCUE_GAIA(HN%R,Z%R,ZF%R,ZR%R,ES,HW%R,TW%R,
      &       THETAW%R,NPOIN,NOMBLAY,TROUVE,ALIRE,PASS,ICF,.TRUE.,MAXVAR)
-        IF(TROUVE(9).EQ.1) YAZR=.TRUE.
         IF(DEBUG.GT.0) WRITE(LU,*) 'SORTIE DE RESCUE_GAIA'
 !
       ENDIF

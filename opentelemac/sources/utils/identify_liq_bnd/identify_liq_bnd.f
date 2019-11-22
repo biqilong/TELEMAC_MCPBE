@@ -59,7 +59,7 @@
       INTEGER :: NOUT
       INTEGER TIME(3),DATE(3), DATE_TMP(6)
       INTEGER :: I,J,K,IERR
-      integer :: first, last, nfrliq
+      INTEGER :: FIRST, LAST, NFRLIQ
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !

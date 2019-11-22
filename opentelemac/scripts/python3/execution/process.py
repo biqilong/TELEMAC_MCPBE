@@ -50,8 +50,8 @@ def check_para_tilling(in_tile, in_node, in_size, ncruns, cas_ncsize):
     ncnode = 1
     if in_node != 0:
         ncnode = max(1, in_node)
-    # Taking max betwen option and steering ncsize
-    ncsize = max(in_size, cas_ncsize)
+    # By default taking the input ncsize
+    ncsize = in_size
 
     # ~~ Special case of nctile ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nctile = 1
@@ -76,7 +76,7 @@ def check_para_tilling(in_tile, in_node, in_size, ncruns, cas_ncsize):
     if ncruns == 1:
     # ~~ Standard cases ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # If the command line options.nctile and options.ncnode are fixed
-        if in_tile != 0 and in_node != 0:
+        if in_tile != 0 and in_node != 0 and ncsize == 0:
             ncsize = ncnode * nctile
     # If options.ncsize is set, it will have priority over the others
         elif in_size != 0:

@@ -21,8 +21,8 @@
         INTEGER, PARAMETER :: T2D_INFO_LEN=200
         ! The maximum number of variable
         INTEGER, PARAMETER :: NB_VAR_T2D=54
-        CHARACTER(LEN=T2D_VAR_LEN),ALLOCATABLE :: VNAME_T2D(:)
-        CHARACTER(LEN=T2D_INFO_LEN),ALLOCATABLE :: VINFO_T2D(:)
+        CHARACTER(LEN=40),ALLOCATABLE,DIMENSION(:) :: VNAME_T2D
+        CHARACTER(LEN=200),ALLOCATABLE,DIMENSION(:) :: VINFO_T2D
 !
       CONTAINS
 !
@@ -347,7 +347,7 @@
      &          VALEUR(1:SIZE(INST%H0%R))
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.TRACER') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-       INST%T%ADR(BLOCK_INDEX)%P%R(1:INST%T%ADR(BLOCK_INDEX)%P%DIM1) =
+        INST%T%ADR(BLOCK_INDEX)%P%R(1:INST%T%ADR(BLOCK_INDEX)%P%DIM1) =
      &            VALEUR(1:INST%T%ADR(BLOCK_INDEX)%P%DIM1)
           ELSE
              IERR = INDEX_BLOCK_MISSING
@@ -1389,7 +1389,49 @@
       END SUBROUTINE GET_VAR_TYPE_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DESCRIPTION OF EACH VARIABLE
+      !BRIEF GET THE DESCRIPTION OF THE ITH VARIABLE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM IERR      [IN]     Integer
+      !PARAM VAR_LEN   [IN]     Size of varname
+      !PARAM INFO_LEN  [IN]     Size of varinfo
+      !PARAM VARNAME   [OUT]    Name of the variable
+      !PARAM VARINFO   [OUT]    Description of the variable
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_VAR_INFO_T2D_D(I, VAR_LEN, INFO_LEN,
+     &                              VARNAME, VARINFO, IERR)
+!
+        INTEGER, INTENT(IN) :: I
+        INTEGER, INTENT(IN) :: VAR_LEN
+        INTEGER, INTENT(IN) :: INFO_LEN
+        CHARACTER, INTENT(OUT) :: VARNAME(VAR_LEN)
+        CHARACTER, INTENT(OUT) :: VARINFO(INFO_LEN)
+        INTEGER, INTENT(OUT) :: IERR
+!
+        INTEGER :: J
+!
+        IERR = 0
+
+        DO J=1,T2D_VAR_LEN
+          VARNAME(J:J) = VNAME_T2D(I)(J:J)
+        ENDDO
+        DO J=1,T2D_INFO_LEN
+          VARINFO(J:J) = VINFO_T2D(I)(J:J)
+        ENDDO
+
+        RETURN
+      END SUBROUTINE GET_VAR_INFO_T2D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF SET THE DESCRIPTION OF EACH VARIABLE
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       !
       !HISTORY Y AUDOUIN (EDF R&D, LNHE)

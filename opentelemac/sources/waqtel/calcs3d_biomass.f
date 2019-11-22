@@ -1,12 +1,12 @@
 !                     **************************
                       SUBROUTINE CALCS3D_BIOMASS
 !                     **************************
+!
      &  (NPOIN3,NPOIN2,NPLAN,WATTEMP,TN,TEXP,RAYEFF,ZPROP,
      &   T1,T2,T3,T4,T5,T6)
 !
-!
 !***********************************************************************
-! TELEMAC2D   V7P3                                        21/03/2016
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS FOR PHYTOPLANKTONIC BIOMASS WAQ PROCESS
@@ -117,7 +117,7 @@
 !     G1 IS STOCKED IN T6, WE TAKE INTO ACCOUNT VARIABLE TEMPERATURE
 !
       G1 = WATTEMP/20.D0
-      IF( IND_T.GT.1 )THEN
+      IF( IND_T.GT.0 )THEN
         CALL OS('X=CY    ',X=T6,Y=TN%ADR(IND_T)%P,C=UNSURVINGT)
       ELSE
         CALL OS('X=C     ',X=T6,C=G1)

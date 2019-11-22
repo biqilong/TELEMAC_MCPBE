@@ -12,14 +12,14 @@
 !
 !history  N.DURAND (HRW)
 !+        09/03/01
-!+        
+!+
 !+   Original
 !
 !history  SRIRAM VENKATACHALAM (HRW)
 !+        13/08/08
-!+        
+!+
 !+   Modified to be compatible with Artemis v5.8
-!+   After executing allvec, the newer version will fill the arrays with 
+!+   After executing allvec, the newer version will fill the arrays with
 !+   huge numbers in order to check whether the array is initialised or
 !+   not. Hence, we need to re-initialise the array with zeros.
 !
@@ -87,7 +87,7 @@
       ALLOCATE (SPEC%NOUTER(NSPEC),STAT=IERR)
       CALL CHECK_ALLOCATE(IERR,'ALLSPEC:SPEC%NOUTER')
       DO I=1,NSPEC
-         SPEC%NOUTER(I) = 0
+        SPEC%NOUTER(I) = 0
       ENDDO
 !     X COORDINATE
       ALLOCATE (SPEC%XOUTER(NSPEC),STAT=IERR)
@@ -111,17 +111,16 @@
 !_______________________________________________________________________
 !
       DO I=1,NSPEC
-         ALLOCATE(SPEC%ADR(I)%SOUTER(NF,NDIR+1),STAT=IERR)
-         CALL CHECK_ALLOCATE(IERR,'ALLSPEC:SPEC%ADR(I)%SOUTER')
-         DO II=1,NF
-            DO JJ=1,NDIR+1
-               SPEC%ADR(I)%SOUTER(II,JJ)=0.D0
-            ENDDO
-         ENDDO
+        ALLOCATE(SPEC%ADR(I)%SOUTER(NF,NDIR+1),STAT=IERR)
+        CALL CHECK_ALLOCATE(IERR,'ALLSPEC:SPEC%ADR(I)%SOUTER')
+        DO II=1,NF
+          DO JJ=1,NDIR+1
+            SPEC%ADR(I)%SOUTER(II,JJ)=0.D0
+          ENDDO
+        ENDDO
       ENDDO
 !
 !_______________________________________________________________________
 !
       RETURN
       END
-

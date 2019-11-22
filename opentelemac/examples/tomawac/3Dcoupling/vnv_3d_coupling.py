@@ -26,16 +26,16 @@ class VnvStudy(AbstractVnvStudy):
         # littoral3D T3D+TOM scalar mode 2D coupling
         self.add_study('vnv_1',
                        'telemac3d',
-                       'T3D_littoral.cas')
+                       't3d_littoral.cas')
 
 
         # littoral3D T3D+TOM parallel mode 2D coupling
-        cas = TelemacCas('T3D_littoral.cas', get_dico('telemac3d'))
+        cas = TelemacCas('t3d_littoral.cas', get_dico('telemac3d'))
         cas.set('PARALLEL PROCESSORS', 4)
 
         self.add_study('vnv_2',
                        'telemac3d',
-                       'T3D_littoral_par.cas',
+                       't3d_littoral_par.cas',
                        cas=cas)
 
         del cas
@@ -44,16 +44,16 @@ class VnvStudy(AbstractVnvStudy):
         # littoral3D T3D+TOM scalar mode 3D coupling
         self.add_study('vnv_3',
                        'telemac3d',
-                       'T3D_3Dcoupling.cas')
+                       't3d_3Dcoupling.cas')
 
 
         # littoral3D T3D+TOM parallel mode 3D coupling
-        cas = TelemacCas('T3D_3Dcoupling.cas', get_dico('telemac3d'))
+        cas = TelemacCas('t3d_3Dcoupling.cas', get_dico('telemac3d'))
         cas.set('PARALLEL PROCESSORS', 4)
 
         self.add_study('vnv_4',
                        'telemac3d',
-                       'T3D_3Dcoupling_par.cas',
+                       't3d_3Dcoupling_par.cas',
                        cas=cas)
 
         del cas

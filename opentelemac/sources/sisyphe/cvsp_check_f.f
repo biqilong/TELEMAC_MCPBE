@@ -93,7 +93,7 @@
           ELSE
             CALL CVSP_P('./','PRO_F.gt'//SOMETEXT, J)
             WRITE(LU,*) 'CVSP CF:PRO_F>1: ERR,LT,J;K;F_I;%: '
-     &                 ,SOMETEXT,LT,JG,K,I,PRO_F(J,K,I),pro_max(j)
+     &                 ,SOMETEXT,LT,JG,K,I,PRO_F(J,K,I),PRO_MAX(J)
             CALL PLANTE(1)
             STOP
           ENDIF
@@ -102,7 +102,7 @@
       ENDDO
 ! ALL FRACTION ZERO IS OK, IN CVSP_MAIN this section will be deleted
       IF(TEMP.EQ.0.D0) THEN
-         TEMP = 1.D0
+        TEMP = 1.D0
       ENDIF
 !-----------------------------------------------------------------------
 ! CHECK AND CORRECT DEVIATIONS

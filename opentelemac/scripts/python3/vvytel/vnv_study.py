@@ -200,10 +200,17 @@ class AbstractVnvStudy(ABC):
 
         if run:
             print("  ~> {}: running on {} cores".format(name, study.ncsize))
+            # Forcing ncsize if not set
+            old_ncsize = self.options.ncsize
+            if old_ncsize == 0:
+                self.options.ncsize = study.ncsize
             if study.cfg['HPC'] == {} or self.options.mpi:
                 run_local_cas(study, self.options)
             else:
                 run_hpc_cas(study, self.options)
+            # Restoring option value
+            if old_ncsize == 0:
+                self.options.ncsize = old_ncsize
         else:
             print("  ~> {}: Nothing to do (up-to-date)".format(name))
 

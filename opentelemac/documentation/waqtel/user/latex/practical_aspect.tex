@@ -1,0 +1,63 @@
+\chapter{Practical aspects}
+
+To activate the water quality module \waqtel, the integer keyword
+\telkey{WATER QUALITY PROCESS} must be set to a value different from 1 (default = 1)
+in the \telemac{2d} or \telemac{3d} \telkey{STEERING FILE}.
+In \waqtel, a new dictionary is created and fully dedicated to water quality applications.
+The description of this new dictionary will be the subject of a separate manual
+(see the \waqtel reference manual).
+%\telemac{2d} or \telemac{3d} will not read automatically this dictionary,
+%unless the keyword \telkey{WAQ DICTIONARY} is used.
+%This keyword is the path to dictionary.
+To introduce WAQ parameters, a separate steering file is necessary.
+It is read with the use of the keyword \telkey{STEERING FILE}
+and its name has to be declared in the \telemac{2d} or \telemac{3d}
+\telkey{STEERING FILE}.
+In the next sections which are dedicated to water quality,
+all the keywords to be introduced to the water quality steering file
+will be written in \telkey{THIS FONT}.
+
+Depending on the \waqtel module, \telemac{2d} or \telemac{3d}
+automatically increase the number of tracers of the model.
+In fact, the total number of tracers (variable \telfile{NTRAC})
+is increased by 3 (for O$_2$ process), by 5 (for BIOMASS and MICROPOL processes)
+or by 8 (for EUTRO process).
+For the THERMIC module, the number of tracers is increased only
+if no temperature is present in the set of tracers already existing in the model.
+
+Some general parameters can also be chosen for any water quality process.
+For instance, user can give a title for the study by using \telkey{WAQ CASE TITLE}.
+He/she can introduce water density (\telkey{WATER DENSITY}).
+%viscosity of water (\telkey{KINEMATIC WATER VISCOSITY}), read but not used at the moment
+
+
+\section{The meteo file or ASCII ATMOSPHERIC DATA FILE}
+\label{subs:meteo:file}
+Most of the water quality processes are tightly linked to
+meteorological data on the domain.
+Besides the specific treatment for wind, atmospheric pressure
+and rain described in the section 6.3 of the \telemac{2d} User Manual
+or in the section 5.5 of the \telemac{3d} User Manual,
+water quality needs different meteorological data such as
+nebulosity, air temperature, evaporation pressure etc.
+Hereafter we give an example of \telkey{ASCII ATMOSPHERIC DATA FILE}
+(see Table \ref{tab:meteo}).
+The user can edit this file and add new parameters.
+However, in this case, he must edit subroutine \telfile{meteo.f} consequently.
+
+\begin{table}
+    \centering
+  \begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+     \hline \hline
+     % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+     Time & $T_{air}$ & $P_{vap}$ & Wind speed & Wind dir. & Nebulo. & Ray. & $P_{atm}$ & Rain \\
+     \hline \hline
+     s & $^\circ$C & hPa & m/s & $^\circ$ & Octa & W/m$^2$ & mbar & mm \\
+     \hline \hline
+     0 & 20 & 10 & 0.5 & 70 & 5 & 160 & 1012.7 & 0 \\
+     3600 & 20 & 10 & 0.5 & 70 & 5 & 160 & 1012.7 & 0 \\
+     7200 & 20 & 10 & 0.5 & 70 & 5 & 160 & 1012.7 & 0 \\
+     \hline
+   \end{tabular}
+  \caption{Example of meteo data file }\label{tab:meteo}
+\end{table}

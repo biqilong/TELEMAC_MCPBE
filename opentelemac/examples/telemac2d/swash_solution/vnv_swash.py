@@ -72,3 +72,30 @@ class VnvStudy(AbstractVnvStudy):
         Post-treatment processes
         """
 
+        #TODO: Redo picture for documentation
+        from postel.plot_vnv import vnv_plot1d_history, vnv_plot2d
+        from data_manip.extraction.telemac_file import TelemacFile
+                # Getting files
+        vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
+        res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
+        vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
+        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
+
+        #Plotting mesh
+        vnv_plot2d('',
+                   res_vnv_1_t2dgeo,
+                   plot_mesh=True,
+                   fig_size=(10, 10),
+                   fig_name='img/Mesh')
+
+
+        # Plotting BOTTOM at 0
+        vnv_plot2d('BOTTOM',
+                   res_vnv_1_t2dres,
+                   record=0,
+                   filled_contours=True,
+                   fig_name='img/Bathy')
+
+        # Closing files
+        res_vnv_1_t2dres.close()
+        res_vnv_1_t2dgeo.close()

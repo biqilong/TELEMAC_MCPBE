@@ -50,7 +50,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_vasque.slf',
-                            eps=[2.E-4, 3.E-5, 7.E-6, 7.E-6, 1.E-8])
+                            eps=[2.E-4, 3.E-5, 8.E-6, 8.E-6, 1.E-8])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',

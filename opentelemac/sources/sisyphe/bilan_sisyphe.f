@@ -266,7 +266,7 @@
         ENDIF
 !
         VCUMUCLA(ICLA) = - FLUXTCLA*DT/CSF_SABLE
-        VCUMUCL(ICLA) = VCUMUCL(ICLA)- FLUXTCLA*DT/CSF_SABLE       
+        VCUMUCL(ICLA) = VCUMUCL(ICLA)- FLUXTCLA*DT/CSF_SABLE
 !
         ENDDO
 !
@@ -378,16 +378,16 @@
           WRITE(LU,*)'INITIAL VOLUME                  :',VOLINI1
           WRITE(LU,*)'FINAL VOLUME                    :',VOLTOT1
           IF(VOLINI1.GT.0.D0) THEN
-               VOLLOSTPERC = (VOLTOT1-VOLINI1-VCUMU1-
-     &                 VOLNESTOR)*100.D0/VOLINI1
+            VOLLOSTPERC = (VOLTOT1-VOLINI1-VCUMU1-
+     &              VOLNESTOR)*100.D0/VOLINI1
           ELSE
-               VOLLOSTPERC = 0.D0
+            VOLLOSTPERC = 0.D0
           ENDIF
           WRITE(LU,*)'TOTAL VOLUME LOST               :',
      &        VOLTOT1-VOLINI1-VCUMU1-VOLNESTOR
           WRITE(LU,*)'                                :'
      &               ,VOLLOSTPERC,'%'
-         IF(NSICLA>1) THEN
+          IF(NSICLA>1) THEN
             DO I=1,NSICLA
               WRITE(LU,*)
               WRITE(LU,*) 'MASS BALANCE FOR SEDIMENT CLASS :',I

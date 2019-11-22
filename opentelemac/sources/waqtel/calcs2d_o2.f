@@ -1,12 +1,12 @@
-!                    **********************
+!                     *********************
                       SUBROUTINE CALCS2D_O2
-!                    **********************
+!                     *********************
+!
      & (NPOIN,WATTEMP,O2SATU,DEMBEN,FORMK2,K1,K44,K22,
      &  PHOTO,RESP,TN,TEXP,TIMP,T2,T3,T4,HPROP,UN,VN,DEBUG)
 !
-!
 !***********************************************************************
-! TELEMAC2D   V7P0                                        21/09/2014
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS FOR O2 WAQ PROCESS
@@ -91,7 +91,7 @@
       BENCORR = DEMBEN*SECTODAY
       POWER   = WATTEMP-20.D0
       DO I=1,NPOIN
-        IF( IND_T.GT.1 ) POWER=TN%ADR(IND_T)%P%R(I)-20.D0
+        IF( IND_T.GT.0 ) POWER=TN%ADR(IND_T)%P%R(I)-20.D0
 !       CORR2T AND BENCOR STOCKED HERE IN T3,T4
         T3%R(I)=CORR2**POWER
         T4%R(I)=BENCORR*(CORR1**POWER)

@@ -797,6 +797,48 @@
       END SUBROUTINE GET_VAR_TYPE_ART_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF GET THE DESCRIPTION OF THE ITH VARIABLE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM IERR      [IN]     Integer
+      !PARAM VAR_LEN   [IN]     Size of varname
+      !PARAM INFO_LEN  [IN]     Size of varinfo
+      !PARAM VARNAME   [OUT]    Name of the variable
+      !PARAM VARINFO   [OUT]    Description of the variable
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE GET_VAR_INFO_ART_D(I, VAR_LEN, INFO_LEN,
+     &                              VARNAME, VARINFO, IERR)
+!
+        INTEGER, INTENT(IN) :: I
+        INTEGER, INTENT(IN) :: VAR_LEN
+        INTEGER, INTENT(IN) :: INFO_LEN
+        CHARACTER, INTENT(OUT) :: VARNAME(VAR_LEN)
+        CHARACTER, INTENT(OUT) :: VARINFO(INFO_LEN)
+        INTEGER, INTENT(OUT) :: IERR
+!
+        INTEGER :: J
+!
+        IERR = 0
+
+        DO J=1,ART_VAR_LEN
+          VARNAME(J:J) = VNAME_ART(I)(J:J)
+        ENDDO
+        DO J=1,ART_INFO_LEN
+          VARINFO(J:J) = VINFO_ART(I)(J:J)
+        ENDDO
+
+        RETURN
+      END SUBROUTINE GET_VAR_INFO_ART_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       !BRIEF GET A DESCRIPTION OF EACH VARIABLE
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       !

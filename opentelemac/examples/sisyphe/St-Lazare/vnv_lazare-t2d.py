@@ -59,7 +59,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:SISRES',
                             'vnv_2:SISRES',
-                            eps=[1.E-6, 1.E-6, 1.E-6, 4.E-5, 4.E-5, 1.E-5, 1.E-9, 1.E-6, 1.E-6])
+                            eps=[1.E-6, 1.E-6, 1.E-6, 4.E-5, 4.E-5, 1.E-5, 1.E-9, 1.E-6, 1.3E-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',

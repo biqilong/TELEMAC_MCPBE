@@ -286,7 +286,6 @@
         ! Only closing file in stand alone otherwise telemac2d will do
         ! it
         IF(INST%TEL%CODE(1:7) == 'SISYPHE') THEN
-          write(*,*) 'Closing log file'
           ! Closing log files
           IF(IPID.NE.0) THEN
             CLOSE(LU)

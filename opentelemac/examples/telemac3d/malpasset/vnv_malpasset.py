@@ -128,7 +128,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:T3DRES',
                             'f3d_malpasset-murd_p6.slf',
-                            eps=[2.E-1, 5.3E0, 2.9E0, 8.E-1, 1.1E0])
+                            eps=[2.E-1, 5.3E0, 2.9E0, 1.E0, 1.1E0])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_6:T3DRES',

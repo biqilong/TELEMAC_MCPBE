@@ -286,13 +286,12 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      LOGICAL RECONSTRUCT,THEEND
+      LOGICAL THEEND
       INTEGER I,IS,K,ICIN,IVIS,NORDRE,ITRAC
       DOUBLE PRECISION XNC,W1,DMIN,BETA,TEST,GPRDTIME,RESTE
 !
       DOUBLE PRECISION,PARAMETER:: EPS =  1.D-6
 !
-      RECONSTRUCT=.FALSE.
       GPRDTIME=LEOPRD*DTINI
 !
       IF(OPTVF.EQ.0) THEN
@@ -304,7 +303,6 @@
       ELSEIF(OPTVF.EQ.2) THEN
         ICIN = 1
         NORDRE = 2
-        RECONSTRUCT=.TRUE.
       ELSEIF(OPTVF.EQ.3) THEN
         ICIN = 2
         NORDRE=1

@@ -1,11 +1,11 @@
 !                     **************************
                       SUBROUTINE CALCS2D_BIOMASS
 !                     **************************
+!
      &  (NPOIN,WATTEMP,TN,TEXP,RAYEFF,HPROP,T1,T2,T3,T4,T5,T6,DEBUG)
 !
-!
 !***********************************************************************
-! TELEMAC2D   V7P0                                        21/09/2014
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS FOR PHYTOPLANKTONIC BIOMASS WAQ PROCESS
@@ -103,7 +103,7 @@
 !
 !     CP IS STORED IN T3
       CALL OS( 'X=0     ',X=T3)
-!     DP IS STROED IN T4
+!     DP IS STORED IN T4
       CALL OS( 'X=0     ',X=T4)
 !     LNUT IS STORED IN T5
       CALL OS( 'X=0     ',X=T5)
@@ -140,8 +140,8 @@
 !
 !     RATE OF ALGAE DISAPPEARANCE
 !
-      CALL ALGAE_DEATH(T4%R,T4%R,CMORALG,TN%ADR(IND_PHY)%P%R,TRESPIR,T6,
-     &                  CTOXIC(2),NPOIN)
+      CALL ALGAE_DEATH(T4%R,T1%R,CMORALG,TN%ADR(IND_PHY)%P%R,TRESPIR,T6,
+     &                 CTOXIC(2),NPOIN)
 !
       IF(DEBUG.GT.0)WRITE(LU,*)'IN BIOMASS, STEP 5'
 !

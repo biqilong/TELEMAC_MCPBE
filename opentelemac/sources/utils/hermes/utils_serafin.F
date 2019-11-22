@@ -417,12 +417,12 @@
           ENDIF
           DO I=1,SRF_OBJ_TAB(SRF_ID)%NVAR
             POS = SRF_OBJ_TAB(SRF_ID)%POS_VARINFO + (I-1)*(4+VAR_SIZE+4)
-            READ(FILE_ID,POS=POS+4,IOMSG=msg,IOSTAT=IERR)
+            READ(FILE_ID,POS=POS+4,IOMSG=MSG,IOSTAT=IERR)
      &                      SRF_OBJ_TAB(SRF_ID)%VAR_LIST(I)
             IF(IERR.NE.0) THEN
               ERROR_MESSAGE = 'ERROR IN '//
      &             TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
-     &             'OPEN_MESH_SRF:READ_VAR_LIST'//'\n'//msg
+     &             'OPEN_MESH_SRF:READ_VAR_LIST'//'\N'//MSG
               RETURN
             ENDIF
           ENDDO
@@ -703,8 +703,8 @@
           IF(PRESENT(MESH_NUMBER).AND.PARTEL_CONCAT)THEN
             IF(SRF_OBJ_TAB(SRF_ID)%CLI_LINE_END >
      &         SRF_OBJ_TAB(SRF_ID)%CLI_LINE_BEGIN)THEN
-               NPTFR=SRF_OBJ_TAB(SRF_ID)%CLI_LINE_END
-     &              - SRF_OBJ_TAB(SRF_ID)%CLI_LINE_BEGIN
+              NPTFR=SRF_OBJ_TAB(SRF_ID)%CLI_LINE_END
+     &             - SRF_OBJ_TAB(SRF_ID)%CLI_LINE_BEGIN
             ELSE
               NPTFR=0
             ENDIF

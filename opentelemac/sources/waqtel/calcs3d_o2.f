@@ -1,12 +1,12 @@
-!                    **********************
+!                     *********************
                       SUBROUTINE CALCS3D_O2
-!                    **********************
+!                     *********************
+!
      & (NPOIN3,NPOIN2,NPLAN,WATTEMP,O2SATU,DEMBEN,FORMK2,K1,K44,K22,
      &  PHOTO,RESP,TN,TEXP,TIMP,T31,T32,T21,HPROP,ZPROP,UN,VN)
 !
-!
 !***********************************************************************
-! WAQTEL   V7P3
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS FOR O2 WAQ PROCESS FOR 3D CASE
@@ -89,7 +89,7 @@
       BENCORR = DEMBEN*SECTODAY
       POWER   = WATTEMP-20.D0
       DO I=1,NPOIN3
-        IF( IND_T.GT.1 ) POWER=TN%ADR(IND_T)%P%R(I)-20.D0
+        IF( IND_T.GT.0 ) POWER=TN%ADR(IND_T)%P%R(I)-20.D0
 !       CORR2T AND BENCOR STOCKED HERE IN T31,T32
         T31%R(I)=CORR2**POWER
         T32%R(I)=BENCORR*(CORR1**POWER)

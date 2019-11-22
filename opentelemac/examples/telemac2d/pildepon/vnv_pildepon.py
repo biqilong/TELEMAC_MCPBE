@@ -92,17 +92,17 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_pildepon_qua.slf',
-                            eps=[1.E-4, 1.E-4, 2.E-4, 2.E-4, 1.E-8])
+                            eps=[5.E-4, 9.E-4, 2.E-4, 2.E-4, 1.E-8])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_5:T2DRES',
                             'f2d_pildepon_qua.slf',
-                            eps=[1.E-3, 2.E-3, 6.E-5, 6.E-5, 1.E-8])
+                            eps=[1.E-3, 2.E-3, 2.E-4, 2.E-4, 1.E-8])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_2:T2DRES',
                             'vnv_5:T2DRES',
-                            eps=[9.E-4, 2.E-3, 2.E-4, 2.E-4, 1.E-8])
+                            eps=[9.E-4, 2.E-3, 3.E-4, 3.E-4, 1.E-8])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T2DRES',

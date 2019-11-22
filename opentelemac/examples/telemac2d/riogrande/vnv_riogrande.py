@@ -59,7 +59,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',
                             'vnv_2:T2DRES',
-                            eps=[0.006,0.005,0.0003,0.0003,1e-6,0.002,0.002,0.0003])
+                            eps=[0.007,0.005,0.0003,0.0003,1e-6,0.002,0.002,0.0003])
 
 
     def _post(self):

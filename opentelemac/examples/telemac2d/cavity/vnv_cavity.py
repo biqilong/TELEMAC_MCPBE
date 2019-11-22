@@ -72,6 +72,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
 
+        #TODO: Redo figure from documentation
         # Plotting BOTTOM over polyline over records range(0, -1)
         vnv_plot1d_polylines(\
                 'BOTTOM',

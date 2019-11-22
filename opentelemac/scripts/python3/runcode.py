@@ -210,9 +210,6 @@ where module can be:\n
     parser.add_argument("args", metavar='cas file(s)', nargs="+")
 
     options = parser.parse_args()
-    # If module is mascaret calling mascaret's main
-    if options.module == 'mascaret':
-        run_mascaret()
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Environment ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

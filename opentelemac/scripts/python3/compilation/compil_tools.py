@@ -889,7 +889,8 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
     except CalledProcessError as execpt:
         raise TelemacException(\
                 'Error during first part of f2py for {} {} \n'
-                '{}'.format(name, execpt.returncode, execpt.output))
+                '{}'.format(name, execpt.returncode,
+                            execpt.output.decode('utf-8')))
     if not silent:
         print(output.decode('utf-8'))
     print("    ~> First part of f2py for {} passed".format(name))
@@ -918,7 +919,8 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
     except CalledProcessError as execpt:
         raise TelemacException(\
                 'Error during second part of f2py for {} {} \n'
-                '{}'.format(name, execpt.returncode, execpt.output))
+                '{}'.format(name, execpt.returncode,
+                            execpt.output.decode('utf-8')))
     if not silent:
         print(output.decode('utf-8'))
     print("    ~> Second part of f2py of %s passed"%name)

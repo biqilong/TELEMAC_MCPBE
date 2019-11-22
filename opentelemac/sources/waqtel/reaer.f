@@ -1,11 +1,11 @@
-!                   **********************
+!                    ****************
                      SUBROUTINE REAER
-!                    **********************
+!                    ****************
 !
      &(FORMK2,K2,K22,NPOIN2,NPLAN,UN,VN,H,EPS)
 !
 !***********************************************************************
-! TELEMAC2D   V7P1
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES THE COEFFICIENT OF REAERATION K2
@@ -75,12 +75,12 @@
 !         FORMULA OF CHURCHILL ET AL.
           ELSEIF(FORMK2.EQ.3)THEN
             K2%R(J) = 0.746D0 * (UNORM**2.695D0) /
-     &      (MAX(H%R(I),EPS)**(-3.085D0) *
+     &      (MAX(H%R(I),EPS)**3.085D0 *
      &       MAX(ABS(PJ),EPS)**0.823D0) ! VERIFY THE FORMULA, SOME DOUBT ?
 !         FORMULA OF O CONNOR & DOBBINS'
           ELSEIF(FORMK2.EQ.4)THEN
             K2%R(J) = (3.90D0 * UNORM**0.5D0 ) /
-     &               MAX(H%R(I),EPS)**(1.5D0)
+     &               MAX(H%R(I),EPS)**1.5D0
 !         FORMULA OF ?? INVISIBLE MAN :) : IT SEEMS TO BE A COMBINATION OF THE 3 LAST FORMULA ?!
           ELSEIF( FORMK2.EQ.5 ) THEN
             IF( H%R(I).LE.0.6D0 ) THEN
@@ -88,8 +88,8 @@
      &                MAX(H%R(I),EPS)**(-1.85D0)
             ELSEIF (H%R(I).LT.(12.D0*UNORM-6.6D0)) THEN
               K2%R(J) =  0.746D0*(UNORM**2.695D0)/
-     &                (MAX(H%R(I), EPS)**(-3.085D0) *
-     &                 MAX(ABS(PJ),EPS)**(0.823D0))
+     &                (MAX(H%R(I), EPS)**3.085D0 *
+     &                 MAX(ABS(PJ),EPS)**0.823D0)
             ELSE
               K2%R(J) = 3.90D0 * (UNORM**0.5D0)/
      &                MAX(H%R(I),EPS)**1.5D0
@@ -113,6 +113,3 @@
 !
       RETURN
       END
-!
-!-----------------------------------------------------------------------
-!

@@ -44,15 +44,15 @@ class VnvStudy(AbstractVnvStudy):
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_cone.slf',
                             eps=[1e-9, 1e-9, 1e-9, 1e-9, 1e-9, \
-                                 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, \
-                                 1e-9, 1e-4, 1e-8, 1e-4, 1e-9])
+                                 1e-9, 1e-9, 1e-9, 1e-7, 1e-9, \
+                                 1e-9, 1e-4, 1e-8, 1e-4, 1e-7])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_cone.slf',
                             eps=[1e-9, 1e-9, 1e-9, 1e-9, 1e-9, \
-                                 1e-9, 1e-9, 1e-9, 1e-9, 1e-9, \
-                                 1e-9, 1e-4, 1e-8, 1e-4, 1e-9])
+                                 1e-9, 1e-9, 1e-9, 1e-7, 1e-9, \
+                                 1e-9, 1e-4, 1e-8, 1e-4, 1e-7])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',

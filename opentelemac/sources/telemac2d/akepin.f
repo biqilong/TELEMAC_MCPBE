@@ -72,13 +72,11 @@
 !
       INTEGER K
 !
-      DOUBLE PRECISION TIERS,HAUT,USTAR,CEPS
+      DOUBLE PRECISION HAUT,USTAR,CEPS
 !
       INTRINSIC SQRT,MAX
 !
 !-----------------------------------------------------------------------
-!
-      TIERS = 1.D0/3.D0
 !
 !     INITIALISATION OF K AND EPSILON
 !

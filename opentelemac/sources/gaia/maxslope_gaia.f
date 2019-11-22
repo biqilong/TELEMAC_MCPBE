@@ -302,11 +302,11 @@
             IF(EPAI_GLISS.GT.0.D0) THEN
 !           IF EPAI_GLISS > ES THE WHOLE LAYER WILL SLIDE. OTHERWISE ONLY A PERCENTAGE OF THE LAYER
              POURCENTAGE_EPAI_TRANSFERT=
-     &        max(0.D0,min(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
+     &        MAX(0.D0,MIN(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
 !
               IF(NMUD.GE.1) THEN
                 DO IMUD = 1,NMUD
-                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+                  FLUX_LOC=-MIN(MAX(0.D0,POURCENTAGE_EPAI_TRANSFERT*
      &              MASS_MUD(IMUD,ILAYER,IG1)),
      &              MASS_MUD(IMUD,ILAYER,IG1))
                   FLUX_MASS_MUD(IMUD,ILAYER,IG1)=
@@ -319,7 +319,7 @@
               ENDIF
               IF(NSAND.GE.1) THEN
                 DO ISAND = 1,NSAND
-                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+                  FLUX_LOC=-MIN(MAX(0.D0,POURCENTAGE_EPAI_TRANSFERT*
      &              MASS_SAND(ISAND,ILAYER,IG1)),
      &              MASS_SAND(ISAND,ILAYER,IG1))
                   FLUX_MASS_SAND(ISAND,ILAYER,IG1)=
@@ -337,13 +337,13 @@
             EPAI_GLISS = -QG2*UNSV2D%R(IG2)
             IF(EPAI_GLISS.GT.0.D0) THEN
               POURCENTAGE_EPAI_TRANSFERT =
-     &         max(0.D0,min(1.D0,EPAI_GLISS/ES(IG2,ILAYER)))
+     &         MAX(0.D0,MIN(1.D0,EPAI_GLISS/ES(IG2,ILAYER)))
               EPAI_GLISS_LAYER =
      &        POURCENTAGE_EPAI_TRANSFERT*ES(IG2,ILAYER)
 !
               IF(NMUD.GE.1) THEN
                 DO IMUD = 1,NMUD
-                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+                  FLUX_LOC=-MIN(MAX(0.D0,POURCENTAGE_EPAI_TRANSFERT*
      &              MASS_MUD(IMUD,ILAYER,IG2)),
      &              MASS_MUD(IMUD,ILAYER,IG2))
                   FLUX_MASS_MUD(IMUD,ILAYER,IG2) =
@@ -356,7 +356,7 @@
               ENDIF
               IF(NSAND.GE.1) THEN
                 DO ISAND = 1,NSAND
-                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+                  FLUX_LOC=-MIN(MAX(0.D0,POURCENTAGE_EPAI_TRANSFERT*
      &              MASS_SAND(ISAND,ILAYER,IG2)),
      &              MASS_SAND(ISAND,ILAYER,IG2))
                   FLUX_MASS_SAND(ISAND,ILAYER,IG2)=
@@ -378,12 +378,12 @@
             EPAI_GLISS = -QG1*UNSV2D%R(IG1)
             IF(EPAI_GLISS.GT.0.D0) THEN
               POURCENTAGE_EPAI_TRANSFERT =
-     &          max(0.D0,min(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
+     &          MAX(0.D0,MIN(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
               EPAI_GLISS_LAYER =
      &          POURCENTAGE_EPAI_TRANSFERT*ES(IG1,ILAYER)
               IF(NMUD.GE.1) THEN
                 DO IMUD = 1,NMUD
-                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+                  FLUX_LOC=-MIN(MAX(0.D0,POURCENTAGE_EPAI_TRANSFERT*
      &              MASS_MUD(IMUD,ILAYER,IG1)),
      &              MASS_MUD(IMUD,ILAYER,IG1))
                   FLUX_MASS_MUD(IMUD,ILAYER,IG1) =
@@ -399,7 +399,7 @@
               ENDIF
               IF(NSAND.GE.1) THEN
                 DO ISAND = 1,NSAND
-                  FLUX_LOC=-min(max(0.D0,POURCENTAGE_EPAI_TRANSFERT*
+                  FLUX_LOC=-MIN(MAX(0.D0,POURCENTAGE_EPAI_TRANSFERT*
      &              MASS_SAND(ISAND,ILAYER,IG1)),
      &              MASS_SAND(ISAND,ILAYER,IG1))
                   FLUX_MASS_SAND(ISAND,ILAYER,IG1) =

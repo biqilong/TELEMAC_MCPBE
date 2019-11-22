@@ -16,8 +16,8 @@ To add parallel support:
 - metis: 5.1.0
 - mpi: openmpi 2.02 mpich
 To add MED support:
-- hdf5: 1.8.10
-- med: 3.3.1
+- hdf5: 1.10.3
+- med: 4.0.0
 To add MUMPS support:
 - mumps: 4.10
 To add AED support:

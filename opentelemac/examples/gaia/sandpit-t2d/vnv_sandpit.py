@@ -86,32 +86,32 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_scal:GAIRES',
                             'gai_ref_sandpit.slf',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_para:GAIRES',
                             'gai_ref_sandpit.slf',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_scal:GAIRES',
                             'vnv_para:GAIRES',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_scal:T2DRES',
                             'f2d_sandpit.slf',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_para:T2DRES',
                             'f2d_sandpit.slf',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_scal:T2DRES',
                             'vnv_para:T2DRES',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl8:GAIRES',
@@ -126,12 +126,12 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_bl8:GAIRES',
                             'vnv_bl8_para:GAIRES',
-                            eps=[666])
+                            eps=[1.e-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl8:T2DRES',
                             'f2d_sandpit_bl8.slf',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl8_para:T2DRES',
@@ -146,7 +146,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl9:GAIRES',
                             'gai_ref_sandpit_bl9.slf',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl9_para:GAIRES',
@@ -161,7 +161,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl9:T2DRES',
                             'f2d_sandpit_bl9.slf',
-                            eps=[1e-3])
+                            eps=[1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl9_para:T2DRES',

@@ -74,6 +74,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
 
+        #TODO: Redo figures from documentation
         #Plotting mesh
         vnv_plot2d('',
                    res_vnv_1_t2dgeo,

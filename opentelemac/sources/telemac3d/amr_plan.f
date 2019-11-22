@@ -7,7 +7,7 @@
      & NNEIGH,MCOEFF,MESH2D,MESH3D)
 !
 !***********************************************************************
-! TELEMAC3D   V7P3
+! TELEMAC3D   V8P1
 !***********************************************************************
 !
 !brief    This subroutine, called from CALCOT, is designed to adaptively
@@ -58,6 +58,13 @@
 !+        V7P3
 !+        A number of nested loops inverted to minimise strides (not a
 !+        digit changed in results).
+!
+!history  C-T Pham (LNHE)
+!+        24/09/2019
+!+        V8P1
+!+        Change for the loop through segments in 2D mesh to find
+!+        neighbours
+!+
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| DIMGLO         |-->| FIRST DIMENSION OF GLOSEG
@@ -112,8 +119,10 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER          :: IPOIN,IPLAN,JPLAN,P1,P2,ISEG,IEXTR,ITERS,LASTJ
+      INTEGER NELEM,K,IELEM,ERR
       DOUBLE PRECISION :: DSDZ,MINDIST,ZL,ZR,SL,SR
-      DOUBLE PRECISION, POINTER :: COEF(:)
+!      DOUBLE PRECISION, POINTER :: COEF(:)
+      LOGICAL, ALLOCATABLE :: YESNO(:)
 !
 ! -----------------------------
 !     HARD-CODED PARAMETERS
@@ -133,18 +142,25 @@
 !     PREPARING AN EDGE-BASED COEFFICIENT = 0.5 ON INTERFACE SEGMENTS
 !                                     AND = 1.  ELSEWHERE
 !
-      IF(NCSIZE.GT.1) THEN
-!       MEMORY SPACE TAKEN IN MESH2D EDGE-BASED WORK MATRIX
-        COEF=>MESH2D%MSEG%X%R(1:NSEG2)
-        DO ISEG=1,NSEG2
-          COEF(ISEG)=1.D0
-        ENDDO
-        CALL MULT_INTERFACE_SEG(COEF,MESH2D%NH_COM_SEG%I,
-     &                          MESH2D%NH_COM_SEG%DIM1,
-     &                          MESH2D%NB_NEIGHB_SEG,
-     &                          MESH2D%NB_NEIGHB_PT_SEG%I,
-     &                          MESH2D%LIST_SEND_SEG%I,NSEG2)
-      ENDIF
+      NELEM = MESH2D%NELEM
+      ALLOCATE(YESNO(NSEG2),STAT=ERR)
+!     INITIALIZATION OF YESNO
+      DO K=1,NSEG2
+        YESNO(K)=.FALSE.
+      ENDDO
+!
+!      IF(NCSIZE.GT.1) THEN
+!!       MEMORY SPACE TAKEN IN MESH2D EDGE-BASED WORK MATRIX
+!        COEF=>MESH2D%MSEG%X%R(1:NSEG2)
+!        DO ISEG=1,NSEG2
+!          COEF(ISEG)=1.D0
+!        ENDDO
+!        CALL MULT_INTERFACE_SEG(COEF,MESH2D%NH_COM_SEG%I,
+!     &                          MESH2D%NH_COM_SEG%DIM1,
+!     &                          MESH2D%NB_NEIGHB_SEG,
+!     &                          MESH2D%NB_NEIGHB_PT_SEG%I,
+!     &                          MESH2D%LIST_SEND_SEG%I,NSEG2)
+!      ENDIF
 !
 ! --------------------------------------------------------------------
 ! COPY ZVALS TO Z0, OBJSOL TO INTSOL, AND ZVALS TO NEWZ
@@ -283,17 +299,47 @@
 !       AND COMPUTE A WEIGHTED MEAN OF THE MONITOR FUNCTION ON EACH NODE
 !
         IF(NCSIZE.GT.1) THEN
-          DO ISEG = 1,NSEG2
-            P1 = GLOSEG(ISEG,1)
-            P2 = GLOSEG(ISEG,2)
-!           A SEGMENT MAY APPEAR TWICE IN PARALLEL, HENCE COEF
-            NNEIGH(P1) = NNEIGH(P1)+COEF(ISEG)
-            NNEIGH(P2) = NNEIGH(P2)+COEF(ISEG)
-            DO IPLAN = 1,NPLAN
-              SMONITOR(P1,IPLAN) = SMONITOR(P1,IPLAN)
-     &                           + COEF(ISEG)*MONITOR(P2,IPLAN)
-              SMONITOR(P2,IPLAN) = SMONITOR(P2,IPLAN)
-     &                           + COEF(ISEG)*MONITOR(P1,IPLAN)
+!          DO ISEG = 1,NSEG2
+!            P1 = GLOSEG(ISEG,1)
+!            P2 = GLOSEG(ISEG,2)
+!!           A SEGMENT MAY APPEAR TWICE IN PARALLEL, HENCE COEF
+!            NNEIGH(P1) = NNEIGH(P1)+COEF(ISEG)
+!            NNEIGH(P2) = NNEIGH(P2)+COEF(ISEG)
+!            DO IPLAN = 1,NPLAN
+!              SMONITOR(P1,IPLAN) = SMONITOR(P1,IPLAN)
+!     &                           + COEF(ISEG)*MONITOR(P2,IPLAN)
+!              SMONITOR(P2,IPLAN) = SMONITOR(P2,IPLAN)
+!     &                           + COEF(ISEG)*MONITOR(P1,IPLAN)
+!            ENDDO
+!          ENDDO
+          DO IELEM=1,NELEM
+            DO K=1,3
+              ISEG = MESH2D%ELTSEG%I(IELEM+(K-1)*NELEM)
+              IF(.NOT.YESNO(ISEG)) THEN
+                P1 = GLOSEG(ISEG,1)
+                P2 = GLOSEG(ISEG,2)
+!               A SEGMENT MAY APPEAR TWICE IN PARALLEL
+                IF(MESH2D%IFABOR%I(IELEM+(K-1)*NELEM).NE.-2) THEN
+                  NNEIGH(P1) = NNEIGH(P1)+1.D0
+                  NNEIGH(P2) = NNEIGH(P2)+1.D0
+                  DO IPLAN = 1,NPLAN-1
+                    SMONITOR(P1,IPLAN) = SMONITOR(P1,IPLAN)
+     &                                 + MONITOR(P2,IPLAN)
+                    SMONITOR(P2,IPLAN) = SMONITOR(P2,IPLAN)
+     &                                 + MONITOR(P1,IPLAN)
+                  ENDDO
+                ELSE
+                  NNEIGH(P1) = NNEIGH(P1)+0.5D0
+                  NNEIGH(P2) = NNEIGH(P2)+0.5D0
+                  DO IPLAN = 1,NPLAN-1
+                    SMONITOR(P1,IPLAN) = SMONITOR(P1,IPLAN)
+     &                                 + 0.5D0*MONITOR(P2,IPLAN)
+                    SMONITOR(P2,IPLAN) = SMONITOR(P2,IPLAN)
+     &                                 + 0.5D0*MONITOR(P1,IPLAN)
+                  ENDDO
+                ENDIF
+                YESNO(ISEG)=.TRUE.
+              ENDIF
             ENDDO
           ENDDO
 !         THE POINT ITSELF (MAY APPEAR SEVERAL TIMES IN PARALLEL, HENCE IFAC)
@@ -308,16 +354,35 @@
           CALL PARCOM(SNNEIGH  ,2,MESH2D)
           CALL PARCOM(SSMONITOR,2,MESH3D)
         ELSE
-          DO ISEG = 1,NSEG2
-            P1 = GLOSEG(ISEG,1)
-            P2 = GLOSEG(ISEG,2)
-            NNEIGH(P1) = NNEIGH(P1)+1.D0
-            NNEIGH(P2) = NNEIGH(P2)+1.D0
-            DO IPLAN = 1,NPLAN-1
-              SMONITOR(P1,IPLAN) = SMONITOR(P1,IPLAN)+MONITOR(P2,IPLAN)
-              SMONITOR(P2,IPLAN) = SMONITOR(P2,IPLAN)+MONITOR(P1,IPLAN)
-            ENDDO              ! IPLAN = 1,NPLAN-1
-          ENDDO                ! ISEG = 1,NSEG2
+!          DO ISEG = 1,NSEG2
+!            P1 = GLOSEG(ISEG,1)
+!            P2 = GLOSEG(ISEG,2)
+!            NNEIGH(P1) = NNEIGH(P1)+1.D0
+!            NNEIGH(P2) = NNEIGH(P2)+1.D0
+!            DO IPLAN = 1,NPLAN-1
+!              SMONITOR(P1,IPLAN) = SMONITOR(P1,IPLAN)+MONITOR(P2,IPLAN)
+!              SMONITOR(P2,IPLAN) = SMONITOR(P2,IPLAN)+MONITOR(P1,IPLAN)
+!            ENDDO              ! IPLAN = 1,NPLAN-1
+!          ENDDO                ! ISEG = 1,NSEG2
+!
+          DO IELEM=1,NELEM
+            DO K=1,3
+              ISEG = MESH2D%ELTSEG%I(IELEM+(K-1)*NELEM)
+              IF(.NOT.YESNO(ISEG)) THEN
+                P1 = GLOSEG(ISEG,1)
+                P2 = GLOSEG(ISEG,2)
+                NNEIGH(P1) = NNEIGH(P1)+1.D0
+                NNEIGH(P2) = NNEIGH(P2)+1.D0
+                DO IPLAN = 1,NPLAN-1
+                  SMONITOR(P1,IPLAN) = SMONITOR(P1,IPLAN)
+     &                               +  MONITOR(P2,IPLAN)
+                  SMONITOR(P2,IPLAN) = SMONITOR(P2,IPLAN)
+     &                               +  MONITOR(P1,IPLAN)
+                ENDDO
+                YESNO(ISEG)=.TRUE.
+              ENDIF
+            ENDDO
+          ENDDO
 !         THE POINT ITSELF
           DO IPOIN = 1,NPOIN2
             NNEIGH(IPOIN)=NNEIGH(IPOIN)+1.D0
@@ -427,6 +492,10 @@
 ! ZVALS NOW CONTAINS THE NEW LAYER POSITIONS
 ! INTSOL CONTAINS AN INTERPOLATION OF THE ORIGINAL SOLUTION
 ! ON THE NEW MESH POINTS (NOT NEEDED BY TELEMAC)
+!
+!-----------------------------------------------------------------------
+!
+      DEALLOCATE(YESNO)
 !
 !-----------------------------------------------------------------------
 !

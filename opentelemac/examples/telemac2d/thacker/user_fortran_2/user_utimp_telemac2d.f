@@ -72,6 +72,7 @@
       LOGICAL USE_CUSTOM_LEOPRD
       INTEGER CUSTOM_LEOPRD
       PARAMETER (USE_CUSTOM_LEOPRD=.TRUE.)
+      INTEGER FID
 !
 !***********************************************************************
 !
@@ -80,15 +81,16 @@
       TYPE(BIEF_OBJ) SVIDE
       TYPE(BIEF_OBJ) ONES, MASSM
 !
-      TYPE(BIEF_OBJ) ERRL1_HLOC, ERRL1_ULOC, ERRL1_VLOC
-      TYPE(BIEF_OBJ) ERRL2_HLOC, ERRL2_ULOC, ERRL2_VLOC
-!
       DOUBLE PRECISION EPTOT, ECTOT,ETOT
       DOUBLE PRECISION MASSBALANCE, MASSTOT
 !
       DOUBLE PRECISION ERRLINF_H, ERRLINF_U, ERRLINF_V
       DOUBLE PRECISION ERRL1_H, ERRL1_U, ERRL1_V
       DOUBLE PRECISION ERRL2_H, ERRL2_U, ERRL2_V
+!
+      DOUBLE PRECISION ERRLINF_HU, ERRLINF_HV
+      DOUBLE PRECISION ERRL1_HU, ERRL1_HV
+      DOUBLE PRECISION ERRL2_HU, ERRL2_HV
 !
 !-----------------------------------------------------------------------
 !
@@ -198,26 +200,16 @@
 ! WRITE ENERGY BALANCE IN TXT FILE
 !
 !       IF PARALLEL ONLY WRITE WITH FIRST NODE
-        IF(NCSIZE.GT.1) THEN
-          IF(IPID.EQ.0) THEN
-            IF(LT.EQ.0) THEN
-              OPEN(UNIT=1846987,FILE='../energy_balance.txt')
-            ELSE
-              OPEN(UNIT=1846987,FILE='../energy_balance.txt',
-     &             POSITION='append')
-            ENDIF
-            WRITE(1846987,1004) AT, ECTOT, EPTOT, ETOT
-            CLOSE(1846987)
-          ENDIF
-        ELSE
+        IF(IPID.EQ.0) THEN
+          CALL GET_FREE_ID(FID)
           IF(LT.EQ.0) THEN
-            OPEN(UNIT=1846987,FILE='../energy_balance.txt')
+            OPEN(UNIT=FID,FILE='../energy_balance.txt')
           ELSE
-            OPEN(UNIT=1846987,FILE='../energy_balance.txt',
+            OPEN(UNIT=FID,FILE='../energy_balance.txt',
      &           POSITION='append')
           ENDIF
-          WRITE(1846987,1004) AT, ECTOT, EPTOT, ETOT
-          CLOSE(1846987)
+          WRITE(FID,1004) AT, ECTOT, EPTOT, ETOT
+          CLOSE(FID)
         ENDIF
       ENDIF
 !
@@ -228,31 +220,18 @@
 ! WRITE MASS BALANCE IN TXT FILE
 !
       IF(MOD(LT,CUSTOM_LEOPRD).EQ.0) THEN
-!       IF PARALLEL ONLY WRITE WITH FIRST NODE
-        IF(NCSIZE.GT.1) THEN
-          IF(IPID.EQ.0) THEN
-            IF(LT.EQ.0) THEN
-              OPEN(UNIT=1846154,FILE='../mass_balance.txt')
-            ELSE
-              OPEN(UNIT=1846154,FILE='../mass_balance.txt',
-     &             POSITION='append')
-            ENDIF
-!           WRITE CURRENT MASS AND MASS BALANCE
-            MASSBALANCE = MASSE0+MASSET+MASENT-MASSE2
-            WRITE(1846154,*) AT, MASSE2, MASSBALANCE
-            CLOSE(1846154)
-          ENDIF
-        ELSE
+        IF(IPID.EQ.0) THEN
+          CALL GET_FREE_ID(FID)
           IF(LT.EQ.0) THEN
-            OPEN(UNIT=1846154,FILE='../mass_balance.txt')
+            OPEN(UNIT=FID,FILE='../mass_balance.txt')
           ELSE
-            OPEN(UNIT=1846154,FILE='../mass_balance.txt',
+            OPEN(UNIT=FID,FILE='../mass_balance.txt',
      &           POSITION='append')
           ENDIF
 !         WRITE CURRENT MASS AND MASS BALANCE
           MASSBALANCE = MASSE0+MASSET+MASENT-MASSE2
-          WRITE(1846154,*) AT, MASSE2, MASSBALANCE
-          CLOSE(1846154)
+          WRITE(FID,*) AT, MASSE2, MASSBALANCE
+          CLOSE(FID)
         ENDIF
       ENDIF
 !
@@ -277,20 +256,13 @@
 !
 !     WRITE MASS AT FINAL TIME
       IF(LT.EQ.NIT) THEN
-        IF(NCSIZE.GT.1) THEN
-          IF(IPID.EQ.0) THEN
-            OPEN(UNIT=561456,FILE='../mass_matrix_tf.txt')
-          ENDIF
+        IF(IPID.EQ.0) THEN
+          CALL GET_FREE_ID(FID)
+          OPEN(UNIT=FID,FILE='../mass_matrix_tf.txt')
           DO I=1,MESH%NPOIN
-            WRITE(561456,*) MASSM%R(I)
+            WRITE(FID,*) MASSM%R(I)
           ENDDO
-          CLOSE(561456)
-        ELSE
-          OPEN(UNIT=561456,FILE='../mass_matrix_tf.txt')
-          DO I=1,MESH%NPOIN
-            WRITE(561456,*) MASSM%R(I)
-          ENDDO
-          CLOSE(561456)
+          CLOSE(FID)
         ENDIF
       ENDIF
 !
@@ -302,7 +274,7 @@
 !       ERROR Linf : sup( ABS(REF - CALC) )
 !       ERROR L1 : sum_S (  int_S ABS(REF - CALC) PSII PSJ dS )
 !       ERROR L2 : sum_S ( (int_S ABS(REF - CALC)^2 PSII PSJ dS)^(1/2) )
-! 
+!
 !     VARIABLE NAMES:
 !       PRIVE1(I) -> H
 !       PRIVE2(I) -> U
@@ -314,27 +286,45 @@
         ERRLINF_H = 0.D0
         ERRLINF_U = 0.D0
         ERRLINF_V = 0.D0
+        ERRLINF_HU = 0.D0
+        ERRLINF_HV = 0.D0
 !
         ERRL1_H = 0.D0
         ERRL1_U = 0.D0
         ERRL1_V = 0.D0
+        ERRL1_HU = 0.D0
+        ERRL1_HV = 0.D0
 !
         ERRL2_H = 0.D0
         ERRL2_U = 0.D0
         ERRL2_V = 0.D0
+        ERRL2_HU = 0.D0
+        ERRL2_HV = 0.D0
 !
         DO I=1,NPOIN
           ERRLINF_H = MAX(ERRLINF_H, ABS(PRIVE1(I)-H%R(I)))
           ERRLINF_U = MAX(ERRLINF_U, ABS(PRIVE2(I)-U%R(I)))
           ERRLINF_V = MAX(ERRLINF_V, ABS(PRIVE3(I)-V%R(I)))
+          ERRLINF_HU = MAX(ERRLINF_HU, ABS(PRIVE1(I)*PRIVE2(I)
+     &               - H%R(I)*U%R(I)))
+          ERRLINF_HV = MAX(ERRLINF_HV, ABS(PRIVE1(I)*PRIVE3(I)
+     &               - H%R(I)*V%R(I)))
 !
           ERRL1_H = ERRL1_H + MASSM%R(I)*ABS(PRIVE1(I)-H%R(I))
           ERRL1_U = ERRL1_U + MASSM%R(I)*ABS(PRIVE2(I)-U%R(I))
           ERRL1_V = ERRL1_V + MASSM%R(I)*ABS(PRIVE3(I)-V%R(I))
+          ERRL1_HU = ERRL1_HU + MASSM%R(I)*ABS(PRIVE1(I)*PRIVE2(I)
+     &             - H%R(I)*U%R(I))
+          ERRL1_HV = ERRL1_HV + MASSM%R(I)*ABS(PRIVE1(I)*PRIVE3(I)
+     &             - H%R(I)*V%R(I))
 !
           ERRL2_H = ERRL2_H + MASSM%R(I)*(ABS(PRIVE1(I)-H%R(I))**2)
           ERRL2_U = ERRL2_U + MASSM%R(I)*(ABS(PRIVE2(I)-U%R(I))**2)
           ERRL2_V = ERRL2_V + MASSM%R(I)*(ABS(PRIVE3(I)-V%R(I))**2)
+          ERRL2_HU = ERRL2_HU + MASSM%R(I)*(ABS(PRIVE1(I)*PRIVE2(I)
+     &             - H%R(I)*U%R(I))**2)
+          ERRL2_HV = ERRL2_HV + MASSM%R(I)*(ABS(PRIVE1(I)*PRIVE3(I)
+     &             - H%R(I)*V%R(I))**2)
         ENDDO
 !
 !       IF PARALLEL, SUM ON ALL PARTITIONS
@@ -342,14 +332,20 @@
           ERRLINF_H = P_DMAX(ERRLINF_H)
           ERRLINF_U = P_DMAX(ERRLINF_U)
           ERRLINF_V = P_DMAX(ERRLINF_V)
+          ERRLINF_HU = P_DMAX(ERRLINF_HU)
+          ERRLINF_HV = P_DMAX(ERRLINF_HV)
 !
           ERRL1_H = P_DSUM(ERRL1_H)
           ERRL1_U = P_DSUM(ERRL1_U)
           ERRL1_V = P_DSUM(ERRL1_V)
+          ERRL1_HU = P_DSUM(ERRL1_HU)
+          ERRL1_HV = P_DSUM(ERRL1_HV)
 !
           ERRL2_H = P_DSUM(ERRL2_H)
           ERRL2_U = P_DSUM(ERRL2_U)
           ERRL2_V = P_DSUM(ERRL2_V)
+          ERRL2_HU = P_DSUM(ERRL2_HU)
+          ERRL2_HV = P_DSUM(ERRL2_HV)
 !
           MASSTOT = P_DSUM(MASSTOT)
         ENDIF
@@ -357,91 +353,64 @@
         ERRL1_H = ERRL1_H/MASSTOT
         ERRL1_U = ERRL1_U/MASSTOT
         ERRL1_V = ERRL1_V/MASSTOT
+        ERRL1_HU = ERRL1_HU/MASSTOT
+        ERRL1_HV = ERRL1_HV/MASSTOT
 !
         ERRL2_H = SQRT(ERRL2_H/MASSTOT)
         ERRL2_U = SQRT(ERRL2_U/MASSTOT)
         ERRL2_V = SQRT(ERRL2_V/MASSTOT)
+        ERRL2_HU = SQRT(ERRL2_HU/MASSTOT)
+        ERRL2_HV = SQRT(ERRL2_HV/MASSTOT)
 !
 !       WRITE LINF ERRORS
-!       IF PARALLEL ONLY WRITE WITH FIRST NODE
-        IF(NCSIZE.GT.1) THEN
-          IF(IPID.EQ.0) THEN
-            IF(LT.EQ.0) THEN
-              OPEN(UNIT=4848154,FILE='../error_Linf.txt')
-            ELSE
-              OPEN(UNIT=4848154,FILE='../error_Linf.txt',
-     &             POSITION='append')
-            ENDIF
-!           WRITE LINF ERRORS
-            WRITE(4848154,*) AT, ERRLINF_H, ERRLINF_U, ERRLINF_V
-            CLOSE(4848154)
-          ENDIF
-! 
-        ELSE
+        IF(IPID.EQ.0) THEN
+          CALL GET_FREE_ID(FID)
           IF(LT.EQ.0) THEN
-            OPEN(UNIT=4848154,FILE='../error_Linf.txt')
+            OPEN(UNIT=FID,FILE='../error_Linf.txt')
           ELSE
-            OPEN(UNIT=4848154,FILE='../error_Linf.txt',
+            OPEN(UNIT=FID,FILE='../error_Linf.txt',
      &           POSITION='append')
           ENDIF
 !         WRITE LINF ERRORS
-          WRITE(4848154,*) AT, ERRLINF_H, ERRLINF_U, ERRLINF_V
-          CLOSE(4848154)
+          WRITE(FID,1005) AT, ERRLINF_H, ERRLINF_U, ERRLINF_V,
+     &                     ERRLINF_HU, ERRLINF_HV
+          CLOSE(FID)
         ENDIF
+!
 !
 !       WRITE L1 ERRORS
 !       IF PARALLEL ONLY WRITE WITH FIRST NODE
-        IF(NCSIZE.GT.1) THEN
-          IF(IPID.EQ.0) THEN
-            IF(LT.EQ.0) THEN
-              OPEN(UNIT=4848154,FILE='../error_L1.txt')
-            ELSE
-              OPEN(UNIT=4848154,FILE='../error_L1.txt',
-     &             POSITION='append')
-            ENDIF
-!           WRITE LINF ERRORS
-            WRITE(4848154,*) AT, ERRL1_H, ERRL1_U, ERRL1_V
-            CLOSE(4848154)
-          ENDIF
-! 
-        ELSE
+        IF(IPID.EQ.0) THEN
+          CALL GET_FREE_ID(FID)
           IF(LT.EQ.0) THEN
-            OPEN(UNIT=4848154,FILE='../error_L1.txt')
+            OPEN(UNIT=FID,FILE='../error_L1.txt')
           ELSE
-            OPEN(UNIT=4848154,FILE='../error_L1.txt',
+            OPEN(UNIT=FID,FILE='../error_L1.txt',
      &           POSITION='append')
           ENDIF
 !         WRITE LINF ERRORS
-          WRITE(4848154,*) AT, ERRL1_H, ERRL1_U, ERRL1_V
-          CLOSE(4848154)
+          WRITE(FID,1005) AT, ERRL1_H, ERRL1_U, ERRL1_V,
+     &                     ERRL1_HU, ERRL1_HV
+          CLOSE(FID)
         ENDIF
+!
 !
 !       WRITE L2 ERRORS
 !       IF PARALLEL ONLY WRITE WITH FIRST NODE
-        IF(NCSIZE.GT.1) THEN
-          IF(IPID.EQ.0) THEN
-            IF(LT.EQ.0) THEN
-              OPEN(UNIT=4848154,FILE='../error_L2.txt')
-            ELSE
-              OPEN(UNIT=4848154,FILE='../error_L2.txt',
-     &             POSITION='append')
-            ENDIF
-!           WRITE LINF ERRORS
-            WRITE(4848154,*) AT, ERRL2_H, ERRL2_U, ERRL2_V
-            CLOSE(4848154)
-          ENDIF
-! 
-        ELSE
+        IF(IPID.EQ.0) THEN
+          CALL GET_FREE_ID(FID)
           IF(LT.EQ.0) THEN
-            OPEN(UNIT=4848154,FILE='../error_L2.txt')
+            OPEN(UNIT=FID,FILE='../error_L2.txt')
           ELSE
-            OPEN(UNIT=4848154,FILE='../error_L2.txt',
+            OPEN(UNIT=FID,FILE='../error_L2.txt',
      &           POSITION='append')
           ENDIF
 !         WRITE LINF ERRORS
-          WRITE(4848154,*) AT, ERRL2_H, ERRL2_U, ERRL2_V
-          CLOSE(4848154)
+          WRITE(FID,1005) AT, ERRL2_H, ERRL2_U, ERRL2_V,
+     &                     ERRL2_HU, ERRL2_HV
+          CLOSE(FID)
         ENDIF
+!
 !
       ENDIF
 !
@@ -474,6 +443,7 @@
  1002 FORMAT((A,F7.1,A))
  1003 FORMAT((A,I5,A,E25.17,A))
  1004 FORMAT((E15.6,E25.10,E25.10,E25.10))
+ 1005 FORMAT((E15.6,6E25.10))
 !
 !-----------------------------------------------------------------------
 !

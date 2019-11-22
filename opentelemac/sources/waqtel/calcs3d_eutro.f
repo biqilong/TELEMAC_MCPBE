@@ -1,12 +1,12 @@
-!                    *************************
+!                     ************************
                       SUBROUTINE CALCS3D_EUTRO
-!                    *************************
+!                     ************************
+!
      &  (NPOIN3,NPOIN2,NPLAN,WATTEMP,TN,TEXP,TIMP,RAYEFF,HPROP,
      &   ZPROP,T1,T2_1,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,DEBUG,UN,VN)
 !
-!
 !***********************************************************************
-! TELEMAC2D   V7P2                                        21/03/2016
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS FOR EUTRO WAQ 3d PROCESS
@@ -122,52 +122,58 @@
       DOUBLE PRECISION, PARAMETER :: UNSURVINGT=0.05D0
       DOUBLE PRECISION, PARAMETER :: EPS=1.D-10
       DOUBLE PRECISION, PARAMETER :: CORR1=1.065D0
-      DOUBLE PRECISION, PARAMETER :: CORR2=1.0241D0
-      DOUBLE PRECISION            :: G2,G3,CC,POWER
+!      DOUBLE PRECISION, PARAMETER :: CORR2=1.0241D0
+      DOUBLE PRECISION, PARAMETER :: CORR2=1.025D0
+      DOUBLE PRECISION            :: G1,G2,G3,CC,POWER
 !
       IF(DEBUG.GT.1)WRITE(LU,*)'IN EUTRO, STEP 0'
 !
 !     INITIALISATION
 !
-!     CS IS STOCKED IN T2_1 ==> 2D TABLE
+!     CS IS STORED IN T2_1 ==> 2D TABLE
       CALL OS( 'X=0     ',X=T2_1)
-!     G2 IS STOCKED IN T6 ==> 3D TABLE
+!     G2 IS STORED IN T6 ==> 3D TABLE
       CALL OS( 'X=0     ',X=T6)
-!     CP IS STOCKED IN T7
+!     CP IS STORED IN T7
       CALL OS( 'X=0     ',X=T7)
-!     DP IS STOCKED IN T4
+!     DP IS STORED IN T4
       CALL OS( 'X=0     ',X=T4)
-!     LNUT IS STOCKED IN T5
+!     LNUT IS STORED IN T5 UNTIL ALGAE_GROWTH,
+!     THEN RESPIR*G1 IS STORED IN T5 FOR THE 8TH EQUATION
       CALL OS( 'X=0     ',X=T5)
-!     RN IS STOCKED IN T8
+!     RN IS STORED IN T8
       CALL OS( 'X=0     ',X=T8)
 !
-!     G2 IS STOCKED IN T6,WE TAKE INTO ACCOUNT FOR VARIABLE TEMPERATURE
+!     G2 IS STORED IN T6,WE TAKE INTO ACCOUNT FOR VARIABLE TEMPERATURE
 !
-      G2 = WATTEMP/20.D0
-      IF( IND_T.GT.1 )THEN
-        CALL OS('X=CY    ',X=T6,Y=TN%ADR(IND_T)%P,C=UNSURVINGT)
-      ELSE
-        CALL OS('X=C     ',X=T6 ,C=G2)
-      ENDIF
+!      G2 = WATTEMP/20.D0
+!      IF( IND_T.GT.0 ) THEN
+!        CALL OS('X=CY    ',X=T6,Y=TN%ADR(IND_T)%P,C=UNSURVINGT)
+!      ELSE
+!        CALL OS('X=C     ',X=T6 ,C=G2)
+!      ENDIF
 !
-!     COMPUTE G3,BENCOR
+!     COMPUTE G2,G3,BENCOR
 !
       POWER = WATTEMP-20.D0
-      G3    = (1.047D0)**(POWER)
+      G2    = 1.050D0**POWER
+      G3    = 1.047D0**POWER
       DO I=1,NPOIN3
-        IF( IND_T.GT.1 )THEN
+        IF( IND_T.GT.0 ) THEN
           POWER=TN%ADR(IND_T)%P%R(I)-20.D0
-          G3=(1.047D0)**(POWER)
+          G2   =1.050D0**POWER
+          G3   =1.047D0**POWER
         ENDIF
-!       CORR2T AND BENCOR STOCKED HERE IN T9,T10
+!       CORR2T AND BENCOR STORED HERE IN T9,T10
         T9%R(I)=CORR2**POWER
         T10%R(I)=DEMBEN*(CORR1**POWER)
-!       G3 IS STOCKED IN T11
+!       G2 IS STORED IN T6
+        T6%R(I)=G2
+!       G3 IS STORED IN T11
         T11%R(I)=G3
       ENDDO
 !
-!     COMPUTE CS (O2SATU, STOCKED IN T2_1): O2 SATURATION DENSITY OF WATER
+!     COMPUTE CS (O2SATU, STORED IN T2_1): O2 SATURATION DENSITY OF WATER
 !
       IF( IND_T.EQ.0 ) THEN
         CALL SATUR_O2(O2SATU,FORMCS,WATTEMP,EPS)
@@ -187,19 +193,27 @@
      &                RAYEFF,ZPROP,T3,T4)
 !
 !     COMPUTE LNUT: EFFECTS OF PHOSPHORIOUS AND NITROGENIOUS
-!           NUTRIMENTS ON ALGAE GROWTH ==>STOCKED IN T5
+!           NUTRIMENTS ON ALGAE GROWTH ==>STORED IN T5
 !
-      CALL NUTEFF(T5%R,TN,NPOIN3,IND_PO4,IND_NO3,KP,KN)
+!      CALL NUTEFF(T5%R,TN,NPOIN3,IND_PO4,IND_NO3,KP,KN)
+!
+!     NUTEFF DOEST NOT TO NH4 INTO ACCOUNT
+      DO I=1,NPOIN3
+        T5%R(I)= MIN(TN%ADR(IND_PO4)%P%R(I)/(KP+TN%ADR(IND_PO4)%P%R(I)),
+     &                (TN%ADR(IND_NO3)%P%R(I)+TN%ADR(IND_NH4)%P%R(I))
+     &               /(KN+TN%ADR(IND_NO3)%P%R(I)
+     &                   +TN%ADR(IND_NH4)%P%R(I)))
+      ENDDO
 !
       IF(DEBUG.GT.0)WRITE(LU,*)'IN EUTRO, STEP 3'
 !
-!     RATE OF ALGAE GROWTH: CP (STOCKED IN T7)
+!     RATE OF ALGAE GROWTH: CP (STORED IN T7)
 !
       CALL ALGAE_GROWTH(T7%R,CMAX,RAYEFF%R,T6,T5%R,CTOXIC(1),NPOIN3)
 !
       IF(DEBUG.GT.0)WRITE(LU,*)'IN EUTRO, STEP 4'
 !
-!     RATE OF ALGAE DISAPPEARANCE DP (STOCKED IN T4) AND MP (STOPCKED IN T12)
+!     RATE OF ALGAE DISAPPEARANCE DP (STORED IN T4) AND MP (STOPCKED IN T12)
 !
       CALL ALGAE_DEATH(T4%R,T12%R,CMORALG,TN%ADR(IND_PHY)%P%R,TRESPIR,
      &                 T6,CTOXIC(2),NPOIN3)
@@ -210,12 +224,19 @@
 !
       CALL REAER(FORMK2,K2,K22,NPOIN2,NPLAN,UN,VN,HPROP,EPS)
 !
-!     COMPUTE RN: PROPORTION OF NITROGEN ASSIMILATED AS NH4(STOCKED IN T8)
+!     COMPUTE RN: PROPORTION OF NITROGEN ASSIMILATED AS NH4(STORED IN T8)
 !
       CALL OS( 'X=Y+Z   ' ,X=T1,Y=TN%ADR(IND_NH4)%P,Z=TN%ADR(IND_NO3)%P)
       CALL OVD('X=Y/Z   ' ,T8%R,TN%ADR(IND_NH4)%P%R,T1%R,0.D0,
      &          NPOIN3 ,2,0.D0,EPS )
 !
+!     RESPIR*G1 IS STORED IN T5 FOR THE 8TH EQUATION
+      G1 = WATTEMP/20.D0
+      IF( IND_T.GT.0 ) THEN
+        CALL OS('X=CY    ',X=T5,Y=TN%ADR(IND_T)%P,C=UNSURVINGT*TRESPIR)
+      ELSE
+        CALL OS('X=C     ',X=T5 ,C=G1*TRESPIR)
+      ENDIF
 !
 !     LET'S NOW COMPUTE SOURCE TERMS
 !     ------------------------------
@@ -267,7 +288,7 @@
       CALL OS( 'X=CXYZ  ' ,X=T1,Y=T7,Z=TN%ADR(IND_PHY)%P  ,C=PRONITC)
       CALL OS( 'X=CYZ   ' ,X=T3,Y=TN%ADR(IND_NH4)%P  ,Z=T6,C=K520)
 !      CALL OS( 'X=Y-Z   ' ,X=TEXP%ADR(IND_NO3)%P,Y=T3,Z=T1          )
-      CALL OS( 'X=X-Y   ' ,X=T3,Y=T1                                )
+      CALL OS( 'X=X+Y   ' ,X=T3,Y=T1                                )
       CALL OS( 'X=X+CY  ' ,X=TEXP%ADR(IND_NO3)%P,Y=T3    ,C=SECTODAY )
 !
       IF(DEBUG.GT.0)WRITE(LU,*)'IN EUTRO, STEP 9'
@@ -333,9 +354,10 @@
 !
       IF(DEBUG.GT.0)WRITE(LU,*)'IN EUTRO, STEP 12'
 !
-!     EIGHTH TRACER: DISSOLVED O2 (IND_O2)
+!     EIGTH TRACER: DISSOLVED O2 (IND_O2)
 !
-      CALL OS( 'X=Y+C   ' ,X=T1                 ,Y=T7,C=-TRESPIR     )
+!      CALL OS( 'X=Y+C   ' ,X=T1                 ,Y=T7,C=-TRESPIR     )
+      CALL OS( 'X=Y-Z   ' ,X=T1                 ,Y=T7,Z=T5           )
 !      CALL OS( 'X=CYZ   ' ,X=TEXP%ADR(IND_O2)%P,Y=T1,
       CALL OS( 'X=CYZ   ' ,X=T4                ,Y=T1,
      &                     Z=TN%ADR(IND_PHY)%P,C=O2PHOTO             )
@@ -356,7 +378,7 @@
         TEXP%ADR(IND_O2)%P%R(J) = TEXP%ADR(IND_O2)%P%R(J)
      &    + SECTODAY * ( K2%R(I)*T9%R(J) *
      &               MAX( (T2_1%R(I)-TN%ADR(IND_O2)%P%R(J)),0.D0 )
-     &    - DEMBEN/MAX( EPS,ZPROP%R(J) ) )
+     &    - T10%R(J)/MAX( EPS,ZPROP%R(J) ) )
       ENDDO
 !
       IF(DEBUG.GT.0)WRITE(LU,*)'IN EUTRO, STEP 14'

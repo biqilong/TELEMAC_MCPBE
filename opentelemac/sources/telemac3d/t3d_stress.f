@@ -42,6 +42,13 @@
 !+        V7P0
 !+   Tidal flats and crushed planes treated.
 !
+!history  J. FONTAINE (EDF LAB, LNHE)
+!+        19/11/2019
+!+        V8P1
+!+   Fix inconsistency between treatment of implicit and explicit
+!+   boundary conditions (MASVEC was used here instead of MASBAS used
+!+   in the matrix.
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| BFBORF         |---| LOGARITHMIC LAW FOR COMPONENT ON THE BOTTOM:
 !|                |---|  NU*DF/DN = AFBORF*U + BFBORF
@@ -97,11 +104,16 @@
 !
 !-----------------------------------------------------------------------
 !
+!     BE CAREFUL! BFBOR* HAVE TO BE ADDED IN THE RHS AS THE
+!     SAME WAY THAN AFBOR* IN THE MATRIX (E.G. IN  DIFF3D.F)
+!     USE OF MASVEC INSTEAD OF MASBAS COULD BE TESTED
+!
 !     LATERAL BOUNDARIES
 !
       IF(BFBORL%TYPR.NE.'0') THEN
-        CALL VECTOR(T3,'=','MASVEC          ',IELM2V,1.D0,BFBORL,
+        CALL VECTOR(T3,'=','MASBAS          ',IELM2V,1.D0,SV,
      &              SV,SV,SV,SV,SV,MESH3D,MSK,MASKBR)
+        CALL OS('X=XY    ',X=T3,Y=BFBORL)
         CALL OSDB(OP,SEM3D,T3,T3,1.D0,MESH3D)
       ENDIF
 !
@@ -144,8 +156,9 @@
 !     FREE SURFACE
 !
       IF(BFBORS%TYPR.NE.'0') THEN
-        CALL VECTOR(T2,'=','MASVEC          ',IELM2H,1.D0,BFBORS,
+        CALL VECTOR(T2,'=','MASBAS          ',IELM2H,1.D0,SV,
      &              SV,SV,SV,SV,SV,MESH2D,MSK,MASKEL)
+        CALL OS('X=XY    ',X=T2,Y=BFBORS)
         CALL OV(OP, X=SEM3D%R(NPOIN3-NPOIN2+1:NPOIN3),
      &          Y=T2%R, Z=T2%R, DIM1=NPOIN2)
       ENDIF

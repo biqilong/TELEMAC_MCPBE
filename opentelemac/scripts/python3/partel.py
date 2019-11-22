@@ -78,6 +78,12 @@ def main():
         action="store_true",
         default=False,
         help="If true concatenate partel output")
+    parser.add_argument(
+            "--mpi",
+            dest="mpi",
+            action="store_true",
+            default=False,
+            help="Run partel as executable (note using command given in systel.cfg)")
     args = parser.parse_args()
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -119,7 +125,12 @@ def main():
 
     # Getting partel command from configuration
     pbin = path.join(CFGS.get_root(), 'builds', CFGS.cfgname, 'bin')
-    parcmd = get_partel_cmd(pbin, CFGS.configs[CFGS.cfgname], '')
+    if args.mpi:
+        exe_ext = CFGS.configs[CFGS.cfgname]['SYSTEM']['sfx_exe']
+        parcmd = path.join(pbin, 'partel'+exe_ext+\
+                                 ' < <partel.par> >> <partel.log>')
+    else:
+        parcmd = get_partel_cmd(pbin, CFGS.configs[CFGS.cfgname], '')
     # Running paritionning
 
     run_partel(parcmd, geo_file, geo_file_fmt, bnd_file, ncsize, False,

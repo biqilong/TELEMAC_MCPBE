@@ -345,27 +345,27 @@
       ENDDO
 !
       IF(NESTOR) THEN
-         DO I = 1,NSICLA
-             T8%R(I) = 0.D0
-           DO J=1,NPOIN
-             T8%R(I) = T8%R(I) + ZFCL_C%ADR(I)%P%R(J)*VOLU2D%R(J)
-           END DO
-           IF(NCSIZE>1) T8%R(I) = P_DSUM(T8%R(I))
-           VOLNESTORCLA(I) = T8%R(I)
-         END DO
-         CALL NESTOR_INTERFACE(2)
-         DO I = 1,NSICLA
-           T9%R(I) = 0.D0
-           DO J=1,NPOIN
-             T9%R(I) = T9%R(I) + ZFCL_C%ADR(I)%P%R(J)*VOLU2D%R(J)
-           END DO
-           IF(NCSIZE>1) T9%R(I) = P_DSUM(T9%R(I))
-! CUMULATED NESTOR CHANGES PER CLASS
-           VOLNESTORCL(I) = VOLNESTORCL(I)+T9%R(I)-VOLNESTORCLA(I)
-! NESTOR CHANGES PER TIME STEP AND CLASS
-           VOLNESTORCLA(I) = T9%R(I)-VOLNESTORCLA(I)
-         END DO
-      ENDIF 
+        DO I = 1,NSICLA
+            T8%R(I) = 0.D0
+          DO J=1,NPOIN
+            T8%R(I) = T8%R(I) + ZFCL_C%ADR(I)%P%R(J)*VOLU2D%R(J)
+          END DO
+          IF(NCSIZE>1) T8%R(I) = P_DSUM(T8%R(I))
+          VOLNESTORCLA(I) = T8%R(I)
+        END DO
+        CALL NESTOR_INTERFACE(2)
+        DO I = 1,NSICLA
+          T9%R(I) = 0.D0
+          DO J=1,NPOIN
+            T9%R(I) = T9%R(I) + ZFCL_C%ADR(I)%P%R(J)*VOLU2D%R(J)
+          END DO
+          IF(NCSIZE>1) T9%R(I) = P_DSUM(T9%R(I))
+!         CUMULATED NESTOR CHANGES PER CLASS
+          VOLNESTORCL(I) = VOLNESTORCL(I)+T9%R(I)-VOLNESTORCLA(I)
+!          NESTOR CHANGES PER TIME STEP AND CLASS
+          VOLNESTORCLA(I) = T9%R(I)-VOLNESTORCLA(I)
+        END DO
+      ENDIF
 !
       ! *********************************************** !
       ! II - EVOLUTIONS AND QS FOR EACH CLASS ARE ADDED !

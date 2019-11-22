@@ -249,7 +249,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER N,I,IELMH,IELM1,NPOIN,IR,ERR,NP,K,II,IREG,TTL
+      INTEGER N,I,IELM1,NPOIN,IR,ERR,NP,K,II,IREG,TTL
 !
       DOUBLE PRECISION PI,WROT,WD,ATH,RAIN_MPS,SURDT,XX,ROAIR
 !
@@ -259,7 +259,7 @@
       LOGICAL OKX,OKY
       LOGICAL :: DEJALU = .FALSE.
 !
-      INTRINSIC SQRT,MAX,ACOS
+      INTRINSIC SQRT,MAX
 !
 !-----------------------------------------------------------------------
 !  EXTRACTS X COORDINATES, NUMBER OF POINTS P1
@@ -429,7 +429,6 @@
 !
 !-----------------------------------------------------------------------
 !
-      IELMH=HN%ELM
       CALL CPSTVC(HN,SMH)
       YASMH=.FALSE.
       CALL OS('X=0     ',X=SMH)

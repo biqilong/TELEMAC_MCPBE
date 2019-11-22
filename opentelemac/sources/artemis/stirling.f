@@ -62,57 +62,57 @@
 !     LOOP ON THE INTERPOLATION POINTS IN BETWEEN
       IVP = 2
       DO I = 2,(NO-1)
-         RMIN = 1.D0
-         XO = XI(1)+FLOAT(I-1)*XOSTEP
+        RMIN = 1.D0
+        XO = XI(1)+FLOAT(I-1)*XOSTEP
 !
 !-----------------------------------------------------------------------
-!        DETERMINES IVP SUCH THAT XO IS CLOSEST TO XI(IVP)
-!        R<0 FOR XO BEFORE XI(IVP); R>0 FOR XO AFTER XI(IVP)
-         DO IV = IVP,(NI-1)
-            R = ( XO - XI(IV) ) / ( XI(IV+1) - XI(IV) )
-            IF( DABS(R).LE.DABS(RMIN) ) THEN
-               RMIN = R
-               IVP = IV
-            ENDIF
-         ENDDO ! IV = IVP,(NI-1)
-         R = ( XO - XI(NI) ) / ( XI(NI) - XI(NI-1) )
-         IF( DABS(R).LE.DABS(RMIN) ) THEN
-           RMIN = R
-           IVP = NI
-         ENDIF
-         R = RMIN
+!       DETERMINES IVP SUCH THAT XO IS CLOSEST TO XI(IVP)
+!       R<0 FOR XO BEFORE XI(IVP); R>0 FOR XO AFTER XI(IVP)
+        DO IV = IVP,(NI-1)
+          R = ( XO - XI(IV) ) / ( XI(IV+1) - XI(IV) )
+          IF( DABS(R).LE.DABS(RMIN) ) THEN
+            RMIN = R
+            IVP = IV
+          ENDIF
+        ENDDO ! IV = IVP,(NI-1)
+        R = ( XO - XI(NI) ) / ( XI(NI) - XI(NI-1) )
+        IF( DABS(R).LE.DABS(RMIN) ) THEN
+          RMIN = R
+          IVP = NI
+        ENDIF
+        R = RMIN
 !
 !-----------------------------------------------------------------------
-!        XO CLOSEST TO XI(2) :
-!        YO COMPUTED FROM PARABOLA USING 1ST 3 POINTS
-         IF( IVP.EQ.2 ) THEN
-            YO(I) = A1 + A2*XO + A3*XO**2
+!       XO CLOSEST TO XI(2) :
+!       YO COMPUTED FROM PARABOLA USING 1ST 3 POINTS
+        IF( IVP.EQ.2 ) THEN
+           YO(I) = A1 + A2*XO + A3*XO**2
 !
 !-----------------------------------------------------------------------
-!        XO CLOSEST TO XI(3) OR XI(NI-2) :
-!        2ND ORDER STIRLING WITH CONSTANT STEP
-         ELSEIF( IVP.EQ.3 .OR. IVP.EQ.NI-2 ) THEN
-            R2 = R**2
-            YO(I) = ( R2-R )*YI(IVP-1)/2.D0 +
-     &          ( 1.D0-R2 )*YI(IVP)  +  ( R2+R )*YI(IVP+1)/2.D0
+!       XO CLOSEST TO XI(3) OR XI(NI-2) :
+!       2ND ORDER STIRLING WITH CONSTANT STEP
+        ELSEIF( IVP.EQ.3 .OR. IVP.EQ.NI-2 ) THEN
+          R2 = R**2
+          YO(I) = ( R2-R )*YI(IVP-1)/2.D0 +
+     &        ( 1.D0-R2 )*YI(IVP)  +  ( R2+R )*YI(IVP+1)/2.D0
 !
 !-----------------------------------------------------------------------
-!        XO CLOSEST TO XI(NI-1) OR XI(NI) :
-!        YO COMPUTED FROM PARABOLA USING LAST 3 POINTS
-         ELSEIF( IVP.EQ.NI-1 .OR. IVP.EQ.NI ) THEN
-            YO(I) = A6 + A5*XO + A4*XO**2
+!       XO CLOSEST TO XI(NI-1) OR XI(NI) :
+!       YO COMPUTED FROM PARABOLA USING LAST 3 POINTS
+        ELSEIF( IVP.EQ.NI-1 .OR. IVP.EQ.NI ) THEN
+          YO(I) = A6 + A5*XO + A4*XO**2
 !
 !-----------------------------------------------------------------------
-!        SUBSEQUENT POINTS
-!        4TH ORDER STIRLING WITH CONSTANT STEP
-         ELSE
-            U = R*( (R**2)-1.D0 )/12.D0
-            YO(I) =     U*( (R/2.D0)-1.D0 ) * YI(IVP-2) +
-     &          (1.D0-R)*(2.D0*U-(R/2.D0))  * YI(IVP-1) +
-     &            ( R*(3.D0*U-R) + 1.D0 )   * YI(IVP)   +
-     &          (1.D0+R)*(-2.D0*U+(R/2.D0)) * YI(IVP+1) +
-     &                  U*( (R/2.D0)+1.D0 ) * YI(IVP+2)
-         ENDIF
+!       SUBSEQUENT POINTS
+!       4TH ORDER STIRLING WITH CONSTANT STEP
+        ELSE
+          U = R*( (R**2)-1.D0 )/12.D0
+          YO(I) =     U*( (R/2.D0)-1.D0 ) * YI(IVP-2) +
+     &        (1.D0-R)*(2.D0*U-(R/2.D0))  * YI(IVP-1) +
+     &          ( R*(3.D0*U-R) + 1.D0 )   * YI(IVP)   +
+     &        (1.D0+R)*(-2.D0*U+(R/2.D0)) * YI(IVP+1) +
+     &                U*( (R/2.D0)+1.D0 ) * YI(IVP+2)
+        ENDIF
 !
 !-----------------------------------------------------------------------
 !     END OF THE LOOP ON THE INTERPOLATION POINTS

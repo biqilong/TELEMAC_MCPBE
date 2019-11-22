@@ -27,7 +27,18 @@
 %	AUTHORS PAGE
 %----------------------------------------------------------------------------------------
 
-\newpage
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+
+\pagestyle{empty} % No headers
+
+\tableofcontents% Print the table of contents itself
+
+%\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
 
 \thispagestyle{empty}
 
@@ -38,7 +49,7 @@ written by Kamal El-Kadi-Abderrezak and Marilyne Luck and published in 2012
 \cite{elkadi_tracer_2012} (ref: EDF R\&D-LNHE H-P73-2011-01786-FR).
 It also includes the heat exchange with atmosphere subsection of the \telemac{3d} theory guide.
 
-TRACER is the transport module of MASCARET, 1D free surface code.
+TRACER is the transport and water quality module of MASCARET, 1D free surface code.
 It enables to simulate the evolution of several coupled tracers
 (i.e. no retroaction on the flow).
 TRACER computes the tracers concentrations with respect to hydraulic conditions,
@@ -136,9 +147,9 @@ that are the modules:
 
 %\addcontentsline{toc}{section}{References}
 \bibliographystyle{plainnat}
-\bibliography{latex/waqtel_theory_guide}
+%\bibliography{latex/waqtel_theory_guide}
 
-%\bibliography{../../data/biblio}
+\bibliography{../../data/biblio}
 
 %\printbibliography
 \end{document}

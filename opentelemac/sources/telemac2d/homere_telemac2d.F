@@ -55,8 +55,8 @@
 !
       IMPLICIT NONE
 !
-      INTEGER TDEB(8),TFIN(8),NCAR,IFLOT
-!
+      INTEGER TDEB(8),TFIN(8),NCAR
+!     
       CHARACTER(LEN=24), PARAMETER :: CODE2='SISYPHE                 '
       CHARACTER(LEN=24), PARAMETER :: CODE3='TOMAWAC                 '
       CHARACTER(LEN=24), PARAMETER :: CODE4='WAQTEL                  '
@@ -67,7 +67,7 @@
       CHARACTER(LEN=PATH_LEN) MOTCAR(MAXKEYWORD),FILE_DESC(4,MAXKEYWORD)
       CHARACTER(LEN=PATH_LEN) DUMMY
 !
-      INTEGER IERR,ITRAC
+      INTEGER ITRAC
       INTEGER, DIMENSION(:,:), TARGET, ALLOCATABLE :: CORRESP
 !
 !======================================================================
@@ -110,7 +110,6 @@
 !
 !     OPENS THE FILES FOR TELEMAC2D
 !
-      IFLOT = 0
       CALL BIEF_OPEN_FILES(CODE1,T2D_FILES,MAXLU_T2D,PATH,NCAR,
      &                     1,.FALSE.)
 !

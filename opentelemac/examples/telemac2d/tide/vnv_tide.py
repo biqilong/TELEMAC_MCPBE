@@ -102,7 +102,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_tide-jmj_type.slf',
-                            eps=[5.E-3, 3.E-3, 4.E-4, 4.E-4, 2.E-3])
+                            eps=[5.E-3, 3.E-3, 4.E-4, 4.E-4, 3.E-3])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',

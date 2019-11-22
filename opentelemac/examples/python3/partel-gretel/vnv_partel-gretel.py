@@ -24,12 +24,12 @@ class VnvStudy(AbstractVnvStudy):
 
         # Using partel.py to split a mesh
         self.add_command('vnv_partel',
-                         'partel.py --file geo_gouttedo.slf --ncsize=4 --file-format=SERAFIN --bnd-file geo_gouttedo.cli')
+                         'partel.py --mpi --file geo_gouttedo.slf --ncsize=4 --file-format=SERAFIN --bnd-file geo_gouttedo.cli')
 
 
         # Using partel.py to split a mesh with an input file
         self.add_command('vnv_partel_input',
-                         'partel.py --input-file partel.par')
+                         'partel.py --mpi --input-file partel.par')
 
 
         # Using gretel.py to split a mesh

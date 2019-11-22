@@ -8,7 +8,7 @@ COUPLING PERIOD FOR TOMAWAC:10
 
 BOTTOM TOPOGRAPHY FILE='./Bath_rip.csv'
 BOUNDARY CONDITIONS FILE = 'tele_bc.cli'
-GEOMETRY FILE               = 'rip.slf'
+GEOMETRY FILE               = 'geo_rip.slf'
 PRESCRIBED ELEVATIONS=0
 3D RESULT FILE  : r3d_rip.slf
 2D RESULT FILE  : r2d_rip.slf

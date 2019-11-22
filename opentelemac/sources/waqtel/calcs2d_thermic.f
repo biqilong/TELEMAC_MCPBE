@@ -1,11 +1,12 @@
-!                    ***************************
+!                     **************************
                       SUBROUTINE CALCS2D_THERMIC
-!                    ***************************
+!                     **************************
+!
      & (NPOIN,TN,TEXP,HPROP,PATMOS)
 !
 !
 !***********************************************************************
-! WAQTEL   V7P3
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS FOR  WAQ THERMIC PROCESS
@@ -33,6 +34,12 @@
 !+        V7P3
 !+        The calculation of P_VAP_SAT has been moved before used in
 !+        the calculation of PATMC
+!
+!history  C.-T. PHAM
+!+        13/11/2019
+!+        V8P1
+!+        The calculation of HA is to be done with P_VAP, not P_VAP_SAT
+!+        so PATMC is not to used for HA, only for HA_SAT
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| AT             |-->| TIME IN SECONDS
@@ -63,7 +70,7 @@
       USE DECLARATIONS_SPECIAL
       USE DECLARATIONS_WAQTEL,ONLY:COEF_K,EMA,CFAER,PVAP,RAY3,
      &                             TAIR,NEBU,NWIND,BOLTZ,CP_EAU,CP_AIR,
-     &                             EMI_EAU,EMA,RO0,IND_T
+     &                             EMI_EAU,RO0,IND_T
 !      USE EXCHANGE_WITH_ATMOSPHERE
       USE INTERFACE_WAQTEL, EX_CALCS2D_THERMIC => CALCS2D_THERMIC
       IMPLICIT NONE
@@ -111,7 +118,7 @@
         ROA = 100.D0*PATMOS%R(I)/((TAIR%R(I)+273.15D0)*287.D0)
 !       AIR SPECIFIC MOISTURE
         PATMC=PATMOS%R(I)-0.378D0*P_VAP_SAT
-        HA  = 0.622D0*PVAP/(MAX(PATMC,EPS))
+        HA  = 0.622D0*PVAP/(MAX(PATMOS%R(I)-0.378D0*PVAP,EPS))
 !       RADIATION ON WATER SURFACE
         RE = CONSTRE*(TEMPER+273.15D0)**4
 !       ADVECTIVE HEAT FLUX
@@ -119,7 +126,7 @@
 !       VAPOR LATENT HEAT
         L_VAP = 2500900.D0 - 2365.D0*TEMPER
 !       AIR MOISTURE AT SATURATION
-        IF(ABS(PATMC).GT.EPS)THEN
+        IF(ABS(PATMC).GT.EPS) THEN
           HA_SAT = 0.622D0*P_VAP_SAT/PATMC
         ELSE
           HA_SAT = 0.D0
@@ -129,7 +136,7 @@
 !       ATMOSPHERIC RADIATION
         CONSTRA = EMA*BOLTZ *(TAIR%R(I)+273.15D0)**4 *
      &            (1.D0+COEF_K*(NEBU/8.D0)**2)
-        IF(HA_SAT.LT.HA)THEN
+        IF(HA_SAT.LT.HA) THEN
           RA = 1.8D0*CONSTRA
         ELSE
           RA = CONSTRA

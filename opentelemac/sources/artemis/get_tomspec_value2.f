@@ -12,17 +12,17 @@
 !
 !history  N.DURAND (HRW)
 !+        09/03/2001
-!+        
+!+
 !+   Original version
 !
 !history  T.ELLAM (HRW)
 !+        13/03/2002
-!+        
+!+
 !+   Modified to read in serafin format.spe
 !
 !history  N.DURAND (HRW)
 !+        June 2014
-!+        
+!+
 !+   Streamlined for V7P0
 !
 !history  N.DURAND (HRW)
@@ -85,7 +85,7 @@
       FFORMAT = ART_FILES(WACSPE)%FMT
 !     THE SUPPORT MESH FOR TOMAWAC SPECTRA IS MADE OF QUADRANGLES
       TYP = QUADRANGLE_ELT_TYPE
-! 
+!
 !-----------------------------------------------------------------------
 !
       IF(SPEC%N.GE.1) THEN
@@ -158,7 +158,7 @@
           ENDIF
 !         IF(DEBUG.GT.0) WRITE(*,*) I,SPEC%DIR(I)
         ENDDO
-! 
+!
 !       RE-ORDERS DIRECTIONS FROM 0 to 360
 !       STARTS BY FINDING THE SMALLEST DIRECTION IN [0;360] => IDEC
         IDEC=0
@@ -182,7 +182,7 @@
           SPEC%DIR(IDD)=STOCK(I)
         ENDDO
         SPEC%DIR(NDIR+1)=SPEC%DIR(1)+360.D0
-! 
+!
 !-----------------------------------------------------------------------
 !
 !       ENERGY DENSITIES FOR EACH SPECTRUM/POINT IN SPEC, AND FOR RECORD TPSTWC
@@ -198,10 +198,10 @@
 !
           DO IFF=1,NF
             DO IDD=1,NDIR
-               SPEC%ADR(ISPEC)%SOUTER(IFF,IDD) = X1((IFF-1)*NDIR+IDD)
+              SPEC%ADR(ISPEC)%SOUTER(IFF,IDD) = X1((IFF-1)*NDIR+IDD)
             ENDDO
 !           CLOSING THE LOOP
-            SPEC%ADR(ISPEC)%SOUTER(IFF,NDIR+1) = 
+            SPEC%ADR(ISPEC)%SOUTER(IFF,NDIR+1) =
      &                    SPEC%ADR(ISPEC)%SOUTER(IFF,1)
           ENDDO
 !
@@ -220,7 +220,7 @@
               ENDIF
               SPEC%ADR(ISPEC)%SOUTER(IFF,IDD)=STOCK(I)
             ENDDO
-            SPEC%ADR(ISPEC)%SOUTER(IFF,NDIR+1) = 
+            SPEC%ADR(ISPEC)%SOUTER(IFF,NDIR+1) =
      &                    SPEC%ADR(ISPEC)%SOUTER(IFF,1)
           ENDDO
 !

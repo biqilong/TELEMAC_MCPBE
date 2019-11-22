@@ -6,6 +6,8 @@ over global mesh
 Release V8P1R0 (xx/xx/xxxx)
 ===========================
 
+WAQTEL: new theory guide + user manual completed
+
 WAQTEL/AED2: fix the bug of wrong computation of array BENTH4AED2
 + wrong location of the fluxes transmitted to TELEMAC-3D
 

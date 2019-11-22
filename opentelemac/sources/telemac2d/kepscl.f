@@ -81,7 +81,7 @@
 !
       INTEGER N,K
 !
-      DOUBLE PRECISION KFOND,EFOND,TIERS,CEPS,USTAR
+      DOUBLE PRECISION KFOND,EFOND,CEPS,USTAR
       DOUBLE PRECISION SSQCMU,UTANG,DIST,DENOM,EBORD,KBORD
 !
 !-----------------------------------------------------------------------
@@ -90,7 +90,6 @@
 !
 !-----------------------------------------------------------------------
 !
-      TIERS  = 1.D0/3.D0
       SSQCMU = 1.D0/ SQRT(CMU)
 !
 !=======================================================================

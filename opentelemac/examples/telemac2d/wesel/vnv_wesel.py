@@ -44,12 +44,12 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_wesel.slf',
-                            eps=[0.3, 0.2, 0.01, 0.01, 1.E-8])
+                            eps=[0.4, 0.3, 0.011, 0.011, 1.E-8])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_wesel_pos.slf',
-                            eps=[0.2, 0.2, 0.03, 0.03, 1.E-8])
+                            eps=[0.3, 0.2, 0.04, 0.04, 1.E-8])
  
 
     def _post(self):

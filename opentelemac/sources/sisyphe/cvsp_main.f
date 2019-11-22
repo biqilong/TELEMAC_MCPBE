@@ -33,7 +33,7 @@
 !+   MANY CHANGES
 !
 !history  R. KOPMANN (BAW)
-!+        25/02/2019 
+!+        25/02/2019
 !+        V7P2
 !+   calling cvsp_make_actlayer moved, removing empty sections
 !+   synchronizing ZR and PRO_D(1), update synchro ZF and PRO_D(PRO_MAX)
@@ -161,7 +161,7 @@
               ENDDO
           ENDIF! EVL < 0
         ENDDO !NSICLA
-!        
+!
 ! REMOVING EMPTY SECTIONS
         DO K=2,PRO_MAX(J)
            PROMAX = PRO_MAX(J)
@@ -172,10 +172,10 @@
            IF(SUMF.EQ.0.D0) THEN
               PROMAX = PROMAX - 1
               DO KK=K,PROMAX
-               DO I=1,NSICLA
-                 PRO_D(J,KK,I) = PRO_D(J,KK+1,I)
-                 PRO_F(J,KK,I) = PRO_F(J,KK+1,I)
-               END DO
+                DO I=1,NSICLA
+                  PRO_D(J,KK,I) = PRO_D(J,KK+1,I)
+                  PRO_F(J,KK,I) = PRO_F(J,KK+1,I)
+                END DO
               END DO
            ENDIF
            IF(PROMAX.EQ.K) GOTO 999
@@ -213,7 +213,7 @@
 ! -> deleting last layer
           IF(PRO_D(J,2,1).LT.PRO_D(J,1,1)) THEN
            WRITE(LU,*) 'Problem bottom',PRO_D(J,2,1),PRO_D(J,1,1),
-     & pro_max(j)
+     & PRO_MAX(J)
             DO I=1,NSICLA
               DO K=PRO_MAX(J),2,-1
                 PRO_D(J,K-1,I) = PRO_D(J,K,I)
@@ -241,7 +241,7 @@
 !
 !in make_actlay werden noch mal checks durchgefuehrt, die ggf.
 ! pro_f und pro_d veraendern... daher vor die Ausgabe gezogen!
-! 
+!
       CALL CVSP_MAKE_ACTLAY()
 !
 !-----------------------------------------------------------------------

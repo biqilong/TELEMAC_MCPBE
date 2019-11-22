@@ -50,7 +50,8 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:WACRES',
                             'fom_spherique.slf',
-                            eps=[1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12])
+                            eps=[0.02, 0.4, 0.08, 1e-12, 1e-12, 0.03, 0.03, 0.2])
+#                            eps=[1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12])
 
         # Compariso between scalar and parrallel.
         self.check_epsilons('vnv_1:WACRES',

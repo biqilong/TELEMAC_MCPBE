@@ -334,7 +334,7 @@
 !
       IF(NESTOR) THEN
         IF(NSAND.GT.0) THEN
-          massnestor = 0.D0
+          MASSNESTOR = 0.D0
           DO IPOIN=1,NPOIN
             DO ISAND=1,NSAND
               K = NUM_ISAND_ICLA(ISAND)

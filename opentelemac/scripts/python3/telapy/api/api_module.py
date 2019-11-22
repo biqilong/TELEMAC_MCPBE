@@ -10,18 +10,16 @@ import sys
 import logging
 import shutil
 #
-from compilation.compil_tools import get_api_ld_flags, get_api_incs_flags,\
-                       compile_princi_lib
 from telapy.tools.polygon import is_in_polygon
 from telapy.tools.decode_range import decode_range
 from ctypes import cdll
+from collections import OrderedDict
 import os
 from os import path
 from execution.telemac_cas import TelemacCas
 from utils.exceptions import TelemacException
 from importlib import reload
 from argparse import Namespace
-from config import update_config, CFGS
 import numpy as np
 
 
@@ -85,6 +83,7 @@ class ApiModule():
         self.coordy = None
         self.rank = 0
         self.parallel_run = False
+        self._variables = None
 
         if log_lvl == 'INFO':
             i_log = logging.INFO
@@ -100,6 +99,9 @@ class ApiModule():
         if recompile:
             # Compiling API with user_fortran
             if user_fortran is not None:
+                from compilation.compil_tools import get_api_ld_flags, get_api_incs_flags,\
+                                       compile_princi_lib
+                from config import update_config, CFGS
                 # Get configuration information
                 options = Namespace()
                 options.root_dir = ''
@@ -182,6 +184,8 @@ class ApiModule():
         self.get_var_size = getattr(self.api_inter, "get_var_size_"+self.name)
         self.mod_handle_var = getattr(ApiModule._api,
                                       "api_handle_var_"+self.name)
+        self.get_var_info = getattr(self.mod_handle_var,
+                                    "get_var_info_{}_d".format(self.name))
 
         self.api_handle_error = ApiModule._api.api_handle_error
 
@@ -520,37 +524,37 @@ class ApiModule():
             plt.show()
         return fig
 
+    @property
+    def variables(self):
+        """
+        Builds self.variables
+        """
+        if self._variables is None:
+            nb_var = getattr(self.mod_handle_var, "nb_var_"+self.name)
+            var_len = getattr(self.mod_handle_var, self.name+"_var_len")
+            info_len = getattr(self.mod_handle_var, self.name+"_info_len")
+
+            self._variables = OrderedDict()
+
+            for i in range(nb_var):
+                tmp_varname, tmp_varinfo, self._error = \
+                        self.get_var_info(i+1, var_len, info_len)
+                varname = b''.join(tmp_varname).decode('utf-8').strip()
+                varinfo = b''.join(tmp_varinfo).decode('utf-8').strip()
+                self._variables[varname] = varinfo
+
+        return self._variables
+
+
     def list_variables(self):
         """
         List the names and the meaning of available variables and parameters
 
         @retuns two lists of strings (name and meaning)
         """
-        nb_var = getattr(self.mod_handle_var, "nb_var_"+self.name)
-        var_len = getattr(self.mod_handle_var, self.name+"_var_len")
-        info_len = getattr(self.mod_handle_var, self.name+"_info_len")
+        vnames = self.variables.keys()
+        vinfo = self.variables.values()
 
-        vnames = []
-        vinfo = []
-        varnames = []
-        varinfo = []
-        # Reordering string array for variable names
-        attr_name = "vname_"+self.name
-        tmp = getattr(self.mod_handle_var, attr_name)
-        for j in range(var_len):
-            for i in range(nb_var):
-                varnames.append(tmp[i][j])
-        # Reordering string array for variable info
-        tmp = getattr(self.mod_handle_var, "vinfo_"+self.name)
-        for j in range(info_len):
-            for i in range(nb_var):
-                varinfo.append(tmp[i][j])
-        # Extracting name and info into a list
-        for i in range(nb_var):
-            vnames.append(b''.join(varnames[i*var_len:(i+1)*var_len])\
-                             .strip().decode('utf-8'))
-            vinfo.append(b''.join(varinfo[i*info_len:(i+1)*info_len])\
-                            .strip().decode('utf-8'))
         return vnames, vinfo
 
     def get(self, varname, i=-1, j=-1, k=-1, global_num=True):
@@ -607,7 +611,7 @@ class ApiModule():
         elif b"STRING" in vartype:
             tmp_value, self._error = self.api_get_string(self.my_id, varname,
                                                          dim0, i+1, j+1)
-            value = tmp_value.tostring().strip()
+            value = tmp_value.tostring().strip().decode('utf-8')
         elif b"BOOLEAN" in vartype:
             value, self._error = self.api_get_boolean(self.my_id, varname,
                                                       i+1, j+1, k+1)
