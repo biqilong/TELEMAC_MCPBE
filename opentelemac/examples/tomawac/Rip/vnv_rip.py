@@ -75,8 +75,9 @@ class VnvStudy(AbstractVnvStudy):
         from postel.plot_vnv import vnv_plot2d
                 # Getting files
         vnv_1_t3dres = self.get_study_file('vnv_1:T3DRES')
+        vnv_1_geo = self.get_study_file('vnv_1:T3DGEO')
         res_vnv_1_t3dres = TelemacFile(vnv_1_t3dres)
-        res_rip = TelemacFile('rip.slf')
+        res_rip = TelemacFile(vnv_1_geo)
 
         # Plotting BOTTOM at -1
         vnv_plot2d('BOTTOM',

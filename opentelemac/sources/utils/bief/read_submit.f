@@ -63,8 +63,8 @@
 !
       DO I=1,NFILES
         FILES(I)%LU=0
-        FILES(I)%TELNAME='      '
-        FILES(I)%NAME(1:1)=' '
+        FILES(I)%TELNAME=REPEAT(' ', 6)
+        FILES(I)%NAME(1:PATH_LEN)= REPEAT(' ', PATH_LEN)
       ENDDO
       CANAL = 0
 !

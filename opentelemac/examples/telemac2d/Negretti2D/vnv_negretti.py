@@ -24,7 +24,7 @@ class VnvStudy(AbstractVnvStudy):
         """
 
         # negretti scalar mode
-        self.add_study('vnv_1',
+        self.add_study('vnv_seq',
                        'telemac2d',
                        't2d_negretti.cas')
 
@@ -33,7 +33,7 @@ class VnvStudy(AbstractVnvStudy):
         cas = TelemacCas('t2d_negretti.cas', get_dico('telemac2d'))
         cas.set('PARALLEL PROCESSORS', 4)
 
-        self.add_study('vnv_2',
+        self.add_study('vnv_par',
                        'telemac2d',
                        't2d_negretti_par.cas',
                        cas=cas)
@@ -48,19 +48,19 @@ class VnvStudy(AbstractVnvStudy):
         """
 
         # Comparison with the last time frame of the reference file.
-        self.check_epsilons('vnv_1:T2DRES',
+        self.check_epsilons('vnv_seq:T2DRES',
                             'f2d_negretti.slf',
-                            eps=[])
+                            eps=[1e-2,1e-2,1e-3,1e-3,1e-8,1e-2,1e-2])
 
         # Comparison with the last time frame of the reference file.
-        self.check_epsilons('vnv_2:T2DRES',
+        self.check_epsilons('vnv_par:T2DRES',
                             'f2d_negretti.slf',
-                            eps=[])
+                            eps=[1e-2,1e-2,1e-3,1e-3,1e-8,1e-2,1e-2])
 
         # Comparison between sequential and parallel run.
-        self.check_epsilons('vnv_1:T2DRES',
-                            'vnv_2:T2DRES',
-                            eps=[])
+        self.check_epsilons('vnv_seq:T2DRES',
+                            'vnv_par:T2DRES',
+                            eps=[1e-2,1e-2,1e-3,1e-3,1e-8,1e-2,1e-2])
 
 
     def _post(self):
@@ -70,15 +70,15 @@ class VnvStudy(AbstractVnvStudy):
         from postel.plot_vnv import vnv_plot1d_history, vnv_plot1d_polylines, \
                 vnv_plot2d
         # Getting files
-        vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
-        vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
-        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo)
-        res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
+        vnv_seq_t2dgeo = self.get_study_file('vnv_seq:T2DGEO')
+        vnv_seq_t2dres = self.get_study_file('vnv_seq:T2DRES')
+        res_vnv_seq_t2dgeo = TelemacFile(vnv_seq_t2dgeo)
+        res_vnv_seq_t2dres = TelemacFile(vnv_seq_t2dres)
 
         #Plotting FREE SURFACE on 703, [0, 1] over records range(0, ntimestep)
         vnv_plot1d_history(\
             'FREE SURFACE',
-            res_vnv_1_t2dres,
+            res_vnv_seq_t2dres,
             'FREE SURFACE',
             points=[[0, 1]],
             nodes=[703],
@@ -87,7 +87,7 @@ class VnvStudy(AbstractVnvStudy):
 
         #Plotting FREE SURFACE in slice plane
         vnv_plot1d_polylines(\
-            'FREE SURFACE', res_vnv_1_t2dres, 'elevation',
+            'FREE SURFACE', res_vnv_seq_t2dres, 'elevation',
             fig_size=(12, 3),
             record=-1,
             poly=[[0, 0.93], [21, 1.07]],
@@ -97,7 +97,7 @@ class VnvStudy(AbstractVnvStudy):
         # Plotting VELOCITY at -1
         vnv_plot2d(\
             'VELOCITY',
-            res_vnv_1_t2dres,
+            res_vnv_seq_t2dres,
             record=-1,
             filled_contours=True,
             vectors=True, vectors_scale=50,
@@ -107,7 +107,7 @@ class VnvStudy(AbstractVnvStudy):
         #Plotting mesh
         vnv_plot2d(\
             '',
-            res_vnv_1_t2dgeo,
+            res_vnv_seq_t2dgeo,
             plot_mesh=True,
             fig_size=(12, 5),
             fig_name='img/figure7')
@@ -115,7 +115,7 @@ class VnvStudy(AbstractVnvStudy):
         # Plotting FREE SURFACE at -1
         vnv_plot2d(\
             'FREE SURFACE',
-            res_vnv_1_t2dres,
+            res_vnv_seq_t2dres,
             record=-1,
             filled_contours=True,
             fig_size=(13, 5),
@@ -124,7 +124,7 @@ class VnvStudy(AbstractVnvStudy):
         # Plotting VELOCITY at -1
         vnv_plot2d(\
             'VELOCITY',
-            res_vnv_1_t2dres,
+            res_vnv_seq_t2dres,
             record=-1,
             filled_contours=True,
             streamlines=True, streamlines_density=1,
@@ -133,5 +133,5 @@ class VnvStudy(AbstractVnvStudy):
             fig_name='img/figure9')
 
         # Closing files
-        res_vnv_1_t2dres.close()
-        res_vnv_1_t2dgeo.close()
+        res_vnv_seq_t2dres.close()
+        res_vnv_seq_t2dgeo.close()

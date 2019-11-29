@@ -13,7 +13,7 @@ FORMATTED RESULTS FILE          = rfo_balzano-hllc.txt
 /----------------------------------------------
 /
 TITLE                           = 'TELEMAC 2D : BOLZANO'
-VARIABLES FOR GRAPHIC PRINTOUTS = 'U,V,H,S,B,F,Q,M,W'   
+VARIABLES FOR GRAPHIC PRINTOUTS = 'U,V,H,S,B,Q,M,W'   
 TIME STEP                       = 5
 DESIRED COURANT NUMBER          = 0.9
 VARIABLE TIME-STEP              : YES

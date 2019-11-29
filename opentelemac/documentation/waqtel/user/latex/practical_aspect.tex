@@ -3,6 +3,24 @@
 To activate the water quality module \waqtel, the integer keyword
 \telkey{WATER QUALITY PROCESS} must be set to a value different from 1 (default = 1)
 in the \telemac{2d} or \telemac{3d} \telkey{STEERING FILE}.
+The possible choices are:
+\begin{itemize}
+\item 0: all available processes,
+\item 1: nothing (default value),
+\item 2: O$_2$ module,
+\item 3: BIOMASS module,
+\item 5: EUTRO module,
+\item 7: MICROPOL module,
+\item 11: THERMIC module,
+\item 13: AED2 model,
+\item 17: degradation law.
+\end{itemize}
+
+Several modules can be combined by giving the multiplication of the process choices,
+e.g. 55 = 5 $\times$ 11 activates EUTRO and THERMIC modules.
+It is noted that AED2 should be used on its own, for the time being,
+without possible combination with other processes.\\
+
 In \waqtel, a new dictionary is created and fully dedicated to water quality applications.
 The description of this new dictionary will be the subject of a separate manual
 (see the \waqtel reference manual).
@@ -41,7 +59,7 @@ or in the section 5.5 of the \telemac{3d} User Manual,
 water quality needs different meteorological data such as
 nebulosity, air temperature, evaporation pressure etc.
 Hereafter we give an example of \telkey{ASCII ATMOSPHERIC DATA FILE}
-(see Table \ref{tab:meteo}).
+(see Table \ref{tab:meteo}) when coupling with \telemac{2d}.
 The user can edit this file and add new parameters.
 However, in this case, he must edit subroutine \telfile{meteo.f} consequently.
 

@@ -22,8 +22,9 @@
 !| GT             |-->| EFFECT OF OF TEMPERATURE ON ALGAE GROWTH
 !|                |   | GT=T/20,  T: WATER TEMPERATURE
 !| MP             |<--| DISAPPEAANCE RATE OF ALGAL BIOMASS AT 20 DEG C
+!| NPOIN          |-->| NUMBER OF NODES
 !| TOX            |-->| COEFFICIENT OF WATER TOXICITY
-!| TR             |-->| TRACER (PHYTOPLANCTOPN BIOMASS)
+!| TRR            |-->| TRACER (PHYTOPLANCTOPN BIOMASS)
 !| TRESP          |-->| RESPIRATION RATE OF ALGAL BIOMASS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -41,11 +42,8 @@
       TYPE(BIEF_OBJ)  , INTENT(IN   ) :: GT
 !     LOCAL VARIABLES
       INTEGER I
-      DOUBLE PRECISION CC
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!
-      CC=TRESP+CMOR(1)+TOX
 !
       DO I=1,NPOIN
         MP(I) = CMOR(1)+CMOR(2)*TRR(I)+TOX

@@ -47,7 +47,7 @@ CONTINUITY CORRECTION             = YES
 /************************************
 /NUMBER OF TRACERS = 1
 / here after, initial values of O2,L, NH4
-INITIAL VALUES OF TRACERS            = 5.;3.;0.01
+INITIAL VALUES OF TRACERS     = 5.;3.;0.01
 DIFFUSION OF TRACERS                 = NO
 COEFFICIENT FOR DIFFUSION OF TRACERS = 0.;0.;0.
 /************************************

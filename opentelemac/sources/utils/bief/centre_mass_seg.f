@@ -81,8 +81,7 @@
 !
       INTEGER ISEG,NB1,NB2,IELEM,I,I1,I2,I3
       DOUBLE PRECISION XEL,YEL,XG1,XG2,YG1,YG2,XSOM(3),YSOM(3)
-      DOUBLE PRECISION X_MIDPOINT,Y_MIDPOINT
-      LOGICAL DEJA
+      DOUBLE PRECISION X_MIDPOINT,Y_MIDPOINT,DET
 !
 !-----------------------------------------------------------------------
 !   INITIALIZATION OF VARIABLES
@@ -142,9 +141,6 @@
 !                   BELONGS CMI
 !
       DO IELEM=1,NELEM
-        I1 = IKLE(IELEM,1)
-        I2 = IKLE(IELEM,2)
-        I3 = IKLE(IELEM,3)
         DO I = 1,3
           ISEG = ELTSEG(IELEM,I)
           NB1 = GLOSEG(ISEG,1)
@@ -159,15 +155,21 @@
           CMI(1,ISEG) = X_MIDPOINT
           CMI(2,ISEG) = Y_MIDPOINT
           ! JMI: IN WHICH ELEMENT IS CMI
-          ! WE USE INPOLY FUNCTION (SEE INPOLY.F)
-          XSOM(1)=X(I1)
-          XSOM(2)=X(I2)
-          XSOM(3)=X(I3)
-          YSOM(1)=Y(I1)
-          YSOM(2)=Y(I2)
-          YSOM(3)=Y(I3)
-          IF(INPOLY(X_MIDPOINT,Y_MIDPOINT,XSOM,YSOM,3 ))THEN
-            JMI(ISEG)= IELEM
+          ! WE USE CROSS PRODUCT 
+          XSOM(1)=X(NB1)
+          XSOM(2)=X(NB2)
+          YSOM(1)=Y(NB1)
+          YSOM(2)=Y(NB2)
+
+          DET = (XSOM(2)-XSOM(1))*(Y_MIDPOINT-YSOM(1))
+     &         -(YSOM(2)-YSOM(1))*(X_MIDPOINT-XSOM(1))
+
+          IF(ORISEG(IELEM,I).EQ.2) DET = -DET
+!         BE CARREFUL FIXME:
+!           - IN CASE OF ISEG IS AT THE INTERFACE OF THE TRIANGLE 
+!             EACH SUBDOMAIN WILL SEE IT       
+          IF(DET.GE.0.D0) THEN
+            JMI(ISEG) = IELEM
           ENDIF
         ENDDO
       ENDDO
@@ -182,35 +184,6 @@
      &                   CMI,
      &                   NSEG,1,1,2,MESH,1,11)
       ENDIF
-!
-!     TEST TO SEE IF ALL INTERNAL EDGES ARE WELL TREATED
-!     NOTE RA: FOR MALPASSET SMALL, MESH IS VERY POOR AND WITHOUT
-!     THE FOLLOWING TEST, IT CRASHES
-      DEJA =.FALSE.
-      DO IELEM=1,NELEM
-        I1 = IKLE(IELEM,1)
-        I2 = IKLE(IELEM,2)
-        I3 = IKLE(IELEM,3)
-        DO I = 1,3
-          ISEG = ELTSEG(IELEM,I)
-          IF(JMI(ISEG).EQ.0.AND.
-     &       IFABOR(IELEM,I).NE.-1.AND.IFABOR(IELEM,I).NE.0.AND.
-     &       IFABOR(IELEM,I).NE.-2)THEN    ! THIS IS ALL NON INTERFACE NODES
-            IF(.NOT.DEJA)THEN
-              WRITE(LU,*)'MESH WITH POOR QUALITY '
-              WRITE(LU,*)'FOR INSTANCE, SEE ELEMENT :',IELEM
-              IF(NCSIZE.GT.1)I1=MESH%KNOLG%I(I1)
-              IF(NCSIZE.GT.1)I2=MESH%KNOLG%I(I2)
-              IF(NCSIZE.GT.1)I3=MESH%KNOLG%I(I3)
-              WRITE(LU,*)'WITH GLOBAL NODES',I1,I2,I3,IFABOR(IELEM,I)
-              DEJA=.TRUE.
-            ENDIF
-          ENDIF
-!         CMI(1,ISEG)=0.5D0*(COORD_G(ISEG,1)+COORD_G(ISEG,3))
-!         CMI(2,ISEG)=0.5D0*(COORD_G(ISEG,2)+COORD_G(ISEG,4))
-          JMI(ISEG)=IELEM
-        ENDDO
-      ENDDO
 !
 ! BOUNDARY SEGMENTS
 !
@@ -241,6 +214,7 @@
           IF(JMI(ISEG).EQ.0)THEN
             WRITE(LU,*)'CENTRE_MASS_SEG: PROBLEM JMI NOT GOOD'
             WRITE(LU,*)'FOR SEGMENT :',ISEG
+            WRITE(LU,*)'PTS SEG',GLOSEG(ISEG,1),GLOSEG(ISEG,2)
             CALL PLANTE(1)
             STOP
           ENDIF

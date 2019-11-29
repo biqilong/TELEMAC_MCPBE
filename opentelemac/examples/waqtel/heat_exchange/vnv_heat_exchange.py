@@ -73,12 +73,12 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T3DRES',
                             'f3d_heat_exchange.slf',
-                            eps=[2.E-4, 0.03, 0.03, 0.004, 0.3])
+                            eps=[2.E-4, 0.03, 0.03, 0.005, 0.3])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_2:T3DRES',
-                            eps=[1.E-4, 0.03, 0.03, 0.004, 0.4])
+                            eps=[1.E-4, 0.03, 0.03, 0.005, 0.4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T3DRES',

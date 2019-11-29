@@ -72,7 +72,8 @@
       USE BIEF
       USE INTERFACE_TELEMAC2D, EX_BILAN => BILAN
       USE DECLARATIONS_TELEMAC2D, ONLY : FLUX1_OLD,MASSE0,MASSE1,
-     &                                   MASSE2,MASENT,MASSET
+     &                                   MASSE2,MASENT,MASSET,
+     &                                   FLUXN_OLD,NTRAC,TMAX
 !
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY : P_DSUM
@@ -129,6 +130,7 @@
         MASSE1 = MASSE2
         MASENT = 0.D0
         MASSET = 0.D0
+        FLUXN_OLD = 0.D0
       ELSE
 !       SOURCE TERMS ADDED TO MASS
         IF(NCSIZE.GT.1) MASSES = P_DSUM(MASSES)
@@ -181,7 +183,13 @@
 !=======================================================================
 !
       IF(EQUA(1:15).EQ.'SAINT-VENANT VF') THEN
-        CONTRIB = DT*( (1-GAMMA)*FLUX1_OLD + GAMMA*FLUX1)
+        IF(NTRAC.GT.0) THEN
+          CONTRIB = FLUXN_OLD*DT
+          FLUXN_OLD = FLUX1
+          IF(AT+DT.GE.TMAX) CONTRIB = FLUX1*DT
+        ELSE
+          CONTRIB = DT*( (1-GAMMA)*FLUX1_OLD + GAMMA*FLUX1)
+        ENDIF
         MASENT = MASENT - CONTRIB
       ELSE
         MASENT = MASENT - FLUX1*DT

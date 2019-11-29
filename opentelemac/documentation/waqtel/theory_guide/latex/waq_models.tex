@@ -1,80 +1,79 @@
 \chapter{Water quality models}
 \label{waq_models}
-To simplify the document, the operator $F(C)$ is defined as follows:
+For the sake of simplicity, the following operator $F(C)$ is defined:
 
 \begin{equation}
   F(C) = \frac{\partial C}{\partial t} + \vec{U} \cdot \vec \nabla C
        - \nabla \cdot \left( k \vec \nabla C \right),
 \end{equation}
 
-with $C(x,y,z,t)$ is the concentration of tracer,
-$k$ the coefficient of diffusion (m$^2$/s),
+with $C(x,y,z,t)$ is the tracer concentration,
+$t$ is time, $(x,y,z)$ the coordinates,
+$k$ the diffusion coefficient (m$^2$/s),
 $\vec{U}$ the velocity vector (m/s).\\
 
 
-In a water quality model, studied substances are advected and dispersed in the mass of water.
-Their dispersion in the aquatic environment is linked to transport due to the flow on the one hand
-and to the turbulent dispersion of the flow on the other hand.
+The studied substances are advected and dispersed in the water mass.
+The dispersion is due to the flow transport and to the flow turbulence.
 
-The concentration of a substance (pollutant, oxygen, etc.) is also influenced by:
+The concentration of a substance (e.g. pollutant, oxygen) is also influenced by:
 \begin{itemize}
-\item punctual contributions, caused by releases (factories, sewage treatment plants, etc.)
-  which are called \emph{external sources},
-\item the presence of other substances in the mass of water, with which the tracer
+\item punctual contributions, caused by releases (industrial, sewage treatment plants, etc.)
+  called \emph{external sources},
+\item the presence of other substances in the water mass, with which the tracer
   may react through biochemical transformations or the existence of forcings
   linked to its own concentration (e.g. the reaeration phenomenon for oxygen).
   These source terms for one tracer are called \emph{internal sources}
-  (because internal to the mass of water) and they characterize the water quality module
+  (because internal to the water mass) and they characterize the water quality module
   (description of the interactions between the tracers).
 \end{itemize}
 
-Solving a water quality problem consists in solving a system of $N$ advection-dispersion
-equations (one equation per tracer) in which there are
-possible external sources (releases, etc.)
-and internal sources that exist through biochemical reactions.
+Solving a water quality problem consists in solving a system of $N$ (number of tracers)
+advection-dispersion equations (one equation per tracer) considering the presence of
+external (e.g. releases) and internal sources.
 
 A water quality model is characterized in WAQTEL by the coupled treatment of different tracers
 and the description of the \emph{internal} source terms.\\
 
-The internal source term for tracer $i$ can be written through the following form:
+The internal source term for a given tracer $i$ can be written through the following form:
 \begin{equation}
   S_{intern_i} = \lambda_i^0 + \sum_{j=1}^{N} \lambda_i^j C_j + \frac{\mu_i^0}{h}
                + \frac{\sum_{j=1}^{N}\mu_i^j C_j}{h}
 \end{equation}
 
-with $\lambda_i^0$ and $\mu_i^0$ the terms not depending on the tracer concentration $i$.
+with $\lambda_i^0$ and $\mu_i^0$ are terms not depending on the tracer concentration $i$
+and $h$ is the water depth.
+The 1$^{\rm{st}}$ term represents the volumic internal sources
+(e.g. chemical reactions) whereas the 2$^{\rm{nd}}$ term represents the surface internal sources
+(e.g. deposition, re-suspension, evaporation).
 
-In the above equality, the 1$^{\rm{st}}$ term represents the volumic internal sources
-(chemical reactions, etc.) whereas the 2$^{\rm{nd}}$ term represents the surfacic internal sources
-(deposition, re-suspension, evaporation, etc.).
-
-Depending on the water quality module, the matrices [$\lambda$] and [$\mu$]
-containing the coefficients $\lambda_i^j$ and $\mu_i^j$ will be written differently.
-The internal source terms relating water quality processes are treated
+Depending on the water quality module, matrices [$\lambda$] and [$\mu$]
+containing the coefficients $\lambda_i^j$ and $\mu_i^j$ are written differently.
+The internal source terms are treated
 in an explicit way in the advection-diffusion equation,
-as they depend on the concentration of other tracers,
+because they depend on the concentration of other tracers that remain
 unknown at the time step $n+1$.
 
 If there are interactions between tracers or specific evolution laws of tracers,
-a water quality model can be used to determine the internal sources of tracers
+a water quality module can be used to determine the internal sources of tracers
 that can be involved in the transport equation.
 
 Internal sources of tracers are computed in the water quality module \waqtel
 at each time step, with respect to physical parameters and
 the concentrations of different tracers.
-Then they are given to \telemac{2d} or \telemac{3d} which compute
-the tracer evolution (by advection and diffusion) taking the
-source terms into account.\\
+Then they are given to \telemac{2d} or \telemac{3d} for computing
+the tracer evolution (by advection and diffusion+dispersion) taking the
+external source terms into account.\\
 
 Several water quality modules are available in the \waqtel library:
 \begin{itemize}
   \item O$_2$ module: simplified model of dissolved oxygen,
   \item BIOMASS module: phytoplankton biomass model,
-  \item EUTRO model: eutrophication model (dissolved oxygen and algal biomass),
-  \item MICROPOL: model for the evolution of heavy metals or radioelements,
-    taking into account their interaction with fine sediments (suspended matter).
-    Anyway, no modification of bottom is done,
-  \item THERMIC module: model for the evolution of water temperature under the influence
+  \item EUTRO module: eutrophication model (dissolved oxygen and algal biomass),
+  \item MICROPOL module: evolution of heavy metals or radioelements,
+    taking into account interactions with fine sediments (suspended matter).
+    However, no changes of the bed geometry is considered,
+  \item THERMIC module: evolution of water temperature under the influence
     of atmospheric fluxes,
   \item AED2 model: the water quality and aquatic ecology model,
   \item degradation law.

@@ -169,7 +169,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('kin1_seq:T2DRES',
                             'f2d_malpasset-kin1.slf',
-                            eps=[72., 39., 1.E-1, 1.E-1, 1.E-15])
+                            eps=[80., 370., 1.E-1, 1.E-1, 1.E-15])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('kin1_par:T2DRES',
                             'f2d_malpasset-kin1.slf',
@@ -177,7 +177,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('kin1_seq:T2DRES',
                             'kin1_par:T2DRES',
-                            eps=[200, 200, 20, 20, 1.E-15])
+                            eps=[200, 370, 20, 20, 1.E-15])
 
         #======================================================================
         # Comparison with the last time frame of the reference file.

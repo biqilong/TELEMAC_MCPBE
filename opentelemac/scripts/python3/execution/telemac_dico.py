@@ -33,7 +33,7 @@ class TelemacDico(object):
         Scan the dictionnary and set default values
         """
         keylist = []
-        with open(self.file_name, 'r') as f:
+        with open(self.file_name, 'r', encoding="utf-8") as f:
             dico_lines = f.readlines()
         # Cleaning up dictonary
         # ~~ buddle continuations (long strings) and remove comments and empty

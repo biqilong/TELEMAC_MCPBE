@@ -294,7 +294,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_14:GAIRES',
                             'gai_ref_1COs.slf',
-                            eps=[1.e-3])
+                            eps=[1.e-2])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_13:GAIRES',

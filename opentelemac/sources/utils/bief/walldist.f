@@ -114,12 +114,12 @@
 !
 !     COMPUTES VERTEX GRADIENT
       CALL VECTOR(T11,'=','GRADF          X',IELWD,
-     &            1.D0,T14,S,S,S,S,S,MESH,.FALSE.,S)
+     &            1.D0,T14,S,S,S,S,S,MESH,.FALSE.,S,ASSPAR=.TRUE.)
       CALL VECTOR(T12,'=','GRADF          Y',IELWD,
-     &            1.D0,T14,S,S,S,S,S,MESH,.FALSE.,S)
+     &            1.D0,T14,S,S,S,S,S,MESH,.FALSE.,S,ASSPAR=.TRUE.)
       CALL VECTOR(T15 , '=' , 'MASBAS          ' , IELWD ,
      &            1.D0,S,S,S,S,S,S,
-     &            MESH,.FALSE.,S)
+     &            MESH,.FALSE.,S,ASSPAR=.TRUE.)
 !     NORMALIZES GRADIENT
       CALL OS('X=Y/Z   ', X=T11, Y=T11, Z=T15)
       CALL OS('X=Y/Z   ', X=T12, Y=T12, Z=T15)

@@ -166,7 +166,7 @@
 !
 !     DECODES 'SUBMIT' CHAINS
 !
-      CALL READ_SUBMIT(WAC_FILES,MAXLU_WAC,FILE_DESC,300)
+      CALL READ_SUBMIT(WAC_FILES,MAXLU_WAC,FILE_DESC,MAXKEYWORD)
 !
 !-----------------------------------------------------------------------
 !

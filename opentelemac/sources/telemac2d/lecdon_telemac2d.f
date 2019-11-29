@@ -292,7 +292,7 @@
 !
 !     ANALYSIS OF 'SUBMIT' CHAINS
 !
-      CALL READ_SUBMIT(T2D_FILES, MAXLU_T2D, FILE_DESC, 300)
+      CALL READ_SUBMIT(T2D_FILES, MAXLU_T2D, FILE_DESC, MAXKEYWORD)
 !
 !-----------------------------------------------------------------------
 !

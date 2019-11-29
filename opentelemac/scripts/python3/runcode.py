@@ -14,7 +14,6 @@ from os import path
 from utils.files import check_sym_link
 from utils.messages import Messages, svn_banner
 from utils.exceptions import TelemacException
-from execution.run_mascaret import run_mascaret
 from config import add_config_argument, update_config, CFGS
 from execution.run_cas import run_study
 
@@ -280,9 +279,8 @@ where module can be:\n
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Jenkins' success message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    else:
-        print('\n\nMy work is done\n\n')
-        sys.exit(0)
+    print('\n\nMy work is done\n\n')
+    sys.exit(0)
 
 
 if __name__ == "__main__":

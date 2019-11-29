@@ -928,6 +928,7 @@ CHOIX =
 '1/R="1/R"';
 'TAU_S="TAU_S"';
 'OMEGA="OMEGA"';
+'WDIST="distance au mur le plus proche"';
 'ZRL="reference level for Nestor "'
 CHOIX1 =
 'U="velocity along x axis (m/s)"';
@@ -967,6 +968,7 @@ CHOIX1 =
 '1/R="1/R"';
 'TAU_S="TAU_S"';
 'OMEGA="OMEGA"';
+'WDIST="distance to the closest wall"';
 'ZRL="reference level for Nestor "'
 APPARENCE =
 'DYNLIST'

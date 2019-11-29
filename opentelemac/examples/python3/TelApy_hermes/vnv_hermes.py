@@ -3,7 +3,6 @@
 Validation script for hermes
 """
 from vvytel.vnv_study import AbstractVnvStudy
-from execution.telemac_cas import TelemacCas, get_dico
 
 class VnvStudy(AbstractVnvStudy):
     """
@@ -31,6 +30,9 @@ class VnvStudy(AbstractVnvStudy):
         self.add_command('vnv_read_write_format',
                          'python3 read_write_format.py')
 
+        # Telemac2d api run of gouttedo
+        self.add_command('vnv_telemac_file',
+                         'python3 test_telemac_file.py')
 
 
     def _check_results(self):

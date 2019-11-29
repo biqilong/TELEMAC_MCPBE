@@ -171,7 +171,7 @@
 !
 !     DECODES 'SUBMIT' CHAINS
 !
-      CALL READ_SUBMIT(ART_FILES,MAXLU_ART,FILE_DESC,300)
+      CALL READ_SUBMIT(ART_FILES,MAXLU_ART,FILE_DESC,MAXKEYWORD)
 !
 !-----------------------------------------------------------------------
 !

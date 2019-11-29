@@ -5,9 +5,8 @@ Functions for validation that compare resultat and compute norms
 # ____/ Test case validation Toolkit /_____________________________/
 #
 #
-from data_manip.extraction.telemac_file import TelemacFile
-from utils.exceptions import TelemacException
 from numpy import sqrt, zeros
+from utils.exceptions import TelemacException
 ###############################################################################
 def mapdiff(a_1, a_2, notime=False, noname=False, relative=False):
     """
@@ -142,5 +141,6 @@ def checkval(a_0, eps, norm='linf'):
         if err >= final_eps[ivar]:
             print(" " * 12 + "Epsilon reached" + str(final_eps[ivar]))
             value = True
+    # Printing empty line
+    print("")
     return value and (not force_success)
-

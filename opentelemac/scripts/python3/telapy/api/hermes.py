@@ -184,7 +184,8 @@ class HermesFile():
         if self.boundary_file is not None:
             self.logger.debug("Closing bnd file %s", self.boundary_file)
             if HermesFile._hermes is not None:
-                self.error = HermesFile._hermes.close_bnd(self.fformat, self.my_id)
+                self.error = HermesFile._hermes.close_bnd(self.fformat,
+                                                          self.my_id)
 
         self.logger.debug("Closing mesh file %s", self.file_name)
         if HermesFile._hermes is not None:
@@ -273,7 +274,8 @@ class HermesFile():
         @returns The number of points
         """
 
-        self.logger.debug("Getting number of points %d %d",self.my_id, self.typ_elem)
+        self.logger.debug("Getting number of points %d %d",
+                          self.my_id, self.typ_elem)
         npoin, self.error = HermesFile._hermes.get_mesh_npoin(\
                            self.fformat, self.my_id, self.typ_elem)
 
@@ -513,7 +515,7 @@ class HermesFile():
                                 self.typ_bnd_elem,
                                 color)
 
-        return liubor, lihbor, livbor, hbor, ubor, vbor, chbord, \
+        return lihbor, liubor, livbor, hbor, ubor, vbor, chbord, \
             litbor, tbor, atbor, btbor, color
 
     def get_data_nvar(self):

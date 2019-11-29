@@ -69,7 +69,8 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF_DEF, ONLY:NCSIZE
-      USE DECLARATIONS_TELEMAC2D,ONLY:DTINI,LEOPRD,PTINIG,LT
+      USE DECLARATIONS_TELEMAC2D,ONLY:DTINI,LEOPRD,PTINIG,LT,NTRAC,
+     &                                LEO_TRAC
       USE INTERFACE_TELEMAC2D, EX_CALDT => CALDT
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY : P_DMIN
@@ -96,6 +97,7 @@
 !-----------------------------------------------------------------------
 !
       THEEND=.FALSE.
+      IF(LEO.OR.LT.EQ.1) LEO_TRAC = .FALSE.
       LEO   =.FALSE.
 !   +++++++++++++++++++++++++
 !     VARIABLE TIME STEP
@@ -215,6 +217,15 @@
 !           HERE THERE IS GRAPHICAL OUTPUT
             LEO = .TRUE.
             DT=MIN(RESTE,DT)
+          ENDIF
+          IF(ICIN.EQ.1.AND.NTRAC.GT.0) THEN
+            IF(LEO) THEN
+              LEO=.FALSE.
+              LEO_TRAC=.TRUE.
+            ELSEIF(LEO_TRAC) THEN
+              LEO=.TRUE.
+              LEO_TRAC=.FALSE.
+            ENDIF
           ENDIF
         ENDIF
 !

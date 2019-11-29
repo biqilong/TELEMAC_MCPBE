@@ -3,8 +3,21 @@ Trunk
 TELAPY: New function mpi_get, mpi_get_array (and set equivalent) to get array
 over global mesh
 
+TELAPY: New functions read/write for TelemacFile to modify a file.
+See notebook notebooks/telapy/telemac_file.ipynb for examples.
+
 Release V8P1R0 (xx/xx/xxxx)
 ===========================
+
+WAQTEL: fix the differences between source code and documentation for EUTRO, MICROPOL(2D)
+
+TELEMAC-3D: rewriting of one loop for Automatic Mesh Refinement (aka AMR or
+MESH TRANFORMATION = 5) to reduce the differences between sequential and parallel
+
+WAQTEL: fix the wrong formula for air specific moisture in CALCS2D_THERMIC
+
+WAQTEL: fix the Churchill formula for the computation of the reaeration coefficient K2
+for O2 and EUTRO
 
 WAQTEL: new theory guide + user manual completed
 
@@ -33,7 +46,7 @@ WAQTEL: fix the bug for degradation law in 3D (WATER QUALITY PROCESS = 17)
 
 TELEMAC-3D: Coupling of TELEMAC-3D with GOTM (standard GOTM)
 
-TELEMAC-3D/SISYPHE: fix the bug of writing of results at the wrong graphic output 
+TELEMAC-3D/SISYPHE: fix the bug of writing of results at the wrong graphic output
 
 TELEMAC-3D/WAQTEL: fix the bug of wrong formula for the linearised formula
 at the free surface for ATMOSPHERE-WATER EXCHANGE MODEL = 1

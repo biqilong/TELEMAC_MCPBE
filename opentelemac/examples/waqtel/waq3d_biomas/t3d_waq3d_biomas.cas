@@ -28,7 +28,7 @@ GRAPHIC PRINTOUT PERIOD            = 720
 LISTING PRINTOUT PERIOD            = 720
 NUMBER OF HORIZONTAL LEVELS        = 5
 /
-VARIABLES FOR 2D GRAPHIC PRINTOUTS = U,V,H
+VARIABLES FOR 2D GRAPHIC PRINTOUTS = U,V,H,TA*
 VARIABLES FOR 3D GRAPHIC PRINTOUTS = Z,U,V,W,TA*
 MASS-BALANCE                       = YES
 /----------------------------------------------------------------------
@@ -43,7 +43,8 @@ LAW OF BOTTOM FRICTION               = 0
 /----------------------------
 /          TRACER
 /----------------------------
-INITIAL VALUES OF TRACERS = 50.;3.;0.01;2.9;9.0
+/ here after, initial values of PHY,PO4,POR,NO3,NOR
+INITIAL VALUES OF TRACERS     = 50.;3.;0.01;2.9;9.0
 /************************************
 /  WATER QUALITY
 /************************************

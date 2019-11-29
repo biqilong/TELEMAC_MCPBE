@@ -270,7 +270,7 @@
 !
 !     DECODES THE SUBMIT STRINGS
 !
-      CALL READ_SUBMIT(T3D_FILES,MAXLU_T3D,FILE_DESC,300)
+      CALL READ_SUBMIT(T3D_FILES,MAXLU_T3D,FILE_DESC,MAXKEYWORD)
 !
 !-----------------------------------------------------------------------
 !

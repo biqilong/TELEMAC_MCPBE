@@ -239,7 +239,8 @@
       ENDIF
 !
 !     Identify the name of the mesh if in read only
-      IF(MED_MODE.EQ.MED_ACC_RDONLY) THEN
+      IF(MED_MODE.EQ.MED_ACC_RDONLY.OR.
+     &   (MED_MODE.EQ.MED_ACC_RDWR.AND..NOT.(PARTEL_CONCAT))) THEN
 !       ONLY ONE MESH PER FILE FOR NOW
         IMESH = MED_OBJ_TAB(MED_ID)%MESH_NUMBER
 !
@@ -4118,6 +4119,7 @@
       INTEGER :: LIST_VAL(NVAL(1)*NVAL(2)*NVAL(3))
       INTEGER :: IFAM
       INTEGER(KIND=KID) :: FID
+      LOGICAL, ALLOCATABLE :: WRITE_GRP(:)
 !
 !-----------------------------------------------------------------------
 !
@@ -4175,6 +4177,14 @@
      &         'ALLOCATING MEDOBJ%GRP_NAME'
           RETURN
         ENDIF
+        ALLOCATE(WRITE_GRP(MED_OBJ_TAB(MED_ID)%NBND_GRP), STAT=IERR)
+        IF(IERR.NE.0) THEN
+          ERROR_MESSAGE = 'ERROR IN '//
+     &         TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &         'ALLOCATING WRITE_GRP'
+          RETURN
+        ENDIF
+        WRITE_GRP = .FALSE.
 
         IFAM = 1
         DO I=1,NVAL(1)
@@ -4193,16 +4203,6 @@
      &                   TRIM(I2CHAR(U_VAL(J)))//
      &                   TRIM(I2CHAR(T_VAL(K)))
               MED_OBJ_TAB(MED_ID)%BND_GRP_NAME(IFAM) = GRP_NAME
-              FAM_NAME = 'FAM_'//TRIM(GRP_NAME)
-!             CREATING THE FAMILIES FOR EACH BOUNDARY TYPES
-              CALL MFACRE(FID,MNAME,FAM_NAME,IFAM+OFFSET,1,
-     &                    GRP_NAME,IERR)
-              IF(IERR.NE.0) THEN
-                ERROR_MESSAGE = 'ERROR IN '//
-     &               TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
-     &               'SET_BND_MED:MFACRE:'
-                RETURN
-              ENDIF
               IFAM = IFAM + 1
             ENDDO
           ENDDO
@@ -4228,6 +4228,8 @@
      &      LITBOR(IPTFR).EQ.MED_OBJ_TAB(MED_ID)%BND_GRP_VAL(J,4))
      &        THEN
                 FAM_NUM(IPTFR) = J + OFFSET
+                ! Counting families as used
+                WRITE_GRP(J) = .TRUE.
                 EXIT
               ENDIF
             ENDDO
@@ -4241,6 +4243,23 @@
      &             I2CHAR(LIVBOR(IPTFR))//' '//
      &             I2CHAR(LITBOR(IPTFR))
               RETURN
+            ENDIF
+          ENDDO
+
+          ! Creating families for each boundary type used
+          DO I=1,MED_OBJ_TAB(MED_ID)%NBND_GRP
+            IF(WRITE_GRP(I)) THEN
+              GRP_NAME = MED_OBJ_TAB(MED_ID)%BND_GRP_NAME(I)
+              FAM_NAME = 'FAM_'//TRIM(GRP_NAME)
+!             CREATING THE FAMILIES FOR EACH BOUNDARY TYPES
+              CALL MFACRE(FID,MNAME,FAM_NAME,I+OFFSET,1,
+     &                    GRP_NAME,IERR)
+              IF(IERR.NE.0) THEN
+                ERROR_MESSAGE = 'ERROR IN '//
+     &               TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &               'SET_BND_MED:MFACRE:'
+                RETURN
+              ENDIF
             ENDIF
           ENDDO
 !
@@ -4266,14 +4285,16 @@
         ENDDO
       ENDIF
 !     WRITING THE BOUNDARY FILE
-      WRITE(NCLI,*) MED_OBJ_TAB(MED_ID)%NBND_GRP
+      WRITE(NCLI,*) COUNT(WRITE_GRP)
       DO I=1,MED_OBJ_TAB(MED_ID)%NBND_GRP
-        WRITE(NCLI,*)
+        IF(WRITE_GRP(I)) THEN
+          WRITE(NCLI,*)
      &               MED_OBJ_TAB(MED_ID)%BND_GRP_VAL(I,1),
      &               MED_OBJ_TAB(MED_ID)%BND_GRP_VAL(I,2),
      &               MED_OBJ_TAB(MED_ID)%BND_GRP_VAL(I,3),
      &               MED_OBJ_TAB(MED_ID)%BND_GRP_VAL(I,4),
      &               TRIM(MED_OBJ_TAB(MED_ID)%BND_GRP_NAME(I))
+        ENDIF
       ENDDO
 
 #else

@@ -775,7 +775,6 @@
         INTEGER, OPTIONAL, INTENT(IN)  :: MESH_NUMBER
         !
         INTEGER SRF_ID, LINE_BEGIN, LINE_END
-        LOGICAL ISOPENED
         !
         CALL GET_OBJ(HASH,FILE_ID,SRF_ID,IERR)
         IF(IERR.NE.0) THEN
@@ -784,12 +783,9 @@
           RETURN
         ENDIF
         !
-        ISOPENED = .FALSE.
         ! Check if the file is still opened as it could have been closed
         ! by another mesh file (see open_bnd_srf for more information)
-        INQUIRE(UNIT=SRF_OBJ_TAB(SRF_ID)%NCLI,OPENED=ISOPENED)
-        IERR = 0
-        IF(ISOPENED) THEN
+        IF(ISOPENED(SRF_OBJ_TAB(SRF_ID)%NCLI)) THEN
           IF(PRESENT(MESH_NUMBER).AND.PARTEL_CONCAT)THEN
             LINE_BEGIN = SRF_OBJ_TAB(SRF_ID)%CLI_LINE_BEGIN
             LINE_END = SRF_OBJ_TAB(SRF_ID)%NPTFR + LINE_BEGIN
@@ -870,8 +866,7 @@
      &                     SRF_OBJ_TAB(SRF_ID)%POS_TITLE,OFFSET)
         ENDIF
         !If an index file was open with the mesh we must close it too
-        INQUIRE(UNIT=SRF_OBJ_TAB(SRF_ID)%MESH_IDX_ID, OPENED=ISOPEN)
-        IF(ISOPEN)THEN
+        IF(ISOPENED(SRF_OBJ_TAB(SRF_ID)%MESH_IDX_ID))THEN
           CLOSE(SRF_OBJ_TAB(SRF_ID)%MESH_IDX_ID)
         ENDIF
 
@@ -879,6 +874,12 @@
         HASH(SRF_ID) = 0
         ! Closing the file
         CLOSE(FILE_ID,IOSTAT=IERR)
+        IF(IERR.NE.0) THEN
+          ERROR_MESSAGE = 'ERROR IN '//
+     &         TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
+     &         'CLOSE_MESH_SRF:CLOSE'
+          RETURN
+        ENDIF
         ! RESET SRF_OBJ_TAB(SRF_ID) TO ZEROS
         ! POSITION IN FILE
         SRF_OBJ_TAB(SRF_ID)%POS_TITLE = 1
@@ -2441,6 +2442,16 @@
      &           'ALLOCATING SET_HEADER:SRF_OBJ_TAB%VARLIST'
             RETURN
           ENDIF
+        ! Case were user modified nvar between read and write
+        ELSE IF(LEN(SRF_OBJ_TAB(SRF_ID)%VAR_LIST).NE.NVAR) THEN
+          DEALLOCATE(SRF_OBJ_TAB(SRF_ID)%VAR_LIST)
+          ALLOCATE(SRF_OBJ_TAB(SRF_ID)%VAR_LIST(NVAR),STAT=IERR)
+          IF(IERR.NE.0) THEN
+            ERROR_MESSAGE = 'ERROR IN '//
+     &           TRIM(SRF_OBJ_TAB(SRF_ID)%FILE_NAME)//': '//
+     &           'ALLOCATING SET_HEADER:SRF_OBJ_TAB%VARLIST'
+            RETURN
+          ENDIF
         ENDIF
         TAG = VAR_SIZE
         DO I=1, NVAR
@@ -3110,5 +3121,38 @@
 
       END SUBROUTINE
 !
+!***********************************************************************
+      FUNCTION ISOPENED
+!***********************************************************************
+     &(FILE_ID)
+!
+!***********************************************************************
+! HERMES   V8P1                                               15/11/2019
+!***********************************************************************
+!
+!brief    Check is a file descriptor is opened.
+!         Return False if the file descriptor happened to be stdin,
+!         stdout or stderr
+!
+!history  Judicael Grasset (STFC-DL)
+!+        15/11/2019
+!+        V8P1
+!+
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| FILE_ID        |-->| FILE DESCRIPTOR
+!| ISOPENED       |<--| RETURN VALUE
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+        USE ISO_FORTRAN_ENV, ONLY : INPUT_UNIT,OUTPUT_UNIT,ERROR_UNIT
+        INTEGER, INTENT(IN) :: FILE_ID
+        LOGICAL :: ISOPENED
+        IF(FILE_ID==INPUT_UNIT.OR.FILE_ID==OUTPUT_UNIT
+     &       .OR.FILE_ID==ERROR_UNIT)THEN
+          ISOPENED=.FALSE.
+        ELSE
+          INQUIRE(UNIT=FILE_ID,OPENED=ISOPENED)
+        ENDIF
+      END FUNCTION ISOPENED
+!
       END MODULE UTILS_SERAFIN
-

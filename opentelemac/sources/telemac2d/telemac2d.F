@@ -405,7 +405,7 @@
 !
 ! ADDED FOR KINETIC SCHEMES
 !
-      DOUBLE PRECISION DTN,FLUSORTN,FLUENTN,DTT,SVOID(1)
+      DOUBLE PRECISION FLUSORTN,FLUENTN,DTT,SVOID(1)
 !
 !-----------------------------------------------------------------------
 !
@@ -563,7 +563,7 @@
       ! If pass == 2 (writing results only)
       IF(PASS.EQ.2) GOTO 800
 !
-      LT = LT + 1
+666   LT = LT + 1
 !
       IF(BRECHE) THEN
         IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING BREACH'
@@ -2029,6 +2029,11 @@
 !
 ! 700: TIME LOOP
 !
+      ! Work around for finite volume with api
+      IF((EQUA(1:15).EQ.'SAINT-VENANT VF')
+     &   .AND.PASS.EQ.2.AND.LT.LT.NIT) THEN
+        GOTO 666
+      ENDIF
       IF(LT.LT.NIT) GO TO 700
 !
 !=======================================================================

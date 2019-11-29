@@ -43,7 +43,8 @@ LAW OF BOTTOM FRICTION               = 0
 /----------------------------
 /          TRACER
 /----------------------------
-INITIAL VALUES OF TRACERS = 50.; 3.; 0.01
+/ here after, initial values of O2,L, NH4
+INITIAL VALUES OF TRACERS    = 50.;3.;0.01
 /************************************
 /  WATER QUALITY
 /************************************

@@ -1,7 +1,7 @@
 \chapter{O2 module}
 \label{subs:O2:mod}
 
-The O$_2$ module is a simple model that describes the evolution of the oxygen density in the water.
+The O$_2$ module is a simple model that describes the oxygen density evolution in the water.
 It is activated by setting \telkey{WATER QUALITY PROCESS} = 2.
 It offers the advantage of being simple and then easy to calibrate.
 Indeed, since some important parameters are kept constant
@@ -22,7 +22,7 @@ These tracers are hence, advected and dispersed in the whole water mass
 and their evolution obeys the advection-diffusion equation linked to external and internal source terms.
 
 For more details about the theory of the O$_2$ module,
-the reader can refer to the \waqtel theory guide.
+the reader can refer to the \waqtel technical manual.
 
 
 \section{The dissolved oxygen}
@@ -61,7 +61,8 @@ This value of temperature is useful when the temperature is not considered
 as a tracer in the model.
 Otherwise, the real temperature is taken into account.
 
-The following Table gives some typical values of benthic demand.\\
+The following Table gives some typical values of benthic demand
+at $T$ = 20$^\circ$C (i.e. $BEN_{20^\circ \rm{C}}$).\\
 
 \begin{table}[H]
  			\centering
@@ -69,7 +70,7 @@ The following Table gives some typical values of benthic demand.\\
 \hline
 %row no:1
 \multicolumn{1}{|p{3.0in}}{Bottom type} & 
-\multicolumn{1}{|p{3.0in}|}{Typical value of $BEN$ (g/m$^2$/d) at 20$^{\circ}$C} \\
+\multicolumn{1}{|p{3.0in}|}{Typical value of $BEN$ (gO$_2$/m$^2$/d) at 20$^{\circ}$C} \\
 \hline
 %\hhline{--}
 %row no:2
@@ -78,12 +79,12 @@ The following Table gives some typical values of benthic demand.\\
 \hline
 %\hhline{--}
 %row no:3
-\multicolumn{1}{|p{3.0in}}{Mud from waste water, near to discharge} & 
+\multicolumn{1}{|p{3.0in}}{Mud from waste water, near to release} & 
 \multicolumn{1}{|p{3.0in}|}{4} \\
 \hline
 %\hhline{--}
 %row no:4
-\multicolumn{1}{|p{3.0in}}{Mud from waste water, far from discharge } & 
+\multicolumn{1}{|p{3.0in}}{Mud from waste water, far from release } & 
 \multicolumn{1}{|p{3.0in}|}{1.5} \\
 \hline
 %\hhline{--}
@@ -93,7 +94,7 @@ The following Table gives some typical values of benthic demand.\\
 \hline
 %\hhline{--}
 %row no:6
-\multicolumn{1}{|p{3.0in}}{Sandy bottom} & 
+\multicolumn{1}{|p{3.0in}}{Sand} & 
 \multicolumn{1}{|p{3.0in}|}{0.5} \\
 \hline
 %\hhline{--}
@@ -115,10 +116,10 @@ It is given directly by the user with keyword \telkey{VEGETAL RESPIRATION R}
 
 \subsection{Photosynthesis P}
 
-Photosynthesis $P$ depends on algae density,
-water depth and sunlight.
-It is very often between 0.3 and 9 mgO$_2$/d/l.
-For O$_2$ module, it is given by the user with the keyword
+The photosynthesis $P$ depends on algae density,
+water depth and sunlight,
+with order of magnitude between 0.3 and 9 mgO$_2$/d/l.
+For O$_2$ module, $P$ is given by the user with the keyword
 \telkey{PHOTOSYNTHESIS P} (default = 1~mgO$_2$/d/l).
 
 
@@ -170,12 +171,12 @@ Its orders of magnitude are indicated in the Table below
 \hline
 %\hhline{--}
 %row no:4
-\multicolumn{1}{|p{3.0in}}{Large streams of low velocity} & 
+\multicolumn{1}{|p{3.0in}}{Large streams of low velocity flow} & 
 \multicolumn{1}{|p{3.0in}|}{0.35-0.46} \\
 \hline
 %\hhline{--}
 %row no:5
-\multicolumn{1}{|p{3.0in}}{Large streams of normal velocity} & 
+\multicolumn{1}{|p{3.0in}}{Large streams of normal velocity flow} & 
 \multicolumn{1}{|p{3.0in}|}{0.46-0.69} \\
 \hline
 %\hhline{--}
@@ -271,7 +272,7 @@ to be with a 1$^{\rm{st}}$ order law:
 \begin{equation*}
  F([L]) = -k_1 [L],
 \end{equation*}
-where $k_1$ is a constant that describes the kinetic of degradation of the organic load.
+where $k_1$ is a constant that describes the kinetic degradation of the organic load.
 It is given using the keyword \telkey{CONSTANT OF DEGRADATION OF ORGANIC LOAD K1}
 (default 0.25~d$^{-1}$).
 The organic load is in mgO$_2$/l.
@@ -284,7 +285,7 @@ has a density varying in time with a 1$^{\rm{st}}$ order law given by:
 \begin{equation*}
  F([NH_4]) = -k_4 [NH_4],
 \end{equation*}
-where $k_4$ is a constant of nitrification kinetic.
+where $k_4$ is a nitrification kinetic constant.
 It is given by \telkey{CONSTANT OF NITRIFICATION KINETIC K4} (default 0.35~d$^{-1}$).
 In this module, $k_4$ is assumed to be constant and independent of remaining variables.
 

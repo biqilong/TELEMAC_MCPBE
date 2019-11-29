@@ -122,7 +122,7 @@
 !
 !     DECODES 'SUBMIT' CHAINS
 !
-      CALL READ_SUBMIT(WAQ_FILES,MAXLU_WAQ,FILE_DESC,300)
+      CALL READ_SUBMIT(WAQ_FILES,MAXLU_WAQ,FILE_DESC,MAXKEYWORD)
 !
 !-----------------------------------------------------------------------
 !

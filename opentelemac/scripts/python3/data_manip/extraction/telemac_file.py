@@ -3,20 +3,20 @@ Contains the class TelemacFile
 """
 from utils.exceptions import TelemacException
 from telapy.api.hermes import HermesFile
+from data_manip.extraction.linspace import \
+        linspace_poly, curvilinear_abscissa
 from os import path
 import math
 import numpy as np
 from scipy.spatial import cKDTree
 import matplotlib.tri as mtri
-from data_manip.extraction.linspace import \
-        linspace_poly, curvilinear_abscissa
 
 class TelemacFile(HermesFile):
     """
     Class to extract data from a TelemacFile
     """
 
-    def __init__(self, file_name, bnd_file=None, log_lvl='INFO'):
+    def __init__(self, file_name, bnd_file=None, log_lvl='INFO', fformat=None, access='r'):
         """
         Initialisation of a file reader
 
@@ -25,22 +25,24 @@ class TelemacFile(HermesFile):
         @parma log_lvl (str) Level of log information
         """
 
-        # Identifying format from file extension if not given
-        _, ext = path.splitext(file_name)
-        if ext == '.med':
-            fformat = 'MED'
-        else:
-            fformat = 'SERAFIN'
+        # Identifying format from file extension if fformat not given
+        if fformat is None:
+            _, ext = path.splitext(file_name)
+            if ext == '.med':
+                fformat = 'MED'
+            else:
+                fformat = 'SERAFIN'
+
         HermesFile.__init__(self, file_name,
                             boundary_file=bnd_file,
+                            access=access,
                             fformat=fformat,
                             log_lvl=log_lvl)
 
         self._title = None
-        self._nvar = None
-        self._varnames = None
-        self._varunits = None
         self._datetime = None
+
+        self._ndim = None
         self._nelem3 = None
         self._npoin3 = None
         self._ndp3 = None
@@ -50,13 +52,30 @@ class TelemacFile(HermesFile):
         self._ndp2 = None
         self._meshx = None
         self._meshy = None
+        self._meshz = None
         self._ikle3 = None
         self._ikle2 = None
+
         self._ipob3 = None
         self._ipob2 = None
+        self._nptfr = None
+        self._nelebd = None
+        self._ikle_bnd = None
+        self._nbor = None
+        self._bnd_info = None
+
+        self._nptir = None
+        self._knolg = None
+
         self._ntimestep = None
-        self._tri = None
+        self._nvar = None
+        self._varnames = None
+        self._varunits = None
         self._times = None
+        self._values = None
+        self._times = None
+
+        self._tri = None
         self.tree = None
         self.neighbours = None
         self.edges = None
@@ -138,6 +157,16 @@ class TelemacFile(HermesFile):
     def datetime(self, value):
         """ Setting datetime value """
         self._datetime = value
+
+    @property
+    def ndim(self):
+        """
+        Return the dimnesion of the mesh
+        """
+        if self._ndim is None:
+            self._ndim = self.get_mesh_dimension()
+
+        return self._ndim
 
     @property
     def nelem3(self):
@@ -243,12 +272,56 @@ class TelemacFile(HermesFile):
         return self._ikle2
 
     @property
+    def nptfr(self):
+        """
+        Returns the number of boundary points
+        """
+        if self._nptfr is None:
+            if self.boundary_file is not None:
+                self._nptfr = self.get_bnd_npoin()
+            else:
+                self._nptfr = 0
+
+        return self._nptfr
+
+    @property
+    def nelebd(self):
+        """
+        Returns the number of boundary elements
+        """
+        if self._nelebd is None:
+            if self.boundary_file is not None:
+                self._nelebd = self.get_bnd_npoin()
+            else:
+                raise TelemacException(\
+                        "Can not read nelebd no boundary file was given")
+
+        return self._nelebd
+
+    @property
+    def ikle_bnd(self):
+        """
+        Returns the number of boundary elements
+        """
+        if self._ikle_bnd is None:
+            if self.boundary_file is not None:
+                self._ikle_bnd = self.get_bnd_connectivity()
+            else:
+                raise TelemacException(\
+                        "Can not read ikle_bnd no boundary file was given")
+
+        return self._ikle_bnd
+
+    @property
     def ipob3(self):
         """
         Returns the ipobo array for 3d points
         """
         if self._ipob3 is None:
-            self._ipob3 = self.get_bnd_ipobo()
+            if self.boundary_file is not None:
+                self._ipob3 = self.get_bnd_ipobo()
+            else:
+                self._ipob3 = np.zeros((self.npoin3))
 
         return self._ipob3
 
@@ -284,6 +357,43 @@ class TelemacFile(HermesFile):
             self._meshy = self.get_mesh_coord(2)
 
         return self._meshy
+
+    @property
+    def meshz(self):
+        """
+        Returns y coordinates value
+        """
+        if self._meshz is None:
+            if self.ndim == 3:
+                self._meshz = self.get_mesh_coord(3)
+            else:
+                self._meshz = None
+
+        return self._meshy
+
+
+    @property
+    def nptir(self):
+        """
+        Returns the number of interface points
+        """
+        if self._nptir is None:
+            self._nptir = self.get_mesh_nptir()
+
+        return self._nptir
+
+    @property
+    def knolg(self):
+        """
+        Return the local to global numbering array
+        """
+        if self._knolg is None:
+            if self.nptir > 0:
+                self._knolg = self.get_mesh_l2g_numbering()
+            else:
+                self._knolg = np.zeros((self.npoin3), dtype=np.int32)
+
+        return self._knolg
 
     @property
     def ntimestep(self):
@@ -441,7 +551,8 @@ class TelemacFile(HermesFile):
                               self.meshy[np.roll(self.ikle2, 1)]),
                                               axis=1)/3.0)))
         for i in range(len(polyline)-1):
-            dio = math.sqrt(sum(np.square(np.array(polyline[i])-np.array(polyline[i+1]))))
+            dio = math.sqrt(sum(np.square(np.array(polyline[i])\
+                                          -np.array(polyline[i+1]))))
             discret.append(int(dio/dxy))
 
         return discret
@@ -451,15 +562,43 @@ class TelemacFile(HermesFile):
     # Computing boundary information
     #
     #############################################
+    @property
+    def nbor(self):
+        """
+        Returns the boundary numbering
+        """
+        if self._nbor is None:
+            if self.boundary_file is not None:
+                self._nbor = self.get_bnd_numbering()
+            else:
+                raise TelemacException(\
+                        "Can not read nbor no boundary file was given")
+
+        return self._nbor
+
+    @property
+    def bnd_info(self):
+        """
+        Get information for the boudnary file
+        """
+        if self._bnd_info is None:
+            if self.boundary_file is not None:
+                self._bnd_info = self.get_bnd_value()
+            else:
+                raise TelemacException(\
+                        "Can not read bnd_info no boundary file was given")
+
+        return self._bnd_info
+
     def get_bnd_info(self):
         """
         Get boundary condition type of nodes
         """
-        nbor = self.get_bnd_numbering()
-        liubor, lihbor, livbor, _, _, _, _, \
-            litbor, _, _, _, _ = self.get_bnd_value()
+        nbor = self.nbor
+        lihbor, liubor, livbor, _, _, _, _, \
+            litbor, _, _, _, _ = self.bnd_info
 
-        return (nbor, liubor, lihbor, livbor, litbor)
+        return (nbor, lihbor, liubor, livbor, litbor)
 
     def get_liq_bnd_info(self):
         """
@@ -549,8 +688,8 @@ class TelemacFile(HermesFile):
             raise TelemacException('Warning the dimension of the result '\
                                    'file is greater than 2')
         data_interp = mtri.LinearTriInterpolator(self.tri, values)
-        pt_x = [ pt[0] for pt in points]
-        pt_y = [ pt[1] for pt in points]
+        pt_x = [pt[0] for pt in points]
+        pt_y = [pt[1] for pt in points]
         res = data_interp(pt_x, pt_y)
         return res
 
@@ -890,7 +1029,8 @@ class TelemacFile(HermesFile):
         is_spectrum = self.ndp3 == 4
         regex = re.compile(r'F[0-9]{2} PT2D[0-9]{6}')
         is_spectrum = is_spectrum and \
-                      all([regex.match(var) is not None for var in self.varnames])
+                      all([regex.match(var) is not None\
+                               for var in self.varnames])
 
         return is_spectrum
 
@@ -903,7 +1043,8 @@ class TelemacFile(HermesFile):
         frequencie steps
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException("This file does not seem to be a spectrum file")
+            raise TelemacException(\
+                    "This file does not seem to be a spectrum file")
 
         nfreq = 0
         eps = 1e-6
@@ -940,7 +1081,8 @@ class TelemacFile(HermesFile):
         Returns the list of spectrum points in the file
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException("This file does not seem to be a spectrum file")
+            raise TelemacException(\
+                    "This file does not seem to be a spectrum file")
 
         points = []
         for var in self.varnames:
@@ -958,7 +1100,8 @@ class TelemacFile(HermesFile):
         @returns (string) Name of the variable
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException("This file does not seem to be a spectrum file")
+            raise TelemacException(\
+                    "This file does not seem to be a spectrum file")
 
         spectrum_var = None
         # Getting the variable for point point
@@ -986,7 +1129,8 @@ class TelemacFile(HermesFile):
         dispersion values
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException("This file does not seem to be a spectrum file")
+            raise TelemacException(\
+                    "This file does not seem to be a spectrum file")
 
         spectrum_var = self.get_spectrum_varname(point)
 
@@ -1028,7 +1172,8 @@ class TelemacFile(HermesFile):
         values
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException("This file does not seem to be a spectrum file")
+            raise TelemacException(\
+                    "This file does not seem to be a spectrum file")
 
         spectrum_var = self.get_spectrum_varname(point)
 
@@ -1046,3 +1191,186 @@ class TelemacFile(HermesFile):
         spectrum = np.sum(data, axis=1) * 2*np.pi/ntheta
 
         return freqs, spectrum
+
+    ###
+    # Loading/Dumping functions
+    ###
+
+    def read(self, src):
+        """
+        This function will read all the information within a
+        telemac file and store it in its variables
+
+        @param src (TelemacFile) Object from which to read data
+        """
+        self.read_mesh(src)
+        self.read_data(src)
+
+    def read_mesh(self, src):
+        """
+        This function will read all the information within the
+        telemac file and store it in its variables
+
+        @param src (TelemacFile) Object from which to read data
+        """
+        self.logger.debug("Reading mesh information from file %s",
+                          src.file_name)
+
+        self._title = src.title
+        self._datetime = src.datetime
+
+        self._ndim = src.ndim
+
+        # copying mesh quantities
+        self._npoin3 = src.npoin3
+        self._nelem3 = src.nelem3
+        self._ndp3 = src.ndp3
+        self._nplan = src.nplan
+        self.typ_elem = src.typ_elem
+
+        # Copying mesh coordiantes
+        self._meshx = src.meshx
+        self._meshy = src.meshy
+        self._meshz = src.meshz
+
+        # Copying connectivity
+        self._ikle3 = src.ikle3
+
+        # Parallel interface information
+        self._nptir = src.nptir
+        self._knolg = src.knolg
+
+        # Boundary information
+        # nptfr and ipob3 are read reagrdless of presence of boundary file
+        # As they are need in serafin format
+        self._nptfr = src.nptfr
+        self._ipob3 = src.ipob3
+        if self.boundary_file is not None:
+            self.typ_bnd_elem = src.typ_bnd_elem
+            self._nelebd = src.nelebd
+            self._bnd_info = src.bnd_info
+            self._ikle_bnd = src.ikle_bnd
+            self._nbor = src.nbor
+
+    def read_data(self, src):
+        """
+        Read information on fields (variables, records, value for each variable
+        and record)
+        Warning this function can be very memory consuming if you have lots of
+        records and variables
+
+        @param src (TelemacFile) Object from which to read data
+        """
+        self.logger.debug("Reading data information from file %s",
+                          src.file_name)
+        self._ntimestep = src.get_data_ntimestep()
+        self._nvar = src.get_data_nvar()
+        self._varnames, self._varunits = src.get_data_var_list()
+
+        self._times = np.zeros((self._ntimestep), dtype=np.float64)
+        self._values = np.zeros((self._ntimestep, self._nvar, self._npoin3),
+                                dtype=np.float64)
+
+        for i in range(self._ntimestep):
+            self._times[i] = src.get_data_time(i)
+            for j in range(self._nvar):
+                self._values[i, j] = src.get_data_value(self._varnames[j], i)
+
+    def write(self):
+        """
+        Writting data from class into file
+        """
+        # Header part
+        self.logger.debug("Writting header information from class in file %s",
+                          self.file_name)
+        # Checking that variables are properly sets
+        for variable in ['title', 'varnames', 'varunits', 'nvar']:
+            if getattr(self, "_"+variable) is None:
+                raise TelemacException("Missing {} in class".format(variable))
+
+        # Checking dimensions of varnames and varunits
+        if len(self._varnames) != self._nvar:
+            raise TelemacException(\
+                    "Error in varnames we have {} variables and {} names" \
+                    "\n varnames: {}"\
+                    .format(self._nvar, len(self._varnames), self._varnames))
+        if len(self._varunits) != self._nvar:
+            raise TelemacException(\
+                    "Error in varnames we have {} variables and {} units"\
+                    "\n varunits: {}"\
+                    .format(self._nvar, len(self._varunits), self._varunits))
+
+        self.set_header(self._title, self._nvar, self._varnames, self._varunits)
+
+        # Mesh part
+        date2 = np.zeros((3), dtype=np.int32)
+        time2 = np.zeros((3), dtype=np.int32)
+        date2[0] = self._datetime[0]
+        date2[1] = self._datetime[1]
+        date2[2] = self._datetime[2]
+        time2[0] = self._datetime[3]
+        time2[1] = self._datetime[4]
+        time2[2] = self._datetime[5]
+
+        self.logger.debug("Writting mesh information from class in file %s",
+                          self.file_name)
+        # Checking that variables are properly sets
+        for variable in ['ndim', 'ndp3', 'nptfr', 'nptir', 'nelem3', 'npoin3',
+                         'ikle3', 'ipob3', 'knolg', 'meshx', 'meshy', 'nplan',
+                         'datetime']:
+            if getattr(self, "_"+variable) is None:
+                raise TelemacException("Missing {} in class".format(variable))
+
+        self.set_mesh(self._ndim, self.typ_elem, self._ndp3, self._nptfr,
+                      self._nptir, self._nelem3, self._npoin3,
+                      self._ikle3, self._ipob3, self._knolg,
+                      self._meshx, self._meshy, self._nplan, date2,
+                      time2, self._meshz)
+
+        # Boundary part
+        if self.boundary_file is not None:
+            self.logger.debug("Writting bnd information from class in file %s",
+                              self.file_name)
+            # Checking that variables are properly sets
+            for variable in ['nelebd', 'ikle_bnd', 'bnd_info', 'nbor']:
+                if getattr(self, "_"+variable) is None:
+                    raise TelemacException(\
+                            "Missing {} in class".format(variable))
+
+            lihbor, liubor, livbor, hbor, ubor, vbor, chbord, \
+                    litbor, tbor, atbor, btbor, color = self._bnd_info
+
+
+            self.set_bnd(self.typ_bnd_elem, self._nelebd, self._ikle_bnd,
+                         lihbor, liubor, livbor, hbor, ubor, vbor, chbord,
+                         litbor, tbor, atbor, btbor, color)
+
+        # Data part
+        self.logger.debug("Writting data information from class in file %s",
+                          self.file_name)
+
+        # Checking that variables are properly sets
+        for variable in ['ntimestep', 'times', 'nvar', 'values']:
+            if getattr(self, "_"+variable) is None:
+                raise TelemacException("Missing {} in class".format(variable))
+
+        # Chacking dimensions of values and times
+        if self._values.shape != (self._ntimestep, self._nvar, self._npoin3):
+            raise TelemacException(\
+                "Error in shape of values (ntimestep, nvar, npoin3):"
+                "\nvalues is {} and should be {}"\
+                .format(self._values.shape,
+                        (self._ntimestep, self._nvar, self._npoin3)))
+
+        if self._times.shape != (self._ntimestep,):
+            raise TelemacException(\
+                "Error in shape of times (ntimestep):"
+                "\ntimes is {} and should be {}"\
+                .format(self._times.shape,
+                        (self._ntimestep,)))
+
+        for i in range(self._ntimestep):
+            time = self._times[i]
+            for j in range(self._nvar):
+                self.add_data(self._varnames[j], self._varunits[j],
+                              time, i, j == 0, self._values[i, j])

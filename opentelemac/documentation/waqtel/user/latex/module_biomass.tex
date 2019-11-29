@@ -2,15 +2,15 @@
 
 The BIOMASS module is a water quality module which allows the calculation of algal biomass.
 It estimates the extent of vegetal colonization in terms of various parameters:
-sunshine, water temperature, degree of fertilization, ratio of water renewal,
+sunlight, water temperature, fertilization degree, water renewal ratio,
 water turbidity and toxicity \cite{gosse_biomass_1983}.
-It is activated by setting \telkey{WATER QUALITY PROCESS} = 3.
+The BIOMASS module is activated by setting \telkey{WATER QUALITY PROCESS} = 3.
 
-It takes into account of five tracers:
+It takes into account five tracers:
 
 \begin{itemize}
 \item phytoplankton biomass PHY,
-\item the principal nutrients that influence its production (phosphorus, nitrogen)
+\item the principal nutrients influencing its production (phosphorus, nitrogen)
   as well as the associated mineral forms, namely:
 
 \begin{itemize}
@@ -21,12 +21,12 @@ It takes into account of five tracers:
 \end{itemize}
 \end{itemize}
 
-These variables are all expressed in mg/l except biomass which is expressed in $\mu$g(Chlorophyl a)/l.\\
+These variables are all expressed in mg/l except biomass that is expressed in $\mu$g(Chlorophyl a)/l.\\
 
-The following paragraphs explain the internal source terms relating to the 5 tracers.
+The following sections explain the internal source terms.
 
 For more details about the theory of the O2 module,
-the reader can refer to the \waqtel theory guide.
+the reader can refer to the \waqtel technical manual.
 
 
 \section{Processes represented}
@@ -42,28 +42,28 @@ These deposition fluxes therefore correspond to a definitive loss of mass.
 
 \subsection{Algal growth}
 
-The rate of algal growth $CP$ (d$^{-1}$) is given by the equation:
+The algal growth rate $CP$ (d$^{-1}$) is given by:
 
 \begin{equation*}
   CP = C_{max} RAY g_1 LNUT \alpha_1,
 \end{equation*}
 
-with $C_{max}$ = maximum rate of algal growth at 20$^{\circ}$C,
+with $C_{max}$ = maximum algal growth rate at 20$^{\circ}$C;
 one can set its value with the keyword \telkey{MAXIMUM ALGAL GROWTH RATE AT 20C} (default = 2).
-$RAY$ represents the effect of sunshine on algal growth,
-this dimensionless parameter belongs to the interval [0;1].
+$RAY$ represents the effect of sunlight on algal growth,
+this dimensionless parameter ranges between 0 and 1.
 $g_1 = T/20$ represents the effect of temperature on algal growth.
 $LNUT$ represents the effects of phosphoric and nitric nutrients on algal growth.
 $\alpha_1$ = water toxicity coefficient for algae ($\alpha_1$ = 1 in the absence of toxicity),
 this last value can be chosen with the 1$^{\textrm{st}}$ value of the keyword
 \telkey{ALGAL TOXICITY COEFFICIENTS} (default = 1).\\
-$RAY$ is calculated by the Smith formula integrated over the vertical:
+$RAY$ is calculated by the Smith formula averaged over the vertical:
 
 \begin{equation*}
   RAY = \frac{1}{k_e h} \log \left( \frac{I_0 + \sqrt{IK^2+I_0^2} }{ I_h + \sqrt{IK^2+I_h^2} }  \right),
 \end{equation*}
 
-where $k_e$ designates the extinction coefficient of solar rays in water.
+where $k_e$ is the extinction coefficient of solar rays in water.
 The formula to compute $k_e$ can be chosen with the keyword
 \telkey{METHOD OF COMPUTATION OF RAY EXTINCTION COEFFICIENT} (default = 1~m$^{-1}$):
 \begin{itemize}
@@ -74,16 +74,16 @@ The formula to compute $k_e$ can be chosen with the keyword
     where $k_{pe}$ is the coefficient of vegetal turbidity without phytoplankton
     provided with the keyword \telkey{VEGETAL TURBIDITY COEFFICIENT WITHOUT PHYTO}
     (default = 0~m$^{-1}$)
-    and $\beta$ the coefficient of the Moss relation ($\beta$ = 0.015).
+    and $\beta$ the Moss coefficient ($\beta \approx$ 0.015).
 \end{itemize}
 
-$IK$ is a calibrating parameter in the Smith formula (W/m$^2$)
+$IK$ is a calibrating parameter
 associated to the keyword \telkey{PARAMETER OF CALIBRATION OF SMITH FORMULA}
 (default = 120~W/m$^2$) of an order of magnitude 100.
 $I_0$ is the flux density of solar radiation on the surface
 which can be set with the keyword \telkey{SUNSHINE FLUX DENSITY ON WATER SURFACE}
 (default = 0~W/m$^2$)
-and $I_h$ is the flux density of solar radiation at the bottom (W/m$^2$), calculated by the following formula:
+and $I_h$ is the flux density of solar radiation at the bed bottom (W/m$^2$), calculated as:
 
 \begin{equation*}
   I_h = I_0 \exp (-k_e h).
@@ -95,25 +95,25 @@ $LNUT$ is calculated by the formula:
   LNUT = \min \left( \frac{[PO_4]}{KP+[PO_4]}, \frac{[NO_3]}{KN+[NO_3]} \right),
 \end{equation*}
 
-with $KP$ = constant of phosphate half-saturation
+with $KP$ = phosphate half-saturation constant
 set with the keyword \telkey{CONSTANT OF HALF-SATURATION WITH PHOSPHATE}
 (default = 0.005 mgP/l),
-and $KN$ = constant of nitrate half-saturation
+and $KN$ = nitrate half-saturation constant
 set with the keyword \telkey{CONSTANT OF HALF-SATURATION WITH NITROGEN}
 (default = 0.03~mgN/l).\\
 
 \subsection{Algal disappearance}
 
-The rate of algal disappearance $DP$ (d$^{-1}$) is given by the equation:
+The algal disappearance rate $DP$ (d$^{-1}$) is given as:
 
 \begin{equation*}
   DP = (RP+MP) g_2,
 \end{equation*}
 
-with $RP$ = the rate of algal biomass respiration at 20$^{\circ}$C
+with $RP$ = algal biomass respiration rate at 20$^{\circ}$C
 given by the keyword \telkey{RESPIRATION RATE OF ALGAL BIOMASS}
 (default = 0.05~d$^{-1}$),
-$MP$ = the rate of algal biomass disappearance at 20$^{\circ}$C (d$^{-1}$).
+$MP$ = algal biomass disappearance rate at 20$^{\circ}$C (d$^{-1}$).
 $g_2 = T/20$ represents the effect of temperature on algal disappearance.
 $MP$ is given by the following relation:
 
@@ -121,10 +121,10 @@ $MP$ is given by the following relation:
   MP = M_1 + M_2 [PHY] + \alpha_2,
 \end{equation*}
 
-with $M_1$ and $M_2$ = coefficients of algal mortality at 20$^{\circ}$C
+with $M_1$ and $M_2$ = algal mortality coefficients at 20$^{\circ}$C
 which can be set with the keyword
 \telkey{COEFFICIENTS OF ALGAL MORTALITY AT 20C} (default = (0.1;0.003)),
-$\alpha_2$ = coefficient of water toxicity for algae,
+$\alpha_2$ = water toxicity coefficient for algae,
 this last value can be chosen with the 2$^{\textrm{nd}}$ value of the keyword
 \telkey{ALGAL TOXICITY COEFFICIENTS} (default = 0).
 
@@ -139,21 +139,21 @@ to describe the processes influencing the evolution of nitric and phosphoric nut
 \item \telkey{PERCENTAGE OF PHOSPHORUS ASSIMILABLE IN DEAD PHYTO}
   for the proportion of directly assimilable phosphorus in dead phytoplankton $dtp$ (default = 0.5),
 \item \telkey{RATE OF TRANSFORMATION OF POR TO PO4}
-  for the rate of transformation of POR into PO$_4$ through bacterial mineralization $k_1$ (default = 0.03~d$^{-1}$),
+  for transformation rate of POR into PO$_4$ through bacterial mineralization $k_1$ (default = 0.03~d$^{-1}$),
 \item \telkey{RATE OF TRANSFORMATION OF NOR TO NO3}
-  for the rate of transformation of NOR into NO$_3$ through heterotrophic
+  for transformation rate of NOR into NO$_3$ through heterotrophic
   and autotrophic bacterial mineralization $k_2$ (default = 0~d$^{-1}$),
 \item \telkey{PROPORTION OF NITROGEN WITHIN PHYTO CELLS}
   for the average proportion of directly assimilable nitrogen in living phytoplankton $fn$ (0.0035~mgN/$\mu$gChlA),
 \item \telkey{PERCENTAGE OF NITROGEN ASSIMILABLE IN DEAD PHYTO}
   for the proportion of directly assimilable nitrogen in dead phytoplankton $dtn$ (default = 0.5),
-\item $F_{POR}$: deposition flux of non-algal organic phosphorus (g/m$^2$s).
+\item $F_{POR}$: deposition flux of non-algal organic phosphorus (g/m$^2$/s).
   $F_{POR} = W_{POR} [POR]$,
-  $W_{POR}$ is the velocity of sedimentation of non-algal organic phosphorus
+  $W_{POR}$ is the sedimentation velocity of non-algal organic phosphorus
   given by the keyword \telkey{SEDIMENTATION VELOCITY OF ORGANIC PHOSPHORUS}
   (default = 0~m/s),
-\item $F_{NOR}$: deposition flux of non-algal organic nitrogen (g/m$^2$s).
-  $F_{NOR} = W_{NOR} [NOR]$, $W_{NOR}$ is the velocity of sedimentation of non-algal organic nitrogen
+\item $F_{NOR}$: deposition flux of non-algal organic nitrogen (g/m$^2$/s).
+  $F_{NOR} = W_{NOR} [NOR]$, $W_{NOR}$ is the sedimentation velocity of non-algal organic nitrogen
   given by the keyword \telkey{SEDIMENTATION VELOCITY OF NON ALGAL NITROGEN}
   (default = 0~m/s).
 \end{itemize}

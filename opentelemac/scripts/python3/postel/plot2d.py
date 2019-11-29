@@ -112,7 +112,7 @@ def plot2d_annotate_bnd(axe, tri, bnd_info,
     @param bnd_info (tuple) boundary conditions information (default None)
     """
     x, y = tri.x, tri.y
-    nbor, liubor, lihbor, livbor, _ = bnd_info
+    nbor, lihbor, liubor, livbor, _ = bnd_info
     nbnd_poin = len(nbor)
 
     if colors is None:
