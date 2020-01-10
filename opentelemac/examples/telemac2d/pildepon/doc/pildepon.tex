@@ -6,9 +6,9 @@
 %
 \section{Purpose}
 
-This test case shows that \telemac{2d} is able to represent the impact of an obstacle on a channel flow. 
+This test case shows that \telemac{2d} is able to represent the impact of an obstacle on a channel flow.
 It simulates a laminar and very viscous flow in a channel with two cylindrical piers. The effect of the flow
-on the piers is assessed with the computation of the Stroual number.
+on the piers is assessed with the computation of the Strouhal number.
 
 \section{Description}
 
@@ -184,7 +184,7 @@ Comparison of free surface and velocity are presented in figure \ref{fig:res:com
 \subsection{Computation of the Stroual number}
 
 On figures \ref{fig:res:fft1}, \ref{fig:res:fft2} and \ref{fig:res:fft3} are plotted the fast Fourier transforms
-of the lift force for each cases considred in section\ref{sec:num}. 
+of the lift force for each cases considred in section \ref{sec:num}.
 
 \begin{figure}[H]
  \centering
@@ -225,7 +225,6 @@ The Strouhal number obtained for the different numerical configurations are pres
 
 \subsection{Mass balance}
 
-It can be noted that only the characteristics are not mass conservative.
 The mass balance at the end of the simulation according to the different advection schemes
 are presented in the following table:
 
@@ -242,4 +241,6 @@ are presented in the following table:
 \label{t2d:bridge:balance}
 \caption{Pildepon test case: mass balance for the different advection schemes.}
 \end{table}
+
+It can be noted that only the characteristics are not mass conservative.
 

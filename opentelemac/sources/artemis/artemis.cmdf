@@ -405,7 +405,6 @@ files: bief_def.f
   fonstr.f
   front2.f
   bief_allvec.f
-  inpoly.f
   centre_mass_seg.f
   comp_fac.f
   cpik12.f
@@ -456,6 +455,7 @@ files: bief_def.f
   corrxy.f
   write_mesh.f
   bief_close_files.f
+  inpoly.f
   read_config.f
   bief_init.f
   bief_open_files.f
@@ -571,6 +571,7 @@ files: declarations_parallel.F
   p_iwriti.F
   p_exit.F
   p_init.F
+  p_sync.F
   p_mpi_type_commit.F
   p_mpi_type_create_struct.F
   p_mpi_type_get_extent.F
@@ -583,7 +584,6 @@ files: declarations_parallel.F
   p_mpi_alltoallv_alg.F
   p_mpi_alltoallv_oil.F
   p_mpi_type_free.F
-  p_sync.F
 
 [special]
 path: <root>|sources|utils|special

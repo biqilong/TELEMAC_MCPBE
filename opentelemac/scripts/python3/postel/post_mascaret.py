@@ -1,7 +1,7 @@
 r"""@author TELEMAC-MASCARET Consortium
 
    @brief
-         Functions to read rubens and opticas mascaret result file
+         Functions to read rubens and opthyca mascaret result file
 """
 from __future__ import print_function
 # _____          ___________________________________________________

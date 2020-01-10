@@ -258,7 +258,7 @@
 !
 !-----------------------------------------------------------------------
 !
-      INTEGER ITRAC,ISOUSI,IPOIN,ISUSP
+      INTEGER ITRAC,ISOUSI,IPOIN
       INTEGER SCHDVI_HOR,SCHDVI_VER,SCHCVI_HOR,SCHCVI_VER
       INTEGER IBID,I,K,I3D,IP
 !

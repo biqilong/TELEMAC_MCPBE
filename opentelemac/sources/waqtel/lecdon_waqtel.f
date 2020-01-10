@@ -2,7 +2,7 @@
                      SUBROUTINE LECDON_WAQTEL
 !                    ************************
 !
-     & (FILE_DESC,PATH,NCAR)
+     & (FILE_DESC,PATH,NCAR,CAS_FILE,DICO_FILE)
 !
 !***********************************************************************
 ! WAQTEL   V7P2
@@ -30,10 +30,13 @@
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-! ARGUMENTS
+!     ARGUMENTS
       CHARACTER(LEN=PATH_LEN), INTENT(INOUT) :: FILE_DESC(4,MAXKEYWORD)
       INTEGER, INTENT(IN)               :: NCAR
       CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: PATH
+!     API
+      CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: DICO_FILE
+      CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE      
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -102,6 +105,10 @@
         NOM_DIC='WAQDICO'
         NOM_CAS='WAQCAS'
 !
+      ENDIF
+      IF((CAS_FILE(1:1).NE.' ').AND.(DICO_FILE(1:1).NE.' ')) THEN
+        NOM_DIC=DICO_FILE
+        NOM_CAS=CAS_FILE
       ENDIF
 !
       CALL GET_FREE_ID(ID_DICO)

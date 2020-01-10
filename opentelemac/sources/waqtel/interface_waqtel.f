@@ -1,6 +1,6 @@
-!                    **************************
+!                    ***********************
                      MODULE INTERFACE_WAQTEL
-!                    **************************
+!                    ***********************
 !
 !
 !***********************************************************************
@@ -268,13 +268,15 @@
 !
       INTERFACE
         SUBROUTINE LECDON_WAQTEL
-     & (FILE_DESC,PATH,NCAR)
+     & (FILE_DESC,PATH,NCAR,CAS_FILE,DICO_FILE)
         USE DECLARATIONS_SPECIAL
         IMPLICIT NONE
         CHARACTER(LEN=PATH_LEN), INTENT(INOUT) ::
      & FILE_DESC(4,MAXKEYWORD)
         INTEGER, INTENT(IN)               :: NCAR
         CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: PATH
+        CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: DICO_FILE
+        CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE          
         END SUBROUTINE
       END INTERFACE
 !

@@ -111,6 +111,7 @@
 
 \newcommand{\telmaversion}{trunk}
 
+\newcommand{\telma}{{\scshape Telemac-Mascaret}\xspace}
 \newcommand{\telemacsystem}{{\scshape Telemac-Mascaret system}\xspace}
 \newcommand{\telemac}[1]{{\scshape Telemac-#1}\xspace}
 \newcommand{\sisyphe}{{\scshape Sisyphe}\xspace}

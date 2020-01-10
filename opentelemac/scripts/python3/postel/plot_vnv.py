@@ -805,7 +805,9 @@ def vnv_plot2d(\
         xlim=None, ylim=None, aspect_ratio='auto',
         x_label='x (m)', y_label='y (m)',
         vmin=None, vmax=None, nv=None,
-        cmap_name='jet', cbar=True, cbar_ticks=None,
+        cmap_name='jet', cbar=True,
+        cbar_ticks=None, cbar_properties=None,
+        cbar_ax=None, cbar_cax=None,
         cbar_label='', cbar_priority='scalar',
         cbar_autoextend=False, cbar_extend='neither',
         plot_mesh=False, plot_only_dry_mesh=False,
@@ -853,6 +855,11 @@ def vnv_plot2d(\
     @param cmap_name (str) name of the scalar map
     @param cbar (bool) trigger for colorbar plot
     @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param cbar_label (str) name to show on scalar colorbar
     @param cbar_priority (str) defines which cbar to plot ('scalar', 'vector'
     or 'contours')
@@ -1094,28 +1101,43 @@ def vnv_plot2d(\
             fig, ax, mesh, scalar, data_name=cbar_label,
             vmin=vmin, vmax=vmax, nv=nv, cmap_name=cmap_name,
             cbar_ticks=cbar_ticks, extend=cbar_extend,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
             colorbar=scalar_colorbar, **kwargs)
     # filled contours layer
     if filled_contours:
+        if nv is None:
+            nv=11
         assert scalar_map is False
         plot2d_scalar_filled_contour(
             fig, ax, mesh, scalar, data_name=cbar_label,
             vmin=vmin, vmax=vmax, nv=nv,
             cbar_ticks=cbar_ticks, extend=cbar_extend,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
             cmap_name=cmap_name, colorbar=scalar_colorbar, **kwargs)
     # contours layer
     if contours:
+        if nv is None:
+            nv=11
         assert colored_contours is False
         plot2d_scalar_contour(
             fig, ax, mesh, scalar, vmin=vmin, vmax=vmax, nv=nv,
-            cbar_ticks=cbar_ticks, linewidths=0.4,
-            colors='k', colorbar=contours_colorbar)
+            cbar_ticks=cbar_ticks,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
+            linewidths=0.4, colors='k', colorbar=contours_colorbar)
     # colored contours layer
     if colored_contours:
+        if nv is None:
+            nv=11
         assert contours is False
         plot2d_scalar_contour(
             fig, ax, mesh, scalar, vmin=vmin, vmax=vmax, nv=nv,
-            cbar_ticks=cbar_ticks, linewidths=0.4,
+            cbar_ticks=cbar_ticks,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
+            linewidths=0.4,
             cmap_name=cmap_name, colorbar=contours_colorbar)
 
     # VECTOR LAYERS:
@@ -1127,6 +1149,9 @@ def vnv_plot2d(\
             fig, ax, mesh, velx, vely,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
             color='k', colorbar=vector_colorbar, data_name=cbar_label,
+            cbar_ticks=cbar_ticks,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
             density=streamlines_density)
     # colored streamlines layer
     if colored_streamlines:
@@ -1135,6 +1160,9 @@ def vnv_plot2d(\
             fig, ax, mesh, velx, vely,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
             cmap_name='jet', colorbar=vector_colorbar, data_name=cbar_label,
+            cbar_ticks=cbar_ticks,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
             density=streamlines_density)
     # vectors layer
     if vectors:
@@ -1144,6 +1172,9 @@ def vnv_plot2d(\
             scale=vectors_scale, headwidth=3, headlength=5,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
             color='k', colorbar=vector_colorbar, data_name=cbar_label,
+            cbar_ticks=cbar_ticks,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
             alpha=0.75)
     # colored vectors layer
     if colored_vectors:
@@ -1153,6 +1184,9 @@ def vnv_plot2d(\
             scale=vectors_scale, headwidth=3, headlength=5,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
             cmap_name='jet', colorbar=vector_colorbar, data_name=cbar_label,
+            cbar_ticks=cbar_ticks,
+            cbar_properties=cbar_properties,
+            cbar_ax=cbar_ax, cbar_cax=cbar_cax,
             alpha=0.75)
 
     # bathymetry contours layer
@@ -1212,7 +1246,9 @@ def vnv_plot3d(varname, res, record=-1, time=None,
                xlim=None, ylim=None, zlim=None,
                x_label='x (m)', y_label='y (m)', z_label='z (m)',
                cmap_name='jet', cbar=True, annotate_time=False,
-               cbar_ticks=None, cbar_label=None, **kwargs):
+               cbar_ticks=None, cbar_properties=None,
+               cbar_ax=None, cbar_cax=None,
+               cbar_label=None, **kwargs):
     """
     Plot a scalar map using values as z coordinates
 
@@ -1236,6 +1272,11 @@ def vnv_plot3d(varname, res, record=-1, time=None,
     @param cmap_name (str) name of the scalar map
     @param cbar (bool) trigger for colorbar plot
     @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param cbar_label (str) name to show on scalar colorbar
 
     """

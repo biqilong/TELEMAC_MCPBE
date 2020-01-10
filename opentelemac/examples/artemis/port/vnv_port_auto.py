@@ -50,7 +50,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:ARTRES',
                             'f2d_port_auto.slf',
-                            eps=[1.e-6, 4.e-4, 1.e-5, 1.e-5, 1.e-5, 1.e-8, 1.e-5, 1.e-5, 0.03])
+                            eps=[1.e-5, 4.e-4, 1.e-5, 1.e-5, 1.e-5, 1.e-8, 1.e-5, 1.e-5, 0.03])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:ARTRES',

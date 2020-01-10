@@ -51,6 +51,8 @@ files: ad_telemac2d_main_after_lecdon_gaia.f
 path: <root>|sources|utils|bief
 files: bief_def.f
   bief.f
+  find_variable.f
+  couple_mod.F
   declarations_telemac.f
   bief_nbmpts.f
   bief_nbpts.f
@@ -71,6 +73,7 @@ files: bief_def.f
   ov_comp.f
   os.f
   bief_close_files.f
+  inpoly.f
   read_config.f
   bief_init.f
   bief_open_files.f
@@ -93,7 +96,6 @@ files: bief_def.f
   cg1112.f
   cg1113.f
   chgdis.f
-  inpoly.f
   dimens.f
   assve1i8.f
   assve1.f
@@ -170,7 +172,6 @@ files: bief_def.f
   slop10.f
   slopes.f
   errmax.f
-  find_variable.f
   addblo.f
   allblo.f
   bief_nbseg.f
@@ -541,7 +542,6 @@ files: bief_def.f
   read_submit.f
   sortie.f
   addtracer.f
-  couple_mod.F
 
 [damocles]
 path: <root>|sources|utils|damocles
@@ -666,11 +666,11 @@ files: declarations_gaia.f
 
 [hermes]
 path: <root>|sources|utils|hermes
-files: hash_table.f
+files: interface_hermes.f
+  hash_table.f
+  utils_cgns.F
   hermes_index_file.f
   utils_med.F
-  interface_hermes.f
-  utils_cgns.F
   utils_serafin.F
   get_data_ntimestep.f
   get_data_nvar.f
@@ -777,9 +777,17 @@ files: m_typedefs_nestor.f
 [parallel]
 path: <root>|sources|utils|parallel
 files: declarations_parallel.F
-  p_exit.F
-  p_init.F
   interface_parallel.f
+  p_iread.F
+  p_ireadi.F
+  p_iwrit.F
+  p_iwriti.F
+  p_sync.F
+  p_wait_paraco.F
+  p_exit.F
+  p_dmax.F
+  p_dmin.F
+  p_init.F
   p_mpi_type_commit.F
   p_mpi_type_create_struct.F
   p_mpi_type_get_extent.F
@@ -793,17 +801,9 @@ files: declarations_parallel.F
   p_mpi_alltoallv_alg.F
   p_mpi_alltoallv_oil.F
   p_mpi_type_free.F
-  p_sync.F
-  p_iread.F
-  p_iwrit.F
-  p_wait_paraco.F
   p_dsum.F
-  p_dmax.F
-  p_dmin.F
   p_ireadi8.F
   p_iwriti8.F
-  p_ireadi.F
-  p_iwriti.F
   p_dsumerr.F
   p_dmax_array.F
   p_dmin_array.F
@@ -948,11 +948,11 @@ files: declarations_sisyphe.f
 path: <root>|sources|utils|special
 files: declarations_special.F
   plante.F
-  get_free_id.f
-  get_nodes_per_element.f
   check_allocate.f
   write_error.f
   check_call.f
+  get_free_id.f
+  get_nodes_per_element.f
   blanc2uscore.f
   extens.f
   gracestop.f

@@ -306,9 +306,9 @@ use the options --validation/reference/user/release/theory to compile only one
         module_list = options.modules.split(',')
     else:
         # all modules
-        module_list = ['artemis', 'stbtel', 'sisyphe',
+        module_list = ['artemis', 'stbtel', 'sisyphe', 'postel3d',
                        'telemac2d', 'telemac3d', 'tomawac', 'waqtel',
-                       'telapy', 'mascaret', 'gaia', 'nestor']
+                       'telapy', 'mascaret', 'gaia', 'nestor', 'khione']
     if options.misc != '':
         misc_list = options.misc.split(',')
         module_list = []

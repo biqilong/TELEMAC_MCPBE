@@ -100,7 +100,6 @@ class VnvStudy(AbstractVnvStudy):
         vnv_plot2d('ELEVATION Z',
                    res_vnv_1_t3dres,
                    plot_mesh=True,
-                   fig_size=(10, 15),
                    fig_name='img/Mesh')
         # Plotting Vercial Mesh
         vnv_plot2d('ELEVATION Z',
@@ -108,7 +107,6 @@ class VnvStudy(AbstractVnvStudy):
                    poly=[[0, 10], [20, 10]],
                    record=0,
                    plot_mesh=True,
-                   fig_size=(10, 5),
                    fig_name='img/MeshV')
 
         records = [(0, '0'),
@@ -124,7 +122,6 @@ class VnvStudy(AbstractVnvStudy):
                        'WATER DEPTH',
                        res_vnv_1_t3dhyd,
                        record=record,
-                       fig_size=(10, 15),
                        fig_name='img/water_depth_'+name)
 
         res_vnv_1_t3dres.close()

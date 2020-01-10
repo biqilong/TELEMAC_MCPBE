@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    Python wrapper to the Fortran APIs of Telemac 2D
+    Python wrapper to the Fortran APIs of Telemac 3D
 
     Author(s): Fabrice Zaoui, Yoann Audouin, Cedric Goeury, Renaud Barate
 
@@ -30,7 +30,9 @@ class Telemac3d(ApiModule):
                  lang=2, stdout=6,
                  comm=None,
                  log_lvl='INFO',
-                 recompile=True):
+                 recompile=True,
+                 waqfile=None,
+                 waqdico=None):
         """
         Constructor for Telemac3d
 
@@ -41,6 +43,8 @@ class Telemac3d(ApiModule):
         @param stdout Where to put the listing (default on terminal)
         @param comm MPI communicator (default=None)
         @param recompile If true recompiling the API (default=True)
+        @param waqfile Name of the steering file waqtel
+        @param waqdico Path to the dictionary waqtel (default=None)
         """
         if dicofile is None:
             hometel = os.getenv("HOMETEL")
@@ -52,9 +56,19 @@ class Telemac3d(ApiModule):
             else:
                 default_dicofile = 'telemac3d.dico'
             dicofile = default_dicofile
+
+        if waqfile is not None and hometel is not None:
+            waq_default_dicofile = os.path.join(os.getenv("HOMETEL"),
+                                                "sources",
+                                                "waqtel",
+                                                "waqtel.dico")
+        else:
+            waq_default_dicofile = 'waqtel.dico'
+        waqdico = waq_default_dicofile
         super(Telemac3d, self).__init__("t3d", casfile, user_fortran,
                                         dicofile, lang, stdout, comm,
-                                        recompile, log_lvl=log_lvl)
+                                        recompile, log_lvl=log_lvl,
+                                        waqfile=waqfile,waqdico=waqdico)
 
     def __del__(self):
         """

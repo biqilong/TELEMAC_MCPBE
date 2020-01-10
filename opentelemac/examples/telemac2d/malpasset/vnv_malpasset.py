@@ -155,7 +155,7 @@ class VnvStudy(AbstractVnvStudy):
         #======================================================================
         self.check_epsilons('prim_seq:T2DRES',
                             'f2d_malpasset-prim.slf',
-                            eps=[3., 3., 8., 8., 1.E-15])
+                            eps=[4., 3., 8., 8., 1.E-15])
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('prim_par:T2DRES',
                             'f2d_malpasset-prim.slf',

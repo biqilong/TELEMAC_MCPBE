@@ -182,6 +182,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_plot2d('WAVE HEIGHT HM0',
                    res_vnv_1_wacres,
                    record=-1,
+                   filled_contours=True,
                    fig_size=(12, 7),
                    fig_name='img/resultsTOM')
 
@@ -217,6 +218,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_plot2d('WAVE HEIGHT HM0',
                    res_vnv_3_wacres,
                    record=-1,
+                   filled_contours=True,
                    fig_size=(12, 7),
                    fig_name='img/resultsTOM3')
 

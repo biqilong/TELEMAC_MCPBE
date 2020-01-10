@@ -41,7 +41,7 @@ class VnvStudy(AbstractVnvStudy):
         self.variable_timestep = True
         self.CFL = 0.9
         #----------------------------------------------------------------------
-        self.timestep = 0.01
+        self.timestep = 0.003
         #print("CONSTANT TIME STEP FIXED TO : {}".format(self.timestep))
         #----------------------------------------------------------------------
         # Manual CFL condition computation to determine timestep:
@@ -132,12 +132,12 @@ class VnvStudy(AbstractVnvStudy):
             cas.set('TIME STEP', self.timestep)
 
             # timestep options
-            if self.variable_timestep:
+            if sc in self.FV_schemes:
                 cas.remove('NUMBER OF TIME STEPS')
                 cas.set('DURATION', self.duration)
                 cas.set('DESIRED COURANT NUMBER', self.CFL)
                 cas.set('VARIABLE TIME-STEP', self.variable_timestep)
-            else:
+            elif sc in self.FE_schemes:
                 cas.set('NUMBER OF TIME STEPS', int(self.duration/self.timestep))
 
             # add study

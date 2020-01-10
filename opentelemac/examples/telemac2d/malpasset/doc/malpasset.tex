@@ -18,7 +18,7 @@ The simulation is performed using the treatment of negative depths introduced si
 \subsection{Geometry and mesh}
 The entire valley is approximately 18~km long and between 200~m (valley) and 7~km wide (flood plain). The complete study is described in details in \cite{Hervouet2007}.
 The dam is modelled by a straight line between the points of coordinates (4701.18 m, 4143.10 m) and (4655.50 m, 4392.10 m). Its location is shown in the Figure \ref{fig:malpasset:mesh_dam}.
-The size of the model is approximately  17~km $\times$ 9~km. A triangular mesh is constructed on this domain and is refined in the river valley (downstream from the dam) and on the banks. 
+The size of the model is approximately  17~km $\times$ 9~km. A triangular mesh is constructed on this domain and is refined in the river valley (downstream from the dam) and on the banks.
 Two meshes are tested:
 \begin{itemize}
 \item \textbf{Regular mesh (Figure \ref{fig:malpasset:Mesh} - a):}
@@ -89,7 +89,7 @@ The boundaries are solid everywhere and the channel banks considered as solid wa
 
 \subsection{Physical parameters}
 
-he characteristics of the case are the following:
+The characteristics of the case are the following:
 \begin{itemize}
   \itemsep0em
 \item Observed mean wave velocity $U_0 = 27~km.h^{-1} = 7.5~m.s^{-1}$;
@@ -106,14 +106,14 @@ In the simulations, the Coriolis force and the wind effect are not taken into ac
 \subsection{Numerical parameters}
 \label{subsection:malpasset:cases}
 Duration of the simulation is set to $4000~s$.
-The use of coupled primitive equations (TREATMENT OF THE LINEAR SYSTEM: 1) 
+The use of coupled primitive equations (TREATMENT OF THE LINEAR SYSTEM: 1)
 is compered to the wave equation (TREATMENT OF THE LINEAR SYSTEM: 2).
 Initial and boundary conditions remain the same for all the cases, and are described in the first two sections.
 The solver used for the resolution of the linear system is GMRES with an accuracy of $10^{-8}$ and with a maximum number
 of iterations equal to $200$.
 for finite element cases, when using the wave equation the type of element are linear for velocities and water depth
-whereas when using primite equations the type of Element are quasi-bubble for velocities and linear for water depth.
-Quasi-bubble elements are used to avoid oscillations due to a violated inf-sup condition. 
+whereas when using primitive equations the type of Element are quasi-bubble for velocities and linear for water depth.
+Quasi-bubble elements are used to avoid oscillations due to a violated inf-sup condition.
 The simulation parameters specific to each case are summed up in Table \ref{tab:malpasset:cases}.
 \begin{table}[H]
   \resizebox{\textwidth}{!}{%
@@ -134,7 +134,7 @@ The simulation parameters specific to each case are summed up in Table \ref{tab:
 \end{table}
 
 \section{Results}
-\subsection{First observations}
+\subsection{First observations - regular mesh}
 
 The figure \ref{fig:malpasset:WD_cin1} illustrates the progression of the flood wave after the dam break.
 The propagation of the wave front is very fast. The water depths increase rapidly in the valley downstream from the dam location. The wave spreads in the plain when arriving to the sea.
@@ -193,10 +193,10 @@ Depending on the system of equation and on the method of resolution, wave propag
   \caption{Water depth at $t=400~s$ for different cases of the Malpasset example}\label{fig:malpasset:WD_all2}
 \end{figure}
 
-On figures \ref{fig:malpasset:velocities} the velocity field after $100s$ of simulation is presented 
-in the vicinity of the dam. With the wave equation option and P1P1 discretization, 
+On figures \ref{fig:malpasset:velocities} the velocity field after $100s$ of simulation is presented
+in the vicinity of the dam. With the wave equation option and P1P1 discretization,
 numerical oscillations are visible on both water depth and velocity.
-Using primitive equation with quasi bubble elements on velocity allow to obtain beter results, at a higher cost.
+Using primitive equation with quasi bubble elements on velocity allows to obtain better results, at a higher cost.
 However numerical oscillations are still visible.
 
 \begin{figure}[H]
@@ -301,8 +301,8 @@ However, for all the schemes the numerical results are far from observations. Th
 
 \subsection{Accuracy of the wave propagation}
 
-Next, the wave propagation time computed with TELEMAC-2D is compared to reference data in figure \ref{tab:malpasset:timepropagation}. 
-Globally, the estimated propagation time is lower than the observed one. 
+Next, the wave propagation time computed with TELEMAC-2D is compared to reference data in figure \ref{tab:malpasset:timepropagation}.
+Globally, the estimated propagation time is lower than the observed one.
 Further more, be it for the A-C or the A-B transit, the differences remain low.
 The most satisfiying results are the ones observed for the KIN1 and HLLC schemes.
 
@@ -357,7 +357,7 @@ during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD
 \subsection{Mass conservation}
 
 Mass conservation can be checked by calculating the volume in the domain during time (as the density is constant in time and space). The lost volume is calculated as $V_{initial} - V_{final}$.
-Figure \ref{fig:malpasset:lostvol} shows that all used schemes are mass conservative. Mass is conserved for sequential runs as well as parallel ones except for the characteristics. 
+Figure \ref{fig:malpasset:lostvol} shows that all used schemes are mass conservative. Mass is conserved for sequential runs as well as parallel ones except for the characteristics.
 
 \begin{figure}[H]
 \centering

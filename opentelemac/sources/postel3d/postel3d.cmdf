@@ -10,6 +10,7 @@ files: bief_def.f
   bief.f
   declarations_telemac.f
   bief_close_files.f
+  inpoly.f
   read_config.f
   bief_init.f
   bief_open_files.f
@@ -111,13 +112,14 @@ files: interface_hermes.f
 path: <root>|sources|utils|parallel
 files: declarations_parallel.F
   p_exit.F
+  p_dmax.F
+  p_dmin.F
   p_init.F
+  p_sync.F
   interface_parallel.f
   p_iread.F
   p_iwrit.F
   p_wait_paraco.F
-  p_dmax.F
-  p_dmin.F
   p_imax.F
   p_isum.F
 

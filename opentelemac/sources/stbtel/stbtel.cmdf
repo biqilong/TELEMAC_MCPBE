@@ -10,7 +10,6 @@ files: bief_def.f
   declarations_telemac.f
   bief.f
   read_config.f
-  bief_eof.f
   mxptel31.f
   mxptel.f
   crosfr.f
@@ -47,11 +46,11 @@ files: hash_table.f
   interface_hermes.f
   utils_cgns.F
   utils_serafin.F
+  close_bnd.f
   lib_vtk_io.F
   utils_vtk.F
-  add_data.f
-  close_bnd.f
   close_mesh.f
+  add_data.f
   get_bnd_color.f
   get_bnd_connectivity.f
   get_bnd_ipobo.f
@@ -80,8 +79,6 @@ files: hash_table.f
   set_bnd.f
   set_header.f
   set_mesh.f
-  lit.F
-  ecri2.f
 
 [parallel]
 path: <root>|sources|utils|parallel
@@ -97,10 +94,10 @@ files: declarations_special.F
   plante.F
   get_free_id.f
   get_nodes_per_element.f
-  blanc2uscore.f
-  check_allocate.f
   write_error.f
   check_call.f
+  blanc2uscore.f
+  check_allocate.f
   print_header.f
 
 [stbtel]

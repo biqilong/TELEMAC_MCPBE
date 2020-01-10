@@ -243,7 +243,7 @@ class Study(object):
         chdir(self.case_dir)
         if self.code_name == 'mascaret':
             # Creating files missing for execution
-            create_mascaret_files(self.cfg, self.steering_file)
+            create_mascaret_files(self.cfg, path.basename(self.steering_file))
             return
         # >>> Copy INPUT files into wdir
         process_lit(\

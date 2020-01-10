@@ -47,6 +47,7 @@ files: bief_def.f
   bief.f
   declarations_telemac.f
   bief_close_files.f
+  inpoly.f
   read_config.f
   bief_init.f
   bief_open_files.f
@@ -189,7 +190,6 @@ files: bief_def.f
   somme.f
   bief_sum.f
   find_variable.f
-  mult_interface_seg.f
   clip.f
   cg1112.f
   cg1113.f
@@ -329,6 +329,7 @@ files: bief_def.f
   p_dotpair.f
   p_dots.f
   positive_depths_eria.f
+  mult_interface_seg.f
   positive_depths_nerd.f
   positive_depths.f
   matrbl.f
@@ -442,7 +443,6 @@ files: bief_def.f
   strche.f
   fonstr.f
   front2.f
-  inpoly.f
   centre_mass_seg.f
   comp_fac.f
   cpik12.f
@@ -522,6 +522,7 @@ files: bief_def.f
   anti_dirac.f
   proxim.f
   topogr.f
+  couple_mod.F
   build_ikle_ext.f
   lubksb.f
   ludcmp.f
@@ -533,7 +534,6 @@ files: bief_def.f
   gettri.f
   slop10.f
   slopes.f
-  couple_mod.F
 
 [damocles]
 path: <root>|sources|utils|damocles
@@ -745,7 +745,10 @@ files: m_typedefs_nestor.f
 path: <root>|sources|utils|parallel
 files: declarations_parallel.F
   p_exit.F
+  p_dmax.F
+  p_dmin.F
   p_init.F
+  p_sync.F
   interface_parallel.f
   p_mpi_type_commit.F
   p_mpi_type_create_struct.F
@@ -760,13 +763,10 @@ files: declarations_parallel.F
   p_mpi_alltoallv_alg.F
   p_mpi_alltoallv_oil.F
   p_mpi_type_free.F
-  p_sync.F
   p_iread.F
   p_iwrit.F
   p_wait_paraco.F
   p_dsum.F
-  p_dmax.F
-  p_dmin.F
   p_ireadi8.F
   p_iwriti8.F
   p_dsumerr.F

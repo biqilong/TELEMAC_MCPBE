@@ -52,7 +52,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:ARTRES',
                             'f2d_rides_x.slf',
-                            eps=[1.e-12, 1.e-7, 1.e-12, 1.e-12, 1.e-7, 1.e-12])
+                            eps=[1.e-9, 1.e-7, 1.e-12, 1.e-12, 1.e-7, 1.e-12])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:ARTRES',

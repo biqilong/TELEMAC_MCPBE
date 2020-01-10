@@ -3,8 +3,8 @@
 Contains function to plot stuff
 """
 from utils.exceptions import TelemacException
-from postel.plot2d import set_extrema
-
+from postel.plot2d import set_extrema, custom_cbar
+from postel.deco_cbar import deco_cbar
 import numpy as np
 import matplotlib.cm as cm
 from mpl_toolkits.mplot3d import Axes3D
@@ -12,7 +12,8 @@ from mpl_toolkits.mplot3d import Axes3D
 def plot3d_scalar_map(fig, axe, mesh, data,\
         x_label='', y_label='', data_name='data',\
         vmin=None, vmax=None, nv=10, levels=None, \
-        colorbar=True, cbar_ticks=None, cbar_axe=None, \
+        colorbar=True, cbar_properties=None, cbar_ticks=None,\
+        cbar_ax=None, cbar_cax=None,\
         cmap_name='jet', **kwargs):
     """
     Plot a 3d representation of a triangle mesh with a data as z coordinates
@@ -26,8 +27,12 @@ def plot3d_scalar_map(fig, axe, mesh, data,\
     @param data (numpy.array) Value to plot
     @param data_name (string) Name of the data to display
     @param colorbar (bool) show colorbar (default: True)
-    @param cbar_ticks (np.array) ticks of the colorbar
-    @param cbar_axe (matplotlib.axes) axe used for colorbar (default: None)
+    @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param vmin (float) Minimal value of data to plot
     @param vmax (float) Maximal value of data to plot
     @param nv (integer) Number of sample for colorbar range (default 10)
@@ -58,8 +63,15 @@ def plot3d_scalar_map(fig, axe, mesh, data,\
         if levels is not None and cbar_ticks is None:
             cbar_ticks = levels
 
-        cbar = fig.colorbar(img, ax=axe, cax=cbar_axe,
-                            ticks=cbar_ticks, shrink=0.5)
+        if cbar_ax is None:
+            cbar_ax = axe
+
+        if cbar_properties is not None:
+            cbar = custom_cbar(
+                fig, img, cbar_ax, cbar_cax, cbar_ticks, cbar_properties)
+        else:
+            cbar = fig.colorbar(
+                img, ax=cbar_ax, cax=cbar_cax, ticks=cbar_ticks)
 
         if data_name is not None:
             cbar.set_label(data_name)

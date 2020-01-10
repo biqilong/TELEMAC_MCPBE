@@ -97,18 +97,18 @@ class VnvStudy(AbstractVnvStudy):
         vnv_plot2d('SALINITY',
                    res,
                    poly=[[0, 1], [30, 1]],
+                   fig_size=(20, 10),
                    record=0,
                    filled_contours=True,
-                   fig_size=None,
                    fig_name='img/lock_initial_salinity')
 
         # Plotting vertical split
         vnv_plot2d('SALINITY',
                    res,
                    poly=[[0, 1], [30, 1]],
+                   fig_size=(20, 10),
                    record=-1,
                    filled_contours=True,
-                   fig_size=None,
                    fig_name='img/lock-exchange_dpwaveq_PSI2_5corr')
 
         res.close()

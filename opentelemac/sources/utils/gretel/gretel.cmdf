@@ -6,9 +6,9 @@ name: gretel
 
 [bief]
 path: <root>|sources|utils|bief
-files: read_mesh_conn.f
-  bief_def.f
+files: bief_def.f
   bief.f
+  read_mesh_conn.f
   read_mesh_info.f
 
 [gretel]

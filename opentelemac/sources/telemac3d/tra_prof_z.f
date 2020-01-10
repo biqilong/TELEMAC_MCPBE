@@ -65,7 +65,7 @@
 !
       DOUBLE PRECISION USTAR,HH,DELTAZ,ROUSE
       DOUBLE PRECISION CMEAN,B,BROUSE,ZREFE
-      INTEGER IPOIN3,ISUSP
+      INTEGER IPOIN3
 !!    FIXME SET ZREFE TO 2*DMOY
 !
 !-----------------------------------------------------------------------

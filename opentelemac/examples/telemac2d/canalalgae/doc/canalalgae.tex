@@ -14,7 +14,7 @@ result file from a Tecplot format to a ParaView format.
 
 \section{Description}
 
-To validate the algae bloom transport model the experiment presented in \citet{Joly_these} and \citet{Joly_jhr}
+To validate the algae bloom transport model the experiment presented in \citet{Joly2011} and \citet{Joly_jhr}
 will be modelled. More validation of the theory can also be found in \citet{Joly_pof}. The flow configuration
 of this experiment is that of partially obstructed open flat bed channel flow, which has the advantage of
 generating a large recirculation pattern downstream of the obstructing groyne. In this experiment a fluid with
@@ -36,8 +36,8 @@ spherical particles were released to validate the algae transport of Telemac-2D.
 
 The flow velocities are well modelled using Telemac-2D. In this case the flow is modelled using a $k$-$\varepsilon$
 closure and it is validated against experimental measurements and another simulation performed with OpenFoam, which
-solves the two-dimensional Navier-Stokes equations with a $k$-$\varepsilon$ closure using a finite volumes method
-\citep{OpenFoam}. The horizontal fluid velocities are presented in figure~\ref{fig:profil_vitesses_canal}.
+solves the two-dimensional Navier-Stokes equations with a $k$-$\varepsilon$ closure using a finite volumes method.
+The horizontal fluid velocities are presented in figure~\ref{fig:profil_vitesses_canal}.
 
 \begin{figure}[H]%
 \begin{center}
@@ -55,7 +55,7 @@ time at fixed intervals (about $1$ Hz). This was done to ensure that particles w
 Several particles were released at different positions in the flow and the trajectories for these particles were
 recorded at different locations. The trajectories of these particles were measured with a camera that was placed above
 the flow so that the position of particles entering a window of measurement were recorded, see
-figure~\ref{fig:exp_setup2}. The process used to extract the trajectories is presented in \citet{Joly_these}.
+figure~\ref{fig:exp_setup2}. The process used to extract the trajectories is presented in \citet{Joly2011}.
 
 \begin{figure}[H]%
 \begin{center}
@@ -151,7 +151,7 @@ Finally, the particle defined by editing the user subroutine \texttt{flot.f}, an
 \subsection{Explantion of the results}
 
 For this test case, the particles are released at position ($0.175$,$0.45$) and recorded using window 2
-(see \figurename~\ref{fig:exp_setup2}a). More results are presented in \citet{Joly_these}.
+(see \figurename~\ref{fig:exp_setup2}a). More results are presented in \citet{Joly2011}.
 
 To analyse the trajectories of the particles, the window of measurements is then divided into four quadrants.
 The number of particles entering each quadrant, and the time spent inside is recorded. The values are then
@@ -170,7 +170,7 @@ of residence inside a quadrant $Q_i$. $N_{Q_i}$ is the number of particles recor
 is the cumulative time spend by all the particles present in this quadrant.
 
 This method of writing the results allows a comparison between numerical and experimental results, as during the
-experiment is was impossible to know if a particle that exited the window of measurement would re-enter it at a later time.
+experiment it was impossible to know if a particle that exited the window of measurement would re-enter it at a later time.
 
 These results are plotted in figures~\ref{fig:quadrant_npart} and~\ref{fig:quadrant_tresid}, where for each quadrant the value
 of interest is plotted along a line going from the inner most corner to the outter most corner. The length scales for these
@@ -188,7 +188,7 @@ are then linked together to form an area. An annotated description of the result
 \label{fig:expe_canal_annotated_example}
 \end{figure}
 
-The velocity of the particles were also analysed. To do so, profile plots were done of the properties of the particles crossing the
+The velocities of the particles were also analysed. To do so, profile plots were done of the properties of the particles crossing the
 line at $x=0.55$ m. These figures can be found in figures~\ref{fig:profile_x0p55_N} to~\ref{fig:profile_x0p55_V_Y}.
 
 \subsection{Simulation results}
@@ -260,5 +260,5 @@ crossing the section defined by $x=0.55$ m, as well as the horizontal and vertic
 The results presented in figures~\ref{fig:profile_x0p55_N} to~\ref{fig:profile_x0p55_V_Y} shows again that the module
 \texttt{ALGAE\_TRANSP} models accurately the velocity. The only region of error would for the vertical velocity near
 the solid boundaries, but this probably linked to the previous mis-estimation of the center of the recirculation
-pattern in Telemac-2D. Furthermore the result are still independent of the number of processors used.
+pattern in Telemac-2D. Furthermore the results are still independent of the number of processors used.
 

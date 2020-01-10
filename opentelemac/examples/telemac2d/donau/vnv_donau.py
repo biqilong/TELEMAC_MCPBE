@@ -53,7 +53,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T2DRES',
                             'f2d_donau.slf',
-                            eps=[2.E-5, 2.E-5, 2.E-5, 4.E-5, 1.E-8, 3.E-5, 2.E-5, 1.E-8])
+                            eps=[2.E-5, 3.E-5, 2.E-5, 4.E-5, 1.E-8, 3.E-5, 2.E-5, 1.E-8])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T2DRES',

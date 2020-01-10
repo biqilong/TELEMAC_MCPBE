@@ -31,6 +31,15 @@ class VnvStudy(AbstractVnvStudy):
         self.add_command('vnv_t2d-par',
                          'mpiexec -n 4 python3 gouttedo.py')
 
+        # Telemac2d api run of gouttedo Finite Volume
+        self.add_command('vnv_t2d_fv',
+                         'python3 gouttedo_cin.py')
+
+
+        # Telemac2d api run of gouttedo Finite Volume in parallel
+        self.add_command('vnv_t2d_fv-par',
+                         'mpiexec -n 4 python3 gouttedo_cin.py')
+
 
         # Tomawac api run of dean
         self.add_command('vnv_wac',
@@ -46,11 +55,17 @@ class VnvStudy(AbstractVnvStudy):
         self.add_command('vnv_t3d',
                          'python3 gouttedo3d.py')
 
-
         # Telemac3d api run of gouttedo3d in parallel
         self.add_command('vnv_t3d-par',
                          'mpiexec -n 4 python3 gouttedo3d.py')
 
+        # Telemac3d-Waqtel api run of heat_exchange
+        self.add_command('vnv_t3d',
+                         'python3 heat_exchange.py')
+
+        # Telemac3d-Waqtel api run of heat_exchange in parallel
+        self.add_command('vnv_t3d-par',
+                         'mpiexec -n 4 python3 heat_exchange.py')
 
         # Artemis api run of bj78
         self.add_command('vnv_art',

@@ -18,14 +18,14 @@ all flow regimes i.e. sub-critical, critical and trans-critical are studied.
 \subsection{Analytic solution}
 
 From the strict hyperbolicity of the shallow water system, the flow over the bump can be caracterized by a
-criticality condition. Depending on the value of the Froud number 
-the flow can either be subcritical (fluvial, $Fr<1$) 
+criticality condition. Depending on the value of the Froude number
+the flow can either be subcritical (fluvial, $Fr<1$)
 or supercritical (torrential, $Fr>1$).
-Let's recall the definition of the Froud number:
+Let's recall the definition of the Froude number:
 \begin{equation}
 Fr = \dfrac{|{\bf u}|}{\sqrt{gh}}
 \end{equation}
-where $|{\bf u}|$ is the norm of the depth averaged velocity and $g$ is the gravitational acceleration. Another useful quatity in the case of a constant discharge $q$ is the critical height defined by:
+where $|{\bf u}|$ is the norm of the depth averaged velocity and $g$ is the gravitational acceleration. Another useful quantity in the case of a constant discharge $q$ is the critical height defined by:
 \begin{equation}
 h_c = \left( \dfrac{q}{\sqrt{g}}\right)^{2/3}
 \end{equation}
@@ -39,7 +39,7 @@ From the Bernoulli relation, one can express the water depth as a solution of th
 the flow criticality:
 
 \begin{itemize}
-\item {\bf Sub-critical flow:} 
+\item {\bf Sub-critical flow:}
 \begin{equation}
  h(x)^3 + \left( z_b(x) - \dfrac{q_0^2}{2g h(L)^2} - h(L) \right) h(x)^2 + \dfrac{q_0^2}{2g} = 0 \quad \forall x \in [0,L]
 \end{equation}
@@ -47,7 +47,7 @@ the flow criticality:
 
 \item {\bf Critical flow:}
 \begin{equation}
-h(x)^3 + \left( z_b(x) - \dfrac{q_0^2}{2g h_c^2} - h_c - z_M \right) h(x)^2 + \dfrac{q_0^2}{2g} = 0 \quad \forall x \in [0,L]  
+h(x)^3 + \left( z_b(x) - \dfrac{q_0^2}{2g h_c^2} - h_c - z_M \right) h(x)^2 + \dfrac{q_0^2}{2g} = 0 \quad \forall x \in [0,L]
 \end{equation}
 with $ z_M = \max_{x \in [0,L]}z_b$.
 \
@@ -97,7 +97,7 @@ z_b = 0.25 * \exp \left(\dfrac{-(x-10)^2}{2} \right)
 The initial conditions are defined with analytical solution for both velocity and water depth to quickly acheive the steady state.
 The boundary conditions are defined as follows:
 \begin{itemize}
-\item {\bf Sub-critical flow:} 
+\item {\bf Sub-critical flow:}
 At the channel entrance, the flow rate is $Q =  1.5~\text{m}^3\text{s}^{-1}$
 (note that the discharge per unit length $q_0=Q/B$, $B$ being the channel width).
 The flow rate $Q$ is taken so that the $q_0$ value is equal to the value
@@ -144,7 +144,7 @@ have been used (keyword DIFFUSION OF VELOCITY prescribed to NO).
 
 \subsection{Numerical parameters}
 
-\telemac{2d} is run forward in time until a steady state flow is obtained. 
+\telemac{2d} is run forward in time until a steady state flow is obtained.
 Several numerical schemes are tested.
 The parameters specific to each case are summed up in the Table~\ref{tab:bump:cases}.
 
@@ -157,7 +157,7 @@ The parameters specific to each case are summed up in the Table~\ref{tab:bump:ca
       \hline 3 & PSI  & Wave Eq. FE & PSI scheme & 0.01~s / - \\
       \hline 4 & LIPS & Wave Eq. FE & PSI LIPS scheme & 0.01~s / - \\
       \hline 5 & NERD & Wave Eq. FE & Edge based N-scheme & 0.01~s / - \\
-      \hline 6 & ERIA & Wave Eq. FE & ERIA scheme & 0.01~s / - \\      
+      \hline 6 & ERIA & Wave Eq. FE & ERIA scheme & 0.01~s / - \\
       \hline 7 & ROE  & Saint-Venant FV & ROE order 1 & - /0.9 \\
       \hline 8 & KIN1 & Saint-Venant FV & Kinetic order 1 & - /0.9 \\
       \hline 9 & KIN2 & Saint-Venant FV & Kinetic order 2 & - /0.9 \\
@@ -191,7 +191,7 @@ analytical solution, when the state flow is steady. Furthermore, the computed
 Froude number ($Fr$) is also
 compared with the analytical solution.
 The solution produced by \telemac{2d} is in close agreement with
-the analytical solution as shown on the 
+the analytical solution as shown on the
 figure \ref{fig:bumpsub:fig:hfr}.
 
 
@@ -259,8 +259,8 @@ On figure \ref{fig:bumpsub:fig:comp}, results obtained with different numerical 
 
 \subsection{Accuracy}
 
-For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms 
-of the water depth and velocity are calculated at final time. 
+For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms
+of the water depth and velocity are calculated at final time.
 Results are presented in figure \ref{fig:bump:errors}.
 
 \begin{figure}[H]
@@ -273,9 +273,9 @@ Results are presented in figure \ref{fig:bump:errors}.
 
 \subsection{Convergence in the sub-critical case}
 
-In this section a mesh convergence is carried out for each numerical scheme on the sub-critical test case. 
+In this section a mesh convergence is carried out for each numerical scheme on the sub-critical test case.
 From a starting mesh with $160$ elements we divide by 4 each triangles recursively to generates new meshes.
-Meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}. 
+Meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}.
 Final time is set to $t_f=2$ minutes.
 With decreasing space step we adjust time step to ensure a constant CFL for each mesh increment.
 
@@ -415,7 +415,7 @@ On the next pages convergence results are presented in $L_1$, $L_2$ and $L_{\inf
 \subsection{Convergence in the critical case}
 
 The same convergence study is carried out for the critical test case.
-Convergence of water depth in $L_2$ norm for different numerical schemes are presented on figure \ref{fig:bumpcri:ErrNumH_convergence}. On the next pages, convergence results for both velocity and water depth 
+Convergence of water depth in $L_2$ norm for different numerical schemes are presented on figure \ref{fig:bumpcri:ErrNumH_convergence}. On the next pages, convergence results for both velocity and water depth
 are presented in $L_1$, $L_2$ and $L_{\infty}$ norms. Finally, errors at final time on the finest mesh are presented in figure \ref{fig:bumpcri:ErrNumH_convergence_mesh3}.
 
 \begin{figure}[H]

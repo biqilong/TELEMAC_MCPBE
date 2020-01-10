@@ -114,7 +114,8 @@ class VnvStudy(AbstractVnvStudy):
 
         # Plotting salinity at multiple time steps
         #TODO: Colobar not as it should
-        fig, ax = plt.subplots(4, 1)
+        fig, ax = plt.subplots(4, 2,
+                               gridspec_kw={'width_ratios':[1, 0.15]})
 
         poly = [[-5, 0], [5, 0]]
 
@@ -129,13 +130,20 @@ class VnvStudy(AbstractVnvStudy):
 
             mesh = triangulation_from_data(abs_curv, poly_z)
 
-            plot2d_scalar_filled_contour(fig, ax[record], mesh, data.flatten(),
-                                         data_name='salinity',
-                                         levels=np.linspace(28, 32, 9))
+            img = plot2d_scalar_filled_contour(fig, ax[record, 0], mesh, data.flatten(),
+                                         levels=np.linspace(28, 32, 9),
+                                         colorbar=False)
 
-            ax[record].set_title('t={}s'.format(res.times[record]))
-            ax[record].set_xlim(0, 10)
-            ax[record].set_ylim(9, 10.25)
+            ax[record, 0].set_title('t={}s'.format(res.times[record]))
+            ax[record, 0].set_xlim(0, 10)
+            ax[record, 0].set_ylim(9, 10.25)
+
+        for axe in ax[:, 1]:
+            axe.axis('off')
+
+        cax = fig.add_axes([0.80, 0.15, 0.05, 0.7])
+        cbar = plt.colorbar(img, cax=cax, ticks=np.linspace(28, 32, 9))
+        cbar.set_label('Salinity')
 
         fig_name = 'img/res_Sal'
         print(" "*8+"~> Plotting "+fig_name)

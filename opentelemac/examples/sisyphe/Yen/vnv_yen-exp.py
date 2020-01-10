@@ -48,7 +48,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:SISRES',
                             'fis_yen-exp.slf',
-                            eps=[1.e-4, 1.e-4, 1.e-4, 1.e-4, 1.e-4, 1.e-4, 1.e-3, 1.e-3, 1.e-3, 1.e-4, 1.e-4, 1.e-4])
+                            eps=[1.e-4, 1.e-4, 1.e-4, 1.e-4, 1.e-4, 1.1e-4, 1.e-3, 1.e-3, 1.e-3, 1.e-4, 1.e-4, 1.e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:SISRES',

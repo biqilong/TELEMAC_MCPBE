@@ -98,17 +98,17 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_malpasset-murd_p2.slf',
-                            eps=[2.E-1, 4.E0, 4.E0, 1.E0, 5.E-1])
+                            eps=[2.E-1, 4.E0, 4.E0, 1.E0, 6.E-1])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T3DRES',
                             'f3d_malpasset-murd_p2.slf',
-                            eps=[2.E-1, 4.E0, 4.E0, 1.E0, 5.E-1])
+                            eps=[2.E-1, 4.E0, 4.E0, 1.E0, 9.1E-1])
 
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:T3DRES',
                             'vnv_2:T3DRES',
-                            eps=[2.E-1, 4.E0, 4.E0, 1.E0, 5.E-1])
+                            eps=[2.E-1, 4.E0, 4.E0, 1.E0, 9.E-1])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_3:T3DRES',
@@ -138,7 +138,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_5:T3DRES',
                             'vnv_6:T3DRES',
-                            eps=[2.E-1, 5.3E0, 3.3E0, 1.E0, 1.1E0])
+                            eps=[3.E-1, 5.3E0, 3.3E0, 1.E0, 1.1E0])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_8:T3DRES',

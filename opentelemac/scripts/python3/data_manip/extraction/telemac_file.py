@@ -1005,10 +1005,9 @@ class TelemacFile(HermesFile):
         if self.get_mesh_dimension() != 3:
             raise TelemacException("Action possible only on 3d mesh")
 
-        nplan = self.nplan
-        res = np.zeros((self.ntimestep, nplan), dtype=np.float64)
+        res = np.zeros((self.nplan, self.ntimestep), dtype=np.float64)
         for record in range(self.ntimestep):
-            res[record, :] = self.get_data_on_vertical_segment(\
+            res[:, record] = self.get_data_on_vertical_segment(\
                                     varname, record, point)
         return res
 

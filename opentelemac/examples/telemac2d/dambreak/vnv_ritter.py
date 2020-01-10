@@ -135,7 +135,8 @@ class VnvStudy(AbstractVnvStudy):
             'initial water depth',
             fig_size=(5, 3),
             record=0,
-            ylim=[0., 1.],
+            ylim=[0., 1.2],
+            y_label='h (m)',
             fig_name='img/t2d_ritter_initial_elevation')
 
         #======================================================================
@@ -152,6 +153,7 @@ class VnvStudy(AbstractVnvStudy):
                 kin1_res,
                 'KIN1',
                 record=record,
+                y_label='h (m)',
                 fig_size=(6, 5),
                 ref_name='ANALYTIC SOL H',
                 fig_name='img/t2d_ritter_kin1_depth_firstobs{}'.format(record),
@@ -174,6 +176,7 @@ class VnvStudy(AbstractVnvStudy):
                 kin1_res,
                 'KIN1',
                 record=record,
+                y_label='u (m/s)',
                 fig_size=(6, 5),
                 ref_name='ANALYTIC SOL U',
                 fig_name='img/t2d_ritter_kin1_vel_firstobs{}'.format(record),
@@ -211,6 +214,7 @@ class VnvStudy(AbstractVnvStudy):
                 res_list,
                 res_labels,
                 record=record,
+                y_label='h (m)',
                 fig_size=(6, 5),
                 ref_name='ANALYTIC SOL H',
                 fig_name='img/t2d_ritter_H_schemes_comparison_{}'.format(record),
@@ -221,6 +225,7 @@ class VnvStudy(AbstractVnvStudy):
                 res_list,
                 res_labels,
                 record=record,
+                y_label='u (m/s)',
                 fig_size=(6, 5),
                 ref_name='ANALYTIC SOL U',
                 fig_name='img/t2d_ritter_U_schemes_comparison_{}'.format(record),

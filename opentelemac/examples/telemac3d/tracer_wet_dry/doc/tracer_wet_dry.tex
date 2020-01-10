@@ -160,7 +160,7 @@ in mind that these times are specific to the validation run and the type of the 
     \begin{tabular}{|c|c|c|}
       \hline  LEO POSTMA & CHAR & MURD\\
       \hline
-      \InputIfFileExists{../TimesSeqPar_schemes.txt}{}{} \\
+      \InputIfFileExists{../img/TimeSeqPar_Schemes.txt}{}{} \\
       \hline
   \end{tabular}%}
   \caption{Time of simulation for different cases of the Tracer wet/dry example}
@@ -181,7 +181,7 @@ That allows to quantify the loss of information that goes along with the partiti
   \begin{tabular}{|c|c|c|}
     \hline $||\epsilon||_{L^1}$ & $||\epsilon||_{L^2}$ & $||\epsilon||_{L^{\infty}}$ \\
     \hline
-    \InputIfFileExists{../SeqPar.txt}{}{}\\
+    \InputIfFileExists{../img/SeqPar.txt}{}{}\\
     \hline
   \end{tabular}
   \caption{Sequentiel VS Parallel - Errors on water depth values of the Tracer wet/dry case}
@@ -217,7 +217,7 @@ the simulation for each scheme are shown resp. in the Tables \ref{tab:tracerwetd
     \end{tabular}
     \begin{tabular}{|c|c|c|}
       \hline  LEO POSTMA & CHAR & MURD\\
-      \hline \InputIfFileExists{../Tmins.txt}{}{}\\
+      \hline \InputIfFileExists{../img/Tmins.txt}{}{}\\
       \hline
   \end{tabular}%}
     \caption{Minimum value of tracer through the simulation for each case of the Tracer wet/dry example.}
@@ -234,7 +234,7 @@ the simulation for each scheme are shown resp. in the Tables \ref{tab:tracerwetd
     \end{tabular}
     \begin{tabular}{|c|c|c|}
       \hline  LEO POSTMA & CHAR & MURD\\
-      \hline \InputIfFileExists{../Tmaxs.txt}{}{}\\
+      \hline \InputIfFileExists{../img/Tmaxs.txt}{}{}\\
       \hline
   \end{tabular}%}
     \caption{Maximum value of tracer through the simulation for each case of the Tracer wet/dry example.}
@@ -256,7 +256,7 @@ and on all the points of the mesh, is transcribed in Table \ref{tab:tracerwetdry
     \end{tabular}
     \begin{tabular}{|c|c|c|}
       \hline  LEO POSTMA & CHAR & MURD\\
-      \hline \InputIfFileExists{../hmins.txt}{}{}\\
+      \hline \InputIfFileExists{../img/hmins.txt}{}{}\\
       \hline
   \end{tabular}%}
     \caption{Minimum value of water depth through the simulation for each case of the Tracer wet/dry example}
@@ -280,9 +280,9 @@ The mass conservation can be checked by calculating the volume in the domain dur
     \begin{tabular}{|c|c|c|}
       \hline  LEO POSTMA & CHAR & MURD\\
       \hline
-      \InputIfFileExists{../volErrors_schemes.txt}{}{} \\
+      \InputIfFileExists{../img/volErrors_schemes.txt}{}{} \\
       \hline
-      \InputIfFileExists{../volErrors_schemes_Parallel.txt}{}{} \\
+      \InputIfFileExists{../img/volErrors_schemes_Parallel.txt}{}{} \\
       \hline
   \end{tabular}}
   \caption{Volume loss and relative error for different schemes of the Tracer wet/dry example}

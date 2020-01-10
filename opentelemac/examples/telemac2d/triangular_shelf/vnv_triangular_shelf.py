@@ -38,7 +38,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_triangular_shelf.slf',
-                            eps=[0.03, 0.008, 3.E-4, 3.E-4, 1.E-8])
+                            eps=[0.03, 0.009, 3.E-4, 3.E-4, 1.E-8])
 
 
     def _post(self):

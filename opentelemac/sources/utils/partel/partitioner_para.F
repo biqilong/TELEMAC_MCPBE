@@ -84,7 +84,6 @@
       TYPE(C_PTR), POINTER :: PTXADJ(:), PTADJNCY(:)
       INTEGER, POINTER :: XADJ2(:), ADJNCY2(:)
       INTEGER :: NEDGE
-      INTEGER :: COMM
 !
 #endif
         IF(PMETHOD.EQ.3) THEN
@@ -177,8 +176,7 @@
           ENDDO
 !
           CALL P_ALLGATHERV_I(EPART_LOC,NELEM_LOC,EPART,
-     &                      RECVCOUNT,DISPLS,
-     &                      COMM,ERR)
+     &                      RECVCOUNT,DISPLS, ERR)
 !
           DEALLOCATE(ELMDIST)
           DEALLOCATE(DISPLS)
@@ -333,9 +331,8 @@
             DISPLS(I) = DISPLS(I-1) + RECVCOUNT(I-1)
           ENDDO
 !
-          CALL P_ALLGATHERV_I(EPART_LOC,NELEM_LOC,MPI_INTEGER,EPART,
-     &                      RECVCOUNT,DISPLS,MPI_INTEGER,
-     &                      COMM,ERR)
+          CALL P_ALLGATHERV_I(EPART_LOC,NELEM_LOC,EPART,
+     &                      RECVCOUNT,DISPLS,ERR)
 !          DEALLOCATE(XADJ2)
 !          DEALLOCATE(ADJNCY2)
           DEALLOCATE(PTXADJ)

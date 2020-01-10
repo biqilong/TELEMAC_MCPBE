@@ -21,6 +21,6 @@ To add MED support:
 To add MUMPS support:
 - mumps: 4.10
 To add AED support:
-- aed2: 1.0-edf (Download from Telemac website)
+- aed2: 1.0-edf (Download from Telemac website http://www.opentelemac.org/index.php/binaries/summary/39-manual-installation-sources/)
 To add GOTM:
-- gotm: 2019-06-14-edf (Download from Telemac Website)
+- gotm: 2019-06-14-edf (Download from Telemac Website http://www.opentelemac.org/index.php/binaries/summary/39-manual-installation-sources/)

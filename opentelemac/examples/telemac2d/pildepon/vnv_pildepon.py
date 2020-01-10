@@ -77,7 +77,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T2DRES',
                             'f2d_pildepon.slf',
-                            eps=[1.E-6, 1.E-7, 1.E-6, 1.E-7, 1.E-8, 3.E-5, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-6])
+                            eps=[1.E-6, 1.E-7, 1.E-6, 1.E-7, 1.E-8, 4.E-5, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-8, 1.E-6])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_4:T2DRES',
@@ -160,6 +160,7 @@ class VnvStudy(AbstractVnvStudy):
             res_vnv_1_t2dres,
             record=0,
             filled_contours=True,
+            cbar_label='Bottom (m)',
             fig_size=(10, 6),
             fig_name='img/Bathy')
 
@@ -170,6 +171,7 @@ class VnvStudy(AbstractVnvStudy):
             record=1,
             filled_contours=True,
             annotate_time=True,
+            cbar_label='Velocity (m/s)',
             fig_size=(6, 4),
             fig_name='img/Velocity_t1')
 
@@ -180,6 +182,7 @@ class VnvStudy(AbstractVnvStudy):
             record=-1,
             filled_contours=True,
             annotate_time=True,
+            cbar_label='Velocity (m/s)',
             fig_size=(6, 4),
             fig_name='img/Velocity_tf')
 
@@ -191,6 +194,7 @@ class VnvStudy(AbstractVnvStudy):
             plot_mesh=True,
             cbar_priority='vector',
             colored_vectors=True,
+            cbar_label='Velocity (m/s)',
             vectors_scale=30,
             grid_resolution=[25, 25],
             fig_size=(8, 6),
@@ -211,6 +215,7 @@ class VnvStudy(AbstractVnvStudy):
                 vmax=0.35,
                 nv=9,
                 cbar_extend='both',
+                cbar_label='Free surface (m)',
                 fig_size=(6, 4),
                 fig_title=labels[idx],
                 fig_name='img/FS_'+res_labels[idx])
@@ -227,6 +232,7 @@ class VnvStudy(AbstractVnvStudy):
                 contours=True,
                 filled_contours=True,
                 vectors=True,
+                cbar_label='Velocity (m/s)',
                 vectors_scale=30,
                 grid_resolution=[15, 15],
                 fig_size=(6, 4),
@@ -242,6 +248,7 @@ class VnvStudy(AbstractVnvStudy):
                 cbar_priority='vector',
                 colored_vectors=True,
                 vectors_scale=30,
+                cbar_label='Velocity (m/s)',
                 grid_resolution=[20, 20],
                 fig_size=(6, 4),
                 fig_title=labels[idx],

@@ -304,7 +304,7 @@ subroutine  PLANIM         ( &
       abs_abs  = Profil(iprof)%AbsAbs
       abs_rel  = Profil(iprof)%AbsRel
 
-      if ( Temps .EQ. TempsInitial .OR. abs(varsed(iprof)) > Hthres ) then
+      if ( Temps .EQ. TempsInitial .OR. condition_courlis ) then
 
         my_cpt_planim = my_cpt_planim + 1  ! PU2017: Incrementation de la variable globale pour compter le nombre d'etapes de planimetrage
 

@@ -60,6 +60,14 @@
 !     LANGUAGE AND LOGICAL UNIT FOR OUTPUTS
 !
       CALL READ_CONFIG(CHAINE,NCAR)
+
+#if defined BOGUS
+      ! Bogus call so that they are added when running rescan
+      call inpoly
+      call p_sync
+      call p_dmax
+      call p_dmin
+#endif
 !
 !-----------------------------------------------------------------------
 !

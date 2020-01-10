@@ -679,7 +679,7 @@ according to the selected formula (Chezy, Strickler, etc.) :
 NOM = 'COEFFICIENT DE FROTTEMENT MAXIMAL'
 NOM1 = 'MAXIMAL FRICTION COEFFICIENT'
 TYPE = REEL
-MNEMO = 'FICE_MAX'
+MNEMO = 'FICE\_MAX'
 INDEX = 52
 TAILLE = 1
 DEFAUT = 0.04
@@ -687,7 +687,7 @@ DEFAUT1 = 0.04
 RUBRIQUE = ''
 RUBRIQUE1 = ''
 NIVEAU = 0
-AIDE = 
+AIDE =
 'Fixe le coefficient de frottement maximal lorsque la celui-ci depend
 de l''epaisseur du couvert de glace'
 AIDE1 =
@@ -709,7 +709,7 @@ CHOIX =
 CHOIX1 =
 '0="CONSTANT FRICTION COEF"';
 '1="LINEAR FRICTION COEF"'
-AIDE = 
+AIDE =
 'Selectionne entre un coefficient de friction constant ou variable
 lineairement en fonction de l''epaisseur du couvert de glace.'
 AIDE1 =

@@ -561,7 +561,7 @@
         INTEGER,                    INTENT(IN)    :: DIM1
         DOUBLE PRECISION, DIMENSION(DIM1), INTENT(IN)   :: VALEUR
         INTEGER,                    INTENT(OUT)   :: IERR
-        INTEGER, OPTIONAL,           INTENT(IN) :: BLOCK_INDEX
+        INTEGER, OPTIONAL,          INTENT(IN)    :: BLOCK_INDEX
 !
         CALL CHECK_INSTANCE_T2D(ID,IERR)
         IF(IERR.NE.0) RETURN
@@ -1297,13 +1297,16 @@
       !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
       !+                        ERROR ID OTHERWISE
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      SUBROUTINE RUN_READ_CASE_T3D(ID,CAS_FILE, DICO_FILE, INIT, IERR)
+      SUBROUTINE RUN_READ_CASE_T3D(ID,CAS_FILE, DICO_FILE, INIT, IERR,
+     &                            WAQ_CAS_FILE, WAQ_DICO_FILE)
 !
           INTEGER,            INTENT(IN) :: ID
           CHARACTER(LEN=250), INTENT(IN) :: CAS_FILE
           CHARACTER(LEN=250), INTENT(IN) :: DICO_FILE
           LOGICAL,            INTENT(IN) :: INIT
           INTEGER,            INTENT(OUT) :: IERR
+          CHARACTER(LEN=250), OPTIONAL, INTENT(IN) :: WAQ_CAS_FILE
+          CHARACTER(LEN=250), OPTIONAL, INTENT(IN) :: WAQ_DICO_FILE          
 !
         INTEGER :: EXEC_POS
 !
@@ -1318,8 +1321,14 @@
 !
         INSTANCE_LIST_T3D(ID)%MYPOSITION = RUN_READ_CASE_POS
 !
-        CALL RUN_READ_CASE_T3D_D(INSTANCE_LIST_T3D(ID),CAS_FILE,
-     &                           DICO_FILE, INIT, IERR)
+        IF(PRESENT(WAQ_CAS_FILE).AND.PRESENT(WAQ_DICO_FILE))THEN
+          CALL RUN_READ_CASE_T3D_D(INSTANCE_LIST_T3D(ID),CAS_FILE,
+     &                             DICO_FILE, INIT, IERR, WAQ_CAS_FILE,
+     &                             WAQ_DICO_FILE)
+        ELSE
+          CALL RUN_READ_CASE_T3D_D(INSTANCE_LIST_T3D(ID),CAS_FILE,
+     &                             DICO_FILE, INIT, IERR)
+        END IF
 !
       END SUBROUTINE RUN_READ_CASE_T3D
 !
@@ -1466,20 +1475,28 @@
 !  VARIABLE ACCESS FUNCTIONS
 !
       SUBROUTINE GET_DOUBLE_ARRAY_T3D
-     &   (ID, VARNAME, VALEUR, DIM1, IERR)
+     &   (ID, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
 !
         INTEGER,                    INTENT(IN)    :: ID
         CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)    :: VARNAME
         INTEGER,                    INTENT(IN)    :: DIM1
         DOUBLE PRECISION, DIMENSION(DIM1), INTENT(INOUT)   :: VALEUR
         INTEGER,                    INTENT(OUT)   :: IERR
+        INTEGER, OPTIONAL,          INTENT(IN)    :: BLOCK_INDEX
 !
         CALL CHECK_INSTANCE_T3D(ID,IERR)
         IF(IERR.NE.0) RETURN
 !
-        CALL GET_DOUBLE_ARRAY_T3D_D(
+        IF(PRESENT(BLOCK_INDEX))THEN
+           CALL GET_DOUBLE_ARRAY_T3D_D(
+     &          INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
+     &          IERR, BLOCK_INDEX)
+        ELSE
+           CALL GET_DOUBLE_ARRAY_T3D_D(
      &          INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
      &          IERR)
+!
+        END IF
 !
       END SUBROUTINE GET_DOUBLE_ARRAY_T3D
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1500,20 +1517,27 @@
       !+                        ERROR ID OTHERWISE
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_ARRAY_T3D
-     &   (ID, VARNAME, VALEUR, DIM1, IERR)
+     &   (ID, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
 !
         INTEGER,                    INTENT(IN)    :: ID
         CHARACTER(LEN=T3D_VAR_LEN), INTENT(IN)    :: VARNAME
         INTEGER,                    INTENT(IN)    :: DIM1
         DOUBLE PRECISION, DIMENSION(DIM1), INTENT(IN)   :: VALEUR
         INTEGER,                    INTENT(OUT)   :: IERR
+        INTEGER, OPTIONAL,          INTENT(IN)    :: BLOCK_INDEX
 !
         CALL CHECK_INSTANCE_T3D(ID,IERR)
         IF(IERR.NE.0) RETURN
 !
-        CALL SET_DOUBLE_ARRAY_T3D_D(
+        IF(PRESENT(BLOCK_INDEX))THEN
+           CALL SET_DOUBLE_ARRAY_T3D_D(
+     &          INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
+     &          IERR, BLOCK_INDEX)
+        ELSE
+           CALL SET_DOUBLE_ARRAY_T3D_D(
      &          INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
      &          IERR)
+        END IF        
 !
       END SUBROUTINE SET_DOUBLE_ARRAY_T3D
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

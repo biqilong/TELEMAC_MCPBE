@@ -1,1 +1,0 @@
-__all__ = ["convertKenue", "convertHYCOM", "convertJCOPE2", "convertECMWF", "convertToBND", "convertToINI", "shapefile", "convertUTM", "pydap" ]

@@ -51,14 +51,14 @@ h_r \quad \text{for} \quad x_d < x \leq L
   \includegraphicsmaybe{[width=0.9\textwidth]}{../img/t2d_ritter_initial_elevation.png}}
   \caption{Initial condition for Ritter}
     \label{fig:ritterini}
-\end{minipage} 
+\end{minipage}
 &
 \begin{minipage}{.48\linewidth}
 \centerline{
 \includegraphicsmaybe{[width=0.9\textwidth]}{../img/t2d_stoker_initial_elevation.png}}
 \caption{Initial condition for Stoker}
     \label{fig:stokerini}
-\end{minipage} 
+\end{minipage}
   \end{tabular}}
 \end{figure}
 
@@ -119,8 +119,8 @@ x_C(t) = x_0 + t \left( \dfrac{2c_m^2 \left( \sqrt{gh_l} - c_m \right)}{c_m^2-g 
 
 $c_m$ being solution of $-8g h_r c_m^2 (\sqrt{gh_l}-c_m)^2+(c_m^2-gh_r)^2(c_m^2+gh-r)$.
 
-\subsection{boundary conditions}
-Boundary conditions are defined by no slip walls on the entry and channel sides and torrential outflow on the outlet boundary 
+\subsection{Boundary conditions}
+Boundary conditions are defined by no slip walls on the entry and channel sides and torrential outflow on the outlet boundary
 with free water depth and velocity.
 
 %
@@ -132,7 +132,7 @@ no friction is set to the bottom.
 \subsection{Numerical parameters}
 
 For this test case, duration is set to $2.5s$ for the Stoker case and $1.5s$ for the Ritter case.
-Several numerical schemes of advection for velocities are confronted. 
+Several numerical schemes of advection for velocities are confronted.
 The solver used is the conjugate gradient with an accuracy of $10^{-8}$.
 The parameters specific to each case are summed up in the Table~\ref{tab:dambreak:cases}.
 \begin{table}[H]
@@ -170,8 +170,8 @@ are specific to the validation run and the type of processors that were used for
 
 \subsection{First observation}
 
-Figure \ref{fig:ritter:firstobs1d} illsutrate the result obtained for water depth and velocity after $0.5s$ of
-simulation with the Kinetic finite volume scheme. The rarefaction wave is clearly visible and well 
+Figure \ref{fig:ritter:firstobs1d} illsutrates the result obtained for water depth and velocity after $0.5s$ of
+simulation with the Kinetic finite volume scheme. The rarefaction wave is clearly visible and well
 captured as well as the moving wet/dry transition.
 On figures \ref{fig:ritter:Hfirstobs1d} and  \ref{fig:ritter:Ufirstobs1d}, water depth and velocity are presented in the 2D plane.
 
@@ -238,14 +238,14 @@ water depth and velocity. Comparisons are shown on figure \ref{fig:ritter:compar
 
 Kinetic and HLLC schemes are able to track the rarefaction wave with a good precision and are capable of
 handling wet/dry tyransition smoothly.
-NERD and ERIA are also are able to track the rarefaction wave schemes 
-but exibit oscillations on the wet/dry transition. 
+NERD and ERIA are also are able to track the rarefaction wave schemes
+but exibit oscillations on the wet/dry transition.
 Finally characteristics are not capable to reproduce the analytic solution.
 
 \subsection{Accuracy}
 
-For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms 
-of the water depth and velocity are calculated at each time step for each scheme. 
+For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms
+of the water depth and velocity are calculated at each time step for each scheme.
 $L^2$ errors time series and time integrated $L^1$, $L^2$ and $L^\infty$ errors are presented in the figures \ref{fig:ritter:ErrNumH}, \ref{fig:ritter:ErrNumU} and \ref{fig:ritter:ErrNumV} for $H$, $U$ and $V$ respectively.
 
 \begin{figure}[H]
@@ -293,13 +293,13 @@ This is to be put in perspective with CPU time presented previously \ref{fig:rit
 
 \subsection{Positivity of the water depth}
 
-The minimum value of the water depth are checked during the whole simulation. 
+The minimum values of the water depth are checked during the whole simulation.
 Results are showed on figure \ref{t2d:ritter:minmax}.
 
 \begin{figure}[H]
 \centering
 \includegraphicsmaybe{[width=0.8\textwidth]}{../img/t2d_ritter_minT.png}
-\caption{Minimum values of water depths after one rotation of the cone.}
+\caption{Minimum values of water depths for the Ritter test case.}
 \label{t2d:ritter:minmax}
 \end{figure}
 
@@ -317,7 +317,7 @@ The evolution of mass for each of the schemes is shown in the Figure~\ref{fig:ri
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_ritter_mass_balance.png}
-  \caption{Mass loss for the tested schemes on the Thacker case.}
+  \caption{Mass loss for the tested schemes on the Ritter test case.}
 \label{fig:ritter:VoLTime}
 \end{figure}
 
@@ -340,21 +340,21 @@ The following quantities are studied:
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_ritter_potential_energy.png}
-  \caption{Evolution of kinetic energy for the tested schemes on the Thacker case.}
+  \caption{Evolution of kinetic energy for the tested schemes on the Ritter test case.}
 \label{fig:ritter:Ep}
 \end{figure}
 
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_ritter_kinetic_energy.png}
-  \caption{Evolution of kinetic energy for the tested schemes on the Thacker case.}
+  \caption{Evolution of kinetic energy for the tested schemes on the Ritter test case.}
 \label{fig:ritter:Ec}
 \end{figure}
 
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_ritter_total_energy.png}
-  \caption{Evolution of mechanical energy for the tested schemes on the Thacker case.}
+  \caption{Evolution of mechanical energy for the tested schemes on the Ritter test case.}
 \label{fig:ritter:Em}
 \end{figure}
 
@@ -377,7 +377,7 @@ are specific to the validation run and the type of processors that were used for
 \subsection{First observation}
 
 Figure \ref{fig:ritter:firstobs1d} illsutrate the result obtained for water depth and velocity after $0.5s$ of
-simulation with the Kinetic finite volume scheme. The left going rarefaction wave and the right going shock are 
+simulation with the Kinetic finite volume scheme. The left going rarefaction wave and the right going shock are
 clearly visible and well captured by the Kinetic scheme.
 
 \begin{figure}[H]
@@ -433,8 +433,8 @@ The worst results are obtained with the characteristics which is not capable of 
 
 \subsection{Accuracy}
 
-For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms 
-of the water depth and velocity are calculated at each time step for each scheme. 
+For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms
+of the water depth and velocity are calculated at each time step for each scheme.
 $L^2$ errors time series and time integrated $L^1$, $L^2$ and $L^\infty$ errors are presented in the figures \ref{fig:stoker:ErrNumH}, \ref{fig:stoker:ErrNumU} and \ref{fig:stoker:ErrNumV} for $H$, $U$ and $V$ respectively.
 
 \begin{figure}[H]
@@ -478,8 +478,8 @@ $L^2$ errors time series and time integrated $L^1$, $L^2$ and $L^\infty$ errors 
 
 \subsection{Positivity of the water depth}
 
-The minimum value of the water depth are checked during the whole simulation. 
-Results are showed on figure \ref{t2d:stoker:minmax}. 
+The minimum value of the water depth are checked during the whole simulation.
+Results are showed on figure \ref{t2d:stoker:minmax}.
 
 \begin{figure}[H]
 \centering
@@ -502,7 +502,7 @@ The evolution of mass for each of the schemes is shown in the Figure~\ref{fig:st
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_stoker_mass_balance.png}
-  \caption{Mass loss for the tested schemes on the Thacker case.}
+  \caption{Mass loss for the tested schemes on the Stoker test case.}
 \label{fig:stoker:VoLTime}
 \end{figure}
 
@@ -525,21 +525,21 @@ The following quantities are studied:
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_stoker_potential_energy.png}
-  \caption{Evolution of kinetic energy for the tested schemes on the Thacker case.}
+  \caption{Evolution of kinetic energy for the tested schemes on the Stoker test case.}
 \label{fig:stoker:Ep}
 \end{figure}
 
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_stoker_kinetic_energy.png}
-  \caption{Evolution of kinetic energy for the tested schemes on the Thacker case.}
+  \caption{Evolution of kinetic energy for the tested schemes on the Stoker test case.}
 \label{fig:stoker:Ec}
 \end{figure}
 
 \begin{figure}[H]
 \centering
   \includegraphicsmaybe{[width=0.75\textwidth]}{../img/t2d_stoker_total_energy.png}
-  \caption{Evolution of mechanical energy for the tested schemes on the Thacker case.}
+  \caption{Evolution of mechanical energy for the tested schemes on the Stoker test case.}
 \label{fig:stoker:Em}
 \end{figure}
 
@@ -547,13 +547,13 @@ The following quantities are studied:
 \section{ Conclusions}
 
 With the tested dambreak cases, we have shown that \telemac{2d} is able to reproduce the propagation
-of rarefaction and shock waves in good accordance with analytic solutions. 
+of rarefaction and shock waves in good accordance with analytic solutions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reference}
 
 \begin{itemize}
 \item J. J. Stoker, Water Waves: The Mathematical Theory with Applications, Interscience, 1957.
-\item Ritter, A. (1892). "Die Fortpflanzung der Wasserwellen." Vereine Deutscher Ingenieure Zeitswchrift, Vol. 36, No. 2, 33, 
+\item Ritter, A. (1892). "Die Fortpflanzung der Wasserwellen." Vereine Deutscher Ingenieure Zeitswchrift, Vol. 36, No. 2, 33,
 13 Aug., pp. 947-954 (in German).
 \end{itemize}

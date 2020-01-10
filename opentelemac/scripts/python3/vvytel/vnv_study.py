@@ -10,6 +10,7 @@ from utils.exceptions import TelemacException
 from utils.files import is_newer
 from vvytel.vnv_tools import compute_norm, compute_diff, check_compatibility
 from data_manip.extraction.telemac_file import TelemacFile
+from data_manip.formats.mascaret_file import MascaretFile
 from abc import ABC, abstractmethod
 import time
 
@@ -41,6 +42,8 @@ class AbstractVnvStudy(ABC):
         self.commands = OrderedDict()
         self.options = options
         self.action_time = OrderedDict()
+        # Walltime for cluster run (default one hour)
+        self.walltime = "01:00:00"
 
         self._init()
 
@@ -200,17 +203,13 @@ class AbstractVnvStudy(ABC):
 
         if run:
             print("  ~> {}: running on {} cores".format(name, study.ncsize))
-            # Forcing ncsize if not set
-            old_ncsize = self.options.ncsize
-            if old_ncsize == 0:
-                self.options.ncsize = study.ncsize
+            # Forcing ncsize
+            self.options.ncsize = study.ncsize
+            self.options.walltime = self.walltime
             if study.cfg['HPC'] == {} or self.options.mpi:
                 run_local_cas(study, self.options)
             else:
                 run_hpc_cas(study, self.options)
-            # Restoring option value
-            if old_ncsize == 0:
-                self.options.ncsize = old_ncsize
         else:
             print("  ~> {}: Nothing to do (up-to-date)".format(name))
 
@@ -275,6 +274,13 @@ class AbstractVnvStudy(ABC):
 
         @returns (str) Path to the file
         """
+        # Specific treatment of Mascaret file
+        if module=='mascaret':
+            name1, submit = name.split(':')
+            masc_file = path.join(self.get_vnv_working_dir(name1), submit)
+            res = MascaretFile(masc_file)
+            return res, name.upper()
+
         # Extract only one result file
         if name is not None:
             if ':' in name:

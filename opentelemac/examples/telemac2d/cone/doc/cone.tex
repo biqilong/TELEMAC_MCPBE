@@ -6,8 +6,8 @@
 %     the physical phenomena involved and specify how the numerical solution will be validated
 
 \section{Purpose}
-This test shows the performance of the finite element advection schemes of \telemac{2d} for passive scalar transport in a time dependent case. 
-It shows the advection of a tracer (or any other passive scalar) in a square basin with flat frictionless bottom and with open boundaries. 
+This test shows the performance of the finite element advection schemes of \telemac{2d} for passive scalar transport in a time dependent case.
+It shows the advection of a tracer (or any other passive scalar) in a square basin with flat frictionless bottom and with closed boundaries.
 
 %--------------------------------------------------------------------------------------------------
 \section{Description}
@@ -43,13 +43,13 @@ c^0(x,y)=e^{-\frac{1}{5}[(x-x_0-5)^2+(y-y_0)^2]}
 
 \subsection{Analytic solution}
 
-The tracer is described by a Gaussian function and is submitted to a rotating velocity field. 
-After one period we expect that the tracer function has the same position and the same values as the initial condition (i.e. maximum value equal to 1 at the center). 
+The tracer is described by a Gaussian function and is submitted to a rotating velocity field.
+After one period we expect that the tracer function has the same position and the same values as the initial condition (i.e. maximum value equal to 1 at the center).
 The analytic solution for the tracer $c$ is given by:
 \begin{equation*}
 c(x,y,t)=e^{-\frac{1}{5}[X^2+Y^2]}
 \end{equation*}
-with: 
+with:
 \begin{equation*}
 \left\{
     \begin{array}{ll}
@@ -64,14 +64,14 @@ where $R=5m$.
 
 In this case the tracer advection equation is solved using fixed hydrodynamic conditions.
 No bottom friction is imposed and diffusivity of tracer is set to zero.
-Angular velocity of the rotating cone is equal to $1 rad.s^{-1}$ which gives a rotation period equal to $T=2\pi$ ($6.28s$). 
+Angular velocity of the rotating cone is equal to $1 rad.s^{-1}$ which gives a rotation period equal to $T=2\pi$ ($6.28s$).
 
 \subsection{Numerical parameters}
 
 The simulation time is set to one period of rotation.
 The time step is chosen in order to do the whole period in 64 steps, so it is equal to $0.098174771s$.
 
-For tracers advection, all the numerical schemes available in \telemac{2d} are tested. 
+For tracers advection, all the numerical schemes available in \telemac{2d} are tested.
 For weak characteristics the number of gauss points is set to 12. For distributive schemes, like predictor-corrector (PC) schemes (scheme 4 and 5 with options 2,3) and locally implicit schemes (LIPS: scheme 4 and 5 with options 4), the number of corrections is set to 5, which is usually sufficient to converge to accurate results. For the locally implicit schemes (scheme 4 and 5 with option 4), the number of sub-steps is equal to 20.
 
 %--------------------------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ For weak characteristics the number of gauss points is set to 12. For distributi
 
 \subsection{Comparison of schemes}
 
-The final contour maps after one rotation of the cone are plotted for each scheme in Figures \ref{t2d:cone:profiles1} and \ref{t2d:cone:profiles2}. One dimentional profiles are also extracted from
+The final contour maps after one rotation of the cone are plotted for each scheme in Figures \ref{t2d:cone:profiles1} and \ref{t2d:cone:profiles2}. One dimensional profiles are also extracted from
 slice plane $(x,y=10,z)$ at $t=T/2$ and $t=T$ on figure \ref{t2d:cone:1dslice}.
 
 \newpage
@@ -116,7 +116,7 @@ slice plane $(x,y=10,z)$ at $t=T/2$ and $t=T$ on figure \ref{t2d:cone:1dslice}.
 \begin{minipage}[t]{0.50\textwidth}
  \centering
  \includegraphicsmaybe{[width=0.95\textwidth]}{../img/figure_NPC1.png}
-\end{minipage} 
+\end{minipage}
   \caption{Cone test: contour maps of tracer after one period of rotation, for the advection schemes of \telemac{2d}.}
  \label{t2d:cone:profiles1}
 \end{figure}
@@ -159,8 +159,8 @@ slice plane $(x,y=10,z)$ at $t=T/2$ and $t=T$ on figure \ref{t2d:cone:1dslice}.
 
 \subsection{Maximum principle}
 
-The minimum value of the gaussian function are measured after one rotation. 
-The maximum value is computed as well, in order to check the respect of the maximum principle (or monotonicity). 
+The minimum value of the gaussian function is measured after one rotation.
+The maximum value is computed as well, in order to check the respect of the maximum principle (or monotonicity).
 Results are showed on figures \ref{t2d:cone:minmax}.
 
 \begin{figure}[H]
@@ -188,8 +188,8 @@ The error norms integrated over time for one rotation of the cone are reported i
 \subsection{Convergence}
 To assess the accuracy of the schemes, computation of error on one mesh is not sufficient.
 In this section a mesh convergence is carried out for each numerical scheme. From a starting mesh
-with $441$ points and $800$ elements we divide by 4 each triangles recursively to generates new meshes.
-The first 4 meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}. 
+with $441$ points and $800$ elements we divide by 4 each triangles recursively to generate new meshes.
+The first 4 meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}.
 
 \begin{figure}[h!]
 \begin{minipage}[t]{0.5\textwidth}
@@ -215,7 +215,7 @@ The first 4 meshes used in the convergence study are presented on figure \ref{t2
 Final time is set to $t_f=T/4$.
 Time step is set to ensure a constant CFL for each mesh increment.
 Strong characteristics, N and PSI schemes converge at first order with a slope slightly inferior to one.
-LIPS and predictor-corrector (PC) schemes as well as NERD have steeper slope of convergence comprised 
+LIPS and predictor-corrector (PC) schemes as well as NERD have steeper slope of convergence comprised
 between one and two.
 Convergence slopes of error in $L^1$, $L^2$ and $L^\infty$ norm at final time
 are plotted for each numerical scheme on figure \ref{t2d:cone:mesh_convergence}.
@@ -253,7 +253,7 @@ are plotted for each numerical scheme on figure \ref{t2d:cone:mesh_convergence}.
 \begin{minipage}[t]{0.50\textwidth}
  \centering
  \includegraphicsmaybe{[width=\textwidth]}{../img/t2d_cone_errors_tf_finemesh_NPC1.png}
-\end{minipage} 
+\end{minipage}
 \begin{minipage}[t]{0.50\textwidth}
  \centering
  \includegraphicsmaybe{[width=\textwidth]}{../img/t2d_cone_errors_tf_finemesh_PSIPC2.png}
@@ -271,7 +271,7 @@ are plotted for each numerical scheme on figure \ref{t2d:cone:mesh_convergence}.
 \end{figure}
 
 Convergence slopes in $L^2$ norm are compared on figure \ref{t2d:cone:error_timeintegrals}.
-Error with strong characteristics, N and PSI schemes are of the same magnitude as well as 
+Error with strong characteristics, N and PSI schemes are of the same magnitude as well as
 LIPS, PC, NERD.
 Errors on the finest mesh are presented in figure \ref{t2d:cone:error_timeintegrals_mesh3}.
 
@@ -292,7 +292,7 @@ Errors on the finest mesh are presented in figure \ref{t2d:cone:error_timeintegr
 %--------------------------------------------------------------------------------------------------
 
 \section{Conclusion}
-\telemac{2d} is able to model passive scalar transport problems in shallow water flows. 
+\telemac{2d} is able to model passive scalar transport problems in shallow water flows.
 
 
 

@@ -5,7 +5,7 @@
 \section{Purpose}
 %
 This test illustrates that \telemac{2d} is able to simulate water retention in a bowled beach.
-It is also useful to check that the schemes are well-balanced and 
+It is also useful to check that the schemes are well-balanced and
 mass conservative in severe drying conditions.
 
 
@@ -109,7 +109,7 @@ The viscosity is set as constant and equal to 0~m$^2$/s (VELOCITY DIFFUSION=0).
 
 \subsection{Numerical parameters}
 
-For this test case, duration is set to $70000 s$ and several numerical schemes 
+For this test case, duration is set to $70000 s$ and several numerical schemes
 are confronted. The solver used is the conjugate gradient with an accuracy of $10^{-4}$.
 For finite element schemes the treatment of the linear system is set to wave Equation (TREATMENT
 OF THE LINEAR SYSTEM: 2). The simulation parameters specific to each case are summed up in Table~\ref{tab:balzano:cases}.
@@ -136,8 +136,8 @@ OF THE LINEAR SYSTEM: 2). The simulation parameters specific to each case are su
 \subsection{First observation}
 \label{subsection:balzano:observations}
 
-The water level in the reservoir gradually reach the elevation $-0.87m$. On the right side of the bump, 
-an hydraulic jump forms as well as near the exit boudary until water level on the righthand side of the domain 
+The water level in the reservoir gradually reach the elevation $-0.87m$. On the right side of the bump,
+an hydraulic jump forms as well as near the exit boudary until water level on the righthand side of the domain
 stabilize around $-2 m$. The evolution of the free suface during the simulation is presented in figure
 \ref{fig:balzano:firstobs} with the kinetic scheme.
 
@@ -199,7 +199,7 @@ are specific to the validation run and the type of processors that were used for
 In this section we compare the solution obtained with all the numerical schemes.
 On the figure \ref{fig:balzano:SL} the evolution of the free surface is presented.
 Kinetic and HLLC schemes handle very well discontinuities and the jumps are well captured.
-CHAR, NERD and ERIA schemes are not able to capture the jumps with large timesteps and numerical oscillations are visible when the drying occurs. Once the hydraulic jump disapears the solutions are smoother and slowly converge towards equilibrium due to numerical diffusion.
+CHAR, NERD and ERIA schemes are not able to capture the jumps with large timesteps and numerical oscillations are visible when the drying occurs. Once the hydraulic jump disappears the solutions are smoother and slowly converge towards equilibrium due to numerical diffusion.
 
 \begin{figure}[H]
 \begin{minipage}[t]{0.5\textwidth}
@@ -219,7 +219,7 @@ The evolution of the water level at two different points, P1 ($x=3600$, $y=600$)
 For all the tested schemes, the asymptotic evolution in the reservoir is realized and is fast.
 On the right-hand side part of the domain, the water level abruptly falls at the beginning of
 the simulation, and later oscillates around the value $-2~m$,
-with a decreasing amplitude. In absence of friction and viscosity, the damping is slow and only 
+with a decreasing amplitude. In absence of friction and viscosity, the damping is slow and only
 and only comes from numerical diffusion.
 
 \begin{figure}[H]
@@ -262,8 +262,8 @@ phases are followed by an oscillation around a zero velocity for all schemes.
 
 \subsection{Positivity of the water depth}
 
-The minimum value of the water depth are checked during all simulation. 
-Results are showed on figure \ref{t2d:balzano:minmax}. 
+The minimum value of the water depth are checked during all simulation.
+Results are showed on figure \ref{t2d:balzano:minmax}.
 In the case of finite volume schemes, positivity is ensured withouth additionnal treatment.
 With finite element schemes the positivity is ensured with a treatment of negative depths
 during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD and 3 for ERIA scheme).
@@ -277,8 +277,8 @@ during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD
 
 \subsection{Mass balance}
 
-Mass conservation can be checked by calculating the mass in the domain during time. The lost mass is calculated as 
-$M_{initial} - M_{final}$ and presented in figure \ref{fig:balzano:massbalance}. 
+Mass conservation can be checked by calculating the mass in the domain during time. The lost mass is calculated as
+$M_{initial} - M_{final}$ and presented in figure \ref{fig:balzano:massbalance}.
 
 \begin{figure}[h!]
   \centering

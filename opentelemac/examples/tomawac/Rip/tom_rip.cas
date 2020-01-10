@@ -8,7 +8,7 @@ STEERING FILE = './tom_rip.cas'
 GEOMETRY FILE = 'geo_rip.slf'
 BOUNDARY CONDITIONS FILE = 'tom_bc.cli'
 /
-2D RESULTS FILE = 'rom_rip.slf'
+2D RESULTS FILE = 'tom_rip.slf'
 /--------------------------------------------------------------------/
 / DIVERS ENTREES-SORTIES
 /--------------------------------------------------------------------/

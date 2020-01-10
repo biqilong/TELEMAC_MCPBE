@@ -472,7 +472,6 @@ files: bief_def.f
   fonstr.f
   front2.f
   bief_allvec.f
-  inpoly.f
   centre_mass_seg.f
   comp_fac.f
   cpik12.f
@@ -523,6 +522,7 @@ files: bief_def.f
   corrxy.f
   write_mesh.f
   bief_close_files.f
+  inpoly.f
   read_config.f
   bief_init.f
   bief_open_files.f
@@ -608,6 +608,7 @@ files: bief_def.f
   gregtim.f
   jultim.f
   addtracer.f
+  couple_mod.F
   bilant.f
   config_code.f
   derive.f
@@ -641,7 +642,6 @@ files: bief_def.f
   gettriebe.f
   gettriseg.f
   gettri.f
-  couple_mod.F
 
 [damocles]
 path: <root>|sources|utils|damocles
@@ -894,6 +894,7 @@ files: declarations_parallel.F
   p_iwriti.F
   p_exit.F
   p_init.F
+  p_sync.F
   p_mpi_type_commit.F
   p_mpi_type_create_struct.F
   p_mpi_type_get_extent.F
@@ -906,7 +907,6 @@ files: declarations_parallel.F
   p_mpi_alltoallv_alg.F
   p_mpi_alltoallv_oil.F
   p_mpi_type_free.F
-  p_sync.F
   p_dmax_array.F
   p_dmin_array.F
 
@@ -1637,5 +1637,7 @@ files: declarations_waqtel.f
   calcs3d_o2.f
   calcs3d_thermicv.f
   source_waq.F
+  lecdon_waqtel.f
+  point_waqtel.f
   calcs3d_thermics.f
   t3d_construct_aed2.F90

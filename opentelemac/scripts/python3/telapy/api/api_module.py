@@ -58,7 +58,9 @@ class ApiModule():
                  dicofile,
                  lang, stdout,
                  comm, recompile,
-                 code=None, log_lvl='INFO'):
+                 code=None, log_lvl='INFO',
+                 waqfile=None,
+                 waqdico=None):
         """
         Constructor for apiModule
 
@@ -71,6 +73,8 @@ class ApiModule():
         @param comm MPI communicator
         @param recompile If true recompiling the API
         @param code For coupling
+        @param waqfile Name of the waqtel steering file
+        @param waqdico Path to the waqtel dictionary
         """
 
         self.name = name
@@ -193,6 +197,8 @@ class ApiModule():
         self.stdout = stdout
         self.casfile = casfile
         self.dicofile = dicofile
+        self.waqfile = waqfile
+        self.waqdico = waqdico
         if comm is not None:
             self.fcomm = comm.py2f()
             self.ncsize = comm.Get_size()
@@ -357,6 +363,9 @@ class ApiModule():
             self._error = self.run_read_case(self.my_id, self.code,
                                              self.casfile, self.dicofile,
                                              init)
+        elif self.name is "t3d" and self.waqfile is not None:
+            self._error = self.run_read_case(self.my_id, self.casfile,
+                                             self.dicofile, init, self.waqfile, self.waqdico)
         else:
             self._error = self.run_read_case(self.my_id, self.casfile,
                                              self.dicofile, init)
@@ -747,7 +756,7 @@ class ApiModule():
 
         return res
 
-    def set_array(self, varname, values):
+    def set_array(self, varname, values, block_index=0):
         """
         Retrieves all the values from a variable into a numpy array
 
@@ -768,7 +777,7 @@ class ApiModule():
                 raise TelemacException(\
                         "Error in shape of values is %s should be %s"
                         % (str(values.shape), str((dim1,))))
-            if b'DOUBLE' in var_type:
+            if b"DOUBLE" in var_type:
                 self.api_set_double_array(self.my_id, varname, values, dim1)
             else:
                 self.api_set_integer_array(self.my_id, varname, values, dim1)
@@ -779,7 +788,9 @@ class ApiModule():
                         "Error in shape of values is %s should be %s"
                         % (str(values.shape), str((dim1, dim2))))
             tmp = values.reshape(dim1*dim2)
-            if b'DOUBLE' in var_type:
+            if b"DOUBLE_BLOCK" in var_type:
+                self.api_set_double_array(self.my_id, varname, tmp, dim1*dim2, block_index=block_index+1)
+            elif b"DOUBLE" in var_type:
                 self.api_set_double_array(self.my_id, varname, tmp, dim1*dim2)
             else:
                 self.api_set_integer_array(self.my_id, varname, tmp, dim1*dim2)
@@ -790,7 +801,7 @@ class ApiModule():
                         "Error in shape of values is %s should be %s"
                         % (str(values.shape), str((dim1, dim2, dim3))))
             tmp = values.reshape(dim1*dim2*dim3)
-            if b'DOUBLE' in var_type:
+            if b"DOUBLE" in var_type:
                 self.api_set_double_array(self.my_id, varname, tmp,
                                           dim1*dim2*dim3)
             else:

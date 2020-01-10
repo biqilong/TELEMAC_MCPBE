@@ -221,7 +221,7 @@ Remember that the computation with the fine mesh is only run in parallel to save
     \begin{tabular}{|c|c|c|c|}
       \hline   MURD P2 & CHAR P2 & MURD P6 & FINE P2\\
       \hline
-      \InputIfFileExists{../TimesSeqPar_schemes.txt}{}{}\\
+      \InputIfFileExists{../img/TimesSeqPar_schemes.txt}{}{}\\
       \hline
   \end{tabular}%}
   \caption{Time of simulation for different cases of the Malpasset example.}
@@ -315,7 +315,7 @@ These data are used to calculate the relative gap percentage between the physica
     \begin{tabular}{|c|c|c|c|}
       \hline  MURD P2 & CHAR P2 & MURD P6 & FINE P2\\
       \hline
-      \InputIfFileExists{../MaxLevels_schemes.txt}{}{} \\
+      \InputIfFileExists{../img/MaxLevels_schemes.txt}{}{} \\
       \hline
   \end{tabular}}
   \caption{Maximum values of water depth on measurement points for different schemes on the Malpasset case - relative errors}
@@ -350,7 +350,7 @@ Next, the propagation time of the wave recorded in TELEMAC-2D is compared to rea
     \begin{tabular}{|c|c|c|c|}
       \hline  MURD P2 & CHAR P2 & MURD P6 & FINE P2\\
       \hline
-      \InputIfFileExists{../waveTimes_schemes.txt}{}{} \\
+      \InputIfFileExists{../img/waveTimes_schemes.txt}{}{} \\
       \hline
   \end{tabular}}
   \caption{Propagation time of the wave for different schemes on the Malpasset case - relative error}
@@ -422,9 +422,9 @@ Mass conservation can be checked by calculating the volume in the domain during 
     \begin{tabular}{|c|c|c|c|}
       \hline  MURD P2 & CHAR P2 & MURD P6 & FINE P2\\
       \hline
-      \InputIfFileExists{../volErrors_schemes.txt}{}{} \\
+      \InputIfFileExists{../img/volErrors_schemes.txt}{}{} \\
       \hline
-      \InputIfFileExists{../volErrors_schemes_Parallel.txt}{}{} \\
+      \InputIfFileExists{../img/volErrors_schemes_Parallel.txt}{}{} \\
       \hline
   \end{tabular}}
   \caption{Volume loss and relative error for different schemes of the Malpasset case}

@@ -26,6 +26,7 @@ files: bief_def.f
   bief.f
   declarations_telemac.f
   bief_close_files.f
+  inpoly.f
   read_config.f
   bief_init.f
   bief_open_files.f
@@ -181,7 +182,6 @@ files: bief_def.f
   strche.f
   fonstr.f
   front2.f
-  inpoly.f
   centre_mass_seg.f
   comp_fac.f
   cpik12.f
@@ -597,7 +597,10 @@ files: m_typedefs_nestor.f
 path: <root>|sources|utils|parallel
 files: declarations_parallel.F
   p_exit.F
+  p_dmax.F
+  p_dmin.F
   p_init.F
+  p_sync.F
   interface_parallel.f
   p_mpi_type_commit.F
   p_mpi_type_create_struct.F
@@ -612,12 +615,9 @@ files: declarations_parallel.F
   p_mpi_alltoallv_alg.F
   p_mpi_alltoallv_oil.F
   p_mpi_type_free.F
-  p_sync.F
   p_iread.F
   p_iwrit.F
   p_wait_paraco.F
-  p_dmax.F
-  p_dmin.F
   p_dsum.F
   p_dsumerr.F
   p_ireadi8.F

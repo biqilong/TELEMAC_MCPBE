@@ -16,6 +16,8 @@ class VnvStudy(AbstractVnvStudy):
         """
         self.rank = 3
         self.tags = ['telemac3d', 'gaia']
+        # For vnv_3
+        self.walltime = '02:00:00'
 
     def _pre(self):
         """

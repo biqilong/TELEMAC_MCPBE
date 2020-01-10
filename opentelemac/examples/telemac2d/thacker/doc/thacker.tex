@@ -2,7 +2,7 @@
 %
 \section{Purpose}
 Thacker test cases illustrate that \telemac{2d} is able to simulate wet/dry moving transitions
-(comings and goings) over a variable slope. 
+(comings and goings) over a variable slope.
 %This type of moving-boundary solutions
 %\textit{« are of great interest in communities interested in tsunami run-up »} \cite{Delestre2013}.
 It is also useful to check the numerical diffusion and mass conservation, as the water height is periodic in time.
@@ -13,7 +13,7 @@ It is also useful to check the numerical diffusion and mass conservation, as the
 
 \subsubsection{Rotation of a planar surface in a parabolic boil}
 
-This thacker solution consists of a planar surface rotating in a paraboloid reservoir without friction for which analytical solution exist in the bibliography.
+This Thacker solution consists of a planar surface rotating in a paraboloid reservoir without friction for which analytical solution exists in the bibliography.
 The free surface has a periodic motion and remains planar in time.
 %\textit{«To visualize this case, one can think of a glass with some liquid in rotation inside »} \cite{Delestre2013}.\\
 The bathymetry of the paraboloid reservoir is defined on a square domain of width $L$, as follows:
@@ -43,7 +43,7 @@ Furthermore, the amplitude of the flow velocity is $U_0 = \eta \omega = 0.70 m.s
 
 \subsubsection{Oscillation of a radially symmetrical paraboloid}
 
-This second analytic solution of thacker presented in this test case consists of a oscillating paraboloid surface radially symmetrical
+This second analytic solution of Thacker presented in this test case consists of an oscillating paraboloid surface radially symmetrical
 without friction. The bathymetry is the same as the planar thacker solution and
 the analytical solution is given by:
 \begin{equation}
@@ -51,7 +51,7 @@ the analytical solution is given by:
     \begin{array}{ll}
       h(r,t) = H_0 \left( \dfrac{\sqrt{1- A^2}}{1-A\cos(\omega t)} - 1 - \dfrac{r^2}{a^2}\left(\dfrac{1-A^2}{(1-A\cos(\omega t))^2} -1 \right)\right) - z(r)\\
       u(x,y,t) = \dfrac{1}{1-A\cos(\omega t)} \left( \dfrac{1}{2} \omega \left( x - \dfrac{L}{2} \right) A \sin(\omega t )\right) \\
-      v(x,y,t) = \dfrac{1}{1-A\cos(\omega t)} \left( \dfrac{1}{2} \omega \left( y - \dfrac{L}{2} \right) A \sin(\omega t )\right) 
+      v(x,y,t) = \dfrac{1}{1-A\cos(\omega t)} \left( \dfrac{1}{2} \omega \left( y - \dfrac{L}{2} \right) A \sin(\omega t )\right)
     \end{array}
     \right.
     \label{eq:thacker2:analytical}
@@ -67,7 +67,7 @@ and the period of the free surface evolution is consequently $T= \dfrac{2 \pi}{\
 \subsection{Geometry, mesh and bathymetry}
 
 The computational domain is a $4~m \times~4m$ square.
-A triangular regular mesh is constructed with $19800$ triangular elements and 
+A triangular regular mesh is constructed with $19800$ triangular elements and
 $10100$ nodes (see Figure~\ref{fig:thacker:Mesh}):
 
 \begin{figure}[H]
@@ -146,8 +146,8 @@ The parameters specific to each case are summed up in the Table~\ref{tab:thacker
 
 \subsection{First observation}
 
-The water planar surface moves anticlockwise. Evolution of water depth and velocity during one rotation 
-is illustrated on figures \ref{fig:thacker:WDTime} and \ref{fig:thacker:VelocityTime}).
+The water planar surface moves anticlockwise. Evolution of water depth and velocity during one rotation
+is illustrated on figures \ref{fig:thacker:WDTime} and \ref{fig:thacker:VelocityTime}.
 
 
 \begin{figure}[h!]
@@ -207,7 +207,7 @@ The WAF case is run only in scalar mode because the parallel version is not impl
 In general, the finite-volume schemes are much faster than the finite-element ones with the chosen parameters.
 This is to be put in perspective with the better accuracy of the NERD and ERIA schemes, which actually perform sub-iterations during each time-step.
 This performace comparison is thus biased and should be interpreted carefully. In the example we did not seek the best accuracy for each scheme,
-which would have provided us with a different performance result. 
+which would have provided us with a different performance result.
 The NERD scheme is faster than the ERIA scheme, which is expected since ERIA is a more elaborate version of NERD that provides better accuracy.
 
 %Further more, the sequential and parallel simulations results are compared for cases in the Table~\ref{tab:thacker:SeqPar}.
@@ -237,7 +237,7 @@ The NERD scheme is faster than the ERIA scheme, which is expected since ERIA is 
 
 In order to evaluate the accuracy of the tested advection schemes, the results are compared to the analytical solution~\ref{eq:thacker:analytical}.
 A first visual comparison in time can be found in the Figure~\ref{fig:thacker:SLTime}.
-The analytical solution is represented by the light blue coloured area.
+The analytical solution is represented by the light red coloured area.
 
 \begin{figure}[H]
 \begin{minipage}[t]{0.5\textwidth}
@@ -261,7 +261,7 @@ The analytical solution is represented by the light blue coloured area.
 \end{figure}
 
 On figures \ref{fig:thacker:SLU_comparison} and \ref{fig:thacker:SLU_comparison2}
-some comparison of water depth and velocity field are presented. Elements where water depth is inferior to $1mm$ have been masked.
+some comparisons of water depth and velocity field are presented. Elements where water depth is inferior to $1mm$ have been masked.
 
 \begin{figure}[H]
 \begin{minipage}[t]{0.5\textwidth}
@@ -323,8 +323,8 @@ some comparison of water depth and velocity field are presented. Elements where 
 
 \subsection{Accuracy}
 
-For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms 
-of the water depth and velocity are calculated at each time step for each scheme. 
+For a more quantitative comparison of schemes, the $L^1$, $L^2$ and $L^\infty$ error norms
+of the water depth and velocity are calculated at each time step for each scheme.
 $L^2$ errors time series and time integrated $L^1$, $L^2$ and $L^\infty$ errors are presented in the figures \ref{fig:thacker:ErrNumH}, \ref{fig:thacker:ErrNumU} and \ref{fig:thacker:ErrNumV} for $H$, $U$ and $V$ respectively.
 
 \begin{figure}[H]
@@ -372,8 +372,8 @@ NERD and ERIA are in good agreement with the analytical solution, keeping in min
 
 \subsection{Positivity of water depth}
 
-The minimum value of the water depth are checked after one rotation. 
-Results are showed on figure \ref{t2d:thacker:minmax}. 
+The minimum value of the water depth are checked after one rotation.
+Results are showed on figure \ref{t2d:thacker:minmax}.
 No negative values are recorded, which shows that the positivity is fulfilled.
 In the case of finite volume schemes, positivity is ensured withouth additionnal treatment.
 With finite element schemes the positivity is ensured with a treatment of negative depths
@@ -382,7 +382,7 @@ during simulation (TREATMENT OF NEGATIVE DEPTHS = 2 for characteristics and NERD
 \begin{figure}[H]
 \centering
 \includegraphicsmaybe{[width=0.9\textwidth]}{../img/t2d_thacker_minT.png}
-\caption{Minimum values of water depths after one rotation of the cone.}
+\caption{Minimum values of water depths after one rotation.}
 \label{t2d:thacker:minmax}
 \end{figure}
 
@@ -439,15 +439,15 @@ The following quantities are studied:
 
 The ERIA and NERD schemes seem to provide the best results.
 In fact, the mean energy (also called integrated, total, mechanical) is almost stable in time.
-But overall, all schemes included, no energy creation is observed 
+But overall, all schemes included, no energy creation is observed
 and the mean energy in time stays lower than the initial one during the whole simulation.
 
 \subsection{Convergence}
 
 To assess the accuracy of the schemes, computation of error on one mesh is not sufficient.
 In this section a mesh convergence is carried out for each numerical scheme. From a starting mesh
-with $121$ points and $200$ elements we divide by 4 each triangles recursively to generates new meshes.
-The first and last meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}. 
+with $121$ points and $200$ elements we divide by 4 each triangles recursively to generate new meshes.
+The first and last meshes used in the convergence study are presented on figure \ref{t2d:cone:meshes}.
 
 \begin{figure}[h!]
 \begin{minipage}[t]{0.5\textwidth}
@@ -458,13 +458,13 @@ The first and last meshes used in the convergence study are presented on figure 
  \centering
  \includegraphicsmaybe{[width=0.8\textwidth]}{../img/mesh_4.png}
 \end{minipage}
- \caption{First and last meshes used in thacker mesh convergence}
+ \caption{First and last meshes used in Thacker mesh convergence}
  \label{t2d:cone:meshes}
 \end{figure}
 
 Final time is set to $t_f=T/2$.
 With decreasing space step we adjust time step to ensure a constant CFL for each mesh increment.
-In this section two additional numerical schemes are tested 
+In this section two additional numerical schemes are tested
 i.e. edge by edge implementation of Leo Potsma scheme (noted LEOP, scheme number 13)
 and second order in space kinetic scheme (noted KIN2).
 
@@ -611,7 +611,7 @@ exibit a slope of convergence comprised between one and two.
 
 %\subsection{First observation}
 %
-%Evolution of water depth and velocity during one oscillation 
+%Evolution of water depth and velocity during one oscillation
 %is illustrated on figures \ref{fig:thacker2:WDTime} and \ref{fig:thacker2:VelocityTime}).
 %
 %\begin{figure}[h!]
@@ -670,9 +670,9 @@ Simulation times for each of these cases with sequential and parallel runs (usin
 
 In order to evaluate the accuracy of the tested advection schemes, the results are compared to the analytical solution~\ref{eq:thacker2:analytical}.
 A first visual comparison in time can be found in the Figure~\ref{fig:thacker2:SLTime}.
-The analytical solution is represented by the light blue coloured area. 
+The analytical solution is represented by the light blue coloured area.
 On figures \ref{fig:thacker:SLU_comparison} and \ref{fig:thacker:SLU_comparison2}
-some comparison of water depth and velocity field are presented. Elements where water depth is inferior to $1mm$ have been masked.
+some comparisons of water depth and velocity field are presented. Elements where water depth is inferior to $1mm$ have been masked.
 
 \begin{figure}[H]
 \begin{minipage}[t]{0.5\textwidth}
@@ -756,7 +756,7 @@ some comparison of water depth and velocity field are presented. Elements where 
 
 \section{Conclusion}
 \telemac{2d} is capable of simulating the wet/dry moving transitions with good
-accuracy and conservation of mass, energy and positivity of the water depth. 
+accuracy and conservation of mass, energy and positivity of the water depth.
 
 
 

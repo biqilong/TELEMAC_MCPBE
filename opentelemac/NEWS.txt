@@ -19,6 +19,10 @@ WAQTEL: fix the wrong formula for air specific moisture in CALCS2D_THERMIC
 WAQTEL: fix the Churchill formula for the computation of the reaeration coefficient K2
 for O2 and EUTRO
 
+TELEMAC-3D: fix inconsistency between boundary conditions in the matrix
+(mass-lumped form) and in the right-hand side (lateral and free surface boundary
+conditions was impacted).
+
 WAQTEL: new theory guide + user manual completed
 
 WAQTEL/AED2: fix the bug of wrong computation of array BENTH4AED2

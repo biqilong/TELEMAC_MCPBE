@@ -760,21 +760,22 @@ subroutine SOLVRO(                   &
    do NOEUD = NSECG + 1 , NSECDL - 1
       K            = -NSECG + NOEUD + 1
       SNODE(NOEUD) = SPREC(NOEUD) + WW1(1,K)
-    enddo 
+   enddo 
 
    !      Prise en compte des termes hydrostatiques
    IF( Boussinesq ) THEN
-    do NOEUD = NSECG + 1 , NSECDL - 1
-     HNP1(NOEUD)  = CSURM1(SNODE(NOEUD), DZ(NOEUD),SGEO(NOEUD,:), Erreur)
-      JG           = int(HNP1(NOEUD)/DZ(NOEUD)) + 1 
-      JD           = JG + 1
-      S1G          = S1GEO(NOEUD,JG)
-      S1D          = S1GEO(NOEUD,JD)
+      !do NOEUD = NSECG + 1 , NSECDL - 1
+      do NOEUD = NSECG , NSECDL - 1
+         HNP1(NOEUD)  = CSURM1(SNODE(NOEUD), DZ(NOEUD),SGEO(NOEUD,:), Erreur)
+         JG           = int(HNP1(NOEUD)/DZ(NOEUD)) + 1 
+         JD           = JG + 1
+         S1G          = S1GEO(NOEUD,JG)
+         S1D          = S1GEO(NOEUD,JD)
 
-      ! INTERPOLATION DE LA LARGEUR
-      Scube1(Noeud) = ( S1D * ( HNP1(NOEUD) - JG * DZ(NOEUD) ) + S1G * ( JD * DZ(NOEUD) - HNP1(Noeud) ) ) / DZ(NOEUD)
-     enddo
-      NS = NSECDL - NSECG + 1
+         ! INTERPOLATION DE LA LARGEUR
+         Scube1(Noeud) = ( S1D * ( HNP1(NOEUD) - JG * DZ(NOEUD) ) + S1G * ( JD * DZ(NOEUD) - HNP1(Noeud) ) ) / DZ(NOEUD)
+      enddo
+      NS = NSECDL - NSECG !+ 1
       DX = X(2) - X(1)
       do NOEUD = 1 , NS
          CE(NOEUD) = WW1(2,NOEUD)

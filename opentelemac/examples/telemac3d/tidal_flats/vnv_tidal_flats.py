@@ -49,7 +49,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:T3DRES',
                             'f3d_tidal_flats_set1.slf',
-                            eps=[1.E-4, 1.E-4, 1.E-4, 1.E-4, 1.E-4])
+                            eps=[1.E-4, 1.E-4, 1.E-4, 1.E-4, 2.E-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:T3DRES',

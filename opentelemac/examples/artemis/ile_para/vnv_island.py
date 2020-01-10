@@ -52,7 +52,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_1:ARTRES',
                             'f2d_island.slf',
-                            eps=[1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-4, 1.e-8])
+                            eps=[1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-4, 3.e-7])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_2:ARTRES',
@@ -62,7 +62,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison between sequential and parallel run.
         self.check_epsilons('vnv_1:ARTRES',
                             'vnv_2:ARTRES',
-                            eps=[1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-4, 1.e-8])
+                            eps=[1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-8, 1.e-4, 3.e-7])
 
 
     def _post(self):

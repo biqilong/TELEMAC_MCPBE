@@ -8,13 +8,13 @@
 \section{Purpose}
 %
 To demonstrate that the Telemac-2D solution is not polarised because it can
-simulate the circular spreading of a wave. 
+simulate the circular spreading of a wave.
 Two types of boundary conditions are tested, solid walls and Thompson.
 The first case shows that the no-flow
 condition is satisfied on solid boundaries and that the solution remains
 symmetric after reflection of the circular wave on the boundaries.
-The second case shows that Thompson boundary condition in TELEMAC-2D 
-make it possible to simulate the propagation of a circular wave out of the domain 
+The second case shows that Thompson boundary condition in TELEMAC-2D
+makes it possible to simulate the propagation of a circular wave out of the domain
 without spurious reflections on the open boundaries.
 
 %
@@ -48,11 +48,11 @@ $ H= 2.4 \left(1.0+exp \left( \frac{-\left[ (x-10)^2+( y-10)^2\right]}{ 4}\right
 \label{fig:gouttedo_init}
 \end{figure}
 
-\subsection{boundary conditions}
+\subsection{Boundary conditions}
 
 Two cases are considered:
 \begin{itemize}
-\item Boundaries are considered as solid walls with perfect slip conditions (condition 2 2 2) 
+\item Boundaries are considered as solid walls with perfect slip conditions (condition 2 2 2)
 \item The Thompson scheme is applied for open boundaries (condition 4 4 4).
 \end{itemize}
 
@@ -60,7 +60,7 @@ Two cases are considered:
 %
 The physical parameters used for this case are the following:
 \begin{itemize}
-\item Friction: Strickler formula with K = 40
+\item Friction: Strickler formula with $k_s = 40 m^{1/3}/s$
 \item Turbulence: Constant viscosity equal to zero (or disactivation of
   diffusion step using the keyword  \textit{DIFFUSION OF VELOCITY =}\textit{
   NO})
@@ -120,7 +120,7 @@ observed after time 1.8~sec (cf. figure \ref{t2d:gouttedo:walls_evol}).
  \centering
  \includegraphicsmaybe{[width=0.9\textwidth]}{../img/t2d_gouttedo_qua_time18_3d.png}
 \end{minipage}
-\caption{Evolution of free surface with Thompson boundary conditions}
+\caption{Evolution of free surface with solid boundary conditions}
 \label{t2d:gouttedo:walls_evol}
 \end{figure}
 
@@ -164,7 +164,7 @@ The total volume of water numerically lost is $0.11* 10^{-4} m^3$ , i.e. $0,0000
  \centering
  \includegraphicsmaybe{[width=0.9\textwidth]}{../img/WaterDepth_t9_3d.png}
 \end{minipage}
-\caption{Evolution of free surface with walls boundary conditions}
+\caption{Evolution of free surface with Thompson boundary conditions}
 \label{t2d:gouttedo:thompson_evol}
 \end{figure}
 

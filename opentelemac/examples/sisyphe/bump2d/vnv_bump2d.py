@@ -193,14 +193,14 @@ class VnvStudy(AbstractVnvStudy):
         plt.plot(xLine,yLine,"k-")
         plt.legend(loc='upper right')
         plt.axes().set_aspect('equal')
-        fig_name = 'img/post_bump2d'
+        fig_name = 'img/sis_bump2d-t2d'
         #plt.tight_layout()
         plt.xlabel("x (m)")
         plt.ylabel("y (m)")
         plt.xlim([0,1000])
         plt.ylim([-500,500])
         plt.title(r"spread angle $\alpha$ = %1.2f"%(alpha))
-        print(" "*8+"~> Plotting img/sis_bumpt2d-t2d")
+        print(" "*8+"~> Plotting img/sis_bump2d-t2d")
         plt.savefig(fig_name + ".pdf",dpi=300)
         plt.savefig(fig_name + ".png",dpi=300)
         plt.clf()

@@ -131,7 +131,7 @@ class VnvStudy(AbstractVnvStudy):
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl8:T2DRES',
                             'f2d_sandpit_bl8.slf',
-                            eps=[1e-4])
+                            eps=[1.1e-4])
 
         # Comparison with the last time frame of the reference file.
         self.check_epsilons('vnv_bl8_para:T2DRES',

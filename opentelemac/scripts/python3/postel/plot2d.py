@@ -3,6 +3,7 @@
 Contains functions to plot scalar and vectors in 2d
 """
 from data_manip.formats.regular_grid import interpolate_on_grid
+from postel.deco_cbar import deco_cbar
 import numpy as np
 import matplotlib.cm as cm
 import matplotlib.tri as mtri
@@ -49,7 +50,7 @@ def set_extrema(data, vmin, vmax, eps=0.):
 def mask_triangles(tri, data, relation='leq', threshold=0.001):
     """
     Defines a boolean mask to mask triangles
-    when data on triangles is < threshold
+    when data on triangles match criteria (relation to a threshold)
 
     @param tri (matplotlib.tri.Triangulation) triangular mesh
     @param data (numpy.array) scalar data used for masking
@@ -203,7 +204,6 @@ def plot2d_triangle_mesh(axe, tri, x_label='', y_label='',
     @param y_label (string) Name of the y_label (default '')
     @param color (str) mesh color (default 'k')
     @param linewidth (float) thickness of the plots line (default 0.1)
-    @param bnd_info (tuple) boundary conditions information (default None)
     @param kwargs (dict) rest of optional arguments given to triplot
     """
     axe.triplot(tri, color=color, linewidth=linewidth, **kwargs)
@@ -236,7 +236,8 @@ def plot2d_image(axe, x_label='', y_label='',
 def plot2d_scalar_map(fig, axe, mesh, data,\
         x_label='', y_label='', data_name='data',\
         vmin=None, vmax=None, nv=None,\
-        colorbar=True, cbar_ticks=None, cbar_axe=None, \
+        colorbar=True, cbar_properties=None, cbar_ticks=None,\
+        cbar_ax=None, cbar_cax=None,\
         shading='gouraud', cmap_name='jet', **kwargs):
     """
     Plot the 2d map of scalar data on triangulation
@@ -254,8 +255,12 @@ def plot2d_scalar_map(fig, axe, mesh, data,\
     @param vmax (float) Maximal value of data to plot
     @param nv (integer) Number of sample for colorbar range
     @param colorbar (bool) show colorbar (default: True)
-    @param cbar_ticks (np.array) ticks of the colorbar
-    @param cbar_axe (matplotlib.axes) axe used for colorbar (default: None)
+    @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param shading (str) shading used in tripcolor (default 'gouraud')
     @param cmap_name (str) colormap name (default 'jet')
     @param kwargs (dict) rest of optional arguments given to tripcolor
@@ -282,7 +287,16 @@ def plot2d_scalar_map(fig, axe, mesh, data,\
             vmin, vmax = set_extrema(data, vmin, vmax)
             cbar_ticks = np.linspace(vmin, vmax, nv, endpoint=True)
 
-        cbar = fig.colorbar(img, ax=axe, cax=cbar_axe, ticks=cbar_ticks)
+        if cbar_ax is None:
+            cbar_ax = axe
+
+        if cbar_properties is not None:
+            cbar = custom_cbar(
+                fig, img, cbar_ax, cbar_cax, cbar_ticks, cbar_properties)
+        else:
+            cbar = fig.colorbar(
+                img, ax=cbar_ax, cax=cbar_cax, ticks=cbar_ticks)
+
         cbar.set_label(data_name)
 
     # Set frame default limits
@@ -297,7 +311,8 @@ def plot2d_scalar_map(fig, axe, mesh, data,\
 def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
          x_label='', y_label='', data_name='data',\
          vmin=None, vmax=None, nv=11, levels=None, \
-         colorbar=True, cbar_ticks=None, cbar_axe=None, \
+         colorbar=True, cbar_properties=None, cbar_ticks=None, \
+         cbar_ax=None, cbar_cax=None,\
          cmap_name='jet', **kwargs):
     """
     Plot a 2d filled contour of scalar data on triangulation
@@ -316,8 +331,12 @@ def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
     @param nv (integer) Number of sample for colorbar range (default 11)
     @param levels (np.array) levels used for contours (default None)
     @param colorbar (bool) show colorbar (default: True)
-    @param cbar_ticks (np.array) ticks of the colorbar
-    @param cbar_axe (matplotlib.axes) axe used for colorbar (default: None)
+    @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param cmap_name (str) colormap name (default: 'jet')
     @param kwargs (dict) rest of optional arguments given to tricontourf
     """
@@ -350,7 +369,16 @@ def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
         if levels is not None and cbar_ticks is None:
             cbar_ticks = levels
 
-        cbar = fig.colorbar(img, ax=axe, cax=cbar_axe, ticks=cbar_ticks)
+        if cbar_ax is None:
+            cbar_ax = axe
+
+        if cbar_properties is not None:
+            cbar = custom_cbar(
+                fig, img, cbar_ax, cbar_cax, cbar_ticks, cbar_properties)
+        else:
+            cbar = fig.colorbar(
+                img, ax=cbar_ax, cax=cbar_cax, ticks=cbar_ticks)
+
         cbar.set_label(data_name)
 
     # Set frame default limits
@@ -366,8 +394,9 @@ def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
 
 def plot2d_scalar_contour(fig, axe, mesh, data,\
         x_label='', y_label='', data_name='data',\
-        vmin=None, vmax=None, nv=11, levels=None, \
-        colorbar=True, cbar_ticks=None, cbar_axe=None, \
+        vmin=None, vmax=None, nv=11, levels=None,\
+        colorbar=True, cbar_properties=None, cbar_ticks=None,\
+        cbar_ax=None, cbar_cax=None,\
         colors=None, cmap_name='jet', **kwargs):
     """
     Plot a 2d contour of scalar data on triangulation
@@ -386,8 +415,12 @@ def plot2d_scalar_contour(fig, axe, mesh, data,\
     @param nv (integer) Number of sample for colorbar range (default 11)
     @param levels (np.array) levels used for contours (default None)
     @param colorbar (bool) show colorbar (default: True)
-    @param cbar_ticks (np.array) ticks of the colorbar
-    @param cbar_axe (matplotlib.axes) axe used for colorbar (default: None)
+    @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param colors (str) colors of the contour lines (default: None)
     @param cmap_name (str) colormap of the contour lines (default: 'jet')
     @param kwargs (dict) rest of optional arguments given to tricontour
@@ -396,7 +429,7 @@ def plot2d_scalar_contour(fig, axe, mesh, data,\
     cmap = cm.get_cmap(name=cmap_name, lut=None)
 
     # Setting levels with min, max and nv values if levels is not prescribed
-    if vmax is not None or vmin is not None:
+    if vmax is not None or vmin is not None or nv!=11:
         assert levels is None
         vmin, vmax = set_extrema(data, vmin, vmax)
         levels = np.linspace(vmin, vmax, nv)
@@ -434,7 +467,16 @@ def plot2d_scalar_contour(fig, axe, mesh, data,\
         if levels is not None and cbar_ticks is None:
             cbar_ticks = levels
 
-        cbar = fig.colorbar(img, ax=axe, cax=cbar_axe, ticks=cbar_ticks)
+        if cbar_ax is None:
+            cbar_ax = axe
+
+        if cbar_properties is not None:
+            cbar = custom_cbar(
+                fig, img, cbar_ax, cbar_cax, cbar_ticks, cbar_properties)
+        else:
+            cbar = fig.colorbar(
+                img, ax=cbar_ax, cax=cbar_cax, ticks=cbar_ticks)
+
         cbar.set_label(data_name)
 
     # Set frame default limits
@@ -450,7 +492,8 @@ def plot2d_vectors(fig, axe, mesh, data_x, data_y,
                    x_label='', y_label='', data_name='data',\
                    normalize=True, scale=50, \
                    vmin=None, vmax=None, nv=None,\
-                   colorbar=True, cbar_ticks=None, cbar_axe=None,\
+                   colorbar=True, cbar_properties=None, cbar_ticks=None,\
+                   cbar_ax=None, cbar_cax=None,\
                    grid_xlim=None, grid_ylim=None, grid_resolution=None,\
                    color=None, cmap_name='jet', **kwargs):
     """
@@ -472,8 +515,12 @@ def plot2d_vectors(fig, axe, mesh, data_x, data_y,
     @param vmax (float) Maximal value of data to plot
     @param nv (integer) Number of sample for colorbar range (default 10)
     @param colorbar (bool) show colorbar (default: True)
-    @param cbar_ticks (np.array) ticks of the colorbar
-    @param cbar_axe (matplotlib.axes) axe used for colorbar (default: None)
+    @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param grid_xlim (list(float)) grid limit in x
     @param grid_ylim (list(float)) grid limit in y
     @param grid_resolution (list(float)) number of grid point on x and y
@@ -527,7 +574,16 @@ def plot2d_vectors(fig, axe, mesh, data_x, data_y,
                 if nv is not None and cbar_ticks is None:
                     cbar_ticks = np.linspace(vmin, vmax, nv, endpoint=True)
 
-            cbar = fig.colorbar(img, ax=axe, cax=cbar_axe, ticks=cbar_ticks)
+            if cbar_ax is None:
+                cbar_ax = axe
+
+            if cbar_properties is not None:
+                cbar = custom_cbar(
+                    fig, img, cbar_ax, cbar_cax, cbar_ticks, cbar_properties)
+            else:
+                cbar = fig.colorbar(
+                    img, ax=cbar_ax, cax=cbar_cax, ticks=cbar_ticks)
+
             cbar.set_label(data_name)
 
     # Plotting unicolored vectors
@@ -549,7 +605,8 @@ def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
                x_label='', y_label='', data_name='data',\
                density=1.5, arrowsize=1.5,\
                vmin=None, vmax=None, nv=None,\
-               colorbar=True, cbar_ticks=None, cbar_axe=None,\
+               colorbar=True, cbar_properties=None, cbar_ticks=None,\
+               cbar_ax=None, cbar_cax=None,\
                grid_xlim=None, grid_ylim=None, grid_resolution=[500, 500],\
                color=None, cmap_name='jet', linewidth=0.5, **kwargs):
     """
@@ -571,8 +628,12 @@ def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
     @param vmax (float) Maximal value of data to plot
     @param nv (integer) Number of sample for colorbar range (default 10)
     @param colorbar (bool) show colorbar (default: True)
-    @param cbar_ticks (np.array) ticks of the colorbar
-    @param cbar_axe (matplotlib.axes) axe used for colorbar (default: None)
+    @param cbar_ticks (list) list of values where to show color bar ticks
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
     @param grid_xlim (list(float)) grid limit in x
     @param grid_ylim (list(float)) grid limit in y
     @param grid_resolution (list(float)) number of grid point on x and y
@@ -619,9 +680,17 @@ def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
                 if nv is not None and cbar_ticks is None:
                     cbar_ticks = np.linspace(vmin, vmax, nv, endpoint=True)
 
-            cbar = fig.colorbar(img.lines, ax=axe, cax=cbar_axe, ticks=cbar_ticks)
-            cbar.set_label(data_name)
+            if cbar_ax is None:
+                cbar_ax = axe
 
+            if cbar_properties is not None:
+                cbar = custom_cbar(
+                    fig, img.lines, cbar_ax, cbar_cax, cbar_ticks, cbar_properties)
+            else:
+                cbar = fig.colorbar(
+                    img.lines, ax=cbar_ax, cax=cbar_cax, ticks=cbar_ticks)
+
+            cbar.set_label(data_name)
 
     # Plotting unicolored streamlines
     else:
@@ -642,13 +711,56 @@ def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
 
+def custom_cbar(fig, img, cbar_ax,
+        cbar_cax, cbar_ticks, cbar_properties):
+    """
+    Adding custom cbar to a figure
+
+    @param fig (matplotlib.figure) matplotlib figure structure
+    @param img (matplotlib object) matplotlib mappable object 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    axes will be stolen. If a list of axes is given they will all be resized
+    to make room for the colorbar axes.
+    @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
+    @param cbar_properties (dict) list additional properties of the colorbar
+    @param cbar_ticks (list) list of values where to show color bar ticks 
+    (will overwrite ticks contained in cbar_properties)
+
+    @return colorbar (matplotlib.pyplot.colorbar)
+    """
+    # update default cbar deco with cbar properties
+    deco_cbar.update(cbar_properties)
+
+    # if no ticks in cbar_properties overide with levels ticks
+    if deco_cbar['ticks'] is None:
+        tks = cbar_ticks
+    else:
+        tks = deco_cbar['ticks']
+
+    # return custop colorbar
+    return fig.colorbar(
+        img, ax=cbar_ax, cax=cbar_cax,
+        orientation=deco_cbar['orientation'],
+        fraction=deco_cbar['fraction'],
+        pad=deco_cbar['pad'],
+        shrink=deco_cbar['shrink'],
+        aspect=deco_cbar['aspect'],
+        anchor=deco_cbar['anchor'],
+        panchor=deco_cbar['panchor'],
+        extend=deco_cbar['extend'],
+        extendfrac=deco_cbar['extendfrac'],
+        extendrect=deco_cbar['extendrect'],
+        spacing=deco_cbar['spacing'],
+        ticks=tks,
+        format=deco_cbar['format'],
+        drawedges=deco_cbar['drawedges'])
+
 def plot2d_quadrangle_mesh(fig, axe, x, y, ikle, **kwargs):
     """
     Plotting a 2d spectrum data
 
     @param fig (matplotlib.figure) matplotlib figure structure
     @param axe (matplotlib.axes) matplotlib axes on which to draw
-
     @param ikle (numpy.array) Connectivity of quadrangles
     @param x (numpy.array) x coordinates of the points
     @param y (numpy.array) y coordinates of the points
@@ -670,7 +782,6 @@ def plot2d_spectrum(fig, axe, x, y, ikle, data, **kwargs):
 
     @param fig (matplotlib.figure) matplotlib figure structure
     @param axe (matplotlib.axes) matplotlib axes on which to draw
-
     @param ikle (numpy.array) Connectivity of quadrangles
     @param x (numpy.array) x coordinates of the points
     @param y (numpy.array) y coordinates of the points

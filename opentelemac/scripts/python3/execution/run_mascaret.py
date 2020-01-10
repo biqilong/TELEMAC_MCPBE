@@ -43,10 +43,7 @@ def create_mascaret_files(cfg, cas):
     # Copying Damocle Courlis dictionnary if necessary
     if not path.isfile("dico_Courlis.txt"):
         print('~+> Copying dico_Courlis.txt')
-        shutil.copyfile(path.join(cfg['root'],
-                                  'sources',
-                                  'mascaret',
-                                  'data',
+        shutil.copyfile(path.join(cfg['root'], 'sources', 'mascaret', 'data',
                                   'dico_Courlis.txt'),
                         "dico_Courlis.txt")
 

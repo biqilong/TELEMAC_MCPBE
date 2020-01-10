@@ -69,8 +69,6 @@ class VnvStudy(AbstractVnvStudy):
         """
         from postel.plot_vnv import vnv_plot2d, vnv_plot1d_history
         # Getting files
-#        vnv_1_t2dgeo = self.get_study_file('vnv_1:T2DGEO')
-#        res_vnv_1_t2dgeo = TelemacFile(vnv_1_t2dgeo, load_bnd=True)
         res_vnv_1_t2dgeo, _ = self.get_study_res('vnv_1:T2DGEO', load_bnd=True)
         vnv_1_t2dres = self.get_study_file('vnv_1:T2DRES')
         res_vnv_1_t2dres = TelemacFile(vnv_1_t2dres)
@@ -80,8 +78,6 @@ class VnvStudy(AbstractVnvStudy):
                    res_vnv_1_t2dgeo,
                    plot_mesh=True,
                    annotate_bnd=True,
-#                   annotate_liq_bnd=True,
-                   fig_size=(7, 7),
                    fig_name='img/Mesh')
 
 
@@ -90,7 +86,6 @@ class VnvStudy(AbstractVnvStudy):
                    res_vnv_1_t2dres,
                    record=0,
                    filled_contours=True,
-                   fig_size=(7, 7),
                    fig_name='img/Bathy')
 
 
@@ -104,7 +99,6 @@ class VnvStudy(AbstractVnvStudy):
                    vmin=0.05,
                    vmax=24,
                    nv=11,
-                   fig_size=(7, 7),
                    fig_name='img/Water_depth22')
 
         # Plotting WATER DEPTH at t= 44700s
@@ -117,7 +111,6 @@ class VnvStudy(AbstractVnvStudy):
                    vmin=0.05,
                    vmax=24,
                    nv=11,
-                   fig_size=(7, 7),
                    fig_name='img/Water_depth44')
 
         # Plotting VELOCITY at -1
@@ -128,7 +121,6 @@ class VnvStudy(AbstractVnvStudy):
                    cbar_priority='vector',
                    colored_vectors=True,
                    grid_resolution=[50, 50],
-                   fig_size=(7, 7),
                    fig_name='img/Velocity_arrows')
 
         # Plotting at points

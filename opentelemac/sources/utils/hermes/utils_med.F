@@ -55,7 +55,7 @@
         LOGICAL, ALLOCATABLE :: IS_BND(:)
         LOGICAL :: NO_BND
         ! Number of boundary groups
-        INTEGER :: NBND_GRP
+        INTEGER :: NBND_GRP, NBND_USED_GRP
         ! Contains for each boundary group its values for h u v tracer
         INTEGER, ALLOCATABLE :: BND_GRP_VAL(:,:)
         ! Contains for each family its number and the index of the boundary group associated
@@ -538,7 +538,7 @@
           !the current offsets
           IF(PRESENT(MESH_NUMBER).AND.PARTEL_CONCAT)THEN
             LINE_BEGIN = MED_OBJ_TAB(MED_ID)%CLI_LINE_BEGIN
-            LINE_END = MED_OBJ_TAB(MED_ID)%NBND_GRP+1+ LINE_BEGIN
+            LINE_END = MED_OBJ_TAB(MED_ID)%NBND_USED_GRP+1+ LINE_BEGIN
             !
             CALL WRITE_INDEX(MED_OBJ_TAB(MED_ID)%CLI_IDX_ID,
      &                       MESH_NUMBER, LINE_BEGIN, LINE_END)
@@ -4285,7 +4285,8 @@
         ENDDO
       ENDIF
 !     WRITING THE BOUNDARY FILE
-      WRITE(NCLI,*) COUNT(WRITE_GRP)
+      MED_OBJ_TAB(MED_ID)%NBND_USED_GRP = COUNT(WRITE_GRP)
+      WRITE(NCLI,*) MED_OBJ_TAB(MED_ID)%NBND_USED_GRP
       DO I=1,MED_OBJ_TAB(MED_ID)%NBND_GRP
         IF(WRITE_GRP(I)) THEN
           WRITE(NCLI,*)

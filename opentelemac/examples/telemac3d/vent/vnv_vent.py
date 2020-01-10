@@ -77,6 +77,33 @@ class VnvStudy(AbstractVnvStudy):
         vnv_1_t3dhyd = self.get_study_file('vnv_1:T3DHYD')
         res_vnv_1_t3dhyd = TelemacFile(vnv_1_t3dhyd)
 
+        #Plotting Horizontal Mesh
+        vnv_plot2d('BOTTOM',
+                   res_vnv_1_t3dhyd,
+                   plot_mesh=True,
+                   fig_name='img/Mesh')
+
+        #Plotting Vertical Mesh
+        vnv_plot2d('ELEVATION Z',
+                   res,
+                   plot_mesh=True,
+                   record=0,
+                   poly=[[0, 50], [500, 50]],
+                   fig_size=(10, 3),
+                   fig_name='img/MeshV')
+
+        #Plotting Vertical Mesh
+        vnv_plot2d('ELEVATION Z',
+                   res,
+                   plot_mesh=True,
+                   record=0,
+                   xlim=[200, 300],
+                   ylim=[-30, 0],
+                   poly=[[0, 50], [500, 50]],
+                   fig_size=(10, 3),
+                   fig_name='img/MeshV_zoom')
+
+
         # Plotting WATER DEPTH over polyline over records res_vnv_1_t3dhyd.ntimestep
         vnv_plot1d_polylines(\
                 'WATER DEPTH',
@@ -93,7 +120,6 @@ class VnvStudy(AbstractVnvStudy):
                    poly=[[0, 50], [500, 50]],
                    record=-1,
                    filled_contours=True,
-                   fig_size=(10, 15),
                    fig_name='img/fieldVelo')
 
         # Ploting vertical slice as vectors
@@ -121,7 +147,7 @@ class VnvStudy(AbstractVnvStudy):
         # creation of a mesh from the elevation value and curvilinear coordinate of the polyline
         mesh = triangulation_from_data(abs_curv, values_poly_z)
 
-        fig, ax = plt.subplots(1, 1, figsize=(10, 15))
+        fig, ax = plt.subplots(1, 1)
 
         plot2d_vectors(fig, ax, mesh, vel_u.flatten(), vel_v.flatten(),
                        grid_resolution=[100, 20],

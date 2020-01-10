@@ -22,6 +22,7 @@ files: bief_def.f
   bief.f
   declarations_telemac.f
   bief_close_files.f
+  inpoly.f
   read_config.f
   bief_init.f
   bief_open_files.f
@@ -80,6 +81,8 @@ files: bief_def.f
   segbor.f
   almesh.f
   bief_allvec_in_block.f
+  find_variable.f
+  couple_mod.F
   impvec.f
   write_data.f
   bief_desimp.f
@@ -379,7 +382,6 @@ files: bief_def.f
   charac.f
   filter.f
   build_ikle_ext.f
-  find_variable.f
   crosfr.f
   fasp.f
   fond.f
@@ -388,7 +390,6 @@ files: bief_def.f
   fonstr.f
   lubksb.f
   ludcmp.f
-  inpoly.f
   centre_mass_seg.f
   comp_fac.f
   cpik12.f
@@ -435,7 +436,6 @@ files: bief_def.f
   read_partel_info.f
   leclim.f
   proxim.f
-  couple_mod.F
 
 [damocles]
 path: <root>|sources|utils|damocles
@@ -486,12 +486,12 @@ files: interface_hermes.f
   get_mesh_npoin_per_element.f
   get_mesh_nptir.f
   get_mesh_title.f
-  add_data.f
-  update_data_mesh.f
   get_data_ntimestep.f
   get_data_time.f
   get_data_value.f
   get_data_var_list.f
+  add_data.f
+  update_data_mesh.f
   ecri2.f
   lit.F
   set_header.f
@@ -506,7 +506,10 @@ files: interface_hermes.f
 path: <root>|sources|utils|parallel
 files: declarations_parallel.F
   p_exit.F
+  p_dmax.F
+  p_dmin.F
   p_init.F
+  p_sync.F
   interface_parallel.f
   p_mpi_type_commit.F
   p_mpi_type_create_struct.F
@@ -521,18 +524,15 @@ files: declarations_parallel.F
   p_mpi_alltoallv_alg.F
   p_mpi_alltoallv_oil.F
   p_mpi_type_free.F
-  p_sync.F
   p_iread.F
   p_iwrit.F
   p_wait_paraco.F
-  p_dmax.F
-  p_dmin.F
+  p_ireadi.F
+  p_iwriti.F
   p_ireadi8.F
   p_iwriti8.F
   p_dsum.F
   p_dsumerr.F
-  p_ireadi.F
-  p_iwriti.F
 
 [special]
 path: <root>|sources|utils|special

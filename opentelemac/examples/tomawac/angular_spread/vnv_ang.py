@@ -82,6 +82,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_plot2d('BOTTOM',
                    res_vnv_1_wacgeo,
                    plot_mesh=True,
+                   filled_contours=True,
                    fig_size=(12, 7),
                    fig_name='img/mesh')
 
@@ -90,6 +91,7 @@ class VnvStudy(AbstractVnvStudy):
         vnv_plot2d('WAVE HEIGHT HM0',
                    res_vnv_1_wacres,
                    record=-1,
+                   filled_contours=True,
                    fig_size=(12, 7),
                    fig_name='img/hm0')
 
