@@ -24,8 +24,10 @@
       USE INTERFACE_TOMAWAC, ONLY: WAC
 !     MODULE SPECIFIC TO COUPLING WITH ESTEL-3D
       USE M_COUPLING_ESTEL3D, ONLY : INFILTRATION_INIT, DEPTH_FILL
+      USE DROGUES, ONLY : NDRG_CLSS
+
 !     ALGAE MODEL
-      USE ALGAE_TRANSP
+      USE ALGAE_TRANSP, ONLY: INIT_BASSET
 !     DELWAQ
       USE TEL4DEL, ONLY: TEL4DELWAQ
       USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_ISUM
@@ -37,7 +39,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      LOGICAL CORBOT
+      LOGICAL CORBOT,FOUND
 !
       INTEGER I,ITRAC,IVAR,II,IELMX,NFRLIQ0,IREG,SUM_TNP
       DOUBLE PRECISION MODVIT
@@ -897,23 +899,53 @@
 !
 !
 !-----------------------------------------------------------------------
-!  INITIALISING THE ALGAE VARIABLES
 !
-      IF(ALGAE) THEN
-!       ALLOCATE THE ALGAE VARIABLES IF NEEDED
-        CALL ALLOC_ALGAE(NFLOT_MAX,MESH,DT)
-        CALL OS('X=Y     ',X=U_X_AV_0,Y=U_X_AV)
-        CALL OS('X=Y     ',X=U_Y_AV_0,Y=U_Y_AV)
-        CALL OS('X=Y     ',X=U_Z_AV_0,Y=U_Z_AV)
-        CALL OS('X=Y     ',X=K_AV_0  ,Y=K_AV)
-        CALL OS('X=Y     ',X=EPS_AV_0,Y=EPS_AV)
-        CALL OS('X=Y     ',X=U_X_0   ,Y=U_X)
-        CALL OS('X=Y     ',X=U_Y_0   ,Y=U_Y)
-        CALL OS('X=Y     ',X=U_Z_0   ,Y=U_Z)
-        CALL OS('X=Y     ',X=V_X_0   ,Y=V_X)
-        CALL OS('X=Y     ',X=V_Y_0   ,Y=V_Y)
-        CALL OS('X=Y     ',X=V_Z_0   ,Y=V_Z)
+!     INITIALISING DROGUES (AND SOME OF THE ALGAE VARIABLES)
+!
+      FOUND = .FALSE.
+      IF( NDRG_CLSS.GT.0 ) THEN
+!
+        IF(ALGAE) THEN                    ! ALGAE TRANSPORT MODEL ACTIVE
+          IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING INIT_BASSET'
+!         VARIABLES USED TO CALCULATE THE BASSET HISTORY FORCE
+          CALL INIT_BASSET(NFLOT_MAX,IELMH,DT)
+          IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM INIT_BASSET'
+        ENDIF
+!
+!       PREVIOUS DROGUES FILE
+        IF( T2D_FILES(T2DPLO)%NAME(1:1).NE.' ' ) THEN
+!
+          IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING READ_DROGUES'
+          CALL READ_DROGUES( NFLOT,NFLOT_MAX, XFLOT%R,YFLOT%R,YFLOT%R,
+     &      TAGFLO%I,CLSFLO%I,ELTFLO%I,SHPFLO%R,
+     &      NPOIN,NPOIN,NELEM,NELMAX,MESH%IKLE%I,MESH%X%R,MESH%Y%R,
+     &      T2D_FILES(T2DPLO) )
+          IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM READ_DROGUES'
+          FOUND = .TRUE.
+!
+        ENDIF
+!
       ENDIF
+!
+!-----------------------------------------------------------------------
+!
+      IF( .NOT.FOUND .AND. NDRG_CLSS.GT.0 ) THEN
+!
+        IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING CONDIN_DROGUES'
+        CALL CONDIN_DROGUES
+        IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM CONDIN_DROGUES'
+!
+      ENDIF
+!
+!-----------------------------------------------------------------------
+!
+!     ADDITIONAL USER DEFINED DROGUES
+!
+      IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING FLOT'
+      CALL FLOT(XFLOT%R,YFLOT%R,NFLOT,NFLOT_MAX,MESH%X%R,MESH%Y%R,
+     &          MESH%IKLE%I,MESH%NELEM,MESH%NELMAX,MESH%NPOIN,
+     &          TAGFLO%I,CLSFLO%I,SHPFLO%R,ELTFLO%I,MESH,LT,NIT,AT)
+      IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM FLOT'
 !
 !-----------------------------------------------------------------------
 !
@@ -1024,6 +1056,21 @@
 !
 !     OPTIONAL USER OUTPUT (COURTESY JACEK JANKOWSKI, BAW)
       CALL UTIMP_TELEMAC2D(LT,AT,PTINIG,LEOPRD,PTINIL,LISPRD)
+!
+!=======================================================================
+!
+!     INITIAL DROGUES OUTPUTS
+!
+      IF( NDRG_CLSS.GT.0 ) THEN
+!
+        IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING UTIMP_DROGUES'
+        CALL UTIMP_DROGUES( LT,AT,MESH%NPOIN,MESH%NPOIN,
+     &              XFLOT%R,YFLOT%R,YFLOT%R,TAGFLO%I,CLSFLO%I,
+     &              NFLOT,NFLOT_MAX,FLOPRD,DEJA_DROGUES_UTIMP,
+     &              T2D_FILES(T2DFLO),T2D_FILES(T2DBLO), MARDAT,MARTIM )
+        IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM UTIMP_DROGUES'
+!
+      ENDIF
 !
 !=======================================================================
 !

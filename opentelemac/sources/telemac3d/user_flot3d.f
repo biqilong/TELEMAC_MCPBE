@@ -3,7 +3,7 @@
 !                    **********************
 !
      &(XFLOT,YFLOT,ZFLOT,NFLOT,NFLOT_MAX,X,Y,Z,IKLE,NELEM,NELMAX,NPOIN,
-     & NPLAN,TAGFLO,SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,LT,NIT,AT)
+     & NPLAN,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,LT,NIT,AT)
 !
 !***********************************************************************
 ! TELEMAC3D
@@ -57,6 +57,7 @@
       INTEGER, INTENT(IN)             :: IKLE(NELMAX,*)
       INTEGER, INTENT(INOUT)          :: NFLOT
       INTEGER, INTENT(INOUT)          :: TAGFLO(NFLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: CLSFLO(NFLOT_MAX)
       INTEGER, INTENT(INOUT)          :: ELTFLO(NFLOT_MAX)
       INTEGER, INTENT(INOUT)          :: ETAFLO(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN),Z(NPOIN),AT
@@ -74,15 +75,15 @@
 !
 !     IF(LT.LE.600.AND.(10*(LT/10).EQ.LT.OR.LT.EQ.1)) THEN
 !       CALL ADD_PARTICLE(-220.D0,400.D0+LT/3.D0,259.D0+LT/100.D0,
-!    &                    LT,NFLOT,
-!    &                    NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,
+!    &                    LT,1,NFLOT,
+!    &                    NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,CLSFLO,
 !    &                    SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,NPLAN,
 !    &                    0.D0,0.D0,0.D0,0.D0,0,0)
 !     ENDIF
 !
 !     IF(LT.EQ.600) THEN
 !        CALL DEL_PARTICLE(20,NFLOT,NFLOT_MAX,
-!    &                     XFLOT,YFLOT,ZFLOT,TAGFLO,SHPFLO,SHZFLO,
+!    &                     XFLOT,YFLOT,ZFLOT,TAGFLO,CLSFLO,SHPFLO,SHZFLO,
 !    &                     ELTFLO,ETAFLO,MESH%TYPELM)
 !     ENDIF
 !

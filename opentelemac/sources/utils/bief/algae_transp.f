@@ -1,5 +1,7 @@
       MODULE ALGAE_TRANSP
         USE BIEF_DEF, ONLY : BIEF_OBJ
+
+      USE DROGUES, ONLY : NDRG_CLSS,NODCLSS,PARCLSS
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !***********************************************************************
@@ -17,8 +19,15 @@
 ! SUBROUTINES MADE AVAILABLE
       PUBLIC :: DEALLOC_ALGAE,ALLOC_ALGAE,INTERP_ALGAE,
      &          DISP_ALGAE
-! MODEL VARIABLES
+!
       INTEGER :: ALGAE_START = 1 ! THIS VALUE NEEDS TO BE UPDATED IN FLOT
+!
+!     MAXIMUM NUMBER OF ALGAE CLASSES - FOR MEMORY ALLOCATION PURPOSES
+      INTEGER :: NALG_CLSS
+!     MAXIMUM NUMBER OF ALGAE CLASSES - FOR MEMORY ALLOCATION PURPOSES
+      INTEGER, PARAMETER :: MAX_NALG_CLSS = 10
+!
+! MODEL VARIABLES
 ! MEAN FLUID VARIABLES AT THE POSITION OF EACH ALGAE PARTICLES
       TYPE(BIEF_OBJ):: U_X_AV_0
       TYPE(BIEF_OBJ):: U_Y_AV_0
@@ -47,7 +56,9 @@
       TYPE(BIEF_OBJ):: DX_A
       TYPE(BIEF_OBJ):: DY_A
       TYPE(BIEF_OBJ):: DZ_A
+      TYPE(BIEF_OBJ):: TEFF
       TYPE(BIEF_OBJ):: I_A_GL
+      TYPE(BIEF_OBJ):: DISLODGE
 ! VARIABLES USED TO CALCULATE THE BASSET HISTORY FORCE
       INTEGER:: NB
       INTEGER:: IB
@@ -82,7 +93,7 @@
                      SUBROUTINE ALLOC_ALGAE
 !                    **********************
 !
-     &(NP_TOT,MESH,DT)
+     &(NP_TOT,IELMH,MESH)
 !
 !***********************************************************************
 ! TELEMAC 2D VERSION 6.3    MAI 2013                       ANTOINE JOLY
@@ -99,7 +110,6 @@
 ! | NP_TOT         | -->| TOTAL NUMBER OF ALGAE PARTICLES              |
 ! | MESH           | -->| MESH STRUCTURE WITH ALL THE INFORMATIONS     |
 ! |                |    | OF THE MESH TREATED                          |
-! | DT             | -->| NUMERICAL TIME STEP OF THE SIMULATIONS       |
 ! |________________|____|______________________________________________|
 ! MODE : -->(NON MODIFIED DATA), <--(RESULT), <-->(MODIFIED DATA)
 !
@@ -119,15 +129,37 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER         , INTENT(IN) :: NP_TOT
+      INTEGER         , INTENT(IN) :: NP_TOT,IELMH
       TYPE(BIEF_MESH) , INTENT(IN) :: MESH
-      DOUBLE PRECISION, INTENT(IN) :: DT
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
+      INTEGER I
+!
 !=======================================================================
-! ALLOCATE THE VARIABLES
+!     ALLOCATE THE VARIABLES
 !=======================================================================
+!
+!     DROGUES PROPERTIES
+!      CALL BIEF_ALLVEC(3,NODCLSS, 'CLSFLO',IELMH,1,1,MESH)
+!      CALL BIEF_ALLVEC(2,PARCLSS, 'TYPFLO',NP_TOT,1,0,MESH)
+!      DO I = 1,NP_TOT
+!        PARCLSS%I(I) = 1
+!      ENDDO
+!
+!      IF( NDRG_CLSS.GT.0 ) THEN
+!       DEFINES THE SPATIAL SAMPLING OF PARCELS WITHIN AN AREA
+!        ALLOCATE( DRG_DENSITY(NDRG_CLSS) )
+!        DRG_DENSITY = 0
+!      ENDIF
+!      IF( ALGAE ) THEN
+!        CALL BIEF_ALLVEC(3,ALG_PARCLSS, 'TYPALG',NP_TOT,1,0,MESH)
+!        DO I = 1,NP_TOT
+!          ALG_PARCLSS%I(I) = 1
+!          ALG_PARCLSS%R(I) = 1.D0
+!        ENDDO
+!      ENDIF
+!
 ! MEAN FLUID VARIABLES
       CALL BIEF_ALLVEC(1,U_X_AV_0,'UX_AV0',NP_TOT,1,0,MESH)
       CALL BIEF_ALLVEC(1,U_Y_AV_0,'UY_AV0',NP_TOT,1,0,MESH)
@@ -156,9 +188,9 @@
       CALL BIEF_ALLVEC(1,DX_A,'DX_ALG',NP_TOT,1,0,MESH)
       CALL BIEF_ALLVEC(1,DY_A,'DY_ALG',NP_TOT,1,0,MESH)
       CALL BIEF_ALLVEC(1,DZ_A,'DZ_ALG',NP_TOT,1,0,MESH)
+      CALL BIEF_ALLVEC(1,TEFF,'TEFF__',NP_TOT,1,0,MESH)
       CALL BIEF_ALLVEC(2,I_A_GL,'I_A_GL',NP_TOT,1,0,MESH)
-! VARIABLES USED TO CALCULATE THE BASSET HISTORY FORCE
-      CALL INIT_BASSET(NP_TOT,MESH%DIM1,DT)
+      CALL BIEF_ALLVEC(2,DISLODGE,'DISLOD',NP_TOT,1,0,MESH)
 !
 !=======================================================================
 ! INITIALISE THE VARIABLES
@@ -180,6 +212,10 @@
       CALL OS('X=C     ',X=DX_A,C=0.D0)
       CALL OS('X=C     ',X=DY_A,C=0.D0)
       CALL OS('X=C     ',X=DZ_A,C=0.D0)
+      CALL OS('X=C     ',X=TEFF,C=0.D0)
+      DO I = 1,NP_TOT
+        DISLODGE%I(I) = 0
+      ENDDO
 !=======================================================================
 ! ALLOCATE VARIABLES USED IN PARALLEL TRANSPORT
 !=======================================================================
@@ -424,10 +460,11 @@
                      SUBROUTINE DISP_ALGAE
 !                    ********************
 !
-     & (NA_TOT,NA,NDIM,DT,ALGAE_START,U_X_AV_0,U_Y_AV_0,U_Z_AV_0,K_AV_0,
+     & (NA_TOT,NA,NDIM,DT,AT,U_X_AV_0,U_Y_AV_0,U_Z_AV_0,K_AV_0,
      &  EPS_AV_0,H_FLU,U_X_AV,U_Y_AV,U_Z_AV,U_X_0,U_Y_0,U_Z_0,V_X_0,
      &  V_Y_0,V_Z_0,DX_A,DY_A,DZ_A,ELEM_ALG,U_X,U_Y,U_Z,V_X,V_Y,V_Z,
-     &  X_A,Y_A,Z_A,LT,DALGAE,RALGAE,EALGAE,ALGTYP)
+     &  X_A,Y_A,Z_A,LT,DALGAE,RALGAE,EALGAE,TALGAE,MALGAE,YALGAE,
+     &  REL_ALGAE)
 !
 !***********************************************************************
 ! TELEMAC 2D VERSION 6.3    MAI 2013                       ANTOINE JOLY
@@ -444,6 +481,11 @@
 !+        V6P3
 !+   First version
 !
+!history  M.S.TURNBULL (HRW)
+!+        26/11/2019
+!+        V8P2
+!+   Algae Dislodgement
+!
 !-----------------------------------------------------------------------
 !                             ARGUMENTS
 ! .________________.____.______________________________________________.
@@ -454,7 +496,6 @@
 ! |                |    | PROCESSOR                                    |
 ! | NDIM           | -->| NUMBER OF DIMENSIONS TREATED                 |
 ! | DT             | -->| TIME STEP OF THE SIMULATION                  |
-! | ALGAE_START    | -->| TIME STEP AT WHICH ALGAE PARTICLES ARE       |
 ! |                |    | RELEASED                                     |
 ! | U_X_AV_0,      | -->| MEAN FLUID VELOCITIES AT THE POSITION OF     |
 ! |   U_Y_AV_0,    |    | EACH ALGAE PARTICLE ONE TIME STEP BEFORE     |
@@ -485,7 +526,10 @@
 ! | DALGAE         | -->| DIAMETER OF THE ALGAE PARTICLES              |
 ! | RALGAE         | -->| DENSITY OF THE ALGAE PARTICLES               |
 ! | EALGAE         | -->| THICKNESS OF THE ALGAE PARTICLES             |
-! | ALGTYP         | -->| ALGAE TYPE OF THE PARTICLES                  |
+! | TALGAE         | -->| TIME AT WHICH ALGAE PARTICLES ARE RELEASED   |
+! | MALGAE         | -->| MASS OF ALGAE PER UNIT AREA                  |
+! | YALGAE         | -->| ALGAE TYPE OF THE PARTICLES                  |
+! | REL_ALGAE      | -->| TYPE OF ALGAE RELEASE                        |
 ! |________________|____|______________________________________________|
 ! MODE : -->(NON MODIFIED DATA), <--(RESULT), <-->(MODIFIED DATA)
 !
@@ -511,20 +555,22 @@
 ! VARIABLES DEPENDENT ON THE ALGAE SIMULATIONS
       INTEGER         ,INTENT(IN)    :: NA_TOT
       INTEGER         ,INTENT(IN)    :: NA
-      INTEGER         ,INTENT(IN)    :: ALGAE_START
-      DOUBLE PRECISION,INTENT(IN)    :: DT
+      DOUBLE PRECISION,INTENT(IN)    :: DT,AT
       INTEGER                        :: I_A
       INTEGER         ,INTENT(IN)    :: LT
-      DOUBLE PRECISION,INTENT(IN)    :: DALGAE
-      DOUBLE PRECISION,INTENT(IN)    :: RALGAE
-      DOUBLE PRECISION,INTENT(IN)    :: EALGAE
-      INTEGER         ,INTENT(IN)    :: ALGTYP
+      DOUBLE PRECISION,INTENT(IN)    :: DALGAE(*)
+      DOUBLE PRECISION,INTENT(IN)    :: RALGAE(*)
+      DOUBLE PRECISION,INTENT(IN)    :: EALGAE(*)
+      DOUBLE PRECISION,INTENT(IN)    :: TALGAE(*)
+      DOUBLE PRECISION,INTENT(IN)    :: MALGAE(*)
+      INTEGER         ,INTENT(IN)    :: YALGAE(*)
+      INTEGER         ,INTENT(IN)    :: REL_ALGAE(*)
 ! CONSTANTS OF THE BODIES
       DOUBLE PRECISION               :: S
       DOUBLE PRECISION               :: OMEGA
       DOUBLE PRECISION               :: M
       DOUBLE PRECISION               :: MASS
-! TEMPORARY VARIABLES TO CLACULATE VARIABLES FOR EACH DIRECTION
+! TEMPORARY VARIABLES TO CALCULATE VARIABLES FOR EACH DIRECTION
       INTEGER         ,INTENT(IN)    :: NDIM
       INTEGER                        :: I_DIM
 ! PROPERTIES OF THE BODIES
@@ -532,6 +578,8 @@
       DOUBLE PRECISION               :: F_B
       DOUBLE PRECISION               :: TAU_PART
       DOUBLE PRECISION               :: FI_C
+      DOUBLE PRECISION               :: D_ALG,R_ALG,E_ALG,T_ALG,M_ALG
+      INTEGER                        :: Y_ALG,REL_ALG
 ! PROPERTIES OF THE FLOW
       DOUBLE PRECISION               :: T_I
       DOUBLE PRECISION               :: B_I
@@ -633,36 +681,52 @@
       IF(.NOT.ALLOCATED(X_I_0_ALGAE))ALLOCATE(X_I_0_ALGAE(NDIM))
       IF(.NOT.ALLOCATED(X_I_ALGAE))ALLOCATE(X_I_ALGAE(NDIM))
       IF(.NOT.ALLOCATED(C_I_ALGAE))ALLOCATE(C_I_ALGAE(NDIM))
-! CONSTANTS
-      IF(ALGTYP.EQ.1)THEN !SPHERE
-        S=PI*DALGAE**2/4.D0
-        OMEGA=PI*DALGAE**3/6.D0
-        M=0.5D0*RHO_F*OMEGA
-      ELSEIF(ALGTYP.EQ.2)THEN !IRIDAEA FLACCIDA (CLOSE TO ULVA)
-        S=PI*DALGAE**2/4.D0
-        OMEGA=S*EALGAE
-        M=3.57D0*RHO_F*OMEGA
-      ELSEIF(ALGTYP.EQ.3)THEN !PELVETIOPSIS LIMITATA
-        S=PI*DALGAE**2/4.D0
-        OMEGA=S*EALGAE
-        M=4.64D0*RHO_F*OMEGA
-      ELSEIF(ALGTYP.EQ.4)THEN !GIGARTINA LEPTORHYNCHOS
-        S=PI*DALGAE**2/4.D0
-        OMEGA=S*EALGAE
-        M=3.26D0*RHO_F*OMEGA
-      END IF
-      MASS=RALGAE*OMEGA
-      CB=6.D0*DALGAE**2*RHO_F*SQRT(PI*NU)
 !
 !=======================================================================
 ! START THE CALCULATIONS FOR EACH PARTICLE
 !=======================================================================
       DO I_A=1,NA
+!
+!       SET PROPERTY FOR THAT CLASS
+        D_ALG = DALGAE(PARCLSS%I(I_A))
+        R_ALG = RALGAE(PARCLSS%I(I_A))
+        E_ALG = EALGAE(PARCLSS%I(I_A))
+        T_ALG = TALGAE(PARCLSS%I(I_A))
+        M_ALG = MALGAE(PARCLSS%I(I_A))
+        Y_ALG = YALGAE(PARCLSS%I(I_A))
+        REL_ALG = REL_ALGAE(PARCLSS%I(I_A))
+! CONSTANTS
+        IF( Y_ALG.EQ.1 )THEN !SPHERE
+          S = PI*D_ALG**2/4.D0
+          OMEGA = PI*D_ALG**3/6.D0
+          M = 0.5D0*RHO_F*OMEGA
+        ELSEIF( Y_ALG.EQ.2 )THEN !IRIDAEA FLACCIDA (CLOSE TO ULVA)
+          S = PI*D_ALG**2/4.D0
+          OMEGA = S*E_ALG
+          M = 3.57D0*RHO_F*OMEGA
+        ELSEIF( Y_ALG.EQ.3 )THEN !PELVETIOPSIS LIMITATA
+          S = PI*D_ALG**2/4.D0
+          OMEGA = S*E_ALG
+          M = 4.64D0*RHO_F*OMEGA
+        ELSEIF( Y_ALG.EQ.4 )THEN !GIGARTINA LEPTORHYNCHOS
+          S = PI*D_ALG**2/4.D0
+          OMEGA = S*E_ALG
+          M = 3.26D0*RHO_F*OMEGA
+        END IF
+        MASS = R_ALG*OMEGA
+        CB = 6.D0*D_ALG**2*RHO_F*SQRT(PI*NU)
+!
 !=======================================================================
 ! CHECK TO SEE IF THE TRANSPORT NEEDS TO BE CALCULATED
 !=======================================================================
-        IF(ELEM_ALG(I_A).LE.0)GOTO 12
-        IF(H_FLU(I_A).LT.DALGAE)GOTO 12
+        IF( ELEM_ALG(I_A).LE.0 ) GOTO 12
+        IF( H_FLU(I_A).LT.D_ALG ) GOTO 12
+        IF(REL_ALG.EQ.2) THEN
+          IF( DISLODGE%I(I_A).EQ.0 ) GOTO 12
+        ELSE
+          IF( AT.LT.T_ALG ) GOTO 12
+        ENDIF
+        IB = LT - INT( T_ALG/DT ) + 1
 !
 !=======================================================================
 ! REDEFINE THE PREVIOUS VARIABLES
@@ -708,8 +772,6 @@
           CI_BAS=0.D0
           F_TAIL=0.D0
 !
-          IB=LT-ALGAE_START+1
-!
           IF(IB.LE.NWIN)THEN
             NB=IB
 !
@@ -727,16 +789,16 @@
             F_A=(RHO_F*OMEGA+M+4.D0/3.D0*CB*SQRT(DT))/(MASS+M+4.D0/3.D0
      &        *CB*SQRT(DT))
 !
-            RE=NORME_U0_V0*DALGAE/NU
-            IF(ALGTYP.EQ.1)THEN !SPHERE
+            RE=NORME_U0_V0*D_ALG/NU
+            IF(Y_ALG.EQ.1)THEN !SPHERE
               IF(RE.EQ.0.D0)THEN
                 CD=0.D0
                 F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &           *SQRT(DT))*DALGAE)
+     &           *SQRT(DT))*D_ALG)
               ELSEIF(RE.LT.0.4)THEN
                 CD=24.D0/RE
                 F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &           *SQRT(DT))*DALGAE)
+     &           *SQRT(DT))*D_ALG)
               ELSEIF(RE.GT.1000000)THEN
                 CD=0.2
                 F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0*CB
@@ -752,7 +814,7 @@
                 F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0*CB
      &           *SQRT(DT)))
               END IF
-            ELSEIF(ALGTYP.EQ.2)THEN !IRIDAEA FLACCIDA (CLOSE TO ULVA)
+            ELSEIF(Y_ALG.EQ.2)THEN !IRIDAEA FLACCIDA (CLOSE TO ULVA)
               IF(RE.GE.14073.D0)THEN
                   CD=EXP(6.822121D0-0.800627D0*LOG(RE))
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -761,11 +823,11 @@
                 IF(RE.EQ.0.D0)THEN
                   CD=0.D0
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.LT.0.4)THEN
                   CD=24.D0/RE
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.GT.1000000)THEN
                   CD=0.2
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -783,7 +845,7 @@
      &             *CB*SQRT(DT)))
                 END IF
               END IF
-            ELSEIF(ALGTYP.EQ.3)THEN !PELVETIOPSIS LIMITATA
+            ELSEIF(Y_ALG.EQ.3)THEN !PELVETIOPSIS LIMITATA
               IF(RE.GE.28611.D0)THEN
                   CD=EXP(8.214783D0-0.877036D0*LOG(RE))
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -792,11 +854,11 @@
                 IF(RE.EQ.0.D0)THEN
                   CD=0.D0
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.LT.0.4)THEN
                   CD=24.D0/RE
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.GT.1000000)THEN
                   CD=0.2
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -814,7 +876,7 @@
      &             *CB*SQRT(DT)))
                 END IF
               END IF
-            ELSEIF(ALGTYP.EQ.4)THEN !GIGARTINA LEPTORHYNCHOS
+            ELSEIF(Y_ALG.EQ.4)THEN !GIGARTINA LEPTORHYNCHOS
               IF(RE.GE.17981.D0)THEN
                   CD=EXP(6.773712D0-0.774252D0*LOG(RE))
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -823,11 +885,11 @@
                 IF(RE.EQ.0.D0)THEN
                   CD=0.D0
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.LT.0.4)THEN
                   CD=24.D0/RE
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.GT.1000000)THEN
                   CD=0.2
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -881,16 +943,16 @@
             F_A=(RHO_F*OMEGA+M+4.D0/3.D0*CB*SQRT(DT))/(MASS+M+4.D0/3.D0
      &        *CB*SQRT(DT))
 !
-            RE=NORME_U0_V0*DALGAE/NU
-            IF(ALGTYP.EQ.1)THEN !SPHERE
+            RE=NORME_U0_V0*D_ALG/NU
+            IF(Y_ALG.EQ.1)THEN !SPHERE
               IF(RE.EQ.0.D0)THEN
                 CD=0.D0
                 F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &           *SQRT(DT))*DALGAE)
+     &           *SQRT(DT))*D_ALG)
               ELSEIF(RE.LT.0.4)THEN
                 CD=24.D0/RE
                 F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &           *SQRT(DT))*DALGAE)
+     &           *SQRT(DT))*D_ALG)
               ELSEIF(RE.GT.1000000)THEN
                 CD=0.2
                 F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0*CB
@@ -906,7 +968,7 @@
                 F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0*CB
      &           *SQRT(DT)))
               END IF
-            ELSEIF(ALGTYP.EQ.2)THEN !IRIDAEA FLACCIDA (CLOSE TO ULVA)
+            ELSEIF(Y_ALG.EQ.2)THEN !IRIDAEA FLACCIDA (CLOSE TO ULVA)
               IF(RE.GE.14073.D0)THEN
                   CD=EXP(6.822121D0-0.800627D0*LOG(RE))
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -915,11 +977,11 @@
                 IF(RE.EQ.0.D0)THEN
                   CD=0.D0
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.LT.0.4)THEN
                   CD=24.D0/RE
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.GT.1000000)THEN
                   CD=0.2
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -937,7 +999,7 @@
      &             *CB*SQRT(DT)))
                 END IF
               END IF
-            ELSEIF(ALGTYP.EQ.3)THEN !PELVETIOPSIS LIMITATA
+            ELSEIF(Y_ALG.EQ.3)THEN !PELVETIOPSIS LIMITATA
               IF(RE.GE.28611.D0)THEN
                   CD=EXP(8.214783D0-0.877036D0*LOG(RE))
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -946,11 +1008,11 @@
                 IF(RE.EQ.0.D0)THEN
                   CD=0.D0
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.LT.0.4)THEN
                   CD=24.D0/RE
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.GT.1000000)THEN
                   CD=0.2
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -968,7 +1030,7 @@
      &             *CB*SQRT(DT)))
                 END IF
               END IF
-            ELSEIF(ALGTYP.EQ.4)THEN !GIGARTINA LEPTORHYNCHOS
+            ELSEIF(Y_ALG.EQ.4)THEN !GIGARTINA LEPTORHYNCHOS
               IF(RE.GE.17981.D0)THEN
                   CD=EXP(6.773712D0-0.774252D0*LOG(RE))
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -977,11 +1039,11 @@
                 IF(RE.EQ.0.D0)THEN
                   CD=0.D0
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.LT.0.4)THEN
                   CD=24.D0/RE
                   F_B=(RHO_F*S*24.D0*NU)/(2.D0*(MASS+M+4.D0/3.D0*CB
-     &             *SQRT(DT))*DALGAE)
+     &             *SQRT(DT))*D_ALG)
                 ELSEIF(RE.GT.1000000)THEN
                   CD=0.2
                   F_B=(RHO_F*S*CD*NORME_U0_V0)/(2.D0*(MASS+M+4.D0/3.D0
@@ -1214,34 +1276,41 @@
       IF(ALLOCATED(X_I_0_ALGAE)) DEALLOCATE(X_I_0_ALGAE)
       IF(ALLOCATED(X_I_ALGAE)) DEALLOCATE(X_I_ALGAE)
       IF(ALLOCATED(C_I_ALGAE)) DEALLOCATE(C_I_ALGAE)
-      IF(ALGAE_START.NE.1) THEN
-        CALL BIEF_DEALLOBJ(U_X_AV_0)
-        CALL BIEF_DEALLOBJ(U_Y_AV_0)
-        CALL BIEF_DEALLOBJ(U_Z_AV_0)
-        CALL BIEF_DEALLOBJ(U_X_AV)
-        CALL BIEF_DEALLOBJ(U_Y_AV)
-        CALL BIEF_DEALLOBJ(U_Z_AV)
-        CALL BIEF_DEALLOBJ(K_AV_0)
-        CALL BIEF_DEALLOBJ(EPS_AV_0)
-        CALL BIEF_DEALLOBJ(K_AV)
-        CALL BIEF_DEALLOBJ(EPS_AV)
-        CALL BIEF_DEALLOBJ(H_FLU)
-        CALL BIEF_DEALLOBJ(U_X_0)
-        CALL BIEF_DEALLOBJ(U_Y_0)
-        CALL BIEF_DEALLOBJ(U_Z_0)
-        CALL BIEF_DEALLOBJ(U_X)
-        CALL BIEF_DEALLOBJ(U_Y)
-        CALL BIEF_DEALLOBJ(U_Z)
-        CALL BIEF_DEALLOBJ(V_X_0)
-        CALL BIEF_DEALLOBJ(V_Y_0)
-        CALL BIEF_DEALLOBJ(V_Z_0)
-        CALL BIEF_DEALLOBJ(V_X)
-        CALL BIEF_DEALLOBJ(V_Y)
-        CALL BIEF_DEALLOBJ(V_Z)
-        CALL BIEF_DEALLOBJ(DX_A)
-        CALL BIEF_DEALLOBJ(DY_A)
-        CALL BIEF_DEALLOBJ(DZ_A)
-        CALL BIEF_DEALLOBJ(I_A_GL)
+!
+      IF (NDRG_CLSS.GT.0) THEN
+        CALL BIEF_DEALLOBJ(NODCLSS)
+        CALL BIEF_DEALLOBJ(PARCLSS)
+        IF (NALG_CLSS.GT.0) THEN
+          CALL BIEF_DEALLOBJ(U_X_AV_0)
+          CALL BIEF_DEALLOBJ(U_Y_AV_0)
+          CALL BIEF_DEALLOBJ(U_Z_AV_0)
+          CALL BIEF_DEALLOBJ(U_X_AV)
+          CALL BIEF_DEALLOBJ(U_Y_AV)
+          CALL BIEF_DEALLOBJ(U_Z_AV)
+          CALL BIEF_DEALLOBJ(K_AV_0)
+          CALL BIEF_DEALLOBJ(EPS_AV_0)
+          CALL BIEF_DEALLOBJ(K_AV)
+          CALL BIEF_DEALLOBJ(EPS_AV)
+          CALL BIEF_DEALLOBJ(H_FLU)
+          CALL BIEF_DEALLOBJ(U_X_0)
+          CALL BIEF_DEALLOBJ(U_Y_0)
+          CALL BIEF_DEALLOBJ(U_Z_0)
+          CALL BIEF_DEALLOBJ(U_X)
+          CALL BIEF_DEALLOBJ(U_Y)
+          CALL BIEF_DEALLOBJ(U_Z)
+          CALL BIEF_DEALLOBJ(V_X_0)
+          CALL BIEF_DEALLOBJ(V_Y_0)
+          CALL BIEF_DEALLOBJ(V_Z_0)
+          CALL BIEF_DEALLOBJ(V_X)
+          CALL BIEF_DEALLOBJ(V_Y)
+          CALL BIEF_DEALLOBJ(V_Z)
+          CALL BIEF_DEALLOBJ(DX_A)
+          CALL BIEF_DEALLOBJ(DY_A)
+          CALL BIEF_DEALLOBJ(DZ_A)
+          CALL BIEF_DEALLOBJ(TEFF)
+          CALL BIEF_DEALLOBJ(I_A_GL)
+          CALL BIEF_DEALLOBJ(DISLODGE)
+        ENDIF
       ENDIF
 !
       RETURN

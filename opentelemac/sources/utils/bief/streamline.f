@@ -134,6 +134,7 @@
       PUBLIC :: SCARACT,POST_INTERP,SEND_PARTICLES,BIEF_INTERP
       PUBLIC :: ADD_PARTICLE,DEL_PARTICLE,ORGANISE_ALGS,SEND_INFO_ALG
       PUBLIC :: DEL_INFO_ALG
+      PUBLIC :: SEND_INFO_ICE,DEL_INFO_ICE
       PUBLIC :: OIL_SEND_PARTICLES,OIL_DEL_PARTICLE,OIL_SEND_INFO
       PUBLIC :: OIL_ORGANISE_CHARS
       PUBLIC :: DEALLOC_STREAMLINE
@@ -7738,7 +7739,6 @@
 !
 !-----------------------------------------------------------------------
 !
-
       IF(IELM.EQ.11) THEN
 !
 !    P1 TRIANGLES
@@ -8391,8 +8391,8 @@
                         SUBROUTINE SEND_PARTICLES
 !                       *************************
 !
-     &(X,Y,Z,SHP,SHZ,ELT,ETA,ISUB,TAG,NDP,NPLOT,NPLOT_MAX,MESH,NPLAN,
-     & DX,DY,DZ)
+     &(X,Y,Z,SHP,SHZ,ELT,ETA,ISUB,TAG,CLS,NDP,NPLOT,NPLOT_MAX,
+     & MESH,NPLAN,DX,DY,DZ)
 !
 !***********************************************************************
 ! BIEF VERSION 6.3           24/04/97    J-M HERVOUET (LNHE)
@@ -8445,7 +8445,8 @@
       INTEGER, INTENT(IN)             :: NPLOT_MAX,NDP,NPLAN
       INTEGER, INTENT(INOUT)          :: NPLOT
       INTEGER, INTENT(INOUT)          :: ELT(NPLOT_MAX),ETA(NPLOT_MAX)
-      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX),TAG(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: TAG(NPLOT_MAX),CLS(NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: SHP(NDP,NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: SHZ(NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: X(NPLOT_MAX),Y(NPLOT_MAX)
@@ -8595,8 +8596,8 @@
             ENDIF
 !           ADDING A PARTICLE WITH ALREADY KNOWN POSITION
             CALL ADD_PARTICLE(XVOID,YVOID,ZVOID,
-     &                        RECVCHAR(I)%IOR,NPLOT,NPLOT_MAX,
-     &                        X,Y,Z,TAG,SHP,SHZ,ELT,ETA,MESH,NPLAN,
+     &                        RECVCHAR(I)%IOR,1,NPLOT,NPLOT_MAX,
+     &                        X,Y,Z,TAG,CLS,SHP,SHZ,ELT,ETA,MESH,NPLAN,
      &                        RECVCHAR(I)%XP,RECVCHAR(I)%YP,
      &                        RECVCHAR(I)%ZP,RECVCHAR(I)%FP,
      &                        RECVCHAR(I)%INE,RECVCHAR(I)%KNE)
@@ -8630,8 +8631,8 @@
                      SUBROUTINE ADD_PARTICLE
 !                    ***********************
 !
-     &(X,Y,Z,TAG,NFLOT,NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,SHPFLO,SHZFLO,
-     & ELTFLO,ETAFLO,MESH,NPLAN,SHP1,SHP2,SHP3,SHZ,ELT,ETA)
+     &(X,Y,Z,TAG,CLS,NFLOT,NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,CLSFLO,
+     &SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH,NPLAN,SHP1,SHP2,SHP3,SHZ,ELT,ETA)
 !
 !***********************************************************************
 ! BIEF   V6P3                                              14/02/2013
@@ -8682,13 +8683,15 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER         , INTENT(IN)    :: TAG,NFLOT_MAX,ELT,ETA,NPLAN
+      INTEGER         , INTENT(IN)    :: TAG,CLS
+      INTEGER         , INTENT(IN)    :: NFLOT_MAX,ELT,ETA,NPLAN
       DOUBLE PRECISION, INTENT(IN)    :: X,Y,Z,SHP1,SHP2,SHP3,SHZ
       DOUBLE PRECISION, INTENT(INOUT) :: XFLOT(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: YFLOT(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: ZFLOT(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: NFLOT
       INTEGER         , INTENT(INOUT) :: TAGFLO(NFLOT_MAX)
+      INTEGER         , INTENT(INOUT) :: CLSFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: ELTFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: ETAFLO(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: SHPFLO(3,NFLOT_MAX)
@@ -8841,6 +8844,7 @@
         XFLOT(NFLOT)=X
         YFLOT(NFLOT)=Y
         TAGFLO(NFLOT)=TAG
+        CLSFLO(NFLOT)=CLS
         SURDET=1.D0/((X2-X1)*(Y3-Y1)-(X3-X1)*(Y2-Y1))
         SHPFLO(1,NFLOT) = DET1*SURDET
         SHPFLO(2,NFLOT) = DET2*SURDET
@@ -8916,8 +8920,9 @@
                      SUBROUTINE DEL_PARTICLE
 !                    ***********************
 !
-     &(TAG,NFLOT,NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,SHPFLO,SHZFLO,
-     & ELTFLO,ETAFLO,IELM,DX,DY,DZ,ISUB)
+     &(TAG,NFLOT,NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,CLSFLO,
+     & SHPFLO,SHZFLO,ELTFLO,ETAFLO,IELM,DX,DY,DZ,ISUB,
+     & TEFF,DISLODGE)
 !
 !***********************************************************************
 ! BIEF   V6P3                                              14/02/2013
@@ -8967,14 +8972,17 @@
       DOUBLE PRECISION, INTENT(INOUT) :: ZFLOT(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: NFLOT
       INTEGER         , INTENT(INOUT) :: TAGFLO(NFLOT_MAX)
+      INTEGER         , INTENT(INOUT) :: CLSFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: ELTFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: ETAFLO(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: SHPFLO(3,NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: SHZFLO(NFLOT_MAX)
       INTEGER         ,OPTIONAL, INTENT(INOUT) :: ISUB(NFLOT_MAX)
+      INTEGER         ,OPTIONAL, INTENT(INOUT) :: DISLODGE(NFLOT_MAX)
       DOUBLE PRECISION,OPTIONAL, INTENT(INOUT) :: DX(NFLOT_MAX)
       DOUBLE PRECISION,OPTIONAL, INTENT(INOUT) :: DY(NFLOT_MAX)
       DOUBLE PRECISION,OPTIONAL, INTENT(INOUT) :: DZ(NFLOT_MAX)
+      DOUBLE PRECISION,OPTIONAL, INTENT(INOUT) :: TEFF(NFLOT_MAX)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -8998,6 +9006,7 @@
                   XFLOT(I)=XFLOT(I+1)
                   YFLOT(I)=YFLOT(I+1)
                   TAGFLO(I)=TAGFLO(I+1)
+                  CLSFLO(I)=CLSFLO(I+1)
                   ELTFLO(I)=ELTFLO(I+1)
                   SHPFLO(1,I)=SHPFLO(1,I+1)
                   SHPFLO(2,I)=SHPFLO(2,I+1)
@@ -9009,6 +9018,7 @@
                   YFLOT(I)=YFLOT(I+1)
                   ZFLOT(I)=ZFLOT(I+1)
                   TAGFLO(I)=TAGFLO(I+1)
+                  CLSFLO(I)=CLSFLO(I+1)
                   ELTFLO(I)=ELTFLO(I+1)
                   ETAFLO(I)=ETAFLO(I+1)
                   SHPFLO(1,I)=SHPFLO(1,I+1)
@@ -9045,6 +9055,16 @@
                   DZ(I)=DZ(I+1)
                 ENDDO
               ENDIF
+              IF(PRESENT(TEFF)) THEN
+                DO I=IFLOT,NFLOT
+                  TEFF(I)=TEFF(I+1)
+                ENDDO
+              ENDIF
+              IF(PRESENT(DISLODGE)) THEN
+                DO I=IFLOT,NFLOT
+                  DISLODGE(I)=DISLODGE(I+1)
+                ENDDO
+              ENDIF
             ENDIF
             EXIT
           ENDIF
@@ -9057,10 +9077,21 @@
       RETURN
       END SUBROUTINE DEL_PARTICLE
 !                       ************************
+                        SUBROUTINE SEND_INFO_ICE
+     &()
+      IMPLICIT NONE
+      END SUBROUTINE SEND_INFO_ICE
+!                    ***********************
+                     SUBROUTINE DEL_INFO_ICE
+     &()
+      IMPLICIT NONE
+      END SUBROUTINE DEL_INFO_ICE
+!
+!                       ************************
                         SUBROUTINE SEND_INFO_ALG
 !                       ************************
 !
-     &(ISUB,TAG,FLAG,NPLOT,NPLOT_MAX,
+     &(ISUB,TAG,CLS,TEFF,DISLODGE,FLAG,NPLOT,NPLOT_MAX,
      & U_X_AV,U_Y_AV,U_Z_AV,K_AV,EPS_AV,H_FLU,U_X,U_Y,U_Z,V_X,
      & V_Y,V_Z,NWIN,NDIR,PSI)
 !
@@ -9109,8 +9140,10 @@
 !     INFORMATION USED IN PARTICLE TRANSPORT
       INTEGER, INTENT(IN)             :: NPLOT_MAX
       INTEGER, INTENT(INOUT)          :: NPLOT
-      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX),TAG(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: TAG(NPLOT_MAX),CLS(NPLOT_MAX)
       INTEGER, INTENT(INOUT)          :: FLAG(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: DISLODGE(NPLOT_MAX)
 !     INFOS USED IN ALGAE TRANSPORT
       DOUBLE PRECISION, INTENT(INOUT) :: U_X_AV(NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: U_Y_AV(NPLOT_MAX)
@@ -9124,6 +9157,7 @@
       DOUBLE PRECISION, INTENT(INOUT) :: V_X(NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: V_Y(NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: V_Z(NPLOT_MAX)
+      DOUBLE PRECISION, INTENT(INOUT) :: TEFF(NPLOT_MAX)
       INTEGER, INTENT(IN)             :: NWIN,NDIR
       DOUBLE PRECISION, INTENT(INOUT) :: PSI(NPLOT_MAX,NDIR,NWIN+1)
 !
@@ -9186,6 +9220,9 @@
           HEAPALG(NCHARA)%VX=V_X(IPLOT)
           HEAPALG(NCHARA)%VY=V_Y(IPLOT)
           HEAPALG(NCHARA)%VZ=0.D0
+          HEAPALG(NCHARA)%ICLASS=CLS(IPLOT)
+          HEAPALG(NCHARA)%TEFF=TEFF(IPLOT)
+          HEAPALG(NCHARA)%DISLODGE=DISLODGE(IPLOT)
           HEAPALG(NCHARA)%UX=U_X(IPLOT)
           HEAPALG(NCHARA)%UY=U_Y(IPLOT)
           HEAPALG(NCHARA)%UZ=0.D0
@@ -9195,6 +9232,10 @@
           HEAPALG(NCHARA)%K_AV=K_AV(IPLOT)
           HEAPALG(NCHARA)%EPS_AV=EPS_AV(IPLOT)
           HEAPALG(NCHARA)%H_FLU=H_FLU(IPLOT)
+! Three new variables (MST)
+          HEAPALG(NCHARA)%ICLASS=CLS(IPLOT)
+          HEAPALG(NCHARA)%TEFF=TEFF(IPLOT)
+          HEAPALG(NCHARA)%DISLODGE=DISLODGE(IPLOT)
           DO IDIR=1,NDIR
             DO IWIN=1,NWIN+1
               HEAPALG(NCHARA)%PSI((IDIR-1)*(NWIN+1)+IWIN)=
@@ -9274,6 +9315,10 @@
             K_AV(NPLOT+I)=RECVALG(I)%K_AV
             EPS_AV(NPLOT+I)=RECVALG(I)%EPS_AV
             H_FLU(NPLOT+I)=RECVALG(I)%H_FLU
+! Three new variables (MST)
+            CLS(NPLOT+I)=RECVALG(I)%ICLASS
+            TEFF(NPLOT+I)=RECVALG(I)%TEFF
+            DISLODGE(NPLOT+I)=RECVALG(I)%DISLODGE
             DO IDIR=1,NDIR
               DO IWIN=1,NWIN+1
                 PSI(NPLOT+I,IDIR,IWIN)=
@@ -9305,8 +9350,8 @@
                      SUBROUTINE DEL_INFO_ALG
 !                    ***********************
 !
-     &(TAG,NFLOT,NFLOT_MAX,IELM,TAGFLO,FLAGFLO,V_X,V_Y,V_Z,U_X,U_Y,U_Z,
-     & U_X_AV,U_Y_AV,U_Z_AV,K_AV,EPS_AV,H_FLU,NWIN,NDIR,PSI)
+     &(TAG,NFLOT,NFLOT_MAX,IELM,TAGFLO,CLSFLO,FLAGFLO,V_X,V_Y,V_Z,
+     & U_X,U_Y,U_Z,U_X_AV,U_Y_AV,U_Z_AV,K_AV,EPS_AV,H_FLU,NWIN,NDIR,PSI)
 !
 !***********************************************************************
 ! BIEF   V6P3                                              14/02/2013
@@ -9347,6 +9392,7 @@
 !
       INTEGER         , INTENT(IN)    :: TAG,NFLOT,NFLOT_MAX,IELM
       INTEGER         , INTENT(INOUT) :: TAGFLO(NFLOT_MAX)
+      INTEGER         , INTENT(INOUT) :: CLSFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: FLAGFLO(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: U_X_AV(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: U_Y_AV(NFLOT_MAX)
@@ -9442,8 +9488,8 @@
                         SUBROUTINE OIL_SEND_PARTICLES
 !                       *****************************
 !
-     &(X,Y,Z,SHP,SHZ,ELT,ETA,ISUB,TAG,NDP,NPLOT,NPLOT_MAX,MESH,NPLAN,
-     &     PARTICULES)
+     &(X,Y,Z,SHP,SHZ,ELT,ETA,ISUB,TAG,CLS,NDP,NPLOT,NPLOT_MAX,
+     &     MESH,NPLAN,PARTICULES)
 !
 !***********************************************************************
 ! BIEF VERSION 6.3           24/04/97    J-M HERVOUET (LNHE)
@@ -9491,7 +9537,8 @@
       INTEGER, INTENT(IN)             :: NPLOT_MAX,NDP,NPLAN
       INTEGER, INTENT(INOUT)          :: NPLOT
       INTEGER, INTENT(INOUT)          :: ELT(NPLOT_MAX),ETA(NPLOT_MAX)
-      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX),TAG(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: TAG(NPLOT_MAX),CLS(NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: SHP(NDP,NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: SHZ(NPLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: X(NPLOT_MAX),Y(NPLOT_MAX)
@@ -9628,8 +9675,8 @@
 !
             NFLOT_OIL = 0
             CALL ADD_PARTICLE(XVOID,YVOID,ZVOID,
-     &                        RECVCHAR(I)%IOR,NFLOT_OIL,1,
-     &                        X,Y,Z,TAG,SHP,SHZ,ELT,ETA,MESH,NPLAN,
+     &                        RECVCHAR(I)%IOR,1,NFLOT_OIL,1,
+     &                        X,Y,Z,TAG,CLS,SHP,SHZ,ELT,ETA,MESH,NPLAN,
      &                        RECVCHAR(I)%XP,RECVCHAR(I)%YP,
      &                        RECVCHAR(I)%ZP,RECVCHAR(I)%DX,
      &                        RECVCHAR(I)%INE,RECVCHAR(I)%KNE)
@@ -9640,6 +9687,7 @@
               PARTICULES(NPLOT)%YOIL = Y(1)
               PARTICULES(NPLOT)%ZOIL = Z(1)
               PARTICULES(NPLOT)%ID = TAG(1)
+              PARTICULES(NPLOT)%CLS = CLS(1)
               PARTICULES(NPLOT)%SHPOIL(1) = SHP(1,1)
               PARTICULES(NPLOT)%SHPOIL(2) = SHP(2,1)
               PARTICULES(NPLOT)%SHPOIL(3) = SHP(3,1)
@@ -9680,7 +9728,7 @@
                         SUBROUTINE OIL_SEND_INFO
 !                       ************************
 !
-     &(ELT,ETA,ISUB,TAG,NPLOT,NPLOT_MAX,
+     &(ELT,ETA,ISUB,TAG,CLS,NPLOT,NPLOT_MAX,
      & PARTICULES,NB_COMPO,NB_HAP)
 !
 !***********************************************************************
@@ -9729,7 +9777,8 @@
       INTEGER, INTENT(IN)             :: NB_COMPO,NB_HAP
       INTEGER, INTENT(INOUT)          :: NPLOT
       INTEGER, INTENT(INOUT)          :: ELT(NPLOT_MAX),ETA(NPLOT_MAX)
-      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX),TAG(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: ISUB(NPLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: TAG(NPLOT_MAX),CLS(NPLOT_MAX)
       TYPE(OIL_PART), DIMENSION(NPLOT_MAX)::PARTICULES
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -9961,6 +10010,7 @@
                   PARTICULES(I)%XOIL=PARTICULES(I+1)%XOIL
                   PARTICULES(I)%YOIL=PARTICULES(I+1)%YOIL
                   PARTICULES(I)%ID=PARTICULES(I+1)%ID
+                  PARTICULES(I)%CLS=PARTICULES(I+1)%CLS
                   PARTICULES(I)%ELTOIL=PARTICULES(I+1)%ELTOIL
                   PARTICULES(I)%SHPOIL(1)=PARTICULES(I+1)%SHPOIL(1)
                   PARTICULES(I)%SHPOIL(2)=PARTICULES(I+1)%SHPOIL(2)
@@ -10001,6 +10051,7 @@
                   PARTICULES(I)%YOIL=PARTICULES(I+1)%YOIL
                   PARTICULES(I)%ZOIL=PARTICULES(I+1)%ZOIL
                   PARTICULES(I)%ID=PARTICULES(I+1)%ID
+                  PARTICULES(I)%CLS=PARTICULES(I+1)%CLS
                   PARTICULES(I)%ELTOIL=PARTICULES(I+1)%ELTOIL
                   PARTICULES(I)%ETAOIL=PARTICULES(I+1)%ETAOIL
                   PARTICULES(I)%SHPOIL(1)=PARTICULES(I+1)%SHPOIL(1)

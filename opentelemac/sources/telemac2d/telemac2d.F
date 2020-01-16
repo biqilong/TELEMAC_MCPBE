@@ -532,7 +532,6 @@
           RETURN
         ENDIF
       ENDIF
-
 !
 !-----------------------------------------------------------------------
 !
@@ -1682,7 +1681,7 @@
 !
         IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING FLOT'
         CALL FLOT(XFLOT%R,YFLOT%R,NFLOT,NFLOT_MAX,MESH%X%R,MESH%Y%R,
-     &            MESH%IKLE%I,NELEM,NELMAX,NPOIN,TAGFLO%I,
+     &              MESH%IKLE%I,NELEM,NELMAX,NPOIN,TAGFLO%I,CLSFLO%I,
      &            SHPFLO%R,ELTFLO%I,MESH,LT,NIT,AT)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM FLOT'
 !
@@ -1695,13 +1694,27 @@
      &              MESH%NDS(IELM,3),MESH%NDS(UCONV%ELM,3),
      &              NPOIN,NPOIN,
      &              NELEM,NELMAX,MESH%SURDET%R,XFLOT%R,YFLOT%R,YFLOT%R,
-     &              SHPFLO%R,SHPFLO%R,TAGFLO%I,ELTFLO%I,ELTFLO%I,
-     &              NFLOT,NFLOT_MAX,FLOPRD,MESH,T2D_FILES(T2DFLO)%LU,
+     &              SHPFLO%R,SHPFLO%R,TAGFLO%I,CLSFLO%I,ELTFLO%I,
+     &              ELTFLO%I,NFLOT,NFLOT_MAX,MESH,
      &              IT1%I,T1%R,T2%R,T2%R,IT2%I,W1%R,W1%R,NPOIN,STOCHA,
      &              VISC,1,SVOID,0,
      &              AALGAE=ALGAE,DALGAE=DALGAE,RALGAE=RALGAE,
-     &              EALGAE=EALGAE,ALGTYP=ALGTYP,AK=AK%R,EP=EP%R,H=H%R)
+     &              EALGAE=EALGAE,TALGAE=TALGAE,MALGAE=MALGAE,
+     &              YALGAE=YALGAE,
+     &              REL_ALGAE=REL_ALGAE,TW1_ALGAE=TW1_ALGAE,
+     &              TW2_ALGAE=TW2_ALGAE,A_ALGAE=A_ALGAE,
+     &              ORBVEL=ORBVEL%R,
+     &              AK=AK%R,EP=EP%R,H=H%R)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM DERIVE'
+!
+!       PRINTING THEM
+!
+        IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING UTIMP_DROGUES'
+        CALL UTIMP_DROGUES( LT,AT,NPOIN,NPOIN,
+     &    XFLOT%R,YFLOT%R,YFLOT%R,TAGFLO%I,CLSFLO%I,
+     &    NFLOT,NFLOT_MAX,FLOPRD,DEJA_DROGUES_UTIMP,
+     &    T2D_FILES(T2DFLO),T2D_FILES(T2DBLO), MARDAT,MARTIM )
+        IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM UTIMP_DROGUES'
 !
         IF(SPHERI) THEN
           CALL OS('X=XY    ',X=UCONV,Y=MESH%COSLAT)

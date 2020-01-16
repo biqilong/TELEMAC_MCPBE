@@ -1758,10 +1758,10 @@
      &                     MAXLU_T3D,NPOIN2,T3DMIG,UCONV,VCONV,WCONV,
      &                     NFLOT,NPLAN,MESH3D,AT,DT,GRAV,CF,X,Y,Z,H,HN,
      &                     IELM3,NPOIN3,NELEM2,XFLOT,YFLOT,ZFLOT,SHPFLO,
-     &                     SHZFLO,TAGFLO,ELTFLO,ETAFLO,FLOPRD,T3DFLO,
-     &                     IT1,IT2,T3_01,T3_02,T3_03,MTRA1,MTRA2,VISCVI,
-     &                     WIND,UNSV3D,NTRAC,TRN,TRAV3,ATABOS,T2_17,
-     &                     VENT)
+     &                     SHZFLO,TAGFLO,CLSFLO,ELTFLO,ETAFLO,FLOPRD,
+     &                     T3DFLO,IT1,IT2,T3_01,T3_02,T3_03,MTRA1,MTRA2,
+     &                     VISCVI,WIND,UNSV3D,NTRAC,TRN,TRAV3,ATABOS,
+     &                     T2_17,VENT)
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE OIL_SPILL_3D'
 !
       ENDIF
@@ -2338,7 +2338,7 @@
         CALL FLOT3D(XFLOT%R,YFLOT%R,ZFLOT%R,NFLOT,NFLOT_MAX,X,Y,Z,
      &              MESH3D%IKLE%I,
      &              MESH3D%NELEM,MESH3D%NELMAX,NPOIN3,NPLAN,
-     &              TAGFLO%I,SHPFLO%R,SHZFLO%R,ELTFLO%I,ETAFLO%I,
+     &          TAGFLO%I,CLSFLO%I,SHPFLO%R,SHZFLO%R,ELTFLO%I,ETAFLO%I,
      &              MESH3D,LT,NIT_ORI,AT)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM FLO3D'
 !
@@ -2353,13 +2353,22 @@
      &              3,3,
      &              NPOIN3,NPOIN2,NELEM2,MESH2D%NELMAX,
      &              MESH2D%SURDET%R,XFLOT%R,YFLOT%R,ZFLOT%R,
-     &              SHPFLO%R,SHZFLO%R,TAGFLO%I,ELTFLO%I,ETAFLO%I,
-     &              NFLOT,NFLOT_MAX,FLOPRD,MESH3D,T3D_FILES(T3DFLO)%LU,
+     &          SHPFLO%R,SHZFLO%R,TAGFLO%I,CLSFLO%I,ELTFLO%I,ETAFLO%I,
+     &          NFLOT,NFLOT_MAX,MESH3D,
      &              IT1%I,T3_01%R,T3_02%R,T3_03%R,IT2%I,
 !                                              NO STOCHASTIC DIFFUSION
      &              MTRA1%X%R,MTRA2%X%R,NPOIN3,0,SVIDE,
      &              NPLAN,ZCHAR%R,TRANSF)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM DERIVE'
+!
+!       PRINTING THEM
+!
+        IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING UTIMP_DROGUES'
+        CALL UTIMP_DROGUES( LT,AT,NPOIN2,NPOIN3,
+     &    XFLOT%R,YFLOT%R,YFLOT%R,TAGFLO%I,CLSFLO%I,
+     &    NFLOT,NFLOT_MAX,FLOPRD,DEJA_DROGUES_UTIMP,
+     &    T3D_FILES(T3DFLO),T3D_FILES(T3DBLO), MARDAT,MARTIM )
+        IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM UTIMP_DROGUES'
 !
         IF(SPHERI) THEN
           CALL OS('X=XY    ',X=UCONV,Y=MESH3D%COSLAT)

@@ -78,8 +78,8 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER K,J,NUM_GLO,NUM_LOC,NUM_MAX,I,NFLOT_OIL,TAGFLO(1)
-      INTEGER ELTFLO(1),ETAFLO(1)
+      INTEGER K,J,NUM_GLO,NUM_LOC,NUM_MAX,I,NFLOT_OIL
+      INTEGER TAGFLO(1),CLSFLO(1),ELTFLO(1),ETAFLO(1)
       DOUBLE PRECISION RHO_EAU,PI,COEF1,COEF2,DELTA,NU,NU2,COORD_X
       DOUBLE PRECISION COORD_Y,XFLOT(1), YFLOT(1),ZFLOT(1),SHPFLO(3,1)
       DOUBLE PRECISION SHZFLO(1)
@@ -112,15 +112,15 @@
             NUM_GLO=NUM_GLO+1
             NFLOT_OIL = 0
             IF(MESH%DIM1.EQ.3)THEN
-              CALL ADD_PARTICLE(COORD_X,COORD_Y,COORD_Y,NUM_GLO,
-     &                         NFLOT_OIL,1,XFLOT,YFLOT,ZFLOT,TAGFLO,
-     &                         SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH,NPLAN,
-     &                         0.D0,0.D0,0.D0,0.D0,0,0)
+              CALL ADD_PARTICLE(COORD_X,COORD_Y,COORD_Y,NUM_GLO,1,
+     &                    NFLOT_OIL,1,XFLOT,YFLOT,ZFLOT,TAGFLO,CLSFLO,
+     &                    SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH,NPLAN,
+     &                    0.D0,0.D0,0.D0,0.D0,0,0)
             ELSEIF(MESH%DIM1.EQ.2)THEN
-              CALL ADD_PARTICLE(COORD_X,COORD_Y,0.D0,NUM_GLO,
-     &                         NFLOT_OIL,1,XFLOT,YFLOT,YFLOT,TAGFLO,
-     &                         SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
-     &                         0.D0,0.D0,0.D0,0.D0,0,0)
+              CALL ADD_PARTICLE(COORD_X,COORD_Y,0.D0,NUM_GLO,1,
+     &                    NFLOT_OIL,1,XFLOT,YFLOT,YFLOT,TAGFLO,CLSFLO,
+     &                    SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
+     &                    0.D0,0.D0,0.D0,0.D0,0,0)
             END IF
             IF(NFLOT_OIL.EQ.1)THEN
               NUM_LOC = NUM_LOC+1
@@ -130,6 +130,7 @@
               PARTICULES(NUM_LOC)%XOIL = XFLOT(1)
               PARTICULES(NUM_LOC)%YOIL = YFLOT(1)
               PARTICULES(NUM_LOC)%ID = TAGFLO(1)
+              PARTICULES(NUM_LOC)%CLS = CLSFLO(1)
               PARTICULES(NUM_LOC)%SHPOIL(1) = SHPFLO(1,1)
               PARTICULES(NUM_LOC)%SHPOIL(2) = SHPFLO(2,1)
               PARTICULES(NUM_LOC)%SHPOIL(3) = SHPFLO(3,1)

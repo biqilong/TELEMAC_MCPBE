@@ -25,13 +25,13 @@
 /
 / INDICES IN USE SO FAR:
 /  - INTEGER (ENTIER):
-/       1-19,21-45,47-79,81-108,110-112
+/       1-19,21-45,47-108,110-113
 /  - REAL (REEL):
-/       1-66,68-77
+/       1-82
 /  - LOGICAL (LOGIQUE):
 /       1-59
 /  - CHARACTER (CARACTERE):
-/       1-3,6-11,13-13,15-20,23-29,33-41,50-53,59-88,90-98,100-103,162
+/       1-3,6-13,15-20,23-29,33-41,48-56,59-104,162
 /
 /-------------------------------------------------------------------------------
 /
@@ -2759,7 +2759,7 @@ maximale S pour le modele pluie-debit SCS CN. Les options disponibles so
   2 : IA/S = 0.05 (methode revisee, cf. Woodward, Hawkins et al. 2003. A
       cette option les coefficients CN fournis en entree sont alors
           automatiquement corriges, cf. manuel utilisateur).
-Ce mot cle est uniquement utile pour le modele pluie-d�bit 1 (CN)'
+Ce mot cle est uniquement utile pour le modele pluie-debit 1 (CN)'
 AIDE1 =
 'Gives the ratio for Initial Abstraction to Maximal Potential
 Retention S for the SCS CN runoff model. Available options are:
@@ -3155,7 +3155,7 @@ RUBRIQUE1 =
 'HYDRO';'PHYSICAL PARAMETERS HYDRO';'SOURCES'
 NIVEAU = 1
 AIDE =
-'Nombre maximal de points pour définir les regions contenant les sources.
+'Nombre maximal de points pour definir les regions contenant les sources.
 Sert au dimensionnement de la memoire, a augmenter si necessaire'
 AIDE1 =
 'Maximal number of points to define regions containing sources.
@@ -6409,8 +6409,8 @@ AIDE1 =
 ////////////////////////////////////////////////////////////////////////
 ///// 8.1-DROGUES
 ////////////////////////////////////////////////////////////////////////
-NOM = 'NOMBRE DE FLOTTEURS'
-NOM1 = 'NUMBER OF DROGUES'
+NOM = 'NOMBRE MAXIMAL DE FLOTTEURS'
+NOM1 = 'MAXIMUM NUMBER OF DROGUES'
 TYPE = INTEGER
 INDEX = 28
 TAILLE = 1
@@ -6425,12 +6425,28 @@ NIVEAU = 0
 AIDE =
 'Permet d''effectuer un suivi de flotteurs'
 AIDE1 =
-'Number of drogues in the computation.
-The user must then fill the subroutine FLOT specifying
-the coordinates of the starting points, their departure
-and arrival times.
-The trajectory of drogues is recorded in the BINARY RESULTS
-FILE that must be given in the steering file'
+'Maximum number of drogues in the computation.'
+/
+NOM = 'DENSITE INITIALE DE REPARTITION DES FLOTTEURS'
+NOM1 = 'INITIAL DROGUES SAMPLING DENSITY'
+TYPE = REAL
+INDEX = 67
+TAILLE = 2
+DEFAUT = 1000;1000
+DEFAUT1 = 1000;1000
+MNEMO = 'DRG\_DENSITY'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 0
+AIDE =
+'Densite initiale utilisee a la repartition des flotteurs
+ au debut (ou en cours) de la simulation'
+AIDE1 =
+'Initial density of drogues, or number of drogues per m2,
+ used to spatially place the initiale drogues in a
+ simulation'
 /
 NOM = 'PERIODE POUR LES SORTIES DE FLOTTEURS'
 NOM1 = 'PRINTOUT PERIOD FOR DROGUES'
@@ -6447,14 +6463,14 @@ RUBRIQUE1 =
 NIVEAU = 0
 AIDE =
 'Nombre de pas de temps entre 2 sorties de positions de
-flotteurs dans le fichier des resultats binaire supplementaire
+flotteurs dans le fichier des resultats supplementaire
 N affecte pas la qualite du calcul de la trajectoire'
 AIDE1 =
 'Number of time steps between 2 outputs of drogues
-positions in the binary file'
+positions in the output file'
 /
-NOM = 'FICHIER DES FLOTTEURS'
-NOM1 = 'DROGUES FILE'
+NOM = 'FICHIER ASCII DES FLOTTEURS'
+NOM1 = 'ASCII DROGUES FILE'
 TYPE = STRING
 INDEX = 92
 TAILLE = 1
@@ -6468,12 +6484,154 @@ RUBRIQUE1 =
 'PARTICLE TRANSPORT';'DROGUES';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultat avec les positions des flotteurs'
+'Fichier de resultat ascii avec les positions des flotteurs'
 AIDE1 =
-'Results file with positions of drogues'
+'Ascii results file with positions of drogues'
+/
+NOM = 'FICHIER BINAIRE DES FLOTTEURS'
+NOM1 = 'BINARY DROGUES FILE'
+TYPE = STRING
+INDEX = 89
+TAILLE = 1
+SUBMIT = 'T2DBLO-WRITE;T2DBLO;FACUL;BIN;ECR;SCAL'
+DEFAUT = ''
+DEFAUT1 = ''
+MNEMO = 'T2D\_FILES(T2DBLO)%NAME'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 0
+AIDE =
+'Fichier de resultat bianaire avec les positions des flotteurs'
+AIDE1 =
+'Binary results file with positions of drogues'
+/
+NOM = 'FORMAT DU FICHIER DES FLOTTEURS'
+NOM1 = 'DROGUES FILE FORMAT'
+TYPE = STRING
+INDEX = 55
+TAILLE = 1
+DEFAUT = 'TECPLOT'
+DEFAUT1 = 'TECPLOT'
+MNEMO = 'T2D\_FILES(T2DBLO)\%FMT'
+CHOIX = 'BKBINPCL'; 'TECPLOT'
+CHOIX1 = 'BKBINPCL'; 'TECPLOT'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 1
+AIDE =
+'Format du \telkey{FICHIER BINAIRE DES FLOTTEURS}.
+Les valeurs possibles sont :
+\begin{itemize}
+\item BKBINPCL: format PCL binaire natif de Blue Kenue;
+\item TECPLOT: format TecPlot original (ASCII).
+\end{itemize}'
+AIDE1 =
+'Format of the \telkey{BINARY DROGUES FILE}.
+Possible choices are:
+\begin{itemize}
+\item BKBINPCL: format binary PCL native to Blue Kenue;
+\item TECPLOT: format TecPlot original (ASCII).
+\end{itemize}'
+/
+NOM = 'FICHIER DES FLOTTEURS PRECEDENT'
+NOM1 = 'PREVIOUS DROGUES FILE'
+TYPE = STRING
+INDEX = 56
+TAILLE = 1
+SUBMIT = 'T2DPLO-READ;T2DPLO;FACUL;BIN;LIT;SCAL'
+DEFAUT = ''
+DEFAUT1 = ''
+MNEMO = 'T2D\_FILES(T2DPLO)%NAME'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'REPRISE DE CALCUL';''
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'RESTART';''
+NIVEAU = 0
+AIDE =
+'Nom d''un fichier contenant les resultats d''un calcul
+precedent avec flotteurs.'
+AIDE1 =
+'Name of a file containing the results of an earlier
+computation with drogues.'
+/
+NOM = 'FORMAT DU FICHIER DES FLOTTEURS PRECEDENT'
+NOM1 = 'PREVIOUS DROGUES FILE FORMAT'
+TYPE = STRING
+INDEX = 54
+TAILLE = 1
+DEFAUT = 'BKBINPCL'
+DEFAUT1 = 'BKBINPCL'
+MNEMO = 'T2D\_FILES(T2DPLO)\%FMT'
+CHOIX = 'BKBINPCL'; 'BKASCPCL'
+CHOIX1 = 'BKBINPCL'; 'BKASCPCL'
+RUBRIQUE = 'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 = 'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 1
+AIDE = 'Format du \telkey{FICHIER DES FLOTTEURS PRECEDENT}.
+Les valeurs possibles sont :
+\begin{itemize}
+\item BKBINPCL: format PCL binaire natif de Blue Kenue;
+\item BKASCPCL: format PCL ascii natif de Blue Kenue.
+\end{itemize}'
+AIDE1 = 'Format of the \telkey{DROGUES FILE}.
+Possible choices are:
+\begin{itemize}
+\item BKBINPCL: format binary PCL native of Blue Kenue;
+\item BKASCPCL: format ascii PCL native of Blue Kenue.
+\end{itemize}'
+/
+NOM = 'FICHIER POSITIONNANT LES DROGUES INITIALES'
+NOM1 = 'DROGUES INITIAL POSITIONING DATA FILE'
+TYPE = STRING
+INDEX = 48
+TAILLE = 1
+SUBMIT = 'T2DPLY-READ;T2DPLY;FACUL;ASC;LIT;PARAL'
+DEFAUT = ''
+DEFAUT1 = ''
+MNEMO = 'T2D\_FILES(T2DPLY)%NAME'
+RUBRIQUE = 'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 = 'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 1
+AIDE =
+'Fichier de donnees en ascii contenant les coordonnees des polygones
+ou des points qui vont permettre un positionnement des particles
+au depart de la simulation.'
+AIDE1 =
+'ASCII data file containing polygons or points defining the
+ initial positioning of drogues at the start of the simulation.'
+/
+NOM = 'FORMAT DU FICHIER POSITIONNANT LES DROGUES'
+NOM1 = 'FORMAT OF THE DROGUES POSITIONING DATA FILE'
+TYPE = STRING
+INDEX = 49
+TAILLE = 1
+DEFAUT = 'BKASCI2S'
+DEFAUT1 = 'BKASCI2S'
+MNEMO = 'T2D\_FILES(T2DPLY)\%FMT'
+CHOIX = 'BKASCI2S'
+CHOIX1 = 'BKASCI2S'
+RUBRIQUE = 'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 = 'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 1
+AIDE = 'Format du
+ \telkey{FICHIER POSITIONNANT LES DROGUES INITIALES}.
+Les valeurs possibles sont :
+\begin{itemize}
+\item BKASCI2S: format I2S ascii natif de Blue Kenue.
+\end{itemize}'
+AIDE1 = 'Format of the
+ \telkey{DROGUES INITIAL POSITIONING DATA FILE}.
+Possible choices are:
+\begin{itemize}
+\item BKASCI2S: format ascii I2S native of Blue Kenue.
+\end{itemize}'
 /
 ////////////////////////////////////////////////////////////////////////
-///// 8.2-ALGAES
+///// 8.2-ALGAE
 ////////////////////////////////////////////////////////////////////////
 NOM = 'MODELE DE TRANSPORT DES ALGUES'
 NOM1 = 'ALGAE TRANSPORT MODEL'
@@ -6489,18 +6647,34 @@ RUBRIQUE1 =
 'PARTICLE TRANSPORT';'ALGAES';''
 NIVEAU = 0
 AIDE =
-'Si oui, les flotteurs seront des algues'
+'Si oui, une partie ou tous les flotteurs seront des algues'
 AIDE1 =
-'If yes, the floats or particles will be algae'
+'If yes, some or all the floats or particles will be algae'
+/
+NOM = 'NOMBRE DE CLASSES D''ALGUES'
+NOM1 = 'NUMBER OF ALGAE CLASSES'
+TYPE = INTEGER
+INDEX = 80
+TAILLE = 1
+DEFAUT = 0
+DEFAUT1 = 0
+MNEMO = 'NALG\_CLSS'
+RUBRIQUE = 'TRANSPORT DE PARTICULE';'ALGUES';''
+RUBRIQUE1 = 'PARTICLE TRANSPORT';'ALGAES';''
+NIVEAU = 0
+AIDE = 'Nombre de classes d''algues. Chaque class sera associe
+ a une propriete particuliere.'
+AIDE1 = 'Number of algae classes. Each class will be associated
+ with a particular property.'
 /
 NOM = 'TYPE DES ALGUES'
 NOM1 = 'ALGAE TYPE'
 TYPE = INTEGER
 INDEX = 82
-TAILLE = 1
-DEFAUT = 1
-DEFAUT1 = 1
-MNEMO = 'ALGTYP'
+TAILLE = 2
+DEFAUT = 1;1
+DEFAUT1 = 1;1
+MNEMO = 'YALGAE'
 CHOIX =
 '1="SPHERE"';
 '2="IRIDAEA FLACCIDA (PROCHE DES ULVES)"';
@@ -6511,6 +6685,7 @@ CHOIX1 =
 '2="IRIDAEA FLACCIDA (CLOSE TO ULVA)"';
 '3="PELVETIOPSIS LIMITATA"';
 '4="GIGARTINA LEPTORHYNCHOS"'
+APPARENCE = 'DYNLIST'
 RUBRIQUE =
 'TRANSPORT DE PARTICULE';'ALGUES';''
 RUBRIQUE1 =
@@ -6529,10 +6704,11 @@ NOM = 'DIAMETRE DES ALGUES'
 NOM1 = 'DIAMETER OF ALGAE'
 TYPE = REAL
 INDEX = 68
-TAILLE = 1
-DEFAUT = 0.1
-DEFAUT1 = 0.1
+TAILLE = 2
+DEFAUT = 0.1;0.1
+DEFAUT1 = 0.1;0.1
 MNEMO = 'DALGAE'
+APPARENCE = 'DYNLIST'
 RUBRIQUE =
 'TRANSPORT DE PARTICULE';'ALGUES';''
 RUBRIQUE1 =
@@ -6541,16 +6717,38 @@ NIVEAU = 0
 AIDE =
 'Diametre des algues en m'
 AIDE1 =
-'Diametre of algae in m'
+'Diameter of algae in m'
+/
+NOM = 'DUREE AVANT RELACHE DES ALGUES'
+NOM1 = 'DURATION BEFORE ALGAE RELEASE'
+TYPE = REAL
+INDEX = 78
+TAILLE = 2
+DEFAUT = 0.0;0.0
+DEFAUT1 = 0.0;0.0
+MNEMO = 'TALGAE'
+APPARENCE = 'DYNLIST'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'ALGUES';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'ALGAES';''
+NIVEAU = 0
+AIDE =
+'Durre en second avant la relache des algues depuis le
+ depart de la simulation'
+AIDE1 =
+'Duration in second before the release of the algae from
+ the start of the simulation'
 /
 NOM = 'MASSE VOLUMIQUE DES ALGUES'
 NOM1 = 'DENSITY OF ALGAE'
 TYPE = REAL
 INDEX = 69
-TAILLE = 1
-DEFAUT = 1050.
-DEFAUT1 = 1050.
+TAILLE = 2
+DEFAUT = 1050.;1050.
+DEFAUT1 = 1050.;1050.
 MNEMO = 'RALGAE'
+APPARENCE = 'DYNLIST'
 RUBRIQUE =
 'TRANSPORT DE PARTICULE';'ALGUES';''
 RUBRIQUE1 =
@@ -6565,10 +6763,11 @@ NOM = 'EPAISSEUR DES ALGUES'
 NOM1 = 'THICKNESS OF ALGAE'
 TYPE = REAL
 INDEX = 70
-TAILLE = 1
-DEFAUT = 0.01
-DEFAUT1 = 0.01
+TAILLE = 2
+DEFAUT = 0.01;0.01
+DEFAUT1 = 0.01;0.01
 MNEMO = 'EALGAE'
+APPARENCE = 'DYNLIST'
 RUBRIQUE =
 'TRANSPORT DE PARTICULE';'ALGUES';''
 RUBRIQUE1 =
@@ -6578,6 +6777,117 @@ AIDE =
 'Epaisseur des algues en m'
 AIDE1 =
 'Thickness of algae in m'
+/
+NOM = 'MASSE DES ALGUES CONTENUE DANS 1 M2'
+NOM1 = 'MASS OF ALGAE PER UNIT AREA'
+TYPE = REAL
+INDEX = 79
+TAILLE = 2
+DEFAUT = 0.;0.
+DEFAUT1 = 0.;0.
+MNEMO = 'MALGAE'
+APPARENCE = 'DYNLIST'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'ALGUES';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'ALGAES';''
+NIVEAU = 0
+AIDE =
+'Masse des algues en kg/m2'
+AIDE1 =
+'Mass of algae in kg/m2'
+/
+NOM = 'TYPE DE RELACHE DES ALGUES'
+NOM1 = 'ALGAE RELEASE TYPE'
+TYPE = INTEGER
+INDEX = 113
+TAILLE = 2
+DEFAUT = 1;1
+DEFAUT1 = 1;1
+MNEMO = 'REL\_ALGAE'
+CHOIX =
+'1=PERIODE';
+'2=DEPLACEMENT'
+CHOIX1 =
+'1=TIMED';
+'2=DISLODGEMENT'
+APPARENCE = 'DYNLIST'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'ALGUES';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'ALGAES';''
+NIVEAU = 0
+AIDE =
+'Les valeurs possibles sont:
+- PERIODE    : Les algues bougent apres une certaine periode de temps;
+- DEPLACEMENT: Les algues bougent lorsque la vitesse orbitale de 
+vague critique depasse un certain seuil'
+AIDE1 =
+'Possible values are:
+- TIMED       : Algae moves after a specified time has elapsed;
+- DISLODGEMENT: Algae moves after a critical wave orbital velocity
+is exceeded'
+/
+NOM = 'SEUIL DE LA VITESSE ORBITALE DE VAGUE POUR LES ALGUES 1'
+NOM1 = 'WAVE ORBITAL VELOCITY THRESHOLD FOR ALGAE 1'
+TYPE = REAL
+INDEX = 80
+TAILLE = 2
+DEFAUT = 2.;2.
+DEFAUT1 = 2.;2.
+MNEMO = 'TW1\_ALGAE'
+APPARENCE = 'DYNLIST'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'ALGUES';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'ALGAES';''
+NIVEAU = 0
+AIDE =
+'Vitesse orbitale de vague 1 pour le
+deplacement des algues en m/s'
+AIDE1 =
+'Wave orbital velocity 1 for algae
+dislodgement in m/s'
+/
+NOM = 'SEUIL DE LA VITESSE ORBITALE DE VAGUE POUR LES ALGUES 2'
+NOM1 = 'WAVE ORBITAL VELOCITY THRESHOLD FOR ALGAE 2'
+TYPE = REAL
+INDEX = 81
+TAILLE = 2
+DEFAUT = 0.;0.
+DEFAUT1 = 0.;0.
+MNEMO = 'TW2\_ALGAE'
+APPARENCE = 'DYNLIST'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'ALGUES';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'ALGAES';''
+NIVEAU = 0
+AIDE =
+'Vitesse orbitale de vague 2 pour le
+deplacement des algues en m/s'
+AIDE1 =
+'Wave orbital velocity 2 for algae
+dislodgement in m/s'
+/
+NOM = 'TAUX DE DEGRADATION POUR LES ALGUES'
+NOM1 = 'RATE OF DEGRADATION FOR ALGAE'
+TYPE = REAL
+INDEX = 82
+TAILLE = 2
+DEFAUT = 0.;0.
+DEFAUT1 = 0.;0.
+MNEMO = 'A\_ALGAE'
+APPARENCE = 'DYNLIST'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'ALGUES';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'ALGAES';''
+NIVEAU = 0
+AIDE =
+'Taux de degradation pour les algues'
+AIDE1 =
+'Rate of degradation for algae'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 8.3-OIL SPILL

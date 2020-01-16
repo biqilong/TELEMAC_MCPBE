@@ -31,7 +31,7 @@
 /  - LOGICAL (LOGIQUE):
 /       1-2,5-22,31-34,51-51,61-61,69-72,75-87,90-93,118-119     OUT OF 49
 /  - CHARACTER (CARACTERE):
-/       1-3,6-11,13-14,16-23,25-25,27-35,41-41,50-53,55-79,83-95,98-98,100-101
+/       1-3,6-11,13-14,16-23,25-25,27-35,41-41,50-53,55-79,83-95,98-98,100-103
 /                                                                OUT OF 75
 /
 /-------------------------------------------------------------------------------
@@ -5895,14 +5895,14 @@ this point to start the simulation with a high water
 ////////////////////////////////////////////////////////////////////////
 /////// 5.7.1-DROGUES
 ////////////////////////////////////////////////////////////////////////
-NOM = 'NOMBRE DE FLOTTEURS'
-NOM1 = 'NUMBER OF DROGUES'
+NOM = 'NOMBRE MAXIMAL DE FLOTTEURS'
+NOM1 = 'MAXIMUM NUMBER OF DROGUES'
 TYPE = INTEGER
 INDEX = 5
 TAILLE = 1
 DEFAUT = 0
 DEFAUT1 = 0
-MNEMO = 'NFLOT'
+MNEMO = 'NFLOT_MAX'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'TRANSPORT DE PARTICULES';'FLOTTEURS'
 RUBRIQUE1 =
@@ -5915,15 +5915,16 @@ Il est alors necessaire de mettre a jour le sous-programme
 \telfile{FLOT3D} afin de fournir les informations sur les
 positions de largage et les temps de suivi des flotteurs.'
 AIDE1 =
-'Number of drogues in the computation.
-The user must then fill the subroutine \telfile{FLOT3D}
+'Maximum number of drogues in the computation.
+The user must then fill the subroutine \telfile{USER_FLOT3D}
 specifying the coordinates of the starting points,
 their departure and arrival times.
 The trajectory of drogues is recorded in the
-\telkey{DROGUES FILE} that must be given in the steering file.'
+\telkey{ASCII DROGUES FILE} or the \telkey{BINARY DROGUES FILE}
+that must be given in the steering file.'
 /
-NOM = 'FICHIER DES FLOTTEURS'
-NOM1 = 'DROGUES FILE'
+NOM = 'FICHIER ASCII DES FLOTTEURS'
+NOM1 = 'ASCII DROGUES FILE'
 TYPE = STRING
 INDEX = 91
 TAILLE = 1
@@ -5937,9 +5938,58 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'PARTICLES TRANSPORT';'DROGUES'
 NIVEAU = 0
 AIDE =
-'Fichier de resultat avec les positions des flotteurs.'
+'Fichier de resultat ASCII avec les positions des flotteurs.'
 AIDE1 =
-'Results file with positions of drogues.'
+'ASCII Results file with positions of drogues.'
+/
+NOM = 'FICHIER BINAIRE DES FLOTTEURS'
+NOM1 = 'BINARY DROGUES FILE'
+TYPE = STRING
+INDEX = 102
+TAILLE = 1
+SUBMIT = 'T3DBLO-WRITE;T3DBLO;FACUL;BIN;ECR;SCAL'
+DEFAUT = ''
+DEFAUT1 = ''
+MNEMO = 'T3D\_FILES(T3DBLO)%NAME'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 0
+AIDE =
+'Fichier de resultat bianaire avec les positions des flotteurs'
+AIDE1 =
+'Binary results file with positions of drogues'
+/
+NOM = 'FORMAT DU FICHIER DES FLOTTEURS'
+NOM1 = 'DROGUES FILE FORMAT'
+TYPE = STRING
+INDEX = 103
+TAILLE = 1
+DEFAUT = 'TECPLOT'
+DEFAUT1 = 'TECPLOT'
+MNEMO = 'T3D\_FILES(T3DBLO)\%FMT'
+CHOIX = 'BKBINPCL'; 'TECPLOT'
+CHOIX1 = 'BKBINPCL'; 'TECPLOT'
+RUBRIQUE =
+'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+RUBRIQUE1 =
+'PARTICLE TRANSPORT';'DROGUES';''
+NIVEAU = 1
+AIDE =
+'Format du \telkey{FICHIER BINAIRE DES FLOTTEURS}.
+Les valeurs possibles sont :
+\begin{itemize}
+\item BKBINPCL: format PCL binaire natif de Blue Kenue;
+\item TECPLOT: format TecPlot original (ASCII).
+\end{itemize}'
+AIDE1 =
+'Format of the \telkey{BINARY DROGUES FILE}.
+Possible choices are:
+\begin{itemize}
+\item BKBINPCL: format binary PCL native to Blue Kenue;
+\item TECPLOT: format TecPlot original (ASCII).
+\end{itemize}'
 /
 NOM = 'PERIODE POUR LES SORTIES DE FLOTTEURS'
 NOM1 = 'PRINTOUT PERIOD FOR DROGUES'

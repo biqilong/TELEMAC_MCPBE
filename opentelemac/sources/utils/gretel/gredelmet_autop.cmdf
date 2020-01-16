@@ -8,9 +8,9 @@ name: gredelmet_autop
 path: <root>|sources|utils|bief
 files: bief_def.f
   bief.f
-  elebd.f
   stoseg.f
   voisin.f
+  elebd.f
 
 [gretel]
 path: <root>|sources|utils|gretel

@@ -3,7 +3,7 @@
 !                    ********************
 !
      &(XFLOT,YFLOT,NFLOT,NFLOT_MAX,X,Y,IKLE,NELEM,NELMAX,NPOIN,
-     & TAGFLO,SHPFLO,ELTFLO,MESH,LT,NIT,AT)
+     & TAGFLO,CLSFLO,SHPFLO,ELTFLO,MESH,LT,NIT,AT)
 !
 !***********************************************************************
 ! TELEMAC2D
@@ -45,6 +45,7 @@
       INTEGER, INTENT(IN)             :: IKLE(NELMAX,3)
       INTEGER, INTENT(INOUT)          :: NFLOT
       INTEGER, INTENT(INOUT)          :: TAGFLO(NFLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: CLSFLO(NFLOT_MAX)
       INTEGER, INTENT(INOUT)          :: ELTFLO(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN),AT
       DOUBLE PRECISION, INTENT(INOUT) :: XFLOT(NFLOT_MAX)
@@ -64,8 +65,8 @@
 !               AND TAG NUMBER LT (LT IS THE TIME STEP NUMBER)
 !
 !     IF(LT.LE.600.AND.(10*(LT/10).EQ.LT.OR.LT.EQ.1)) THEN
-!       CALL ADD_PARTICLE(-220.D0,400.D0+LT/3.D0,0.D0,LT,NFLOT,
-!    &                    NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,
+!       CALL ADD_PARTICLE(-220.D0,400.D0+LT/3.D0,0.D0,LT,1,NFLOT,
+!    &                    NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,CLSFLO,
 !    &                    SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
 !    &                    0.D0,0.D0,0.D0,0.D0,0,0)
 !     ENDIF
@@ -74,25 +75,21 @@
 !
 !     IF(LT.EQ.600) THEN
 !        CALL DEL_PARTICLE(20,NFLOT,NFLOT_MAX,
-!    &                     XFLOT,YFLOT,YFLOT,TAGFLO,SHPFLO,SHPFLO,
+!    &                     XFLOT,YFLOT,YFLOT,TAGFLO,CLSFLO,SHPFLO,SHPFLO,
 !    &                     ELTFLO,ELTFLO,MESH%TYPELM)
 !     ENDIF
 !
 !-----------------------------------------------------------------------
 !
 !     EXAMPLE : FOR ALGAE PARTICLE TRANSPORT
-!               => ALGAE_START NEEDS TO BE DEFINED
+!       ( RELEASE START FOR ALGAE IS NOW DEFINED IN THE CAS FILE )
 !
-!       ALGAE_START=2
-!
-!       IF(LT.EQ.MAX(1,ALGAE_START)) THEN
-!         DO I=1,NFLOT_MAX
-!           CALL ADD_PARTICLE(0.175D0,0.45D0,0.D0,I,NFLOT,
-!      &                    NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,
-!      &                    SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
-!      &                    0.D0,0.D0,0.D0,0.D0,0,0)
-!         END DO
-!       ENDIF
+!       DO I=1,NFLOT_MAX
+!         CALL ADD_PARTICLE(0.175D0,0.45D0,0.D0,I,1,NFLOT,
+!      &                  NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,CLSFLO,
+!      &                  SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
+!      &                  0.D0,0.D0,0.D0,0.D0,0,0)
+!       END DO
 !
 !     EXAMPLE : AT ITERATION 1 AND EVERY 10 ITERATIONS AFTER 600
 !               A PARTICLE IS RELEASED WITH COORDINATES
@@ -101,8 +98,8 @@
 !               AND TAG NUMBER LT (LT IS THE TIME STEP NUMBER)
 !
 !     IF(LT.LE.600.AND.(10*(LT/10).EQ.LT.OR.LT.EQ.1)) THEN
-!       CALL ADD_PARTICLE(-220.D0,400.D0+LT/3.D0,0.D0,LT,NFLOT,
-!    &                    NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,
+!       CALL ADD_PARTICLE(-220.D0,400.D0+LT/3.D0,0.D0,1,LT,NFLOT,
+!    &                    NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,CLSFLO,
 !    &                    SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
 !    &                    0.D0,0.D0,0.D0,0.D0,0,0)
 !     ENDIF
@@ -111,25 +108,21 @@
 !
 !     IF(LT.EQ.600) THEN
 !        CALL DEL_PARTICLE(20,NFLOT,NFLOT_MAX,
-!    &                     XFLOT,YFLOT,YFLOT,TAGFLO,SHPFLO,SHPFLO,
+!    &                     XFLOT,YFLOT,YFLOT,TAGFLO,CLSFLO,SHPFLO,SHPFLO,
 !    &                     ELTFLO,ELTFLO,MESH%TYPELM)
 !     ENDIF
 !
 !-----------------------------------------------------------------------
 !
 !     EXAMPLE : FOR ALGAE PARTICLE TRANSPORT
-!               => ALGAE_START NEEDS TO BE DEFINED
+!       ( RELEASE START FOR ALGAE IS NOW DEFINED IN THE CAS FILE )
 !
-!       ALGAE_START=2
-!
-!       IF(LT.EQ.MAX(1,ALGAE_START)) THEN
-!         DO I=1,NFLOT_MAX
-!           CALL ADD_PARTICLE(0.175D0,0.45D0,0.D0,I,NFLOT,
-!      &                    NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,
-!      &                    SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
-!      &                    0.D0,0.D0,0.D0,0.D0,0,0)
-!         END DO
-!       ENDIF
+!       DO I=1,NFLOT_MAX
+!         CALL ADD_PARTICLE(0.175D0,0.45D0,0.D0,I,1,NFLOT,
+!      &                  NFLOT_MAX,XFLOT,YFLOT,YFLOT,TAGFLO,CLSFLO,
+!      &                  SHPFLO,SHPFLO,ELTFLO,ELTFLO,MESH,1,
+!      &                  0.D0,0.D0,0.D0,0.D0,0,0)
+!       END DO
 !
 !
 !-----------------------------------------------------------------------

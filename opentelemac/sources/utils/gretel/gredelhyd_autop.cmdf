@@ -6,8 +6,8 @@ name: gredelhyd_autop
 
 [bief]
 path: <root>|sources|utils|bief
-files: gregtim.f
-  jultim.f
+files: jultim.f
+  gregtim.f
 
 [gretel]
 path: <root>|sources|utils|gretel

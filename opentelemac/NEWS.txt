@@ -1,5 +1,14 @@
 Trunk
 ===========================
+
+TELEMAC-2D: Drogues can be defined using a polygon file and in the geometry file.
+Drogues can be output to a binary (PCL) file which can be read by BlueKenue.
+
+TELEMAC-2D: Algae classes can be defined and different Algae properties can be defined
+for each class. The Algae can start to move after a specified time has elapsed.
+Alternatively Algae can start to move after being dislodged after a critical bed 
+wave orbital velocity has been reached.
+
 TELAPY: New function mpi_get, mpi_get_array (and set equivalent) to get array
 over global mesh
 

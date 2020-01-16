@@ -3,46 +3,51 @@
 
 \section{ Drogue Displacements}
 \label{sec:drog:displ}
- During a hydrodynamic simulation, \telemac{2d} offers the possibility of monitoring the tracks followed by certain particles (drogues) introduced into the fluid from outflow points. The result is produced in the form of a Tecplot format file containing the various positions of the drogues in time, see paragraph \ref{subs:drog:output:file} for more details.
+ During a hydrodynamic simulation, \telemac{2d} offers the possibility of monitoring the tracks followed by certain particles (drogues) introduced into the fluid from outflow points. The result is produced in the form of a Tecplot format file or a binary PCL format file containing the various positions of the drogues in time, see paragraph \ref{subs:drog:output:file} for more details.
 
  Note that using this function provides more accurate results than using the particle tracking features of the post-processing tools. Contrary to \telemac{2d} for which monitoring floats is determined at each time step, the post-processing tools are based on the results file that is usually sampled much coarser. Since release 7.0 the management of drogues is modified to be coherent with other particle transport features of \telemac{2d} (oil spill and algae). Hereafter, we give the implementation details.
 
 \subsection{ Input Files}
 \label{subs:drog:inp:fil}
- In addition to the mandatory files for a classical \telemac{2d} model (steering, geometry boundary conditions), it is necessary to add a fortran file to run a particle transport case.
+ In addition to the mandatory files for a classical \telemac{2d} model (steering, geometry, boundary conditions), there is the option to use an input file containing a number of polygons that specify an initial particle distribution.
 
 \subsection{ Steering file}
 \label{subs:drog:steer:file}
- The steering file has to include the following key-words to account for drogue transport (for oil spill and algae, as well):
+ The following steering file keywords relate to drogues.  The same keywords are used for oil spill and algae.
 
 \begin{enumerate}
-\item  The number of particles released: \textit{NUMBER OF DROGUES}, this is the maximum number used to dimension various arrays.
+\item  The maximum number of allowed particles: \textit{MAXIMUM NUMBER OF DROGUES}.  This is the number used to dimension various arrays.
 
-\item  The frequency of the drogues printout period: \textit{PRINTOUT PERIOD FOR DROGUES} \textit{;}
+\item  The drogues printout period: \textit{PRINTOUT PERIOD FOR DROGUES}.  This sets the time step interval between successive outputs to the drogue output file.
 
-\item  The name of the output file (tecplot file) containing the drogue displacement: \textit{DROGUES FILE} (see section \ref{subs:drog:output:file});
+\item  The name of the output file containing the drogue positions: \textit{ASCII DROGUES FILE} (tecplot format) or \textit{BINARY DROGUES FILE} (binary PCL format).  In the case of the PCL format, the file extension should be “pcl”.  (See section \ref{subs:drog:output:file})
+
+\item  \textit{DROGUES FILE FORMAT: TECPLOT} or \textit{BKINPCL}.  If \textit{TECPLOT} is chosen, the \textit{ASCII DROGUES FILE} is written to.  If \textit{BKINPCL} is chosen, the \textit{BINARY DROGUES FILE} is written to.
+
+\item  The file which specifies initial drogue placement and the class of each particle:  \textit{DROGUES INITIAL POSITIONING DATA FILE}.  The z coordinate sets the class of each particle.
+
+\item  The format of the file that specifies initial drogue displacement: \textit{FORMAT OF THE DROGUES POSITIONING DATA FILE}.  Currently, the only option is \textit{BKASCI2S} (BlueKenue i2s).
+
+\item  The number of drogues per unit area for each drogue class (one number for each class):  \textit{INITIAL DROGUES SAMPLING DENSITY}.
 
 \item  \telemac{2d} offers the possibility to introduce a stochastic diffusion coefficient. When setting the key-word \textit{STOCHASTIC DIFFUSION MODEL} =1 (default = 0), a stochastic model will generate stochastically a diffusion coefficient which is computed using the turbulent viscosity. If no turbulence is activated, this stochastic diffusion is not considered during the particle transport.
 \end{enumerate}
 
-\subsection{ Fortran file}
-\label{subs:drog:fortr:file}
- Once the number of released drogues has been defined in the steering file, subroutine FLOT is used to define their positions and time of release. This is done by using the variable LT, which is the iteration step. This variable is used to release particles at a specific time. The subroutine ADD\_PARTICLE is then used to set the initial values of variables XFLOT, YFLOT and TAGFLOT, which are the two-dimensional position components and an identifier of the particle. An example of these changes can be found in subroutine FLOT (./sources/telemac2d). See also section \ref{sec:oil:spill:modell}.
-
- \textbf{Modifications to subroutine }FLOT\textbf{:}
+\subsection{ Initial Drogue locations}
+\label{subs:drog:init}
+The initial drogue locations can be specified in three ways.  Any combination of these three ways can be used.
 
 \begin{enumerate}
-\item \textbf{ }Use LT to define when to release particles
+\item  The geometry file.  An extra variable can be included in the geometry file, called DROGUES CLASSES.  This variable specifies the drogue class.  The number of drogues per unit area for each class is specified by the keyword \textit{INITIAL DROGUES SAMPLING DENSITY}.
 
-\item  Call ADD\_PARTICLE to define XFLOT, YFLOT and TAGFLOT
+\item  A polygon file.  Each polygon sets defines an area and a drogue class.  The number of drogues per unit area for each class is specified by the keyword \textit{INITIAL DROGUES SAMPLING DENSITY}.
+
+\item  The Fortran user subroutine USER\_FLOT.  Commented out examples are included in USER\_FLOT.  Within USER\_FLOT, the subroutine ADD\_PARTICLE can be called.  Each call of ADD\_PARTICLE will add a drogue with a specified x, y, tag and class.  Each particle should be defined with a unique tag number.
 \end{enumerate}
-
 
 \subsection{ Output file}
 \label{subs:drog:output:file}
- Besides the classic result file, \telemac{2d} produces a specific output file for drogues. It is given by the key-word \textit{DROGUES FILE. }
-
- This file is a formatted file created by \telemac{2d} during the computation. It stores drogue positions in TECPLOT format. To visualize the drogue positions with Tecplot software, the user must:
+ Besides the classic result file, \telemac{2d} produces a specific output file for drogues.  This file is a formatted file created by \telemac{2d} during the computation.  For the case of a file in the TECPLOT format, it is given by the key-word \textit{ASCII DROGUES FILE}.  To visualize the drogue positions with Tecplot software, the user must:
 
 \begin{enumerate}
 \item  Use the File$>$Load Data File(s) command to load the 2D RESULT FILE
@@ -60,93 +65,92 @@
  \label{fig:load:df}
 \end{figure}
 
- \textbf{Change the drogue output format:}
+ For the case of a file in the BlueKenue PCL format, the output file can be read in to BlueKenue.  The file extension of the file should be “pcl”.
+ 
+ \textbf{Additional drogue output formats}
 
- It is possible to develop a new drogue output format. This must be done in the subroutine DERIVE. A Fortran file including the subroutine DERIVE with the new format definition for the DROGUE FILE needs to be added with the input files.
+ It is possible to develop additional drogue output formats.  This must be done in the subroutine UTIMP\_DROGUES.  A Fortran file including the subroutine UTIMP\_DROGUES with the new format definition needs to be added with the input files.  The user can choose whether to write to the ASCII DROGUES FILE or the BINARY DROGUES FILE.
 
-
-\section{ Algae bloom modelling}
+\section{ Algae modelling}
 \label{sec:algae:bloom}
- Since release 6.3, \telemac{2d} offers the possibility to simulate algae bloom transport. Theoretical aspects about algae physics and modelization can be found in Joly \cite{Joly2011}.
+ Since release 6.3, \telemac{2d} offers the possibility to simulate algae transport. Theoretical aspects about algae physics and modelling can be found in Joly \cite{Joly2011}.
 
 
-\subsection{Input files}
+\subsection{ Input files}
 
- Input files for algae bloom modelling are the same than for drogues.
+ Input files for algae modelling are the same as for drogues.
 
 
 \subsection{ Steering file}
 
- The steering file has to include the following key-words to account for an algae bloom propagation model:
-
-\begin{itemize}
-\item  The number of particle released: \textit{NUMBER OF DROGUES};
-
-\item  The frequency of the algae printout period: \textit{PRINTOUT PERIOD FOR DROGUES};
-
-\item  The name of the output file (tecplot file) containing the drogue displacement: \textit{DROGUES FILE} (see section \ref{subs:drog:output:file});
-
-\item  The option setting the particles as algae: \textit{ALGAE TRANSPORT MODEL=YES} (default\textit{ = NO});
-
-\item  The type of algae particles considered \textit{ALGAE TYPE} (default 1). The different choices are:
+ All of the keywords listed for drogues in section \ref{subs:drog:steer:file} are also used for Algae.  In addition, the following keywords are used for algae modelling.
 
 \begin{enumerate}
-\item Sphere,
+\item  The option setting the particles as algae: \textit{ALGAE TRANSPORT MODEL = YES} (default = \textit{NO}).
 
-\item Iridaea Flaccida,
+\item  The number of algae classes: \textit{NUMBER OF ALGAE CLASSES}.  Keywords in items 3 to 7 have one number per algae class.
 
-\item Pelvetiopsis Limitata,
+\item  The type of algae particles considered: \textit{ALGAE TYPE} (default 1).  The different choices are:
 
-\item Gigartina Leptorhynchos
+\begin{enumerate}
+\item[\nonumber] 1: Sphere,
+\item[\nonumber] 2: Iridaeca Flaccida,
+\item[\nonumber] 3: Pelvetiopsis Limitata,
+\item[\nonumber] 4: Gigartina Leptorhynchos
 \end{enumerate}
 
 \item  The physical properties of the algae (diameter, density and thickness):
+\begin{enumerate}
+\item[\nonumber] \textit{DIAMETER OF ALGAE} (default = 0.1);
+\item[\nonumber] \textit{DENSITY OF ALGAE} (default = 1050);
+\item[\nonumber] \textit{THICKNESS OF ALGAE} (default = 0.01).
+\end{enumerate}
 
-\begin{itemize}
-\item  \textit{DIAMETER OF ALGAE} (default = 0.1);
+\item  \textit{ALGAE RELEASE TYPE:}  1 for timed release or 2 for dislodgement.
 
-\item  \textit{DENSITY OF ALGAE} (default = 1050);
+\item  \textit{DURATION BEFORE ALGAE RELEASE:}  The time in seconds before the Algae starts moving.  This applies when \textit{ALGAE RELEASE TYPE = 1}.
 
-\item  \textit{THICKNESS OF ALGAE} (default = 0.01).
-\end{itemize}
-\end{itemize}
+\item  \textit{WAVE ORBITAL VELOCITY THRESHOLD FOR ALGAE 1}, \textit{WAVE ORBITAL VELOCITY THRESHOLD FOR ALGAE 2} and \textit{RATE OF DEGRADATION FOR ALGAE}.  These three keywords are used to define Algae dislodgement, which applies when \textit{ALGAE RELEASE TYPE = 2}.  This is explained in section \ref{subs:alg:disl}.
+
+\end{enumerate}
 
 \begin{WarningBlock}{Warning:}
 
 \begin{itemize}
-\item  Even though some of the previous keywords make references to drogues, they are also used for algae blooms.
+\item  Even though some of the previous keywords make references to drogues, they are also used for algae.
 
 \item  To use the algae particle transport module it is necessary to use the k-$\epsilon$ turbulence model, i.e. the option \textit{TURBULENCE MODEL = 3} needs to be set in the steering file.
 \end{itemize}
 \end{WarningBlock}
 
-\subsection{Fortran file}
+\subsection{Initial algae locations}
 
- Once algae transport has been defined in the steering file, the subroutine FLOT is used to define the position and time of release. This is done by defining the variable ALGAE\_START and using the variable LT to release particles. In addition the subroutine ADD\_PARTICLE is used to set the initial values of variables XFLOT, YFLOT and TAGFLOT, which are the two-dimensional position components and an identifier of the particle. An example how to use FLOT to release algae particles is put in comments within the subroutine FLOT.
+The initial algae particles are specified in the same way as for drogues (see \ref{subs:drog:init}). 
 
- \textbf{Modifications to subroutine for algae transport}
+\subsection{Dislodgement}
+\label{subs:alg:disl}
+
+If \textit{ALGAE RELEASE TYPE} equals 2, then an algae particle does not start to move until the wave orbital velocity at the bed exceeds a threshold value.  This option only works if the \telemac{2d} run is coupled with \tomawac.  The \tomawac run supplies the wave orbital velocity to the \telemac{2d} run.
+
+The threshold value of the wave orbital velocity varies with time, according to the equation:
+\begin{equation}
+OV_0 = OV_1 + (OV_2 - OV_1) exp(-A . T_{eff})
+\end{equation}
+
+$OV_{1}$, $OV_{2}$ and $ A $ are specified in the steering file with the following keywords:
 
 \begin{enumerate}
-\item Add the command USE ALGAE\_TRANSP at the beginning of the routine
-
-\item  Define ALGAE\_START, which will be used as the release time of the algae (so far a simple time release is allowed)
-
-\item  Use LT to release particles
-
-\item  Call ADD\_PARTICLE to define XFLOT, YFLOT and TAGFLOT
+\item[\nonumber] $OV_{1}$ = \textit{WAVE ORBITAL VELOCITY THRESHOLD FOR ALGAE 1}
+\item[\nonumber] $OV_{2}$ = \textit{WAVE ORBITAL VELOCITY THRESHOLD FOR ALGAE 2}
+\item[\nonumber] $A$ = \textit{RATE OF DEGRADATION FOR ALGAE}
 \end{enumerate}
 
-\begin{WarningBlock}{Warning:}
-\begin{itemize}
-\item  ALGAE\_START needs to be greater or equal to 1
+$T_{eff}$ is an “effective time” relating to the cumulative wave forcing that has been experienced by each algae particle, defined by: $T_{eff} = \sum { OV . dt}$ . This means that $T_{eff}$ is the numerical integral of wave orbital velocity over time.
 
-\item  So far, it is possible to achieve a unique release of algae. To do multiple releases (in different times), futher developments are necessary.
-\end{itemize}
-\end{WarningBlock}
 
 \subsection{ Output files}
 
- Likewise for drogues, see \ref{subs:drog:output:file}.
+ The algae output file is specified in the same way as for drogues (see \ref{subs:drog:output:file}).
 
 
 \section{ Oil spill modelling}
@@ -168,11 +172,11 @@
 
 \item  The name of the oil spill steering file which contains the oil characteristics: \textit{OIL SPILL STEERING FILE};
 
-\item  The number of oil particles to be released during the oil spill episode: \textit{NUMBER OF DROGUES};
+\item  The number of oil particles to be released during the oil spill episode: \newline \textit{MAXIMUM NUMBER OF DROGUES};
 
 \item  The frequency of the drogues printout period: \textit{PRINTOUT PERIOD FOR DROGUES};
 
-\item  The name of the Tecplot file containing the oil displacement: \textit{DROGUES FILE}.
+\item  The name of the Tecplot file containing the oil displacement: \textit{ASCII DROGUES FILE}.
 \end{itemize}
 
 \begin{WarningBlock}{Warning:}

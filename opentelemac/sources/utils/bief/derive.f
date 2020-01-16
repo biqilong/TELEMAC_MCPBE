@@ -5,11 +5,13 @@
      &(U,V,W,DT,AT,X,Y,Z,IKLE,IFABOR,LT,IELM,IELMU,NDP,NDP2,
      & NPOIN,NPOIN2,
      & NELEM,NELMAX,SURDET,XFLOT,YFLOT,ZFLOT,
-     & SHPFLO,SHZFLO,TAGFLO,ELTFLO,ETAFLO,
-     & NFLOT,NFLOT_MAX,FLOPRD,MESH,UL,
+     & SHPFLO,SHZFLO,TAGFLO,CLSFLO,ELTFLO,ETAFLO,
+     & NFLOT,NFLOT_MAX,MESH,
      & ISUB,DX,DY,DZ,ELTBUF,SHPBUF,SHZBUF,SIZEBUF,STOCHA,VISC,
      & NPLAN,ZSTAR,TRANSF,
-     & AALGAE,DALGAE,RALGAE,EALGAE,ALGTYP,AK,EP,H)
+     & AALGAE,DALGAE,RALGAE,EALGAE,TALGAE,MALGAE,YALGAE,
+     & REL_ALGAE,TW1_ALGAE,TW2_ALGAE,A_ALGAE,
+     & ORBVEL,AK,EP,H)
 !
 !***********************************************************************
 ! BIEF   V6P3                                   21/08/2010
@@ -79,6 +81,11 @@
 !+   Replaced EXTERNAL statements to parallel functions / subroutines
 !+   by the INTERFACE_PARALLEL
 !
+!history  M.S.TURNBULL (HRW)
+!+        26/11/2019
+!+        V8P2
+!+   Algae Dislodgement
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| DT             |-->| TIME STEP (I.E. TIME INTERVAL).
 !| DX             |<->| WORK ARRAY (DISPLACEMENTS ALONG X)
@@ -87,7 +94,6 @@
 !| ELTBUF         |<->| WORK ARRAY
 !| ELTFLO         |<->| NUMBERS OF ELEMENTS WHERE ARE THE FLOATS
 !| ETAFLO         |<->| LEVELS WHERE ARE THE FLOATS
-!| FLOPRD         |-->| NUMBER OF TIME STEPS BETWEEB TWO RECORDS
 !|                |   | FOR FLOATS POSITIONS.
 !| IELM           |-->| TYPE OF ELEMENT.
 !| IELMU          |-->| TYPE OF ELEMENT FOR VELOCITIES.
@@ -118,12 +124,12 @@
 !| TAGFLO         |-->| TAGS OF FLOATS
 !| TRANSF         |-->| 3D MESH TRANSFORMATION
 !| U              |-->| X-COMPONENT OF VELOCITY
-!| UL             |-->| LOGICAL UNIT OF OUTPUT FILE
 !| V              |-->| Y-COMPONENT OF VELOCITY
 !| W              |-->| Z-COMPONENT OF VELOCITY
 !| X              |-->| ABSCISSAE OF POINTS IN THE MESH
 !| Y              |-->| ORDINATES OF POINTS IN THE MESH
 !| Z              |-->| ELEVATIONS OF POINTS IN THE MESH
+!| ORBVEL         |-->| WAVE ORBITAL VELOCITY
 !| XFLOT          |<->| ABSCISSAE OF FLOATS
 !| YFLOT          |<->| ORDINATES OF FLOATS
 !| ZFLOT          |<->| ELEVATIONS OF FLOATS
@@ -133,18 +139,19 @@
       USE BIEF, EX_DERIVE => DERIVE
       USE DECLARATIONS_TELEMAC, ONLY : DEJA_DERIVE, SVOID_DERIVE,
      &                                 INIT_ALG, SIZEBUF2_D,BUFF_1D_D,
-     &                                 BUFF_2D_D
+     &                                 BUFF_2D_D, ALG_DISLODGE
       USE STREAMLINE
       USE ALGAE_TRANSP
 !
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY : P_ISUM
+      USE DROGUES, ONLY : PARCLSS
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER         , INTENT(IN)    :: NPOIN,LT,IELM,IELMU,NDP,NELEM
-      INTEGER         , INTENT(IN)    :: FLOPRD,NELMAX,UL,SIZEBUF,NPOIN2
+      INTEGER         , INTENT(IN)    :: NELMAX,SIZEBUF,NPOIN2
       INTEGER         , INTENT(IN)    :: NFLOT_MAX,STOCHA,NPLAN,TRANSF
       INTEGER         , INTENT(INOUT) :: NFLOT
       INTEGER         , INTENT(IN)    :: NDP2
@@ -158,6 +165,7 @@
       DOUBLE PRECISION, INTENT(INOUT) :: YFLOT(NFLOT_MAX),DY(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(INOUT) :: ZFLOT(NFLOT_MAX),DZ(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: TAGFLO(NFLOT_MAX)
+      INTEGER         , INTENT(INOUT) :: CLSFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: ELTFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: ETAFLO(NFLOT_MAX)
       INTEGER         , INTENT(INOUT) :: ELTBUF(SIZEBUF)
@@ -170,25 +178,34 @@
       TYPE(BIEF_MESH) , INTENT(INOUT) :: MESH
       LOGICAL         , OPTIONAL, INTENT(IN) :: AALGAE
       DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: AK(*),EP(*)
+      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: ORBVEL(*)
       DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: H(NPOIN)
-      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: DALGAE,RALGAE,EALGAE
-      INTEGER         , OPTIONAL, INTENT(IN) :: ALGTYP
+      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: DALGAE(*),RALGAE(*)
+      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: EALGAE(*)
+      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: TALGAE(*),MALGAE(*)
+      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: TW1_ALGAE(*)
+      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: TW2_ALGAE(*)
+      DOUBLE PRECISION, OPTIONAL, INTENT(IN) :: A_ALGAE(*)
+      INTEGER         , OPTIONAL, INTENT(IN) :: YALGAE(*)
+      INTEGER         , OPTIONAL, INTENT(IN) :: REL_ALGAE(*)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER IFLOT,FRE(1),FREBUF(1),IPROC,NFLOTG,ELT,ETF
+      INTEGER IFLOT,FRE(1),FREBUF(1),ELT,ETF
       INTEGER N1,N2,N3,N4,N5,N6,NOMB,SENS,NRK
 !
-      CHARACTER(LEN=32) TEXTE(3)
-      CHARACTER(LEN=72) LIGNE
+      INTEGER ICLS, REL_ALG
+      DOUBLE PRECISION TW0, TW1, TW2, A_ALG
+      DOUBLE PRECISION, ALLOCATABLE :: TW(:) 
 !
-      LOGICAL YESITIS,SSIGMA
+      LOGICAL SSIGMA
 !
       CHARACTER(LEN=11) EXTENS
       EXTERNAL          EXTENS
 !
       LOGICAL ALGAE
-      INTEGER ID
+!
+      SAVE TW
 !
 !-----------------------------------------------------------------------
 !
@@ -212,7 +229,9 @@
      &     .NOT.PRESENT(DALGAE).OR.
      &     .NOT.PRESENT(RALGAE).OR.
      &     .NOT.PRESENT(EALGAE).OR.
-     &     .NOT.PRESENT(ALGTYP)) THEN
+     &     .NOT.PRESENT(TALGAE).OR.
+     &     .NOT.PRESENT(MALGAE).OR.
+     &     .NOT.PRESENT(YALGAE)) THEN
           WRITE(LU,*) 'DERIVE: MISSING ARGUMENTS FOR ALGAE'
           CALL PLANTE(1)
           STOP
@@ -254,31 +273,12 @@
         SVOID_DERIVE%DIM1=1
         ALLOCATE(SVOID_DERIVE%R(1))
 !
-!       HEADER OF TECPLOT FILE
+        IF(ALGAE.AND.ALG_DISLODGE)THEN
+          ALLOCATE(TW(NFLOT_MAX))
+        END IF
 !
-        IF(IPID.EQ.0) THEN
-          TEXTE(1)='X                               '
-          TEXTE(2)='Y                               '
-          IF(LNG.EQ.LNG_FR) THEN
-            TEXTE(3)='COTE Z          M               '
-          ELSE
-            TEXTE(3)='ELEVATION Z     M               '
-          ENDIF
-          IF(LNG.EQ.LNG_FR) THEN
-            WRITE(UL,100) 'TITLE = "FICHIER DES FLOTTEURS"'
-          ELSE
-            WRITE(UL,100) 'TITLE = "DROGUES FILE"'
-          ENDIF
-          IF(IELM.EQ.11) THEN
-            WRITE(UL,100) 'VARIABLES = "LABELS","'//
-     &                     TEXTE(1)//'","'//TEXTE(2)//'","COLOUR"'
-          ELSEIF(IELM.EQ.41) THEN
-            WRITE(UL,100) 'VARIABLES = "LABELS","'//
-     &      TEXTE(1)//'","'//TEXTE(2)//'","'//TEXTE(3)//'","COLOUR"'
-          ENDIF
-        ENDIF
         DEJA_DERIVE=.TRUE.
-100     FORMAT(A)
+!
       ENDIF
 !
       SVOID_DERIVE%ELM=IELM
@@ -303,7 +303,6 @@
       ENDIF
 !
       IF(ALGAE) THEN
-        IF(LT.EQ.MAX(1,ALGAE_START)) THEN
           IF(IELMU.EQ.11) THEN
             CALL INTERP_ALGAE(NFLOT,NFLOT_MAX,SHPFLO,SHZFLO,ELTFLO,
      &          U_X_AV_0%R,U_Y_AV_0%R,U_Z_AV_0%R,K_AV_0%R,EPS_AV_0%R,
@@ -324,7 +323,6 @@
      &          IELMU,NPOIN+NELMAX,U,V,W,AK,EP,H)
           ENDIF
         ENDIF
-      ENDIF
 !RA
 !     BACK CONVERSION WHEN SIGMA TRANSFORM
       IF(SSIGMA)THEN
@@ -355,20 +353,52 @@
      &          U_X_AV%R,U_Y_AV%R,U_Z_AV%R,K_AV%R,EPS_AV%R,
      &          H_FLU%R,NPOIN,IELM,NDP,NDP2,NPLAN,NELMAX,IKLE,SHZBUF,
      &          IELMU,NPOIN,U,V,W,AK,EP,H)
+          IF(ALG_DISLODGE)THEN
+            CALL BIEF_INTERP(ORBVEL,TW,SHPFLO,NDP,SHZFLO,
+     &           ELTFLO,SHZBUF,FRE,
+     &           ELTFLO,NFLOT,NPOIN,NPLAN,IELMU,IKLE,NELMAX,
+     &           .FALSE.,.FALSE.)
+          END IF
         ELSEIF(IELMU.EQ.12)THEN
           CALL INTERP_ALGAE(NFLOT,NFLOT_MAX,SHPFLO,SHZFLO,ELTFLO,
      &          U_X_AV%R,U_Y_AV%R,U_Z_AV%R,K_AV%R,EPS_AV%R,
      &          H_FLU%R,NPOIN,IELM,NDP,NDP2,NPLAN,NELMAX,IKLE,SHZBUF,
      &          IELMU,NPOIN+NELMAX,U,V,W,AK,EP,H)
+          IF(ALG_DISLODGE)THEN
+            CALL BIEF_INTERP(ORBVEL,TW,SHPFLO,NDP,SHZFLO,
+     &           ELTFLO,SHZBUF,FRE,
+     &           ELTFLO,NFLOT,NPOIN+NELMAX,NPLAN,IELMU,IKLE,NELMAX,
+     &           .FALSE.,.FALSE.)
+          END IF
         END IF
 !
-        CALL DISP_ALGAE(NFLOT_MAX,NFLOT,MESH%DIM1,DT,ALGAE_START,
+        DO IFLOT=1,NFLOT_MAX
+          PARCLSS%I(IFLOT) = CLSFLO(IFLOT)
+        END DO
+!
+        IF(ALG_DISLODGE)THEN
+          DO IFLOT=1,NFLOT
+            REL_ALG = REL_ALGAE(CLSFLO(IFLOT))
+            IF (REL_ALG.EQ.2) THEN
+              TW1 = TW1_ALGAE(CLSFLO(IFLOT))
+              TW2 = TW2_ALGAE(CLSFLO(IFLOT))
+              A_ALG = A_ALGAE(CLSFLO(IFLOT))
+              TEFF%R(IFLOT) = TEFF%R(IFLOT) + DT * TW(IFLOT)
+              TW0 = TW2 + (TW1 - TW2) * EXP(-A_ALG * TEFF%R(IFLOT))
+              IF (TW(IFLOT).GT.TW0) THEN
+                DISLODGE%I(IFLOT) = 1
+              ENDIF
+            ENDIF
+          END DO
+        END IF
+!
+        CALL DISP_ALGAE(NFLOT_MAX,NFLOT,MESH%DIM1,DT,AT,
      &                 U_X_AV_0%R,U_Y_AV_0%R,U_Z_AV_0%R,K_AV_0%R,
      &                 EPS_AV_0%R,H_FLU%R,U_X_AV%R,U_Y_AV%R,U_Z_AV%R,
      &                 U_X_0%R,U_Y_0%R,U_Z_0%R,V_X_0%R,V_Y_0%R,V_Z_0%R,
      &                 DX,DY,DZ,ELTFLO,U_X%R,U_Y%R,U_Z%R,V_X%R,V_Y%R,
      &                 V_Z%R,XFLOT,YFLOT,ZFLOT,LT,DALGAE,RALGAE,EALGAE,
-     &                 ALGTYP)
+     &                 TALGAE,MALGAE,YALGAE,REL_ALGAE)
 !
 ! FIND THE ELEMENT AND SUBDOMAIN AFTER THE TRANSPORT (WITH A VERIFICATION
 ! IF SIZEBUF.LT.NFLOT_MAX)
@@ -469,7 +499,9 @@
 !     SEND THE ALGAE INFORMATION IF IT IS NECESSARY
 !
       IF(NCSIZE.GT.1.AND.ALGAE) THEN
-        CALL SEND_INFO_ALG(ISUB,I_A_GL%I,ELTBUF,NFLOT,NFLOT_MAX,
+        CALL SEND_INFO_ALG(ISUB,I_A_GL%I,CLSFLO,
+     &                 TEFF%R,DISLODGE%I,
+     &                 ELTBUF,NFLOT,NFLOT_MAX,
      &                 U_X_AV%R,U_Y_AV%R,U_Z_AV%R,K_AV%R,
      &                 EPS_AV%R,H_FLU%R,U_X%R,U_Y%R,U_Z%R,V_X%R,V_Y%R,
      &                 V_Z%R,NWIN,MESH%DIM1,PSI)
@@ -480,11 +512,11 @@
       IF(NCSIZE.GT.1) THEN
         IF(ALGAE) THEN
           CALL SEND_PARTICLES(XFLOT,YFLOT,ZFLOT,SHPFLO,SHZFLO,ELTFLO,
-     &                        ETAFLO,ISUB,TAGFLO,NDP,NFLOT,NFLOT_MAX,
+     &                 ETAFLO,ISUB,TAGFLO,CLSFLO,NDP,NFLOT,NFLOT_MAX,
      &                        MESH,NPLAN,DX=DX,DY=DY,DZ=DZ)
         ELSE
           CALL SEND_PARTICLES(XFLOT,YFLOT,ZFLOT,SHPFLO,SHZFLO,ELTFLO,
-     &                        ETAFLO,ISUB,TAGFLO,NDP,NFLOT,NFLOT_MAX,
+     &                 ETAFLO,ISUB,TAGFLO,CLSFLO,NDP,NFLOT,NFLOT_MAX,
      &                        MESH,NPLAN)
         ENDIF
       ENDIF
@@ -508,19 +540,20 @@
 !
             IF(ALGAE) THEN
               CALL DEL_INFO_ALG(TAGFLO(IFLOT),NFLOT,NFLOT_MAX,
-     &                   MESH%TYPELM,I_A_GL%I,ELTBUF,V_X%R,V_Y%R,V_Z%R,
+     &            MESH%TYPELM,I_A_GL%I,CLSFLO,ELTBUF,V_X%R,V_Y%R,V_Z%R,
      &                   U_X%R,U_Y%R,U_Z%R,U_X_AV%R,U_Y_AV%R,U_Z_AV%R,
      &                   K_AV%R,EPS_AV%R,H_FLU%R,NWIN,MESH%DIM1,PSI)
             ENDIF
 !
             IF(ALGAE) THEN
               CALL DEL_PARTICLE(TAGFLO(IFLOT),NFLOT,NFLOT_MAX,XFLOT,
-     &                          YFLOT,ZFLOT,TAGFLO,SHPFLO,SHZFLO,ELTFLO,
+     &                   YFLOT,ZFLOT,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,
      &                          ETAFLO,MESH%TYPELM,
-     &                          DX=DX,DY=DY,DZ=DZ,ISUB=ISUB)
+     &                          DX=DX,DY=DY,DZ=DZ,ISUB=ISUB,
+     &                          TEFF=TEFF%R,DISLODGE=DISLODGE%I)
             ELSE
               CALL DEL_PARTICLE(TAGFLO(IFLOT),NFLOT,NFLOT_MAX,XFLOT,
-     &                          YFLOT,ZFLOT,TAGFLO,SHPFLO,SHZFLO,ELTFLO,
+     &                   YFLOT,ZFLOT,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,
      &                          ETAFLO,MESH%TYPELM,
      &                          ISUB=ISUB)
             ENDIF
@@ -553,15 +586,16 @@
 !
             IF(ALGAE) THEN
               CALL DEL_INFO_ALG(TAGFLO(IFLOT),NFLOT,NFLOT_MAX,
-     &                   MESH%TYPELM,I_A_GL%I,ELTBUF,V_X%R,V_Y%R,V_Z%R,
+     &            MESH%TYPELM,I_A_GL%I,CLSFLO,ELTBUF,V_X%R,V_Y%R,V_Z%R,
      &                   U_X%R,U_Y%R,U_Z%R,U_X_AV%R,U_Y_AV%R,U_Z_AV%R,
      &                   K_AV%R,EPS_AV%R,H_FLU%R,NWIN,MESH%DIM1,PSI)
               CALL DEL_PARTICLE(TAGFLO(IFLOT),NFLOT,NFLOT_MAX,XFLOT,
-     &                    YFLOT,ZFLOT,TAGFLO,SHPFLO,SHZFLO,ELTFLO,
-     &                    ETAFLO,MESH%TYPELM,DX=DX,DY=DY,DZ=DZ)
+     &                 YFLOT,ZFLOT,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,
+     &                    ETAFLO,MESH%TYPELM,DX=DX,DY=DY,DZ=DZ,
+     &                    TEFF=TEFF%R,DISLODGE=DISLODGE%I)
             ELSE
               CALL DEL_PARTICLE(TAGFLO(IFLOT),NFLOT,NFLOT_MAX,XFLOT,
-     &                    YFLOT,ZFLOT,TAGFLO,SHPFLO,SHZFLO,ELTFLO,
+     &                 YFLOT,ZFLOT,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,
      &                    ETAFLO,MESH%TYPELM)
             ENDIF
 !
@@ -578,93 +612,6 @@
 !
           IFLOT=IFLOT+1
           IF(IFLOT.LE.NFLOT) GO TO 10
-        ENDIF
-!
-      ENDIF
-!
-!-----------------------------------------------------------------------
-!
-!     TECPLOT FILE
-!
-      IF(NCSIZE.GT.1) THEN
-!
-!       WAITING ALL PROCESSORS (SO THAT NFLOT IS UPDATED FOR ALL
-!                               BEFORE CALLING P_ISUM)
-!
-        CALL P_SYNC
-!
-!       PARALLEL VERSION
-!
-        NFLOTG=P_ISUM(NFLOT)
-        IF(NFLOTG.GT.0.AND.(LT.EQ.1.OR.(LT/FLOPRD)*FLOPRD.EQ.LT)) THEN
-!
-!         1) EVERY PROCESSOR WRITES ITS OWN DATA IN A FILE WITH EXTENSION
-!
-          CALL GET_FREE_ID(ID)
-          IF(NFLOT.GT.0) THEN
-            OPEN(ID,FILE=EXTENS(NCSIZE,IPID+1),
-     &           FORM='FORMATTED',STATUS='NEW')
-            IF(IELM.EQ.11) THEN
-              DO IFLOT=1,NFLOT
-                WRITE(ID,300) TAGFLO(IFLOT),XFLOT(IFLOT),
-     &                        YFLOT(IFLOT),1
-              ENDDO
-            ELSE
-              DO IFLOT=1,NFLOT
-                WRITE(ID,301) TAGFLO(IFLOT),XFLOT(IFLOT),
-     &                        YFLOT(IFLOT),ZFLOT(IFLOT),1
-              ENDDO
-            ENDIF
-            CLOSE(ID)
-          ENDIF
-!
-!         2) WAITING ALL PROCESSORS
-!
-          CALL P_SYNC
-!
-!         3) PROCESSOR 0 READS ALL EXISTING FILES AND MERGES
-!            THEM IN THE FINAL FILE
-!
-          IF(IPID.EQ.0) THEN
-            WRITE(UL,200) 'ZONE DATAPACKING=POINT, T="G_',AT,
-     &        ' SECONDS"',', I=',NFLOTG,', SOLUTIONTIME=',AT
-            DO IPROC=1,NCSIZE
-              INQUIRE(FILE=EXTENS(NCSIZE,IPROC),EXIST=YESITIS)
-              IF(YESITIS) THEN
-                OPEN(ID,FILE=EXTENS(NCSIZE,IPROC),
-     &               FORM='FORMATTED',STATUS='OLD')
-22              CONTINUE
-                READ(ID,100,ERR=23,END=23) LIGNE
-                WRITE(UL,*) LIGNE
-                GO TO 22
-23              CONTINUE
-                CLOSE(ID,STATUS='DELETE')
-              ENDIF
-            ENDDO
-          ENDIF
-!
-        ENDIF
-!
-      ELSE
-!
-!       SCALAR VERSION
-!
-        IF(NFLOT.GT.0.AND.(LT.EQ.1.OR.(LT/FLOPRD)*FLOPRD.EQ.LT)) THEN
-          WRITE(UL,200) 'ZONE DATAPACKING=POINT, T="G_',AT,
-     &                  ' SECONDS"',', I=',NFLOT,', SOLUTIONTIME=',AT
-          IF(IELM.EQ.11) THEN
-            DO IFLOT=1,NFLOT
-              WRITE(UL,300) TAGFLO(IFLOT),XFLOT(IFLOT),YFLOT(IFLOT),1
-            ENDDO
-          ELSE
-            DO IFLOT=1,NFLOT
-              WRITE(UL,301) TAGFLO(IFLOT),XFLOT(IFLOT),
-     &                      YFLOT(IFLOT),ZFLOT(IFLOT),1
-            ENDDO
-          ENDIF
-200       FORMAT(A,F12.4,A,A,I4,A,F12.4)
-300       FORMAT(I6,',',F16.8,',',F16.8,',',I2)
-301       FORMAT(I6,',',F16.8,',',F16.8,',',F16.8,',',I2)
         ENDIF
 !
       ENDIF

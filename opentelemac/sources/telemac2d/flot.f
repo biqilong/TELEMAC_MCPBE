@@ -3,7 +3,7 @@
 !                    ***************
 !
      &(XFLOT,YFLOT,NFLOT,NFLOT_MAX,X,Y,IKLE,NELEM,NELMAX,NPOIN,
-     & TAGFLO,SHPFLO,ELTFLO,MESH,LT,NIT,AT)
+     & TAGFLO,CLSFLO,SHPFLO,ELTFLO,MESH,LT,NIT,AT)
 !
 !***********************************************************************
 ! TELEMAC2D   V7P0
@@ -62,6 +62,7 @@
       INTEGER, INTENT(IN)             :: IKLE(NELMAX,3)
       INTEGER, INTENT(INOUT)          :: NFLOT
       INTEGER, INTENT(INOUT)          :: TAGFLO(NFLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: CLSFLO(NFLOT_MAX)
       INTEGER, INTENT(INOUT)          :: ELTFLO(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN),AT
       DOUBLE PRECISION, INTENT(INOUT) :: XFLOT(NFLOT_MAX)
@@ -74,7 +75,7 @@
       ! USER FUNCTION
       CALL USER_FLOT
      &(XFLOT,YFLOT,NFLOT,NFLOT_MAX,X,Y,IKLE,NELEM,NELMAX,NPOIN,
-     & TAGFLO,SHPFLO,ELTFLO,MESH,LT,NIT,AT)
+     & TAGFLO,CLSFLO,SHPFLO,ELTFLO,MESH,LT,NIT,AT)
 !
 !-----------------------------------------------------------------------
 !

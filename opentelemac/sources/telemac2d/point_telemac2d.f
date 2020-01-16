@@ -151,6 +151,8 @@
       USE BIEF
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_TELEMAC2D
+      USE DROGUES, ONLY: NDRG_CLSS,NODCLSS,PARCLSS
+      USE ALGAE_TRANSP
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -1123,11 +1125,41 @@
 !
 !_______________________________________________________________________
 !
-      CALL BIEF_ALLVEC(1,XFLOT ,'XFLOT ',NFLOT_MAX,1,0,MESH)
-      CALL BIEF_ALLVEC(1,YFLOT ,'YFLOT ',NFLOT_MAX,1,0,MESH)
-      CALL BIEF_ALLVEC(1,SHPFLO,'SHPFLO',
+!      IF( NDRG_CLSS.GT.0 ) THEN
+!
+        CALL BIEF_ALLVEC(1,XFLOT ,'XFLOT ',NFLOT_MAX,1,0,MESH)
+        CALL BIEF_ALLVEC(1,YFLOT ,'YFLOT ',NFLOT_MAX,1,0,MESH)
+        CALL BIEF_ALLVEC(1,SHPFLO,'SHPFLO',
      &                        BIEF_NBPEL(IELM1,MESH)*NFLOT_MAX,1,
      &                        0,MESH)
+      IF( NDRG_CLSS.GT.0 ) THEN
+!
+        CALL BIEF_ALLVEC(3,NODCLSS, 'CLSFLO',IELMH,1,1,MESH)
+        CALL BIEF_ALLVEC(2,PARCLSS, 'TYPFLO',NFLOT_MAX,1,0,MESH)
+        DO I = 1,NFLOT_MAX
+          PARCLSS%I(I) = 1
+        ENDDO
+!
+        IF( ALGAE ) THEN
+!
+!         ALLOCATE THE ALGAE VARIABLES IF NEEDED
+          CALL ALLOC_ALGAE(NFLOT_MAX,IELMH,MESH)
+!
+          CALL OS('X=Y     ',X=U_X_AV_0,Y=U_X_AV)
+          CALL OS('X=Y     ',X=U_Y_AV_0,Y=U_Y_AV)
+          CALL OS('X=Y     ',X=U_Z_AV_0,Y=U_Z_AV)
+          CALL OS('X=Y     ',X=K_AV_0  ,Y=K_AV)
+          CALL OS('X=Y     ',X=EPS_AV_0,Y=EPS_AV)
+          CALL OS('X=Y     ',X=U_X_0   ,Y=U_X)
+          CALL OS('X=Y     ',X=U_Y_0   ,Y=U_Y)
+          CALL OS('X=Y     ',X=U_Z_0   ,Y=U_Z)
+          CALL OS('X=Y     ',X=V_X_0   ,Y=V_X)
+          CALL OS('X=Y     ',X=V_Y_0   ,Y=V_Y)
+          CALL OS('X=Y     ',X=V_Z_0   ,Y=V_Z)
+!
+        ENDIF
+!
+      ENDIF
 !
 !-----------------------------------------------------------------------
 !
@@ -1310,6 +1342,7 @@
       CALL BIEF_ALLVEC(2,FINFLO,'FINFLO',NFLOT_MAX,1,0,MESH)
       CALL BIEF_ALLVEC(2,ELTFLO,'ELTFLO',NFLOT_MAX,1,0,MESH)
       CALL BIEF_ALLVEC(2,TAGFLO,'TAGFLO',NFLOT_MAX,1,0,MESH)
+      CALL BIEF_ALLVEC(2,CLSFLO,'CLSFLO',NFLOT_MAX,1,0,MESH)
 !
 !_______________________________________________________________________
 !

@@ -599,6 +599,10 @@
             CALL VITFON(CPL_WAC_DATA%ORBVEL_TEL%R, TSTOT, XK,  NF,
      &           NPOIN2,NPLAN)
           ENDIF
+          IF (ALG_DISLODGE) THEN
+            CALL VITFON(CPL_WAC_DATA%ORBVEL_TEL%R, TSTOT, XK,  NF,
+     &           NPOIN2,NPLAN)
+          ENDIF
 !
         ENDIF
 !

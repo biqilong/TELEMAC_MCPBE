@@ -3,7 +3,7 @@
 !                    *****************
 !
      &(XFLOT,YFLOT,ZFLOT,NFLOT,NFLOT_MAX,X,Y,Z,IKLE,NELEM,NELMAX,NPOIN,
-     & NPLAN,TAGFLO,SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,LT,NIT,AT)
+     & NPLAN,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,LT,NIT,AT)
 !
 !***********************************************************************
 ! TELEMAC3D
@@ -56,6 +56,7 @@
       INTEGER, INTENT(IN)             :: IKLE(NELMAX,*)
       INTEGER, INTENT(INOUT)          :: NFLOT
       INTEGER, INTENT(INOUT)          :: TAGFLO(NFLOT_MAX)
+      INTEGER, INTENT(INOUT)          :: CLSFLO(NFLOT_MAX)
       INTEGER, INTENT(INOUT)          :: ELTFLO(NFLOT_MAX)
       INTEGER, INTENT(INOUT)          :: ETAFLO(NFLOT_MAX)
       DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN),Z(NPOIN),AT
@@ -74,7 +75,7 @@
       ! USER FUNCTION
       CALL USER_FLOT3D
      &(XFLOT,YFLOT,ZFLOT,NFLOT,NFLOT_MAX,X,Y,Z,IKLE,NELEM,NELMAX,NPOIN,
-     & NPLAN,TAGFLO,SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,LT,NIT,AT)
+     & NPLAN,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,LT,NIT,AT)
 !
 !-----------------------------------------------------------------------
 !
