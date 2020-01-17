@@ -2052,7 +2052,7 @@
             ENDDO
             WRITE(LU,*) 'BEFORE EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MACF
-            WRITE(LU,*) IMICF_MACF,NSICLA+1,NAMETRAC(ITRAC)(1:16),
+            WRITE(LU,*) IMICF_MACF,NSICLA+1,NAMETRAC(IMICF_MACF)(1:16),
      &               FLUDP%ADR(NSICLA+1)%P%R(DBPOIN_MCPBE),
      &               TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
      &               WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
@@ -2060,7 +2060,8 @@
             IF(MCPBE_VER.GT.1) THEN
               WRITE(LU,*) 'BEFORE EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MEGF
-              WRITE(LU,*) IMICF_MEGF,NSICLA+2,NAMETRAC(ITRAC)(1:16),
+              WRITE(LU,*) IMICF_MEGF,NSICLA+2,
+     &               NAMETRAC(IMICF_MEGF)(1:16),
      &               FLUDP%ADR(NSICLA+2)%P%R(DBPOIN_MCPBE),
      &               TA%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
      &               WCHU%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
@@ -2127,7 +2128,7 @@
         ENDDO
         WRITE(LU,*) 'AFTER EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MACF
-        WRITE(LU,*) IMICF_MACF,NSICLA+1,NAMETRAC(ITRAC)(1:16),
+        WRITE(LU,*) IMICF_MACF,NSICLA+1,NAMETRAC(IMICF_MACF)(1:16),
      &                FLUDP%ADR(NSICLA+1)%P%R(DBPOIN_MCPBE),
      &                TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
      &                WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
@@ -2135,10 +2136,10 @@
         IF(MCPBE_VER.GT.1) THEN
           WRITE(LU,*) 'AFTER EROSION DEPOSITION FLUX OF TRACER ',
      &                                                       IMICF_MEGF
-          WRITE(LU,*) IMICF_MEGF,NSICLA+2,NAMETRAC(ITRAC)(1:16),
+          WRITE(LU,*) IMICF_MEGF,NSICLA+2,NAMETRAC(IMICF_MEGF)(1:16),
      &                FLUDP%ADR(NSICLA+2)%P%R(DBPOIN_MCPBE),
-     &                TA%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
-     &                WCHU%ADR(IMICF_MACF)%P%R(DBPOIN_MCPBE),
+     &                TA%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
+     &                WCHU%ADR(IMICF_MEGF)%P%R(DBPOIN_MCPBE),
      &                FLUER%ADR(NSICLA+2)%P%R(DBPOIN_MCPBE)
         ENDIF
       ENDIF
