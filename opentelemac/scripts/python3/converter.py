@@ -100,10 +100,26 @@ def main():
         generate_atm(options.geo_file, options.slf_file, options.atm_file,
                      options.ll2utm)
     elif options.command == 'generate_bnd':
+        varnames = []
+        for var in options.varnames.split(";"):
+            if len(var) < 16:
+                name = var + ' '*(16-len(var))
+            else:
+                name = var[:16]
+            varnames.append(name)
+
+        varunits = []
+        for var in options.varunits.split(";"):
+            if len(var) < 16:
+                name = var + ' '*(16-len(var))
+            else:
+                name = var[:16]
+            varunits.append(name)
+
         generate_bnd(options.cli_file, options.geo_file, options.slf_file,
                      options.bnd_file,
-                     options.varnames.split(";"),
-                     options.varunits.split(";"))
+                     varnames,
+                     varunits)
     elif options.command in ['srf2med', 'srf2vtk', 'med2srf', 'med2srfd']:
         run_converter(options.command, options.input_file, options.output_file,
                       options.root_dir, options.bnd_file, options.log_file,
