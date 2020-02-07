@@ -1172,7 +1172,7 @@ def refactor_sources(subset, cmdf, bypass):
     pbar.finish()
 
 
-def scan_sources(cfgdir, cfg, bypass):
+def scan_sources(cfgdir, cfg, bypass, verbose):
     """
     Scan sources
 
@@ -1232,6 +1232,7 @@ def scan_sources(cfgdir, cfg, bypass):
         # /!\ if you need to print within this loop, you now need to use
         #     pbar.write(text, ibar) so the progress bar moves along
         for fle in file_list:
+
             ibar = ibar + 1
             pbar.update(ibar)
             fle = path.join(src_dir, fle)
@@ -1264,6 +1265,8 @@ def scan_sources(cfgdir, cfg, bypass):
                                   path.splitext(path.basename(fle))[0] +
                                   cfg['SYSTEM']['sfx_obj'].lower()))
 
+            if verbose:
+                print("Parsing: ", fle)
             src_file = open(fle, 'r', encoding='utf-8')
             if path.splitext(who['file'])[1].lower() in ['.f90', '.f95']:
                 # Strips the F90+ commented lines

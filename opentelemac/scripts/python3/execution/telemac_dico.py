@@ -170,7 +170,7 @@ class TelemacDico(object):
                     else:
                         # List of strings just removing quotes for each value
                         key_info[key] = \
-                             [val.strip("'\"") for val in key_info[key]]
+                             [val.strip("'\" ") for val in key_info[key]]
                 # AIDE*, APPARENCE, CHOIX*, COMPORT
                 # COMPOSE, CONTROLE, RUBRIQUE*, TYPE, SUBMIT
                 elif len(key_info[key]) == 1:

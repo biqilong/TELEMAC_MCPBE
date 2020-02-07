@@ -85,7 +85,7 @@
       IF(REF_T2D.LE.1) THEN
         IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING LECLIM'
 !     UPDATE NPTIR FOR SAFETY
-!                                                       WAC2        
+!                                                       WAC2
         IF(INCLUS(COUPLING,'TOMAWAC2')) THEN
           CALL GET_MESH_NPTIR(T2D_FILES(T2DGEO)%FMT,
      &         T2D_FILES(T2DGEO)%LU,NPTIR,IERR)
@@ -1184,7 +1184,7 @@
         IF(INCLUS(COUPLING,'TOMAWAC2')) THEN
           CALL SEND_COUPLE(1,NPOIN,NVARTEL2TOM,TEL2TOM)
         ENDIF
-        
+
         CALL T2D_WAC_CPL_UPDATE()
         CALL WAC(PART=0)
         IF(INCLUS(COUPLING,'TOMAWAC2')) THEN
@@ -1193,7 +1193,7 @@
 
           CALL RECEIVE_COUPLE(2,NPOIN,NVARTOM2TEL,TOM2TEL)
         ENDIF
-          
+
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM TOMAWAC'
         CALL CONFIG_CODE(1)
 !

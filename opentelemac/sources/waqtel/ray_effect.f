@@ -5,7 +5,7 @@
      &(SECCHI,TRR,NPOIN,MEXT,I0,IK,KPE,EFF,H,T1,T2)
 !
 !***********************************************************************
-! TELEMAC2D   V7P1
+! WAQTEL   V8P1
 !***********************************************************************
 !
 !brief    COMPUTES RAY EFFECT: COEFFICIENT OF SUNSHINE ON
@@ -50,7 +50,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-!     PRELEMINARIES
+!     PRELIMINARIES
 !
       IK2=IK**2
       I02=I0**2

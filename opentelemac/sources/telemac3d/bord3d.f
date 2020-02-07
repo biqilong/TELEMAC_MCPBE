@@ -598,27 +598,55 @@
 !
       ENDIF
 !
+!-----------------------------------------------------------------------
+!
+!     AUTOMATIC TIDAL BOUNDARY CONDITIONS
+!
+      IF(TIDALTYPE.GE.1) CALL TIDAL_MODEL_T3D()
+!
 !     PRESCRIBED VELOCITIES AND WATER LEVEL AT OPEN BOUNDARIES
 !     FOR VORTEX FORCE FORMALISM
 !
       IF(INCLUS(COUPLING,'TOMAWACT3D')) THEN
-        DO K=1,NPTFR2
-          IF((LIUBOL%I(K).EQ.KENTU.OR.LIVBOL%I(K).EQ.KENTU)
-     &       .AND.LIHBOR%I(K).EQ.KENT) THEN
-            DO NP=1,NPLAN
-              IJK=(NP-1)*NPTFR2+K
-              IPOIN2=NBOR2%I(K)
-              UBORL%R(IJK) = XNEBOR2%R(K)*US2D%R(IPOIN2)
-              VBORL%R(IJK) = YNEBOR2%R(K)*VS2D%R(IPOIN2)
-            ENDDO
-            IF (NCOTE.NE.0) THEN
-              HBOR%R(K) = -WIP%R(NBOR2%I(K))/GRAV+SL3(ICOT,AT,N,INFOGR)
-     &             -ZF%R(NBOR2%I(K))
-            ELSE
-              HBOR%R(K) = -WIP%R(NBOR2%I(K))/GRAV-ZF%R(NBOR2%I(K))
+        IF(TIDALTYPE.EQ.0) THEN
+          DO K=1,NPTFR2
+            IF((LIUBOL%I(K).EQ.KENTU.OR.LIVBOL%I(K).EQ.KENTU)
+     &           .AND.LIHBOR%I(K).EQ.KENT) THEN
+              DO NP=1,NPLAN
+                IJK=(NP-1)*NPTFR2+K
+                IPOIN2=NBOR2%I(K)
+                UBORL%R(IJK) = XNEBOR2%R(K)*US2D%R(IPOIN2)
+                VBORL%R(IJK) = YNEBOR2%R(K)*VS2D%R(IPOIN2)
+              ENDDO
+              IF(NCOTE.NE.0) THEN
+                 HBOR%R(K) = -WIP%R(NBOR2%I(K))/GRAV
+     &                     + SL3(ICOT,AT,N,INFOGR)-ZF%R(NBOR2%I(K))
+              ELSE
+                HBOR%R(K) = -WIP%R(NBOR2%I(K))/GRAV-ZF%R(NBOR2%I(K))
+              ENDIF
             ENDIF
-          ENDIF
-        ENDDO
+          ENDDO
+        ELSE ! WE MODIFY U,V AND H SET BY TIDAL_MODEL_T3D
+          DO K=1,NPTFR2
+            IF((LIUBOL%I(K).EQ.KENTU.OR.LIVBOL%I(K).EQ.KENTU)
+     &           .AND.LIHBOR%I(K).EQ.KENT) THEN
+              DO NP=1,NPLAN
+                IJK=(NP-1)*NPTFR2+K
+                IPOIN2=NBOR2%I(K)
+                UBORL%R(IJK) = UBORL%R(IJK)+XNEBOR2%R(K)*US2D%R(IPOIN2)
+                VBORL%R(IJK) = VBORL%R(IJK)+YNEBOR2%R(K)*VS2D%R(IPOIN2)
+              ENDDO
+              IF(NCOTE.NE.0) THEN
+                HBOR%R(K) = HBOR%R(K)-WIP%R(NBOR2%I(K))/GRAV
+     &                     +SL3(ICOT,AT,N,INFOGR)-ZF%R(NBOR2%I(K))
+              ELSE
+                HBOR%R(K) = HBOR%R(K)-WIP%R(NBOR2%I(K))/GRAV
+     &                     -ZF%R(NBOR2%I(K))
+              ENDIF
+            ENDIF
+          ENDDO
+
+        ENDIF
 !       MOMENTUM LOST BY WAVES DUE TO BREAKING IS ADDED
 !       AS A SURFACE STRESS
         DO IPOIN2 = 1,NPOIN2
@@ -634,12 +662,6 @@
           ENDDO
         ENDIF
       ENDIF
-!
-!-----------------------------------------------------------------------
-!
-!     AUTOMATIC TIDAL BOUNDARY CONDITIONS
-!
-      IF(TIDALTYPE.GE.1) CALL TIDAL_MODEL_T3D()
 !
 !-----------------------------------------------------------------------
 !

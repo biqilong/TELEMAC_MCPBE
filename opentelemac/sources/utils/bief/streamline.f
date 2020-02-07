@@ -134,7 +134,6 @@
       PUBLIC :: SCARACT,POST_INTERP,SEND_PARTICLES,BIEF_INTERP
       PUBLIC :: ADD_PARTICLE,DEL_PARTICLE,ORGANISE_ALGS,SEND_INFO_ALG
       PUBLIC :: DEL_INFO_ALG
-      PUBLIC :: SEND_INFO_ICE,DEL_INFO_ICE
       PUBLIC :: OIL_SEND_PARTICLES,OIL_DEL_PARTICLE,OIL_SEND_INFO
       PUBLIC :: OIL_ORGANISE_CHARS
       PUBLIC :: DEALLOC_STREAMLINE
@@ -9077,17 +9076,6 @@
       RETURN
       END SUBROUTINE DEL_PARTICLE
 !                       ************************
-                        SUBROUTINE SEND_INFO_ICE
-     &()
-      IMPLICIT NONE
-      END SUBROUTINE SEND_INFO_ICE
-!                    ***********************
-                     SUBROUTINE DEL_INFO_ICE
-     &()
-      IMPLICIT NONE
-      END SUBROUTINE DEL_INFO_ICE
-!
-!                       ************************
                         SUBROUTINE SEND_INFO_ALG
 !                       ************************
 !
@@ -9232,7 +9220,6 @@
           HEAPALG(NCHARA)%K_AV=K_AV(IPLOT)
           HEAPALG(NCHARA)%EPS_AV=EPS_AV(IPLOT)
           HEAPALG(NCHARA)%H_FLU=H_FLU(IPLOT)
-! Three new variables (MST)
           HEAPALG(NCHARA)%ICLASS=CLS(IPLOT)
           HEAPALG(NCHARA)%TEFF=TEFF(IPLOT)
           HEAPALG(NCHARA)%DISLODGE=DISLODGE(IPLOT)
@@ -9315,7 +9302,6 @@
             K_AV(NPLOT+I)=RECVALG(I)%K_AV
             EPS_AV(NPLOT+I)=RECVALG(I)%EPS_AV
             H_FLU(NPLOT+I)=RECVALG(I)%H_FLU
-! Three new variables (MST)
             CLS(NPLOT+I)=RECVALG(I)%ICLASS
             TEFF(NPLOT+I)=RECVALG(I)%TEFF
             DISLODGE(NPLOT+I)=RECVALG(I)%DISLODGE

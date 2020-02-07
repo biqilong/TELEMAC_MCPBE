@@ -51,6 +51,8 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
+      INTEGER I
+
       IERR = 0
       NEW_DATATYPE = 0
 #if defined HAVE_MPI
@@ -58,7 +60,9 @@
      &                            NEW_DATATYPE,IERR)
 !
       IF(IERR.NE.0) THEN
+        CALL MPI_ERROR_STRING(IERR, MPI_ERROR_MSG, MPI_ERROR_LEN, I)
         WRITE(LU,*) 'P_MPI_TYPE_STRUCT:'
+        WRITE(LU,*) 'MPI_MSG: ', TRIM(MPI_ERROR_MSG)
         WRITE(LU,*) 'MPI ERROR ',IERR
         CALL PLANTE(1)
         STOP

@@ -1,12 +1,22 @@
 Trunk
 ===========================
 
+TELEMAC 3D: Fix missing PARCOM (volumetric explicit source terms) if LIPS advection
+scheme is used.
+
+ALL: Removing SERAFIN? file format option
+
+TELEMAC 3D: Fix missing term (volumetric sources) in the computation of the balance
+for the tracers. This fixes wrong thermal balance in case of exchanges with atmosphere.
+
+GAIA: fix a bug when sliding in parallel computations
+
 TELEMAC-2D: Drogues can be defined using a polygon file and in the geometry file.
 Drogues can be output to a binary (PCL) file which can be read by BlueKenue.
 
 TELEMAC-2D: Algae classes can be defined and different Algae properties can be defined
 for each class. The Algae can start to move after a specified time has elapsed.
-Alternatively Algae can start to move after being dislodged after a critical bed 
+Alternatively Algae can start to move after being dislodged after a critical bed
 wave orbital velocity has been reached.
 
 TELAPY: New function mpi_get, mpi_get_array (and set equivalent) to get array
@@ -15,7 +25,7 @@ over global mesh
 TELAPY: New functions read/write for TelemacFile to modify a file.
 See notebook notebooks/telapy/telemac_file.ipynb for examples.
 
-Release V8P1R0 (xx/xx/xxxx)
+Release V8P1R0 (04/12/2019)
 ===========================
 
 WAQTEL: fix the differences between source code and documentation for EUTRO, MICROPOL(2D)

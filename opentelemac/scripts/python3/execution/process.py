@@ -51,7 +51,10 @@ def check_para_tilling(in_tile, in_node, in_size, ncruns, cas_ncsize):
     if in_node != 0:
         ncnode = max(1, in_node)
     # By default taking the input ncsize
-    ncsize = in_size
+    if in_size != -1:
+        ncsize = in_size
+    else:
+        ncsize = cas_ncsize
 
     # ~~ Special case of nctile ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nctile = 1

@@ -219,6 +219,7 @@
 !=======================================================================
 ! ALLOCATE VARIABLES USED IN PARALLEL TRANSPORT
 !=======================================================================
+      NWIN=100
       IF(NCSIZE.GT.1) CALL ORGANISE_ALGS(NP_TOT,NWIN*MESH%DIM1)
 !
       RETURN
@@ -311,7 +312,6 @@
         END DO
       END DO
 !
-      NWIN=100
       TWIN=REAL(NWIN)*DT
 !
       IF(ALLOCATED(PSI))DEALLOCATE(PSI)

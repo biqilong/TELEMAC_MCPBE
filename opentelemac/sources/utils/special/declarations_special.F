@@ -26,7 +26,6 @@
 !+       Enabling ENDIAN and FLOAT formats of the GEOMETRY file to be
 !+       the default of all OUTPUT FILES binaries, unless the user sets
 !+       it otherwise in the CAS file. Also:
-!+       - the DAFAULT of the DICO files are 'SERAFIN?'
 !+       - ENDIAN is also compiler dependent
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,7 +122,6 @@
 !
 !     SHARING AND PASSING ON THE ENDIAN AND THE PRECISION FORMATS
 !
-      CHARACTER(LEN=8) :: SELAFMT = 'SERAFIN?'
 #if defined COMPAD || defined LITTLE_ENDIAN
       CHARACTER(LEN=13) :: ENDIAN = 'LITTLE_ENDIAN'
 #else

@@ -91,7 +91,8 @@
 !
       INTEGER I,L1,L2,L3,L4,N1,N2,N3,N4,IVBIL,ILIQ,IELEB
       INTEGER IPTFR,IETAGE,ITRAC
-      DOUBLE PRECISION FLUDI(MAXTRA+5),FLUS1(MAXTRA+5),FLUXTOTAL
+      DOUBLE PRECISION FLUDI(MAXTRA+5),FLUS1(MAXTRA+5),FLUS0(MAXTRA+5)
+      DOUBLE PRECISION FLUXTOTAL
       INTRINSIC SQRT
 !
 !=======================================================================
@@ -191,6 +192,16 @@
             ENDDO
             IF(NCSIZE.GT.1) THEN
               FLUS1(5+ITRAC) = P_DSUM(FLUS1(5+ITRAC))
+            ENDIF
+          ENDIF
+          FLUS0(5+ITRAC) = 0.D0
+          IF(S0TA%ADR(ITRAC)%P%TYPR.NE.'0') THEN
+            DO I=1,NPOIN3
+              FLUS0(5+ITRAC)=FLUS0(5+ITRAC)
+     &                        +S0TA%ADR(ITRAC)%P%R(I)*VOLU%R(I)
+            ENDDO
+            IF(NCSIZE.GT.1) THEN
+              FLUS0(5+ITRAC) = P_DSUM(FLUS0(5+ITRAC))
             ENDIF
           ENDIF
         ENDDO
@@ -355,6 +366,7 @@
         DO IVBIL=6,5+NTRAC
 !
           FLUTOT = FLUX%R(IVBIL) - FLUDI(IVBIL) + FLUS1(IVBIL)
+     &             - FLUS0(IVBIL)
           FLUCUM%R(IVBIL) = FLUCUM%R(IVBIL) + FLUTOT
 !
           IF(INFOGR) THEN

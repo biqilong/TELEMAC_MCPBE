@@ -115,7 +115,7 @@ Work with all active configurations.
         CFGS.light_dump()
         # Only if we ask for a scan
         if options.rescan:
-            update_cmdf(options.bypass, options.cleanup)
+            update_cmdf(options.bypass, options.cleanup, options.verbose)
 
         # /!\ multiple configurations will now generate multiple rescan
         # (because of tags and adds, specific to some configurations)

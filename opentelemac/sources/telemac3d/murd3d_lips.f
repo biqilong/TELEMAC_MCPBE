@@ -798,9 +798,11 @@
 !     EXPLICIT SOURCE TERMS
 !
       IF(S0F%TYPR.NE.'0') THEN
+        CALL OV ('X=Y     ', X=TRA02, Y=VOLU, DIM1=NPOIN3)
+        IF(NCSIZE.GT.1) CALL PARCOM(STRA02,2,MESH3D)
         DO IP=1,NPOIN3
-          IF(VOLU(IP).GT.EPS) THEN
-            FC(IP)=FC(IP)+DT*S0F%R(IP)/VOLU(IP)
+          IF(TRA02(IP).GT.EPS) THEN
+            FC(IP)=FC(IP)+DT*S0F%R(IP)/TRA02(IP)
           ENDIF
         ENDDO
       ENDIF

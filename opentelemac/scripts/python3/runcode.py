@@ -32,7 +32,7 @@ def add_mpi_argument(parser):
              "';' delimited")
     parser.add_argument(
         "--ncsize",
-        dest="ncsize", default=0, type=int,
+        dest="ncsize", default=-1, type=int,
         help="the number of processors forced in parallel mode")
     parser.add_argument(
         "--nctile",

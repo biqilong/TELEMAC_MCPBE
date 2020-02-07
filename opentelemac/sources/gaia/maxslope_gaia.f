@@ -13,11 +13,10 @@
 !>@param[in/out] EVOL   Work array
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
+      USE INTERFACE_GAIA, EX_MAXSLOPE => MAXSLOPE_GAIA
       USE BIEF
       USE DECLARATIONS_GAIA
-!
-!      USE INTERFACE_GAIA, EX_MAXSLOPE => MAXSLOPE_GAIA
-!
+      USE INTERFACE_PARALLEL, ONLY: P_DMAX
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
@@ -186,6 +185,9 @@
         DO I=1,NPOIN
           TEST_GLISS=TEST_GLISS+ABS(EVOL%R(I))
         ENDDO
+!
+!       GET PARALLEL MAX TO MAKE SURE EACH PARTITION DOES THE SAME (BECAUSE THER ARE MORE PARCOM CALLS BELOW)
+        TEST_GLISS = P_DMAX(TEST_GLISS)
 !
 !       IF NO SLIDING NEEDED, END OF SUBROUTINE
         IF(TEST_GLISS.LE.1.D-8) GOTO 100
@@ -471,6 +473,7 @@
 
       ENDDO ! ENDLOOP ON NOMBLAY
 !-----------------------------------------------------------------------
+!
 100   CONTINUE
 !
 !----------------------------------------------------------------------

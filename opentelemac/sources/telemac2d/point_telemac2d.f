@@ -1505,8 +1505,8 @@
         CALL BIEF_ALLVEC_IN_BLOCK(PHAS,NPERIAF,1,'PHAS  ',
      &                            IELM1,1,2,MESH)
       ENDIF
-      
-      
+
+
 !-----------------------------------------------------------------------
 !
 ! NEW TELEMAC TO TOMAWAC COUPLING

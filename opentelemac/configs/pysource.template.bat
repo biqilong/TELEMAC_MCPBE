@@ -13,3 +13,6 @@
 @set SYSTELCFG=%HOMETEL%\configs\systel.cfg
 @rem Name of the configuration to use
 @set USETELCFG=<myconfiguration>
+@rem Adding python scripts to Python environement
+@set PYTHONPATH=%HOMETEL%\scripts\python3;%PYTHONPATH%
+@set PYTHONPATH=%HOMETEL%\builds\%USETELCFG%\wrap_api\lib;%PYTHONPATH%

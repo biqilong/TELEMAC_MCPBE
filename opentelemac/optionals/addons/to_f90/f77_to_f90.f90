@@ -1622,7 +1622,11 @@
         OPEN (UNIT=NIN, FILE=TRIM(NAME)//'.f', ACTION='READ')
       endif
 
-      OPEN (UNIT=NOUT, FILE=TRIM(NAME)//'.f90', ACTION='WRITE')
+      if(.not.exists) then
+        OPEN (UNIT=NOUT, FILE=TRIM(NAME)//'.F90', ACTION='WRITE')
+      else
+        OPEN (UNIT=NOUT, FILE=TRIM(NAME)//'.f90', ACTION='WRITE')
+      endif
 !
 !   Print values to be used
       Write (*,'(" Loop bodies will be indented by",I3/                &

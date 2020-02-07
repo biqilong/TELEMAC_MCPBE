@@ -37,14 +37,15 @@ LIST_LIBS = ['api', \
     'artemis', \
     'khione', \
     'waqtel', \
-    'mascaret', \
     'utils|gretel', \
     'utils|partel', \
     'utils|bief', \
     'utils|parallel', \
     'utils|hermes', \
     'utils|damocles', \
-    'utils|special']
+    'utils|special',
+    'mascaret', \
+    ]
 
 
 
@@ -230,13 +231,28 @@ def create_lib_files(lname, lmdul, lprog, mprog, mes, tasks,
     create_directories(lib_dir)
 
     # ~~ Lists all dependent libraries ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    lib_files = ''
-    for lib in homeres[lprog]['deps'][:homeres[lprog]['deps'].index(lname)]:
-        l = path.join(cfg['root'], 'builds', cfgname, 'lib', \
-            lib+'4'+mprog+cfg['SYSTEM']['sfx_lib'])
-        if not path.exists(l):
-            raise TelemacException('\nLibrary missing:\n        '+l)
-        lib_files = l + ' ' + lib_files
+    # Dynamic linking
+    if 'dyn' in cfg['options']:
+        #Path containing all the libraries
+        lib_dir = path.join(cfg['root'], 'builds', cfgname, 'lib')
+        lib_ext = cfg['SYSTEM']['sfx_lib']
+
+        lib_files = ' -L'+lib_dir+' '
+        for lib in homeres[lprog]['deps'][:homeres[lprog]['deps'].index(lname)]:
+            l= lib+'4'+mprog
+            if not path.exists(path.join(lib_dir, 'lib'+l+lib_ext)):
+                raise TelemacException('\nLibrary missing:\n        '+l)
+            lib_files += '-l' + l + ' '
+
+    #Static linking
+    else:
+        lib_files = ''
+        for lib in homeres[lprog]['deps'][:homeres[lprog]['deps'].index(lname)]:
+            l = path.join(cfg['root'], 'builds', cfgname, 'lib', \
+                'lib'+lib+'4'+mprog+cfg['SYSTEM']['sfx_lib'])
+            if not path.exists(l):
+                raise TelemacException('\nLibrary missing:\n        '+l)
+            lib_files = l + ' ' + lib_files
 
     # ~~ Add external libraries ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if 'libs' in cfg['MODULES'][lmdul]:
@@ -246,10 +262,10 @@ def create_lib_files(lname, lmdul, lprog, mprog, mes, tasks,
     # - /!\ hopefuly, the directory exists
     if lmdul == lib_name:
         lib_file = path.join(cfg['root'], 'builds', cfgname, 'lib', \
-            mprog + cfg['SYSTEM']['sfx_lib'])
+            'lib'+mprog + cfg['SYSTEM']['sfx_lib'])
     else:
         lib_file = path.join(cfg['root'], 'builds', cfgname, 'lib', \
-            lib_name+'4'+mprog + cfg['SYSTEM']['sfx_lib'])
+            'lib'+lib_name+'4'+mprog + cfg['SYSTEM']['sfx_lib'])
 
     # ~~ Lists all objects ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     obj_files = ''
@@ -344,12 +360,28 @@ def create_exe_files(ename, emdul, eprog, mes, bypass, homeres, verbose):
     # ~~ Lists all system libraries ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     lib_files = ''
     # /!\ [1:] to create the exe from local objs.
-    for lib in homeres[ename]['deps'][:len(homeres[ename]['deps'])-1]:
-        l = path.join(cfg['root'], 'builds', cfgname, 'lib', \
-            lib+'4'+eprog+cfg['SYSTEM']['sfx_lib'])
-        if not path.exists(l):
-            raise TelemacException('\nLibrary missing:\n        '+l)
-        lib_files = l + ' ' + lib_files
+    if 'dyn' in cfg['options']:
+        #Path containing all the libraries
+        lib_dir = path.join(cfg['root'], 'builds', cfgname, 'lib')
+        lib_ext = cfg['SYSTEM']['sfx_lib']
+
+        lib_files = ' -L'+lib_dir+' '
+        for lib in homeres[ename]['deps'][:-1]:
+            l= lib+'4'+eprog
+            if not path.exists(path.join(lib_dir, 'lib'+l+lib_ext)):
+                raise TelemacException('\nLibrary missing:\n        '+l)
+            lib_files += '-l' + l + ' '
+
+    #Static linking
+    else:
+        lib_files = ''
+        for lib in homeres[ename]['deps'][:-1]:
+            l = path.join(cfg['root'], 'builds', cfgname, 'lib', \
+                'lib'+lib+'4'+eprog+cfg['SYSTEM']['sfx_lib'])
+            if not path.exists(l):
+                raise TelemacException('\nLibrary missing:\n        '+l)
+            lib_files = l + ' ' + lib_files
+
     for lib in cfg['ADDONES']:
         for fli in cfg['ADDONES'][lib]:
             ones = lib+'.'+path.splitext(fli)[0]
@@ -373,10 +405,10 @@ def create_exe_files(ename, emdul, eprog, mes, bypass, homeres, verbose):
     lib = homeres[ename]['deps'][len(homeres[ename]['deps'])-1]
     if lib == emdul:
         lib_file = path.join(cfg['root'], 'builds', cfgname, 'lib', \
-            eprog+cfg['SYSTEM']['sfx_lib'])
+            'lib'+eprog+cfg['SYSTEM']['sfx_lib'])
     else:
         lib_file = path.join(cfg['root'], 'builds', cfgname, 'lib', \
-            lib+'4'+eprog+cfg['SYSTEM']['sfx_lib'])
+            'lib'+lib+'4'+eprog+cfg['SYSTEM']['sfx_lib'])
     if not path.exists(lib_file):
         raise TelemacException('\nLibrary missing:\n        '+lib_file)
 
@@ -669,11 +701,13 @@ def get_api_ld_flags(static):
     cfgname = CFGS.cfgname
     cfg = CFGS.configs[cfgname]
     api_dir = path.join(cfg['root'], 'builds', cfgname, 'wrap_api')
+    lib_dir = path.join(cfg['root'], 'builds', cfgname, 'lib')
+    lib_api_dir = path.join(api_dir, 'lib')
 
     ld_flags = ''
     # Adding library path
     if not static:
-        ld_flags += ' -L'+api_dir+sep+'lib '
+        ld_flags += ' -L'+lib_api_dir + ' '
     else:
         ld_flags += ' '
 
@@ -681,11 +715,17 @@ def get_api_ld_flags(static):
     # Adding list of libraries
     for lib_name in LIST_LIBS:
         if lib_name == 'mascaret':
-            if not path.exists(path.join(api_dir, 'libmascaret'+lib_ext)):
+            if not path.exists(path.join(lib_dir, 'libmascaret'+lib_ext)):
                 continue
-        lib = lib_name.split('|')[-1]
+
+        if lib_name == 'mascaret' or lib_name == 'api':
+            # Not adding 4api
+            lib = lib_name.split('|')[-1]
+        else:
+            lib = lib_name.split('|')[-1]+'4api'
+
         if static:
-            ld_flags += api_dir+sep+'lib'+sep+'lib'+lib+lib_ext+" "
+            ld_flags += lib_dir+sep+'lib'+lib+lib_ext+" "
         else:
             ld_flags += "-l"+lib+" "
 
@@ -729,7 +769,8 @@ def compile_princi_lib(princi_file, incs_flags, ld_flags):
     # Building linking commands
     command = cfg['cmd_lib'] \
         .replace('<libname>', "libuser_fortran" + cfg['sfx_lib']) \
-        .replace('<objs>', ' '.join(user_fortran))
+        .replace('<objs>', ' '.join(user_fortran)) \
+        .replace('<libs>', '')
     command += ' ' + incs_flags + ' ' + ld_flags
 
     mes = Messages(size=10)
@@ -751,6 +792,10 @@ def copy_src_api(api_dir, src_list, src_dir):
     @returns String containing list of new names for f2py
     """
 
+    cfgname = CFGS.cfgname
+    cfg = CFGS.configs[cfgname]
+    lib_dir = path.join(cfg['root'], 'builds', cfgname, 'lib')
+
     source = ''
     for src in src_list:
         root, _ = path.splitext(src)
@@ -760,6 +805,21 @@ def copy_src_api(api_dir, src_list, src_dir):
             path.join(api_dir, 'src', root+'.f90'))
         # Building list of sources
         source += path.join(api_dir, 'src', root+'.f90') + ' '
+
+    # Copying libraries
+    dyn_ext = cfg['sfx_lib']
+    for lib in LIST_LIBS:
+        lib_name = lib.split('|')[-1]
+        lib_name_tel = 'lib'+lib_name+'4api'+dyn_ext
+        # Mascaret is not named the same
+        if lib == 'mascaret':
+            lib_name_tel = 'lib'+lib_name+dyn_ext
+            if not path.exists(path.join(lib_dir, lib_name_tel)):
+                continue
+        if lib == 'api':
+            lib_name_tel = 'libapi'+dyn_ext
+        mycopy(path.join(lib_dir, lib_name_tel), \
+            path.join(api_dir, 'lib', lib_name_tel))
 
     return source
 
@@ -783,20 +843,6 @@ def generate_api():
         mkdir(api_dir+sep+'lib')
         mkdir(api_dir+sep+'src')
         mkdir(api_dir+sep+'include')
-    # Copying libraries
-    dyn_ext = cfg['sfx_lib']
-    for lib in LIST_LIBS:
-        lib_name = lib.split('|')[-1]
-        lib_name_tel = lib_name+'4api'+dyn_ext
-        # Mascaret is not named the same
-        if lib == 'mascaret':
-            lib_name_tel = lib_name+dyn_ext
-            if not path.exists(path.join(lib_dir, lib_name_tel)):
-                continue
-        if lib == 'api':
-            lib_name_tel = 'api'+dyn_ext
-        mycopy(path.join(lib_dir, lib_name_tel), \
-            path.join(api_dir, 'lib', 'lib'+lib_name+dyn_ext))
 
     # Copying Modules
     for root, _, files in walk(obj_dir):
@@ -975,18 +1021,19 @@ def compile_api_files(silent, static=False, hermes_only=False):
     compile_api_f2py('hermes', api_dir, source_hermes, '',
                      ld_flags, f2py_name, fcompiler, compiler, silent)
 
-def update_cmdf(bypass, cleanup):
+def update_cmdf(bypass, cleanup, verbose):
     """
     Update the cmdf file by doing a scan of the sources
 
     @param bypass If True Exception are bypassed
     @param cleanup If True cmdf are removed and rewritten
+    @param verbose If True will print the scanned file
     """
     cfgname = CFGS.cfgname
     cfg = CFGS.configs[cfgname]
     # ~~ Scans all source files to build a relation database ~~~~~~~~~~
     # TODO: parallelistaion of the scan_sources
-    fic, _, _, _, _, top, _, whocallswho = scan_sources(cfgname, cfg, bypass)
+    fic, _, _, _, _, top, _, whocallswho = scan_sources(cfgname, cfg, bypass, verbose)
 
     # ~~ Builds the Call Tree for each tree top ~~~~~~~~~~~~~~~~~~~~~~~
     homeres = {}

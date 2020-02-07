@@ -235,15 +235,15 @@ NOM1 = 'GEOMETRY FILE FORMAT'
 TYPE = STRING
 INDEX = 29
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DGEO)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -316,15 +316,15 @@ NOM1 = 'BINARY BOUNDARY DATA FILE FORMAT'
 TYPE = STRING
 INDEX = 23
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DBND)%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -487,15 +487,15 @@ NOM1 = 'BINARY DATA FILE 1 FORMAT'
 TYPE = STRING
 INDEX = 79
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DBI1)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -593,15 +593,15 @@ NOM1 = 'REFERENCE FILE FORMAT'
 TYPE = STRING
 INDEX = 78
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DREF)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -660,15 +660,15 @@ NOM1 = '3D RESULT FILE FORMAT'
 TYPE = STRING
 INDEX = 30
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DRES)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -720,15 +720,15 @@ NOM1 = '2D RESULT FILE FORMAT'
 TYPE = STRING
 INDEX = 28
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DHYD)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -1554,15 +1554,15 @@ NOM1 = 'PREVIOUS COMPUTATION FILE FORMAT'
 TYPE = STRING
 INDEX = 31
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DPRE)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -1689,15 +1689,15 @@ NOM1 = 'RESTART FILE FORMAT'
 TYPE = STRING
 INDEX = 84
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DRST)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -1772,15 +1772,15 @@ NOM1 = 'FILE FOR 2D CONTINUATION FORMAT'
 TYPE = STRING
 INDEX = 93
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DS2D)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -3029,15 +3029,15 @@ NOM1 = 'BINARY ATMOSPHERIC DATA FILE FORMAT'
 TYPE = STRING
 INDEX = 41
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3ATMB)%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -5760,15 +5760,15 @@ NOM1 = 'TIDAL MODEL FILE FORMAT'
 TYPE = STRING
 INDEX = 17
 TAILLE = 1
-DEFAUT = 'SERAFIN?'
-DEFAUT1 = 'SERAFIN?'
+DEFAUT = 'SERAFIN '
+DEFAUT1 = 'SERAFIN '
 MNEMO = 'T3D\_FILES(T3DTID)\%FMT'
 CHOIX =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
-'SERAFIN?';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -5902,7 +5902,7 @@ INDEX = 5
 TAILLE = 1
 DEFAUT = 0
 DEFAUT1 = 0
-MNEMO = 'NFLOT_MAX'
+MNEMO = 'NFLOT\_MAX'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'TRANSPORT DE PARTICULES';'FLOTTEURS'
 RUBRIQUE1 =
@@ -5910,13 +5910,17 @@ RUBRIQUE1 =
 NIVEAU = 0
 AIDE =
 'Permet d''effectuer un suivi de flotteurs.
-Fixe le nombre de flotteurs a traiter lors du calcul.
+Fixe le nombre maximum de flotteurs a traiter lors du calcul.
 Il est alors necessaire de mettre a jour le sous-programme
-\telfile{FLOT3D} afin de fournir les informations sur les
-positions de largage et les temps de suivi des flotteurs.'
+\telfile{USER\_FLOT3D} afin de fournir les informations sur les
+positions de largage et les temps de suivi des flotteurs.
+La trajectoire des flotteurs est enregistree dans le
+\telkey{FICHIER ASCII DES FLOTTEURS} ou le
+\telkey{FICHIER BINAIRE DES FLOTTEURS}
+qui doivent etre donnes dans le fichier des parametres.'
 AIDE1 =
 'Maximum number of drogues in the computation.
-The user must then fill the subroutine \telfile{USER_FLOT3D}
+The user must then fill the subroutine \telfile{USER\_FLOT3D}
 specifying the coordinates of the starting points,
 their departure and arrival times.
 The trajectory of drogues is recorded in the
@@ -5940,7 +5944,7 @@ NIVEAU = 0
 AIDE =
 'Fichier de resultat ASCII avec les positions des flotteurs.'
 AIDE1 =
-'ASCII Results file with positions of drogues.'
+'ASCII results file with positions of drogues.'
 /
 NOM = 'FICHIER BINAIRE DES FLOTTEURS'
 NOM1 = 'BINARY DROGUES FILE'
@@ -5950,16 +5954,16 @@ TAILLE = 1
 SUBMIT = 'T3DBLO-WRITE;T3DBLO;FACUL;BIN;ECR;SCAL'
 DEFAUT = ''
 DEFAUT1 = ''
-MNEMO = 'T3D\_FILES(T3DBLO)%NAME'
+MNEMO = 'T3D\_FILES(T3DBLO)\%NAME'
 RUBRIQUE =
-'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+'HYDRODYNAMIQUE';'TRANSPORT DE PARTICULES';'FLOTTEURS'
 RUBRIQUE1 =
-'PARTICLE TRANSPORT';'DROGUES';''
+'HYDRODYNAMICS';'PARTICLES TRANSPORT';'DROGUES'
 NIVEAU = 0
 AIDE =
-'Fichier de resultat bianaire avec les positions des flotteurs'
+'Fichier de resultat binaire avec les positions des flotteurs.'
 AIDE1 =
-'Binary results file with positions of drogues'
+'Binary results file with positions of drogues.'
 /
 NOM = 'FORMAT DU FICHIER DES FLOTTEURS'
 NOM1 = 'DROGUES FILE FORMAT'
@@ -5972,23 +5976,23 @@ MNEMO = 'T3D\_FILES(T3DBLO)\%FMT'
 CHOIX = 'BKBINPCL'; 'TECPLOT'
 CHOIX1 = 'BKBINPCL'; 'TECPLOT'
 RUBRIQUE =
-'TRANSPORT DE PARTICULE';'FLOTTEURS';''
+'HYDRODYNAMIQUE';'TRANSPORT DE PARTICULES';'FLOTTEURS'
 RUBRIQUE1 =
-'PARTICLE TRANSPORT';'DROGUES';''
+'HYDRODYNAMICS';'PARTICLES TRANSPORT';'DROGUES'
 NIVEAU = 1
 AIDE =
 'Format du \telkey{FICHIER BINAIRE DES FLOTTEURS}.
 Les valeurs possibles sont :
 \begin{itemize}
-\item BKBINPCL: format PCL binaire natif de Blue Kenue;
-\item TECPLOT: format TecPlot original (ASCII).
+\item BKBINPCL : format PCL binaire natif de Blue Kenue ;
+\item TECPLOT : format TecPlot original (ASCII).
 \end{itemize}'
 AIDE1 =
 'Format of the \telkey{BINARY DROGUES FILE}.
 Possible choices are:
 \begin{itemize}
-\item BKBINPCL: format binary PCL native to Blue Kenue;
-\item TECPLOT: format TecPlot original (ASCII).
+\item BKBINPCL: binary PCL format native to Blue Kenue,
+\item TECPLOT: original TecPlot format (ASCII).
 \end{itemize}'
 /
 NOM = 'PERIODE POUR LES SORTIES DE FLOTTEURS'
@@ -6619,7 +6623,7 @@ Possible choices are:
   \item 3: 2nd order predictor-corrector;
   \item 4: implicit scheme compatible with tidal flats;
   \end{itemize}
-  \item NUMBER OF CORRECTIONS FOR DISTRIBUTIVE SCHEMES:
+  \item \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES}:
   sets the number of sub-iterations for the 1st and 2nd order predictor-corrector
   schemes (a value around 4 is recommended);
   \end{itemize}
@@ -6632,7 +6636,7 @@ Possible choices are:
   \item 3: 2nd order predictor-corrector;
   \item 4: implicit scheme compatible with tidal flats;
   \end{itemize}
-  \item NUMBER OF CORRECTIONS FOR DISTRIBUTIVE SCHEMES:
+  \item \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES}:
   sets the number of sub-iterations for the 1st and 2nd order predictor-corrector
   schemes (a value around 4 is recommended);
   \end{itemize}

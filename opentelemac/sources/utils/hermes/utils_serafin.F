@@ -505,9 +505,6 @@
             RETURN
           ENDIF
 !
-!         THE FIRST FILE (THE GEO) SETS THE PACE
-          IF( SELAFMT.EQ.'SERAFIN?' ) SELAFMT = FFORMAT
-!
           ! EVEN IN 3D THE SERAFON ONLY CONTAINS THE X AND Y COORDINATES AS THE Y VARIES WITH TIME
           SRF_OBJ_TAB(SRF_ID)%POS_DATA = SRF_OBJ_TAB(SRF_ID)%POS_COORD
      &        + (4 +
@@ -602,7 +599,6 @@
           SRF_OBJ_TAB(SRF_ID)%TYP_BND_ELT = 0
           SRF_OBJ_TAB(SRF_ID)%CLI_LINE_BEGIN = 0
           SRF_OBJ_TAB(SRF_ID)%CLI_LINE_END = 0
-          IF( FFORMAT.EQ.'SERAFIN?' ) FFORMAT = SELAFMT
         ENDIF
         ! Initialising boundary unit to the same as mesh file
         SRF_OBJ_TAB(SRF_ID)%NCLI = 0

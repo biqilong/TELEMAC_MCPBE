@@ -74,23 +74,16 @@
         CALL OS('X=X+Y   ',X=E,Y=EVOL_MC)
       ENDIF
 !
-      IF(SLIDE) THEN
+      IF(SLIDE.AND.ENTET) THEN
         SUM_EVOL_MM = 0.D0
         DO I=1,NPOIN
-          SUM_EVOL_MM = SUM_EVOL_MM + EVOL_MM%R(I)
+          SUM_EVOL_MM = SUM_EVOL_MM + EVOL_MM%R(I)*VOLU2D%R(I)
         ENDDO
         IF(NCSIZE.GT.1) THEN
           SUM_EVOL_MM = P_DSUM(SUM_EVOL_MM)
         ENDIF
-        IF(SUM_EVOL_MM.GT.MIN_SED_MASS_COMP) THEN
-          WRITE(LU,*)'SLIDING MODEL SEEMS
-     &                TO BE NOT CONSERVATIV'
-          WRITE(LU,*)'SUM_EVOL_MM :',
-     &               SUM_EVOL_MM
-          CALL PLANTE(1)
-          STOP
-        ENDIF
-!       FIXME: can be removed if it works
+        WRITE(LU,111) SUM_EVOL_MM
+111     FORMAT(5X,'MASS EVOLUTION DUE TO SLIDING =',G16.7,'(KG)')
         CALL OS('X=X+Y   ',X=E,Y=EVOL_MM)
       ENDIF
 !

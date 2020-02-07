@@ -12,9 +12,6 @@ import logging
 from os import path
 from utils.exceptions import TelemacException
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-from mpl_toolkits.mplot3d import Axes3D
 #
 PRISM = 40
 TETRAHEDRON = 30
@@ -764,6 +761,9 @@ class HermesFile():
 
         @retuns the figure object
         """
+        import matplotlib.pyplot as plt
+        import matplotlib.cm as cm
+        from mpl_toolkits.mplot3d import Axes3D
         coordx = self.get_mesh_coord(1)
         coordy = self.get_mesh_coord(2)
         tri = self.get_mesh_connectivity()

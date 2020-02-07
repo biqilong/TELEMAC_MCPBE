@@ -8,7 +8,7 @@
 #
 # ~~> dependencies towards standard python
 import sys
-from os import chdir, remove, walk, path, linesep, sep, mkdir
+from os import chdir, remove, walk, path, linesep, sep, mkdir, stat
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 # ~~> dependencies towards other pytel/modules
 from utils.messages import Messages
@@ -39,45 +39,81 @@ def clean_doc(doc_dir, fullclean):
             remove(fle)
 
 
-def compiletex(texfile, version):
+def compiletex(texfile, version, verbose):
     """
     @brief Full procedure for compiling a LaTeX file
              .i.e pdflatex,bibtex,pdflatex,pdflatex
     @param texfile Name of the main LaTex file
     @param version Version of the code/documentation
+    @param verbose If yes display pdflatex listing
     """
+
+    if verbose:
+        tex_cmd = "pdflatex --jobname={tex}_{version} {tex}.tex"\
+                  .format(tex=texfile, version=version)
+        bib_cmd = "bibtex {}_{}.aux".format(texfile, version)
+    else:
+        tex_cmd = \
+           "pdflatex --jobname={tex}_{version} {tex}.tex >latex_run.log 2>&1"\
+                  .format(tex=texfile, version=version)
+        bib_cmd = "bibtex {}_{}.aux >bib_run.log 2>&1".format(texfile, version)
+
 
     # First compilation
     mes = Messages(size=10)
-    tail, code = mes.run_cmd("pdflatex --jobname=%s_%s %s.tex" %
-                             (texfile, version, texfile), False)
+    tail, code = mes.run_cmd(tex_cmd, False)
 
     if code != 0:
-        raise TelemacException('Latex compilation failed\n {}'.format(tail))
+        if verbose:
+            log = ''
+        else:
+            log = '\noutput:\n{}'.format(\
+                    '\n'.join(get_file_content('latex_run.log')[-20:]))
+        raise TelemacException(\
+            'Latex compilation failed\n{}\n{}'\
+            .format(tail, log))
 
     # Bibtex compilation
-    tail, code = mes.run_cmd("bibtex %s.aux" %
-                             (texfile+'_'+version), False)
+    tail, code = mes.run_cmd(bib_cmd, False)
 
     # Forcing bibtex to pass
     code = 0
 
     if code != 0:
-        raise TelemacException('Bibtex compilation failed\n {}'.format(tail))
+        if verbose:
+            log = ''
+        else:
+            log = '\noutput:\n{}'.format(\
+                    '\n'.join(get_file_content('latex_run.log')[-20:]))
+        raise TelemacException(\
+            'Latex compilation failed\n{}\n{}'\
+            .format(tail, log))
 
     # Second compilation
-    tail, code = mes.run_cmd("pdflatex --jobname=%s_%s %s.tex" %
-                             (texfile, version, texfile), False)
+    tail, code = mes.run_cmd(tex_cmd, False)
 
     if code != 0:
-        raise TelemacException('Latex compilation failed\n{}'.format(tail))
+        if verbose:
+            log = ''
+        else:
+            log = '\noutput:\n{}'.format(\
+                    '\n'.join(get_file_content('bib_run.log')[-20:]))
+        raise TelemacException(\
+            'Latex compilation failed\n{}\n{}'\
+            .format(tail, log))
 
     # Third compilation
-    tail, code = mes.run_cmd("pdflatex --jobname=%s_%s %s.tex" %
-                             (texfile, version, texfile), False)
+    tail, code = mes.run_cmd(tex_cmd, False)
 
     if code != 0:
-        raise TelemacException('Latex compilation failed\n{}'.format(tail))
+        if verbose:
+            log = ''
+        else:
+            log = '\noutput:\n{}'.format(\
+                    '\n'.join(get_file_content('latex_run.log')[-20:]))
+        raise TelemacException(\
+            'Latex compilation failed\n{}\n{}'\
+            .format(tail, log))
 
 #
 def create_case_list_file(doc_dir, val_dir, cfg_val, cleanup):
@@ -120,7 +156,8 @@ def create_case_list_file(doc_dir, val_dir, cfg_val, cleanup):
     return skipped_cases
 
 
-def generate_ref_from_dict(exe_path, dictionary, latex_file, lng, cleanup):
+def generate_ref_from_dict(exe_path, dictionary, latex_file, lng,
+                           cleanup, verbose):
     """
     @brief Generate the Latex file for the
             reference manual from the dictionary
@@ -132,6 +169,7 @@ def generate_ref_from_dict(exe_path, dictionary, latex_file, lng, cleanup):
     @param lng Language for the reference manual
                  1: French
                  2: English
+    @param verbose If True display command
     """
     # Building input parameter file
     latex_dir = path.dirname(latex_file)
@@ -159,18 +197,24 @@ def generate_ref_from_dict(exe_path, dictionary, latex_file, lng, cleanup):
             remove(latex_file)
         # Run Fortran program
         mes = Messages(size=10)
-        cmd = "%s < %s > %s" % (exe_path, param_file, log_file)
-        print(cmd)
+        if verbose:
+            cmd = "{} < {}".format(exe_path, param_file)
+        else:
+            cmd = "{} < {} >{} 2>&1".format(exe_path, param_file, log_file)
+        if verbose:
+            print(cmd)
         _, code = mes.run_cmd(cmd, False)
         if code != 0:
+            if verbose:
+                log = ''
+            else:
+                log = '\n\nHere is the log:\n'\
+                      + '\n'.join(get_file_content(log_file))
             raise TelemacException(\
                     'Could not generated data from dictionary '
-                    + '\n\nHere is the log:\n'
-                    + '\n'.join(get_file_content(log_file))
-                                  )
+                    + '{}'.format(log))
 
-
-def compile_doc(doc_dir, doc_name, version, cleanup, fullcleanup):
+def compile_doc(doc_dir, doc_name, version, cleanup, fullcleanup, verbose):
     """
     @brief Compile the telemac-mascaret documentation
 
@@ -179,6 +223,7 @@ def compile_doc(doc_dir, doc_name, version, cleanup, fullcleanup):
     @param version Version of the code/documentation
     @param cleanup If yes remove temporary files
     @param fullcleanup If yes does cleanup + remove pdf
+    @param verbose If yes display pdflatex listing
     """
     chdir(doc_dir)
     if cleanup or fullcleanup:
@@ -188,7 +233,7 @@ def compile_doc(doc_dir, doc_name, version, cleanup, fullcleanup):
         # removing pdflatex temporary files
         clean_doc(doc_dir, False)
         # compiling the texfile
-        compiletex(doc_name, version)
+        compiletex(doc_name, version, verbose)
 
 def generate_notebook_pdf(doc_dir, notebook_dir):
     """
@@ -212,7 +257,7 @@ def generate_notebook_pdf(doc_dir, notebook_dir):
                 if ".ipynb_checkpoint" in root:
                     continue
                 notebook = path.join(root, ffile)
-                cmd = "ipython3 nbconvert --to pdf --output-dir={} {}"\
+                cmd = "jupyter nbconvert --to pdf --output-dir={} {}"\
                        .format(doc_dir, notebook)
                 print("   ~> Converting "+ffile)
                 # Running convertion
@@ -221,6 +266,75 @@ def generate_notebook_pdf(doc_dir, notebook_dir):
 
                 if code != 0:
                     raise TelemacException('nbconvert failed\n {}'.format(tail))
+
+def compile_doxygen(doxy_file, verbose):
+    """
+    Compile a doxygen documentation
+
+    @param doxy_file name of the doxygen file to use
+    @param verbose If True display doxygen listing
+    """
+
+    doxy_dir = path.dirname(doxy_file)
+
+    chdir(doxy_dir)
+    if verbose:
+        cmd = "doxygen {}".format(doxy_file)
+    else:
+        cmd = "doxygen {} >Doxygen_run.log 2>&1 ".format(doxy_file)
+
+    print("   ~> Generating doxygen documentation for " + doxy_file)
+    # Running convertion
+    mes = Messages(size=10)
+    tail, code = mes.run_cmd(cmd, bypass=False)
+
+    if code != 0:
+        if verbose:
+            log = ''
+        else:
+            log = '\noutput:\n{}'.format(\
+                    '\n'.join(get_file_content('Doxygen_run.log')[-20:]))
+        raise TelemacException(\
+            'Doxygen failed\n{}\n{}'\
+            .format(tail, log))
+
+    html_file = path.join(doxy_dir, 'html', 'index.html')
+
+    print("   To see documentation run (replace firefox by your "\
+          "internet browser):\n   firefox {}".format(html_file))
+
+    doxy_warning_log = path.join(doxy_dir, 'Doxygen_warning.log')
+
+    if stat(doxy_warning_log).st_size != 0:
+        print('There seems to be some doxygen warnings see:\n{}'\
+              .format(doxy_warning_log))
+
+def generate_doxygen(doxydoc, verbose):
+    """
+    Generate the Doxygen documentation (In html) for the Python and the sources
+
+    @param doxydoc name of the doxygen folder to use (doxydocs or doxypydocs)
+    @param verbose If True display doxygen listing
+    """
+
+    if doxydoc == "doxydocs":
+        # Checking that the converter is compiled
+        converter_path = path.join(CFGS.get_root(),
+                                   'optionals',
+                                   'addons',
+                                   'to_f90')
+
+        if not path.exists(path.join(converter_path, 'f77_to_f90')):
+            raise TelemacException(
+                "You need to compile the converter in :\n"+converter_path)
+
+    # Compiling sources doxygen
+    doxy_dir = path.join(CFGS.get_root(),
+                         'documentation',
+                         doxydoc)
+    doxy_file = path.join(doxy_dir, 'Doxyfile')
+
+    compile_doxygen(doxy_file, verbose)
 
 def main():
     """
@@ -238,13 +352,17 @@ use the options --validation/reference/user/release/theory to compile only one
         '''))
     parser = add_config_argument(parser)
     parser.add_argument(
+        "-v", "--verbose", action="store_true",
+        dest="verbose", default=False,
+        help="Will display listing for all commands")
+    parser.add_argument(
         "-m", "--modules",
         dest="modules", default='',
-        help="specify the list modules, default is taken from config file")
+        help="specify the list modules (, separated), default is all of them")
     parser.add_argument(
         "-M", "--misc",
         dest="misc", default='',
-        help="specify the list of misc documentation to compile, "
+        help="specify the list of misc documentation (, separated) to compile, "
              "default is all of them")
     parser.add_argument(
         "--validation", action="store_true",
@@ -272,14 +390,9 @@ use the options --validation/reference/user/release/theory to compile only one
         dest="theory_guide", default=False,
         help="Will generate the theory guide")
     parser.add_argument(
-        "--notebook", action="store_true",
-        dest="notebook", default=False,
-        help="Will generate the notebook into an html version")
-    parser.add_argument(
         "--clean", action="store_true",
         dest="cleanup", default=False,
-        help="Will remove all temporary file "
-             "generated by pdflatex")
+        help="Will remove all temporary file generated by pdflatex")
     parser.add_argument(
         "--fullclean", action="store_true",
         dest="fullcleanup", default=False,
@@ -289,7 +402,6 @@ use the options --validation/reference/user/release/theory to compile only one
 # ~~~~ Environment ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     options = parser.parse_args()
     update_config(options)
-
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Works for all configurations unless specified ~~~~~~~~~~~~~~~
@@ -315,7 +427,8 @@ use the options --validation/reference/user/release/theory to compile only one
     else:
         # all docs
         misc_list = ['developer_guide', 'software_quality_plan',
-                     'TelemacDocTemplate', 'git_guide']
+                     'TelemacDocTemplate', 'git_guide',
+                     'doxypydocs']
         # If a module was specified or a specific documentation for modules
         # not compiling Misc documentation
         if options.modules != '' or not doall:
@@ -372,7 +485,8 @@ use the options --validation/reference/user/release/theory to compile only one
                         'bin', 'damocles'+cfg['SYSTEM']['sfx_exe'])
                 generate_ref_from_dict(\
                         exe_path, dictionary, latex_file, lng,
-                        options.cleanup or options.fullcleanup)
+                        options.cleanup or options.fullcleanup,
+                        options.verbose)
                 todo.append('reference')
         if options.user or doall:
             if code_name not in ['mascaret']:
@@ -383,6 +497,8 @@ use the options --validation/reference/user/release/theory to compile only one
             if code_name in ['telemac3d', 'mascaret', 'waqtel']:
                 todo.append('theory_guide')
         for doc_type in todo:
+            print('\n     ~> Compilation of the {} documentation'\
+                  .format(doc_type))
             doc_dir = path.join(root, 'documentation',
                                 code_name, doc_type)
             chdir(doc_dir)
@@ -391,7 +507,8 @@ use the options --validation/reference/user/release/theory to compile only one
                                      code_name + "_" + doc_type + ".tex")):
                 compile_doc(doc_dir, code_name+'_'+doc_type,
                             version,
-                            options.cleanup, options.fullcleanup)
+                            options.cleanup, options.fullcleanup,
+                            options.verbose)
             else:
                 raise TelemacException(\
                         "   - Error for {} {}, {}.tex "
@@ -402,27 +519,31 @@ use the options --validation/reference/user/release/theory to compile only one
                 output_mess += '   - Created %s_%s_%s.pdf\n' % \
                               (code_name, doc_type, version)
     # List of the other documentation
+    print('\nCompilation of the documentation for Misc'
+          + '\n'+'~'*72)
     for doc in misc_list:
-        print('\nCompilation of the documentation for ' + doc
-              + '\n'+'~'*72)
+        print('\n     ~> Compilation of the {} documentation'.format(doc))
         doc_dir = path.join(root, 'documentation',
                             'Misc', doc)
 
         if doc == 'notebook':
-            notebook_dir = path.join(root, 'examples', 'notebook')
+            notebook_dir = path.join(root, 'notebooks')
             generate_notebook_pdf(doc_dir, notebook_dir)
+        elif doc in ['doxydocs', 'doxypydocs']:
+            generate_doxygen(doc, options.verbose)
         else:
-
             chdir(doc_dir)
             if path.exists(path.join(doc_dir, doc + ".tex")):
                 compile_doc(doc_dir, doc,
                             version,
-                            options.cleanup, options.fullcleanup)
+                            options.cleanup, options.fullcleanup,
+                            options.verbose)
             else:
                 raise TelemacException(\
                         "   - Error in {}, {}.tex "
                         "not found ".format(path.basename(doc_dir), doc))
-        if not (options.cleanup or options.fullcleanup):
+        if not (options.cleanup or options.fullcleanup) or \
+           doc not in ['notebooks', 'doxydocs', 'doxypydocs']:
             output_mess += '   - Created %s_%s.pdf\n' % \
                           (doc, version)
 
