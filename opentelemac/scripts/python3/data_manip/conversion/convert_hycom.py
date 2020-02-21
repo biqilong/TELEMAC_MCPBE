@@ -101,6 +101,7 @@ class HYCOM(object):
         self.experiments = []
         for hycomurl in hycomurls:
             success = False
+            attempt = 0
             while not success:
                 try:
                     success = True
@@ -113,8 +114,11 @@ class HYCOM(object):
                     ats = []
                     z = zip(hycomdata['Date'][0:nit], range(nit))
                 except Exception:
+                    if attempt == 4:
+                        raise TelemacException("Could not access hycom data (Maybe proxy issue ?)")
                     success = False
-                    print(' ... re-attempting ')
+                    attempr += 1
+                    print(' ... re-attempting {}'+attempt)
 
             for hycomdate, itime in z:
                 date = datetime(int(str(hycomdate)[0:4]),

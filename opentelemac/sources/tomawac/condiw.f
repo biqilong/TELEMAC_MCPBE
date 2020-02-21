@@ -87,7 +87,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER UL
+      INTEGER UL,J
       CHARACTER(LEN=8) ::FFORMAT
       LOGICAL TROUVE(3)
 !
@@ -222,6 +222,9 @@
 !
       IF(VENT) THEN
 !
+        DO J=1,3
+          TROUVE(J)=.FALSE.
+        ENDDO
         IF(NAMVEF(1:1).EQ.' '.AND.NAMVEB(1:1).EQ.' '     ) THEN
           WRITE(LU,*) ' '
           WRITE(LU,*)'USE OF WIND VELOCITIES'

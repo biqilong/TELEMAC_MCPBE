@@ -925,9 +925,16 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
         remove(pyf_file)
     if skip_source != '':
         skip_source = 'skip: ' + skip_source + ' :'
+    quiet = '--quiet' if silent else ''
     # First step of call to f2py
-    cmd = '{} --quiet -h {} -m _{} {} {}' \
-        .format(f2py_name, pyf_file, name, source_list, skip_source)
+    cmd = '{f2py_name} {quiet} -h {pyf_file} -m _{name} '\
+          '{source_list} {skip_source}' \
+        .format(f2py_name=f2py_name,
+                quiet=quiet,
+                pyf_file=pyf_file,
+                name=name,
+                source_list=source_list,
+                skip_source=skip_source)
     if not silent:
         print(cmd)
     try:
@@ -949,10 +956,11 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
         compile_cmd = ''
 
     # Second step of call to f2py
-    cmd = '{f2py_name} --quiet -c {pyf_file} --fcompiler={fcompiler} '\
+    cmd = '{f2py_name} {quiet} -c {pyf_file} --fcompiler={fcompiler} '\
           '{compile_cmd} --opt="{f2py_opt}" -I{include} {ld_flags} ' \
         .format(f2py_name=f2py_name,
                 pyf_file=pyf_file,
+                quiet=quiet,
                 fcompiler=fcompiler,
                 compile_cmd=compile_cmd,
                 include=path.join(api_dir, 'include'),

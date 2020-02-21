@@ -38,12 +38,14 @@ class TelemacCas(object):
     Class to hanlde a Telemac-mascaret steering file
     """
 
-    def __init__(self, file_name, dico_file, access='r'):
+    def __init__(self, file_name, dico_file, access='r', check_files=True):
         """
         Init of the class
 
         @param file_name (string) Name of the steering file
         @param dico_file (string) Name of the dictionary to use
+        @param acces (string) r (read) or w (write)
+        @param check_files (bool) If true checking that input files exist
         """
         self.file_name = file_name
         #TODO: Add identification of the module
@@ -52,6 +54,7 @@ class TelemacCas(object):
         self.in_files = {}
         self.out_files = {}
         self.access = access
+        self.check_files = check_files
         # Check if the dictionary has already been parsed
         if dico_file not in DICOS:
             DICOS[dico_file] = TelemacDico(dico_file)
@@ -256,10 +259,11 @@ class TelemacCas(object):
                 if 'LIT' in key_data['SUBMIT']:
                     self.in_files[key] = key_data['SUBMIT']
                     val = self.values[key].strip("'")
-                    if not path.exists(val):
-                        raise TelemacException(\
-                            "In {} missing file for {}:\n {}"\
-                            .format(self.file_name, key, val))
+                    if self.check_files:
+                        if not path.exists(val):
+                            raise TelemacException(\
+                                "In {} missing file for {}:\n {}"\
+                                .format(self.file_name, key, val))
                 # output file
                 if 'ECR' in key_data['SUBMIT']:
                     self.out_files[key] = key_data['SUBMIT']
@@ -346,7 +350,9 @@ class TelemacCas(object):
                 if '=' not in head and ':' not in head:
                     break # move on to next line
                 # If only part of a string value skipping
-                if head.count("'") == 1 or head.count('"') == 1:
+                if (head.count("'") == 1 and ("L'" not in keyword and \
+                                              "D'" not in keyword)) or \
+                    head.count('"') == 1:
                     break
 
                 # ~~> translate the keyword

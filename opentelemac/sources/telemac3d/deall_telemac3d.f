@@ -510,7 +510,9 @@
 !
 !     GOTM
 !
-      CALL DEALLOC_GOTM()
+      IF(ITURBV.EQ.6) THEN
+        CALL DEALLOC_GOTM()
+      ENDIF
 !
 !     Breach
 !

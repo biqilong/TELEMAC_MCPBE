@@ -46,7 +46,7 @@ def main():
     if not path.exists(dico_file):
         raise TelemacException(\
             'Could not find the dictionary file: {}'.format(dico_file))
-    cas = TelemacCas(args.cas_file, dico_file)
+    cas = TelemacCas(args.cas_file, dico_file, check_files=False)
 
     cas.write_fr_gb()
 

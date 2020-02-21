@@ -118,7 +118,7 @@
 !
 !     ID Tracking
 !
-      INTEGER :: MAX_ID = 1
+      INTEGER :: MAX_ID = 10
 !
 !     SHARING AND PASSING ON THE ENDIAN AND THE PRECISION FORMATS
 !
