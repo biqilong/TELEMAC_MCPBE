@@ -98,6 +98,7 @@ class Study(object):
         self.ncnode = 1
         self.nctile = 1
         self.ncsize = self.cas.get('PARALLEL PROCESSORS', default=1)
+
         self.lang = self.cas.lang
 
         self.cpl_cases = {}
@@ -361,6 +362,7 @@ class Study(object):
         Running partionning of the input files
         """
         # No partitionning to do
+
         if self.ncsize <= 1:
             return
         chdir(self.working_dir)

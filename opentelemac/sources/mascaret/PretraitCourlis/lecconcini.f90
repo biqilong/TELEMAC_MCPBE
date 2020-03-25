@@ -311,7 +311,7 @@ use M_LecFicConcIni_I		! Module d'interface
 !	FORMATS D'ECRITURE
 !=========================================================================
 
-  10300 format (/,'CONCENTRATIONS INITIALES',/,		&
+  10300 format (/,'CONCENTRATIONS INITIALES',/,     &
                 &   '------------------------',/)
   10310 format ('Mode de saisie par fichier. Nom du fichier    : ',A )
   10320 format ('Mode de saisie par clavier                      '   )

@@ -117,8 +117,8 @@ class HYCOM(object):
                     if attempt == 4:
                         raise TelemacException("Could not access hycom data (Maybe proxy issue ?)")
                     success = False
-                    attempr += 1
-                    print(' ... re-attempting {}'+attempt)
+                    attempt += 1
+                    print(' ... re-attempting {}'.format(attempt))
 
             for hycomdate, itime in z:
                 date = datetime(int(str(hycomdate)[0:4]),

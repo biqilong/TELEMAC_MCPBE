@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -59,7 +59,7 @@ subroutine PRETRAIT_Tracer( &
 ! PROGICIEL : TRACER         S.MANDELKERN - M. LUCK
 !                            F. ZAOUI                   
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !*****************************************************************************
 !
 !  FONCTION : LECTURE DU FICHIER CAS PAR APPEL DU LOGICIEL DAMOCLES

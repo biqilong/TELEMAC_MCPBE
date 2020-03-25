@@ -1,18 +1,19 @@
 \chapter{Others configurations}
 
-\section{Modification of bottom topography (\telfile{CORFON})}
+\section{Modification of bottom topography (\telfile{USER\_T3D\_CORFON})}
 
 Bottom topography may be introduced at various levels, as stated in section
 \ref{sec:topo}.
 
 \telemac{3D} offers the possibility of modifying the bottom topography at the
-beginning of a computation using the \telfile{T3D\_CORFON} subroutine. This is
+beginning of a computation using the \telfile{USER\_T3D\_CORFON} subroutine. This is
 called up once at the beginning of the computation and enables the value of
 variable \telfile{ZF} to be modified at each point of the mesh. To do this, a number of
 variables such as the point coordinates, the element surface value,
 connectivity table, etc, are made available to the user.
 
-By default, the \telfile{T3D\_CORFON} subroutine carries out a number of bottom
+By default, the \telfile{T3D\_CORFON} subroutine (which calls the
+\telfile{USER\_T3D\_CORFON} subroutine) carries out a number of bottom
 smoothings equal to \telfile{LISFON}, i.e. equal to the number specified by the keyword
 \telkey{NUMBER OF BOTTOM SMOOTHINGS} for which the default value is 0 (no
 smoothing).
@@ -22,21 +23,22 @@ This avoids having to carry out several bottom smoothings or modifications to
 the bottom topography during the computation.
 
 
-\section{Modifying coordinates (\telfile{CORRXY})}
+\section{Modifying coordinates (\telfile{USER\_CORRXY})}
 
 \telemac{3D} also offers the possibility of modifying the mesh point coordinates
 at the beginning of a computation. This means, for example, that it is possible
 to change the scale (from that of a reduced-scale model to that of the real
 object), rotate or translate the object.
 
-The modification is done in the \telfile{CORRXY} subroutine (\bief library), which
-is called up at the beginning of the computation. This subroutine is empty by
+The modification is done in the \telfile{USER\_CORRXY} subroutine (\bief library),
+which is called up at the beginning of the computation. This subroutine is empty by
 default and gives an example of programming a change of scale and origin,
 within commented statements.
 
 It is also possible to specify the coordinates of the origin point of the mesh.
 This is done using the keyword \telkey{ORIGIN COORDINATES} which specify 2
-integers. These 2 integers will be transmitted to the results file in the
+integers (default = (0;0)).
+These 2 integers will be transmitted to the results file in the
 SERAFIN format, for a use by post-processors for superimposition of results
 with digital maps (coordinates in meshes may be reduced to avoid dealing with
 large real numbers). These 2 integers may also be used in subroutines under the
@@ -105,15 +107,16 @@ The new variables are identified by the strings \telfile{PRIVE1, PRIVE2, PRIVE3}
 and \telfile{PRIVE4} for 2D variables and \telfile{P1, P2, P3} and \telfile{P4}
 for 3D variables.
 
-At the end of the \telfile{NOMVAR\_XX} subroutine (XX = 2D or 3D), it is
+At the end of the \telfile{NOMVAR\_TELEMAC3D} or \telfile{NOMVAR\_2D\_IN\_3D}
+subroutines, it is
 possible to change the abbreviations (mnemonics) used for the keywords
 \telkey{VARIABLES FOR GRAPHIC 2D PRINTOUTS} and \telkey{VARIABLES FOR GRAPHIC
-3D}. Sequences of 8 letters may be used.
+3D PRINTOUTS}. Sequences of 8 letters may be used.
 Consequently, the variables must be separated by spaces, commas or semi-colons
 in the keywords, e.g.:
 
 \begin{lstlisting}[language=TelemacCas]
-VARIABLES FOR GRAPHIC PRINTOUTS : 'U, V, H, B'
+VARIABLES FOR GRAPHIC 2D PRINTOUTS : 'U, V, H, B'
 \end{lstlisting}
 
 In the software data structure, these four variables correspond to the tables
@@ -121,8 +124,8 @@ In the software data structure, these four variables correspond to the tables
 and \telfile{PRIVE\%ADR(4)\%P\%R(X)} (in which \telfile{X} is the number of
 nodes in the mesh). These may be used in several places in the programming,
 like all TELEMAC variables.
-For example, they may be used in the subroutines \telfile{CORRXY},
-\telfile{CORSTR}, \telfile{BORD3D}, etc.  If a \telfile{PRIVE} table is used
+For example, they may be used in the subroutines \telfile{USER\_CORRXY},
+\telfile{CORSTR}, \telfile{USER\_BORD3D}, etc.  If a \telfile{PRIVE} table is used
 to program a case, it is essential to check the value of the keyword
 \telkey{NUMBER OF PRIVATE ARRAYS}.
 This value fixes the number of tables used (0, 1, 2, 3 or 4)
@@ -135,7 +138,7 @@ It is initialised with the value 10.
 
 \begin{lstlisting}[language=TelFortran]
 DO I=1,NPOIN2
-  PRIVE\%ADR(2)\%P\%R(I) = 10.D0
+  PRIVE%ADR(2)%P%R(I) = 10.D0
 ENDDO
 \end{lstlisting}
 
@@ -183,10 +186,10 @@ The variable \telfile{MESH} is needed for the \telfile{FILPOL} subroutine
 but have no meaning for the user.
 
 
-\section{Validating a computation (\telfile{VALIDA})}
+\section{Validating a computation (\telfile{BIEF\_VALIDA})}
 
 The structure of the \telemac{3D} software offers an entry point for validating a
-computation, in the form of a subroutine named \telfile{VALIDA}, which has to
+computation, in the form of a subroutine named \telfile{BIEF\_VALIDA}, which has to
 be filled by the user in accordance with each particular case.
 Validation may be carried out either with respect to a reference file (which is
 therefore a file of results from the same computation that is taken as reference,
@@ -194,16 +197,17 @@ the name of which is supplied by the keyword \telkey{REFERENCE FILE}), or with
 respect to an analytical solution that must then be programmed entirely by the user.
 
 When using a reference file, the keyword \telkey{REFERENCE FILE FORMAT}
-specifies the format of this binary file (SERAFIN by default).
+specifies the format of this binary file ('SERAFIN ' by default).
 
-The \telfile{VALIDA} subroutine is called at each time step when the keyword
+The \telfile{BIEF\_VALIDA} subroutine is called at each time step when the keyword
 \telkey{VALIDATION} has the value YES, enabling a comparison to be made with
-the validation solution at each time step. By default, the \telfile{VALIDA}
+the validation solution at each time step. By default, the \telfile{BIEF\_VALIDA}
 subroutine only does a comparison with the last time step. The results of this
 comparison are given in the output listing.
 
 
 \section{Coupling}
+\label{sec:coupling}
 
 The principle of coupling two (or in theory more) simulation modules involves
 running the two calculations simultaneously and exchanging the various results
@@ -226,8 +230,11 @@ bottom,
 module at the next time step, and so on.
 \end{itemize}
 
-Two modules can be coupled in the current version of the code: the sedimentary
-transport module SISYPHE and the sea state computational module \tomawac. The
+Several modules can be coupled in the current version of the code:
+the sedimentary transport modules \gaia or \sisyphe,
+the sea state computational module \tomawac with 2 options (like with
+\telemac{2d} and forces constant along the vertical, or with 3D forces)
+and the water quality module \waqtel (and even DELWAQ). The
 time step used for the two calculations is not necessarily the same and is
 managed automatically by the coupling algorithms and the keyword
 \telkey{COUPLING PERIOD FOR SISYPHE} and \telkey{COUPLING PERIOD FOR TOMAWAC}
@@ -238,16 +245,58 @@ indicates which simulation code is to be coupled with \telemac{3D}. The values o
 this keyword can be:
 
 \begin{itemize}
+\item  \telkey{COUPLING WITH}= `GAIA' for coupling with the \gaia module,
+
 \item  \telkey{COUPLING WITH}= `SISYPHE' for coupling with the \sisyphe module,
 
 \item  \telkey{COUPLING WITH}= `TOMAWAC' for coupling with the \tomawac module,
+forces are constant along the vertical,
 
-\item  \telkey{COUPLING WITH}= `SISYPHE, TOMAWAC' for coupling with both.
+\item  \telkey{COUPLING WITH}= `TOMAWACT3D' for coupling with the \tomawac module,
+forces are 3D,
+
+\item  \telkey{COUPLING WITH}= `WAQTEL' for coupling with the \waqtel module.
+
+%\item  \telkey{COUPLING WITH}= `SISYPHE, TOMAWAC' for coupling with both.
 \end{itemize}
 
-Depending on the module(s) used, the keywords \telkey{SISYPHE STEERING
-FILE} and \telkey{TOMAWAC STEERING FILE} indicate the names of the steering files
-of the coupled modules.
+If wanting to couple with 2 modules or more, the differents modules are to
+be written in the \telkey{COUPLING WITH} separated with semicolon.
+
+Depending on the module(s) used, the keywords
+\telkey{GAIA STEERING FILE}, \telkey{SISYPHE STEERING FILE},
+\telkey{TOMAWAC STEERING FILE} and \telkey{WAQTEL STEERING FILE}
+indicate the names of the steering files
+of the coupled modules.\\
+
+If coupling with the water quality module \waqtel, the integer keyword
+\telkey{WATER QUALITY PROCESS} must be set to a value different from 1 (default = 1)
+in the \telemac{3d} steering file.
+The possible choices are:
+\begin{itemize}
+\item 0: all available processes,
+\item 1: nothing (default value),
+\item 2: O$_2$ module,
+\item 3: BIOMASS module,
+\item 5: EUTRO module,
+\item 7: MICROPOL module,
+\item 11: THERMIC module,
+\item 13: AED2 model,
+\item 17: degradation law.
+\end{itemize}
+
+Several modules can be combined by giving the multiplication of the process choices,
+e.g. 55 = 5 $\times$ 11 activates EUTRO and THERMIC modules.
+It is noted that AED2 should be used on its own, for the time being,
+without possible combination with other processes.
+Please refer to the \waqtel documentation for additional informations for
+\waqtel.\\
+
+If coupling with the \tomawac in a 3D way (the keyword \telkey{COUPLING WITH}
+including TOMAWACT3D), the keyword \telkey{BOTTOM FRICTION DUE TO WAVES}
+enables to take into account the momentum lost by waves due to
+bottom friction.
+A fine mesh around the bottom is needed to be accurate.\\
 
 The keyword \telkey{COUPLING WITH} is also used if the computation has to
 generate the appropriate files necessary to run a water quality simulation with

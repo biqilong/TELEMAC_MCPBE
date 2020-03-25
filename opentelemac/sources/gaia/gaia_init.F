@@ -544,6 +544,7 @@
 !     BALANCE
 !
       IF(BILMA) THEN
+        MASS0ACT = 0.D0
         IF(NSAND.GT.0) THEN
           DO IPOIN=1,NPOIN
             DO ISAND=1,NSAND

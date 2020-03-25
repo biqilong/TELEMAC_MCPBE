@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -20,7 +20,7 @@ module M_LOI_TRACER_T
 !***********************************************************************
 ! PROGICIEL : TRACER         S.MANDELKERN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    use M_PRECISION
@@ -82,13 +82,13 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.Graph.Name') then
+      if ( index(NomVar, 'Model.Tracer.Graph.Name') > 0) then
          TypeVar = 'STRING'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Graph.Time') then
+      else if ( index(NomVar, 'Model.Tracer.Graph.Time') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Graph.Concentration') then
+      else if ( index(NomVar, 'Model.Tracer.Graph.Concentration') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
       else
@@ -123,15 +123,15 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Graph.Name') then
+      if ( index(NomVar, 'Model.Tracer.Graph.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Graph.Time') then
+      else if ( index(NomVar, 'Model.Tracer.Graph.Time') > 0) then
          taille1 = size(Instance%Temps)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Graph.Concentration') then
+      else if ( index(NomVar, 'Model.Tracer.Graph.Concentration') > 0) then
          taille1 = size(Instance%Conc, 1)
          taille2 = size(Instance%Conc, 2)
          taille3 = 0
@@ -166,7 +166,7 @@ contains
       !------------------------------------------------------------------------------
       ! Fin des appels aux fonctions SET_TAILLE_VAR_XXXX des membres de type primitif
       !------------------------------------------------------------------------------
-      if ( NomVar == 'Model.Tracer.Graph.Time') then
+      if ( index(NomVar, 'Model.Tracer.Graph.Time') > 0) then
         if (ASSOCIATED(Instance%Temps)) then
            t1 = size(Instance%Temps)
            if (t1 /= NewT1) then
@@ -186,7 +186,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Tracer.Graph.Concentration') then
+      else if ( index(NomVar, 'Model.Tracer.Graph.Concentration') > 0) then
         if (ASSOCIATED(Instance%Conc)) then
            t1 = size(Instance%Conc, 1)
            t2 = size(Instance%Conc, 2)
@@ -237,9 +237,9 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Graph.Time') then
+      if ( index(NomVar, 'Model.Tracer.Graph.Time') > 0) then
          valeur = Instance%Temps(index1)
-      else if ( NomVar == 'Model.Tracer.Graph.Concentration') then
+      else if ( index(NomVar, 'Model.Tracer.Graph.Concentration') > 0) then
          valeur = Instance%Conc(index1, index2)
       else
          GET_DOUBLE_LOI_TRACER = 1
@@ -292,9 +292,9 @@ contains
       SET_DOUBLE_LOI_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Graph.Time') then
+      if ( index(NomVar, 'Model.Tracer.Graph.Time') > 0) then
          Instance%Temps(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Graph.Concentration') then
+      else if ( index(NomVar, 'Model.Tracer.Graph.Concentration') > 0) then
          Instance%Conc(index1, index2) = valeur
       else
          SET_DOUBLE_LOI_TRACER = 1

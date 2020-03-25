@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -34,7 +34,7 @@ subroutine STOCK_CALAGE( &
 !***********************************************************************
 !  PROGICIEL : MASCARET
 !
-!  VERSION : 8.1.4           EDF-CEREMA
+!  VERSION : V8P2R0           EDF-CEREMA
 !
 !  FONCTION :  STOCKAGE SUR FICHIER AU FORMAT `LIDO NON PERMANENT'
 !  --------    DES RESULTATS PROPRES A CASIER

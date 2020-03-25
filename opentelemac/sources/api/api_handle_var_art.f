@@ -30,13 +30,14 @@
       !BRIEF GET A DOUBLE ARRAY FROM ARTEMIS
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_ARRAY_ART_D
-     &     (INST, VARNAME, VALEUR, DIM1, IERR)
+     &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
 !
         TYPE(INSTANCE_ART),         INTENT(IN) :: INST
         CHARACTER(LEN=ART_VAR_LEN), INTENT(IN) :: VARNAME
         INTEGER,                    INTENT(IN) :: DIM1
         DOUBLE PRECISION,           INTENT(OUT):: VALEUR(DIM1)
         INTEGER,                    INTENT(OUT):: IERR
+        INTEGER, OPTIONAL,          INTENT(IN) :: BLOCK_INDEX
 !
         IERR = 0
         VALEUR = 0.0
@@ -60,13 +61,14 @@
       !BRIEF DEFINES THE VALUE OF A DOUBLE ARRAY OF ARTEMIS
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_ARRAY_ART_D
-     &     (INST, VARNAME, VALEUR, DIM1, IERR)
+     &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
 !
         TYPE(INSTANCE_ART),    INTENT(INOUT) :: INST
         CHARACTER(LEN=ART_VAR_LEN), INTENT(IN)  :: VARNAME
         INTEGER,               INTENT(IN) :: DIM1
         DOUBLE PRECISION,      INTENT(IN) :: VALEUR(DIM1)
         INTEGER,               INTENT(OUT) :: IERR
+        INTEGER, OPTIONAL,          INTENT(IN) :: BLOCK_INDEX
 !
         IERR = 0
         IF(TRIM(VARNAME).EQ.'MODEL.X') THEN

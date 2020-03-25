@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -20,7 +20,7 @@ module M_CONSTANTES_TRACER_T
 !***********************************************************************
 ! PROGICIEL : TRACER         S.MANDELKERN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -100,31 +100,31 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.Convection') then
+      if ( index(NomVar, 'Model.Tracer.Constant.ConvectionScheme') > 0) then
+         TypeVar = 'INT'
+         dimVar                = 0
+      else if ( index(NomVar, 'Model.Tracer.Constant.Convection') > 0) then
          TypeVar = 'BOOL'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.ConvectionScheme') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.FVorder') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.FVorder') then
-         TypeVar = 'INT'
-         dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.SlopeLimValue') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimValue') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.SlopeLimiter') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimiter') > 0) then
          TypeVar = 'BOOL'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.Diffusion') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Diffusion') > 0) then
          TypeVar = 'BOOL'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.Disp') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Disp') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.MultiCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.MultiCoefDiff') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Constant.AddCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.AddCoefDiff') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
       else
@@ -159,39 +159,39 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.Convection') then
+      if ( index(NomVar, 'Model.Tracer.Constant.ConvectionScheme') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.ConvectionScheme') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Convection') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.FVorder') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.FVorder') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.SlopeLimValue') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimValue') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.SlopeLimiter') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimiter') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.Diffusion') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Diffusion') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.Disp') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Disp') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.MultiCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.MultiCoefDiff') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Constant.AddCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.AddCoefDiff') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -245,11 +245,11 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.SlopeLimValue') then
+      if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimValue') > 0) then
          valeur = Instance%ParamW
-      else if ( NomVar == 'Model.Tracer.Constant.MultiCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.MultiCoefDiff') > 0) then
          valeur = Instance%CoefDiffu(1)
-      else if ( NomVar == 'Model.Tracer.Constant.AddCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.AddCoefDiff') > 0) then
          valeur = Instance%CoefDiffu(2)
       else
          GET_DOUBLE_CONSTANTES_TRACER = 1
@@ -273,11 +273,11 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.ConvectionScheme') then
+      if ( index(NomVar, 'Model.Tracer.Constant.ConvectionScheme') > 0) then
          valeur = Instance%ScheConv
-      else if ( NomVar == 'Model.Tracer.Constant.FVorder') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.FVorder') > 0) then
          valeur = Instance%OrdreVF
-      else if ( NomVar == 'Model.Tracer.Constant.Disp') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Disp') > 0) then
          valeur = Instance%OptionCalculDisp
       else
          GET_INT_CONSTANTES_TRACER = 1
@@ -301,11 +301,11 @@ contains
       valeur                = .FALSE.
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.Convection') then
+      if ( index(NomVar, 'Model.Tracer.Constant.Convection') > 0) then
          valeur = Instance%Conv
-      else if ( NomVar == 'Model.Tracer.Constant.SlopeLimiter') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimiter') > 0) then
          valeur = Instance%LimiteurPente
-      else if ( NomVar == 'Model.Tracer.Constant.Diffusion') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Diffusion') > 0) then
          valeur = Instance%Diff
       else
          GET_BOOL_CONSTANTES_TRACER = 1
@@ -333,11 +333,11 @@ contains
       SET_DOUBLE_CONSTANTES_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.SlopeLimValue') then
+      if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimValue') > 0) then
          Instance%ParamW = valeur
-      else if ( NomVar == 'Model.Tracer.Constant.MultiCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.MultiCoefDiff') > 0) then
          Instance%CoefDiffu(1) = valeur
-      else if ( NomVar == 'Model.Tracer.Constant.AddCoefDiff') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.AddCoefDiff') > 0) then
          Instance%CoefDiffu(2) = valeur
       else
          SET_DOUBLE_CONSTANTES_TRACER = 1
@@ -359,11 +359,11 @@ contains
       SET_INT_CONSTANTES_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.ConvectionScheme') then
+      if ( index(NomVar, 'Model.Tracer.Constant.ConvectionScheme') > 0) then
          Instance%ScheConv = valeur
-      else if ( NomVar == 'Model.Tracer.Constant.FVorder') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.FVorder') > 0) then
          Instance%OrdreVF = valeur
-      else if ( NomVar == 'Model.Tracer.Constant.Disp') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Disp') > 0) then
          Instance%OptionCalculDisp = valeur
       else
          SET_INT_CONSTANTES_TRACER = 1
@@ -385,11 +385,11 @@ contains
       SET_BOOL_CONSTANTES_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Constant.Convection') then
+      if ( index(NomVar, 'Model.Tracer.Constant.Convection') > 0) then
          Instance%Conv = valeur
-      else if ( NomVar == 'Model.Tracer.Constant.SlopeLimiter') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.SlopeLimiter') > 0) then
          Instance%LimiteurPente = valeur
-      else if ( NomVar == 'Model.Tracer.Constant.Diffusion') then
+      else if ( index(NomVar, 'Model.Tracer.Constant.Diffusion') > 0) then
          Instance%Diff = valeur
       else
          SET_BOOL_CONSTANTES_TRACER = 1

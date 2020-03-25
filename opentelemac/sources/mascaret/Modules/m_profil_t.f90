@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_PROFIL_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -125,49 +125,49 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-       if ( NomVar == 'Model.CrossSection.Name') then
+       if ( index(NomVar, 'Model.CrossSection.Name') > 0) then
           TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.RelAbs') then
+       else if ( index(NomVar, 'Model.CrossSection.RelAbs') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.AbsAbs') then
+       else if ( index(NomVar, 'Model.CrossSection.AbsAbs') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.ReachNum') then
+       else if ( index(NomVar, 'Model.CrossSection.ReachNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.ReachName') then
+       else if ( index(NomVar, 'Model.CrossSection.ReachName') > 0) then
          TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.NumStep') then
+       else if ( index(NomVar, 'Model.CrossSection.NumStep') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.Step') then
+       else if ( index(NomVar, 'Model.CrossSection.Step') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.Zbot') then
+       else if ( index(NomVar, 'Model.CrossSection.Zbot') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.Zbank') then
+       else if ( index(NomVar, 'Model.CrossSection.Zbank') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.CrossSection.X') then
+       else if ( index(NomVar, 'Model.CrossSection.X') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.CrossSection.Y') then
+       else if ( index(NomVar, 'Model.CrossSection.Y') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.CrossSection.Bound1') then
+       else if ( index(NomVar, 'Model.CrossSection.Bound1') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.CrossSection.Bound2') then
+       else if ( index(NomVar, 'Model.CrossSection.Bound2') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.CrossSection.FricCoef1') then
+       else if ( index(NomVar, 'Model.CrossSection.FricCoef1') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.CrossSection.FricCoef2') then
+       else if ( index(NomVar, 'Model.CrossSection.FricCoef2') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
        else
@@ -203,43 +203,43 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CrossSection.Name') then
+      if ( index(NomVar, 'Model.CrossSection.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.RelAbs') then
+      else if ( index(NomVar, 'Model.CrossSection.RelAbs') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.AbsAbs') then
+      else if ( index(NomVar, 'Model.CrossSection.AbsAbs') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.ReachNum') then
+      else if ( index(NomVar, 'Model.CrossSection.ReachNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.ReachName') then
+      else if ( index(NomVar, 'Model.CrossSection.ReachName') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.NumStep') then
+      else if ( index(NomVar, 'Model.CrossSection.NumStep') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.Step') then
+      else if ( index(NomVar, 'Model.CrossSection.Step') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.Zbot') then
+      else if ( index(NomVar, 'Model.CrossSection.Zbot') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.Zbank') then
+      else if ( index(NomVar, 'Model.CrossSection.Zbank') > 0) then
          taille1 = size(Instance%ZRive)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.X') then
+      else if ( index(NomVar, 'Model.CrossSection.X') > 0) then
          if (ASSOCIATED(Instance%X)) then
             taille1 = size(Instance%X)
          else
@@ -247,7 +247,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.Y') then
+      else if ( index(NomVar, 'Model.CrossSection.Y') > 0) then
          if (ASSOCIATED(Instance%Y)) then
             taille1 = size(Instance%Y)
          else
@@ -255,19 +255,19 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.Bound1') then
+      else if ( index(NomVar, 'Model.CrossSection.Bound1') > 0) then
          taille1 = size(Instance%LimiteMin)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.Bound2') then
+      else if ( index(NomVar, 'Model.CrossSection.Bound2') > 0) then
          taille1 = size(Instance%LimiteMaj)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.FricCoef1') then
+      else if ( index(NomVar, 'Model.CrossSection.FricCoef1') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CrossSection.FricCoef2') then
+      else if ( index(NomVar, 'Model.CrossSection.FricCoef2') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -307,7 +307,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.CrossSection.X') then
+      if ( index(NomVar, 'Model.CrossSection.X') > 0) then
         if (ASSOCIATED(Instance%X)) then
            t1 = size(Instance%X)
            if (t1 /= NewT1) then
@@ -327,7 +327,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.CrossSection.Y') then
+      else if ( index(NomVar, 'Model.CrossSection.Y') > 0) then
         if (ASSOCIATED(Instance%Y)) then
            t1 = size(Instance%Y)
            if (t1 /= NewT1) then
@@ -377,23 +377,23 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CrossSection.RelAbs') then
+      if ( index(NomVar, 'Model.CrossSection.RelAbs') > 0) then
          valeur = Instance%AbsRel
-      else if ( NomVar == 'Model.CrossSection.AbsAbs') then
+      else if ( index(NomVar, 'Model.CrossSection.AbsAbs') > 0) then
          valeur = Instance%AbsAbs
-      else if ( NomVar == 'Model.CrossSection.Step') then
+      else if ( index(NomVar, 'Model.CrossSection.Step') > 0) then
          valeur = Instance%Pas
-      else if ( NomVar == 'Model.CrossSection.Zbot') then
+      else if ( index(NomVar, 'Model.CrossSection.Zbot') > 0) then
          valeur = Instance%Zref
-      else if ( NomVar == 'Model.CrossSection.Zbank') then
+      else if ( index(NomVar, 'Model.CrossSection.Zbank') > 0) then
          valeur = Instance%ZRive(index1)
-      else if ( NomVar == 'Model.CrossSection.X') then
+      else if ( index(NomVar, 'Model.CrossSection.X') > 0) then
          valeur = Instance%X(index1)
-      else if ( NomVar == 'Model.CrossSection.Y') then
+      else if ( index(NomVar, 'Model.CrossSection.Y') > 0) then
          valeur = Instance%Y(index1)
-      else if ( NomVar == 'Model.CrossSection.FricCoef1') then
+      else if ( index(NomVar, 'Model.CrossSection.FricCoef1') > 0) then
          valeur = Instance%CoeffFrottMin
-      else if ( NomVar == 'Model.CrossSection.FricCoef2') then
+      else if ( index(NomVar, 'Model.CrossSection.FricCoef2') > 0) then
          valeur = Instance%CoeffFrottMaj
       else
          GET_DOUBLE_PROFIL = 1
@@ -418,13 +418,13 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CrossSection.ReachNum') then
+      if ( index(NomVar, 'Model.CrossSection.ReachNum') > 0) then
          valeur = Instance%NumBief
-      else if ( NomVar == 'Model.CrossSection.NumStep') then
+      else if ( index(NomVar, 'Model.CrossSection.NumStep') > 0) then
          valeur = Instance%NbPas
-      else if ( NomVar == 'Model.CrossSection.Bound1') then
+      else if ( index(NomVar, 'Model.CrossSection.Bound1') > 0) then
          valeur = Instance%LimiteMin(index1)
-      else if ( NomVar == 'Model.CrossSection.Bound2') then
+      else if ( index(NomVar, 'Model.CrossSection.Bound2') > 0) then
          valeur = Instance%LimiteMaj(index1)
       else
          GET_INT_PROFIL = 1
@@ -449,9 +449,9 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CrossSection.Name') then
+      if ( index(NomVar, 'Model.CrossSection.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.CrossSection.ReachName') then
+      else if ( index(NomVar, 'Model.CrossSection.ReachName') > 0) then
          valeur = Instance%NomBief
       else
          GET_STRING_PROFIL = 1
@@ -481,23 +481,23 @@ contains
       SET_DOUBLE_PROFIL = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CrossSection.RelAbs') then
+      if ( index(NomVar, 'Model.CrossSection.RelAbs') > 0) then
          Instance%AbsRel = valeur
-      else if ( NomVar == 'Model.CrossSection.AbsAbs') then
+      else if ( index(NomVar, 'Model.CrossSection.AbsAbs') > 0) then
          Instance%AbsAbs = valeur
-      else if ( NomVar == 'Model.CrossSection.Step') then
+      else if ( index(NomVar, 'Model.CrossSection.Step') > 0) then
          Instance%Pas = valeur
-      else if ( NomVar == 'Model.CrossSection.Zbot') then
+      else if ( index(NomVar, 'Model.CrossSection.Zbot') > 0) then
          Instance%Zref = valeur
-      else if ( NomVar == 'Model.CrossSection.Zbank') then
+      else if ( index(NomVar, 'Model.CrossSection.Zbank') > 0) then
          Instance%ZRive(index1) = valeur
-      else if ( NomVar == 'Model.CrossSection.X') then
+      else if ( index(NomVar, 'Model.CrossSection.X') > 0) then
          Instance%X(index1) = valeur
-      else if ( NomVar == 'Model.CrossSection.Y') then
+      else if ( index(NomVar, 'Model.CrossSection.Y') > 0) then
          Instance%Y(index1) = valeur
-      else if ( NomVar == 'Model.CrossSection.FricCoef1') then
+      else if ( index(NomVar, 'Model.CrossSection.FricCoef1') > 0) then
          Instance%CoeffFrottMin = valeur
-      else if ( NomVar == 'Model.CrossSection.FricCoef2') then
+      else if ( index(NomVar, 'Model.CrossSection.FricCoef2') > 0) then
          Instance%CoeffFrottMaj = valeur
       else
          SET_DOUBLE_PROFIL = 1
@@ -520,13 +520,13 @@ contains
       SET_INT_PROFIL = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CrossSection.ReachNum') then
+      if ( index(NomVar, 'Model.CrossSection.ReachNum') > 0) then
          Instance%NumBief = valeur
-      else if ( NomVar == 'Model.CrossSection.NumStep') then
+      else if ( index(NomVar, 'Model.CrossSection.NumStep') > 0) then
          Instance%NbPas = valeur
-      else if ( NomVar == 'Model.CrossSection.Bound1') then
+      else if ( index(NomVar, 'Model.CrossSection.Bound1') > 0) then
          Instance%LimiteMin(index1) = valeur
-      else if ( NomVar == 'Model.CrossSection.Bound2') then
+      else if ( index(NomVar, 'Model.CrossSection.Bound2') > 0) then
          Instance%LimiteMaj(index1) = valeur
       else
          SET_INT_PROFIL = 1
@@ -549,9 +549,9 @@ contains
       SET_STRING_PROFIL = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CrossSection.Name') then
+      if ( index(NomVar, 'Model.CrossSection.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.CrossSection.ReachName') then
+      else if ( index(NomVar, 'Model.CrossSection.ReachName') > 0) then
          Instance%NomBief = valeur
       else
          SET_STRING_PROFIL = 1

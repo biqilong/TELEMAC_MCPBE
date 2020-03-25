@@ -8,7 +8,7 @@ CONTAINS
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 ! Debitance
 ! Strickler mineur

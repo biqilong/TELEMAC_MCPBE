@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -19,7 +19,7 @@
 ! *********************************************************************
 ! PROGICIEL : MASCARET       J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
    !.................................................................................................................................
    ! Importation de l'etat Mascaret a partir de la ligne d'eau initiale (debit, cote) passee en argument
@@ -313,6 +313,12 @@ subroutine  INIT_LIGNE_MASCARET(Erreur, Identifiant, Q, Z, Taille)
       nullify(Etat%ZINIT)
    endif
    nullify(Etat%ZINIT)                     ! ligne initiale (noyau Mascaret)
+
+   Etat%tempsPrecedent = 0.
+   Etat%numPasTps = 0
+   Etat%DT = 0.
+   Etat%DTRezo = 0.
+   Etat%NBARAD = 0
 
 ! LIGNE D'EAU INITIALE
 !---------------------

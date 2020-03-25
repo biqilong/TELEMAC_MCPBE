@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -41,7 +41,7 @@ subroutine  PLANIM         ( &
 !                             S. PERON
 !                             S. MANDELKERN
 !
-! VERSION : 8.1.4                EDF-CEREMA
+! VERSION : V8P2R0                EDF-CEREMA
 ! *********************************************************************
 !  FONCTION :
 !  --------
@@ -188,6 +188,10 @@ subroutine  PLANIM         ( &
    Allocate(DZP(size(Profil)),STAT=retour)  ! PU2017: Allocation d'un tableau pour pas de planimetrage (utile pour CSUR)
 
    if(temps.EQ.TempsInitial)then
+   if(.not.associated(vsed)) then
+     allocate(vsed(size(profil)), STAT=retour)
+     Vsed(:) = 0.0D0
+   endif
    if(.not.associated(ProfilPlan%B1)) allocate( ProfilPlan%B1(size( Profil ),nb_pas) , STAT = retour )
    if( retour /= 0 ) then
       Erreur%Numero = 5
@@ -288,10 +292,12 @@ subroutine  PLANIM         ( &
 
       !Zold = Profil(iprof)%ZRef
 
-      if(optionCourlis) then
-        ! critere de varation sedimentaire
+      if(optionCourlis .AND. clipping_option) then
+        ! critere de variation sedimentaire
         Hthres = fracH*(myZsl(iprof)-Profil(iprof)%ZRef)
         condition_courlis = abs(varsed(iprof)) > Hthres
+      else if (optionCourlis) then
+        condition_courlis = abs(varsed(iprof)) > absolute_clip
       else
         condition_courlis = .false.
       endif
@@ -304,7 +310,7 @@ subroutine  PLANIM         ( &
       abs_abs  = Profil(iprof)%AbsAbs
       abs_rel  = Profil(iprof)%AbsRel
 
-      if ( Temps .EQ. TempsInitial .OR. condition_courlis ) then
+      if ( Temps .EQ. TempsInitial .OR. condition_courlis) then
 
         my_cpt_planim = my_cpt_planim + 1  ! PU2017: Incrementation de la variable globale pour compter le nombre d'etapes de planimetrage
 
@@ -448,7 +454,8 @@ subroutine  PLANIM         ( &
         ! ---------------------------------------------------------------------
         ok = 0
 
-        If ( (NiteSed < 1).OR.(Vsed(iprof) < 0.D0) ) Then
+        If (Temps .EQ. TempsInitial .OR. suspension_option .OR.  &
+          (NiteSed < 1).OR.(Vsed(iprof) < 0.D0) ) Then
 
           ok = 1  ! PU2017: Test pour savoir si planim mis a jour
 
@@ -540,7 +547,7 @@ subroutine  PLANIM         ( &
           ProfilPlan%SS(iprof,:)  = DSS(:)
           ProfilPlan%S2G(iprof,:) = DS2G(:)
 
-        Else If ( (Vsed(iprof) > 0.D0).AND.(NiteSed > 0) ) Then  ! PU2017: Planim pour cas Depot
+        Else If ( bedload_option .AND. (vsed(iprof) > 0.D0).AND.(NiteSed > 0) ) Then  ! PU2017: Planim pour cas Depot
 
           ok = 1  ! PU2017: Test pour savoir si planim mis a jour
           DZP(iprof) = pas

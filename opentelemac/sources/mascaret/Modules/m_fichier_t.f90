@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_FICHIER_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -130,91 +130,91 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.File.Listing.Unit') then
+      if ( index(NomVar, 'Model.File.Listing.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Listing.Name') then
+      else if ( index(NomVar, 'Model.File.Listing.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Result.Unit') then
+      else if ( index(NomVar, 'Model.File.Result.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Result.Name') then
+      else if ( index(NomVar, 'Model.File.Result.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Result2.Unit') then
+      else if ( index(NomVar, 'Model.File.Result2.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Result2.Name') then
+      else if ( index(NomVar, 'Model.File.Result2.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.GeoStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.GeoStoArea.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.GeoStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.GeoStoArea.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ResultStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.ResultStoArea.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ResultStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.ResultStoArea.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ResultLink.Unit') then
+      else if ( index(NomVar, 'Model.File.ResultLink.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ResultLink.Name') then
+      else if ( index(NomVar, 'Model.File.ResultLink.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Tracer.Result.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.Result.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Tracer.Result.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.Result.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ListingStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.ListingStoArea.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ListingStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.ListingStoArea.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ListingLink.Unit') then
+      else if ( index(NomVar, 'Model.File.ListingLink.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.ListingLink.Name') then
+      else if ( index(NomVar, 'Model.File.ListingLink.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Tracer.Listing.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.Listing.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Tracer.Listing.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.Listing.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Tracer.IniConc.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.IniConc.Unit') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.File.Tracer.IniConc.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.IniConc.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -268,27 +268,27 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.File.Listing.Unit') then
+      if ( index(NomVar, 'Model.File.Listing.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.Result.Unit') then
+      else if ( index(NomVar, 'Model.File.Result.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.Result2.Unit') then
+      else if ( index(NomVar, 'Model.File.Result2.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.GeoStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.GeoStoArea.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.ResultStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.ResultStoArea.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.ResultLink.Unit') then
+      else if ( index(NomVar, 'Model.File.ResultLink.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.Tracer.Result.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.Result.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.ListingStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.ListingStoArea.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.ListingLink.Unit') then
+      else if ( index(NomVar, 'Model.File.ListingLink.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.Tracer.Listing.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.Listing.Unit') > 0) then
          valeur = Instance%Unite
-      else if ( NomVar == 'Model.File.Tracer.IniConc.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.IniConc.Unit') > 0) then
          valeur = Instance%Unite
       else
          GET_INT_FICHIER = 1
@@ -313,27 +313,27 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.File.Listing.Name') then
+      if ( index(NomVar, 'Model.File.Listing.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.Result.Name') then
+      else if ( index(NomVar, 'Model.File.Result.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.Result2.Name') then
+      else if ( index(NomVar, 'Model.File.Result2.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.GeoStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.GeoStoArea.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.ResultStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.ResultStoArea.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.ResultLink.Name') then
+      else if ( index(NomVar, 'Model.File.ResultLink.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.Tracer.Result.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.Result.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.ListingStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.ListingStoArea.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.ListingLink.Name') then
+      else if ( index(NomVar, 'Model.File.ListingLink.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.Tracer.Listing.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.Listing.Name') > 0) then
          valeur = Instance%Nom
-      else if ( NomVar == 'Model.File.Tracer.IniConc.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.IniConc.Name') > 0) then
          valeur = Instance%Nom
       else
          GET_STRING_FICHIER = 1
@@ -363,27 +363,27 @@ contains
       SET_INT_FICHIER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.File.Listing.Unit') then
+      if ( index(NomVar, 'Model.File.Listing.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.Result.Unit') then
+      else if ( index(NomVar, 'Model.File.Result.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.Result2.Unit') then
+      else if ( index(NomVar, 'Model.File.Result2.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.GeoStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.GeoStoArea.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.ResultStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.ResultStoArea.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.ResultLink.Unit') then
+      else if ( index(NomVar, 'Model.File.ResultLink.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.Tracer.Result.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.Result.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.ListingStoArea.Unit') then
+      else if ( index(NomVar, 'Model.File.ListingStoArea.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.ListingLink.Unit') then
+      else if ( index(NomVar, 'Model.File.ListingLink.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.Tracer.Listing.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.Listing.Unit') > 0) then
          Instance%Unite = valeur
-      else if ( NomVar == 'Model.File.Tracer.IniConc.Unit') then
+      else if ( index(NomVar, 'Model.File.Tracer.IniConc.Unit') > 0) then
          Instance%Unite = valeur
       else
          SET_INT_FICHIER = 1
@@ -406,27 +406,27 @@ contains
       SET_STRING_FICHIER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.File.Listing.Name') then
+      if ( index(NomVar, 'Model.File.Listing.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.Result.Name') then
+      else if ( index(NomVar, 'Model.File.Result.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.Result2.Name') then
+      else if ( index(NomVar, 'Model.File.Result2.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.GeoStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.GeoStoArea.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.ResultStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.ResultStoArea.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.ResultLink.Name') then
+      else if ( index(NomVar, 'Model.File.ResultLink.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.Tracer.Result.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.Result.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.ListingStoArea.Name') then
+      else if ( index(NomVar, 'Model.File.ListingStoArea.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.ListingLink.Name') then
+      else if ( index(NomVar, 'Model.File.ListingLink.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.Tracer.Listing.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.Listing.Name') > 0) then
          Instance%Nom = valeur
-      else if ( NomVar == 'Model.File.Tracer.IniConc.Name') then
+      else if ( index(NomVar, 'Model.File.Tracer.IniConc.Name') > 0) then
          Instance%Nom = valeur
       else
          SET_STRING_FICHIER = 1

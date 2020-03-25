@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_CASIER_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        A. LEBOSEE    C. RISSOAN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -147,58 +147,58 @@ module M_CASIER_T
       MessageErreur         = ""
 
 
-       if ( NomVar == 'Model.StorageArea.BottomLevel') then
+       if ( index(NomVar, 'Model.StorageArea.BottomLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.Level') then
+       else if ( index(NomVar, 'Model.StorageArea.Level') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.Surface') then
+       else if ( index(NomVar, 'Model.StorageArea.Surface') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.Volume') then
+       else if ( index(NomVar, 'Model.StorageArea.Volume') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.InitVolume') then
+       else if ( index(NomVar, 'Model.StorageArea.InitVolume') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.Statement') then
+       else if ( index(NomVar, 'Model.StorageArea.Statement') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.ErrorStatement') then
+       else if ( index(NomVar, 'Model.StorageArea.ErrorStatement') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.DZ') then
+       else if ( index(NomVar, 'Model.StorageArea.DZ') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.MaxLevel') then
+       else if ( index(NomVar, 'Model.StorageArea.MaxLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.TimeMaxLevel') then
+       else if ( index(NomVar, 'Model.StorageArea.TimeMaxLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.SSLink') then
+       else if ( index(NomVar, 'Model.StorageArea.SSLink') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 2
-       else if ( NomVar == 'Model.StorageArea.RSLink') then
+       else if ( index(NomVar, 'Model.StorageArea.RSLink') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 2
-       else if ( NomVar == 'Model.StorageArea.Graph_Z_S') then
+       else if ( index(NomVar, 'Model.StorageArea.Graph_Z_S') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.StorageArea.Graph_Z_V') then
+       else if ( index(NomVar, 'Model.StorageArea.Graph_Z_V') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.StorageArea.VertDisc') then
+       else if ( index(NomVar, 'Model.StorageArea.VertDisc') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.NbVertDisc') then
+       else if ( index(NomVar, 'Model.StorageArea.NbVertDisc') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.StorageArea.BoundPts') then
+       else if ( index(NomVar, 'Model.StorageArea.BoundPts') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.StorageArea.InternalPts') then
+       else if ( index(NomVar, 'Model.StorageArea.InternalPts') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
       else
@@ -234,47 +234,47 @@ module M_CASIER_T
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.StorageArea.BottomLevel') then
+      if ( index(NomVar, 'Model.StorageArea.BottomLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.Level') then
+      else if ( index(NomVar, 'Model.StorageArea.Level') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.Surface') then
+      else if ( index(NomVar, 'Model.StorageArea.Surface') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.Volume') then
+      else if ( index(NomVar, 'Model.StorageArea.Volume') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.InitVolume') then
+      else if ( index(NomVar, 'Model.StorageArea.InitVolume') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.Statement') then
+      else if ( index(NomVar, 'Model.StorageArea.Statement') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.ErrorStatement') then
+      else if ( index(NomVar, 'Model.StorageArea.ErrorStatement') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.DZ') then
+      else if ( index(NomVar, 'Model.StorageArea.DZ') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.MaxLevel') then
+      else if ( index(NomVar, 'Model.StorageArea.MaxLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.TimeMaxLevel') then
+      else if ( index(NomVar, 'Model.StorageArea.TimeMaxLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.SSLink') then
+      else if ( index(NomVar, 'Model.StorageArea.SSLink') > 0) then
          if (ASSOCIATED(Instance%LiaisonCC)) then
             taille1 = size(Instance%LiaisonCC, 1)
             taille2 = size(Instance%LiaisonCC, 2)
@@ -283,7 +283,7 @@ module M_CASIER_T
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.RSLink') then
+      else if ( index(NomVar, 'Model.StorageArea.RSLink') > 0) then
          if (ASSOCIATED(Instance%LiaisonRC)) then
             taille1 = size(Instance%LiaisonRC, 1)
             taille2 = size(Instance%LiaisonRC, 2)
@@ -292,7 +292,7 @@ module M_CASIER_T
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_S') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_S') > 0) then
          if (ASSOCIATED(Instance%Loi_Z_S)) then
             taille1 = size(Instance%Loi_Z_S, 1)
             taille2 = size(Instance%Loi_Z_S, 2)
@@ -301,7 +301,7 @@ module M_CASIER_T
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_V') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_V') > 0) then
          if (ASSOCIATED(Instance%Loi_Z_V)) then
             taille1 = size(Instance%Loi_Z_V, 1)
             taille2 = size(Instance%Loi_Z_V, 2)
@@ -310,15 +310,15 @@ module M_CASIER_T
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.VertDisc') then
+      else if ( index(NomVar, 'Model.StorageArea.VertDisc') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.NbVertDisc') then
+      else if ( index(NomVar, 'Model.StorageArea.NbVertDisc') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.BoundPts') then
+      else if ( index(NomVar, 'Model.StorageArea.BoundPts') > 0) then
          if (ASSOCIATED(Instance%PointFrontiere)) then
             taille1 = size(Instance%PointFrontiere, 1)
             taille2 = size(Instance%PointFrontiere, 2)
@@ -327,7 +327,7 @@ module M_CASIER_T
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.StorageArea.InternalPts') then
+      else if ( index(NomVar, 'Model.StorageArea.InternalPts') > 0) then
          if (ASSOCIATED(Instance%PointInterieur)) then
             taille1 = size(Instance%PointInterieur, 1)
             taille2 = size(Instance%PointInterieur, 2)
@@ -372,7 +372,7 @@ module M_CASIER_T
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.StorageArea.SSLink') then
+      if ( index(NomVar, 'Model.StorageArea.SSLink') > 0) then
         if (ASSOCIATED(Instance%LiaisonCC)) then
            t1 = size(Instance%LiaisonCC, 1)
            t2 = size(Instance%LiaisonCC, 2)
@@ -393,7 +393,7 @@ module M_CASIER_T
               return
            endif
         endif
-      else if ( NomVar == 'Model.StorageArea.RSLink') then
+      else if ( index(NomVar, 'Model.StorageArea.RSLink') > 0) then
         if (ASSOCIATED(Instance%LiaisonRC)) then
            t1 = size(Instance%LiaisonRC, 1)
            t2 = size(Instance%LiaisonRC, 2)
@@ -414,7 +414,7 @@ module M_CASIER_T
               return
            endif
         endif  
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_S') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_S') > 0) then
         if (ASSOCIATED(Instance%Loi_Z_S)) then
            t1 = size(Instance%Loi_Z_S, 1)
            t2 = size(Instance%Loi_Z_S, 2)
@@ -435,7 +435,7 @@ module M_CASIER_T
               return
            endif
         endif
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_V') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_V') > 0) then
         if (ASSOCIATED(Instance%Loi_Z_V)) then
            t1 = size(Instance%Loi_Z_V, 1)
            t2 = size(Instance%Loi_Z_V, 2)
@@ -456,7 +456,7 @@ module M_CASIER_T
               return
            endif
         endif
-      else if ( NomVar == 'Model.StorageArea.BoundPts') then
+      else if ( index(NomVar, 'Model.StorageArea.BoundPts') > 0) then
         if (ASSOCIATED(Instance%PointFrontiere)) then
            t1 = size(Instance%PointFrontiere, 1)
            t2 = size(Instance%PointFrontiere, 2)
@@ -477,7 +477,7 @@ module M_CASIER_T
               return
            endif
         endif
-      else if ( NomVar == 'Model.StorageArea.InternalPts') then
+      else if ( index(NomVar, 'Model.StorageArea.InternalPts') > 0) then
         if (ASSOCIATED(Instance%PointInterieur)) then
            t1 = size(Instance%PointInterieur, 1)
            t2 = size(Instance%PointInterieur, 2)
@@ -528,35 +528,35 @@ module M_CASIER_T
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.StorageArea.BottomLevel') then
+      if ( index(NomVar, 'Model.StorageArea.BottomLevel') > 0) then
          valeur = Instance%CoteFond
-      else if ( NomVar == 'Model.StorageArea.Level') then
+      else if ( index(NomVar, 'Model.StorageArea.Level') > 0) then
          valeur = Instance%Cote
-      else if ( NomVar == 'Model.StorageArea.Surface') then
+      else if ( index(NomVar, 'Model.StorageArea.Surface') > 0) then
          valeur = Instance%Surface
-      else if ( NomVar == 'Model.StorageArea.Volume') then
+      else if ( index(NomVar, 'Model.StorageArea.Volume') > 0) then
          valeur = Instance%Volume
-      else if ( NomVar == 'Model.StorageArea.InitVolume') then
+      else if ( index(NomVar, 'Model.StorageArea.InitVolume') > 0) then
          valeur = Instance%VolumeIni
-      else if ( NomVar == 'Model.StorageArea.Statement') then
+      else if ( index(NomVar, 'Model.StorageArea.Statement') > 0) then
          valeur = Instance%Bilan
-      else if ( NomVar == 'Model.StorageArea.ErrorStatement') then
+      else if ( index(NomVar, 'Model.StorageArea.ErrorStatement') > 0) then
          valeur = Instance%BilanErreur
-      else if ( NomVar == 'Model.StorageArea.DZ') then
+      else if ( index(NomVar, 'Model.StorageArea.DZ') > 0) then
          valeur = Instance%DzCas
-      else if ( NomVar == 'Model.StorageArea.MaxLevel') then
+      else if ( index(NomVar, 'Model.StorageArea.MaxLevel') > 0) then
          valeur = Instance%CoteMax
-      else if ( NomVar == 'Model.StorageArea.TimeMaxLevel') then
+      else if ( index(NomVar, 'Model.StorageArea.TimeMaxLevel') > 0) then
          valeur = Instance%TempsMax
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_S') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_S') > 0) then
          valeur = Instance%Loi_Z_S(index1, index2)
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_V') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_V') > 0) then
          valeur = Instance%Loi_Z_V(index1, index2)
-      else if ( NomVar == 'Model.StorageArea.VertDisc') then
+      else if ( index(NomVar, 'Model.StorageArea.VertDisc') > 0) then
          valeur = Instance%PasPlanim
-      else if ( NomVar == 'Model.StorageArea.BoundPts') then
+      else if ( index(NomVar, 'Model.StorageArea.BoundPts') > 0) then
          valeur = Instance%PointFrontiere(index1, index2)
-      else if ( NomVar == 'Model.StorageArea.InternalPts') then
+      else if ( index(NomVar, 'Model.StorageArea.InternalPts') > 0) then
          valeur = Instance%PointInterieur(index1, index2)
       else
          GET_DOUBLE_CASIER = 1
@@ -581,11 +581,11 @@ module M_CASIER_T
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.StorageArea.SSLink') then
+      if ( index(NomVar, 'Model.StorageArea.SSLink') > 0) then
          valeur = Instance%LiaisonCC(index1, index2)
-      else if ( NomVar == 'Model.StorageArea.RSLink') then
+      else if ( index(NomVar, 'Model.StorageArea.RSLink') > 0) then
          valeur = Instance%LiaisonRC(index1, index2)
-      else if ( NomVar == 'Model.StorageArea.NbVertDisc') then
+      else if ( index(NomVar, 'Model.StorageArea.NbVertDisc') > 0) then
          valeur = Instance%NbCotePlanim
       else
          GET_INT_CASIER = 1
@@ -615,35 +615,35 @@ module M_CASIER_T
       SET_DOUBLE_CASIER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.StorageArea.BottomLevel') then
+      if ( index(NomVar, 'Model.StorageArea.BottomLevel') > 0) then
          Instance%CoteFond = valeur
-      else if ( NomVar == 'Model.StorageArea.Level') then
+      else if ( index(NomVar, 'Model.StorageArea.Level') > 0) then
          Instance%Cote = valeur
-      else if ( NomVar == 'Model.StorageArea.Surface') then
+      else if ( index(NomVar, 'Model.StorageArea.Surface') > 0) then
          Instance%Surface = valeur
-      else if ( NomVar == 'Model.StorageArea.Volume') then
+      else if ( index(NomVar, 'Model.StorageArea.Volume') > 0) then
          Instance%Volume = valeur
-      else if ( NomVar == 'Model.StorageArea.InitVolume') then
+      else if ( index(NomVar, 'Model.StorageArea.InitVolume') > 0) then
          Instance%VolumeIni = valeur
-      else if ( NomVar == 'Model.StorageArea.Statement') then
+      else if ( index(NomVar, 'Model.StorageArea.Statement') > 0) then
          Instance%Bilan = valeur
-      else if ( NomVar == 'Model.StorageArea.ErrorStatement') then
+      else if ( index(NomVar, 'Model.StorageArea.ErrorStatement') > 0) then
          Instance%BilanErreur = valeur
-      else if ( NomVar == 'Model.StorageArea.DZ') then
+      else if ( index(NomVar, 'Model.StorageArea.DZ') > 0) then
          Instance%DzCas = valeur
-      else if ( NomVar == 'Model.StorageArea.MaxLevel') then
+      else if ( index(NomVar, 'Model.StorageArea.MaxLevel') > 0) then
          Instance%CoteMax = valeur
-      else if ( NomVar == 'Model.StorageArea.TimeMaxLevel') then
+      else if ( index(NomVar, 'Model.StorageArea.TimeMaxLevel') > 0) then
          Instance%TempsMax = valeur
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_S') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_S') > 0) then
          Instance%Loi_Z_S(index1, index2) = valeur
-      else if ( NomVar == 'Model.StorageArea.Graph_Z_V') then
+      else if ( index(NomVar, 'Model.StorageArea.Graph_Z_V') > 0) then
          Instance%Loi_Z_V(index1, index2) = valeur
-      else if ( NomVar == 'Model.StorageArea.VertDisc') then
+      else if ( index(NomVar, 'Model.StorageArea.VertDisc') > 0) then
          Instance%PasPlanim = valeur
-      else if ( NomVar == 'Model.StorageArea.BoundPts') then
+      else if ( index(NomVar, 'Model.StorageArea.BoundPts') > 0) then
          Instance%PointFrontiere(index1, index2) = valeur
-      else if ( NomVar == 'Model.StorageArea.InternalPts') then
+      else if ( index(NomVar, 'Model.StorageArea.InternalPts') > 0) then
          Instance%PointInterieur(index1, index2) = valeur
       else
          SET_DOUBLE_CASIER = 1
@@ -666,11 +666,11 @@ module M_CASIER_T
       SET_INT_CASIER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.StorageArea.SSLink') then
+      if ( index(NomVar, 'Model.StorageArea.SSLink') > 0) then
          Instance%LiaisonCC(index1, index2) = valeur
-      elseif ( NomVar == 'Model.StorageArea.RSLink') then
+      elseif ( index(NomVar, 'Model.StorageArea.RSLink') > 0) then
          Instance%LiaisonRC(index1, index2) = valeur
-      else if ( NomVar == 'Model.StorageArea.NbVertDisc') then
+      else if ( index(NomVar, 'Model.StorageArea.NbVertDisc') > 0) then
          Instance%NbCotePlanim = valeur
       else
          SET_INT_CASIER = 1

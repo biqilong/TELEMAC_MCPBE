@@ -14,16 +14,16 @@ def triangulation_from_data(x, z):
     @returns (matplotlib.tri)
 
     """
-    nplan = np.shape(z)[1]
-    tab_x = np.zeros(nplan*len(x))
-    tab_z = np.zeros(nplan*len(x))
+    npoin, nplan = z.shape
+    tab_x = np.zeros(nplan*npoin)
+    tab_z = np.zeros(nplan*npoin)
     triang = np.zeros((((nplan-1)*(len(x)-1)*2), 3))
 
     for i, val_x in enumerate(x):
         for j in range(nplan):
             tab_x[i*nplan+j] = val_x
             tab_z[i*nplan+j] = z[i, j]
-    for k in range(len(x)-1):
+    for k in range(npoin-1):
         for l in range(nplan-1):
             triang[k*2*(nplan-1)+2*l, 0] = nplan*k+l
             triang[k*2*(nplan-1)+2*l, 1] = nplan*(k+1)+l

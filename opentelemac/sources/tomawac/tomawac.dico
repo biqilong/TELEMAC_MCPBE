@@ -2554,14 +2554,12 @@ RUBRIQUE =
 RUBRIQUE1 =
 'GENERAL PARAMETERS';'SPECTRAL DISCRETISATION';''
 NIVEAU = 2
-AIDE = 'Utilise pour prendre en compte dans les calculs la
-contribution des hautes frequences non discretisees.
+AIDE = 'Utilise pour calculer l energie des frequences superieures a la frequence de coupure.
 **Mots-cles associes :**
 NOMBRE DE FREQUENCES
 FREQUENCE MINIMALE
 RAISON FREQUENTIELLE'
-AIDE1 = 'Used to consider in the computations the contribution
-of the non discretised high frequencies
+AIDE1 = 'decay order of the hight frequencies (Beyond cut off frequency)
 \\
  \begin{CommentBlock}{Related keywords}
 NUMBER OF FREQUENCIES\\

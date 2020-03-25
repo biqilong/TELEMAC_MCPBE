@@ -20,7 +20,7 @@ module M_LIAISON_CHENAL_I
 ! *********************************************************************
 ! PROGICIEL : MASCARET        S. DELMAS    C. COULET
 !                             
-! VERSION : 8.1.4         EDF-CEREMA-ARTELIA
+! VERSION : V8P2R0         EDF-CEREMA-ARTELIA
 ! *********************************************************************
    interface
    

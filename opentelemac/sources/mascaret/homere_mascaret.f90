@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -86,7 +86,7 @@ program HOMERE_MASCARET
 !                             C.COULET
 !                             F. DEMANGEON
 !
-! VERSION : 8.1.4               EDF-CEREMA-ARTELIA
+! VERSION : V8P2R0               EDF-CEREMA-ARTELIA
 ! *********************************************************************
 ! Fonction : Programme Chef d'Orchestre, Execution pas a pas d'un des
 !            trois noyaux de calculs :
@@ -328,8 +328,8 @@ program HOMERE_MASCARET
    ! -------------
    type(FICHIER_T)                           :: message
    !
-   type(ZONE_SECHE_T), dimension(:), pointer :: ZoneSeche
-   type(ZONE_FROT_T),  dimension(:), pointer :: ZoneFrot
+   type(ZONE_SECHE_T), dimension(:), pointer :: ZoneSeche => null()
+   type(ZONE_FROT_T),  dimension(:), pointer :: ZoneFrot => null()
    type(Sauve_T)                             :: Sauve
    ! Impressions - resultats
    !------------------------
@@ -467,26 +467,26 @@ program HOMERE_MASCARET
    real(DOUBLE)    :: LimiteSable
    real(DOUBLE)    :: CnuxV
    real(DOUBLE)    :: CnuxS
-   type(COUCHE_T), dimension(:), pointer :: CoucheSed
+   type(COUCHE_T), dimension(:), pointer :: CoucheSed => null()
    type(CONSTANTES_TRACER_T) :: ConsConv
 
    ! Geometrie
    type(FICHIER_T) :: FicGeomCourlis
-   type(PROFIL_COURLIS_T), dimension(:), pointer :: ProfilCourlis
+   type(PROFIL_COURLIS_T), dimension(:), pointer :: ProfilCourlis => null()
 
    ! Conditions Initiales
    type(FICHIER_T) :: FicCMESIni
-   real(DOUBLE), dimension(:), pointer :: CVaseIni
-   real(DOUBLE), dimension(:), pointer :: CSableIni
+   real(DOUBLE), dimension(:), pointer :: CVaseIni => null()
+   real(DOUBLE), dimension(:), pointer :: CSableIni => null()
 
    ! Conditions limites et apports
    integer :: NbLoiConc
    type(FICHIER_T) :: FicLoiConc
-   type(LOI_CONC_T), dimension(:), pointer :: LoiConc
+   type(LOI_CONC_T), dimension(:), pointer :: LoiConc => null()
    type(CL_COURLIS_T) :: CL_Vase
    type(CL_COURLIS_T) :: CL_Sable
-   type(SOURCE_TRACER_T), dimension(:), pointer :: ApportVase
-   type(SOURCE_TRACER_T), dimension(:), pointer :: ApportSable
+   type(SOURCE_TRACER_T), dimension(:), pointer :: ApportVase => null()
+   type(SOURCE_TRACER_T), dimension(:), pointer :: ApportSable => null()
 
    ! Impression des parametres-resultats
    type(FICHIER_T) :: FicListingCourlis
@@ -514,18 +514,18 @@ program HOMERE_MASCARET
    integer :: PhasePostImpCourlis
 
    ! Parametres hydrauliques
-   real(DOUBLE), dimension(:)  , pointer :: ZsurfCourlis, ZsurfPrecCourlis
-   real(DOUBLE), dimension(:)  , pointer :: VitCourlis  , VitPrecCourlis
-   real(DOUBLE), dimension(:)  , pointer :: SmCourlis   , SmPrecCourlis
-   real(DOUBLE), dimension(:)  , pointer :: PmCourlis   , PmPrecCourlis
-   real(DOUBLE), dimension(:)  , pointer :: Sm0Courlis
-   real(DOUBLE), dimension(:)  , pointer :: Vit1Courlis
+   real(DOUBLE), dimension(:)  , pointer :: ZsurfCourlis, ZsurfPrecCourlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: VitCourlis  , VitPrecCourlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: SmCourlis   , SmPrecCourlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: PmCourlis   , PmPrecCourlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: Sm0Courlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: Vit1Courlis => null()
 
    ! real(DOUBLE), dimension(:)  , pointer :: debCourlis
-   real(DOUBLE), dimension(:)  , pointer :: Sm1Courlis
-   real(DOUBLE), dimension(:)  , pointer :: Pm1Courlis
-   real(DOUBLE), dimension(:)  , pointer :: Zsl1Courlis
-   real(DOUBLE), dimension(:)  , pointer :: ZrefC !chb
+   real(DOUBLE), dimension(:)  , pointer :: Sm1Courlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: Pm1Courlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: Zsl1Courlis => null()
+   real(DOUBLE), dimension(:)  , pointer :: ZrefC => null()
 
    ! Parametres temporels
    real(DOUBLE) :: DtCourlis
@@ -535,20 +535,20 @@ program HOMERE_MASCARET
    integer      :: iter_courlis
 
    ! Parametres de l'evolution sedimentaire
-   real(DOUBLE), dimension(:)  , pointer :: CVase, CSable
-   real(DOUBLE), dimension(:)  , pointer :: QVase, QSable
-   real(DOUBLE), dimension(:,:), pointer :: QVaseCouche, QSableCouche
-   real(DOUBLE), dimension(:)  , pointer :: QApportVase, QapportSable
-   real(DOUBLE), dimension(:,:), pointer :: TauH, TauE, Ceq
-   real(DOUBLE), dimension(:)  , pointer :: TauHMoy, TauHMax
-   real(DOUBLE), dimension(:)  , pointer :: TauEMoy, TauEMax, CeqMoy
-   real(DOUBLE), dimension(:,:), pointer :: DepotCumulCouche
-   real(DOUBLE), dimension(:)  , pointer :: DeltaSurfaceSed
+   real(DOUBLE), dimension(:)  , pointer :: CVase, CSable => null()
+   real(DOUBLE), dimension(:)  , pointer :: QVase, QSable => null()
+   real(DOUBLE), dimension(:,:), pointer :: QVaseCouche, QSableCouche => null()
+   real(DOUBLE), dimension(:)  , pointer :: QApportVase, QapportSable => null()
+   real(DOUBLE), dimension(:,:), pointer :: TauH, TauE, Ceq => null()
+   real(DOUBLE), dimension(:)  , pointer :: TauHMoy, TauHMax => null()
+   real(DOUBLE), dimension(:)  , pointer :: TauEMoy, TauEMax, CeqMoy => null()
+   real(DOUBLE), dimension(:,:), pointer :: DepotCumulCouche => null()
+   real(DOUBLE), dimension(:)  , pointer :: DeltaSurfaceSed => null()
 !   real(DOUBLE), dimension(:), pointer   :: DeltaH ! PU2017 : Passage en global
-   real(DOUBLE), dimension(:,:), pointer :: ResIni
-   integer,      dimension(:,:), pointer :: SurPl
+   real(DOUBLE), dimension(:,:), pointer :: ResIni => null()
+   integer,      dimension(:,:), pointer :: SurPl => null()
 
-   real(DOUBLE), dimension(:), pointer   :: varsed
+   real(DOUBLE), dimension(:), pointer   :: varsed => null()
 
    ! Variables de bilan
    type(BILAN_FLUX_T)  :: FluxVase, FluxSable
@@ -644,7 +644,7 @@ program HOMERE_MASCARET
    retour        = 0
    !Erreur%arbredappel = 'MAIN'
    Print *
-   Print * ,'MASCARET v8.1.4 == Copyright (C) 2000-2017 EDF-CEREMA =='
+   Print * ,'TELEMAC-MASCARET V8P2R0beta == Copyright (C) 2000-2020 EDF-CEREMA =='
    Print *
    Print * , 'Data File : ' // TRIM(FichierMotCle%Nom)
    Print *
@@ -783,9 +783,7 @@ program HOMERE_MASCARET
       mySm(:) = 0.0D0
 
    endif
-      Allocate (Vsed(size(X)), STAT=retour)  ! PU2017: Allocation variable globale
       Allocate (myZsl(size(X)), STAT=retour)        ! PU2017: Allocation variable globale
-      Vsed(:) = 0.0D0
       myZsl(:) = 0.0D0
 
    messim = 'Simulation'
@@ -1927,16 +1925,19 @@ if( OptionCourlis) then
       varsed(:) = 2.E-5
     endif
   endif
-
-!  do i = 1, NbPtmax
-!    varsed(:)=varsed(:) + DeltaH(i,:)
-!  end do
-
+  if (suspension_option) then
+    do i = 1, NbPtmax
+      varsed(:)=varsed(:) + DeltaH(i,:)
+    end do
+  else if (bedload_option) then
   ! PU2017 : Changement bornes de la boucle et du calcul de varsed
-
-  do i = 1, NbProfCourlis
-    varsed(i)= varsed(i) + abs(DeltaH(1,i))
-  end do
+  ! MS2019 : probleme sur un cas de calcul avec jamais de planim en suspension
+  ! todo : verifier que le tableau deltaH est identique entre charriage et suspension
+  ! MS2020 : non identique; conservation des 2 mises a jour
+    do i = 1, NbProfCourlis
+      varsed(i)= varsed(i) + abs(DeltaH(1,i))
+    end do
+  end if
 
   ! PU2017
   Do i = 1,size(Profil)
@@ -2171,7 +2172,7 @@ end if
       ! PU2016 : Affichage temps courant
       ! write (*,"(a,f15.5,a)") " TEMPS COURANT : ",Temps,CR
       ! write (*,'(a,F15.5,a$)') ' TEMPS COURANT : ',Temps,CR ! le dernier a jour
-      write (*,'(a,F15.5,a)') ' TEMPS COURANT : ',Temps,CR ! le dernier a jour
+      ! write (*,'(a,F15.5,a)') ' TEMPS COURANT : ',Temps,CR ! le dernier a jour
 
       select case( Noyau )
 

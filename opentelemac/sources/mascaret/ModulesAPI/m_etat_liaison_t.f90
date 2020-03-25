@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_ETAT_LIAISON_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
 !=========================== Declarations ==============================
@@ -116,37 +116,37 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'State.Link.Discharge') then
+      if ( index(NomVar, 'State.Link.Discharge') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.PrevDischarge') then
+      else if ( index(NomVar, 'State.Link.PrevDischarge') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.MaxDischarge') then
+      else if ( index(NomVar, 'State.Link.MaxDischarge') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.MaxDischTime') then
+      else if ( index(NomVar, 'State.Link.MaxDischTime') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.ExchangeV') then
+      else if ( index(NomVar, 'State.Link.ExchangeV') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.MaxV') then
+      else if ( index(NomVar, 'State.Link.MaxVTime') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.MaxVTime') then
+      else if ( index(NomVar, 'State.Link.MaxV') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.DQDZus') then
+      else if ( index(NomVar, 'State.Link.DQDZus') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.DQDZds') then
+      else if ( index(NomVar, 'State.Link.DQDZds') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.DQDZsto') then
+      else if ( index(NomVar, 'State.Link.DQDZsto') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Link.DQDZriv') then
+      else if ( index(NomVar, 'State.Link.DQDZriv') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
      else
@@ -182,47 +182,47 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Link.Discharge') then
+      if ( index(NomVar, 'State.Link.Discharge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.PrevDischarge') then
+      else if ( index(NomVar, 'State.Link.PrevDischarge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.MaxDischarge') then
+      else if ( index(NomVar, 'State.Link.MaxDischarge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.MaxDischTime') then
+      else if ( index(NomVar, 'State.Link.MaxDischTime') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.ExchangeV') then
+      else if ( index(NomVar, 'State.Link.ExchangeV') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.MaxV') then
+      else if ( index(NomVar, 'State.Link.MaxVTime') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.MaxVTime') then
+      else if ( index(NomVar, 'State.Link.MaxV') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.DQDZus') then
+      else if ( index(NomVar, 'State.Link.DQDZus') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.DQDZds') then
+      else if ( index(NomVar, 'State.Link.DQDZds') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.DQDZsto') then
+      else if ( index(NomVar, 'State.Link.DQDZsto') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Link.DQDZriv') then
+      else if ( index(NomVar, 'State.Link.DQDZriv') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -276,27 +276,27 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Link.Discharge') then
+      if ( index(NomVar, 'State.Link.Discharge') > 0) then
          valeur = Instance%DebitEchange
-      else if ( NomVar == 'State.Link.PrevDischarge') then
+      else if ( index(NomVar, 'State.Link.PrevDischarge') > 0) then
          valeur = Instance%DebitPrecedent
-      else if ( NomVar == 'State.Link.MaxDischarge') then
+      else if ( index(NomVar, 'State.Link.MaxDischarge') > 0) then
          valeur = Instance%DebitMax
-      else if ( NomVar == 'State.Link.MaxDischTime') then
+      else if ( index(NomVar, 'State.Link.MaxDischTime') > 0) then
          valeur = Instance%TempsDebitMax
-      else if ( NomVar == 'State.Link.ExchangeV') then
+      else if ( index(NomVar, 'State.Link.ExchangeV') > 0) then
          valeur = Instance%VitesseEchange
-      else if ( NomVar == 'State.Link.MaxV') then
-         valeur = Instance%VitesseMax
-      else if ( NomVar == 'State.Link.MaxVTime') then
+      else if ( index(NomVar, 'State.Link.MaxVTime') > 0) then
          valeur = Instance%TempsVitesseMax
-      else if ( NomVar == 'State.Link.DQDZus') then
+      else if ( index(NomVar, 'State.Link.MaxV') > 0) then
+         valeur = Instance%VitesseMax
+      else if ( index(NomVar, 'State.Link.DQDZus') > 0) then
          valeur = Instance%DQDZamont
-      else if ( NomVar == 'State.Link.DQDZds') then
+      else if ( index(NomVar, 'State.Link.DQDZds') > 0) then
          valeur = Instance%DQDZaval
-      else if ( NomVar == 'State.Link.DQDZsto') then
+      else if ( index(NomVar, 'State.Link.DQDZsto') > 0) then
          valeur = Instance%DQDZcasier
-      else if ( NomVar == 'State.Link.DQDZriv') then
+      else if ( index(NomVar, 'State.Link.DQDZriv') > 0) then
          valeur = Instance%DQDZriviere
       else
          GET_DOUBLE_ETAT_LIAISON = 1
@@ -326,27 +326,27 @@ contains
       SET_DOUBLE_ETAT_LIAISON = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Link.Discharge') then
+      if ( index(NomVar, 'State.Link.Discharge') > 0) then
          Instance%DebitEchange = valeur
-      else if ( NomVar == 'State.Link.PrevDischarge') then
+      else if ( index(NomVar, 'State.Link.PrevDischarge') > 0) then
          Instance%DebitPrecedent = valeur
-      else if ( NomVar == 'State.Link.MaxDischarge') then
+      else if ( index(NomVar, 'State.Link.MaxDischarge') > 0) then
          Instance%DebitMax = valeur
-      else if ( NomVar == 'State.Link.MaxDischTime') then
+      else if ( index(NomVar, 'State.Link.MaxDischTime') > 0) then
          Instance%TempsDebitMax = valeur
-      else if ( NomVar == 'State.Link.ExchangeV') then
+      else if ( index(NomVar, 'State.Link.ExchangeV') > 0) then
          Instance%VitesseEchange = valeur
-      else if ( NomVar == 'State.Link.MaxV') then
-         Instance%VitesseMax = valeur
-      else if ( NomVar == 'State.Link.MaxVTime') then
+      else if ( index(NomVar, 'State.Link.MaxVTime') > 0) then
          Instance%TempsVitesseMax = valeur
-      else if ( NomVar == 'State.Link.DQDZus') then
+      else if ( index(NomVar, 'State.Link.MaxV') > 0) then
+         Instance%VitesseMax = valeur
+      else if ( index(NomVar, 'State.Link.DQDZus') > 0) then
          Instance%DQDZamont = valeur
-      else if ( NomVar == 'State.Link.DQDZds') then
+      else if ( index(NomVar, 'State.Link.DQDZds') > 0) then
          Instance%DQDZaval = valeur
-      else if ( NomVar == 'State.Link.DQDZsto') then
+      else if ( index(NomVar, 'State.Link.DQDZsto') > 0) then
          Instance%DQDZcasier = valeur
-      else if ( NomVar == 'State.Link.DQDZriv') then
+      else if ( index(NomVar, 'State.Link.DQDZriv') > 0) then
          Instance%DQDZriviere = valeur
       else
          SET_DOUBLE_ETAT_LIAISON = 1

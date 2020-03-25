@@ -24,9 +24,11 @@
         CHARACTER(LEN=PATH_LEN) :: RES_FILE_T2D, RES_FILE_SIS
         CHARACTER(LEN=PATH_LEN) :: CAS_FILE_T2D, DICO_FILE_T2D
         CHARACTER(LEN=PATH_LEN) :: CAS_FILE_SIS, DICO_FILE_SIS
+        CHARACTER(LEN=PATH_LEN) :: dummy
         CHARACTER(LEN=SIS_VAR_LEN) :: VARNAME
         INTEGER LU,LNG,NPLAN,PARALLEL,REFFILE,PREFILE
         INTEGER RANK,NCSIZE,PMETHOD,VAR_SIZE,COMM
+        dummy = ' '
         COMM = 0
 
 !     OUTPUT FOR WRITING
@@ -133,13 +135,14 @@
         CALL RUN_SET_CONFIG_T2D(ID_T2D,LU,LNG,COMM,IERR)
 
         CALL RUN_READ_CASE_T2D(ID_T2D,CAS_FILE_T2D,DICO_FILE_T2D,
-     &                         .TRUE.,IERR)
+     &                         .TRUE.,IERR,dummy,dummy)
 
         ! Changing the name of the result file
         VARNAME = 'MODEL.RESULTFILE'
-        CALL GET_VAR_SIZE_T2D(ID_T2D,VARNAME,VAR_SIZE,IDUM,IDUM1,IERR)
+        CALL GET_VAR_SIZE(ID_T2D,'T2D',VARNAME,VAR_SIZE,
+     &                        IDUM,IDUM1,IERR)
         PRINT *, 'rank:',RANK,'VAR_SIZE:',VAR_SIZE
-        CALL SET_STRING_T2D(ID_T2D,VARNAME,RES_FILE_T2D,VAR_SIZE,
+        CALL SET_STRING(ID_T2D,'T2D',VARNAME,RES_FILE_T2D,VAR_SIZE,
      &                      0,0,IERR)
 
         CALL RUN_ALLOCATION_T2D(ID_T2D,IERR)
@@ -155,9 +158,9 @@
 
         ! Changing the name of the result file
         VARNAME = 'MODEL.RESULTFILE'
-        CALL GET_VAR_SIZE_SIS(ID_SIS,VARNAME,VAR_SIZE,IDUM,IDUM1,IERR)
+        CALL GET_VAR_SIZE(ID_SIS,'SIS',VARNAME,VAR_SIZE,IDUM,IDUM1,IERR)
         PRINT *, 'rank:',RANK,'VAR_SIZE:',VAR_SIZE
-        CALL SET_STRING_SIS(ID_SIS,VARNAME,RES_FILE_SIS,VAR_SIZE,
+        CALL SET_STRING(ID_SIS,'SIS',VARNAME,RES_FILE_SIS,VAR_SIZE,
      &                      0,0,IERR)
 
         CALL RUN_ALLOCATION_SIS(ID_SIS,IERR)
@@ -167,7 +170,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         CALL RUN_INIT_T2D(ID_T2D,IERR)
         VARNAME = 'MODEL.CPL_PERIOD'
-        CALL SET_INTEGER_T2D(ID_T2D, VARNAME, CPL_PERIOD,
+        CALL SET_INTEGER(ID_T2D, 'T2D', VARNAME, CPL_PERIOD,
      &                       0, 0, 0, IERR)
         CALL CPL_INIT(ID_T2D,IERR)
         CALL SET_VAR_SIS(ID_T2D, ID_SIS, 0, IERR)
@@ -177,12 +180,12 @@
 
         !Get the number of timesteps
         VARNAME = 'MODEL.NTIMESTEPS'
-        CALL GET_INTEGER_T2D(ID_T2D, VARNAME, NTIME_STEPS_T2D,
+        CALL GET_INTEGER(ID_T2D, 'T2D', VARNAME, NTIME_STEPS_T2D,
      &                       0, 0, 0, IERR)
 
         !Get the coupling period
         VARNAME = 'MODEL.CPL_PERIOD'
-        CALL GET_INTEGER_T2D(ID_T2D,VARNAME,CPL_PERIOD, 0, 0, 0, IERR)
+        CALL GET_INTEGER(ID_T2D,'T2D',VARNAME,CPL_PERIOD, 0, 0, 0, IERR)
 
         DO I=1,NTIME_STEPS_T2D
            CALL RUN_TIMESTEP_COMPUTE_T2D(ID_T2D,IERR)

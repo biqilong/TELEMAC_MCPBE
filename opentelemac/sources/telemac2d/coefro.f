@@ -101,10 +101,11 @@
 !
 !-----------------------------------------------------------------------
 !
-      IF(YAFV)GOTO 300 ! FINITE VOLUMES
-!
 !     FOR FINITE ELEMENTS AND BOUSSINESQ
       TIERS  = 1.D0/3.D0
+!
+      IF(YAFV)GOTO 300 ! FINITE VOLUMES
+!
 !
 !     FRICTION COEFFICIENT
 !

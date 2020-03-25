@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_MODELE_MASCARET_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
 !=========================== Declarations ==============================
@@ -129,6 +129,8 @@ Type MODELE_MASCARET_T
     integer                                    :: FormatGeom
     integer                                    :: LoiFrottement
     integer                                    :: NbPasTemps
+    real(DOUBLE)                               :: Cote_max_controle
+    integer                                    :: Section_controle
     integer                                    :: CritereArret
     integer                                    :: Regime
     integer                                    :: ModeleLit
@@ -330,6 +332,9 @@ contains
         tabNomVar(i)         ="Model.MaxCompTime"
         tabDescriptionVar(i) ="Maximal computation time (s)"
         i=i+1
+        tabNomVar(i)         ="Model.MaxControlZ"
+        tabDescriptionVar(i) ="Maximal control water level (m)"
+        i=i+1
         tabNomVar(i)         ="Model.InitTime"
         tabDescriptionVar(i) ="Initial time of the computation (s)"
         i=i+1
@@ -380,6 +385,9 @@ contains
         i=i+1
         tabNomVar(i)         ="Model.MaxNbTimeStep"
         tabDescriptionVar(i) ="Maximal number of time steps"
+        i=i+1
+        tabNomVar(i)         ="Model.ControlSection"
+        tabDescriptionVar(i) ="Control section number"
         i=i+1
         tabNomVar(i)         ="Model.StopCriteria"
         tabDescriptionVar(i) ="Criteria for stopping calculations"
@@ -462,208 +470,214 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.CSectionAbsX') then
+      if ( index(NomVar, 'Model.CSectionAbsX') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.HeadLossEnlarg') then
+       else if ( index(NomVar, 'Model.HeadLossEnlarg') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.ImpSupCritKern') then
+       else if ( index(NomVar, 'Model.ImpSupCritKern') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.HeadLossJunc') then
+       else if ( index(NomVar, 'Model.HeadLossJunc') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.StoArea') then
+       else if ( index(NomVar, 'Model.StoArea') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.TracerOn') then
+       else if ( index(NomVar, 'Model.TracerOn') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.RecVar') then
+       else if ( index(NomVar, 'Model.RecVar') > 0) then
           TypeVar = 'TABBOOL'
           dimVar                = 1
-       else if ( NomVar == 'Model.CompVar') then
+       else if ( index(NomVar, 'Model.CompVar') > 0) then
           TypeVar = 'TABBOOL'
           dimVar                = 1
-       else if ( NomVar == 'Model.PrintComp') then
+       else if ( index(NomVar, 'Model.PrintComp') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.PrintVertCSection') then
+       else if ( index(NomVar, 'Model.PrintVertCSection') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.HotStart') then
+       else if ( index(NomVar, 'Model.HotStart') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.InefFlowArea') then
+       else if ( index(NomVar, 'Model.InefFlowArea') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.InterpFriction') then
+       else if ( index(NomVar, 'Model.InterpFriction') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.ProgOverFlowIFA') then
+       else if ( index(NomVar, 'Model.ProgOverFlowIFA') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.ProgOverFlowFP') then
+       else if ( index(NomVar, 'Model.ProgOverFlowFP') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.FricVertWall') then
+       else if ( index(NomVar, 'Model.FricVertWall') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.VarTimeStep') then
+       else if ( index(NomVar, 'Model.VarTimeStep') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.ImpFric') then
+       else if ( index(NomVar, 'Model.ImpFric') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.ValidComp') then
+       else if ( index(NomVar, 'Model.ValidComp') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.DamBrkFldWave') then
+       else if ( index(NomVar, 'Model.DamBrkFldWave') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.Zbot') then
+       else if ( index(NomVar, 'Model.Zbot') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.LevRightBk') then
+       else if ( index(NomVar, 'Model.LevRightBk') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.LevLeftBk') then
+       else if ( index(NomVar, 'Model.LevLeftBk') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Abac') then
+       else if ( index(NomVar, 'Model.Abac') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 3
-       else if ( NomVar == 'Model.Heps') then
+       else if ( index(NomVar, 'Model.Heps') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.FricCoefFP') then
+       else if ( index(NomVar, 'Model.FricCoefFP') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.FricCoefMainCh') then
+       else if ( index(NomVar, 'Model.FricCoefMainCh') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.LocalHeadLoss') then
+       else if ( index(NomVar, 'Model.LocalHeadLoss') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.XDT') then
+       else if ( index(NomVar, 'Model.XDT') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.X') then
+       else if ( index(NomVar, 'Model.XD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.CourantNum') then
+       else if ( index(NomVar, 'Model.X') > 0) then
+          TypeVar = 'TABDOUBLE'
+          dimVar                = 1
+       else if ( index(NomVar, 'Model.CourantNum') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.MaxCompTime') then
+       else if ( index(NomVar, 'Model.MaxCompTime') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.InitTime') then
+       else if ( index(NomVar, 'Model.MaxControlZ') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.DT') then
+       else if ( index(NomVar, 'Model.InitTime') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.LimFroude') then
+       else if ( index(NomVar, 'Model.DT') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.DZwave') then
+       else if ( index(NomVar, 'Model.LimFroude') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.ResultFmt2') then
+       else if ( index(NomVar, 'Model.DZwave') > 0) then
+          TypeVar = 'DOUBLE'
+          dimVar                = 0
+       else if ( index(NomVar, 'Model.ResultFmt2') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.NodeRes') then
+       else if ( index(NomVar, 'Model.NodeRes') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.RecOption') then
+       else if ( index(NomVar, 'Model.RecOption') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.ResultFmt') then
+       else if ( index(NomVar, 'Model.ResultFmt') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.RecNbFstTimeStep') then
+       else if ( index(NomVar, 'Model.RecNbFstTimeStep') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.RecNTimeStep') then
+       else if ( index(NomVar, 'Model.RecNTimeStep') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.RecListNTimeStep') then
+       else if ( index(NomVar, 'Model.RecListNTimeStep') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.AlgoNet') then
+       else if ( index(NomVar, 'Model.AlgoNet') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.1DMesh') then
+       else if ( index(NomVar, 'Model.1DMesh') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.IDT') then
+       else if ( index(NomVar, 'Model.IDT') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.GeoFileFmt') then
+       else if ( index(NomVar, 'Model.GeoFileFmt') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.FricLaw') then
+       else if ( index(NomVar, 'Model.FricLaw') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.MaxNbTimeStep') then
+       else if ( index(NomVar, 'Model.MaxNbTimeStep') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.StopCriteria') then
+       else if ( index(NomVar, 'Model.ControlSection') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Regime') then
+       else if ( index(NomVar, 'Model.StopCriteria') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.CSectionLayout') then
+       else if ( index(NomVar, 'Model.Regime') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.ValidType') then
+       else if ( index(NomVar, 'Model.CSectionLayout') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Kernel') then
+       else if ( index(NomVar, 'Model.ValidType') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Version') then
+       else if ( index(NomVar, 'Model.Kernel') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Title') then
+       else if ( index(NomVar, 'Model.Version') > 0) then
+          TypeVar = 'INT'
+          dimVar                = 0
+       else if ( index(NomVar, 'Model.Title') > 0) then
           TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.DZ') then
+       else if ( index(NomVar, 'Model.DZD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.XD') then
+       else if ( index(NomVar, 'Model.DZ') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.DZD') then
-          TypeVar = 'TABDOUBLE'
-          dimVar                = 1
-       else if ( NomVar == 'Model.FirstCSReach') then
+       else if ( index(NomVar, 'Model.FirstCSReach') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.LastCSReach') then
+       else if ( index(NomVar, 'Model.LastCSReach') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.RelXFirstNdReach') then
+       else if ( index(NomVar, 'Model.RelXFirstNdReach') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.RelXLastNdReach') then
+       else if ( index(NomVar, 'Model.RelXLastNdReach') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Opt') then
+       else if ( index(NomVar, 'Model.Opt') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.F1') then
+       else if ( index(NomVar, 'Model.F1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.Boussinesq') then
+       else if ( index(NomVar, 'Model.Boussinesq') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-      else if ( NomVar == 'Model.NoConvection') then
+      else if ( index(NomVar, 'Model.NoConvection') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.CQMV') then
+       else if ( index(NomVar, 'Model.CQMV') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
        else if ( INDEX(NomVar,'Model.Connect.') > 0) then
@@ -693,9 +707,9 @@ contains
        else if ( INDEX(NomVar,'Model.Link.') > 0) then
           GET_TYPE_VAR_MODELE_MASCARET = GET_TYPE_VAR_LIAISON(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
           dimVar = dimVar + 1
-       else if ( INDEX(NomVar,'Model.File.Result.') > 0) then
-          GET_TYPE_VAR_MODELE_MASCARET = GET_TYPE_VAR_FICHIER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
        else if ( INDEX(NomVar,'Model.File.Result2.') > 0) then
+          GET_TYPE_VAR_MODELE_MASCARET = GET_TYPE_VAR_FICHIER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
+       else if ( INDEX(NomVar,'Model.File.Result.') > 0) then
           GET_TYPE_VAR_MODELE_MASCARET = GET_TYPE_VAR_FICHIER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
        else if ( INDEX(NomVar,'Model.File.GeoStoArea.') > 0) then
           GET_TYPE_VAR_MODELE_MASCARET = GET_TYPE_VAR_FICHIER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
@@ -769,87 +783,87 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CSectionAbsX') then
+      if ( index(NomVar, 'Model.CSectionAbsX') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.HeadLossEnlarg') then
+      else if ( index(NomVar, 'Model.HeadLossEnlarg') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.ImpSupCritKern') then
+      else if ( index(NomVar, 'Model.ImpSupCritKern') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.HeadLossJunc') then
+      else if ( index(NomVar, 'Model.HeadLossJunc') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.StoArea') then
+      else if ( index(NomVar, 'Model.StoArea') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.TracerOn') then
+      else if ( index(NomVar, 'Model.TracerOn') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.RecVar') then
+      else if ( index(NomVar, 'Model.RecVar') > 0) then
          taille1 = size(Instance%VarSto)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CompVar') then
+      else if ( index(NomVar, 'Model.CompVar') > 0) then
          taille1 = size(Instance%VarCalc)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.PrintComp') then
+      else if ( index(NomVar, 'Model.PrintComp') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.PrintVertCSection') then
+      else if ( index(NomVar, 'Model.PrintVertCSection') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.HotStart') then
+      else if ( index(NomVar, 'Model.HotStart') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.InefFlowArea') then
+      else if ( index(NomVar, 'Model.InefFlowArea') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.InterpFriction') then
+      else if ( index(NomVar, 'Model.InterpFriction') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.ProgOverFlowIFA') then
+      else if ( index(NomVar, 'Model.ProgOverFlowIFA') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.ProgOverFlowFP') then
+      else if ( index(NomVar, 'Model.ProgOverFlowFP') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.FricVertWall') then
+      else if ( index(NomVar, 'Model.FricVertWall') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.VarTimeStep') then
+      else if ( index(NomVar, 'Model.VarTimeStep') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.ImpFric') then
+      else if ( index(NomVar, 'Model.ImpFric') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.ValidComp') then
+      else if ( index(NomVar, 'Model.ValidComp') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.DamBrkFldWave') then
+      else if ( index(NomVar, 'Model.DamBrkFldWave') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Zbot') then
+      else if ( index(NomVar, 'Model.Zbot') > 0) then
          if (ASSOCIATED(Instance%ZREF)) then
             taille1 = size(Instance%ZREF)
          else
@@ -857,7 +871,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LevRightBk') then
+      else if ( index(NomVar, 'Model.LevRightBk') > 0) then
          if (ASSOCIATED(Instance%RDC)) then
             taille1 = size(Instance%RDC)
          else
@@ -865,7 +879,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LevLeftBk') then
+      else if ( index(NomVar, 'Model.LevLeftBk') > 0) then
          if (ASSOCIATED(Instance%RGC)) then
             taille1 = size(Instance%RGC)
          else
@@ -873,15 +887,15 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Abac') then
+      else if ( index(NomVar, 'Model.Abac') > 0) then
          taille1 = size(Instance%abaque, 1)
          taille2 = size(Instance%abaque, 2)
          taille3 = size(Instance%abaque, 3)
-      else if ( NomVar == 'Model.Heps') then
+      else if ( index(NomVar, 'Model.Heps') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.FricCoefFP') then
+      else if ( index(NomVar, 'Model.FricCoefFP') > 0) then
          if (ASSOCIATED(Instance%CF2)) then
             taille1 = size(Instance%CF2)
          else
@@ -889,7 +903,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.FricCoefMainCh') then
+      else if ( index(NomVar, 'Model.FricCoefMainCh') > 0) then
          if (ASSOCIATED(Instance%CF1)) then
             taille1 = size(Instance%CF1)
          else
@@ -897,7 +911,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LocalHeadLoss') then
+      else if ( index(NomVar, 'Model.LocalHeadLoss') > 0) then
          if (ASSOCIATED(Instance%PCSing)) then
             taille1 = size(Instance%PCSing)
          else
@@ -905,7 +919,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.XDT') then
+      else if ( index(NomVar, 'Model.XDT') > 0) then
          if (ASSOCIATED(Instance%XDT)) then
             taille1 = size(Instance%XDT)
          else
@@ -913,139 +927,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.X') then
-         if (ASSOCIATED(Instance%X)) then
-            taille1 = size(Instance%X)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.CourantNum') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.MaxCompTime') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.InitTime') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.DT') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.LimFroude') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.DZwave') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.ResultFmt2') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.NodeRes') then
-         if (ASSOCIATED(Instance%SectionStockage)) then
-            taille1 = size(Instance%SectionStockage)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.RecOption') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.ResultFmt') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.RecNbFstTimeStep') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.RecNTimeStep') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.RecListNTimeStep') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.AlgoNet') then
-         if (ASSOCIATED(Instance%Algorithme)) then
-            taille1 = size(Instance%Algorithme)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.1DMesh') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.IDT') then
-         if (ASSOCIATED(Instance%IDT)) then
-            taille1 = size(Instance%IDT)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.GeoFileFmt') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.FricLaw') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.MaxNbTimeStep') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.StopCriteria') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Regime') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.CSectionLayout') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.ValidType') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Kernel') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Version') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Title') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.DZ') then
-         if (ASSOCIATED(Instance%DZ)) then
-            taille1 = size(Instance%DZ)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.XD') then
+      else if ( index(NomVar, 'Model.XD') > 0) then
          if (ASSOCIATED(Instance%XD)) then
             taille1 = size(Instance%XD)
          else
@@ -1053,7 +935,139 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.DZD') then
+      else if ( index(NomVar, 'Model.X') > 0) then
+         if (ASSOCIATED(Instance%X)) then
+            taille1 = size(Instance%X)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.CourantNum') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.MaxCompTime') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.MaxControlZ') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.InitTime') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.DT') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.LimFroude') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.DZwave') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.ResultFmt2') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.NodeRes') > 0) then
+         if (ASSOCIATED(Instance%SectionStockage)) then
+            taille1 = size(Instance%SectionStockage)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.RecOption') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.ResultFmt') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.RecNbFstTimeStep') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.RecNTimeStep') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.RecListNTimeStep') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.AlgoNet') > 0) then
+         if (ASSOCIATED(Instance%Algorithme)) then
+            taille1 = size(Instance%Algorithme)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.1DMesh') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.IDT') > 0) then
+         if (ASSOCIATED(Instance%IDT)) then
+            taille1 = size(Instance%IDT)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.GeoFileFmt') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.FricLaw') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.MaxNbTimeStep') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.ControlSection') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.StopCriteria') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Regime') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.CSectionLayout') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.ValidType') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Kernel') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Version') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Title') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.DZD') > 0) then
          if (ASSOCIATED(Instance%DZD)) then
             taille1 = size(Instance%DZD)
          else
@@ -1061,7 +1075,15 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.FirstCSReach') then
+      else if ( index(NomVar, 'Model.DZ') > 0) then
+         if (ASSOCIATED(Instance%DZ)) then
+            taille1 = size(Instance%DZ)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.FirstCSReach') > 0) then
          if (ASSOCIATED(Instance%ProfDebBief)) then
             taille1 = size(Instance%ProfDebBief)
          else
@@ -1069,7 +1091,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LastCSReach') then
+      else if ( index(NomVar, 'Model.LastCSReach') > 0) then
          if (ASSOCIATED(Instance%ProfFinBief)) then
             taille1 = size(Instance%ProfFinBief)
          else
@@ -1077,7 +1099,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.RelXFirstNdReach') then
+      else if ( index(NomVar, 'Model.RelXFirstNdReach') > 0) then
          if (ASSOCIATED(Instance%absc_rel_ext_deb_bief)) then
             taille1 = size(Instance%absc_rel_ext_deb_bief)
          else
@@ -1085,7 +1107,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.RelXLastNdReach') then
+      else if ( index(NomVar, 'Model.RelXLastNdReach') > 0) then
          if (ASSOCIATED(Instance%absc_rel_ext_fin_bief)) then
             taille1 = size(Instance%absc_rel_ext_fin_bief)
          else
@@ -1093,11 +1115,11 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Opt') then
+      else if ( index(NomVar, 'Model.Opt') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.F1') then
+      else if ( index(NomVar, 'Model.F1') > 0) then
          if (ASSOCIATED(Instance%F1)) then
             taille1 = size(Instance%F1, 1)
             taille2 = size(Instance%F1, 2)
@@ -1106,15 +1128,15 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.Boussinesq') then
+      else if ( index(NomVar, 'Model.Boussinesq') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.NoConvection') then
+      else if ( index(NomVar, 'Model.NoConvection') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.CQMV') then
+      else if ( index(NomVar, 'Model.CQMV') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -1243,11 +1265,11 @@ contains
              taille2 = 0
              taille3 = 0
          end if
-      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
-         GET_TAILLE_VAR_MODELE_MASCARET = GET_TAILLE_VAR_FICHIER(Instance%FichierResultat,&
-                                               NomVar, taille1, taille2, taille3, MessageErreur)
       else if (INDEX(NomVar,'Model.File.Result2.') > 0) then
          GET_TAILLE_VAR_MODELE_MASCARET = GET_TAILLE_VAR_FICHIER(Instance%FichierResultat2,&
+                                               NomVar, taille1, taille2, taille3, MessageErreur)
+      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
+         GET_TAILLE_VAR_MODELE_MASCARET = GET_TAILLE_VAR_FICHIER(Instance%FichierResultat,&
                                                NomVar, taille1, taille2, taille3, MessageErreur)
       else if (INDEX(NomVar,'Model.File.GeoStoArea.') > 0) then
          GET_TAILLE_VAR_MODELE_MASCARET = GET_TAILLE_VAR_FICHIER(Instance%FichierGeomCasier,&
@@ -1400,7 +1422,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.Zbot') then
+      if ( index(NomVar, 'Model.Zbot') > 0) then
         if (ASSOCIATED(Instance%ZREF)) then
            t1 = size(Instance%ZREF)
            if (t1 /= NewT1) then
@@ -1420,7 +1442,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.LevRightBk') then
+      else if ( index(NomVar, 'Model.LevRightBk') > 0) then
         if (ASSOCIATED(Instance%RDC)) then
            t1 = size(Instance%RDC)
            if (t1 /= NewT1) then
@@ -1440,7 +1462,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.LevLeftBk') then
+      else if ( index(NomVar, 'Model.LevLeftBk') > 0) then
         if (ASSOCIATED(Instance%RGC)) then
            t1 = size(Instance%RGC)
            if (t1 /= NewT1) then
@@ -1460,7 +1482,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.FricCoefFP') then
+      else if ( index(NomVar, 'Model.FricCoefFP') > 0) then
         if (ASSOCIATED(Instance%CF2)) then
            t1 = size(Instance%CF2)
            if (t1 /= NewT1) then
@@ -1480,7 +1502,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.FricCoefMainCh') then
+      else if ( index(NomVar, 'Model.FricCoefMainCh') > 0) then
         if (ASSOCIATED(Instance%CF1)) then
            t1 = size(Instance%CF1)
            if (t1 /= NewT1) then
@@ -1500,7 +1522,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.LocalHeadLoss') then
+      else if ( index(NomVar, 'Model.LocalHeadLoss') > 0) then
         if (ASSOCIATED(Instance%PCSing)) then
            t1 = size(Instance%PCSing)
            if (t1 /= NewT1) then
@@ -1520,7 +1542,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.XDT') then
+      else if ( index(NomVar, 'Model.XDT') > 0) then
         if (ASSOCIATED(Instance%XDT)) then
            t1 = size(Instance%XDT)
            if (t1 /= NewT1) then
@@ -1540,107 +1562,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.X') then
-        if (ASSOCIATED(Instance%X)) then
-           t1 = size(Instance%X)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%X, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_MODELE_MASCARET = err
-                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.X'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%X) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%X(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_MODELE_MASCARET = err
-              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.X'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.NodeRes') then
-        if (ASSOCIATED(Instance%SectionStockage)) then
-           t1 = size(Instance%SectionStockage)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%SectionStockage, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_MODELE_MASCARET = err
-                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.NODERES'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%SectionStockage) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%SectionStockage(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_MODELE_MASCARET = err
-              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.NODERES'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.AlgoNet') then
-        if (ASSOCIATED(Instance%Algorithme)) then
-           t1 = size(Instance%Algorithme)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%Algorithme, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_MODELE_MASCARET = err
-                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.ALGONET'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%Algorithme) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%Algorithme(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_MODELE_MASCARET = err
-              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.ALGONET'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.IDT') then
-        if (ASSOCIATED(Instance%IDT)) then
-           t1 = size(Instance%IDT)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%IDT, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_MODELE_MASCARET = err
-                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.IDT'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%IDT) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%IDT(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_MODELE_MASCARET = err
-              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.IDT'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.DZ') then
-        if (ASSOCIATED(Instance%DZ)) then
-           t1 = size(Instance%DZ)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%DZ, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_MODELE_MASCARET = err
-                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.DZ'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%DZ) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%DZ(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_MODELE_MASCARET = err
-              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.DZ'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.XD') then
+      else if ( index(NomVar, 'Model.XD') > 0) then
         if (ASSOCIATED(Instance%XD)) then
            t1 = size(Instance%XD)
            if (t1 /= NewT1) then
@@ -1660,7 +1582,87 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.DZD') then
+      else if ( index(NomVar, 'Model.X') > 0) then
+        if (ASSOCIATED(Instance%X)) then
+           t1 = size(Instance%X)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%X, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_MODELE_MASCARET = err
+                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.X'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%X) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%X(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_MODELE_MASCARET = err
+              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.X'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.NodeRes') > 0) then
+        if (ASSOCIATED(Instance%SectionStockage)) then
+           t1 = size(Instance%SectionStockage)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%SectionStockage, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_MODELE_MASCARET = err
+                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.NODERES'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%SectionStockage) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%SectionStockage(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_MODELE_MASCARET = err
+              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.NODERES'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.AlgoNet') > 0) then
+        if (ASSOCIATED(Instance%Algorithme)) then
+           t1 = size(Instance%Algorithme)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%Algorithme, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_MODELE_MASCARET = err
+                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.ALGONET'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%Algorithme) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%Algorithme(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_MODELE_MASCARET = err
+              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.ALGONET'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.IDT') > 0) then
+        if (ASSOCIATED(Instance%IDT)) then
+           t1 = size(Instance%IDT)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%IDT, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_MODELE_MASCARET = err
+                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.IDT'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%IDT) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%IDT(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_MODELE_MASCARET = err
+              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.IDT'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.DZD') > 0) then
         if (ASSOCIATED(Instance%DZD)) then
            t1 = size(Instance%DZD)
            if (t1 /= NewT1) then
@@ -1680,7 +1682,27 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.FirstCSReach') then
+      else if ( index(NomVar, 'Model.DZ') > 0) then
+        if (ASSOCIATED(Instance%DZ)) then
+           t1 = size(Instance%DZ)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%DZ, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_MODELE_MASCARET = err
+                 MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to deallocate MODEL_MASCARET_T.DZ'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%DZ) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%DZ(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_MODELE_MASCARET = err
+              MessageErreur = 'SET_TAILLE_VAR_MODELE_MASCARET : Unable to allocate MODEL_MASCARET_T.DZ'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.FirstCSReach') > 0) then
         if (ASSOCIATED(Instance%ProfDebBief)) then
            t1 = size(Instance%ProfDebBief)
            if (t1 /= NewT1) then
@@ -1700,7 +1722,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.LastCSReach') then
+      else if ( index(NomVar, 'Model.LastCSReach') > 0) then
         if (ASSOCIATED(Instance%ProfFinBief)) then
            t1 = size(Instance%ProfFinBief)
            if (t1 /= NewT1) then
@@ -1720,7 +1742,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.RelXFirstNdReach') then
+      else if ( index(NomVar, 'Model.RelXFirstNdReach') > 0) then
         if (ASSOCIATED(Instance%absc_rel_ext_deb_bief)) then
            t1 = size(Instance%absc_rel_ext_deb_bief)
            if (t1 /= NewT1) then
@@ -1741,7 +1763,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.RelXLastNdReach') then
+      else if ( index(NomVar, 'Model.RelXLastNdReach') > 0) then
         if (ASSOCIATED(Instance%absc_rel_ext_fin_bief)) then
            t1 = size(Instance%absc_rel_ext_fin_bief)
            if (t1 /= NewT1) then
@@ -1762,7 +1784,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.F1') then
+      else if ( index(NomVar, 'Model.F1') > 0) then
         if (ASSOCIATED(Instance%F1)) then
            t1 = size(Instance%F1, 1)
            t2 = size(Instance%F1, 2)
@@ -2160,20 +2182,20 @@ contains
          endif
          ! fin de la partie non generee automatiquement
 
-      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
-         err = SET_TAILLE_VAR_FICHIER(Instance%FichierResultat, &
-                                   NomVar, NewT1, NewT2, NewT3, MessageErreurType)
-         if (err /= 0) then
-            SET_TAILLE_VAR_MODELE_MASCARET = err
-            MessageErreur = 'Unable to change the size of Instance%FichierResultat'
-            return
-         endif
       else if (INDEX(NomVar,'Model.File.Result2.') > 0) then
          err = SET_TAILLE_VAR_FICHIER(Instance%FichierResultat2, &
                                    NomVar, NewT1, NewT2, NewT3, MessageErreurType)
          if (err /= 0) then
             SET_TAILLE_VAR_MODELE_MASCARET = err
             MessageErreur = 'Unable to change the size of Instance%FichierResultat2'
+            return
+         endif
+      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
+         err = SET_TAILLE_VAR_FICHIER(Instance%FichierResultat, &
+                                   NomVar, NewT1, NewT2, NewT3, MessageErreurType)
+         if (err /= 0) then
+            SET_TAILLE_VAR_MODELE_MASCARET = err
+            MessageErreur = 'Unable to change the size of Instance%FichierResultat'
             return
          endif
       else if (INDEX(NomVar,'Model.File.GeoStoArea.') > 0) then
@@ -2538,49 +2560,51 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Zbot') then
+      if ( index(NomVar, 'Model.Zbot') > 0) then
          valeur = Instance%ZREF(index1)
-      else if ( NomVar == 'Model.LevRightBk') then
+      else if ( index(NomVar, 'Model.LevRightBk') > 0) then
          valeur = Instance%RDC(index1)
-      else if ( NomVar == 'Model.LevLeftBk') then
+      else if ( index(NomVar, 'Model.LevLeftBk') > 0) then
          valeur = Instance%RGC(index1)
-      else if ( NomVar == 'Model.Abac') then
+      else if ( index(NomVar, 'Model.Abac') > 0) then
          valeur = Instance%abaque(index1, index2, index3)
-      else if ( NomVar == 'Model.Heps') then
+      else if ( index(NomVar, 'Model.Heps') > 0) then
          valeur = Instance%HEPS
-      else if ( NomVar == 'Model.FricCoefFP') then
+      else if ( index(NomVar, 'Model.FricCoefFP') > 0) then
          valeur = Instance%CF2(index1)
-      else if ( NomVar == 'Model.FricCoefMainCh') then
+      else if ( index(NomVar, 'Model.FricCoefMainCh') > 0) then
          valeur = Instance%CF1(index1)
-      else if ( NomVar == 'Model.LocalHeadLoss') then
+      else if ( index(NomVar, 'Model.LocalHeadLoss') > 0) then
          valeur = Instance%PCSing(index1)
-      else if ( NomVar == 'Model.XDT') then
+      else if ( index(NomVar, 'Model.XDT') > 0) then
          valeur = Instance%XDT(index1)
-      else if ( NomVar == 'Model.X') then
-         valeur = Instance%X(index1)
-      else if ( NomVar == 'Model.CourantNum') then
-         valeur = Instance%CourantObj
-      else if ( NomVar == 'Model.MaxCompTime') then
-         valeur = Instance%TempsMaximum
-      else if ( NomVar == 'Model.InitTime') then
-         valeur = Instance%TempsInitial
-      else if ( NomVar == 'Model.DT') then
-         valeur = Instance%DT
-      else if ( NomVar == 'Model.LimFroude') then
-         valeur = Instance%FroudeLim
-      else if ( NomVar == 'Model.DZwave') then
-         valeur = Instance%DZArriveeFront
-      else if ( NomVar == 'Model.DZ') then
-         valeur = Instance%DZ(index1)
-      else if ( NomVar == 'Model.XD') then
+      else if ( index(NomVar, 'Model.XD') > 0) then
          valeur = Instance%XD(index1)
-      else if ( NomVar == 'Model.DZD') then
+      else if ( index(NomVar, 'Model.X') > 0) then
+         valeur = Instance%X(index1)
+      else if ( index(NomVar, 'Model.CourantNum') > 0) then
+         valeur = Instance%CourantObj
+      else if ( index(NomVar, 'Model.MaxCompTime') > 0) then
+         valeur = Instance%TempsMaximum
+      else if ( index(NomVar, 'Model.MaxControlZ') > 0) then
+         valeur = Instance%Cote_max_controle
+      else if ( index(NomVar, 'Model.InitTime') > 0) then
+         valeur = Instance%TempsInitial
+      else if ( index(NomVar, 'Model.DT') > 0) then
+         valeur = Instance%DT
+      else if ( index(NomVar, 'Model.LimFroude') > 0) then
+         valeur = Instance%FroudeLim
+      else if ( index(NomVar, 'Model.DZwave') > 0) then
+         valeur = Instance%DZArriveeFront
+      else if ( index(NomVar, 'Model.DZD') > 0) then
          valeur = Instance%DZD(index1)
-      else if ( NomVar == 'Model.RelXFirstNdReach') then
+      else if ( index(NomVar, 'Model.DZ') > 0) then
+         valeur = Instance%DZ(index1)
+      else if ( index(NomVar, 'Model.RelXFirstNdReach') > 0) then
          valeur = Instance%absc_rel_ext_deb_bief(index1)
-      else if ( NomVar == 'Model.RelXLastNdReach') then
+      else if ( index(NomVar, 'Model.RelXLastNdReach') > 0) then
          valeur = Instance%absc_rel_ext_fin_bief(index1)
-      else if ( NomVar == 'Model.F1') then
+      else if ( index(NomVar, 'Model.F1') > 0) then
          valeur = Instance%F1(index1, index2)
       else if (INDEX(NomVar,'Model.CrossSection.') > 0) then
            GET_DOUBLE_MODELE_MASCARET = GET_DOUBLE_PROFIL(instance%Profils(index1), NomVar, index2,&
@@ -2648,49 +2672,51 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.ResultFmt2') then
+      if ( index(NomVar, 'Model.ResultFmt2') > 0) then
          valeur = Instance%FormatResu2
-      else if ( NomVar == 'Model.NodeRes') then
+      else if ( index(NomVar, 'Model.NodeRes') > 0) then
          valeur = Instance%SectionStockage(index1)
-      else if ( NomVar == 'Model.RecOption') then
+      else if ( index(NomVar, 'Model.RecOption') > 0) then
          valeur = Instance%OptionStockage
-      else if ( NomVar == 'Model.ResultFmt') then
+      else if ( index(NomVar, 'Model.ResultFmt') > 0) then
          valeur = Instance%FormatResu
-      else if ( NomVar == 'Model.RecNbFstTimeStep') then
+      else if ( index(NomVar, 'Model.RecNbFstTimeStep') > 0) then
          valeur = Instance%PremierPasStocke
-      else if ( NomVar == 'Model.RecNTimeStep') then
+      else if ( index(NomVar, 'Model.RecNTimeStep') > 0) then
          valeur = Instance%PasImpression
-      else if ( NomVar == 'Model.RecListNTimeStep') then
+      else if ( index(NomVar, 'Model.RecListNTimeStep') > 0) then
          valeur = Instance%PasStockage
-      else if ( NomVar == 'Model.AlgoNet') then
+      else if ( index(NomVar, 'Model.AlgoNet') > 0) then
          valeur = Instance%Algorithme(index1)
-      else if ( NomVar == 'Model.1DMesh') then
+      else if ( index(NomVar, 'Model.1DMesh') > 0) then
          valeur = Instance%TypeMaillage
-      else if ( NomVar == 'Model.IDT') then
+      else if ( index(NomVar, 'Model.IDT') > 0) then
          valeur = Instance%IDT(index1)
-      else if ( NomVar == 'Model.GeoFileFmt') then
+      else if ( index(NomVar, 'Model.GeoFileFmt') > 0) then
          valeur = Instance%FormatGeom
-      else if ( NomVar == 'Model.FricLaw') then
+      else if ( index(NomVar, 'Model.FricLaw') > 0) then
          valeur = Instance%LoiFrottement
-      else if ( NomVar == 'Model.MaxNbTimeStep') then
+      else if ( index(NomVar, 'Model.MaxNbTimeStep') > 0) then
          valeur = Instance%NbPasTemps
-      else if ( NomVar == 'Model.StopCriteria') then
+      else if ( index(NomVar, 'Model.ControlSection') > 0) then
+         valeur = Instance%Section_controle
+      else if ( index(NomVar, 'Model.StopCriteria') > 0) then
          valeur = Instance%CritereArret
-      else if ( NomVar == 'Model.Regime') then
+      else if ( index(NomVar, 'Model.Regime') > 0) then
          valeur = Instance%Regime
-      else if ( NomVar == 'Model.CSectionLayout') then
+      else if ( index(NomVar, 'Model.CSectionLayout') > 0) then
          valeur = Instance%ModeleLit
-      else if ( NomVar == 'Model.ValidType') then
+      else if ( index(NomVar, 'Model.ValidType') > 0) then
          valeur = Instance%TypeValidation
-      else if ( NomVar == 'Model.Kernel') then
+      else if ( index(NomVar, 'Model.Kernel') > 0) then
          valeur = Instance%Noyau
-      else if ( NomVar == 'Model.Version') then
+      else if ( index(NomVar, 'Model.Version') > 0) then
          valeur = Instance%VersionCode
-      else if ( NomVar == 'Model.FirstCSReach') then
+      else if ( index(NomVar, 'Model.FirstCSReach') > 0) then
          valeur = Instance%ProfDebBief(index1)
-      else if ( NomVar == 'Model.LastCSReach') then
+      else if ( index(NomVar, 'Model.LastCSReach') > 0) then
          valeur = Instance%ProfFinBief(index1)
-      else if ( NomVar == 'Model.CQMV') then
+      else if ( index(NomVar, 'Model.CQMV') > 0) then
          valeur = Instance%CQMV
       else if (INDEX(NomVar,'Model.Connect.') > 0) then
            GET_INT_MODELE_MASCARET = GET_INT_CONNECT(instance%Connect, NomVar, index1,&
@@ -2719,11 +2745,11 @@ contains
       else if (INDEX(NomVar,'Model.Link.') > 0) then
            GET_INT_MODELE_MASCARET = GET_INT_LIAISON(instance%Liaisons(index1), NomVar, index2,&
                                          index3, bidon1, valeur, MessageErreur)
-      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
-           GET_INT_MODELE_MASCARET = GET_INT_FICHIER(instance%FichierResultat, NomVar, index1,&
-                                         index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.Result2.') > 0) then
            GET_INT_MODELE_MASCARET = GET_INT_FICHIER(instance%FichierResultat2, NomVar, index1,&
+                                         index2, index3, valeur, MessageErreur)
+      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
+           GET_INT_MODELE_MASCARET = GET_INT_FICHIER(instance%FichierResultat, NomVar, index1,&
                                          index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.GeoStoArea.') > 0) then
            GET_INT_MODELE_MASCARET = GET_INT_FICHIER(instance%FichierGeomCasier, NomVar, index1,&
@@ -2794,51 +2820,51 @@ contains
       valeur                = .FALSE.
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CSectionAbsX') then
+      if ( index(NomVar, 'Model.CSectionAbsX') > 0) then
          valeur = Instance%ProfAbs
-      else if ( NomVar == 'Model.HeadLossEnlarg') then
+      else if ( index(NomVar, 'Model.HeadLossEnlarg') > 0) then
          valeur = Instance%PerteElargissementTrans
-      else if ( NomVar == 'Model.ImpSupCritKern') then
+      else if ( index(NomVar, 'Model.ImpSupCritKern') > 0) then
          valeur = Instance%ImplicitTrans
-      else if ( NomVar == 'Model.HeadLossJunc') then
+      else if ( index(NomVar, 'Model.HeadLossJunc') > 0) then
          valeur = Instance%PerteChargeConfluent
-      else if ( NomVar == 'Model.StoArea') then
+      else if ( index(NomVar, 'Model.StoArea') > 0) then
          valeur = Instance%OptionCasier
-      else if ( NomVar == 'Model.TracerOn') then
+      else if ( index(NomVar, 'Model.TracerOn') > 0) then
          valeur = Instance%OptionTracer
-      else if ( NomVar == 'Model.RecVar') then
+      else if ( index(NomVar, 'Model.RecVar') > 0) then
          valeur = Instance%VarSto(index1)
-      else if ( NomVar == 'Model.CompVar') then
+      else if ( index(NomVar, 'Model.CompVar') > 0) then
          valeur = Instance%VarCalc(index1)
-      else if ( NomVar == 'Model.PrintComp') then
+      else if ( index(NomVar, 'Model.PrintComp') > 0) then
          valeur = Instance%ImpressionCalcul
-      else if ( NomVar == 'Model.PrintVertCSection') then
+      else if ( index(NomVar, 'Model.PrintVertCSection') > 0) then
          valeur = Instance%ImpressionPlanim
-      else if ( NomVar == 'Model.HotStart') then
+      else if ( index(NomVar, 'Model.HotStart') > 0) then
          valeur = Instance%RepriseCalcul
-      else if ( NomVar == 'Model.InefFlowArea') then
+      else if ( index(NomVar, 'Model.InefFlowArea') > 0) then
          valeur = Instance%PresenceZoneStockage
-      else if ( NomVar == 'Model.InterpFriction') then
+      else if ( index(NomVar, 'Model.InterpFriction') > 0) then
          valeur = Instance%InterpolLinStrickler
-      else if ( NomVar == 'Model.ProgOverFlowIFA') then
+      else if ( index(NomVar, 'Model.ProgOverFlowIFA') > 0) then
          valeur = Instance%DebProgressifZS
-      else if ( NomVar == 'Model.ProgOverFlowFP') then
+      else if ( index(NomVar, 'Model.ProgOverFlowFP') > 0) then
          valeur = Instance%DebProgressifLM
-      else if ( NomVar == 'Model.FricVertWall') then
+      else if ( index(NomVar, 'Model.FricVertWall') > 0) then
          valeur = Instance%FrottParoiVerticale
-      else if ( NomVar == 'Model.VarTimeStep') then
+      else if ( index(NomVar, 'Model.VarTimeStep') > 0) then
          valeur = Instance%PasTempsVariable
-      else if ( NomVar == 'Model.ImpFric') then
+      else if ( index(NomVar, 'Model.ImpFric') > 0) then
          valeur = Instance%FrottementImplicite
-      else if ( NomVar == 'Model.ValidComp') then
+      else if ( index(NomVar, 'Model.ValidComp') > 0) then
          valeur = Instance%CalculValidation
-      else if ( NomVar == 'Model.DamBrkFldWave') then
+      else if ( index(NomVar, 'Model.DamBrkFldWave') > 0) then
          valeur = Instance%OndeSubm
-      else if ( NomVar == 'Model.Opt') then
+      else if ( index(NomVar, 'Model.Opt') > 0) then
          valeur = Instance%Opt
-      else if ( NomVar == 'Model.Boussinesq') then
+      else if ( index(NomVar, 'Model.Boussinesq') > 0) then
          valeur = Instance%Boussinesq
-      else if ( NomVar == 'Model.NoConvection') then
+      else if ( index(NomVar, 'Model.NoConvection') > 0) then
          valeur = Instance%NoConvection
       else if (INDEX(NomVar,'Model.Weir.') > 0) then
            GET_BOOL_MODELE_MASCARET = GET_BOOL_SINGULARITE(instance%Singularites(index1), NomVar, index2,&
@@ -2870,7 +2896,7 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Title') then
+      if ( index(NomVar, 'Model.Title') > 0) then
          valeur = Instance%TitreCas
       else if (INDEX(NomVar,'Model.CrossSection.') > 0) then
            GET_STRING_MODELE_MASCARET = GET_STRING_PROFIL(instance%Profils(index1), NomVar, index2,&
@@ -2887,11 +2913,11 @@ contains
       else if (INDEX(NomVar,'Model.File.Listing.') > 0) then
            GET_STRING_MODELE_MASCARET = GET_STRING_FICHIER(instance%FichierListing, NomVar, index1,&
                                          index2, index3, valeur, MessageErreur)
-      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
-           GET_STRING_MODELE_MASCARET = GET_STRING_FICHIER(instance%FichierResultat, NomVar, index1,&
-                                         index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.Result2.') > 0) then
            GET_STRING_MODELE_MASCARET = GET_STRING_FICHIER(instance%FichierResultat2, NomVar, index1,&
+                                         index2, index3, valeur, MessageErreur)
+      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
+           GET_STRING_MODELE_MASCARET = GET_STRING_FICHIER(instance%FichierResultat, NomVar, index1,&
                                          index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.GeoStoArea.') > 0) then
            GET_STRING_MODELE_MASCARET = GET_STRING_FICHIER(instance%FichierGeomCasier, NomVar, index1,&
@@ -2958,49 +2984,51 @@ contains
       SET_DOUBLE_MODELE_MASCARET = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Zbot') then
+      if ( index(NomVar,'Model.Zbot') > 0) then
          Instance%ZREF(index1) = valeur
-      else if ( NomVar == 'Model.LevRightBk') then
+      else if ( index(NomVar,'Model.LevRightBk') > 0) then
          Instance%RDC(index1) = valeur
-      else if ( NomVar == 'Model.LevLeftBk') then
+      else if ( index(NomVar,'Model.LevLeftBk') > 0) then
          Instance%RGC(index1) = valeur
-      else if ( NomVar == 'Model.Abac') then
+      else if ( index(NomVar,'Model.Abac') > 0) then
          Instance%abaque(index1, index2, index3) = valeur
-      else if ( NomVar == 'Model.Heps') then
+      else if ( index(NomVar,'Model.Heps') > 0) then
          Instance%HEPS = valeur
-      else if ( NomVar == 'Model.FricCoefFP') then
+      else if ( index(NomVar,'Model.FricCoefFP') > 0) then
          Instance%CF2(index1) = valeur
-      else if ( NomVar == 'Model.FricCoefMainCh') then
+      else if ( index(NomVar,'Model.FricCoefMainCh') > 0) then
          Instance%CF1(index1) = valeur
-      else if ( NomVar == 'Model.LocalHeadLoss') then
+      else if ( index(NomVar,'Model.LocalHeadLoss') > 0) then
          Instance%PCSing(index1) = valeur
-      else if ( NomVar == 'Model.XDT') then
+      else if ( index(NomVar,'Model.XDT') > 0) then
          Instance%XDT(index1) = valeur
-      else if ( NomVar == 'Model.X') then
+      else if ( index(NomVar,'Model.XD') > 0) then
+            Instance%XD(index1) = valeur
+      else if ( index(NomVar,'Model.X') > 0) then
          Instance%X(index1) = valeur
-      else if ( NomVar == 'Model.CourantNum') then
+      else if ( index(NomVar,'Model.CourantNum') > 0) then
          Instance%CourantObj = valeur
-      else if ( NomVar == 'Model.MaxCompTime') then
+      else if ( index(NomVar,'Model.MaxCompTime') > 0) then
          Instance%TempsMaximum = valeur
-      else if ( NomVar == 'Model.InitTime') then
+      else if ( index(NomVar,'Model.MaxControlZ') > 0) then
+         Instance%Cote_max_controle = valeur
+      else if ( index(NomVar,'Model.InitTime') > 0) then
          Instance%TempsInitial = valeur
-      else if ( NomVar == 'Model.DT') then
+      else if ( index(NomVar,'Model.DT') > 0) then
          Instance%DT = valeur
-      else if ( NomVar == 'Model.LimFroude') then
+      else if ( index(NomVar,'Model.LimFroude') > 0) then
          Instance%FroudeLim = valeur
-      else if ( NomVar == 'Model.DZwave') then
+      else if ( index(NomVar,'Model.DZwave') > 0) then
          Instance%DZArriveeFront = valeur
-      else if ( NomVar == 'Model.DZ') then
+      else if ( index(NomVar,'Model.DZD') > 0) then
+            Instance%DZD(index1) = valeur
+      else if ( index(NomVar,'Model.DZ') > 0) then
          Instance%DZ(index1) = valeur
-      else if ( NomVar == 'Model.XD') then
-         Instance%XD(index1) = valeur
-      else if ( NomVar == 'Model.DZD') then
-         Instance%DZD(index1) = valeur
-      else if ( NomVar == 'Model.RelXFirstNdReach') then
+      else if ( index(NomVar,'Model.RelXFirstNdReach') > 0) then
          Instance%absc_rel_ext_deb_bief(index1) = valeur
-      else if ( NomVar == 'Model.RelXLastNdReach') then
+      else if ( index(NomVar,'Model.RelXLastNdReach') > 0) then
          Instance%absc_rel_ext_fin_bief(index1) = valeur
-      else if ( NomVar == 'Model.F1') then
+      else if ( index(NomVar,'Model.F1') > 0) then
          Instance%F1(index1, index2) = valeur
       else if (INDEX(NomVar,'Model.CrossSection.') > 0) then
            SET_DOUBLE_MODELE_MASCARET = SET_DOUBLE_PROFIL(instance%Profils(index1), NomVar, index2,&
@@ -3066,49 +3094,51 @@ contains
       SET_INT_MODELE_MASCARET = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.ResultFmt2') then
+      if ( index(NomVar,'Model.ResultFmt2') > 0) then
          Instance%FormatResu2 = valeur
-      else if ( NomVar == 'Model.NodeRes') then
+      else if ( index(NomVar,'Model.NodeRes') > 0) then
          Instance%SectionStockage(index1) = valeur
-      else if ( NomVar == 'Model.RecOption') then
+      else if ( index(NomVar,'Model.RecOption') > 0) then
          Instance%OptionStockage = valeur
-      else if ( NomVar == 'Model.ResultFmt') then
+      else if ( index(NomVar,'Model.ResultFmt') > 0) then
          Instance%FormatResu = valeur
-      else if ( NomVar == 'Model.RecNbFstTimeStep') then
+      else if ( index(NomVar,'Model.RecNbFstTimeStep') > 0) then
          Instance%PremierPasStocke = valeur
-      else if ( NomVar == 'Model.RecNTimeStep') then
+      else if ( index(NomVar,'Model.RecNTimeStep') > 0) then
          Instance%PasImpression = valeur
-      else if ( NomVar == 'Model.RecListNTimeStep') then
+      else if ( index(NomVar,'Model.RecListNTimeStep') > 0) then
          Instance%PasStockage = valeur
-      else if ( NomVar == 'Model.AlgoNet') then
+      else if ( index(NomVar,'Model.AlgoNet') > 0) then
          Instance%Algorithme(index1) = valeur
-      else if ( NomVar == 'Model.1DMesh') then
+      else if ( index(NomVar,'Model.1DMesh') > 0) then
          Instance%TypeMaillage = valeur
-      else if ( NomVar == 'Model.IDT') then
+      else if ( index(NomVar,'Model.IDT') > 0) then
          Instance%IDT(index1) = valeur
-      else if ( NomVar == 'Model.GeoFileFmt') then
+      else if ( index(NomVar,'Model.GeoFileFmt') > 0) then
          Instance%FormatGeom = valeur
-      else if ( NomVar == 'Model.FricLaw') then
+      else if ( index(NomVar,'Model.FricLaw') > 0) then
          Instance%LoiFrottement = valeur
-      else if ( NomVar == 'Model.MaxNbTimeStep') then
+      else if ( index(NomVar,'Model.MaxNbTimeStep') > 0) then
          Instance%NbPasTemps = valeur
-      else if ( NomVar == 'Model.StopCriteria') then
+      else if ( index(NomVar,'Model.ControlSection') > 0) then
+         Instance%Section_controle = valeur
+      else if ( index(NomVar,'Model.StopCriteria') > 0) then
          Instance%CritereArret = valeur
-      else if ( NomVar == 'Model.Regime') then
+      else if ( index(NomVar,'Model.Regime') > 0) then
          Instance%Regime = valeur
-      else if ( NomVar == 'Model.CSectionLayout') then
+      else if ( index(NomVar,'Model.CSectionLayout') > 0) then
          Instance%ModeleLit = valeur
-      else if ( NomVar == 'Model.ValidType') then
+      else if ( index(NomVar,'Model.ValidType') > 0) then
          Instance%TypeValidation = valeur
-      else if ( NomVar == 'Model.Kernel') then
+      else if ( index(NomVar,'Model.Kernel') > 0) then
          Instance%Noyau = valeur
-      else if ( NomVar == 'Model.Version') then
+      else if ( index(NomVar,'Model.Version') > 0) then
          Instance%VersionCode = valeur
-      else if ( NomVar == 'Model.FirstCSReach') then
+      else if ( index(NomVar,'Model.FirstCSReach') > 0) then
          Instance%ProfDebBief(index1) = valeur
-      else if ( NomVar == 'Model.LastCSReach') then
+      else if ( index(NomVar,'Model.LastCSReach') > 0) then
          Instance%ProfFinBief(index1) = valeur
-      else if ( NomVar == 'Model.CQMV') then
+      else if ( index(NomVar,'Model.CQMV') > 0) then
          Instance%CQMV = valeur
       else if (INDEX(NomVar,'Model.Connect.') > 0) then
            SET_INT_MODELE_MASCARET = SET_INT_CONNECT(instance%Connect, NomVar, index1,&
@@ -3137,11 +3167,11 @@ contains
       else if (INDEX(NomVar,'Model.Link.') > 0) then
            SET_INT_MODELE_MASCARET = SET_INT_LIAISON(instance%Liaisons(index1), NomVar, index2,&
                                          index3, bidon1, valeur, MessageErreur)
-      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
-           SET_INT_MODELE_MASCARET = SET_INT_FICHIER(instance%FichierResultat, NomVar, index1,&
-                                         index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.Result2.') > 0) then
            SET_INT_MODELE_MASCARET = SET_INT_FICHIER(instance%FichierResultat2, NomVar, index1,&
+                                         index2, index3, valeur, MessageErreur)
+      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
+           SET_INT_MODELE_MASCARET = SET_INT_FICHIER(instance%FichierResultat, NomVar, index1,&
                                          index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.GeoStoArea.') > 0) then
            SET_INT_MODELE_MASCARET = SET_INT_FICHIER(instance%FichierGeomCasier, NomVar, index1,&
@@ -3210,49 +3240,49 @@ contains
       SET_BOOL_MODELE_MASCARET = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.CSectionAbsX') then
+      if ( index(NomVar,'Model.CSectionAbsX') > 0) then
          Instance%ProfAbs = valeur
-      else if ( NomVar == 'Model.HeadLossEnlarg') then
+      else if ( index(NomVar,'Model.HeadLossEnlarg') > 0) then
          Instance%PerteElargissementTrans = valeur
-      else if ( NomVar == 'Model.ImpSupCritKern') then
+      else if ( index(NomVar,'Model.ImpSupCritKern') > 0) then
          Instance%ImplicitTrans = valeur
-      else if ( NomVar == 'Model.HeadLossJunc') then
+      else if ( index(NomVar,'Model.HeadLossJunc') > 0) then
          Instance%PerteChargeConfluent = valeur
-      else if ( NomVar == 'Model.TracerOn') then
+      else if ( index(NomVar,'Model.TracerOn') > 0) then
          Instance%OptionTracer = valeur
-      else if ( NomVar == 'Model.RecVar') then
+      else if ( index(NomVar,'Model.RecVar') > 0) then
          Instance%VarSto(index1) = valeur
-      else if ( NomVar == 'Model.CompVar') then
+      else if ( index(NomVar,'Model.CompVar') > 0) then
          Instance%VarCalc(index1) = valeur
-      else if ( NomVar == 'Model.PrintComp') then
+      else if ( index(NomVar,'Model.PrintComp') > 0) then
          Instance%ImpressionCalcul = valeur
-      else if ( NomVar == 'Model.PrintVertCSection') then
+      else if ( index(NomVar,'Model.PrintVertCSection') > 0) then
          Instance%ImpressionPlanim = valeur
-      else if ( NomVar == 'Model.HotStart') then
+      else if ( index(NomVar,'Model.HotStart') > 0) then
          Instance%RepriseCalcul = valeur
-      else if ( NomVar == 'Model.InefFlowArea') then
+      else if ( index(NomVar,'Model.InefFlowArea') > 0) then
          Instance%PresenceZoneStockage = valeur
-      else if ( NomVar == 'Model.InterpFriction') then
+      else if ( index(NomVar,'Model.InterpFriction') > 0) then
          Instance%InterpolLinStrickler = valeur
-      else if ( NomVar == 'Model.ProgOverFlowIFA') then
+      else if ( index(NomVar,'Model.ProgOverFlowIFA') > 0) then
          Instance%DebProgressifZS = valeur
-      else if ( NomVar == 'Model.ProgOverFlowFP') then
+      else if ( index(NomVar,'Model.ProgOverFlowFP') > 0) then
          Instance%DebProgressifLM = valeur
-      else if ( NomVar == 'Model.FricVertWall') then
+      else if ( index(NomVar,'Model.FricVertWall') > 0) then
          Instance%FrottParoiVerticale = valeur
-      else if ( NomVar == 'Model.VarTimeStep') then
+      else if ( index(NomVar,'Model.VarTimeStep') > 0) then
          Instance%PasTempsVariable = valeur
-      else if ( NomVar == 'Model.ImpFric') then
+      else if ( index(NomVar,'Model.ImpFric') > 0) then
          Instance%FrottementImplicite = valeur
-      else if ( NomVar == 'Model.ValidComp') then
+      else if ( index(NomVar,'Model.ValidComp') > 0) then
          Instance%CalculValidation = valeur
-      else if ( NomVar == 'Model.DamBrkFldWave') then
+      else if ( index(NomVar,'Model.DamBrkFldWave') > 0) then
          Instance%OndeSubm = valeur
-      else if ( NomVar == 'Model.Opt') then
+      else if ( index(NomVar,'Model.Opt') > 0) then
          Instance%Opt = valeur
-      else if ( NomVar == 'Model.Boussinesq') then
+      else if ( index(NomVar,'Model.Boussinesq') > 0) then
          Instance%Boussinesq = valeur
-      else if ( NomVar == 'Model.NoConvection') then
+      else if ( index(NomVar,'Model.NoConvection') > 0) then
          Instance%NoConvection = valeur
       else if (INDEX(NomVar,'Model.Weir.') > 0) then
            SET_BOOL_MODELE_MASCARET = SET_BOOL_SINGULARITE(instance%Singularites(index1), NomVar, index2,&
@@ -3282,7 +3312,7 @@ contains
       SET_STRING_MODELE_MASCARET = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Title') then
+      if ( index(NomVar, 'Model.Title') > 0) then
          Instance%TitreCas = valeur
       else if (INDEX(NomVar,'Model.CrossSection.') > 0) then
            SET_STRING_MODELE_MASCARET = SET_STRING_PROFIL(instance%Profils(index1), NomVar, index2,&
@@ -3299,11 +3329,11 @@ contains
       else if (INDEX(NomVar,'Model.File.Listing.') > 0) then
            SET_STRING_MODELE_MASCARET = SET_STRING_FICHIER(instance%FichierListing, NomVar, index1,&
                                          index2, index3, valeur, MessageErreur)
-      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
-           SET_STRING_MODELE_MASCARET = SET_STRING_FICHIER(instance%FichierResultat, NomVar, index1,&
-                                         index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.Result2.') > 0) then
            SET_STRING_MODELE_MASCARET = SET_STRING_FICHIER(instance%FichierResultat2, NomVar, index1,&
+                                         index2, index3, valeur, MessageErreur)
+      else if (INDEX(NomVar,'Model.File.Result.') > 0) then
+           SET_STRING_MODELE_MASCARET = SET_STRING_FICHIER(instance%FichierResultat, NomVar, index1,&
                                          index2, index3, valeur, MessageErreur)
       else if (INDEX(NomVar,'Model.File.GeoStoArea.') > 0) then
            SET_STRING_MODELE_MASCARET = SET_STRING_FICHIER(instance%FichierGeomCasier, NomVar, index1,&

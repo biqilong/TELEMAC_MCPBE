@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_LOI_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -117,35 +117,35 @@ contains
       GET_TYPE_VAR_LOI = 0
       TypeVar               = ""
       Categorie             = "MODEL"
-      Modifiable            = .FALSE.
+      Modifiable            = .TRUE.
       dimVar                = 0
       MessageErreur         = ""
 
-       if ( NomVar == 'Model.Graph.Name') then
+       if ( index(NomVar, 'Model.Graph.Name') > 0) then
           TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.Graph.Type') then
+       else if ( index(NomVar, 'Model.Graph.Type') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Graph.Time') then
+       else if ( index(NomVar, 'Model.Graph.Time') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Graph.Level') then
+       else if ( index(NomVar, 'Model.Graph.Level') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Graph.Discharge') then
+       else if ( index(NomVar, 'Model.Graph.Discharge') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Graph.SupLevel') then
+       else if ( index(NomVar, 'Model.Graph.SupLevel') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Graph.InfLevel') then
+       else if ( index(NomVar, 'Model.Graph.InfLevel') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Graph.DownLevel') then
+       else if ( index(NomVar, 'Model.Graph.DownLevel') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Graph.UpLevel') then
+       else if ( index(NomVar, 'Model.Graph.UpLevel') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
       else
@@ -181,15 +181,15 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Graph.Name') then
+      if ( index(NomVar, 'Model.Graph.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.Type') then
+      else if ( index(NomVar, 'Model.Graph.Type') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.Time') then
+      else if ( index(NomVar, 'Model.Graph.Time') > 0) then
          if (ASSOCIATED(Instance%Temps)) then
             taille1 = size(Instance%Temps)
          else
@@ -197,7 +197,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.Level') then
+      else if ( index(NomVar, 'Model.Graph.Level') > 0) then
          if (ASSOCIATED(Instance%Cote)) then
             taille1 = size(Instance%Cote)
          else
@@ -205,7 +205,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.Discharge') then
+      else if ( index(NomVar, 'Model.Graph.Discharge') > 0) then
          if (ASSOCIATED(Instance%Debit)) then
             taille1 = size(Instance%Debit)
          else
@@ -213,7 +213,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.SupLevel') then
+      else if ( index(NomVar, 'Model.Graph.SupLevel') > 0) then
          if (ASSOCIATED(Instance%CoteSup)) then
             taille1 = size(Instance%CoteSup)
          else
@@ -221,7 +221,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.InfLevel') then
+      else if ( index(NomVar, 'Model.Graph.InfLevel') > 0) then
          if (ASSOCIATED(Instance%CoteInf)) then
             taille1 = size(Instance%CoteInf)
          else
@@ -229,7 +229,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.DownLevel') then
+      else if ( index(NomVar, 'Model.Graph.DownLevel') > 0) then
          if (ASSOCIATED(Instance%CoteAval)) then
             taille1 = size(Instance%CoteAval)
          else
@@ -237,7 +237,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Graph.UpLevel') then
+      else if ( index(NomVar, 'Model.Graph.UpLevel') > 0) then
          if (ASSOCIATED(Instance%CoteAmont)) then
             taille1 = size(Instance%CoteAmont, 1)
             taille2 = size(Instance%CoteAmont, 2)
@@ -282,7 +282,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.Graph.Time') then
+      if ( index(NomVar, 'Model.Graph.Time') > 0) then
         if (ASSOCIATED(Instance%Temps)) then
            t1 = size(Instance%Temps)
            if (t1 /= NewT1) then
@@ -302,7 +302,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Graph.Level') then
+      else if ( index(NomVar, 'Model.Graph.Level') > 0) then
         if (ASSOCIATED(Instance%Cote)) then
            t1 = size(Instance%Cote)
            if (t1 /= NewT1) then
@@ -322,7 +322,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Graph.Discharge') then
+      else if ( index(NomVar, 'Model.Graph.Discharge') > 0) then
         if (ASSOCIATED(Instance%Debit)) then
            t1 = size(Instance%Debit)
            if (t1 /= NewT1) then
@@ -342,7 +342,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Graph.SupLevel') then
+      else if ( index(NomVar, 'Model.Graph.SupLevel') > 0) then
         if (ASSOCIATED(Instance%CoteSup)) then
            t1 = size(Instance%CoteSup)
            if (t1 /= NewT1) then
@@ -362,7 +362,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Graph.InfLevel') then
+      else if ( index(NomVar, 'Model.Graph.InfLevel') > 0) then
         if (ASSOCIATED(Instance%CoteInf)) then
            t1 = size(Instance%CoteInf)
            if (t1 /= NewT1) then
@@ -382,7 +382,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Graph.DownLevel') then
+      else if ( index(NomVar, 'Model.Graph.DownLevel') > 0) then
         if (ASSOCIATED(Instance%CoteAval)) then
            t1 = size(Instance%CoteAval)
            if (t1 /= NewT1) then
@@ -402,7 +402,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Graph.UpLevel') then
+      else if ( index(NomVar, 'Model.Graph.UpLevel') > 0) then
         if (ASSOCIATED(Instance%CoteAmont)) then
            t1 = size(Instance%CoteAmont, 1)
            t2 = size(Instance%CoteAmont, 2)
@@ -453,19 +453,19 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Graph.Time') then
+      if ( index(NomVar, 'Model.Graph.Time') > 0) then
          valeur = Instance%Temps(index1)
-      else if ( NomVar == 'Model.Graph.Level') then
+      else if ( index(NomVar, 'Model.Graph.Level') > 0) then
          valeur = Instance%Cote(index1)
-      else if ( NomVar == 'Model.Graph.Discharge') then
+      else if ( index(NomVar, 'Model.Graph.Discharge') > 0) then
          valeur = Instance%Debit(index1)
-      else if ( NomVar == 'Model.Graph.SupLevel') then
+      else if ( index(NomVar, 'Model.Graph.SupLevel') > 0) then
          valeur = Instance%CoteSup(index1)
-      else if ( NomVar == 'Model.Graph.InfLevel') then
+      else if ( index(NomVar, 'Model.Graph.InfLevel') > 0) then
          valeur = Instance%CoteInf(index1)
-      else if ( NomVar == 'Model.Graph.DownLevel') then
+      else if ( index(NomVar, 'Model.Graph.DownLevel') > 0) then
          valeur = Instance%CoteAval(index1)
-      else if ( NomVar == 'Model.Graph.UpLevel') then
+      else if ( index(NomVar, 'Model.Graph.UpLevel') > 0) then
          valeur = Instance%CoteAmont(index1, index2)
       else
          GET_DOUBLE_LOI = 1
@@ -490,7 +490,7 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Graph.Type') then
+      if ( index(NomVar, 'Model.Graph.Type') > 0) then
          valeur = Instance%Type
       else
          GET_INT_LOI = 1
@@ -515,7 +515,7 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Graph.Name') then
+      if ( index(NomVar, 'Model.Graph.Name') > 0) then
          valeur = Instance%Nom
       else
          GET_STRING_LOI = 1
@@ -545,19 +545,19 @@ contains
       SET_DOUBLE_LOI = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Graph.Time') then
+      if ( index(NomVar, 'Model.Graph.Time') > 0) then
          Instance%Temps(index1) = valeur
-      else if ( NomVar == 'Model.Graph.Level') then
+      else if ( index(NomVar, 'Model.Graph.Level') > 0) then
          Instance%Cote(index1) = valeur
-      else if ( NomVar == 'Model.Graph.Discharge') then
+      else if ( index(NomVar, 'Model.Graph.Discharge') > 0) then
          Instance%Debit(index1) = valeur
-      else if ( NomVar == 'Model.Graph.SupLevel') then
+      else if ( index(NomVar, 'Model.Graph.SupLevel') > 0) then
          Instance%CoteSup(index1) = valeur
-      else if ( NomVar == 'Model.Graph.InfLevel') then
+      else if ( index(NomVar, 'Model.Graph.InfLevel') > 0) then
          Instance%CoteInf(index1) = valeur
-      else if ( NomVar == 'Model.Graph.DownLevel') then
+      else if ( index(NomVar, 'Model.Graph.DownLevel') > 0) then
          Instance%CoteAval(index1) = valeur
-      else if ( NomVar == 'Model.Graph.UpLevel') then
+      else if ( index(NomVar, 'Model.Graph.UpLevel') > 0) then
          Instance%CoteAmont(index1, index2) = valeur
       else
          SET_DOUBLE_LOI = 1
@@ -580,7 +580,7 @@ contains
       SET_INT_LOI = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Graph.Type') then
+      if ( index(NomVar, 'Model.Graph.Type') > 0) then
          Instance%Type = valeur
       else
          SET_INT_LOI = 1
@@ -603,7 +603,7 @@ contains
       SET_STRING_LOI = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Graph.Name') then
+      if ( index(NomVar, 'Model.Graph.Name') > 0) then
          Instance%Nom = valeur
       else
          SET_STRING_LOI = 1

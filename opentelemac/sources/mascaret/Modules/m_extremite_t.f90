@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_EXTREMITE_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -99,22 +99,22 @@ contains
       MessageErreur         = ""
 
 
-       if ( NomVar == 'Model.Boundary.Name') then
+       if ( index(NomVar, 'Model.Boundary.Name') > 0) then
           TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.Boundary.Slope') then
+       else if ( index(NomVar, 'Model.Boundary.Slope') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Boundary.GraphNum') then
+       else if ( index(NomVar, 'Model.Boundary.GraphNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Boundary.Type') then
+       else if ( index(NomVar, 'Model.Boundary.Type') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Boundary.PtZ') then
+       else if ( index(NomVar, 'Model.Boundary.PtZ') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Boundary.PtQ') then
+       else if ( index(NomVar, 'Model.Boundary.PtQ') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
       else
@@ -150,23 +150,23 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Boundary.Name') then
+      if ( index(NomVar, 'Model.Boundary.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Boundary.Slope') then
+      else if ( index(NomVar, 'Model.Boundary.Slope') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Boundary.GraphNum') then
+      else if ( index(NomVar, 'Model.Boundary.GraphNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Boundary.Type') then
+      else if ( index(NomVar, 'Model.Boundary.Type') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Boundary.PtZ') then
+      else if ( index(NomVar, 'Model.Boundary.PtZ') > 0) then
          if (ASSOCIATED(Instance%PtZ)) then
             taille1 = size(Instance%PtZ)
          else
@@ -174,7 +174,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Boundary.PtQ') then
+      else if (index(NomVar, 'Model.Boundary.PtQ') > 0) then
          if (ASSOCIATED(Instance%PtQ)) then
             taille1 = size(Instance%PtQ)
          else
@@ -218,7 +218,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.Boundary.PtZ') then
+      if ( index(NomVar, 'Model.Boundary.PtZ') > 0) then
         if (ASSOCIATED(Instance%PtZ)) then
            t1 = size(Instance%PtZ)
            if (t1 /= NewT1) then
@@ -238,7 +238,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Boundary.PtQ') then
+      else if ( index(NomVar, 'Model.Boundary.PtQ') > 0) then
         if (ASSOCIATED(Instance%PtQ)) then
            t1 = size(Instance%PtQ)
            if (t1 /= NewT1) then
@@ -288,11 +288,11 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Boundary.Slope') then
+      if ( index(NomVar, 'Model.Boundary.Slope') > 0) then
          valeur = Instance%PenteFond
-      else if ( NomVar == 'Model.Boundary.PtZ') then
+      else if ( index(NomVar, 'Model.Boundary.PtZ') > 0) then
          valeur = Instance%PtZ(index1)
-      else if ( NomVar == 'Model.Boundary.PtQ') then
+      else if ( index(NomVar, 'Model.Boundary.PtQ') > 0) then
          valeur = Instance%PtQ(index1)
       else
          GET_DOUBLE_EXTREMITE = 1
@@ -317,9 +317,9 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Boundary.GraphNum') then
+      if ( index(NomVar, 'Model.Boundary.GraphNum') > 0) then
          valeur = Instance%NumeroLoi
-      else if ( NomVar == 'Model.Boundary.Type') then
+      else if ( index(NomVar, 'Model.Boundary.Type') > 0) then
          valeur = Instance%Type
       else
          GET_INT_EXTREMITE = 1
@@ -344,7 +344,7 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Boundary.Name') then
+      if ( index(NomVar, 'Model.Boundary.Name') > 0) then
          valeur = Instance%Nom
       else
          GET_STRING_EXTREMITE = 1
@@ -374,11 +374,11 @@ contains
       SET_DOUBLE_EXTREMITE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Boundary.Slope') then
+      if ( index(NomVar, 'Model.Boundary.Slope') > 0) then
          Instance%PenteFond = valeur
-      else if ( NomVar == 'Model.Boundary.PtZ') then
+      else if ( index(NomVar, 'Model.Boundary.PtZ') > 0) then
          Instance%PtZ(index1) = valeur
-      else if ( NomVar == 'Model.Boundary.PtQ') then
+      else if ( index(NomVar, 'Model.Boundary.PtQ') > 0) then
          Instance%PtQ(index1) = valeur
       else
          SET_DOUBLE_EXTREMITE = 1
@@ -401,9 +401,9 @@ contains
       SET_INT_EXTREMITE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Boundary.GraphNum') then
+      if ( index(NomVar, 'Model.Boundary.GraphNum') > 0) then
          Instance%NumeroLoi = valeur
-      else if ( NomVar == 'Model.Boundary.Type') then
+      else if ( index(NomVar, 'Model.Boundary.Type') > 0) then
          Instance%Type = valeur
       else
          SET_INT_EXTREMITE = 1
@@ -426,7 +426,7 @@ contains
       SET_STRING_EXTREMITE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Boundary.Name') then
+      if ( index(NomVar, 'Model.Boundary.Name') > 0) then
          Instance%Nom = valeur
       else
          SET_STRING_EXTREMITE = 1

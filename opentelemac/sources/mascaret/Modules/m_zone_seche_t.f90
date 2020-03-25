@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_ZONE_SECHE_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -70,10 +70,10 @@ contains
 
 
 
-       if ( NomVar == 'Model.DryArea.FirstNode') then
+       if ( index(NomVar, 'Model.DryArea.FirstNode') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.DryArea.LastNode') then
+       else if ( index(NomVar, 'Model.DryArea.LastNode') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
        else
@@ -109,11 +109,11 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.DryArea.FirstNode') then
+      if ( index(NomVar, 'Model.DryArea.FirstNode') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.DryArea.LastNode') then
+      else if ( index(NomVar, 'Model.DryArea.LastNode') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -167,9 +167,9 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.DryArea.FirstNode') then
+      if ( index(NomVar, 'Model.DryArea.FirstNode') > 0) then
          valeur = Instance%SectionDeb
-      else if ( NomVar == 'Model.DryArea.LastNode') then
+      else if ( index(NomVar, 'Model.DryArea.LastNode') > 0) then
          valeur = Instance%SectionFin
       else
          GET_INT_ZONE_SECHE = 1
@@ -199,9 +199,9 @@ contains
       SET_INT_ZONE_SECHE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.DryArea.FirstNode') then
+      if ( index(NomVar, 'Model.DryArea.FirstNode') > 0) then
          Instance%SectionDeb = valeur
-      else if ( NomVar == 'Model.DryArea.LastNode') then
+      else if ( index(NomVar, 'Model.DryArea.LastNode') > 0) then
          Instance%SectionFin = valeur
       else
          SET_INT_ZONE_SECHE = 1

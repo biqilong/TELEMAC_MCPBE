@@ -16,6 +16,12 @@ function write_get {
   elif [[ $var_type == 'bief_integer' ]]; then
     real_type="integer"
     real_inst_name="$var_inst_name%I"
+  elif [[ $var_type == 'bloc_double' ]]; then
+    real_type="double"
+    real_inst_name="$var_inst_name%ADR(INDEX1)%P%R"
+  elif [[ $var_type == 'bloc_integer' ]]; then
+    real_type="integer"
+    real_inst_name="$var_inst_name%ADR(INDEX1)%P%I"
   else
     real_type="$var_type"
     real_inst_name="$var_inst_name"
@@ -25,7 +31,12 @@ function write_get {
   if [[ $var_ndim == '0' ]]; then
     inst_name="$real_inst_name"
   elif [[ $var_ndim == '1' ]]; then
-    inst_name="$real_inst_name(INDEX1)"
+    # First index is used as block index
+    if [[ $var_type == "bloc_integer" || $var_type == "bloc_double" ]];then
+      inst_name="$real_inst_name(INDEX2)"
+    else
+      inst_name="$real_inst_name(INDEX1)"
+    fi
   elif [[ $var_ndim == '2' ]]; then
     # 1 dimensialized array call
     if [[ $var_type == "bief_integer" || $var_type == "bief_double" ]];then
@@ -38,11 +49,20 @@ function write_get {
   fi
 
   if [[ $var_type == "string" ]]; then
-    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          DO J=1,VALUELEN\n            VALEUR(J:J) = INST%$inst_name(J:J)\n          ENDDO"
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          DO J=1,VALUELEN\n"
+    text+="            VALEUR(J:J) = INST%$inst_name(J:J)\n"
+    text+="          ENDDO"
   elif [[ $var_type == "boolean" ]]; then
-    text="\          IF(INST%$inst_name) THEN\n           VALEUR = 0\n         ELSE\n           VALEUR = 1\n         ENDIF"
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          IF(INST%$inst_name) THEN\n"
+    text+="            VALEUR = 0\n"
+    text+="          ELSE\n"
+    text+="            VALEUR = 1\n"
+    text+="          ENDIF"
   else
-    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          VALEUR = INST%$inst_name"
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          VALEUR = INST%$inst_name"
   fi
 
   tag="! <get_${real_type}>"
@@ -62,6 +82,12 @@ function write_set {
   elif [[ $var_type == 'bief_integer' ]]; then
     real_type="integer"
     real_inst_name="$var_inst_name%I"
+  elif [[ $var_type == 'bloc_double' ]]; then
+    real_type="double"
+    real_inst_name="$var_inst_name%ADR(INDEX1)%P%R"
+  elif [[ $var_type == 'bloc_integer' ]]; then
+    real_type="integer"
+    real_inst_name="$var_inst_name%ADR(INDEX1)%P%I"
   else
     real_type="$var_type"
     real_inst_name="$var_inst_name"
@@ -71,7 +97,12 @@ function write_set {
   if [[ $var_ndim == '0' ]]; then
     inst_name="$real_inst_name"
   elif [[ $var_ndim == '1' ]]; then
-    inst_name="$real_inst_name(INDEX1)"
+    # First index is used as block index
+    if [[ $var_type == "bloc_integer" || $var_type == "bloc_double" ]];then
+      inst_name="$real_inst_name(INDEX2)"
+    else
+      inst_name="$real_inst_name(INDEX1)"
+    fi
   elif [[ $var_ndim == '2' ]]; then
     # 1 dimensialized array call
     if [[ $var_type == "bief_integer" || $var_type == "bief_double" ]];then
@@ -84,11 +115,16 @@ function write_set {
   fi
 
   if [[ $var_type == "string" ]]; then
-    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          DO J=1,VALUELEN\n            INST%$inst_name(J:J) = VALEUR(J)\n          ENDDO"
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          DO J=1,VALUELEN\n"
+    text+="            INST%$inst_name(J:J) = VALEUR(J)\n"
+    text+="          ENDDO"
   elif [[ $var_type == "boolean" ]]; then
-    text="\          IF(VALEUR.EQ.0) THEN\n           INST%$inst_name = .TRUE.\n         ELSE\n           INST%$inst_name = .FALSE.\n         ENDIF"
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          INST%$inst_name = VALEUR.EQ.0"
   else
-    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          INST%$inst_name = VALEUR"
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          INST%$inst_name = VALEUR"
   fi
 
   tag="<set_$real_type>"
@@ -107,6 +143,12 @@ function write_get_array {
   elif [[ $var_type == 'bief_integer' ]]; then
     real_type="integer"
     real_inst_name="$var_inst_name%I"
+  elif [[ $var_type == 'bloc_double' ]]; then
+    real_type="double"
+    real_inst_name="$var_inst_name%ADR(BLOCK_INDEX)%P%R"
+  elif [[ $var_type == 'bloc_integer' ]]; then
+    real_type="integer"
+    real_inst_name="$var_inst_name%ADR(BLOCK_INDEX)%P%I"
   else
     real_type="$var_type"
     real_inst_name="$var_inst_name"
@@ -122,7 +164,23 @@ function write_get_array {
     return 0
   fi
 
-  text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          VALEUR($range) =\n     &     INST%$real_inst_name($range)"
+
+
+  if [[ $var_type == 'bloc_double' || $var_type == 'bloc_integer' ]]; then
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          IF(PRESENT(BLOCK_INDEX))THEN\n"
+    text+="            VALEUR($range) =\n"
+    text+="     &       INST%$real_inst_name\n"
+    text+="     &       ($range)\n"
+    text+="          ELSE\n"
+    text+="            IERR = INDEX_BLOCK_MISSING\n"
+    text+="            ERR_MESS = 'THE BLOCK INDEX IS MISSING FOR'//TRIM(VARNAME)\n"
+    text+="          ENDIF"
+  else
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          VALEUR($range) =\n"
+    text+="     &     INST%$real_inst_name($range)"
+  fi
 
   tag="! <get_${real_type}_array>"
 
@@ -141,6 +199,12 @@ function write_set_array {
   elif [[ $var_type == 'bief_integer' ]]; then
     real_type="integer"
     real_inst_name="$var_inst_name%I"
+  elif [[ $var_type == 'bloc_double' ]]; then
+    real_type="double"
+    real_inst_name="$var_inst_name%ADR(BLOCK_INDEX)%P%R"
+  elif [[ $var_type == 'bloc_integer' ]]; then
+    real_type="integer"
+    real_inst_name="$var_inst_name%ADR(BLOCK_INDEX)%P%I"
   else
     real_type="$var_type"
     real_inst_name="$var_inst_name"
@@ -157,9 +221,23 @@ function write_set_array {
   fi
 
 
-  text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          INST%$inst_name($range) = \n     &    VALEUR($range)"
+  if [[ $var_type == 'bloc_double' || $var_type == 'bloc_integer' ]]; then
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          IF(PRESENT(BLOCK_INDEX))THEN\n"
+    text+="            INST%$real_inst_name\n"
+    text+="     &       ($range)=\n"
+    text+="     &       VALEUR($range)\n"
+    text+="          ELSE\n"
+    text+="            IERR = INDEX_BLOCK_MISSING\n"
+    text+="            ERR_MESS = 'THE BLOCK INDEX IS MISSING FOR'//TRIM(VARNAME)\n"
+    text+="          ENDIF"
+  else
+    text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+    text+="          INST%$real_inst_name($range) = \n"
+    text+="     &     VALEUR($range)"
+  fi
 
-  tag="<set_${real_type_array}_array>"
+  tag="<set_${real_type}_array>"
 
   sed -i "/$tag/i $text" $api_handle${module}.f
 }
@@ -175,15 +253,24 @@ function write_size {
   elif [[ $var_ndim == '1' ]]; then
     if [[ $var_type == 'bief_integer' || $var_type == 'bief_double' ]]; then
       text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          DIM1 = INST%$var_inst_name%DIM1"
+    elif [[ $var_type == 'bloc_integer' || $var_type == 'bloc_double' ]]; then
+      text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+      text+="          DIM1 = INST%$var_inst_name%N\n"
+      text+="          DIM2 = INST%$var_inst_name%ADR(1)%P%DIM1"
     else
-      text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          DIM1 = SIZE(INST%$var_inst_name)"
+      text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+      text+="          DIM1 = SIZE(INST%$var_inst_name)"
     fi
   elif [[ $var_ndim == '2' ]]; then
     if [[ $var_type == 'bief_integer' || $var_type == 'bief_double' ]]; then
-      text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n          DIM1 = INST%$var_inst_name%DIM1\n          DIM2 = INST%$var_inst_name%DIM2"
+      text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+      text+="          DIM1 = INST%$var_inst_name%DIM1\n"
+      text+="          DIM2 = INST%$var_inst_name%DIM2"
     else
-      echo "WARNING: Not handled"
-      exit 1
+      text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+      text+="          TWODIM = SHAPE(INST%$var_inst_name)\n"
+      text+="          DIM1 = TWODIM(1)\n"
+      text+="          DIM2 = TWODIM(2)"
     fi
   elif [[ $var_ndim == '3' ]]; then
     echo "WARNING: Not handled"
@@ -213,12 +300,12 @@ function write_type {
   fi
 
 
-  text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN \
-\n          VARTYPE = '$ftype'\
-\n          READONLY = .${var_readonly}.\
-\n          NDIM = $var_ndim\
-\n          GETPOS = $var_get_pos\
-\n          SETPOS = $var_set_pos"
+  text="\        ELSE IF(TRIM(VARNAME).EQ.'$var_name') THEN\n"
+  text+="          VARTYPE = '$ftype'\n"
+  text+="          READONLY = .${var_readonly}.\n"
+  text+="          NDIM = $var_ndim\n"
+  text+="          GETPOS = $var_get_pos\n"
+  text+="          SETPOS = $var_set_pos"
 
 
   tag="<get_var_type>"
@@ -232,7 +319,9 @@ function write_type {
 ###
 function write_help {
 
-  text="\          I = I + 1\n          VNAME_T2D(I) = '$var_name'\n          VINFO_T2D(I) = '$var_help'"
+  text="\          I = I + 1\n"
+  text+="          VNAME_${module^^}(I) = '$var_name'\n"
+  text+="          VINFO_${module^^}(I) = '$var_help'"
 
   tag="<set_var_list>"
 
@@ -266,7 +355,8 @@ function add_instance {
     echo
   fi
 
-  if [[ $var_type == "bief_integer" || $var_type == "bief_double" ]];then
+  if [[ $var_type == "bief_integer" || $var_type == "bief_double" || \
+        $var_type == "bloc_integer" || $var_type == "bloc_double" ]];then
     real_type="TYPE(BIEF_OBJ)"
     real_inst_name="${var_inst_name}"
   else

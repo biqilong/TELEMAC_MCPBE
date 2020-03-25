@@ -32,7 +32,8 @@ The computation case title is specified by the keyword \textit{TITLE}
 \[f_{k} =f_{0} \; r^{k-1} \quad (k=1,NF)\]
 where $f_{0} $ is the \textit{MINIMUM FREQUENCY }  r is the \textit{FREQUENTIAL RATIO}   NF is the \textit{NUMBER OF FREQUENCIES}
 
- In order to take the contribution of high frequencies (higher than the maximum discretised frequency) into account in the computations, it is assumed that the decay of the spectrum follows a law that is of the type f-n. The keyword \textit{SPECTRUM TAIL FACTOR }corresponds to the value of n.
+We can choose how to treat the high frequencies. If we want to impose the frequencies higher than the frequency cut off to decay with a law of the type $f^{-n}$, then we set the \textit{OPTION FOR DIAGNOSTIC TAIL} to 1, and the \textit{SPECTRUM TAIL FACTOR }corresponds to the value of n. The frequency cut off is the max of 4 Pierson-Moskowitz frequency and 2.5 mean frequency. 
+The Pierson-Moskowitz frequency is defined as $\frac{g}{2\pi 28 u^*}$ where $ u^*$ is the friction wind velocity.  
 
 
 \subsection{ Release}

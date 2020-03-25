@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_LIAISON_T
 !***********************************************************************
 ! PROGICIEL : MASCARET       C. RISSOAN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -158,68 +158,68 @@ module M_LIAISON_T
       MessageErreur         = ""
 
 
-       if ( NomVar == 'Model.Link.Type') then
+       if ( index(NomVar, 'Model.Link.Type') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.Kind') then
+       else if ( index(NomVar, 'Model.Link.Kind') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.CulverFlowDir') then
+       else if ( index(NomVar, 'Model.Link.CulverFlowDir') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if (INDEX(NomVar,'Model.Link.StoR') == 1) then
+       else if (INDEX(NomVar,'Model.Link.StoR') > 0) then
           GET_TYPE_VAR_LIAISON =  GET_TYPE_VAR_LIAISONRC(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
-       else if (INDEX(NomVar,'Model.Link.StoS') == 1) then
+       else if (INDEX(NomVar,'Model.Link.StoS') > 0) then
           GET_TYPE_VAR_LIAISON =  GET_TYPE_VAR_LIAISONCC(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
-       else if ( NomVar == 'Model.Link.Width') then
+       else if ( index(NomVar, 'Model.Link.Width') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.Length') then
+       else if ( index(NomVar, 'Model.Link.Length') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.Level') then
+       else if ( index(NomVar, 'Model.Link.Level') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.MeanLevel') then
+       else if ( index(NomVar, 'Model.Link.MeanLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.CoefCulvertDischarge') then
+       else if ( index(NomVar, 'Model.Link.CoefCulvertDischarge') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.CSection') then
+       else if ( index(NomVar, 'Model.Link.CSection') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.Roughness') then
+       else if ( index(NomVar, 'Model.Link.Roughness') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.CoefWeirDischarge') then
+       else if ( index(NomVar, 'Model.Link.CoefWeirDischarge') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.HeadLossCoef') then
+       else if ( index(NomVar, 'Model.Link.HeadLossCoef') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.ActivationCoef') then
+       else if ( index(NomVar, 'Model.Link.ActivationCoef') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.FlowExchange') then
+       else if ( index(NomVar, 'Model.Link.FlowExchange') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.PrevDischarge') then
+       else if ( index(NomVar, 'Model.Link.PrevDischarge') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.MaxDischarge') then
+       else if ( index(NomVar, 'Model.Link.MaxDischarge') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.TimeMaxDischarge') then
+       else if ( index(NomVar, 'Model.Link.TimeMaxDischarge') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.ExchangeVelocity') then
+       else if ( index(NomVar, 'Model.Link.ExchangeVelocity') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.MaxVelocity') then
+       else if ( index(NomVar, 'Model.Link.MaxVelocity') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.TimeMaxVelocity') then
+       else if ( index(NomVar, 'Model.Link.TimeMaxVelocity') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
       else
@@ -255,83 +255,83 @@ module M_LIAISON_T
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.Type') then
+      if ( index(NomVar, 'Model.Link.Type') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.Kind') then
+      else if ( index(NomVar, 'Model.Link.Kind') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.CulverFlowDir') then
+      else if ( index(NomVar, 'Model.Link.CulverFlowDir') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.Width') then
+      else if ( index(NomVar, 'Model.Link.Width') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.Length') then
+      else if ( index(NomVar, 'Model.Link.Length') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.Level') then
+      else if ( index(NomVar, 'Model.Link.Level') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.MeanLevel') then
+      else if ( index(NomVar, 'Model.Link.MeanLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.CoefCulvertDischarge') then
+      else if ( index(NomVar, 'Model.Link.CoefCulvertDischarge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.CSection') then
+      else if ( index(NomVar, 'Model.Link.CSection') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.Roughness') then
+      else if ( index(NomVar, 'Model.Link.Roughness') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.CoefWeirDischarge') then
+      else if ( index(NomVar, 'Model.Link.CoefWeirDischarge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.HeadLossCoef') then
+      else if ( index(NomVar, 'Model.Link.HeadLossCoef') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.ActivationCoef') then
+      else if ( index(NomVar, 'Model.Link.ActivationCoef') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.FlowExchange') then
+      else if ( index(NomVar, 'Model.Link.FlowExchange') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.PrevDischarge') then
+      else if ( index(NomVar, 'Model.Link.PrevDischarge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.MaxDischarge') then
+      else if ( index(NomVar, 'Model.Link.MaxDischarge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.TimeMaxDischarge') then
+      else if ( index(NomVar, 'Model.Link.TimeMaxDischarge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.ExchangeVelocity') then
+      else if ( index(NomVar, 'Model.Link.ExchangeVelocity') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.MaxVelocity') then
+      else if ( index(NomVar, 'Model.Link.MaxVelocity') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.TimeMaxVelocity') then
+      else if ( index(NomVar, 'Model.Link.TimeMaxVelocity') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -419,39 +419,39 @@ module M_LIAISON_T
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.Width') then
+      if ( index(NomVar, 'Model.Link.Width') > 0) then
          valeur = Instance%Largeur
-      else if ( NomVar == 'Model.Link.Length') then
+      else if ( index(NomVar, 'Model.Link.Length') > 0) then
          valeur = Instance%Longueur
-      else if ( NomVar == 'Model.Link.Level') then
+      else if ( index(NomVar, 'Model.Link.Level') > 0) then
          valeur = Instance%Cote
-      else if ( NomVar == 'Model.Link.MeanLevel') then
+      else if ( index(NomVar, 'Model.Link.MeanLevel') > 0) then
          valeur = Instance%CoteMoyenne
-      else if ( NomVar == 'Model.Link.CoefCulvertDischarge') then
+      else if ( index(NomVar, 'Model.Link.CoefCulvertDischarge') > 0) then
          valeur = Instance%CoefDebitOrifice
-      else if ( NomVar == 'Model.Link.CSection') then
+      else if ( index(NomVar, 'Model.Link.CSection') > 0) then
          valeur = Instance%Section
-      else if ( NomVar == 'Model.Link.Roughness') then
+      else if ( index(NomVar, 'Model.Link.Roughness') > 0) then
          valeur = Instance%Rugosite
-      else if ( NomVar == 'Model.Link.CoefWeirDischarge') then
+      else if ( index(NomVar, 'Model.Link.CoefWeirDischarge') > 0) then
          valeur = Instance%CoefDebitSeuil
-      else if ( NomVar == 'Model.Link.HeadLossCoef') then
+      else if ( index(NomVar, 'Model.Link.HeadLossCoef') > 0) then
          valeur = Instance%CoefPerteCharge
-      else if ( NomVar == 'Model.Link.ActivationCoef') then
+      else if ( index(NomVar, 'Model.Link.ActivationCoef') > 0) then
          valeur = Instance%CoefNoye
-      else if ( NomVar == 'Model.Link.FlowExchange') then
+      else if ( index(NomVar, 'Model.Link.FlowExchange') > 0) then
          valeur = Instance%DebitEchange
-      else if ( NomVar == 'Model.Link.PrevDischarge') then
+      else if ( index(NomVar, 'Model.Link.PrevDischarge') > 0) then
          valeur = Instance%DebitPrecedent
-      else if ( NomVar == 'Model.Link.MaxDischarge') then
+      else if ( index(NomVar, 'Model.Link.MaxDischarge') > 0) then
          valeur = Instance%DebitMax
-      else if ( NomVar == 'Model.Link.TimeMaxDischarge') then
+      else if ( index(NomVar, 'Model.Link.TimeMaxDischarge') > 0) then
          valeur = Instance%TempsDebitMax
-      else if ( NomVar == 'Model.Link.ExchangeVelocity') then
+      else if ( index(NomVar, 'Model.Link.ExchangeVelocity') > 0) then
          valeur = Instance%VitesseEchange
-      else if ( NomVar == 'Model.Link.MaxVelocity') then
+      else if ( index(NomVar, 'Model.Link.MaxVelocity') > 0) then
          valeur = Instance%VitesseMax
-      else if ( NomVar == 'Model.Link.TimeMaxVelocity') then
+      else if ( index(NomVar, 'Model.Link.TimeMaxVelocity') > 0) then
          valeur = Instance%TempsVitesseMax
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
       GET_DOUBLE_LIAISON = GET_DOUBLE_LIAISONRC(instance%CaracRC, NomVar, index1,&
@@ -482,11 +482,11 @@ module M_LIAISON_T
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.Type') then
+      if ( index(NomVar, 'Model.Link.Type') > 0) then
          valeur = Instance%TypeLiaison
-      else if ( NomVar == 'Model.Link.Kind') then
+      else if ( index(NomVar, 'Model.Link.Kind') > 0) then
          valeur = Instance%NatureLiaison
-      else if ( NomVar == 'Model.Link.CulverFlowDir') then
+      else if ( index(NomVar, 'Model.Link.CulverFlowDir') > 0) then
          valeur = Instance%TypeOrifice
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
       GET_INT_LIAISON = GET_INT_LIAISONRC(instance%CaracRC, NomVar, index1,&
@@ -522,39 +522,39 @@ module M_LIAISON_T
       SET_DOUBLE_LIAISON = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.Width') then
+      if ( index(NomVar, 'Model.Link.Width') > 0) then
          Instance%Largeur = valeur
-      else if ( NomVar == 'Model.Link.Length') then
+      else if ( index(NomVar, 'Model.Link.Length') > 0) then
          Instance%Longueur = valeur
-      else if ( NomVar == 'Model.Link.Level') then
+      else if ( index(NomVar, 'Model.Link.Level') > 0) then
          Instance%Cote = valeur
-      else if ( NomVar == 'Model.Link.MeanLevel') then
+      else if ( index(NomVar, 'Model.Link.MeanLevel') > 0) then
          Instance%CoteMoyenne = valeur
-      else if ( NomVar == 'Model.Link.CoefCulvertDischarge') then
+      else if ( index(NomVar, 'Model.Link.CoefCulvertDischarge') > 0) then
          Instance%CoefDebitOrifice = valeur
-      else if ( NomVar == 'Model.Link.CSection') then
+      else if ( index(NomVar, 'Model.Link.CSection') > 0) then
          Instance%Section = valeur
-      else if ( NomVar == 'Model.Link.Roughness') then
+      else if ( index(NomVar, 'Model.Link.Roughness') > 0) then
          Instance%Rugosite = valeur
-      else if ( NomVar == 'Model.Link.CoefWeirDischarge') then
+      else if ( index(NomVar, 'Model.Link.CoefWeirDischarge') > 0) then
          Instance%CoefDebitSeuil = valeur
-      else if ( NomVar == 'Model.Link.HeadLossCoef') then
+      else if ( index(NomVar, 'Model.Link.HeadLossCoef') > 0) then
          Instance%CoefPerteCharge = valeur
-      else if ( NomVar == 'Model.Link.ActivationCoef') then
+      else if ( index(NomVar, 'Model.Link.ActivationCoef') > 0) then
          Instance%CoefNoye = valeur
-      else if ( NomVar == 'Model.Link.FlowExchange') then
+      else if ( index(NomVar, 'Model.Link.FlowExchange') > 0) then
          Instance%DebitEchange = valeur
-      else if ( NomVar == 'Model.Link.PrevDischarge') then
+      else if ( index(NomVar, 'Model.Link.PrevDischarge') > 0) then
          Instance%DebitPrecedent = valeur
-      else if ( NomVar == 'Model.Link.MaxDischarge') then
+      else if ( index(NomVar, 'Model.Link.MaxDischarge') > 0) then
          Instance%DebitMax = valeur
-      else if ( NomVar == 'Model.Link.TimeMaxDischarge') then
+      else if ( index(NomVar, 'Model.Link.TimeMaxDischarge') > 0) then
          Instance%TempsDebitMax = valeur
-      else if ( NomVar == 'Model.Link.ExchangeVelocity') then
+      else if ( index(NomVar, 'Model.Link.ExchangeVelocity') > 0) then
          Instance%VitesseEchange = valeur
-      else if ( NomVar == 'Model.Link.MaxVelocity') then
+      else if ( index(NomVar, 'Model.Link.MaxVelocity') > 0) then
          Instance%VitesseMax = valeur
-      else if ( NomVar == 'Model.Link.TimeMaxVelocity') then
+      else if ( index(NomVar, 'Model.Link.TimeMaxVelocity') > 0) then
          Instance%TempsVitesseMax = valeur
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
       SET_DOUBLE_LIAISON = SET_DOUBLE_LIAISONRC(instance%CaracRC, NomVar, index1,&
@@ -583,11 +583,11 @@ module M_LIAISON_T
       SET_INT_LIAISON = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.Type') then
+      if ( index(NomVar, 'Model.Link.Type') > 0) then
          Instance%TypeLiaison = valeur
-      else if ( NomVar == 'Model.Link.Kind') then
+      else if ( index(NomVar, 'Model.Link.Kind') > 0) then
          Instance%NatureLiaison = valeur
-      else if ( NomVar == 'Model.Link.CulverFlowDir') then
+      else if ( index(NomVar, 'Model.Link.CulverFlowDir') > 0) then
          Instance%TypeOrifice = valeur
       else if (INDEX(NomVar,'Model.Link.StoR.') > 0) then
       SET_INT_LIAISON = SET_INT_LIAISONRC(instance%CaracRC, NomVar, index1,&

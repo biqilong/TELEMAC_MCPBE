@@ -738,7 +738,7 @@
 !
 !>    Number of sediment classes of bed material (less than NISCLM)
 !
-      INTEGER :: NSICLA
+      INTEGER, TARGET :: NSICLA
 !
 !>    Number of suspension sediment classes for TELEMAC3D or TELEMAC2D
 !!    (less than NISCLM)
@@ -756,7 +756,7 @@
 !>    Number of bed load model layers = NUMSTRAT+1
 !!    to take the active layer into account
 !
-      INTEGER :: NOMBLAY
+      INTEGER, TARGET :: NOMBLAY
 !
 !>    Hiding factor formulas
 !
@@ -1056,7 +1056,7 @@
 !
 !>    Settling velocities
 !
-      DOUBLE PRECISION XWC(NSICLM)
+      DOUBLE PRECISION, TARGET :: XWC(NSICLM)
 !
 !>    Critical shields parameter
 !

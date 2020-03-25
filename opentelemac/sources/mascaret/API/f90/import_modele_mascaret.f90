@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -19,12 +19,12 @@
 ! *********************************************************************
 ! PROGICIEL : MASCARET       J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
    !..................................................................................................................................
    ! Importation d'un modele mascaret a partir des fichiers natifs de Mascaret
    ! .................................................................................................................................
-    subroutine IMPORT_MODELE_MASCARET(RetourErreur, Identifiant, TabNomFichier, TypeNomFichier, Taille, Impress)
+    subroutine IMPORT_MODELE_MASCARET(RetourErreur, Identifiant, TabNomFichier, TypeNomFichier, Taille, Impress, FichierMascaret)
       use M_APIMASCARET_STATIC
       use M_CONSTANTES_CALCUL_C
       use M_PRETRAIT_INTERFACE_I
@@ -43,6 +43,7 @@
                                                                      ! "res", "listing_casier", "listing_liaison", "res_casier", "res_liaison"
       integer, intent(in )                         :: Taille         ! Taille des 2 tableaux TabNomFichier et TypeNomFichier
       integer, intent(in )                         :: Impress        ! impression sur les fichiers listing (1-> Vrai 0-> Faux)
+      character(LEN=255), optional,     intent(in) :: FichierMascaret  ! Fichier listant les noms des fichiers natifs Mascaret a importer
 
       !------------------------------------------------------------------------------------------------------------
       ! variables locales
@@ -104,7 +105,7 @@
       integer                                 :: PremierPasStocke
 
       integer :: phase_intersect
-      INTEGER :: i, compteurLoi, compteurLoiTrac, retour
+      INTEGER :: i, compteurLoi, compteurLoiTrac, retour, unitnum
       integer :: nb_pas
 
       character(LEN=255)          :: nomFic
@@ -232,14 +233,43 @@
       ul_lst = FichierListing%Unite
       UL_LST_CAS = FichierListingCasier%Unite
 
-      ! comptage de nombre de fichier de type loi
+      ! comptage de nombre de fichier de type loi/tracer_loi
       compteurLoi = 0
-      DO i=1, Taille
-        typeFic = TRIM(TypeNomFichier(i))
-        IF ( typeFic == 'loi') THEN
-           compteurLoi = compteurLoi +1
-        END IF
-      END DO
+      compteurLoiTrac = 0
+      
+      if(present(FichierMascaret)) then
+          unitnum = 123
+          open(unit=unitnum, file=FichierMascaret, status="old", action="read", iostat=RetourErreur)
+          if(RetourErreur.ne.0) then
+              ptrMsgsErreurs(Identifiant) = 'IMPORT_MODELE_MASCARET - Unable to read from the Mascaret file'
+              return
+          endif
+          do
+            read(unitnum, *, iostat=RetourErreur) nomFic
+            if(RetourErreur > 0) then
+                ptrMsgsErreurs(Identifiant) = 'IMPORT_MODELE_MASCARET - Unable to read from the Mascaret file'
+                return
+            elseif(RetourErreur < 0) then
+                exit
+            else
+                if (index(nomFic, '.tracer_loi').ne.0) then
+                   compteurLoiTrac = compteurLoiTrac +1
+                elseif(index(nomFic, '.loi').ne.0) then
+                   compteurLoi = compteurLoi +1
+                endif
+            endif
+         end do
+      else
+          do i= 1, Taille
+            typeFic = TRIM(TypeNomFichier(i))
+            if ( index(typeFic, 'tracer_loi') > 0) then
+               compteurLoiTrac = compteurLoiTrac +1
+            else if ( index(typeFic, 'loi') > 0) then
+               compteurLoi = compteurLoi +1
+            endif
+          end do
+      endif
+      
       ! allocation de FichiersLois
       if(.not.associated(FichiersLois)) then
           allocate(FichiersLois(compteurLoi), STAT = retour)
@@ -249,16 +279,6 @@
             RETURN
           end if
       endif
-
-      ! comptage de nombre de fichier de type tracer_loi
-      compteurLoiTrac = 0
-      DO i=1, Taille
-        typeFic = TRIM(TypeNomFichier(i))
-        IF ( typeFic == 'tracer_loi') THEN
-           compteurLoiTrac = compteurLoiTrac +1
-        END IF
-      END DO
-      ! allocation de FichiersLois
       if(.not.associated(FichiersLoisTracer).and.compteurLoiTrac > 0) then
           allocate(FichiersLoisTracer(compteurLoiTrac), STAT = retour)
           if (retour /= 0) then
@@ -271,78 +291,125 @@
       ! affection des noms des fichiers imposes par l'API
       compteurLoi = 0
       compteurLoiTrac = 0
-      DO i=1, Taille
-        nomFic  = TRIM(TabNomFichier(i))
-        typeFic = TRIM(TypeNomFichier(i))
 
-        IF ( typeFic == 'xcas') THEN
-           FichierMotCle%Nom = nomFic
-        END IF
-        IF ( typeFic == 'geo') THEN
-           FichierGeom%Nom   = nomFic
-        END IF
-        IF ( typeFic == 'loi') THEN
-           compteurLoi = compteurLoi + 1
-           FichiersLois(compteurLoi)%Nom = nomFic
-           FichiersLois(compteurLoi)%Unite = 21
-        END IF
-        IF ( typeFic == 'casier') THEN
-           FichierGeomCasier%Nom = nomFic
-           Modele%FichierGeomCasier%Nom = nomFic
-        END IF
-        IF ( typeFic == 'listing') THEN
-           FichierListing%Nom = nomFic
-           Modele%FichierListing%Nom = nomFic
-        END IF
-        IF ( typeFic == 'listing_casier') THEN
-           FichierListingCasier%Nom = nomFic
-           Modele%FichierListingCasier%Nom = nomFic
-        END IF
-        IF ( typeFic == 'listing_liaison') THEN
-           FichierListingLiaison%Nom = nomFic
-           Modele%FichierListingLiaison%Nom = nomFic
-        END IF
-        IF ( typeFic == 'res') THEN
-           FichierResultat%Nom = nomFic
-           Modele%FichierResultat%Nom = nomFic
-        END IF
-        IF ( typeFic == 'res_casier') THEN
-           FichierResultatCasier%Nom = nomFic
-           Modele%FichierResuCasier%Nom = nomFic
-        END IF
-        IF ( typeFic == 'res_liaison') THEN
-           FichierResultatLiaison%Nom = nomFic
-           Modele%FichierResuLiaison%Nom = nomFic
-        END IF
-        IF ( typeFic == 'lig') THEN
-           FichierLigne%Nom = nomFic
-        END IF
-        IF ( typeFic == 'tracer_conc') THEN
-           FichierConcInit%Nom = nomFic
-           Modele%Tracer%FichierConcInit%Nom = nomFic
-        END IF
-        IF ( typeFic == 'tracer_loi') THEN
-           compteurLoiTrac = compteurLoiTrac + 1
-           FichiersLoisTracer(compteurLoiTrac)%Nom = nomFic
-           FichiersLoisTracer(compteurLoiTrac)%Unite = 46
-        END IF
-        IF ( typeFic == 'tracer_parphy') THEN
-           FichierParPhy%Nom = nomFic
-        END IF
-        IF ( typeFic == 'tracer_meteo') THEN
-           FichierMeteo%Nom = nomFic
-        END IF
-        IF ( typeFic == 'tracer_listing') THEN
-           FichierListingTracer%Nom = nomFic
-           Modele%Tracer%FichierListingTracer%Nom = nomFic
-        END IF
-        IF ( typeFic == 'tracer_res') THEN
-           FichierResuTracer%Nom = nomFic
-           Modele%Tracer%FichierResuTracer%Nom = nomFic
-        END IF
-
-      END DO
-
+      if(present(FichierMascaret)) then
+        rewind(unitnum)
+        do
+            read(unitnum, *, iostat=RetourErreur) nomFic
+            if(RetourErreur > 0) then
+                ptrMsgsErreurs(Identifiant) = 'IMPORT_MODELE_MASCARET - Unable to read from the Mascaret file'
+                return
+            elseif(RetourErreur < 0) then
+                exit
+            else
+                if ( index(nomFic,'.xcas').ne.0) then
+                   FichierMotCle%Nom = nomFic
+                elseif ( index(nomFic,'.geo').ne.0) then
+                   FichierGeom%Nom   = nomFic
+                elseif ( index(nomFic, '.casier').ne.0) then
+                   FichierGeomCasier%Nom = nomFic
+                   Modele%FichierGeomCasier%Nom = nomFic
+                elseif ( index(nomFic , '.listing_casier').ne.0) then
+                   FichierListingCasier%Nom = nomFic
+                   Modele%FichierListingCasier%Nom = nomFic
+                elseif ( index(nomFic , '.listing_liaison').ne.0) then
+                   FichierListingLiaison%Nom = nomFic
+                   Modele%FichierListingLiaison%Nom = nomFic
+                elseif ( index(nomFic , '.listing').ne.0) then
+                      FichierListing%Nom = nomFic
+                      Modele%FichierListing%Nom = nomFic
+                elseif ( index(nomFic,'.res_casier').ne.0) then
+                   FichierResultatCasier%Nom = nomFic
+                   Modele%FichierResuCasier%Nom = nomFic
+                elseif (index(nomFic,'.res_liaison').ne.0) then
+                   FichierResultatLiaison%Nom = nomFic
+                   Modele%FichierResuLiaison%Nom = nomFic
+                elseif( index(nomFic, '.res').ne.0) then
+                   FichierResultat%Nom = nomFic
+                   Modele%FichierResultat%Nom = nomFic
+                elseif ( index(nomFic,'.lig').ne.0) then
+                   FichierLigne%Nom = nomFic
+                elseif ( index(nomFic,'.tracer_conc').ne.0) then
+                   FichierConcInit%Nom = nomFic
+                   Modele%Tracer%FichierConcInit%Nom = nomFic
+                elseif ( index(nomFic,'.tracer_loi').ne.0) then
+                   compteurLoiTrac = compteurLoiTrac + 1
+                   FichiersLoisTracer(compteurLoiTrac)%Nom = nomFic
+                   FichiersLoisTracer(compteurLoiTrac)%Unite = 46
+                elseif (index(nomFic,'loi').ne.0) then
+                    compteurLoi = compteurLoi + 1
+                    FichiersLois(compteurLoi)%Nom = nomFic
+                    FichiersLois(compteurLoi)%Unite = 21
+                elseif ( index(nomFic,'tracer_parphy').ne.0) then
+                   FichierParPhy%Nom = nomFic
+                elseif ( index(nomFic,'tracer_meteo').ne.0) then
+                   FichierMeteo%Nom = nomFic
+                elseif ( index(nomFic,'tracer_listing').ne.0) then
+                   FichierListingTracer%Nom = nomFic
+                   Modele%Tracer%FichierListingTracer%Nom = nomFic
+                elseif ( index(nomFic ,'tracer_res').ne.0) then
+                   FichierResuTracer%Nom = nomFic
+                   Modele%Tracer%FichierResuTracer%Nom = nomFic
+                endif
+            endif
+          end do
+          close(123)
+      else
+        do i = 1, Taille
+            nomFic  = TRIM(TabNomFichier(i))
+            typeFic = TRIM(TypeNomFichier(i))
+            if ( index(typeFic, 'xcas') > 0) then
+               FichierMotCle%Nom = nomFic
+            else if ( index(typeFic, 'geo') > 0) THEN
+               FichierGeom%Nom   = nomFic
+            else if ( index(typeFic, 'tracer_loi') > 0) THEN
+               compteurLoiTrac = compteurLoiTrac + 1
+               FichiersLoisTracer(compteurLoiTrac)%Nom = nomFic
+               FichiersLoisTracer(compteurLoiTrac)%Unite = 46
+            else if ( index(typeFic, 'loi') > 0) THEN
+               compteurLoi = compteurLoi + 1
+               FichiersLois(compteurLoi)%Nom = nomFic
+               FichiersLois(compteurLoi)%Unite = 21
+            else if ( index(typeFic, 'casier') > 0) THEN
+               FichierGeomCasier%Nom = nomFic
+               Modele%FichierGeomCasier%Nom = nomFic
+            else if ( index(typeFic, 'listing_casier') > 0) THEN
+               FichierListingCasier%Nom = nomFic
+               Modele%FichierListingCasier%Nom = nomFic
+            else if ( index(typeFic, 'listing_liaison') > 0) THEN
+               FichierListingLiaison%Nom = nomFic
+               Modele%FichierListingLiaison%Nom = nomFic
+            else if ( index(typeFic, 'listing') > 0) THEN
+               FichierListing%Nom = nomFic
+               Modele%FichierListing%Nom = nomFic
+            else if ( index(typeFic, 'res_casier') > 0) THEN
+               FichierResultatCasier%Nom = nomFic
+               Modele%FichierResuCasier%Nom = nomFic
+            else if ( index(typeFic, 'res_liaison') > 0) THEN
+               FichierResultatLiaison%Nom = nomFic
+               Modele%FichierResuLiaison%Nom = nomFic
+            else if ( index(typeFic, 'res') > 0) THEN
+               FichierResultat%Nom = nomFic
+               Modele%FichierResultat%Nom = nomFic
+            else if ( index(typeFic, 'lig') > 0) THEN
+               FichierLigne%Nom = nomFic
+            else if ( index(typeFic, 'tracer_conc') > 0) THEN
+               FichierConcInit%Nom = nomFic
+               Modele%Tracer%FichierConcInit%Nom = nomFic
+            else if ( index(typeFic, 'tracer_parphy') > 0) THEN
+               FichierParPhy%Nom = nomFic
+            else if ( index(typeFic, 'tracer_meteo') > 0) THEN
+               FichierMeteo%Nom = nomFic
+            else if ( index(typeFic, 'tracer_listing') > 0) THEN
+               FichierListingTracer%Nom = nomFic
+               Modele%Tracer%FichierListingTracer%Nom = nomFic
+            else if ( index(typeFic, 'tracer_res') > 0) THEN
+               FichierResuTracer%Nom = nomFic
+               Modele%Tracer%FichierResuTracer%Nom = nomFic
+            end if
+         end do
+      endif
+      
       Erreur%Numero = 0
       Erreur%arbredappel = 'IMPORTATION_MODELE'
 
@@ -446,6 +513,7 @@
         Modele%ProfAbs, Modele%HEPS                              , &
         Modele%DT, Modele%TempsInitial, Modele%CritereArret      , &
         Modele%NbPasTemps, Modele%TempsMaximum                   , &
+        Modele%Section_controle,Modele%Cote_max_controle         , &
         Modele%PasTempsVariable, Modele%CourantObj               , &
         FichierGeom, Modele%FormatGeom, Modele%Profils           , &
         Modele%PresenceZoneStockage                              , &

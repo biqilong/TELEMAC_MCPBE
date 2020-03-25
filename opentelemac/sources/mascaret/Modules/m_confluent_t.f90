@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_CONFLUENT_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
 !=========================== Declarations ==============================
@@ -94,28 +94,28 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-       if ( NomVar == 'Model.Junction.Name') then
+       if ( index(NomVar, 'Model.Junction.Name') > 0) then
           TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.Connect.ReachNum') then
+       else if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Junction.Abscissa') then
+       else if ( index(NomVar, 'Model.Junction.Abscissa') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Junction.Ordinate') then
+       else if ( index(NomVar, 'Model.Junction.Ordinate') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Junction.Angle') then
+       else if ( index(NomVar, 'Model.Junction.Angle') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Junction.Isec') then
+       else if ( index(NomVar, 'Model.Junction.Isecvo') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.Junction.Isecvo') then
+       else if ( index(NomVar, 'Model.Junction.Isec') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.Junction.EndReach') then
+       else if ( index(NomVar, 'Model.Junction.EndReach') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
       else
@@ -151,15 +151,15 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Junction.Name') then
+      if ( index(NomVar, 'Model.Junction.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Connect.ReachNum') then
+      else if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Junction.Abscissa') then
+      else if ( index(NomVar, 'Model.Junction.Abscissa') > 0) then
          if (ASSOCIATED(Instance%AbscisseAfflu)) then
             taille1 = size(Instance%AbscisseAfflu)
          else
@@ -167,7 +167,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Junction.Ordinate') then
+      else if ( index(NomVar, 'Model.Junction.Ordinate') > 0) then
          if (ASSOCIATED(Instance%OrdonneeAfflu)) then
             taille1 = size(Instance%OrdonneeAfflu)
          else
@@ -175,7 +175,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Junction.Angle') then
+      else if ( index(NomVar, 'Model.Junction.Angle') > 0) then
          if (ASSOCIATED(Instance%AngleAfflu)) then
             taille1 = size(Instance%AngleAfflu)
          else
@@ -183,15 +183,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Junction.Isec') then
-         if (ASSOCIATED(Instance%Isec)) then
-            taille1 = size(Instance%Isec)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Junction.Isecvo') then
+      else if ( index(NomVar, 'Model.Junction.Isecvo') > 0) then
          if (ASSOCIATED(Instance%Isecvo)) then
             taille1 = size(Instance%Isecvo)
          else
@@ -199,7 +191,15 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Junction.EndReach') then
+      else if ( index(NomVar, 'Model.Junction.Isec') > 0) then
+         if (ASSOCIATED(Instance%Isec)) then
+            taille1 = size(Instance%Isec)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Junction.EndReach') > 0) then
          if (ASSOCIATED(Instance%Finbie)) then
             taille1 = size(Instance%Finbie)
          else
@@ -243,7 +243,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.Junction.Abscissa') then
+      if ( index(NomVar, 'Model.Junction.Abscissa') > 0) then
         if (ASSOCIATED(Instance%AbscisseAfflu)) then
            t1 = size(Instance%AbscisseAfflu)
            if (t1 /= NewT1) then
@@ -263,7 +263,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Junction.Ordinate') then
+      else if ( index(NomVar, 'Model.Junction.Ordinate') > 0) then
         if (ASSOCIATED(Instance%OrdonneeAfflu)) then
            t1 = size(Instance%OrdonneeAfflu)
            if (t1 /= NewT1) then
@@ -283,7 +283,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Junction.Angle') then
+      else if ( index(NomVar, 'Model.Junction.Angle') > 0) then
         if (ASSOCIATED(Instance%AngleAfflu)) then
            t1 = size(Instance%AngleAfflu)
            if (t1 /= NewT1) then
@@ -303,27 +303,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Junction.Isec') then
-        if (ASSOCIATED(Instance%Isec)) then
-           t1 = size(Instance%Isec)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%Isec, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_CONFLUENT = err
-                 MessageErreur = 'SET_TAILLE_VAR_CONFLUENT : Unable to deallocate CONFLUENT_T.Isec'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%Isec) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%Isec(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_CONFLUENT = err
-              MessageErreur = 'SET_TAILLE_VAR_CONFLUENT : Unable to allocate CONFLUENT_T.Isec'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.Junction.Isecvo') then
+      else if ( index(NomVar, 'Model.Junction.Isecvo') > 0) then
         if (ASSOCIATED(Instance%Isecvo)) then
            t1 = size(Instance%Isecvo)
            if (t1 /= NewT1) then
@@ -343,7 +323,27 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Junction.EndReach') then
+      else if ( index(NomVar, 'Model.Junction.Isec') > 0) then
+        if (ASSOCIATED(Instance%Isec)) then
+           t1 = size(Instance%Isec)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%Isec, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_CONFLUENT = err
+                 MessageErreur = 'SET_TAILLE_VAR_CONFLUENT : Unable to deallocate CONFLUENT_T.Isec'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%Isec) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%Isec(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_CONFLUENT = err
+              MessageErreur = 'SET_TAILLE_VAR_CONFLUENT : Unable to allocate CONFLUENT_T.Isec'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.Junction.EndReach') > 0) then
         if (ASSOCIATED(Instance%Finbie)) then
            t1 = size(Instance%Finbie)
            if (t1 /= NewT1) then
@@ -393,11 +393,11 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Junction.Abscissa') then
+      if ( index(NomVar, 'Model.Junction.Abscissa') > 0) then
          valeur = Instance%AbscisseAfflu(index1)
-      else if ( NomVar == 'Model.Junction.Ordinate') then
+      else if ( index(NomVar, 'Model.Junction.Ordinate') > 0) then
          valeur = Instance%OrdonneeAfflu(index1)
-      else if ( NomVar == 'Model.Junction.Angle') then
+      else if ( index(NomVar, 'Model.Junction.Angle') > 0) then
          valeur = Instance%AngleAfflu(index1)
       else
          GET_DOUBLE_CONFLUENT = 1
@@ -422,13 +422,13 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Connect.ReachNum') then
+      if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
          valeur = Instance%NbAffluent
-      else if ( NomVar == 'Model.Junction.Isec') then
-         valeur = Instance%Isec(index1)
-      else if ( NomVar == 'Model.Junction.Isecvo') then
+      else if ( index(NomVar, 'Model.Junction.Isecvo') > 0) then
          valeur = Instance%Isecvo(index1)
-      else if ( NomVar == 'Model.Junction.EndReach') then
+      else if ( index(NomVar, 'Model.Junction.Isec') > 0) then
+         valeur = Instance%Isec(index1)
+      else if ( index(NomVar, 'Model.Junction.EndReach') > 0) then
          valeur = Instance%Finbie(index1)
       else
          GET_INT_CONFLUENT = 1
@@ -453,7 +453,7 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Junction.Name') then
+      if ( index(NomVar, 'Model.Junction.Name') > 0) then
          valeur = Instance%Nom
       else
          GET_STRING_CONFLUENT = 1
@@ -483,11 +483,11 @@ contains
       SET_DOUBLE_CONFLUENT = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Junction.Abscissa') then
+      if ( index(NomVar, 'Model.Junction.Abscissa') > 0) then
          Instance%AbscisseAfflu(index1) = valeur
-      else if ( NomVar == 'Model.Junction.Ordinate') then
+      else if ( index(NomVar, 'Model.Junction.Ordinate') > 0) then
          Instance%OrdonneeAfflu(index1) = valeur
-      else if ( NomVar == 'Model.Junction.Angle') then
+      else if ( index(NomVar, 'Model.Junction.Angle') > 0) then
          Instance%AngleAfflu(index1) = valeur
       else
          SET_DOUBLE_CONFLUENT = 1
@@ -510,13 +510,13 @@ contains
       SET_INT_CONFLUENT = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Connect.ReachNum') then
+      if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
          Instance%NbAffluent = valeur
-      else if ( NomVar == 'Model.Junction.Isec') then
-         Instance%Isec(index1) = valeur
-      else if ( NomVar == 'Model.Junction.Isecvo') then
+      else if ( index(NomVar, 'Model.Junction.Isecvo') > 0) then
          Instance%Isecvo(index1) = valeur
-      else if ( NomVar == 'Model.Junction.EndReach') then
+      else if ( index(NomVar, 'Model.Junction.Isec') > 0) then
+         Instance%Isec(index1) = valeur
+      else if ( index(NomVar, 'Model.Junction.EndReach') > 0) then
          Instance%Finbie(index1) = valeur
       else
          SET_INT_CONFLUENT = 1
@@ -539,7 +539,7 @@ contains
       SET_STRING_CONFLUENT = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Junction.Name') then
+      if ( index(NomVar, 'Model.Junction.Name') > 0) then
          Instance%Nom = valeur
       else
          SET_STRING_CONFLUENT = 1

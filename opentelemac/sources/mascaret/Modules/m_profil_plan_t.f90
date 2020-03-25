@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_PROFIL_PLAN_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !***********************************************************************
@@ -96,16 +96,16 @@ contains
         tabNomVar(i)         ="Model.VDCrossSection.SS"
         tabDescriptionVar(i) ="Wetted ineffective flow area"
         i=i+1
-        tabNomVar(i)         ="Model.VDCrossSection.C"
-        tabDescriptionVar(i) ="Celerity"
-        i=i+1
         tabNomVar(i)         ="Model.VDCrossSection.Conv1"
         tabDescriptionVar(i) ="Conveyance of the main channel"
         i=i+1
         tabNomVar(i)         ="Model.VDCrossSection.Conv2"
         tabDescriptionVar(i) ="Conveyance of the floodplain"
         i=i+1
-        tabNomVar(i)         ="Model.VDCrossSection.Pr"
+        tabNomVar(i)         ="Model.VDCrossSection.C"
+        tabDescriptionVar(i) ="Celerity"
+        i=i+1
+         tabNomVar(i)         ="Model.VDCrossSection.Pr"
         tabDescriptionVar(i) ="Pressure"
         i=i+1
         tabNomVar(i)         ="Model.VDCrossSection.Inv"
@@ -154,64 +154,64 @@ contains
       MessageErreur         = ""
 
 
-       if ( NomVar == 'Model.VDCrossSection.B1') then
+       if ( index(NomVar, 'Model.VDCrossSection.B1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.B2') then
+       else if ( index(NomVar, 'Model.VDCrossSection.B2') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.BS') then
+       else if ( index(NomVar, 'Model.VDCrossSection.BS') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.P1') then
+       else if ( index(NomVar, 'Model.VDCrossSection.P1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.P2') then
+       else if ( index(NomVar, 'Model.VDCrossSection.P2') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.S1') then
+       else if ( index(NomVar, 'Model.VDCrossSection.S1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.S2') then
+       else if ( index(NomVar, 'Model.VDCrossSection.S2') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.S2G') then
+       else if ( index(NomVar, 'Model.VDCrossSection.S2G') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.SS') then
+       else if ( index(NomVar, 'Model.VDCrossSection.SS') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.C') then
+       else if ( index(NomVar, 'Model.VDCrossSection.Conv1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.Conv1') then
+       else if ( index(NomVar, 'Model.VDCrossSection.Conv2') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.Conv2') then
+       else if ( index(NomVar, 'Model.VDCrossSection.C') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.Pr') then
+       else if ( index(NomVar, 'Model.VDCrossSection.Pr') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.Inv') then
+       else if ( index(NomVar, 'Model.VDCrossSection.Inv') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.S1D') then
+       else if ( index(NomVar, 'Model.VDCrossSection.S1D') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.S2D') then
+       else if ( index(NomVar, 'Model.VDCrossSection.S2D') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.SSD') then
+       else if ( index(NomVar, 'Model.VDCrossSection.SSD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.PrD') then
+       else if ( index(NomVar, 'Model.VDCrossSection.PrD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.BD') then
+       else if ( index(NomVar, 'Model.VDCrossSection.BD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDCrossSection.DebD') then
+       else if ( index(NomVar, 'Model.VDCrossSection.DebD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
       else
@@ -247,7 +247,7 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.VDCrossSection.B1') then
+      if ( index(NomVar, 'Model.VDCrossSection.B1') > 0) then
          if (ASSOCIATED(Instance%B1)) then
             taille1 = size(Instance%B1, 1)
             taille2 = size(Instance%B1, 2)
@@ -256,7 +256,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.B2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.B2') > 0) then
          if (ASSOCIATED(Instance%B2)) then
             taille1 = size(Instance%B2, 1)
             taille2 = size(Instance%B2, 2)
@@ -265,7 +265,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.BS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BS') > 0) then
          if (ASSOCIATED(Instance%BS)) then
             taille1 = size(Instance%BS, 1)
             taille2 = size(Instance%BS, 2)
@@ -274,7 +274,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.P1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P1') > 0) then
          if (ASSOCIATED(Instance%P1)) then
             taille1 = size(Instance%P1, 1)
             taille2 = size(Instance%P1, 2)
@@ -283,7 +283,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.P2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P2') > 0) then
          if (ASSOCIATED(Instance%P2)) then
             taille1 = size(Instance%P2, 1)
             taille2 = size(Instance%P2, 2)
@@ -292,7 +292,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.S1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1') > 0) then
          if (ASSOCIATED(Instance%S1)) then
             taille1 = size(Instance%S1, 1)
             taille2 = size(Instance%S1, 2)
@@ -301,7 +301,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.S2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2') > 0) then
          if (ASSOCIATED(Instance%S2)) then
             taille1 = size(Instance%S2, 1)
             taille2 = size(Instance%S2, 2)
@@ -310,7 +310,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.S2G') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2G') > 0) then
          if (ASSOCIATED(Instance%S2G)) then
             taille1 = size(Instance%S2G, 1)
             taille2 = size(Instance%S2G, 2)
@@ -319,7 +319,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.SS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SS') > 0) then
          if (ASSOCIATED(Instance%SS)) then
             taille1 = size(Instance%SS, 1)
             taille2 = size(Instance%SS, 2)
@@ -328,16 +328,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.C') then
-         if (ASSOCIATED(Instance%C)) then
-            taille1 = size(Instance%C, 1)
-            taille2 = size(Instance%C, 2)
-         else
-            taille1 = 0
-            taille2 = 0
-         endif
-         taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.Conv1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv1') > 0) then
          if (ASSOCIATED(Instance%Deb1)) then
             taille1 = size(Instance%Deb1, 1)
             taille2 = size(Instance%Deb1, 2)
@@ -346,7 +337,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.Conv2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv2') > 0) then
          if (ASSOCIATED(Instance%Deb2)) then
             taille1 = size(Instance%Deb2, 1)
             taille2 = size(Instance%Deb2, 2)
@@ -355,7 +346,16 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.Pr') then
+      else if ( index(NomVar, 'Model.VDCrossSection.C') > 0) then
+         if (ASSOCIATED(Instance%C)) then
+            taille1 = size(Instance%C, 1)
+            taille2 = size(Instance%C, 2)
+         else
+            taille1 = 0
+            taille2 = 0
+         endif
+         taille3 = 0
+      else if ( index(NomVar, 'Model.VDCrossSection.Pr') > 0) then
          if (ASSOCIATED(Instance%Pr)) then
             taille1 = size(Instance%Pr, 1)
             taille2 = size(Instance%Pr, 2)
@@ -364,7 +364,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.Inv') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Inv') > 0) then
          if (ASSOCIATED(Instance%Inv)) then
             taille1 = size(Instance%Inv, 1)
             taille2 = size(Instance%Inv, 2)
@@ -373,7 +373,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.S1D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1D') > 0) then
          if (ASSOCIATED(Instance%S1D)) then
             taille1 = size(Instance%S1D, 1)
             taille2 = size(Instance%S1D, 2)
@@ -382,7 +382,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.S2D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2D') > 0) then
          if (ASSOCIATED(Instance%S2D)) then
             taille1 = size(Instance%S2D, 1)
             taille2 = size(Instance%S2D, 2)
@@ -391,7 +391,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.SSD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SSD') > 0) then
          if (ASSOCIATED(Instance%SSD)) then
             taille1 = size(Instance%SSD, 1)
             taille2 = size(Instance%SSD, 2)
@@ -400,7 +400,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.PrD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.PrD') > 0) then
          if (ASSOCIATED(Instance%PrD)) then
             taille1 = size(Instance%PrD, 1)
             taille2 = size(Instance%PrD, 2)
@@ -409,7 +409,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.BD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BD') > 0) then
          if (ASSOCIATED(Instance%BD)) then
             taille1 = size(Instance%BD, 1)
             taille2 = size(Instance%BD, 2)
@@ -418,7 +418,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDCrossSection.DebD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.DebD') > 0) then
          if (ASSOCIATED(Instance%DebD)) then
             taille1 = size(Instance%DebD, 1)
             taille2 = size(Instance%DebD, 2)
@@ -463,7 +463,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.VDCrossSection.B1') then
+      if ( index(NomVar, 'Model.VDCrossSection.B1') > 0) then
         if (ASSOCIATED(Instance%B1)) then
            t1 = size(Instance%B1, 1)
            t2 = size(Instance%B1, 2)
@@ -484,7 +484,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.B2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.B2') > 0) then
         if (ASSOCIATED(Instance%B2)) then
            t1 = size(Instance%B2, 1)
            t2 = size(Instance%B2, 2)
@@ -505,7 +505,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.BS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BS') > 0) then
         if (ASSOCIATED(Instance%BS)) then
            t1 = size(Instance%BS, 1)
            t2 = size(Instance%BS, 2)
@@ -526,7 +526,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.P1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P1') > 0) then
         if (ASSOCIATED(Instance%P1)) then
            t1 = size(Instance%P1, 1)
            t2 = size(Instance%P1, 2)
@@ -547,7 +547,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.P2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P2') > 0) then
         if (ASSOCIATED(Instance%P2)) then
            t1 = size(Instance%P2, 1)
            t2 = size(Instance%P2, 2)
@@ -568,7 +568,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.S1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1') > 0) then
         if (ASSOCIATED(Instance%S1)) then
            t1 = size(Instance%S1, 1)
            t2 = size(Instance%S1, 2)
@@ -589,7 +589,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.S2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2') > 0) then
         if (ASSOCIATED(Instance%S2)) then
            t1 = size(Instance%S2, 1)
            t2 = size(Instance%S2, 2)
@@ -610,7 +610,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.S2G') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2G') > 0) then
         if (ASSOCIATED(Instance%S2G)) then
            t1 = size(Instance%S2G, 1)
            t2 = size(Instance%S2G, 2)
@@ -631,7 +631,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.SS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SS') > 0) then
         if (ASSOCIATED(Instance%SS)) then
            t1 = size(Instance%SS, 1)
            t2 = size(Instance%SS, 2)
@@ -652,28 +652,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.C') then
-        if (ASSOCIATED(Instance%C)) then
-           t1 = size(Instance%C, 1)
-           t2 = size(Instance%C, 2)
-           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%C, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_PROFIL_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_PROFIL_PLAN : Unable to deallocate PROFIL_PLAN_T.C'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%C).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%C(NewT1, NewT2), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_PROFIL_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_PROFIL_PLAN : Unable to allocate PROFIL_PLAN_T.C'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.VDCrossSection.Conv1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv1') > 0) then
         if (ASSOCIATED(Instance%Deb1)) then
            t1 = size(Instance%Deb1, 1)
            t2 = size(Instance%Deb1, 2)
@@ -694,7 +673,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.Conv2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv2') > 0) then
         if (ASSOCIATED(Instance%Deb2)) then
            t1 = size(Instance%Deb2, 1)
            t2 = size(Instance%Deb2, 2)
@@ -707,6 +686,27 @@ contains
               endif
            endif
         endif
+      else if ( index(NomVar, 'Model.VDCrossSection.C') > 0) then
+        if (ASSOCIATED(Instance%C)) then
+           t1 = size(Instance%C, 1)
+           t2 = size(Instance%C, 2)
+           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
+              DEALLOCATE(Instance%C, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_PROFIL_PLAN = err
+                 MessageErreur = 'SET_TAILLE_VAR_PROFIL_PLAN : Unable to deallocate PROFIL_PLAN_T.C'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%C).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%C(NewT1, NewT2), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_PROFIL_PLAN = err
+              MessageErreur = 'SET_TAILLE_VAR_PROFIL_PLAN : Unable to allocate PROFIL_PLAN_T.C'
+              return
+           endif
+        endif
         if (.not.ASSOCIATED(Instance%Deb2).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
            ALLOCATE(Instance%Deb2(NewT1, NewT2), STAT=err)
            if (err /= 0) then
@@ -715,7 +715,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.Pr') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Pr') > 0) then
         if (ASSOCIATED(Instance%Pr)) then
            t1 = size(Instance%Pr, 1)
            t2 = size(Instance%Pr, 2)
@@ -736,7 +736,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.Inv') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Inv') > 0) then
         if (ASSOCIATED(Instance%Inv)) then
            t1 = size(Instance%Inv, 1)
            t2 = size(Instance%Inv, 2)
@@ -757,7 +757,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.S1D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1D') > 0) then
         if (ASSOCIATED(Instance%S1D)) then
            t1 = size(Instance%S1D, 1)
            t2 = size(Instance%S1D, 2)
@@ -778,7 +778,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.S2D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2D') > 0) then
         if (ASSOCIATED(Instance%S2D)) then
            t1 = size(Instance%S2D, 1)
            t2 = size(Instance%S2D, 2)
@@ -799,7 +799,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.SSD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SSD') > 0) then
         if (ASSOCIATED(Instance%SSD)) then
            t1 = size(Instance%SSD, 1)
            t2 = size(Instance%SSD, 2)
@@ -820,7 +820,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.PrD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.PrD') > 0) then
         if (ASSOCIATED(Instance%PrD)) then
            t1 = size(Instance%PrD, 1)
            t2 = size(Instance%PrD, 2)
@@ -841,7 +841,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.BD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BD') > 0) then
         if (ASSOCIATED(Instance%BD)) then
            t1 = size(Instance%BD, 1)
            t2 = size(Instance%BD, 2)
@@ -862,7 +862,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDCrossSection.DebD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.DebD') > 0) then
         if (ASSOCIATED(Instance%DebD)) then
            t1 = size(Instance%DebD, 1)
            t2 = size(Instance%DebD, 2)
@@ -913,45 +913,45 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.VDCrossSection.B1') then
+      if ( index(NomVar, 'Model.VDCrossSection.B1') > 0) then
          valeur = Instance%B1(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.B2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.B2') > 0) then
          valeur = Instance%B2(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.BS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BS') > 0) then
          valeur = Instance%BS(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.P1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P1') > 0) then
          valeur = Instance%P1(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.P2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P2') > 0) then
          valeur = Instance%P2(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.S1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1') > 0) then
          valeur = Instance%S1(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.S2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2') > 0) then
          valeur = Instance%S2(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.S2G') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2G') > 0) then
          valeur = Instance%S2G(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.SS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SS') > 0) then
          valeur = Instance%SS(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.C') then
-         valeur = Instance%C(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.Conv1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv1') > 0) then
          valeur = Instance%Deb1(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.Conv2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv2') > 0) then
          valeur = Instance%Deb2(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.Pr') then
+      else if ( index(NomVar, 'Model.VDCrossSection.C') > 0) then
+         valeur = Instance%C(index1, index2)
+      else if ( index(NomVar, 'Model.VDCrossSection.Pr') > 0) then
          valeur = Instance%Pr(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.Inv') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Inv') > 0) then
          valeur = Instance%Inv(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.S1D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1D') > 0) then
          valeur = Instance%S1D(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.S2D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2D') > 0) then
          valeur = Instance%S2D(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.SSD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SSD') > 0) then
          valeur = Instance%SSD(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.PrD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.PrD') > 0) then
          valeur = Instance%PrD(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.BD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BD') > 0) then
          valeur = Instance%BD(index1, index2)
-      else if ( NomVar == 'Model.VDCrossSection.DebD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.DebD') > 0) then
          valeur = Instance%DebD(index1, index2)
       else
          GET_DOUBLE_PROFIL_PLAN = 1
@@ -981,45 +981,45 @@ contains
       SET_DOUBLE_PROFIL_PLAN = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.VDCrossSection.B1') then
+      if ( index(NomVar, 'Model.VDCrossSection.B1') > 0) then
          Instance%B1(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.B2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.B2') > 0) then
          Instance%B2(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.BS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BS') > 0) then
          Instance%BS(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.P1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P1') > 0) then
          Instance%P1(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.P2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.P2') > 0) then
          Instance%P2(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.S1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1') > 0) then
          Instance%S1(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.S2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2') > 0) then
          Instance%S2(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.S2G') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2G') > 0) then
          Instance%S2G(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.SS') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SS') > 0) then
          Instance%SS(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.C') then
-         Instance%C(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.Conv1') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv1') > 0) then
          Instance%Deb1(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.Conv2') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Conv2') > 0) then
          Instance%Deb2(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.Pr') then
+      else if ( index(NomVar, 'Model.VDCrossSection.C') > 0) then
+         Instance%C(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDCrossSection.Pr') > 0) then
          Instance%Pr(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.Inv') then
+      else if ( index(NomVar, 'Model.VDCrossSection.Inv') > 0) then
          Instance%Inv(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.S1D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S1D') > 0) then
          Instance%S1D(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.S2D') then
+      else if ( index(NomVar, 'Model.VDCrossSection.S2D') > 0) then
          Instance%S2D(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.SSD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.SSD') > 0) then
          Instance%SSD(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.PrD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.PrD') > 0) then
          Instance%PrD(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.BD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.BD') > 0) then
          Instance%BD(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDCrossSection.DebD') then
+      else if ( index(NomVar, 'Model.VDCrossSection.DebD') > 0) then
          Instance%DebD(index1, index2) = valeur
       else
          SET_DOUBLE_PROFIL_PLAN = 1

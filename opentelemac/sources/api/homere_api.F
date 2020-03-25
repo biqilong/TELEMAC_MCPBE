@@ -26,10 +26,11 @@
         CHARACTER(LEN=PATH_LEN) :: RES_FILE
         CHARACTER(LEN=PATH_LEN) :: DUMMY
         CHARACTER(LEN=PATH_LEN) :: CAS_FILE, DICO_FILE
+        CHARACTER(LEN=PATH_LEN) :: GAI_CAS_FILE, GAI_DICO_FILE
         CHARACTER(LEN=8) :: FFORMAT = 'SERAFIN '
         CHARACTER(LEN=9) :: TEL_MODULE
         CHARACTER(LEN=T2D_VAR_LEN) :: VARNAME
-        CHARACTER(LEN=200) :: DUMMY_MESSAGE
+        CHARACTER(LEN=250) :: DUMMY_MESSAGE
         INTEGER NPLAN
         INTEGER PARALLEL
         INTEGER RANK,NCSIZE,PMETHOD,COMM
@@ -49,6 +50,8 @@
         READ(12,*) TEL_MODULE
         READ(12,'(A)') DICO_FILE
         READ(12,*) CAS_FILE
+        READ(12,'(A)') GAI_DICO_FILE
+        READ(12,*) GAI_CAS_FILE
         READ(12,*) GEO_FILE
         READ(12,*) CLI_FILE
         READ(12,*) PARALLEL
@@ -94,6 +97,7 @@
 
         IF(TEL_MODULE(1:9).EQ.'TELEMAC2D') THEN
           CALL RUN_T2D
+          CALL RUN_T2D
         ELSE IF (TEL_MODULE(1:9).EQ.'TELEMAC3D') THEN
           CALL RUN_T3D
           CALL RUN_T3D
@@ -103,6 +107,9 @@
           CALL RUN_ART
         ELSE IF (TEL_MODULE(1:7).EQ.'TOMAWAC') THEN
           CALL RUN_WAC
+        ELSE
+          WRITE(LU,*) "UNKBOWN MODULE", TEL_MODULE
+          CALL PLANTE(1)
         ENDIF
 
 #if defined HAVE_MPI
@@ -120,7 +127,7 @@
      &                              .FALSE.,.FALSE.,I)
           CALL GET_DATA_VAR_LIST2(GEO_FILE,I,1,(/''/),(/''/),I)
           CALL EXAMPLE_CPL_T2D_SIS()
-          CALL GET_ERROR_MESSAGE(DUMMY_MESSAGE)
+          CALL GET_ERROR_MESSAGE(1,CODE, I,DUMMY_MESSAGE)
         ENDIF
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         CONTAINS
@@ -167,11 +174,12 @@
             CALL RUN_SET_CONFIG_T2D(ID,LU,LNG,COMM,IERR)
             CALL CHECK_CALL(IERR,'RUN_SET_CONFIG_T2D')
 
-            CALL RUN_READ_CASE_T2D(ID,CAS_FILE,DICO_FILE,.TRUE.,IERR)
+            CALL RUN_READ_CASE_T2D(ID,CAS_FILE,DICO_FILE,.TRUE.,
+     &                             IERR,GAI_CAS_FILE,GAI_DICO_FILE)
             CALL CHECK_CALL(IERR,'RUN_READ_CASE_T2D')
             ! Get the name of the result file
             VARNAME = 'MODEL.RESULTFILE'
-            CALL GET_STRING_T2D(ID, VARNAME, RES_FILE,
+            CALL GET_STRING(ID, 'T2D', VARNAME, RES_FILE,
      &                           PATH_LEN, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_STRING_T2D')
 
@@ -183,7 +191,7 @@
 
             !Get the number of timesteps
             VARNAME = 'MODEL.NTIMESTEPS'
-            CALL GET_INTEGER_T2D(ID, VARNAME, NTIME_STEPS,
+            CALL GET_INTEGER(ID, 'T2D', VARNAME, NTIME_STEPS,
      &                           0, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_INTEGER_T2D')
             ! Time loop
@@ -200,11 +208,12 @@
             CALL RUN_SET_CONFIG_T3D(ID,LU,LNG,COMM,IERR)
             CALL CHECK_CALL(IERR,'RUN_SET_CONFIG_T3D')
 
-            CALL RUN_READ_CASE_T3D(ID,CAS_FILE,DICO_FILE,.TRUE.,IERR)
+            CALL RUN_READ_CASE_T3D(ID,CAS_FILE,DICO_FILE,.TRUE.,IERR,
+     &                  DUMMY,DUMMY,DUMMY,DUMMY)
             CALL CHECK_CALL(IERR,'RUN_READ_CASE_T3D')
             ! Get the name of the result file
             VARNAME = 'MODEL.RESULTFILE'
-            CALL GET_STRING_T3D(ID, VARNAME, RES_FILE,
+            CALL GET_STRING(ID, 'T3D', VARNAME, RES_FILE,
      &                           PATH_LEN, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_STRING_T3D')
 
@@ -216,7 +225,7 @@
 
             !Get the number of timesteps
             VARNAME = 'MODEL.NTIMESTEPS'
-            CALL GET_INTEGER_T3D(ID, VARNAME, NTIME_STEPS,
+            CALL GET_INTEGER(ID, 'T3D', VARNAME, NTIME_STEPS,
      &                           0, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_INTEGER_T3D')
             ! Time loop
@@ -238,7 +247,7 @@
             CALL CHECK_CALL(IERR,'RUN_READ_CASE_SIS')
             ! Get the name of the result file
             VARNAME = 'MODEL.RESULTFILE'
-            CALL GET_STRING_SIS(ID, VARNAME, RES_FILE,
+            CALL GET_STRING(ID, 'SIS', VARNAME, RES_FILE,
      &                           PATH_LEN, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_STRING_SIS')
 
@@ -250,7 +259,7 @@
 
             !Get the number of timesteps
             VARNAME = 'MODEL.NTIMESTEPS'
-            CALL GET_INTEGER_SIS(ID, VARNAME, NTIME_STEPS,
+            CALL GET_INTEGER(ID, 'SIS', VARNAME, NTIME_STEPS,
      &                           0, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_INTEGER_SIS')
             ! Time loop
@@ -271,7 +280,7 @@
             CALL CHECK_CALL(IERR,'RUN_READ_CASE_ART')
             ! Get the name of the result file
             VARNAME = 'MODEL.RESULTFILE'
-            CALL GET_STRING_ART(ID, VARNAME, RES_FILE,
+            CALL GET_STRING(ID, 'ART', VARNAME, RES_FILE,
      &                           PATH_LEN, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_STRING_ART')
 
@@ -283,7 +292,7 @@
 
             !Get the number of timesteps
             VARNAME = 'MODEL.NTIMESTEPS'
-            CALL GET_INTEGER_ART(ID, VARNAME, NTIME_STEPS,
+            CALL GET_INTEGER(ID, 'ART', VARNAME, NTIME_STEPS,
      &                           0, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_INTEGER_ART')
             ! Time loop
@@ -304,7 +313,7 @@
             CALL CHECK_CALL(IERR,'RUN_READ_CASE_WAC')
             ! Get the name of the result file
             VARNAME = 'MODEL.RESULTFILE'
-            CALL GET_STRING_WAC(ID, VARNAME, RES_FILE,
+            CALL GET_STRING(ID, 'WAC', VARNAME, RES_FILE,
      &                           PATH_LEN, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_STRING_WAC')
 
@@ -316,7 +325,7 @@
 
             !Get the number of timesteps
             VARNAME = 'MODEL.NTIMESTEPS'
-            CALL GET_INTEGER_WAC(ID, VARNAME, NTIME_STEPS,
+            CALL GET_INTEGER(ID, 'WAC', VARNAME, NTIME_STEPS,
      &                           0, 0, 0, IERR)
             CALL CHECK_CALL(IERR,'GET_INTEGER_WAC')
             ! Time loop

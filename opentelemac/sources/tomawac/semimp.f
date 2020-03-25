@@ -684,7 +684,7 @@
                 FM2 =AUX2*TAUX7(IP)
                 MF1=INT(AUX3*LOG10(FM1)+1.D0)
                 MF2=INT(AUX3*LOG10(FM2)+1.D0)
-                MFMAX=MIN(MAX(MF1,MF2),NF)
+                MFMAX=MAX(MIN(MAX(MF1,MF2),NF),1)
                 DO IFF=MFMAX+1,NF
                    AUX4=(FREQ(MFMAX)/FREQ(IFF))**TAILF
                    DO JP=1,NPLAN

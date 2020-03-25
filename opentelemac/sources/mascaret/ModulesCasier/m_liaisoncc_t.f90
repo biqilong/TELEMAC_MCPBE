@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_LIAISONCC_T
 !***********************************************************************
 ! PROGICIEL : MASCARET       C. RISSOAN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -79,16 +79,16 @@ module M_LIAISONCC_T
       MessageErreur         = ""
 
 
-      if ( NomVar == 'Model.Link.StoS.S_i') then
+      if ( index(NomVar, 'Model.Link.StoS.S_i') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-      else if ( NomVar == 'Model.Link.StoS.S_j') then
+      else if ( index(NomVar, 'Model.Link.StoS.S_j') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-      else if ( NomVar == 'Model.Link.StoS.DQDZup') then
+      else if ( index(NomVar, 'Model.Link.StoS.DQDZup') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-      else if ( NomVar == 'Model.Link.StoS.DQDZdown') then
+      else if ( index(NomVar, 'Model.Link.StoS.DQDZdown') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
       else
@@ -122,19 +122,19 @@ module M_LIAISONCC_T
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoS.S_i') then
+      if ( index(NomVar, 'Model.Link.StoS.S_i') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoS.S_j') then
+      else if ( index(NomVar, 'Model.Link.StoS.S_j') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoS.DQDZup') then
+      else if ( index(NomVar, 'Model.Link.StoS.DQDZup') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoS.DQDZdown') then
+      else if ( index(NomVar, 'Model.Link.StoS.DQDZdown') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -188,9 +188,9 @@ module M_LIAISONCC_T
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoS.DQDZup') then
+      if ( index(NomVar, 'Model.Link.StoS.DQDZup') > 0) then
          valeur = Instance%DQDZamont
-      else if ( NomVar == 'Model.Link.StoS.DQDZdown') then
+      else if ( index(NomVar, 'Model.Link.StoS.DQDZdown') > 0) then
          valeur = Instance%DQDZaval
       else
          GET_DOUBLE_LIAISONCC = 1
@@ -215,9 +215,9 @@ module M_LIAISONCC_T
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoS.S_i') then
+      if ( index(NomVar, 'Model.Link.StoS.S_i') > 0) then
          valeur = Instance%CasierOrigine
-      else if ( NomVar == 'Model.Link.StoS.S_j') then
+      else if ( index(NomVar, 'Model.Link.StoS.S_j') > 0) then
          valeur = Instance%CasierFin
       else
          GET_INT_LIAISONCC = 1
@@ -247,9 +247,9 @@ module M_LIAISONCC_T
       SET_DOUBLE_LIAISONCC = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoS.DQDZup') then
+      if ( index(NomVar, 'Model.Link.StoS.DQDZup') > 0) then
          Instance%DQDZamont = valeur
-      else if ( NomVar == 'Model.Link.StoS.DQDZdown') then
+      else if ( index(NomVar, 'Model.Link.StoS.DQDZdown') > 0) then
          Instance%DQDZaval = valeur
       else
          SET_DOUBLE_LIAISONCC = 1
@@ -272,9 +272,9 @@ module M_LIAISONCC_T
       SET_INT_LIAISONCC = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoS.S_i') then
+      if ( index(NomVar, 'Model.Link.StoS.S_i') > 0) then
          Instance%CasierOrigine = valeur
-      else if ( NomVar == 'Model.Link.StoS.S_j') then
+      else if ( index(NomVar, 'Model.Link.StoS.S_j') > 0) then
          Instance%CasierFin = valeur
       else
          SET_INT_LIAISONCC = 1

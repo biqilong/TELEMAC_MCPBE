@@ -136,6 +136,7 @@
 !-----------------------------------------------------------------------
 !
       IF(STOP_ERROR) THEN
+        WRITE(LU,*) 'ISSUE DETECTED WHILE CHECING THE MESH'
         CALL PLANTE(1)
         STOP
       ENDIF

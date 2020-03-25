@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -20,7 +20,7 @@ module M_PARAMETRES_QUALITE_EAU_T
 !***********************************************************************
 ! PROGICIEL : TRACER         S.MANDELKERN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -82,7 +82,7 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.ParPhy.ParQual_Eau') then
+      if ( index(NomVar, 'Model.Tracer.ParPhy.ParQual_Eau') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
       else if (index(NomVar,'Model.Tracer.ParPhy.O2.') > 0) then
@@ -132,7 +132,7 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.ParPhy.ParQual_Eau') then
+      if ( index(NomVar, 'Model.Tracer.ParPhy.ParQual_Eau') > 0) then
          taille1 = size(Instance%ParQual_Eau)
          taille2 = 0
          taille3 = 0
@@ -187,7 +187,7 @@ contains
       !------------------------------------------------------------------------------
       ! Fin des appels aux fonctions SET_TAILLE_VAR_XXXX des membres de type primitif
       !------------------------------------------------------------------------------
-      if ( NomVar == 'Model.Tracer.ParPhy.ParQual_Eau') then
+      if ( index(NomVar, 'Model.Tracer.ParPhy.ParQual_Eau') > 0) then
         if (ASSOCIATED(Instance%ParQual_Eau)) then
            t1 = size(Instance%ParQual_Eau)
            if (t1 /= NewT1) then
@@ -239,7 +239,7 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.ParPhy.ParQual_Eau') then
+      if ( index(NomVar, 'Model.Tracer.ParPhy.ParQual_Eau') > 0) then
          valeur = Instance%ParQual_Eau(index1)
       else if (index(NomVar,'Model.Tracer.ParPhy.O2.') > 0) then
          GET_DOUBLE_PARAMETRES_QUALITE_EAU = GET_DOUBLE_CALCS_O2(Instance%ParQual_Eau, NomVar, index1, valeur, MessageErreur)
@@ -303,7 +303,7 @@ contains
       SET_DOUBLE_PARAMETRES_QUALITE_EAU = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.ParPhy.ParQual_Eau') then
+      if ( index(NomVar, 'Model.Tracer.ParPhy.ParQual_Eau') > 0) then
          Instance%ParQual_Eau(index1) = valeur
       else if ( index(NomVar,'Model.Tracer.ParPhy.O2.') > 0) then
          SET_DOUBLE_PARAMETRES_QUALITE_EAU = SET_DOUBLE_CALCS_O2(Instance%ParQual_Eau, NomVar, index1, valeur, MessageErreur)

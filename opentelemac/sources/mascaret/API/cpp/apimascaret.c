@@ -1,4 +1,4 @@
-//== Copyright (C) 2000-2017 EDF-CEREMA ==
+//== Copyright (C) 2000-2020 EDF-CEREMA ==
 //
 //   This file is part of MASCARET.
 //
@@ -19,7 +19,7 @@
 //***********************************************************************
 // PROGICIEL : MASCARET        J.-M. LACOMBE
 //
-// VERSION : 8.1.4              EDF-CEREMA
+// VERSION : V8P2R0              EDF-CEREMA
 //***********************************************************************
 /************************************************************************
  *
@@ -35,49 +35,46 @@
  // Signatures des subroutines fortrans utilisees
  // Elles peuvent dependre legerement du compilateur utilise
  // Dans le cas de gfortran : le nom est en minuscule et un underscore a la fin du nom.
-   void create_mascaret_(int *Erreur, int *Identifiant);
-   void delete_mascaret_(int *Erreur, int *Identifiant);
-   void save_etat_mascaret_(int *Erreur, int *Identifiant, int *IdentifiantEtat);
-   void set_etat_mascaret_(int *Erreur, int *Identifiant, int *IdentifiantEtat, int *AndDelete);
-   void free_all_save_etat_mascaret_(int *Erreur, int *Identifiant);
-   void free_save_etat_mascaret_(int *Erreur, int *IdentifiantEtat);
-   void get_erreur_mascaret_(int *Erreur, int *Identifiant, char *Message);
-   void import_modele_mascaret_(int *Erreur, int *Identifiant, char TabNomFichier[], char TypeNomFichier[], int *Taille, int *Impression);
-   void init_etat_mascaret_(int *Erreur, int *Identifiant, char *NomFichier, int *Impression);
-   void init_ligne_mascaret_(int *Erreur, int *Identifiant, double Q[], double Z[], int *Taille);
-   void init_ligne_tracer_(int *Erreur, int *Identifiant, double C[], int *Taille, int *Nbtrac, int *Impression);
-   void init_etat_tracer_(int *Erreur, int *Identifiant, int *Impression);
-   void get_ligne_(int *Erreur, int *Identifiant, double Q[], double Z[]);
-   void get_ligne_tracer_(int *Erreur, int *Identifiant, double C[]);
-   void calcul_mascaret_(int *Erreur, int *Identifiant, double *TpsInitial, double *TpsFinal, double *PasTps, int *Impression);
-   void get_nb_condition_limite_mascaret_(int *Erreur, int *Identifiant, int *NbCL);
-   void get_nom_condition_limite_mascaret_(int *Erreur, int *Identifiant, int *NumCL, char *NomCL, int *NumLoi);
-   void calcul_mascaret_condition_limite_(int *Erreur, int *Identifiant, double *TpsInitial, double *TpsFinal, double *PasTps, double TpsCl[], int *TailleTpsCL, double *CL1, double *CL2, int *Impression);
-   void get_nb_var_mascaret_(int *NbVarMascaret);
-   void get_desc_var_mascaret_(int *Erreur, int *Identifiant, char TabNom[], char TabDesc[], int *Taille);
-   void get_type_var_mascaret_(int *Erreur, int *Identifiant, char *NomVar, char *TypeVar, char *Categorie, int *Modifiable, int *dimVar);
-   void get_taille_var_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *taille1, int *taille2, int *taille3);
-   void set_taille_var_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *taille1, int *taille2, int *taille3);
-   void get_double_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, double *valeur);
-   void get_int_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, int *valeur);
-   void get_bool_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, int *valeur, int *trueref);
-   void get_string_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, char *valeur);
-   void set_double_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, double *valeur);
-   void set_int_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, int *valeur);
-   void set_bool_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, int *valeur);
-   void set_string_mascaret_(int *Erreur, int *Identifiant, char *NomVar, int *index1, int *index2, int *index3, char *valeur);
-   void version_mascaret_(int *Majeur, int *Mineur, int *Micro);
-   void import_xml_(int *Erreur, int *Identifiant, char *NomFichier, int *importModele);
-   void export_xml_(int *Erreur, int *Identifiant, char *NomFichier, int *AvecDesc, int *exportModele);
-   void export_xml_saint_venant_(int *Erreur, int *Identifiant, char *NomFichier);
-   void ouverture_balise_xml_(int *Erreur, int *Identifiant, char *NomFichier, int *uniteLogique, char *balise);
-   void export_var_xml_(int *Erreur, int *Identifiant, int *uniteLogique, char *nomVar, int *avecDesc);
-   void export_uservar_xml_(int *Erreur, int *Identifiant, int *uniteLogique, char *nomUserVar, char *typeVar, char *descVar, char *valeurVar);
-   void fermeture_balise_xml_(int *Erreur, int *Identifiant, int *uniteLogique, char *balise);
+   void create_mascaret_(int *, int *);
+   void delete_mascaret_(int *, int *);
+   void save_etat_mascaret_(int *, int *, int *);
+   void set_etat_mascaret_(int *, int *, int *, int *);
+   void free_all_save_etat_mascaret_(int *, int *);
+   void free_save_etat_mascaret_(int *, int *);
+   void get_erreur_mascaret_(int *, int *, char *);
+   void import_modele_mascaret_(int *, int *, char [], char [], int *, int *, char *);
+   void init_etat_mascaret_(int *, int *, char *, int *);
+   void init_ligne_mascaret_(int *, int *, double [], double [], int *);
+   void init_ligne_tracer_(int *, int *, double [], int *, int *, int *);
+   void init_etat_tracer_(int *, int *, int *);
+   void get_ligne_(int *, int *, double [], double []);
+   void get_ligne_tracer_(int *, int *, double []);
+   void calcul_mascaret_(int *, int *, double *, double *, double *, int *);
+   void get_nb_condition_limite_mascaret_(int *, int *, int *);
+   void get_nom_condition_limite_mascaret_(int *, int *, int *, char *, int *);
+   void calcul_mascaret_condition_limite_(int *, int *, double *, double *, double *, double [], int *, double *, double *, int *);
+   void get_nb_var_mascaret_(int *);
+   void get_desc_var_mascaret_(int *, int *, char [], char [], int *);
+   void get_type_var_mascaret_(int *, int *, char *, char *, char *, int *, int *);
+   void get_taille_var_mascaret_(int *, int *, char *, int *, int *, int *, int *);
+   void set_taille_var_mascaret_(int *, int *, char *, int *, int *, int *, int *);
+   void get_double_mascaret_(int *, int *, char *, int *, int *, int *, double *);
+   void get_int_mascaret_(int *, int *, char *, int *, int *, int *, int *);
+   void get_bool_mascaret_(int *, int *, char *, int *, int *, int *, int *, int *);
+   void get_string_mascaret_(int *, int *, char *, int *, int *, int *, char *);
+   void set_double_mascaret_(int *, int *, char *, int *, int *, int *, double *);
+   void set_int_mascaret_(int *, int *, char *, int *, int *, int *, int *);
+   void set_bool_mascaret_(int *, int *, char *, int *, int *, int *, int *);
+   void set_string_mascaret_(int *, int *, char *, int *, int *, int *, char *);
+   void version_mascaret_(int *, int *, int *);
+   void import_xml_(int *, int *, char *, int *);
+   void export_xml_(int *, int *, char *, int *, int *);
+   void export_xml_saint_venant_(int *, int *, char *);
+   void ouverture_balise_xml_(int *, int *, char *, int *, char *);
+   void export_var_xml_(int *, int *, int *, char *, int *);
+   void export_uservar_xml_(int *, int *, int *, char *, char *, char *, char *);
+   void fermeture_balise_xml_(int *, int *, int *, char *);
 
- //Signatures des fonction utilitaires de conversion de chaine Fortran---C
-   void converChaineFversC(char fortran[], int tailleFortran, char **chaineC);
-   void converChaineCversF(char *chaineC, int malloc, char *fortran, int tailleFortran);
 
    //.................................................................................................................................
    // Initialise les ressources associees a une instance de Mascaret (Modele et Etat)
@@ -132,7 +129,7 @@
    // Arguments en entree :
    //      Identifiant     :  Identifiant de l'instance de Mascaret dont l'etat va etre modifie
    //      IdentifiantEtat :  Identifiant de l'etat Mascaret sauvegarde par SAVE_ETAT_MASCARET
-   //      AndDelete       :  Efface (si !=0) ou non (si =0) l'etat sauvegarde apres restauration 
+   //      AndDelete       :  Efface (si !=0) ou non (si =0) l'etat sauvegarde apres restauration
    //.................................................................................................................................
    int C_SET_ETAT_MASCARET(int Identifiant, int IdentifiantEtat, int AndDelete)
    {
@@ -154,7 +151,7 @@
 
       return erreurFortran;
    }
-  
+
    //.................................................................................................................................
    // Desallocation d'un etat sauvegardes
    // Arguments en entree :
@@ -179,11 +176,18 @@
    int C_GET_ERREUR_MASCARET(int Identifiant, char **Message)
    {
       char messageFortran[256];
-      int erreurFortran;
+      char *chaineC;
+      int erreurFortran, taille;
 
       get_erreur_mascaret_(&erreurFortran, &Identifiant, messageFortran);
 
-      converChaineFversC(messageFortran, 256, Message);
+      chaineC = (char*)malloc( 256 * sizeof( char ) );
+      memcpy(chaineC, messageFortran, 256 * sizeof(char));
+      taille = 256;
+      while(chaineC[taille-1] == ' ') chaineC[--taille] = 0;
+
+      *Message = chaineC;
+
 
       return erreurFortran;
    }
@@ -203,28 +207,53 @@
   int C_IMPORT_MODELE_MASCARET(int Identifiant, char *TabNomFichier[], char *TypeNomFichier[], int Taille, int Impression)
   {
      int erreurFortran;
-     int i;
-     char *tabNomFichierFortran;
-     char *typeNomFichierFortran;
+     int i, strsize;
+     char *tabNomFichierFortran = NULL;
+     char *typeNomFichierFortran = NULL;
 
-     tabNomFichierFortran = (char*)malloc( (Taille*255) * sizeof( char ) );
-     for(i=0; i<Taille; i++)
-     {
-        converChaineCversF(TabNomFichier[i], 0, &tabNomFichierFortran[i*255], 255);
+     if(Taille > 0){
+         tabNomFichierFortran = (char*)malloc( (Taille*255) * sizeof( char ) );
+         for(i=0; i<Taille; i++)
+         {
+            strsize = strlen(TabNomFichier[i]);
+            strcpy(&tabNomFichierFortran[i*255], TabNomFichier[i]);
+            memset(&tabNomFichierFortran[i*255]+strsize, ' ', 255-strsize);
+         }
+
+         typeNomFichierFortran = (char*)malloc( (Taille*40) * sizeof( char ) );
+         for(i=0; i<Taille; i++)
+         {
+            strsize = strlen(TypeNomFichier[i]);
+            strcpy(&typeNomFichierFortran[i*40], TypeNomFichier[i]);
+            memset(&typeNomFichierFortran[i*40]+strsize, ' ', 40-strsize);
+         }
+
+         import_modele_mascaret_(&erreurFortran, &Identifiant, tabNomFichierFortran, typeNomFichierFortran, &Taille, &Impression, NULL);
+     }else{
+         return -1;
      }
-
-     typeNomFichierFortran = (char*)malloc( (Taille*40) * sizeof( char ) );
-     for(i=0; i<Taille; i++)
-     {
-        converChaineCversF(TypeNomFichier[i], 0, &typeNomFichierFortran[i*40], 40);
-     }
-
-     import_modele_mascaret_(&erreurFortran, &Identifiant, tabNomFichierFortran, typeNomFichierFortran, &Taille, &Impression);
 
      return erreurFortran;
   }
 
+    int C_IMPORT_MODELE_MASCARET_ONEFILE(int *Identifiant , int *Impression, char **MascFile)
+  {
+     int erreurFortran;
+     int i, Taille, strsize;
+     char *tabNomFichierFortran = NULL;
+     char *typeNomFichierFortran = NULL;
+     char *FichierMascaret;
 
+     strsize = strlen(MascFile[0]);
+     Taille = 0;
+     FichierMascaret = (char*)malloc( 255 * sizeof( char ) );
+     strcpy(FichierMascaret, MascFile[0]);
+     memset(FichierMascaret+strsize, ' ', 255-strsize);
+
+     import_modele_mascaret_(&erreurFortran, Identifiant, tabNomFichierFortran, typeNomFichierFortran, &Taille, Impression, FichierMascaret);
+
+     return erreurFortran;
+  }
    //.................................................................................................................................
    // Importation de l'etat Mascaret a partir du fichier natif contenant la ligne d'eau initiale
    // Arguments en entree :
@@ -232,14 +261,16 @@
    //       NomFichier  : Nom du fichier natif contenant la ligne d'eau initiale (max 255 carateres)
    //       Impression  : impression sur les fichiers listing (1-> Vrai 0-> Faux)
    // .................................................................................................................................
-  int C_INIT_ETAT_MASCARET(int Identifiant, char *NomFichier, int Impression)
+  int C_INIT_ETAT_MASCARET(int *Identifiant, char **NomFichier, int *Impression)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomFichierFortran[255];
 
-     converChaineCversF(NomFichier, 0, nomFichierFortran, 255);
+     taille = strlen(NomFichier[0]);
+     strcpy(nomFichierFortran, NomFichier[0]);
+     memset(nomFichierFortran + taille, ' ', 255 - taille);
 
-     init_etat_mascaret_(&erreurFortran, &Identifiant, nomFichierFortran, &Impression);
+     init_etat_mascaret_(&erreurFortran, Identifiant, nomFichierFortran, Impression);
      return erreurFortran;
   }
 
@@ -267,11 +298,11 @@
    //       Q           : Tableau des debits de la ligne d'eau
    //       Z           : Tableau des cotes de la ligne d'eau
    // .................................................................................................................................
-  int C_GET_LIGNE(int Identifiant, double Q[], double Z[])
+  int C_GET_LIGNE(int *Identifiant, double Q[], double Z[])
   {
      int erreurFortran;
 
-     get_ligne_(&erreurFortran, &Identifiant, Q, Z);
+     get_ligne_(&erreurFortran, Identifiant, Q, Z);
 
      return erreurFortran;
   }
@@ -371,12 +402,18 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //.................................................................................................................................
   int C_GET_NOM_CONDITION_LIMITE_MASCARET(int Identifiant, int NumCL, char **NomCL, int *NumLoi)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char messageFortran[30];
+     char *chaineC;
 
      get_nom_condition_limite_mascaret_(&erreurFortran, &Identifiant, &NumCL, messageFortran, NumLoi);
 
-     converChaineFversC(messageFortran, 30, NomCL);
+     chaineC = (char*)malloc( 30 * sizeof( char ) );
+     memcpy(chaineC, messageFortran, 30 * sizeof(char));
+     taille = 30;
+     while(chaineC[taille-1] == ' ') chaineC[--taille] = 0;
+
+     *NomCL = chaineC;
 
      return erreurFortran;
   }
@@ -401,7 +438,7 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
      int NbCL, i, j, indexFortran;
 
      get_nb_condition_limite_mascaret_(&erreurFortran, &Identifiant, &NbCL);
-     
+
      Cl1Fortran = (double*)malloc( (NbCL*TailleTpsCL) * sizeof( double ) );
      Cl2Fortran = (double*)malloc( (NbCL*TailleTpsCL) * sizeof( double ) );
      indexFortran = 0;
@@ -412,11 +449,11 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
              indexFortran++;
          }
      }
-         
-     
+
+
      calcul_mascaret_condition_limite_(&erreurFortran, &Identifiant, &TpsInitial, &TpsFinal, &PasTps,
                                        TpsCl, &TailleTpsCL, Cl1Fortran, Cl2Fortran, &Impression);
-     
+
      free(Cl1Fortran);
      free(Cl2Fortran);
 
@@ -441,33 +478,39 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
      int i,j;
      char *tabNomFortran;
      char *tabDescFortran;
+     char *chaineC1, *chaineC2;
      char tmpVarFortran[40];
      char tmpDescFortran[110];
 
      get_nb_var_mascaret_(&NbVarMascaret);
-     
+
      tabNomFortran = (char*)malloc( (NbVarMascaret*40) * sizeof( char ) );
      tabDescFortran = (char*)malloc( (NbVarMascaret*110) * sizeof( char ) );
 
      *TabNom  = (char**)malloc(NbVarMascaret* sizeof( char *) );
      *TabDesc = (char**)malloc(NbVarMascaret* sizeof( char *) );
 
-
      get_desc_var_mascaret_(&erreurFortran, &Identifiant, tabNomFortran, tabDescFortran, &NbVarMascaret);
 
      for (i=0 ; i < NbVarMascaret ; i++)
-     {    
+     {
          for (j=0 ; j < 40 ; j++)
          {
-             tmpVarFortran[j] = tabNomFortran[(40*i)+j];         
-         }   
-         converChaineFversC(tmpVarFortran, 40, &(*TabNom)[i]);
+             tmpVarFortran[j] = tabNomFortran[(40*i)+j];
+         }
+         chaineC1 = (char*)malloc( 40 * sizeof( char ) );
+         memcpy(chaineC1, tmpVarFortran, 40 * sizeof(char));
+         memset(chaineC1+40-1, '\0', 1);
+         (*TabNom)[i] = chaineC1;
 
          for (j=0 ; j < 110 ; j++)
          {
              tmpDescFortran[j] = tabDescFortran[(110*i)+j];
          }
-         converChaineFversC(tmpDescFortran, 110, &(*TabDesc)[i]);
+         chaineC2 = (char*)malloc( 110 * sizeof( char ) );
+         memcpy(chaineC2, tmpDescFortran, 110 * sizeof(char));
+         memset(chaineC2+110-1, '\0', 1);
+         (*TabDesc)[i] = chaineC2;
      }
 
      free(tabNomFortran);
@@ -493,18 +536,29 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        Modifiable  : Si vrai alors on peut utiliser une fonction SET_XXXX_MASCARET sur la variable
    //        dimVar      : dimension (c'est a dire le nombre d'indexe de 0 a 3)
    // .................................................................................................................................
-   int C_GET_TYPE_VAR_MASCARET(int Identifiant, char *NomVar, char **TypeVar, char **Categorie, int *Modifiable, int *dimVar)
+   int C_GET_TYPE_VAR_MASCARET(int *Identifiant, char **NomVar, char **TypeVar, char **Categorie, int *Modifiable, int *dimVar)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
      char typeVarFortran[10], categorieFortran[10];
+     char *chaineC1, *chaineC2;
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     get_type_var_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, typeVarFortran, categorieFortran, Modifiable, dimVar);
+     get_type_var_mascaret_(&erreurFortran, Identifiant, nomVarFortran, typeVarFortran, categorieFortran, Modifiable, dimVar);
 
-     converChaineFversC(typeVarFortran, 10, TypeVar);
-     converChaineFversC(categorieFortran, 10, Categorie);
+     chaineC1 = (char*)malloc( 10 * sizeof( char ) );
+     memcpy(chaineC1, typeVarFortran, 10 * sizeof(char));
+     taille = 10;
+     while(chaineC1[taille-1] == ' ') chaineC1[--taille] = 0;
+     *TypeVar = chaineC1;
+     chaineC2 = (char*)malloc( 10 * sizeof( char ) );
+     memcpy(chaineC2, categorieFortran, 10 * sizeof(char));
+     taille = 10;
+     while(chaineC2[taille-1] == ' ') chaineC2[--taille] = 0;
+     *Categorie = chaineC2;
 
      return erreurFortran;
   }
@@ -521,18 +575,20 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        taille2     : valeur max du 2e  indice
    //        taille3     : valeur max du 3e  indice
    // .................................................................................................................................
-  int C_GET_TAILLE_VAR_MASCARET(int Identifiant, char *NomVar, int index1, int *taille1, int *taille2, int *taille3)
+  int C_GET_TAILLE_VAR_MASCARET(int *Identifiant, char **NomVar, int *index1, int *taille1, int *taille2, int *taille3)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     get_taille_var_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, taille1, taille2, taille3);
+     get_taille_var_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, taille1, taille2, taille3);
 
      return erreurFortran;
   }
-  
+
    // .................................................................................................................................
    // Definit la taille maximum des indexes pour acceder a une variable
    // RQ : Depend de l'instance du modele ou de l'etat
@@ -545,12 +601,14 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        taille3     : valeur max du 3e  indice
    // .................................................................................................................................
    int C_SET_TAILLE_VAR_MASCARET(int Identifiant, char *NomVar, int index1,
-          int taille1, int taille2, int taille3) 
+          int taille1, int taille2, int taille3)
    {
-       int erreurFortran;
+       int erreurFortran, taille;
        char nomVarFortran[40];
 
-       converChaineCversF(NomVar, 0, nomVarFortran, 40);
+       taille = strlen(NomVar);
+       strcpy(nomVarFortran, NomVar);
+       memset(nomVarFortran + taille, ' ', 40 - taille);
 
        set_taille_var_mascaret_(&erreurFortran, &Identifiant, nomVarFortran,
              &index1, &taille1, &taille2, &taille3);
@@ -572,14 +630,16 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : valeur de la variable pour les indexes specifies
-  int C_GET_DOUBLE_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, double *valeur)
+  int C_GET_DOUBLE_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, double *valeur)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     get_double_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, valeur);
+     get_double_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeur);
 
      return erreurFortran;
   }
@@ -592,19 +652,20 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : valeur de la variable pour les indexes specifies
-  int C_GET_INT_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int *valeur)
+  int C_GET_INT_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, int *valeur)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     get_int_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, valeur);
+     get_int_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeur);
 
 
      return erreurFortran;
   }
-
    // Lecture d'une variable de type booleen
    // Arguments en entree :
    //        Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
@@ -613,14 +674,16 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : valeur de la variable pour les indexes specifies
-  int C_GET_BOOL_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int *valeur, int *trueref)
+  int C_GET_BOOL_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, int *valeur, int *trueref)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     get_bool_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, valeur, trueref);
+     get_bool_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeur, trueref);
 
 
      return erreurFortran;
@@ -634,18 +697,24 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : valeur de la variable pour les indexes specifies
-  int C_GET_STRING_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, char **valeur)
+  int C_GET_STRING_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, char **valeur)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
      char valeurFortran[256];
+     char *chaineC;
 
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     get_string_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeurFortran);
 
-     get_string_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, valeurFortran);
-
-     converChaineFversC(valeurFortran, 256, valeur);
+     chaineC = (char*)malloc( 256 * sizeof( char ) );
+     memcpy(chaineC, valeurFortran, 256 * sizeof(char));
+     taille = 256;
+     while(chaineC[taille-1] == ' ') chaineC[--taille] = 0;
+     *valeur = chaineC;
 
      return erreurFortran;
   }
@@ -665,18 +734,19 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : nouvelle valeur de la variable pour les indexes specifies
-  int C_SET_DOUBLE_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, double valeur)
+  int C_SET_DOUBLE_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, double *valeur)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     set_double_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, &valeur);
+     set_double_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeur);
 
      return erreurFortran;
   }
-
    // Modification d'une variable de type entier
    // Arguments en entree :
    //        Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
@@ -685,18 +755,19 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : nouvelle valeur de la variable pour les indexes specifies
-  int C_SET_INT_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int valeur)
+  int C_SET_INT_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, int *valeur)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     set_int_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, &valeur);
+     set_int_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeur);
 
      return erreurFortran;
   }
-
    // Modification d'une variable de type booleen
    // Arguments en entree :
    //        Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
@@ -705,14 +776,16 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : nouvelle valeur de la variable pour les indexes specifies
-  int C_SET_BOOL_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int valeur)
+  int C_SET_BOOL_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, int *valeur)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     set_bool_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, &valeur);
+     set_bool_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeur);
 
      return erreurFortran;
   }
@@ -725,16 +798,21 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //        index2      : valeur du 2e indice
    //        index3      : valeur du 3e indice
    //        valeur      : nouvelle valeur de la variable pour les indexes specifies
-  int C_SET_STRING_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, char *valeur)
+  int C_SET_STRING_MASCARET(int *Identifiant, char **NomVar, int *index1, int *index2, int *index3, char **valeur)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
      char valeurFortran[256];
 
-     converChaineCversF(NomVar, 0, nomVarFortran, 40);
-     converChaineCversF(valeur, 0, valeurFortran, 256);
+     taille = strlen(NomVar[0]);
+     strcpy(nomVarFortran, NomVar[0]);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
 
-     set_string_mascaret_(&erreurFortran, &Identifiant, nomVarFortran, &index1, &index2, &index3, valeurFortran);
+     taille = strlen(valeur[0]);
+     strcpy(valeurFortran, valeur[0]);
+     memset(valeurFortran + taille, ' ', 256 - taille);
+
+     set_string_mascaret_(&erreurFortran, Identifiant, nomVarFortran, index1, index2, index3, valeurFortran);
 
      return erreurFortran;
   }
@@ -772,10 +850,12 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //.................................................................................................................................
    int C_IMPORT_XML(int Identifiant, char *NomFichier, int importModele)
    {
-      int erreurFortran;
+      int erreurFortran, taille;
       char nomFichierFortran[255];
 
-      converChaineCversF(NomFichier, 0, nomFichierFortran, 255);
+      taille = strlen(NomFichier);
+      strcpy(nomFichierFortran, NomFichier);
+      memset(nomFichierFortran + taille, ' ', 255 - taille);
 
       import_xml_(&erreurFortran, &Identifiant, nomFichierFortran, &importModele);
 
@@ -792,10 +872,12 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //.................................................................................................................................
    int C_EXPORT_XML(int Identifiant, char *NomFichier, int AvecDesc, int exportModele)
    {
-      int erreurFortran;
+      int erreurFortran, taille;
       char nomFichierFortran[255];
 
-      converChaineCversF(NomFichier, 0, nomFichierFortran, 255);
+      taille = strlen(NomFichier);
+      strcpy(nomFichierFortran, NomFichier);
+      memset(nomFichierFortran + taille, ' ', 255 - taille);
 
       export_xml_(&erreurFortran, &Identifiant, nomFichierFortran, &AvecDesc, &exportModele);
 
@@ -812,17 +894,19 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //.................................................................................................................................
    int C_EXPORT_XML_SAINT_VENANT(int Identifiant, char *NomFichier)
    {
-      int erreurFortran;
+      int erreurFortran, taille;
       char nomFichierFortran[255];
 
-      converChaineCversF(NomFichier, 0, nomFichierFortran, 255);
+      taille = strlen(NomFichier);
+      strcpy(nomFichierFortran, NomFichier);
+      memset(nomFichierFortran + taille, ' ', 255 - taille);
 
       export_xml_saint_venant_(&erreurFortran, &Identifiant, nomFichierFortran);
 
       return erreurFortran;
-   }   
-   
-   
+   }
+
+
    //-------------------------------------------------------------------------------
    // Ouverture du fichier XML suivi de l'ouverture de la balise XML racine
    // Ce fichier est prevu pour contenir des variables au choix de Mascaret via l'utilisation de C_EXPORT_VAR_XML
@@ -834,12 +918,18 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //-------------------------------------------------------------------------------
   int C_OUVERTURE_BALISE_XML(int Identifiant, char *NomFichier, int uniteLogique, char *balise)
   {
-      int erreurFortran;
+      int erreurFortran, taille;
       char nomFichierFortran[255];
       char baliseFortran[255];
 
-      converChaineCversF(NomFichier, 0, nomFichierFortran, 255);
-      converChaineCversF(balise, 0, baliseFortran, 255);
+      taille = strlen(NomFichier);
+      strcpy(nomFichierFortran, NomFichier);
+      memset(nomFichierFortran + taille, ' ', 255 - taille);
+
+      taille = strlen(balise);
+      strcpy(baliseFortran, balise);
+      memset(baliseFortran + taille, ' ', 255 - taille);
+
       ouverture_balise_xml_(&erreurFortran, &Identifiant, nomFichierFortran, &uniteLogique, baliseFortran);
 
       return erreurFortran;
@@ -858,16 +948,19 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //-----------------------------------------------------------------------------------
   int C_EXPORT_VAR_XML(int Identifiant, int uniteLogique, char *nomVar, int avecDesc)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
 
-     converChaineCversF(nomVar, 0, nomVarFortran, 40);
+     taille = strlen(nomVar);
+     strcpy(nomVarFortran, nomVar);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
+
      export_var_xml_(&erreurFortran, &Identifiant, &uniteLogique, nomVarFortran, &avecDesc);
 
      return erreurFortran;
   }
 
-  
+
  //-----------------------------------------------------------------------------------
    // Exportation d'une variable utilisateur dans un fichier XML
    // par ex: <nomUserVar type="typeVar" description="descVar">valeurVar</nomUserVar>
@@ -884,22 +977,34 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //-----------------------------------------------------------------------------------
   int C_EXPORT_USERVAR_XML(int Identifiant, int uniteLogique, char *nomUserVar, char *typeVar, char *descVar, char *valeurVar)
   {
-     int erreurFortran;
+     int erreurFortran, taille;
      char nomVarFortran[40];
      char typeVarFortran[20];
      char descVarFortran[110];
      char valeurVarFortran[20];
 
-     converChaineCversF(nomUserVar, 0, nomVarFortran, 40);
-     converChaineCversF(typeVar, 0, typeVarFortran, 20);
-     converChaineCversF(descVar, 0, descVarFortran, 110);
-     converChaineCversF(valeurVar, 0, valeurVarFortran, 20);
+     taille = strlen(nomUserVar);
+     strcpy(nomVarFortran, nomUserVar);
+     memset(nomVarFortran + taille, ' ', 40 - taille);
+
+     taille = strlen(typeVar);
+     strcpy(typeVarFortran, typeVar);
+     memset(typeVarFortran + taille, ' ', 20 - taille);
+
+     taille = strlen(descVar);
+     strcpy(descVarFortran, descVar);
+     memset(descVarFortran + taille, ' ', 110 - taille);
+
+     taille = strlen(valeurVar);
+     strcpy(valeurVarFortran, valeurVar);
+     memset(valeurVarFortran + taille, ' ', 20 - taille);
+
      export_uservar_xml_(&erreurFortran, &Identifiant, &uniteLogique, nomVarFortran, typeVarFortran, descVarFortran, valeurVarFortran);
 
      return erreurFortran;
   }
 
-  
+
    //------------------------------------------------------------------------------------
    // Fermeture du la balise XML racine puis fermeture du fichier
    // Doit etre utiliser apres OUVERTURE_BALISE_XML et normalement apres C_EXPORT_VAR_XML
@@ -910,96 +1015,13 @@ int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int
    //-----------------------------------------------------------------------------------
   int C_FERMETURE_BALISE_XML(int Identifiant, int uniteLogique, char *balise)
   {
-      int erreurFortran;
+      int erreurFortran, taille;
       char baliseFortran[255];
 
-      converChaineCversF(balise, 0, baliseFortran, 255);
+      taille = strlen(balise);
+      strcpy(baliseFortran, balise);
+      memset(baliseFortran + taille, ' ', 255 - taille);
+
       fermeture_balise_xml_(&erreurFortran, &Identifiant, &uniteLogique, baliseFortran);
       return erreurFortran;
-  }
-
-/*************************************************************************************************************************************
- *
- *  2 fonctions internes pour convertir les chaines C en chaines Fortran et inversement
- *
- *************************************************************************************************************************************/
-
-   //----------------------------------------------------------------------------------------------------------------------------------
-   // Conversion d'une chaine Fortran en chaine C
-   // Arguments en entree :
-   //        fortran       : la chaine fortran represente en interne par un tableau de caracteres avec des espaces a droites
-   //        tailleFortran : taille du tableau 'fortran'
-   // Argument en sortie :
-   //        chaineC       : la chaine de caracteres convertie avec un '\0' a la fin de la chaine
-   //-----------------------------------------------------------------------------------------------------------------------------------
-  void converChaineFversC(char fortran[], int tailleFortran, char **chaine)
-  {
-     int iFortran;
-     int iChaineC;
-     int tailleChaine;
-     char *chaineC;
-
-     // Reperer le 1er caractere qui ne soit pas un espace a partir de la fin du tableau
-     tailleChaine = 0;
-     for(iFortran=(tailleFortran -1) ; iFortran >= 0 ; iFortran--)
-     {
-       if (fortran[iFortran]!= ' ')
-       {
-          tailleChaine = iFortran +1;
-          break;
-       }
-     }
-     chaineC = (char*)malloc( (tailleChaine+1) * sizeof( char ) );
-
-     chaineC[tailleChaine]='\0';
-     for(iChaineC=0 ; iChaineC< tailleChaine ; iChaineC++)
-     {
-       chaineC[iChaineC] = fortran[iChaineC];
-     }
-
-     *chaine = chaineC;
-     
-     return;
-  }
-
-   //----------------------------------------------------------------------------------------------------------------------------------
-   // Conversion d'une chaine C en chaine Fortran
-   // Integre l'allocation du tableau de char Fortran si malloc vaut 1
-   // Arguments en entree :
-   //        chaineC       : la chaine de caracteres convertie avec un '\0' a la fin de la chaine
-   //        malloc        : si vaut 1, alloue le tableau fortran
-   // Argument en sortie :
-   //        fortran       : la chaine fortran represente en interne par un tableau de caracteres avec des espaces a droites
-   //        tailleFortran : taille du tableau 'fortran'
-   //-----------------------------------------------------------------------------------------------------------------------------------
-  void converChaineCversF(char *chaineC, int malloc, char *fortran, int tailleFortran)
-  {
-     int iFortran;
-     int iChaineC;
-     int tailleChaineC;
-     int tailleCopie;
-
-     // determination de la longueur de la chaine C
-     tailleChaineC = strlen(chaineC);
-
-     // tailleCopie = Min(tailleChaine,tailleFortran)
-     tailleCopie = tailleChaineC;
-     if (tailleFortran < tailleChaineC)
-     {
-       tailleCopie = tailleFortran;
-     }
-
-     // Copie de la chaine C dans la chaine Fortran caractere par caractere
-     for(iChaineC=0 ; iChaineC < tailleCopie ; iChaineC++)
-     {
-       fortran[iChaineC] = chaineC[iChaineC];
-     }
-
-     // Complete la chaine Fortran par des espaces (si necessaire)
-     for(iFortran=tailleCopie ; iFortran< tailleFortran ; iFortran++)
-     {
-       fortran[iFortran] = ' ';
-     }
-
-     return;
   }

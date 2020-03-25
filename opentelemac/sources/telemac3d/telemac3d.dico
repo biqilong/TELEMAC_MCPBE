@@ -1022,16 +1022,16 @@ Les possibilites offertes sont les suivantes :
 \item W : coefficient de frottement ;
 \item RB : cote des fonds non erodables (m) ;
 \item HD : epaisseur des depots frais (m) ;
-\item EF : flux d''erosion (kg/m$2^$/s) ;
-\item DF : probabilite de depot (kg/m$2^$/s) ;
+\item EF : flux d''erosion (kg/m$^2$/s) ;
+\item DF : probabilite de depot (kg/m$^2$/s) ;
 \item DZF : evolution du lit ;
 \item PRIVE1 : tableau de travail PRIVE 1 ;
 \item PRIVE2 : tableau de travail PRIVE 2 ;
 \item PRIVE3 : tableau de travail PRIVE 3 ;
 \item PRIVE4 : tableau de travail PRIVE 4 ;
-\item QS : debit solide (m$2^$/s) ;
-\item QSX : debit solide suivant x (m$2^$/s) ;
-\item QSY : debit solide suivant y (m$2^$/s) ;
+\item QS : debit solide (m$^2$/s) ;
+\item QSX : debit solide suivant x (m$^2$/s) ;
+\item QSY : debit solide suivant y (m$^2$/s) ;
 \item US : vitesse de frottement (m/s) ;
 \item MAXZ : valeur maximum de la cote de l eau au cours du calcul (m) ;
 \item TMXZ : temps correspondant a ce niveau maximum (s) ;
@@ -3665,9 +3665,11 @@ NIVEAU = 0
 AIDE =
 'Specifie le type de conditions aux limites au fond.
 Les choix possibles sont :
+\begin{itemize}
 \item 1 : conditions de Neumann pour les vitesses au fond;
 \item 2 : vitesses nulles au fond. Va de pair logiquement avec
- un bon raffinement du maillage au fond'
+ un bon raffinement du maillage au fond.
+\end{itemize}'
 AIDE1 =
 'Specifies the type of boundary conditions on the bottom
 layer. Possible choices are:
@@ -5695,7 +5697,7 @@ automatique des conditions aux limites. Les choix possibles sont :
 \end{itemize}
 Pour JMJ, renseigner la localisation du fichier bdd\_jmj et
 geofin dans les mots-cles \telkey{BASE ASCII DE DONNEES DE MAREE} et
-\telkey{FICHIER DU MODELE DE MAREE.
+\telkey{FICHIER DU MODELE DE MAREE}.
 Pour TPXO, LEGOS-NEA, FES20XX et PREVIMER, l''utilisateur
 doit telecharger les fichiers de constantes harmoniques sur internet.'
 AIDE1 =
@@ -8899,10 +8901,10 @@ TYPE = STRING
 INDEX = 62
 TAILLE = 1
 DEFAUT = 'RIEN'
-DEFAUT1 = 'NOTHING'
+DEFAUT1 = ''
 MNEMO = 'COUPLING, IN BIEF'
 CHOIX =
-'RIEN';
+'';
 'SISYPHE';
 'TOMAWAC';
 'TOMAWACT3D';
@@ -8910,7 +8912,7 @@ CHOIX =
 'DELWAQ';
 'GAIA'
 CHOIX1 =
-'NOTHING';
+'';
 'SISYPHE';
 'TOMAWAC';
 'TOMAWACT3D';

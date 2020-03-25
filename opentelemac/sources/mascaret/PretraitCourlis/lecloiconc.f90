@@ -308,10 +308,10 @@ use M_TRAITER_ERREUR_I		! Traitement de l'errreur
 
   2000  Format ('2',//,'LOIS DE CONCENTRATION',/,24('-'))
   2001  Format (/,'Nombre de lois : ',I3)
-  2002  Format ('Loi No. : ', i3, ', Nom : ', A, /,		&
-				'Mode de saisie par fichier. Nom du fichier : ', A)
-  2003  Format ('Loi No. : ', i3, ', Nom : ', A, /,		&
-				'Mode de saisie par clavier.')
+  2002  Format ('Loi No. : ', i3, ', Nom : ', A, /,     &
+                'Mode de saisie par fichier. Nom du fichier : ', A)
+  2003  Format ('Loi No. : ', i3, ', Nom : ', A, /,     &
+                'Mode de saisie par clavier.')
   2006  Format ('Unite de temps     = ', A)
   2004  Format ('Loi No. ', i3, 2A12)
   2005  Format (i11,2F12.2)

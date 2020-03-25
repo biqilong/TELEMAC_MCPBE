@@ -149,11 +149,11 @@ use M_TRAITER_ERREUR_I		! Traitement de l'errreur
 !=========================================================================
 
  1000 format('# Resultats du calcul ',A30,' au temps', F18.3,' secondes')
- 1010 format('[variables]', /,										&
-			 '"Abscisse curviligne"   ; "X"     ; "m"  ; 1', /,		&
-			 '"Concentration en vase" ; "CVASE" ; "g/l"; 3', /,		&
-			 '"Concentration en sable";"CSABLE" ; "g/l"; 3', /,		&
-			 '[resultats]')
+ 1010 format('[variables]', /,                                      &
+             '"Abscisse curviligne"   ; "X"     ; "m"  ; 1', /,     &
+             '"Concentration en vase" ; "CVASE" ; "g/l"; 3', /,     &
+             '"Concentration en sable";"CSABLE" ; "g/l"; 3', /,     &
+             '[resultats]')
  1020 format(F14.2,2(';',F10.4))
 
 

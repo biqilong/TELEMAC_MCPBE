@@ -278,6 +278,20 @@ use M_TRAITER_ERREUR_I    ! Traitement de l'erreur
   WRITE(*,*)
   WRITE(*,"(A,L)")" Suspension option : ", suspension_option
 
+  sediment_slide_option = MOTLOG(ADRESS(3,669))
+  WRITE(*,*)
+  WRITE(*,"(A,L)")" sediment slide option : ", sediment_slide_option
+
+  clipping_option = MOTLOG(ADRESS(3,670))
+  WRITE(*,*)
+  WRITE(*,"(A,L)")" planim clipping option : ", clipping_option
+
+  absolute_clip = MOTREA(ADRESS(2,671))
+  IF (clipping_option .EQV. .FALSE.) then
+    WRITE(*,*)
+    WRITE(*,"(A,E10.4)")" absolute clipping = ", absolute_clip
+  ENDIF
+
  !coefficient de diffusion
  !------------------------
  CnuxV    = MOTREA(ADRESS(2,618))

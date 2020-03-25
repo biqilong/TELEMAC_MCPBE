@@ -24,3 +24,8 @@ To add AED support:
 - aed2: 1.0-edf (Download from Telemac website http://www.opentelemac.org/index.php/binaries/summary/39-manual-installation-sources/)
 To add GOTM:
 - gotm: 2019-06-14-edf (Download from Telemac Website http://www.opentelemac.org/index.php/binaries/summary/39-manual-installation-sources/)
+For coupling and drivers for data assimilation:
+- mpi4py: >3.0.3 compliant with the selected mpi library
+- shapely: >1.7.0
+- jsonschema: only needed for advanced optional support of json input
+- cpu_cores: >0.1.3 only needed for automatic selection of parallel layout

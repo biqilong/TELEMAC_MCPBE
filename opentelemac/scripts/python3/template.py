@@ -4,6 +4,7 @@ r"""
     @brief Function to run a steering file using the api
 """
 # Class Telemac2d import
+from execution.telemac_cas import TelemacCas
 from telapy.api.t2d import Telemac2d
 from telapy.api.t3d import Telemac3d
 from telapy.api.art import Artemis
@@ -11,6 +12,7 @@ from telapy.api.wac import Tomawac
 from mpi4py import MPI
 from argparse import ArgumentParser
 import string
+from os import path, environ
 
 
 SCRIPT_TEMPLATE = """\
@@ -43,27 +45,68 @@ SHORT = {'telemac2d':'t2d',
          'sisyphe':'sis',
          'artemis':'art'}
 
+def get_fortran_file(steering_file, module):
+    """
+    Get the fortran file from a cas (looks into coupled steering files as well)
 
-def run(module, steering_file, fortran_file):
+    @param steering_file Name of the steering file
+    @param module Name of the module
+    """
+    dico = path.join(environ['HOMETEL'], 'sources', module, module+'.dico')
+    cas = TelemacCas(steering_file, dico)
+    fortran_file = cas.get('FORTRAN FILE', '')
+
+    if fortran_file == '':
+        # Only searching in coupled files for telemac2d and telemac3d
+        fortran_file = None
+        if module in ["telemac2d", "telemac3d"]:
+            cpl_with = cas.get('COUPLING WITH', '')
+            if cpl_with == '':
+                return None
+            cpl_mods = cpl_with.lower().split(';')
+            for cpl_mod in cpl_mods:
+                cpl_dico = path.join(environ['HOMETEL'],
+                                     'sources',
+                                     cpl_mod,
+                                     cpl_mod+'.dico')
+                cpl_steering_file = cas.get(cpl_mod.upper()+' STEERING FILE')
+                # Some coupled module do not have a dictionary (nestor, waqtel)
+                if path.exists(cpl_dico):
+                    cpl_cas = TelemacCas(cpl_steering_file, cpl_dico)
+                    fortran_file = cpl_cas.get('FORTRAN FILE', '')
+                    del cpl_cas
+                    if fortran_file != '':
+                        return fortran_file
+            return None
+
+
+    return fortran_file
+
+
+def run(module, steering_file, stdout, log):
     """
     Running a full study
 
-    @param module Name of the module
-    @param steering_file Name of the steering file
-    @param fortran_file Name of the fortran file
-    @param double_run If true running main computation twice
+    @param module (str) Name of the module
+    @param steering_file (str) Name of the steering file
+    @param stdout (int) Output for TelApy (6 normal listing -1 into file)
+    @param log (str) Logging level for TelApy (INFO, DEBUG)
     """
     # Creation of the instance Telemac2d
     comm = MPI.COMM_WORLD
-    fortran = None if fortran_file == '' else fortran_file
+    fortran = get_fortran_file(steering_file, module)
     if module == "telemac2d":
-        study = Telemac2d(steering_file, user_fortran=fortran, comm=comm)
+        study = Telemac2d(steering_file, user_fortran=fortran,
+                          comm=comm, stdout=stdout, log_lvl=log)
     elif module == "telemac3d":
-        study = Telemac3d(steering_file, user_fortran=fortran, comm=comm)
+        study = Telemac3d(steering_file, user_fortran=fortran,
+                          comm=comm, stdout=stdout, log_lvl=log)
     elif module == "artemis":
-        study = Artemis(steering_file, user_fortran=fortran, comm=comm)
+        study = Artemis(steering_file, user_fortran=fortran,
+                        comm=comm, stdout=stdout, log_lvl=log)
     elif module == "tomawac":
-        study = Tomawac(steering_file, user_fortran=fortran, comm=comm)
+        study = Tomawac(steering_file, user_fortran=fortran,
+                        comm=comm, stdout=stdout, log_lvl=log)
     # Running telemac
     study.set_case()
     study.init_state_default()
@@ -103,15 +146,21 @@ if __name__ == "__main__":
              "steering_file",
              help="name of the steering file")
     PARSER.add_argument(\
-             "-f", "--fortran-file",
-             dest="fortran_file",
-             default="",
-             help="name of the fortran file")
-    PARSER.add_argument(\
              "--double-run",
              dest="double_run",
              action="store_true",
              help="Running main computation twice")
+    PARSER.add_argument(\
+             "-v", "--verbose",
+             dest="verbose",
+             action="store_true",
+             help="Display Telemac listing")
+    PARSER.add_argument(\
+             "--log",
+             dest="log",
+             default='INFO',
+             choices=['INFO', 'DEBUG'],
+             help="TelApy log level")
     PARSER.add_argument(\
              "-o", "--output-script",
              dest="output_script",
@@ -121,13 +170,15 @@ if __name__ == "__main__":
     ARGS = PARSER.parse_args()
 
     if ARGS.output_script != '':
-        dump_script(ARGS.module, ARGS.steering_file, ARGS.fortran_file,
+        dump_script(ARGS.module, ARGS.steering_file,
+                    get_fortran_file(ARGS.steering_file, ARGS.module),
                     ARGS.output_script)
     else:
-        run(ARGS.module, ARGS.steering_file, ARGS.fortran_file)
+        STDOUT = 6 if ARGS.verbose else 0
+        run(ARGS.module, ARGS.steering_file, STDOUT, ARGS.log)
+        print("First run passed")
         if ARGS.double_run:
-            run(ARGS.module, ARGS.steering_file, ARGS.fortran_file)
-
-
+            run(ARGS.module, ARGS.steering_file, STDOUT, ARGS.log)
+            print("Second run passed")
 
     print("My work is done")

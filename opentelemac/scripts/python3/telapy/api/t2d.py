@@ -53,6 +53,7 @@ class Telemac2d(ApiModule):
                                                 "telemac2d.dico")
             else:
                 default_dicofile = 'telemac2d.dico'
+
             dicofile = default_dicofile
         super(Telemac2d, self).__init__("t2d", casfile, user_fortran,
                                         dicofile, lang, stdout,
@@ -64,13 +65,28 @@ class Telemac2d(ApiModule):
         self.u_vel = None
         self.v_vel = None
 
+        self.itrub = None
+        self.nbTrac = None
+        self.aksave = None
+        self.epsave = None
+        self.tracsave=None
+
     def save_state(self):
         """
         Save the hydraulic state
         """
+        self.itrub = self.get('MODEL.ITURB')
+        self.nbTrac = self.get('MODEL.NTRAC')
         self.hsave = self.get_array('MODEL.WATERDEPTH')
         self.usave = self.get_array('MODEL.VELOCITYU')
         self.vsave = self.get_array('MODEL.VELOCITYV')
+        if self.itrub == 3:
+            self.aksave = self.get_array('MODEL.AK')
+            self.epsave = self.get_array('MODEL.EP')
+
+        if self.nbTrac>0:
+            for k in range(self.nbTrac):
+                self.tracsave[k] = self.get_array('MODEL.TRACER')
 
     def restore_state(self):
         """
@@ -82,6 +98,12 @@ class Telemac2d(ApiModule):
         self.set_array('MODEL.WATERDEPTH', self.hsave)
         self.set_array('MODEL.VELOCITYU', self.usave)
         self.set_array('MODEL.VELOCITYV', self.vsave)
+        if self.itrub == 3:
+            self.set_array('MODEL.AK', self.aksave)
+            self.set_array('MODEL.EP', self.epsave)
+        if self.nbTrac > 0:
+            for k in range(self.nbTrac):
+                self.set_array('MODEL.TRACER', self.tracsave[k])
 
     def get_state(self):
         """
@@ -156,6 +178,22 @@ class Telemac2d(ApiModule):
                              value, i=i)
 
         return
+
+    def write_one_time_step(self):
+        """
+        Write only output
+        """
+        self._error = self.run_timestep_res(self.my_id)
+
+    def compute_one_time_step(self):
+        """
+        Run one time step, no write output
+        """
+        if self._initstate != 2:
+            raise TelemacException('Error: the initial conditions are not set\n\
+                       Use init_state_default first')
+        else:
+            self._error = self.run_timestep_compute(self.my_id)
 
     def __del__(self):
         """

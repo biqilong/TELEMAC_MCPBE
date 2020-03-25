@@ -3,7 +3,8 @@
 !                    ***************************
 !
      &(MOTCAR,FILE_DESC,PATH,NCAR,
-     & CAS_FILE,DICO_FILE)
+     & CAS_FILE,DICO_FILE,
+     & GAIA_CAS_FILE,GAIA_DICO_FILE)
 !
 !***********************************************************************
 ! TELEMAC3D   V7P2
@@ -162,8 +163,11 @@
       CHARACTER(LEN=PATH_LEN), INTENT(INOUT) :: FILE_DESC(4,MAXKEYWORD)
       CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: PATH
       INTEGER, INTENT(IN)               :: NCAR
-      CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: DICO_FILE
+      !API
       CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE
+      CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: DICO_FILE
+      CHARACTER(LEN=PATH_LEN), OPTIONAL, INTENT(IN)    :: GAIA_CAS_FILE
+      CHARACTER(LEN=PATH_LEN), OPTIONAL, INTENT(IN)    :: GAIA_DICO_FILE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -187,7 +191,7 @@
       DOUBLE PRECISION   MOTREA(MAXKEYWORD)
       LOGICAL            MOTLOG(MAXKEYWORD)
       CHARACTER(LEN=72)  MOTCLE(4,MAXKEYWORD,2)
-      CHARACTER(LEN=PATH_LEN) DUMMY
+      CHARACTER(LEN=PATH_LEN) DUMMY, DUMMY2
       LOGICAL DOC
       INTEGER :: ID_DICO, ID_CAS
 !
@@ -550,11 +554,16 @@
       IND_SED = 0
       IF( INCLUS(COUPLING,'GAIA') ) THEN
         DUMMY = ' '
+        DUMMY2 = ' '
+        IF(PRESENT(GAIA_CAS_FILE)) THEN
+          DUMMY = GAIA_CAS_FILE
+          DUMMY2 = GAIA_DICO_FILE
+        ENDIF
         ! This will increase ntrac by adding the tracer from gaia
         ! It will also set ind_sed (which points to the first gaia
         ! tracer)
         CALL LECDON_TELEMAC3D_GAIA(MOTCAR_GAIA,FILE_DESC_GAIA,PATH,
-     &                             NCAR,DUMMY,DUMMY)
+     &                             NCAR,DUMMY,DUMMY2)
       ENDIF
 !
 !     LOCATING TRACERS OF IMPORTANCE TO TELEMAC-3D

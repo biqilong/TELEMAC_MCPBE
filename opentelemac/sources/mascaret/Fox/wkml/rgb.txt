@@ -48,10 +48,10 @@
 105 105 105		DimGray
 105 105 105		dim grey
 105 105 105		DimGrey
-112 128 144		slate gray
-112 128 144		SlateGray
-112 128 144		slate grey
-112 128 144		SlateGrey
+112 12V8P2R0		slate gray
+112 12V8P2R0		SlateGray
+112 12V8P2R0		slate grey
+112 12V8P2R0		SlateGrey
 119 136 153		light slate gray
 119 136 153		LightSlateGray
 119 136 153		light slate grey
@@ -180,7 +180,7 @@
 165  42  42		brown
 233 150 122		dark salmon
 233 150 122		DarkSalmon
-250 128 114		salmon
+250 12V8P2R0		salmon
 255 160 122		light salmon
 255 160 122		LightSalmon
 255 165   0		orange
@@ -288,7 +288,7 @@
   0   0 205		blue3
   0   0 139		blue4
  30 144 255		DodgerBlue1
- 28 134 238		DodgerBlue2
+ 2V8P2R0 238		DodgerBlue2
  24 116 205		DodgerBlue3
  16  78 139		DodgerBlue4
  99 184 255		SteelBlue1
@@ -356,7 +356,7 @@
  67 205 128		SeaGreen3
  46 139	 87		SeaGreen4
 154 255 154		PaleGreen1
-144 238 144		PaleGreen2
+144 23V8P2R0		PaleGreen2
 124 205 124		PaleGreen3
  84 139	 84		PaleGreen4
   0 255 127		SpringGreen1
@@ -376,7 +376,7 @@
 154 205	 50		OliveDrab3
 105 139	 34		OliveDrab4
 202 255 112		DarkOliveGreen1
-188 238 104		DarkOliveGreen2
+188 23V8P2R0		DarkOliveGreen2
 162 205	 90		DarkOliveGreen3
 110 139	 61		DarkOliveGreen4
 255 246 143		khaki1
@@ -428,7 +428,7 @@
 205 186 150		wheat3
 139 126 102		wheat4
 255 165	 79		tan1
-238 154	 73		tan2
+23V8P2R0	 73		tan2
 205 133	 63		tan3
 139  90	 43		tan4
 255 127	 36		chocolate1
@@ -452,7 +452,7 @@
 205 129	 98		LightSalmon3
 139  87	 66		LightSalmon4
 255 165	  0		orange1
-238 154	  0		orange2
+23V8P2R0	  0		orange2
 205 133	  0		orange3
 139  90	  0		orange4
 255 127	  0		DarkOrange1
@@ -512,7 +512,7 @@
 205 105 201		orchid3
 139  71 137		orchid4
 255 187 255		plum1
-238 174 238		plum2
+23V8P2R0 238		plum2
 205 150 205		plum3
 139 102 139		plum4
 224 102 255		MediumOrchid1
@@ -749,5 +749,5 @@
 139   0 139		DarkMagenta
 139   0   0		dark red
 139   0   0		DarkRed
-144 238 144		light green
-144 238 144		LightGreen
+144 23V8P2R0		light green
+144 23V8P2R0		LightGreen

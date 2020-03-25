@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_PRETRAIT_INTERFACE_I
 !***********************************************************************
 ! PROGICIEL : MASCARET        J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
 interface
@@ -41,6 +41,7 @@ subroutine  PRETRAIT_INTERFACE                             ( &
   PerteElargissementTrans, Boussinesq, NoConvection ,CQMV  , &
   ProfAbs, HEPS                                            , &
   DT, TempsInitial, CritereArret, NbPasTemps, TempsMaximum , &
+  Section_controle,Cote_max_controle                       , &
   PasTempsVariable, CourantObj                             , &
   FichierGeom, FormatGeom, Profil, PresenceZoneStockage    , &
   X, IDT, XDT                                              , &
@@ -182,6 +183,8 @@ use Fox_dom                 ! parser XML Fortran
   integer     , intent(  out) :: CritereArret
   integer     , intent(  out) :: NbPasTemps
   real(DOUBLE), intent(  out) :: TempsMaximum
+  integer     , intent(  out) :: Section_controle
+  real(DOUBLE), intent(  out) :: Cote_max_controle 
   logical     , intent(  out) :: PasTempsVariable
   real(DOUBLE), intent(  out) :: CourantObj
 

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_SAUVE_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -134,58 +134,58 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'State.Save.H2OIB') then
+      if ( index(NomVar, 'State.Save.H2OTBS') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar =='State.Save.H2OTB') then
+      else if ( index(NomVar, 'State.Save.H2OIBS') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OEB') then
+      else if ( index(NomVar, 'State.Save.H2OIB') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OSB') then
+      else if ( index(NomVar, 'State.Save.H2OTB') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OIC') then
+      else if ( index(NomVar, 'State.Save.H2OEB') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OTC') then
+      else if ( index(NomVar, 'State.Save.H2OSB') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OEC') then
+      else if ( index(NomVar, 'State.Save.H2OIC') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OSC') then
+      else if ( index(NomVar, 'State.Save.H2OTC') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OTBS') then
+      else if ( index(NomVar, 'State.Save.H2OEC') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OIBS') then
+      else if ( index(NomVar, 'State.Save.H2OSC') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.SPREC') then
+      else if ( index(NomVar, 'State.Save.SPREC') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.QPREC') then
+      else if ( index(NomVar, 'State.Save.QPREC') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Save.H2OIG') then
+      else if ( index(NomVar, 'State.Save.H2OIGS') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Save.H2OTG') then
+      else if ( index(NomVar, 'State.Save.H2OIG') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Save.H2OTGS') then
+      else if ( index(NomVar, 'State.Save.H2OTGS') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Save.H2OIGS') then
+      else if ( index(NomVar, 'State.Save.H2OTG') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Save.H2OEG') then
+      else if ( index(NomVar, 'State.Save.H2OEG') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Save.H2OSG') then
+      else if ( index(NomVar, 'State.Save.H2OSG') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
       else
@@ -219,72 +219,8 @@ contains
       taille2                = 0
       taille3                = 0
       MessageErreur          = ""
-
-      if ( NomVar == 'State.Save.H2OIB') then
-         if (ASSOCIATED(Instance%H2OIB)) then
-            taille1 = size(Instance%H2OIB)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OTB') then
-         if (ASSOCIATED(Instance%H2OTB)) then
-            taille1 = size(Instance%H2OTB)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OEB') then
-         if (ASSOCIATED(Instance%H2OEB)) then
-            taille1 = size(Instance%H2OEB)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OSB') then
-         if (ASSOCIATED(Instance%H2OSB)) then
-            taille1 = size(Instance%H2OSB)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OIC') then
-         if (ASSOCIATED(Instance%H2OIC)) then
-            taille1 = size(Instance%H2OIC)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OTC') then
-         if (ASSOCIATED(Instance%H2OTC)) then
-            taille1 = size(Instance%H2OTC)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OEC') then
-         if (ASSOCIATED(Instance%H2OEC)) then
-            taille1 = size(Instance%H2OEC)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OSC') then
-         if (ASSOCIATED(Instance%H2OSC)) then
-            taille1 = size(Instance%H2OSC)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.Save.H2OTBS') then
+      
+      if ( index(NomVar, 'State.Save.H2OTBS') > 0) then
          if (ASSOCIATED(Instance%H2OTBS)) then
             taille1 = size(Instance%H2OTBS)
          else
@@ -292,7 +228,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.H2OIBS') then
+      else if ( index(NomVar, 'State.Save.H2OIBS') > 0) then
          if (ASSOCIATED(Instance%H2OIBS)) then
             taille1 = size(Instance%H2OIBS)
          else
@@ -300,7 +236,71 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.SPREC') then
+      else if ( index(NomVar, 'State.Save.H2OIB') > 0) then
+         if (ASSOCIATED(Instance%H2OIB)) then
+            taille1 = size(Instance%H2OIB)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.H2OTB') > 0) then
+         if (ASSOCIATED(Instance%H2OTB)) then
+            taille1 = size(Instance%H2OTB)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.H2OEB') > 0) then
+         if (ASSOCIATED(Instance%H2OEB)) then
+            taille1 = size(Instance%H2OEB)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.H2OSB') > 0) then
+         if (ASSOCIATED(Instance%H2OSB)) then
+            taille1 = size(Instance%H2OSB)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.H2OIC') > 0) then
+         if (ASSOCIATED(Instance%H2OIC)) then
+            taille1 = size(Instance%H2OIC)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.H2OTC') > 0) then
+         if (ASSOCIATED(Instance%H2OTC)) then
+            taille1 = size(Instance%H2OTC)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.H2OEC') > 0) then
+         if (ASSOCIATED(Instance%H2OEC)) then
+            taille1 = size(Instance%H2OEC)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.H2OSC') > 0) then
+         if (ASSOCIATED(Instance%H2OSC)) then
+            taille1 = size(Instance%H2OSC)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'State.Save.SPREC') > 0) then
          if (ASSOCIATED(Instance%SPREC)) then
             taille1 = size(Instance%SPREC)
          else
@@ -308,7 +308,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.QPREC') then
+      else if ( index(NomVar, 'State.Save.QPREC') > 0) then
          if (ASSOCIATED(Instance%QPREC)) then
             taille1 = size(Instance%QPREC)
          else
@@ -316,27 +316,27 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.H2OIG') then
+      else if ( index(NomVar, 'State.Save.H2OIGS') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.H2OIGS') then
+      else if ( index(NomVar, 'State.Save.H2OIG') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.H2OTG') then
+      else if ( index(NomVar, 'State.Save.H2OTGS') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.H2OTGS') then
+      else if ( index(NomVar, 'State.Save.H2OTG') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.H2OEG') then
+      else if ( index(NomVar, 'State.Save.H2OEG') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Save.H2OSG') then
+      else if ( index(NomVar, 'State.Save.H2OSG') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -376,167 +376,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'State.Save.H2OIB') then
-        if (ASSOCIATED(Instance%H2OIB)) then
-           t1 = size(Instance%H2OIB)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OIB, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OIB'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OIB) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OIB(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OIB'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OTB') then
-        if (ASSOCIATED(Instance%H2OTB)) then
-           t1 = size(Instance%H2OTB)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OTB, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OTB'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OTB) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OTB(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OTB'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OEB') then
-        if (ASSOCIATED(Instance%H2OEB)) then
-           t1 = size(Instance%H2OEB)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OEB, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OEB'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OEB) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OEB(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OEB'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OSB') then
-        if (ASSOCIATED(Instance%H2OSB)) then
-           t1 = size(Instance%H2OSB)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OSB, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OSB'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OSB) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OSB(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OSB'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OIC') then
-        if (ASSOCIATED(Instance%H2OIC)) then
-           t1 = size(Instance%H2OIC)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OIC, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OIC'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OIC) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OIC(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OIC'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OTC') then
-        if (ASSOCIATED(Instance%H2OTC)) then
-           t1 = size(Instance%H2OTC)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OTC, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OTC'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OTC) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OTC(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OTC'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OEC') then
-        if (ASSOCIATED(Instance%H2OEC)) then
-           t1 = size(Instance%H2OEC)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OEC, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OEC'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OEC) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OEC(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OEC'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OSC') then
-        if (ASSOCIATED(Instance%H2OSC)) then
-           t1 = size(Instance%H2OSC)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%H2OSC, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SAUVE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OSC'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%H2OSC) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%H2OSC(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SAUVE = err
-              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OSC'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.Save.H2OTBS') then
+      if ( index(NomVar, 'State.Save.H2OTBS') > 0) then
         if (ASSOCIATED(Instance%H2OTBS)) then
            t1 = size(Instance%H2OTBS)
            if (t1 /= NewT1) then
@@ -556,7 +396,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Save.H2OIBS') then
+      else if ( index(NomVar, 'State.Save.H2OIBS') > 0) then
         if (ASSOCIATED(Instance%H2OIBS)) then
            t1 = size(Instance%H2OIBS)
            if (t1 /= NewT1) then
@@ -576,7 +416,167 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Save.SPREC') then
+      else if ( index(NomVar, 'State.Save.H2OIB') > 0) then
+        if (ASSOCIATED(Instance%H2OIB)) then
+           t1 = size(Instance%H2OIB)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OIB, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OIB'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OIB) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OIB(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OIB'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.H2OTB') > 0) then
+        if (ASSOCIATED(Instance%H2OTB)) then
+           t1 = size(Instance%H2OTB)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OTB, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OTB'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OTB) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OTB(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OTB'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.H2OEB') > 0) then
+        if (ASSOCIATED(Instance%H2OEB)) then
+           t1 = size(Instance%H2OEB)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OEB, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OEB'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OEB) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OEB(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OEB'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.H2OSB') > 0) then
+        if (ASSOCIATED(Instance%H2OSB)) then
+           t1 = size(Instance%H2OSB)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OSB, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OSB'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OSB) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OSB(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OSB'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.H2OIC') > 0) then
+        if (ASSOCIATED(Instance%H2OIC)) then
+           t1 = size(Instance%H2OIC)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OIC, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OIC'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OIC) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OIC(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OIC'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.H2OTC') > 0) then
+        if (ASSOCIATED(Instance%H2OTC)) then
+           t1 = size(Instance%H2OTC)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OTC, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OTC'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OTC) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OTC(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OTC'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.H2OEC') > 0) then
+        if (ASSOCIATED(Instance%H2OEC)) then
+           t1 = size(Instance%H2OEC)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OEC, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OEC'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OEC) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OEC(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OEC'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.H2OSC') > 0) then
+        if (ASSOCIATED(Instance%H2OSC)) then
+           t1 = size(Instance%H2OSC)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%H2OSC, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SAUVE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to deallocate SAUVE_T.H2OSC'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%H2OSC) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%H2OSC(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SAUVE = err
+              MessageErreur = 'SET_TAILLE_VAR_SAUVE : Unable to allocate SAUVE_T.H2OSC'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'State.Save.SPREC') > 0) then
         if (ASSOCIATED(Instance%SPREC)) then
            t1 = size(Instance%SPREC)
            if (t1 /= NewT1) then
@@ -596,7 +596,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Save.QPREC') then
+      else if ( index(NomVar, 'State.Save.QPREC') > 0) then
         if (ASSOCIATED(Instance%QPREC)) then
            t1 = size(Instance%QPREC)
            if (t1 /= NewT1) then
@@ -646,41 +646,41 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Save.H2OIB') then
-         valeur = Instance%H2OIB(index1)
-      else if ( NomVar == 'State.Save.H2OTB') then
-         valeur = Instance%H2OTB(index1)
-      else if ( NomVar == 'State.Save.H2OEB') then
-         valeur = Instance%H2OEB(index1)
-      else if ( NomVar == 'State.Save.H2OSB') then
-         valeur = Instance%H2OSB(index1)
-      else if ( NomVar == 'State.Save.H2OIC') then
-         valeur = Instance%H2OIC(index1)
-      else if ( NomVar == 'State.Save.H2OTC') then
-         valeur = Instance%H2OTC(index1)
-      else if ( NomVar == 'State.Save.H2OEC') then
-         valeur = Instance%H2OEC(index1)
-      else if ( NomVar == 'State.Save.H2OSC') then
-         valeur = Instance%H2OSC(index1)
-      else if ( NomVar == 'State.Save.H2OTBS') then
+      if ( index(NomVar, 'State.Save.H2OTBS') > 0) then
          valeur = Instance%H2OTBS(index1)
-      else if ( NomVar == 'State.Save.H2OIBS') then
+      else if ( index(NomVar, 'State.Save.H2OIBS') > 0) then
          valeur = Instance%H2OIBS(index1)
-      else if ( NomVar == 'State.Save.SPREC') then
+      else if ( index(NomVar, 'State.Save.H2OIB') > 0) then
+         valeur = Instance%H2OIB(index1)
+      else if ( index(NomVar, 'State.Save.H2OTB') > 0) then
+         valeur = Instance%H2OTB(index1)
+      else if ( index(NomVar, 'State.Save.H2OEB') > 0) then
+         valeur = Instance%H2OEB(index1)
+      else if ( index(NomVar, 'State.Save.H2OSB') > 0) then
+         valeur = Instance%H2OSB(index1)
+      else if ( index(NomVar, 'State.Save.H2OIC') > 0) then
+         valeur = Instance%H2OIC(index1)
+      else if ( index(NomVar, 'State.Save.H2OTC') > 0) then
+         valeur = Instance%H2OTC(index1)
+      else if ( index(NomVar, 'State.Save.H2OEC') > 0) then
+         valeur = Instance%H2OEC(index1)
+      else if ( index(NomVar, 'State.Save.H2OSC') > 0) then
+         valeur = Instance%H2OSC(index1)
+      else if ( index(NomVar, 'State.Save.SPREC') > 0) then
          valeur = Instance%SPREC(index1)
-      else if ( NomVar == 'State.Save.QPREC') then
+      else if ( index(NomVar, 'State.Save.QPREC') > 0) then
          valeur = Instance%QPREC(index1)
-      else if ( NomVar == 'State.Save.H2OIG') then
-         valeur = Instance%H2OIG
-      else if ( NomVar == 'State.Save.H2OIGS') then
+      else if ( index(NomVar, 'State.Save.H2OIGS') > 0) then
          valeur = Instance%H2OIGS
-      else if ( NomVar == 'State.Save.H2OTG') then
-         valeur = Instance%H2OTG
-      else if ( NomVar == 'State.Save.H2OTGS') then
+      else if ( index(NomVar, 'State.Save.H2OIG') > 0) then
+         valeur = Instance%H2OIG
+      else if ( index(NomVar, 'State.Save.H2OTGS') > 0) then
          valeur = Instance%H2OTGS
-      else if ( NomVar == 'State.Save.H2OEG') then
+      else if ( index(NomVar, 'State.Save.H2OTG') > 0) then
+         valeur = Instance%H2OTG
+      else if ( index(NomVar, 'State.Save.H2OEG') > 0) then
          valeur = Instance%H2OEG
-      else if ( NomVar == 'State.Save.H2OSG') then
+      else if ( index(NomVar, 'State.Save.H2OSG') > 0) then
          valeur = Instance%H2OSG
       else
          GET_DOUBLE_SAUVE = 1
@@ -710,41 +710,41 @@ contains
       SET_DOUBLE_SAUVE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Save.H2OIB') then
-         Instance%H2OIB(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OTB') then
-         Instance%H2OTB(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OEB') then
-         Instance%H2OEB(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OSB') then
-         Instance%H2OSB(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OIC') then
-         Instance%H2OIC(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OTC') then
-         Instance%H2OTC(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OEC') then
-         Instance%H2OEC(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OSC') then
-         Instance%H2OSC(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OTBS') then
+      if ( index(NomVar, 'State.Save.H2OTBS') > 0) then
          Instance%H2OTBS(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OIBS') then
+      else if ( index(NomVar, 'State.Save.H2OIBS') > 0) then
          Instance%H2OIBS(index1) = valeur
-      else if ( NomVar == 'State.Save.SPREC') then
+      else if ( index(NomVar, 'State.Save.H2OIB') > 0) then
+         Instance%H2OIB(index1) = valeur
+      else if ( index(NomVar, 'State.Save.H2OTB') > 0) then
+         Instance%H2OTB(index1) = valeur
+      else if ( index(NomVar, 'State.Save.H2OEB') > 0) then
+         Instance%H2OEB(index1) = valeur
+      else if ( index(NomVar, 'State.Save.H2OSB') > 0) then
+         Instance%H2OSB(index1) = valeur
+      else if ( index(NomVar, 'State.Save.H2OIC') > 0) then
+         Instance%H2OIC(index1) = valeur
+      else if ( index(NomVar, 'State.Save.H2OTC') > 0) then
+         Instance%H2OTC(index1) = valeur
+      else if ( index(NomVar, 'State.Save.H2OEC') > 0) then
+         Instance%H2OEC(index1) = valeur
+      else if ( index(NomVar, 'State.Save.H2OSC') > 0) then
+         Instance%H2OSC(index1) = valeur
+      else if ( index(NomVar, 'State.Save.SPREC') > 0) then
          Instance%SPREC(index1) = valeur
-      else if ( NomVar == 'State.Save.QPREC') then
+      else if ( index(NomVar, 'State.Save.QPREC') > 0) then
          Instance%QPREC(index1) = valeur
-      else if ( NomVar == 'State.Save.H2OIG') then
-         Instance%H2OIG = valeur
-      else if ( NomVar == 'State.Save.H2OIGS') then
+      else if ( index(NomVar, 'State.Save.H2OIGS') > 0) then
          Instance%H2OIGS = valeur
-      else if ( NomVar == 'State.Save.H2OTG') then
-         Instance%H2OTG = valeur
-      else if ( NomVar == 'State.Save.H2OTGS') then
+      else if ( index(NomVar, 'State.Save.H2OIG') > 0) then
+         Instance%H2OIG = valeur
+      else if ( index(NomVar, 'State.Save.H2OTGS') > 0) then
          Instance%H2OTGS = valeur
-      else if ( NomVar == 'State.Save.H2OEG') then
+      else if ( index(NomVar, 'State.Save.H2OTG') > 0) then
+         Instance%H2OTG = valeur
+      else if ( index(NomVar, 'State.Save.H2OEG') > 0) then
          Instance%H2OEG = valeur
-      else if ( NomVar == 'State.Save.H2OSG') then
+      else if ( index(NomVar, 'State.Save.H2OSG') > 0) then
          Instance%H2OSG = valeur
       else
          SET_DOUBLE_SAUVE = 1

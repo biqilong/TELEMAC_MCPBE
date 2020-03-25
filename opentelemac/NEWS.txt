@@ -1,6 +1,19 @@
 Trunk
 ===========================
 
+KHIONE: fix a wrong call of VECTOR in border_icover
+
+WAQTEL: fix an unexpected division by 0 in calcs2d_micropol (OVD)
+
+MASCARET: Make editable the laws of singularity and add variables in api: 
+ControlSection and MaxcontrolZ
+
+TELAPY: Add python files and examples for mascaret/telemac-2d coupling
+        Add python files and examples for mscaret/telemac-2d drivers for
+	  data assimilation and UQ
+
+TELEMAC3D: COUPLING WITH changing default from 'NOTHING' to ''
+
 TELEMAC 3D: Fix missing PARCOM (volumetric explicit source terms) if LIPS advection
 scheme is used.
 

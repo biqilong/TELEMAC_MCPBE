@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_ETAT_MASCARET_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
 !=========================== Declarations ==============================
@@ -63,10 +63,10 @@ Type ETAT_MASCARET_T
     real(DOUBLE), dimension(:), pointer        :: Y        => null() ! Hauteur d'eau
     real(DOUBLE), dimension(:), pointer        :: VOL      => null() ! Volume du lit actif
     real(DOUBLE), dimension(:), pointer        :: VOLS     => null() ! Volume de stockage
-    real(DOUBLE)                               :: tempsPrecedent !
-    integer                                    :: numPasTps ! num_pas : numero de pas de temps
+    real(DOUBLE)                               :: tempsPrecedent = 0.
+    integer                                    :: numPasTps = 0 ! num_pas : numero de pas de temps
     integer                                    :: phaseSimulation !
-    real(DOUBLE)                               :: DT ! pas te temps
+    real(DOUBLE)                               :: DT = 0. ! pas te temps
     real(DOUBLE), dimension(:), pointer        :: Q        => null()
     real(DOUBLE), dimension(:), pointer        :: Z        => null()
     type(ETAT_LIAISON_T),     dimension(:), pointer :: Liaisons => null()
@@ -77,9 +77,9 @@ Type ETAT_MASCARET_T
     integer     , dimension(:), pointer        :: IFIGE     => null() ! indice de planimetrage Fige
     real(DOUBLE), dimension(:,:), pointer      :: FLUX      => null() ! Flux pour le solveur de Roe
     real(DOUBLE), dimension(:)  , pointer      :: DebitFlux => null() ! Flux de masse
-    real(DOUBLE)                               :: DTRezo      ! Pas de temps REZO
+    real(DOUBLE)                               :: DTRezo = 0.     ! Pas de temps REZO
     type(REZOMAT_T)                            :: MatriceRezo ! Matrice du reseau
-    integer                                    :: NBARAD    ! NBARAD
+    integer                                    :: NBARAD   = 0  ! NBARAD
     integer     , dimension(:), pointer        :: IDEB  => null() ! LIMITE DE DEBUT DE LA ZONE DE CALCUL PAR BIEF
     integer     , dimension(:), pointer        :: IFIN  => null() ! LIMITE DE FIN DE LA ZONE DE CALCUL PAR BIEF
     integer     , dimension(:), pointer        :: ITEM0 => null() ! ITEM0
@@ -279,109 +279,115 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'State.DPDZ2') then
+      if ( index(NomVar,'State.DPDZ2') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.DPDZ1') then
+      else if ( index(NomVar,'State.DPDZ1') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Qspilled') then
+      else if ( index(NomVar,'State.Qspilled') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Qinflow') then
+      else if ( index(NomVar,'State.Qinflow') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Airs') then
+      else if ( index(NomVar,'State.Airs') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
-      else if ( NomVar == 'State.W') then
+      else if ( index(NomVar,'State.W') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 3
-      else if ( NomVar == 'State.YNode') then
+      else if ( index(NomVar,'State.YNode') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.CNode') then
+      else if ( index(NomVar,'State.CNode') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.UNode') then
+      else if ( index(NomVar,'State.UNode') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.XFron') then
+      else if ( index(NomVar,'State.XFron') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.RH2') then
+      else if ( index(NomVar,'State.RH2') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.RH1') then
+      else if ( index(NomVar,'State.RH1') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.BS') then
+      else if ( index(NomVar,'State.BS') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.B2') then
+      else if ( index(NomVar,'State.B2') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.B1') then
+      else if ( index(NomVar,'State.B1') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.P2') then
+      else if ( index(NomVar,'State.P2') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.P1') then
+      else if ( index(NomVar,'State.P1') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Froude') then
+      else if ( index(NomVar,'State.Froude') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Beta') then
+      else if ( index(NomVar,'State.Beta') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.S2') then
+      else if ( index(NomVar,'State.S2') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.S1') then
+      else if ( index(NomVar,'State.S1') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.SS') then
+      else if ( index(NomVar,'State.SS') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Q2') then
+      else if ( index(NomVar,'State.Q2') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Q1') then
+      else if ( index(NomVar,'State.Q1') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.V1') then
+      else if ( index(NomVar,'State.V1') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.V2') then
+      else if ( index(NomVar,'State.V2') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Y') then
+      else if ( index(NomVar,'State.Y') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-       else if ( NomVar == 'State.VOL') then
+      else if ( index(NomVar,'State.VOLS') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-       else if ( NomVar == 'State.VOLS') then
+      else if ( index(NomVar,'State.VOL') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.PreviousTime') then
+      else if ( index(NomVar,'State.PreviousTime') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.TimeStepNum') then
+      else if ( index(NomVar,'State.TimeStepNum') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'State.SimulPhase') then
+      else if ( index(NomVar,'State.SimulPhase') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'State.DT') then
+      else if ( index(NomVar,'State.DTRezo') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.Q') then
+      else if ( index(NomVar,'State.DT') > 0) then
+         TypeVar = 'DOUBLE'
+         dimVar                = 0
+      else if ( index(NomVar,'State.Q') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Z') then
+      else if ( index(NomVar,'State.ZINIT') > 0) then
+         TypeVar = 'TABDOUBLE'
+         dimVar                = 1
+      else if ( index(NomVar,'State.Z') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
       else if ( INDEX(NomVar,'State.Link.') > 0) then
@@ -392,44 +398,38 @@ contains
           dimVar = dimVar + 1
       else if ( INDEX(NomVar,'State.Tracer.') > 0) then
           GET_TYPE_VAR_ETAT_MASCARET = GET_TYPE_VAR_ETAT_TRACER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
-      else if ( NomVar == 'State.JGNODE') then
+      else if ( index(NomVar,'State.JGNODE') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
-      else if ( NomVar == 'State.JDNODE') then
+      else if ( index(NomVar,'State.JDNODE') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
-      else if ( NomVar == 'State.IFIGE') then
+      else if ( index(NomVar,'State.IFIGE') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
-      else if ( NomVar == 'State.FLUX') then
+      else if ( index(NomVar,'State.FLUX') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
-      else if ( NomVar == 'State.Flow') then
+      else if ( index(NomVar,'State.Flow') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.DTRezo') then
-         TypeVar = 'DOUBLE'
-         dimVar                = 0
       else if ( INDEX(NomVar,'State.Rezomat.') > 0) then
           GET_TYPE_VAR_ETAT_MASCARET = GET_TYPE_VAR_REZOMAT(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
 
-      else if ( NomVar == 'State.NBARAD') then
+      else if ( index(NomVar,'State.NBARAD') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'State.IDEB') then
+      else if ( index(NomVar,'State.IDEB') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
-      else if ( NomVar == 'State.IFIN') then
+      else if ( index(NomVar,'State.IFIN') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
-      else if ( NomVar == 'State.ITEM0') then
+      else if ( index(NomVar,'State.ITEM0') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
       else if ( INDEX(NomVar,'State.Save.') > 0) then
           GET_TYPE_VAR_ETAT_MASCARET = GET_TYPE_VAR_SAUVE(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
-      else if ( NomVar == 'State.ZINIT') then
-         TypeVar = 'TABDOUBLE'
-         dimVar                = 1
 
       else
         GET_TYPE_VAR_ETAT_MASCARET = 1
@@ -465,7 +465,7 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.DPDZ2') then
+      if ( index(NomVar,'State.DPDZ2') > 0) then
          if (ASSOCIATED(Instance%DPDZ2)) then
             taille1 = size(Instance%DPDZ2)
          else
@@ -473,7 +473,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.DPDZ1') then
+      else if ( index(NomVar,'State.DPDZ1') > 0) then
          if (ASSOCIATED(Instance%DPDZ1)) then
             taille1 = size(Instance%DPDZ1)
          else
@@ -481,7 +481,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Qspilled') then
+      else if ( index(NomVar,'State.Qspilled') > 0) then
          if (ASSOCIATED(Instance%QDeverse)) then
             taille1 = size(Instance%QDeverse)
          else
@@ -489,7 +489,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Qinflow') then
+      else if ( index(NomVar,'State.Qinflow') > 0) then
          if (ASSOCIATED(Instance%Qinjec)) then
             taille1 = size(Instance%Qinjec)
          else
@@ -497,7 +497,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Airs') then
+      else if ( index(NomVar,'State.Airs') > 0) then
          if (ASSOCIATED(Instance%Airs)) then
             taille1 = size(Instance%Airs, 1)
             taille2 = size(Instance%Airs, 2)
@@ -506,7 +506,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'State.W') then
+      else if ( index(NomVar,'State.W') > 0) then
          if (ASSOCIATED(Instance%W)) then
             taille1 = size(Instance%W, 1)
             taille2 = size(Instance%W, 2)
@@ -516,7 +516,7 @@ contains
             taille2 = 0
             taille3 = 0
          endif
-      else if ( NomVar == 'State.YNode') then
+      else if ( index(NomVar,'State.YNode') > 0) then
          if (ASSOCIATED(Instance%YNode)) then
             taille1 = size(Instance%YNode)
          else
@@ -524,7 +524,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.CNode') then
+      else if ( index(NomVar,'State.CNode') > 0) then
          if (ASSOCIATED(Instance%CNode)) then
             taille1 = size(Instance%CNode)
          else
@@ -532,7 +532,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.UNode') then
+      else if ( index(NomVar,'State.UNode') > 0) then
          if (ASSOCIATED(Instance%UNode)) then
             taille1 = size(Instance%UNode)
          else
@@ -540,7 +540,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.XFron') then
+      else if ( index(NomVar,'State.XFron') > 0) then
          if (ASSOCIATED(Instance%XFron)) then
             taille1 = size(Instance%XFron)
          else
@@ -548,7 +548,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.RH2') then
+      else if ( index(NomVar,'State.RH2') > 0) then
          if (ASSOCIATED(Instance%RH2)) then
             taille1 = size(Instance%RH2)
          else
@@ -556,7 +556,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.RH1') then
+      else if ( index(NomVar,'State.RH1') > 0) then
          if (ASSOCIATED(Instance%RH1)) then
             taille1 = size(Instance%RH1)
          else
@@ -564,7 +564,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.BS') then
+      else if ( index(NomVar,'State.BS') > 0) then
          if (ASSOCIATED(Instance%BS)) then
             taille1 = size(Instance%BS)
          else
@@ -572,7 +572,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.B2') then
+      else if ( index(NomVar,'State.B2') > 0) then
          if (ASSOCIATED(Instance%B2)) then
             taille1 = size(Instance%B2)
          else
@@ -580,7 +580,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.B1') then
+      else if ( index(NomVar,'State.B1') > 0) then
          if (ASSOCIATED(Instance%B1)) then
             taille1 = size(Instance%B1)
          else
@@ -588,7 +588,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.P2') then
+      else if ( index(NomVar,'State.P2') > 0) then
          if (ASSOCIATED(Instance%P2)) then
             taille1 = size(Instance%P2)
          else
@@ -596,7 +596,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.P1') then
+      else if ( index(NomVar,'State.P1') > 0) then
          if (ASSOCIATED(Instance%P1)) then
             taille1 = size(Instance%P1)
          else
@@ -604,7 +604,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Froude') then
+      else if ( index(NomVar,'State.Froude') > 0) then
          if (ASSOCIATED(Instance%Froude)) then
             taille1 = size(Instance%Froude)
          else
@@ -612,7 +612,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Beta') then
+      else if ( index(NomVar,'State.Beta') > 0) then
          if (ASSOCIATED(Instance%Beta)) then
             taille1 = size(Instance%Beta)
          else
@@ -620,7 +620,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.S2') then
+      else if ( index(NomVar,'State.S2') > 0) then
          if (ASSOCIATED(Instance%S2)) then
             taille1 = size(Instance%S2)
          else
@@ -628,7 +628,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.S1') then
+      else if ( index(NomVar,'State.S1') > 0) then
          if (ASSOCIATED(Instance%S1)) then
             taille1 = size(Instance%S1)
          else
@@ -636,7 +636,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.SS') then
+      else if ( index(NomVar,'State.SS') > 0) then
          if (ASSOCIATED(Instance%SS)) then
             taille1 = size(Instance%SS)
          else
@@ -644,7 +644,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Q2') then
+      else if ( index(NomVar,'State.Q2') > 0) then
          if (ASSOCIATED(Instance%Q2)) then
             taille1 = size(Instance%Q2)
          else
@@ -652,7 +652,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Q1') then
+      else if ( index(NomVar,'State.Q1') > 0) then
          if (ASSOCIATED(Instance%Q1)) then
             taille1 = size(Instance%Q1)
          else
@@ -660,7 +660,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.V1') then
+      else if ( index(NomVar,'State.V1') > 0) then
          if (ASSOCIATED(Instance%V1)) then
             taille1 = size(Instance%V1)
          else
@@ -668,7 +668,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.V2') then
+      else if ( index(NomVar,'State.V2') > 0) then
          if (ASSOCIATED(Instance%V2)) then
             taille1 = size(Instance%V2)
          else
@@ -676,7 +676,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Y') then
+      else if ( index(NomVar,'State.Y') > 0) then
          if (ASSOCIATED(Instance%Y)) then
             taille1 = size(Instance%Y)
          else
@@ -684,15 +684,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.VOL') then
-         if (ASSOCIATED(Instance%VOL)) then
-            taille1 = size(Instance%VOL)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.VOLS') then
+      else if ( index(NomVar,'State.VOLS') > 0) then
          if (ASSOCIATED(Instance%VOLS)) then
             taille1 = size(Instance%VOLS)
          else
@@ -700,23 +692,35 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.PreviousTime') then
+      else if ( index(NomVar,'State.VOL') > 0) then
+         if (ASSOCIATED(Instance%VOL)) then
+            taille1 = size(Instance%VOL)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar,'State.PreviousTime') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.TimeStepNum') then
+      else if ( index(NomVar,'State.TimeStepNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.SimulPhase') then
+      else if ( index(NomVar,'State.SimulPhase') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.DT') then
+      else if ( index(NomVar,'State.DTRezo') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Q') then
+      else if ( index(NomVar,'State.DT') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar,'State.Q') > 0) then
          if (ASSOCIATED(Instance%Q)) then
             taille1 = size(Instance%Q)
          else
@@ -724,7 +728,15 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Z') then
+      else if ( index(NomVar,'State.ZINIT') > 0) then
+         if (ASSOCIATED(Instance%ZINIT)) then
+            taille1 = size(Instance%ZINIT)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar,'State.Z') > 0) then
          if (ASSOCIATED(Instance%Z)) then
             taille1 = size(Instance%Z)
          else
@@ -732,7 +744,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.JGNODE') then
+      else if ( index(NomVar,'State.JGNODE') > 0) then
          if (ASSOCIATED(Instance%JGNODE)) then
             taille1 = size(Instance%JGNODE)
          else
@@ -740,7 +752,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.JDNODE') then
+      else if ( index(NomVar,'State.JDNODE') > 0) then
          if (ASSOCIATED(Instance%JDNODE)) then
             taille1 = size(Instance%JDNODE)
          else
@@ -748,7 +760,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.IFIGE') then
+      else if ( index(NomVar,'State.IFIGE') > 0) then
          if (ASSOCIATED(Instance%IFIGE)) then
             taille1 = size(Instance%IFIGE)
          else
@@ -756,7 +768,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.FLUX') then
+      else if ( index(NomVar,'State.FLUX') > 0) then
          if (ASSOCIATED(Instance%FLUX)) then
             taille1 = size(Instance%FLUX, 1)
             taille2 = size(Instance%FLUX, 2)
@@ -765,7 +777,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'State.Flow') then
+      else if ( index(NomVar,'State.Flow') > 0) then
          if (ASSOCIATED(Instance%DebitFlux)) then
             taille1 = size(Instance%DebitFlux)
          else
@@ -773,15 +785,11 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.DTRezo') then
+      else if ( index(NomVar,'State.NBARAD') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.NBARAD') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.IDEB') then
+      else if ( index(NomVar,'State.IDEB') > 0) then
          if (ASSOCIATED(Instance%IDEB)) then
             taille1 = size(Instance%IDEB)
          else
@@ -789,7 +797,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.IFIN') then
+      else if ( index(NomVar,'State.IFIN') > 0) then
          if (ASSOCIATED(Instance%IFIN)) then
             taille1 = size(Instance%IFIN)
          else
@@ -797,17 +805,9 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.ITEM0') then
+      else if ( index(NomVar,'State.ITEM0') > 0) then
          if (ASSOCIATED(Instance%ITEM0)) then
             taille1 = size(Instance%ITEM0)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'State.ZINIT') then
-         if (ASSOCIATED(Instance%ZINIT)) then
-            taille1 = size(Instance%ZINIT)
          else
             taille1 = 0
          endif
@@ -885,7 +885,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'State.DPDZ2') then
+      if ( index(NomVar,'State.DPDZ2') > 0) then
         if (ASSOCIATED(Instance%DPDZ2)) then
            t1 = size(Instance%DPDZ2)
            if (t1 /= NewT1) then
@@ -905,7 +905,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.DPDZ1') then
+      else if ( index(NomVar,'State.DPDZ1') > 0) then
         if (ASSOCIATED(Instance%DPDZ1)) then
            t1 = size(Instance%DPDZ1)
            if (t1 /= NewT1) then
@@ -925,7 +925,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Qspilled') then
+      else if ( index(NomVar,'State.Qspilled') > 0) then
         if (ASSOCIATED(Instance%QDeverse)) then
            t1 = size(Instance%QDeverse)
            if (t1 /= NewT1) then
@@ -945,7 +945,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Qinflow') then
+      else if ( index(NomVar,'State.Qinflow') > 0) then
         if (ASSOCIATED(Instance%Qinjec)) then
            t1 = size(Instance%Qinjec)
            if (t1 /= NewT1) then
@@ -965,7 +965,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'State.Airs') then
+     else if ( index(NomVar,'State.Airs') > 0) then
         if (ASSOCIATED(Instance%Airs)) then
            t1 = size(Instance%Airs, 1)
            t2 = size(Instance%Airs, 2)
@@ -986,7 +986,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.W') then
+      else if ( index(NomVar,'State.W') > 0) then
         if (ASSOCIATED(Instance%W)) then
            t1 = size(Instance%W, 1)
            t2 = size(Instance%W, 2)
@@ -1008,7 +1008,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.YNode') then
+      else if ( index(NomVar,'State.YNode') > 0) then
         if (ASSOCIATED(Instance%YNode)) then
            t1 = size(Instance%YNode)
            if (t1 /= NewT1) then
@@ -1028,7 +1028,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.CNode') then
+      else if ( index(NomVar,'State.CNode') > 0) then
         if (ASSOCIATED(Instance%CNode)) then
            t1 = size(Instance%CNode)
            if (t1 /= NewT1) then
@@ -1048,7 +1048,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.UNode') then
+      else if ( index(NomVar,'State.UNode') > 0) then
         if (ASSOCIATED(Instance%UNode)) then
            t1 = size(Instance%UNode)
            if (t1 /= NewT1) then
@@ -1068,7 +1068,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.XFron') then
+      else if ( index(NomVar,'State.XFron') > 0) then
         if (ASSOCIATED(Instance%XFron)) then
            t1 = size(Instance%XFron)
            if (t1 /= NewT1) then
@@ -1088,7 +1088,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.RH2') then
+      else if ( index(NomVar,'State.RH2') > 0) then
         if (ASSOCIATED(Instance%RH2)) then
            t1 = size(Instance%RH2)
            if (t1 /= NewT1) then
@@ -1108,7 +1108,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.RH1') then
+      else if ( index(NomVar,'State.RH1') > 0) then
         if (ASSOCIATED(Instance%RH1)) then
            t1 = size(Instance%RH1)
            if (t1 /= NewT1) then
@@ -1128,7 +1128,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.BS') then
+      else if ( index(NomVar,'State.BS') > 0) then
         if (ASSOCIATED(Instance%BS)) then
            t1 = size(Instance%BS)
            if (t1 /= NewT1) then
@@ -1148,7 +1148,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.B2') then
+      else if ( index(NomVar,'State.B2') > 0) then
         if (ASSOCIATED(Instance%B2)) then
            t1 = size(Instance%B2)
            if (t1 /= NewT1) then
@@ -1168,7 +1168,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.B1') then
+      else if ( index(NomVar,'State.B1') > 0) then
         if (ASSOCIATED(Instance%B1)) then
            t1 = size(Instance%B1)
            if (t1 /= NewT1) then
@@ -1188,7 +1188,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.P2') then
+      else if ( index(NomVar,'State.P2') > 0) then
         if (ASSOCIATED(Instance%P2)) then
            t1 = size(Instance%P2)
            if (t1 /= NewT1) then
@@ -1208,7 +1208,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.P1') then
+      else if ( index(NomVar,'State.P1') > 0) then
         if (ASSOCIATED(Instance%P1)) then
            t1 = size(Instance%P1)
            if (t1 /= NewT1) then
@@ -1228,7 +1228,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Froude') then
+      else if ( index(NomVar,'State.Froude') > 0) then
         if (ASSOCIATED(Instance%Froude)) then
            t1 = size(Instance%Froude)
            if (t1 /= NewT1) then
@@ -1248,7 +1248,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Beta') then
+      else if ( index(NomVar,'State.Beta') > 0) then
         if (ASSOCIATED(Instance%Beta)) then
            t1 = size(Instance%Beta)
            if (t1 /= NewT1) then
@@ -1268,7 +1268,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.S2') then
+      else if ( index(NomVar,'State.S2') > 0) then
         if (ASSOCIATED(Instance%S2)) then
            t1 = size(Instance%S2)
            if (t1 /= NewT1) then
@@ -1288,7 +1288,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.S1') then
+      else if ( index(NomVar,'State.S1') > 0) then
         if (ASSOCIATED(Instance%S1)) then
            t1 = size(Instance%S1)
            if (t1 /= NewT1) then
@@ -1308,7 +1308,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.SS') then
+      else if ( index(NomVar,'State.SS') > 0) then
         if (ASSOCIATED(Instance%SS)) then
            t1 = size(Instance%SS)
            if (t1 /= NewT1) then
@@ -1328,7 +1328,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Q2') then
+      else if ( index(NomVar,'State.Q2') > 0) then
         if (ASSOCIATED(Instance%Q2)) then
            t1 = size(Instance%Q2)
            if (t1 /= NewT1) then
@@ -1348,7 +1348,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Q1') then
+      else if ( index(NomVar,'State.Q1') > 0) then
         if (ASSOCIATED(Instance%Q1)) then
            t1 = size(Instance%Q1)
            if (t1 /= NewT1) then
@@ -1368,7 +1368,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.V1') then
+      else if ( index(NomVar,'State.V1') > 0) then
         if (ASSOCIATED(Instance%V1)) then
            t1 = size(Instance%V1)
            if (t1 /= NewT1) then
@@ -1388,7 +1388,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.V2') then
+      else if ( index(NomVar,'State.V2') > 0) then
         if (ASSOCIATED(Instance%V2)) then
            t1 = size(Instance%V2)
            if (t1 /= NewT1) then
@@ -1408,7 +1408,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Y') then
+      else if ( index(NomVar,'State.Y') > 0) then
         if (ASSOCIATED(Instance%Y)) then
            t1 = size(Instance%Y)
            if (t1 /= NewT1) then
@@ -1428,27 +1428,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.VOL') then
-        if (ASSOCIATED(Instance%VOL)) then
-           t1 = size(Instance%VOL)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%VOL, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_ETAT_MASCARET = err
-                 MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to deallocate ETAT_MASCARET_T.VOL'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%VOL) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%VOL(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_ETAT_MASCARET = err
-              MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to allocate ETAT_MASCARET_T.VOL'
-              return
-           endif
-        endif
-      else if ( NomVar == 'State.VOLS') then
+      else if ( index(NomVar,'State.VOLS') > 0) then
         if (ASSOCIATED(Instance%VOLS)) then
            t1 = size(Instance%VOLS)
            if (t1 /= NewT1) then
@@ -1468,7 +1448,27 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Q') then
+      else if ( index(NomVar,'State.VOL') > 0) then
+        if (ASSOCIATED(Instance%VOL)) then
+           t1 = size(Instance%VOL)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%VOL, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_ETAT_MASCARET = err
+                 MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to deallocate ETAT_MASCARET_T.VOL'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%VOL) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%VOL(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_ETAT_MASCARET = err
+              MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to allocate ETAT_MASCARET_T.VOL'
+              return
+           endif
+        endif
+      else if ( index(NomVar,'State.Q') > 0) then
         if (ASSOCIATED(Instance%Q)) then
            t1 = size(Instance%Q)
            if (t1 /= NewT1) then
@@ -1488,7 +1488,27 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Z') then
+      else if ( index(NomVar,'State.ZINIT') > 0) then
+        if (ASSOCIATED(Instance%ZINIT)) then
+           t1 = size(Instance%ZINIT)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%ZINIT, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_ETAT_MASCARET = err
+                 MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to deallocate ETAT_MASCARET_T.ZINIT'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%ZINIT) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%ZINIT(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_ETAT_MASCARET = err
+              MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to allocate ETAT_MASCARET_T.ZINIT'
+              return
+           endif
+        endif
+      else if ( index(NomVar,'State.Z') > 0) then
         if (ASSOCIATED(Instance%Z)) then
            t1 = size(Instance%Z)
            if (t1 /= NewT1) then
@@ -1508,7 +1528,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.JGNODE') then
+      else if ( index(NomVar,'State.JGNODE') > 0) then
         if (ASSOCIATED(Instance%JGNODE)) then
            t1 = size(Instance%JGNODE)
            if (t1 /= NewT1) then
@@ -1528,7 +1548,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.JDNODE') then
+      else if ( index(NomVar,'State.JDNODE') > 0) then
         if (ASSOCIATED(Instance%JDNODE)) then
            t1 = size(Instance%JDNODE)
            if (t1 /= NewT1) then
@@ -1548,7 +1568,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.IFIGE') then
+      else if ( index(NomVar,'State.IFIGE') > 0) then
         if (ASSOCIATED(Instance%IFIGE)) then
            t1 = size(Instance%IFIGE)
            if (t1 /= NewT1) then
@@ -1568,7 +1588,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.FLUX') then
+      else if ( index(NomVar,'State.FLUX') > 0) then
         if (ASSOCIATED(Instance%FLUX)) then
            t1 = size(Instance%FLUX, 1)
            t2 = size(Instance%FLUX, 2)
@@ -1589,7 +1609,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.Flow') then
+      else if ( index(NomVar,'State.Flow') > 0) then
         if (ASSOCIATED(Instance%DebitFlux)) then
            t1 = size(Instance%DebitFlux)
            if (t1 /= NewT1) then
@@ -1609,7 +1629,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.IDEB') then
+      else if ( index(NomVar,'State.IDEB') > 0) then
         if (ASSOCIATED(Instance%IDEB)) then
            t1 = size(Instance%IDEB)
            if (t1 /= NewT1) then
@@ -1629,7 +1649,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.IFIN') then
+      else if ( index(NomVar,'State.IFIN') > 0) then
         if (ASSOCIATED(Instance%IFIN)) then
            t1 = size(Instance%IFIN)
            if (t1 /= NewT1) then
@@ -1649,7 +1669,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.ITEM0') then
+      else if ( index(NomVar,'State.ITEM0') > 0) then
         if (ASSOCIATED(Instance%ITEM0)) then
            t1 = size(Instance%ITEM0)
            if (t1 /= NewT1) then
@@ -1669,26 +1689,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'State.ZINIT') then
-        if (ASSOCIATED(Instance%ZINIT)) then
-           t1 = size(Instance%ZINIT)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%ZINIT, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_ETAT_MASCARET = err
-                 MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to deallocate ETAT_MASCARET_T.ZINIT'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%ZINIT) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%ZINIT(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_ETAT_MASCARET = err
-              MessageErreur = 'SET_TAILLE_VAR_ETAT_MASCARET : Unable to allocate ETAT_MASCARET_T.ZINIT'
-              return
-           endif
-        endif
+
       !--------------------------------------------------------------------
       ! Fin de la modification de la taille des pointers de types primitifs
       !--------------------------------------------------------------------
@@ -1846,80 +1847,80 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.DPDZ2') then
+      if ( index(NomVar,'State.DPDZ2') > 0) then
          valeur = Instance%DPDZ2(index1)
-      else if ( NomVar == 'State.DPDZ1') then
+      else if ( index(NomVar,'State.DPDZ1') > 0) then
          valeur = Instance%DPDZ1(index1)
-      else if ( NomVar == 'State.Qspilled') then
+      else if ( index(NomVar,'State.Qspilled') > 0) then
          valeur = Instance%QDeverse(index1)
-      else if ( NomVar == 'State.Qinflow') then
+      else if ( index(NomVar,'State.Qinflow') > 0) then
          valeur = Instance%Qinjec(index1)
-      else if ( NomVar == 'State.Airs') then
+      else if ( index(NomVar,'State.Airs') > 0) then
          valeur = Instance%Airs(index1, index2)
-      else if ( NomVar == 'State.W') then
+      else if ( index(NomVar,'State.W') > 0) then
          valeur = Instance%W(index1, index2, index3)
-      else if ( NomVar == 'State.YNode') then
+      else if ( index(NomVar,'State.YNode') > 0) then
          valeur = Instance%YNode(index1)
-      else if ( NomVar == 'State.CNode') then
+      else if ( index(NomVar,'State.CNode') > 0) then
          valeur = Instance%CNode(index1)
-      else if ( NomVar == 'State.UNode') then
+      else if ( index(NomVar,'State.UNode') > 0) then
          valeur = Instance%UNode(index1)
-      else if ( NomVar == 'State.XFron') then
+      else if ( index(NomVar,'State.XFron') > 0) then
          valeur = Instance%XFron(index1)
-      else if ( NomVar == 'State.RH2') then
+      else if ( index(NomVar,'State.RH2') > 0) then
          valeur = Instance%RH2(index1)
-      else if ( NomVar == 'State.RH1') then
+      else if ( index(NomVar,'State.RH1') > 0) then
          valeur = Instance%RH1(index1)
-      else if ( NomVar == 'State.BS') then
+      else if ( index(NomVar,'State.BS') > 0) then
          valeur = Instance%BS(index1)
-      else if ( NomVar == 'State.B2') then
+      else if ( index(NomVar,'State.B2') > 0) then
          valeur = Instance%B2(index1)
-      else if ( NomVar == 'State.B1') then
+      else if ( index(NomVar,'State.B1') > 0) then
          valeur = Instance%B1(index1)
-      else if ( NomVar == 'State.P2') then
+      else if ( index(NomVar,'State.P2') > 0) then
          valeur = Instance%P2(index1)
-      else if ( NomVar == 'State.P1') then
+      else if ( index(NomVar,'State.P1') > 0) then
          valeur = Instance%P1(index1)
-      else if ( NomVar == 'State.Froude') then
+      else if ( index(NomVar,'State.Froude') > 0) then
          valeur = Instance%Froude(index1)
-      else if ( NomVar == 'State.Beta') then
+      else if ( index(NomVar,'State.Beta') > 0) then
          valeur = Instance%Beta(index1)
-      else if ( NomVar == 'State.S2') then
+      else if ( index(NomVar,'State.S2') > 0) then
          valeur = Instance%S2(index1)
-      else if ( NomVar == 'State.S1') then
+      else if ( index(NomVar,'State.S1') > 0) then
          valeur = Instance%S1(index1)
-      else if ( NomVar == 'State.SS') then
+      else if ( index(NomVar,'State.SS') > 0) then
          valeur = Instance%SS(index1)
-      else if ( NomVar == 'State.Q2') then
+      else if ( index(NomVar,'State.Q2') > 0) then
          valeur = Instance%Q2(index1)
-      else if ( NomVar == 'State.Q1') then
+      else if ( index(NomVar,'State.Q1') > 0) then
          valeur = Instance%Q1(index1)
-      else if ( NomVar == 'State.V1') then
+      else if ( index(NomVar,'State.V1') > 0) then
          valeur = Instance%V1(index1)
-      else if ( NomVar == 'State.V2') then
+      else if ( index(NomVar,'State.V2') > 0) then
          valeur = Instance%V2(index1)
-      else if ( NomVar == 'State.Y') then
+      else if ( index(NomVar,'State.Y') > 0) then
          valeur = Instance%Y(index1)
-      else if ( NomVar == 'State.VOL') then
-         valeur = Instance%VOL(index1)
-      else if ( NomVar == 'State.VOLS') then
+      else if ( index(NomVar,'State.VOLS') > 0) then
          valeur = Instance%VOLS(index1)
-      else if ( NomVar == 'State.PreviousTime') then
+      else if ( index(NomVar,'State.VOL') > 0) then
+         valeur = Instance%VOL(index1)
+      else if ( index(NomVar,'State.PreviousTime') > 0) then
          valeur = Instance%tempsPrecedent
-      else if ( NomVar == 'State.DT') then
-         valeur = Instance%DT
-      else if ( NomVar == 'State.Q') then
-         valeur = Instance%Q(index1)
-      else if ( NomVar == 'State.Z') then
-         valeur = Instance%Z(index1)
-      else if ( NomVar == 'State.FLUX') then
-         valeur = Instance%FLUX(index1, index2)
-      else if ( NomVar == 'State.Flow') then
-         valeur = Instance%DebitFlux(index1)
-      else if ( NomVar == 'State.DTRezo') then
+      else if ( index(NomVar,'State.DTRezo') > 0) then
          valeur = Instance%DTRezo
-      else if ( NomVar == 'State.ZINIT') then
+      else if ( index(NomVar,'State.DT') > 0) then
+         valeur = Instance%DT
+      else if ( index(NomVar,'State.Q') > 0) then
+         valeur = Instance%Q(index1)
+      else if ( index(NomVar,'State.ZINIT') > 0) then
          valeur = Instance%ZINIT(index1)
+      else if ( index(NomVar,'State.Z') > 0) then
+         valeur = Instance%Z(index1)
+      else if ( index(NomVar,'State.FLUX') > 0) then
+         valeur = Instance%FLUX(index1, index2)
+      else if ( index(NomVar,'State.Flow') > 0) then
+         valeur = Instance%DebitFlux(index1)
       else if (INDEX(NomVar,'State.Link.') > 0) then
            GET_DOUBLE_ETAT_MASCARET = GET_DOUBLE_ETAT_LIAISON(instance%Liaisons(index1), NomVar, index2,& 
                                          index3, bidon1, valeur, MessageErreur)
@@ -1959,23 +1960,23 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.TimeStepNum') then
+      if ( index(NomVar,'State.TimeStepNum') > 0) then
          valeur = Instance%numPasTps
-      else if ( NomVar == 'State.SimulPhase') then
+      else if ( index(NomVar,'State.SimulPhase') > 0) then
          valeur = Instance%phaseSimulation
-      else if ( NomVar == 'State.JGNODE') then
+      else if ( index(NomVar,'State.JGNODE') > 0) then
          valeur = Instance%JGNODE(index1)
-      else if ( NomVar == 'State.JDNODE') then
+      else if ( index(NomVar,'State.JDNODE') > 0) then
          valeur = Instance%JDNODE(index1)
-      else if ( NomVar == 'State.IFIGE') then
+      else if ( index(NomVar,'State.IFIGE') > 0) then
          valeur = Instance%IFIGE(index1)
-      else if ( NomVar == 'State.NBARAD') then
+      else if ( index(NomVar,'State.NBARAD') > 0) then
          valeur = Instance%NBARAD
-      else if ( NomVar == 'State.IDEB') then
+      else if ( index(NomVar,'State.IDEB') > 0) then
          valeur = Instance%IDEB(index1)
-      else if ( NomVar == 'State.IFIN') then
+      else if ( index(NomVar,'State.IFIN') > 0) then
          valeur = Instance%IFIN(index1)
-      else if ( NomVar == 'State.ITEM0') then
+      else if ( index(NomVar,'State.ITEM0') > 0) then
          valeur = Instance%ITEM0(index1)
       else if (INDEX(NomVar,'State.Rezomat.') > 0) then
            GET_INT_ETAT_MASCARET = GET_INT_REZOMAT(instance%MatriceRezo, NomVar, index1,& 
@@ -2009,80 +2010,80 @@ contains
       SET_DOUBLE_ETAT_MASCARET = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.DPDZ2') then
+      if ( index(NomVar,'State.DPDZ2') > 0) then
          Instance%DPDZ2(index1) = valeur
-      else if ( NomVar == 'State.DPDZ1') then
+      else if ( index(NomVar,'State.DPDZ1') > 0) then
          Instance%DPDZ1(index1) = valeur
-      else if ( NomVar == 'State.Qspilled') then
+      else if ( index(NomVar,'State.Qspilled') > 0) then
          Instance%QDeverse(index1) = valeur
-      else if ( NomVar == 'State.Qinflow') then
+      else if ( index(NomVar,'State.Qinflow') > 0) then
          Instance%Qinjec(index1) = valeur
-      else if ( NomVar == 'State.Airs') then
+      else if ( index(NomVar,'State.Airs') > 0) then
          Instance%Airs(index1, index2) = valeur
-      else if ( NomVar == 'State.W') then
+      else if ( index(NomVar,'State.W') > 0) then
          Instance%W(index1, index2, index3) = valeur
-      else if ( NomVar == 'State.YNode') then
+      else if ( index(NomVar,'State.YNode') > 0) then
          Instance%YNode(index1) = valeur
-      else if ( NomVar == 'State.CNode') then
+      else if ( index(NomVar,'State.CNode') > 0) then
          Instance%CNode(index1) = valeur
-      else if ( NomVar == 'State.UNode') then
+      else if ( index(NomVar,'State.UNode') > 0) then
          Instance%UNode(index1) = valeur
-      else if ( NomVar == 'State.XFron') then
+      else if ( index(NomVar,'State.XFron') > 0) then
          Instance%XFron(index1) = valeur
-      else if ( NomVar == 'State.RH2') then
+      else if ( index(NomVar,'State.RH2') > 0) then
          Instance%RH2(index1) = valeur
-      else if ( NomVar == 'State.RH1') then
+      else if ( index(NomVar,'State.RH1') > 0) then
          Instance%RH1(index1) = valeur
-      else if ( NomVar == 'State.BS') then
+      else if ( index(NomVar,'State.BS') > 0) then
          Instance%BS(index1) = valeur
-      else if ( NomVar == 'State.B2') then
+      else if ( index(NomVar,'State.B2') > 0) then
          Instance%B2(index1) = valeur
-      else if ( NomVar == 'State.B1') then
+      else if ( index(NomVar,'State.B1') > 0) then
          Instance%B1(index1) = valeur
-      else if ( NomVar == 'State.P2') then
+      else if ( index(NomVar,'State.P2') > 0) then
          Instance%P2(index1) = valeur
-      else if ( NomVar == 'State.P1') then
+      else if ( index(NomVar,'State.P1') > 0) then
          Instance%P1(index1) = valeur
-      else if ( NomVar == 'State.Froude') then
+      else if ( index(NomVar,'State.Froude') > 0) then
          Instance%Froude(index1) = valeur
-      else if ( NomVar == 'State.Beta') then
+      else if ( index(NomVar,'State.Beta') > 0) then
          Instance%Beta(index1) = valeur
-      else if ( NomVar == 'State.S2') then
+      else if ( index(NomVar,'State.S2') > 0) then
          Instance%S2(index1) = valeur
-      else if ( NomVar == 'State.S1') then
+      else if ( index(NomVar,'State.S1') > 0) then
          Instance%S1(index1) = valeur
-      else if ( NomVar == 'State.SS') then
+      else if ( index(NomVar,'State.SS') > 0) then
          Instance%SS(index1) = valeur
-      else if ( NomVar == 'State.Q2') then
+      else if ( index(NomVar,'State.Q2') > 0) then
          Instance%Q2(index1) = valeur
-      else if ( NomVar == 'State.Q1') then
+      else if ( index(NomVar,'State.Q1') > 0) then
          Instance%Q1(index1) = valeur
-      else if ( NomVar == 'State.V1') then
+      else if ( index(NomVar,'State.V1') > 0) then
          Instance%V1(index1) = valeur
-      else if ( NomVar == 'State.V2') then
+      else if ( index(NomVar,'State.V2') > 0) then
          Instance%V2(index1) = valeur
-      else if ( NomVar == 'State.Y') then
+      else if ( index(NomVar,'State.Y') > 0) then
          Instance%Y(index1) = valeur
-      else if ( NomVar == 'State.VOL') then
-         Instance%VOL(index1) = valeur
-      else if ( NomVar == 'State.VOLS') then
+      else if ( index(NomVar,'State.VOLS') > 0) then
          Instance%VOLS(index1) = valeur
-      else if ( NomVar == 'State.PreviousTime') then
+      else if ( index(NomVar,'State.VOL') > 0) then
+         Instance%VOL(index1) = valeur
+      else if ( index(NomVar,'State.PreviousTime') > 0) then
          Instance%tempsPrecedent = valeur
-      else if ( NomVar == 'State.DT') then
-         Instance%DT = valeur
-      else if ( NomVar == 'State.Q') then
-         Instance%Q(index1) = valeur
-      else if ( NomVar == 'State.Z') then
-         Instance%Z(index1) = valeur
-      else if ( NomVar == 'State.FLUX') then
-         Instance%FLUX(index1, index2) = valeur
-      else if ( NomVar == 'State.Flow') then
-         Instance%DebitFlux(index1) = valeur
-      else if ( NomVar == 'State.DTRezo') then
+      else if ( index(NomVar,'State.DTRezo') > 0) then
          Instance%DTRezo = valeur
-      else if ( NomVar == 'State.ZINIT') then
+      else if ( index(NomVar,'State.DT') > 0) then
+         Instance%DT = valeur
+      else if ( index(NomVar,'State.Q') > 0) then
+         Instance%Q(index1) = valeur
+      else if ( index(NomVar,'State.ZINIT') > 0) then
          Instance%ZINIT(index1) = valeur
+      else if ( index(NomVar,'State.Z') > 0) then
+         Instance%Z(index1) = valeur
+      else if ( index(NomVar,'State.FLUX') > 0) then
+         Instance%FLUX(index1, index2) = valeur
+      else if ( index(NomVar,'State.Flow') > 0) then
+         Instance%DebitFlux(index1) = valeur
       else if (INDEX(NomVar,'State.Link.') > 0) then
            SET_DOUBLE_ETAT_MASCARET = SET_DOUBLE_ETAT_LIAISON(instance%Liaisons(index1), NomVar, index2,& 
                                          index3, bidon1, valeur, MessageErreur)
@@ -2120,23 +2121,23 @@ contains
       SET_INT_ETAT_MASCARET = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.TimeStepNum') then
+      if ( index(NomVar,'State.TimeStepNum') > 0) then
          Instance%numPasTps = valeur
-      else if ( NomVar == 'State.SimulPhase') then
+      else if ( index(NomVar,'State.SimulPhase') > 0) then
          Instance%phaseSimulation = valeur
-      else if ( NomVar == 'State.JGNODE') then
+      else if ( index(NomVar,'State.JGNODE') > 0) then
          Instance%JGNODE(index1) = valeur
-      else if ( NomVar == 'State.JDNODE') then
+      else if ( index(NomVar,'State.JDNODE') > 0) then
          Instance%JDNODE(index1) = valeur
-      else if ( NomVar == 'State.IFIGE') then
+      else if ( index(NomVar,'State.IFIGE') > 0) then
          Instance%IFIGE(index1) = valeur
-      else if ( NomVar == 'State.NBARAD') then
+      else if ( index(NomVar,'State.NBARAD') > 0) then
          Instance%NBARAD = valeur
-      else if ( NomVar == 'State.IDEB') then
+      else if ( index(NomVar,'State.IDEB') > 0) then
          Instance%IDEB(index1) = valeur
-      else if ( NomVar == 'State.IFIN') then
+      else if ( index(NomVar,'State.IFIN') > 0) then
          Instance%IFIN(index1) = valeur
-      else if ( NomVar == 'State.ITEM0') then
+      else if ( index(NomVar,'State.ITEM0') > 0) then
          Instance%ITEM0(index1) = valeur
       else if (INDEX(NomVar,'State.Rezomat.') > 0) then
            SET_INT_ETAT_MASCARET = SET_INT_REZOMAT(instance%MatriceRezo, NomVar, index1,& 

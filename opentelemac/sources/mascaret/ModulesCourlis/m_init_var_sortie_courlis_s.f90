@@ -132,7 +132,7 @@ Contains
     integer                        , intent(in   ) :: PhaseSimulation
 
 	integer :: k
-    character, dimension(10) :: i_in_letter
+    character*2, dimension(10) :: i_in_letter
 	data i_in_letter / '1','2','3','4','5','6','7','8','9','10'/
 
     !============================ Initialisations =========================== 

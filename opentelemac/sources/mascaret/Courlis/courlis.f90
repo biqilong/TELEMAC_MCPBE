@@ -196,24 +196,24 @@ use M_MY_GLOBAL_VAR_SED
 !=========================================================================
 ! Calcul de la stabilite des berges
 !=========================================================================
-!  If (phase_talus == PHASE_CALCUL) Then
+  If (phase_talus == PHASE_CALCUL .AND. sediment_slide_option) Then
 
-!    call StabiliteTalus  (  &
-!          ProfilCourlis  ,  & ! Profils sedimentaires
-!          Talus          ,  & ! Parametres relatifs aux talus
-!          DtCourlis             ,  & ! Pas de temps
-!          Zsurf1         ,  & ! Cote de la surface libre
-!          CoucheSed      ,  & ! Parametres sedimentaires des differentes couches
-!          DeltaH         ,  & ! Variation de hauteur sedimentaire en chaque point des profils
-!          Resini         ,  & ! Resistance initiale des blocs au mouvement
-!          SurPl          ,  & !
-!          Erreur         )
+    call StabiliteTalus  (  &
+          ProfilCourlis  ,  & ! Profils sedimentaires
+          Talus          ,  & ! Parametres relatifs aux talus
+          DtCourlis             ,  & ! Pas de temps
+          Zsurf1         ,  & ! Cote de la surface libre
+          CoucheSed      ,  & ! Parametres sedimentaires des differentes couches
+          DeltaH         ,  & ! Variation de hauteur sedimentaire en chaque point des profils
+          Resini         ,  & ! Resistance initiale des blocs au mouvement
+          SurPl          ,  & !
+          Erreur         )
 
-!    If (Erreur%Numero /= 0) Then
-!      return
-!    Endif
+    If (Erreur%Numero /= 0) Then
+      return
+    Endif
 
-!  Endif
+  Endif
 
 !print *, " DEB Lim Depot"
 !=========================================================================

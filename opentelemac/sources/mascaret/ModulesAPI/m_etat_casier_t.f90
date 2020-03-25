@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -106,31 +106,31 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'State.StoArea.Level') then
+      if ( index(NomVar, 'State.StoArea.Level') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.Surface') then
+      else if ( index(NomVar, 'State.StoArea.Surface') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.Volume') then
+      else if ( index(NomVar, 'State.StoArea.Volume') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.InitVolume') then
+      else if ( index(NomVar, 'State.StoArea.InitVolume') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.VolStatement') then
+      else if ( index(NomVar, 'State.StoArea.VolStatement') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.ErrVolStatement') then
+      else if ( index(NomVar, 'State.StoArea.ErrVolStatement') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.DzSto') then
+      else if ( index(NomVar, 'State.StoArea.DzSto') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.MaxLevel') then
+      else if ( index(NomVar, 'State.StoArea.MaxLevel') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'State.StoArea.MaxTime') then
+      else if ( index(NomVar, 'State.StoArea.MaxTime') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
      else
@@ -166,39 +166,39 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.StoArea.Level') then
+      if ( index(NomVar, 'State.StoArea.Level') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.Surface') then
+      else if ( index(NomVar, 'State.StoArea.Surface') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.Volume') then
+      else if ( index(NomVar, 'State.StoArea.Volume') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.InitVolume') then
+      else if ( index(NomVar, 'State.StoArea.InitVolume') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.VolStatement') then
+      else if ( index(NomVar, 'State.StoArea.VolStatement') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.ErrVolStatement') then
+      else if ( index(NomVar, 'State.StoArea.ErrVolStatement') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.DzSto') then
+      else if ( index(NomVar, 'State.StoArea.DzSto') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.MaxLevel') then
+      else if ( index(NomVar, 'State.StoArea.MaxLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.StoArea.MaxTime') then
+      else if ( index(NomVar, 'State.StoArea.MaxTime') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -252,23 +252,23 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.StoArea.Level') then
+      if ( index(NomVar, 'State.StoArea.Level') > 0) then
          valeur = Instance%Cote
-      else if ( NomVar == 'State.StoArea.Surface') then
+      else if ( index(NomVar, 'State.StoArea.Surface') > 0) then
          valeur = Instance%Surface
-      else if ( NomVar == 'State.StoArea.Volume') then
+      else if ( index(NomVar, 'State.StoArea.Volume') > 0) then
          valeur = Instance%Volume
-      else if ( NomVar == 'State.StoArea.InitVolume') then
+      else if ( index(NomVar, 'State.StoArea.InitVolume') > 0) then
          valeur = Instance%VolumeIni
-      else if ( NomVar == 'State.StoArea.VolStatement') then
+      else if ( index(NomVar, 'State.StoArea.VolStatement') > 0) then
          valeur = Instance%Bilan
-      else if ( NomVar == 'State.StoArea.ErrVolStatement') then
+      else if ( index(NomVar, 'State.StoArea.ErrVolStatement') > 0) then
          valeur = Instance%BilanErreur
-      else if ( NomVar == 'State.StoArea.DzSto') then
+      else if ( index(NomVar, 'State.StoArea.DzSto') > 0) then
          valeur = Instance%DzCas
-      else if ( NomVar == 'State.StoArea.MaxLevel') then
+      else if ( index(NomVar, 'State.StoArea.MaxLevel') > 0) then
          valeur = Instance%CoteMax
-      else if ( NomVar == 'State.StoArea.MaxTime') then
+      else if ( index(NomVar, 'State.StoArea.MaxTime') > 0) then
          valeur = Instance%TempsMax
       else
          GET_DOUBLE_ETAT_CASIER = 1
@@ -298,23 +298,23 @@ contains
       SET_DOUBLE_ETAT_CASIER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.StoArea.Level') then
+      if ( index(NomVar, 'State.StoArea.Level') > 0) then
          Instance%Cote = valeur
-      else if ( NomVar == 'State.StoArea.Surface') then
+      else if ( index(NomVar, 'State.StoArea.Surface') > 0) then
          Instance%Surface = valeur
-      else if ( NomVar == 'State.StoArea.Volume') then
+      else if ( index(NomVar, 'State.StoArea.Volume') > 0) then
          Instance%Volume = valeur
-      else if ( NomVar == 'State.StoArea.InitVolume') then
+      else if ( index(NomVar, 'State.StoArea.InitVolume') > 0) then
          Instance%VolumeIni = valeur
-      else if ( NomVar == 'State.StoArea.VolStatement') then
+      else if ( index(NomVar, 'State.StoArea.VolStatement') > 0) then
          Instance%Bilan = valeur
-      else if ( NomVar == 'State.StoArea.ErrVolStatement') then
+      else if ( index(NomVar, 'State.StoArea.ErrVolStatement') > 0) then
          Instance%BilanErreur = valeur
-      else if ( NomVar == 'State.StoArea.DzSto') then
+      else if ( index(NomVar, 'State.StoArea.DzSto') > 0) then
          Instance%DzCas = valeur
-      else if ( NomVar == 'State.StoArea.MaxLevel') then
+      else if ( index(NomVar, 'State.StoArea.MaxLevel') > 0) then
          Instance%CoteMax = valeur
-      else if ( NomVar == 'State.StoArea.MaxTime') then
+      else if ( index(NomVar, 'State.StoArea.MaxTime') > 0) then
          Instance%TempsMax = valeur
       else
          SET_DOUBLE_ETAT_CASIER = 1

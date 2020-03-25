@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_DONNEES_CRUES_CALAGE_T
 !***********************************************************************
 ! PROGICIEL : MASCARET       A. LEBOSSE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
    !=========================== Declarations ==============================
    use M_PRECISION   ! type DOUBLE

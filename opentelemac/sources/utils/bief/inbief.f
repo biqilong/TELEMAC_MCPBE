@@ -107,7 +107,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF, EX_INBIEF => INBIEF
-      USE DECLARATIONS_TELEMAC, ONLY : MODASS
+      USE DECLARATIONS_TELEMAC, ONLY : MODASS, CHECK_MESH
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -671,6 +671,14 @@
       CALL MAKE_ELTCAR(MESH%ELTCAR%I,MESH%IFAC%I,
      &                 MESH%IKLE%I,NPOIN2,NELEM2,
      &                 NELMAX,MESH%KNOLG%I,IT1%I,MESH,NPLAN,IELMX)
+!
+!-----------------------------------------------------------------------
+!
+!     CHECKING THE MESH
+!
+      IF(CHECK_MESH) THEN
+        CALL CHECKMESH(MESH,NPOIN)
+      ENDIF
 !
 !-----------------------------------------------------------------------
 !

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@
 ! PROGICIEL : MASCARET       J.-M. LACOMBE
 !                            F. ZAOUI
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
 subroutine  PRETRAIT_INTERFACE                             ( &
 
@@ -38,6 +38,7 @@ subroutine  PRETRAIT_INTERFACE                             ( &
   PerteElargissementTrans, Boussinesq , NoConvection, CQMV , &
   ProfAbs, HEPS                                            , &
   DT, TempsInitial, CritereArret, NbPasTemps, TempsMaximum , &
+  Section_controle,Cote_max_controle                       , &
   PasTempsVariable, CourantObj                             , &
   FichierGeom, FormatGeom, Profil, PresenceZoneStockage    , &
   X, IDT, XDT                                              , &
@@ -76,7 +77,7 @@ subroutine  PRETRAIT_INTERFACE                             ( &
 ! *********************************************************************
 ! PROGICIEL : MASCARET       J.-M. LACOMBE - S. MANDELKERN - N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
 !  FONCTION : LECTURE DU FICHIER CAS PAR APPEL DU LOGICIEL DAMOCLES.
 !----------------------------------------------------------------------
@@ -192,6 +193,8 @@ use Fox_dom                 ! parser XML Fortran
   integer     , intent(  out) :: CritereArret
   integer     , intent(  out) :: NbPasTemps
   real(DOUBLE), intent(  out) :: TempsMaximum
+  integer     , intent(  out) :: Section_controle
+  real(DOUBLE), intent(  out) :: Cote_max_controle
   logical     , intent(  out) :: PasTempsVariable
   real(DOUBLE), intent(  out) :: CourantObj
 
@@ -371,12 +374,20 @@ use Fox_dom                 ! parser XML Fortran
 
   ! FoX XML
   !--------
-  type(Node), pointer :: document,element,champ1,champ2,champ3
-  type(DOMconfiguration), pointer :: config
+  type(Node), pointer :: document => null()
+  type(Node), pointer :: element => null()
+  type(Node), pointer :: champ1 => null()
+  type(Node), pointer :: champ2 => null()
+  type(Node), pointer :: champ3 => null()
+  type(DOMconfiguration), pointer :: config => null()
   type(DOMException) :: ex
   integer :: ios
   integer, allocatable      :: itab(:)
   real(double), allocatable :: rtab(:)
+
+  real(DOUBLE) :: Abs_rel_controle
+  real(DOUBLE) :: Abs_abs_controle
+  integer      :: Bief_controle
 !========================== Instructions =============================
 
 ! INITIALISATION
@@ -915,6 +926,38 @@ use Fox_dom                 ! parser XML Fortran
     return
   end if
 
+   ! Point de controle de la cote maximale pour l'arret du calcul
+   !-------------------------------------------------------------
+   champ2 => item(getElementsByTagname(champ1, "abscisseControle"), 0)
+   if(associated(champ2).eqv..false.) then
+       print*,"Parse error => abscisseControle"
+       call xerror(Erreur)
+       return
+   endif
+   call extractDataContent(champ2,Abs_rel_controle)
+   champ2 => item(getElementsByTagname(champ1, "biefControle"), 0)
+   if(associated(champ2).eqv..false.) then
+       print*,"Parse error => biefControle"
+       call xerror(Erreur)
+       return
+   endif
+   call extractDataContent(champ2,Bief_controle)
+   champ2 => item(getElementsByTagname(champ1, "coteMax"), 0)
+   if(associated(champ2).eqv..false.) then
+       print*,"Parse error => coteMax"
+       call xerror(Erreur)
+       return
+   endif
+   call extractDataContent(champ2,Cote_max_controle)
+
+   if( CritereArret == COTE_MAXIMALE_AU_POINT_DE_CONTROLE .and. Bief_controle <= 0.) then
+      Erreur%Numero = 306
+      Erreur%ft     = err_306
+      Erreur%ft_c   = err_306c
+      call TRAITER_ERREUR( Erreur , 'Bief associe au point de controle' )
+      return
+   end if
+
 ! Pas de temps variable
 !----------------------
 
@@ -1432,7 +1475,11 @@ use Fox_dom                 ! parser XML Fortran
     do while ((X(isect) <  (Profil(iprof)%AbsAbs   - EPS4)) .or.    &
               (X(isect) >= (Profil(iprof+1)%AbsAbs - EPS4)))
 
-      if ((abs(X(isect)- Profil(size(Profil(:)))%AbsAbs)) <= 0.0001)  exit
+      if ((abs(X(isect)- Profil(size(Profil(:)))%AbsAbs)) <= 0.0001)  then
+          iprof = size(Profil(:))-1
+          exit
+      endif
+
 
       iprof = iprof + 1
     end do
@@ -1575,6 +1622,60 @@ use Fox_dom                 ! parser XML Fortran
     deallocate(rtab)
 
   endif
+!=============================================================
+!                      CAS D'UN ARRET DU CALCUL
+!           AVEC COTE MAXIMALE ATTEINTE A UN POINT DE CONTROLE
+!=============================================================
+! initialisation des variables
+   Section_controle = 1
+   Abs_abs_controle = 0
+
+   if( CritereArret == COTE_MAXIMALE_AU_POINT_DE_CONTROLE ) then
+      !erreur sur l'abs rel ou le no du bief
+      if( Bief_controle <= 0 .or. &
+          Bief_controle > size(ProfDebBief) ) then
+         Erreur%Numero = 332
+         Erreur%ft     = err_332
+         Erreur%ft_c   = err_332c
+         call TRAITER_ERREUR( Erreur , 'point de controle pour arret du calcul' , &
+			      Bief_controle , 1 )
+         return
+      end if
+
+      if( Abs_rel_controle < (Profil(ProfDebBief(Bief_controle))%AbsRel-EPS4) &
+           .or. &
+          Abs_rel_controle > (Profil(ProfFinBief(Bief_controle))%AbsRel+EPS4) ) then
+         Erreur%Numero = 387
+         Erreur%ft     = err_387
+         Erreur%ft_c   = err_387c
+         call TRAITER_ERREUR( Erreur , 'point de controle pour arret du calcul' , &
+                              Bief_controle )
+         return
+      end if
+
+      ! calcul de l'abscisse abs
+      Abs_abs_controle = ABS_ABS_S        ( &
+        Bief_controle                     , &
+        Abs_rel_controle                  , &
+        Profil                            , &
+        ProfDebBief                       , &
+        ProfFinBief                       , &
+        Erreur                              &
+                                             )
+      if( Erreur%Numero /= 0 ) then
+         return
+      end if
+
+      ! Calcul de la section de calcul correspondante
+      call XINDIC_S                          (&
+           Section_controle,                  &
+           Abs_abs_controle,                  &
+           X,                                 &
+           Erreur                              )
+      if( Erreur%Numero /= 0 ) then
+         return
+      endif
+   endif
 
 !==============================================================
 !                      LECTURE DES FROTTEMENTS
@@ -2122,7 +2223,7 @@ call LEC_DEVER             ( &
       call DATE_S(chaine_date)
 
       if(VersionCode == 3) then
-        write(UniteListing,10000) ' 8.1.4 ', chaine_date
+        write(UniteListing,10000) ' V8P2R0 ', chaine_date
       endif
 
       if(VersionCode == 2) then
@@ -2342,8 +2443,8 @@ call LEC_DEVER             ( &
   !Erreur%arbredappel = !arbredappel_old
 !     write(12,*)'Fin Pretrait'
 
-   !call destroy(document)
-   !call destroy(config)
+   call destroy(document)
+   call destroy(config)
 
   return
 

@@ -139,7 +139,8 @@
       USE BIEF, EX_DERIVE => DERIVE
       USE DECLARATIONS_TELEMAC, ONLY : DEJA_DERIVE, SVOID_DERIVE,
      &                                 INIT_ALG, SIZEBUF2_D,BUFF_1D_D,
-     &                                 BUFF_2D_D, ALG_DISLODGE
+     &                                 BUFF_2D_D, ALG_DISLODGE,
+     &                                 BUFF_ELT_I
       USE STREAMLINE
       USE ALGAE_TRANSP
 !
@@ -296,6 +297,7 @@
           SIZEBUF2_D=NFLOT_MAX
           ALLOCATE(BUFF_1D_D(SIZEBUF2_D))
           ALLOCATE(BUFF_2D_D(NDP,SIZEBUF2_D))
+          ALLOCATE(BUFF_ELT_I(SIZEBUF2_D))
         ELSE
 !         SET IT TO TRUE SO DEALL_BIEF DOES NOT TRY TO DEALLOCATE IT
           INIT_ALG=.TRUE.
@@ -409,7 +411,7 @@
      &                 XFLOT,YFLOT,ZFLOT,ZFLOT,DX,DY,DZ,DZ,Z,
      &                 SHPFLO,SHZFLO,SHZFLO,
      &                 SURDET,DT,IKLE,IFABOR,ELTFLO,ETAFLO,
-     &                 FRE,ELTBUF,ISUB,IELM,IELMU,
+     &                 FRE,BUFF_ELT_I,ISUB,IELM,IELMU,
      &                 NELEM,NELMAX,NOMB,NPOIN2,NDP,NRK,
      &                 NPLAN,1,MESH,NFLOT,NPOIN2,SENS,
      &                 BUFF_2D_D,BUFF_1D_D,BUFF_1D_D,FREBUF,SIZEBUF2_D,
@@ -499,12 +501,19 @@
 !     SEND THE ALGAE INFORMATION IF IT IS NECESSARY
 !
       IF(NCSIZE.GT.1.AND.ALGAE) THEN
-        CALL SEND_INFO_ALG(ISUB,I_A_GL%I,CLSFLO,
-     &                 TEFF%R,DISLODGE%I,
-     &                 ELTBUF,NFLOT,NFLOT_MAX,
-     &                 U_X_AV%R,U_Y_AV%R,U_Z_AV%R,K_AV%R,
-     &                 EPS_AV%R,H_FLU%R,U_X%R,U_Y%R,U_Z%R,V_X%R,V_Y%R,
-     &                 V_Z%R,NWIN,MESH%DIM1,PSI)
+        IF(NFLOT_MAX.GT.SIZEBUF)THEN
+          CALL SEND_INFO_ALG(ISUB,I_A_GL%I,CLSFLO,TEFF%R,DISLODGE%I,
+     &                       BUFF_ELT_I,NFLOT,NFLOT_MAX,
+     &                       U_X_AV%R,U_Y_AV%R,U_Z_AV%R,K_AV%R,EPS_AV%R,
+     &                       H_FLU%R,U_X%R,U_Y%R,U_Z%R,V_X%R,V_Y%R,
+     &                       V_Z%R,NWIN,MESH%DIM1,PSI)
+        ELSE
+          CALL SEND_INFO_ALG(ISUB,I_A_GL%I,CLSFLO,TEFF%R,DISLODGE%I,
+     &                       ELTBUF,NFLOT,NFLOT_MAX,
+     &                       U_X_AV%R,U_Y_AV%R,U_Z_AV%R,K_AV%R,EPS_AV%R,
+     &                       H_FLU%R,U_X%R,U_Y%R,U_Z%R,V_X%R,V_Y%R,
+     &                       V_Z%R,NWIN,MESH%DIM1,PSI)
+        ENDIF
       ENDIF
 !
 !     SENDING THE PARTICLES THAT MIGRATED TO ANOTHER SUB-DOMAIN

@@ -55,7 +55,7 @@
 !
       USE BIEF
       USE DECLARATIONS_KHIONE, ONLY:ICEPROCESS,ANFEM,THIFEMF,THIFEMS,
-     &                              DWB,ANFEM0,IT1,IT2,T1,
+     &                              DWB,ANFEM0,IT1,IT2,T1,T2,
      &                              ICETYPE,VCRBOR,VCRBOM,TCR,VZ,
      &                              LH_ICE,LIN_WATAIR,TC,TMELT
       USE METEO_KHIONE       ,ONLY: TAIR
@@ -93,7 +93,7 @@
 !     TODO: T1 CAN BE REPLACED BY VOLUPAR (ALREADY COMPUTED)
 !
         CALL VECTOR(T1,'=','MASBAS          ',U%ELM,1.D0,
-     &               T1,T1,T1,T1,T1,T1,MESH,.FALSE.,T1)
+     &              T2,T2,T2,T2,T2,T2,MESH,.FALSE.,T2)
 !       ASSEMBLING THE SUM OF ALL VALUES
         IF( NCSIZE.GT.1 ) CALL PARCOM( T1,2,MESH )
 !

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_SINGULARITE_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -165,77 +165,77 @@ contains
       GET_TYPE_VAR_SINGULARITE = 0
       TypeVar               = ""
       Categorie             = "MODEL"
-      Modifiable            = .FALSE.
+      Modifiable            = .TRUE.
       dimVar                = 0
       MessageErreur         = ""
 
-       if ( NomVar == 'Model.Weir.Name') then
+       if ( index(NomVar, 'Model.Weir.Name') > 0) then
           TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.Number') then
+       else if ( index(NomVar, 'Model.Weir.Number') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.ReachNum') then
+       else if ( index(NomVar, 'Model.Weir.ReachNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.RelAbscissa') then
+       else if ( index(NomVar, 'Model.Weir.RelAbscissa') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.Node') then
+       else if ( index(NomVar, 'Model.Weir.Node') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.Type') then
+       else if ( index(NomVar, 'Model.Weir.Type') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.State') then
+       else if ( index(NomVar, 'Model.Weir.State') > 0) then
           TypeVar = 'BOOL'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.Thickness') then
+       else if ( index(NomVar, 'Model.Weir.Thickness') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.CrestLevel') then
+       else if ( index(NomVar, 'Model.Weir.CrestLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.DischCoef') then
+       else if ( index(NomVar, 'Model.Weir.DischCoef') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.BrkLevel') then
+       else if ( index(NomVar, 'Model.Weir.BrkLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.Slope') then
+       else if ( index(NomVar, 'Model.Weir.Slope') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.Discharge') then
+       else if ( index(NomVar, 'Model.Weir.Discharge') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.GateLength') then
+       else if ( index(NomVar, 'Model.Weir.GateLength') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.GraphNum') then
+       else if ( index(NomVar, 'Model.Weir.GraphNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.PtZ') then
+       else if ( index(NomVar, 'Model.Weir.PtQ') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Weir.PtQ') then
-          TypeVar = 'TABDOUBLE'
-          dimVar                = 1
-       else if ( NomVar == 'Model.Weir.PtZus') then
+       else if ( index(NomVar, 'Model.Weir.PtZus') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.Weir.PtZds') then
+       else if ( index(NomVar, 'Model.Weir.PtZds') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Weir.PtZup') then
+       else if ( index(NomVar, 'Model.Weir.PtZup') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.PtZlo') then
+       else if ( index(NomVar, 'Model.Weir.PtZlo') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Weir.PtX') then
+       else if ( index(NomVar, 'Model.Weir.PtZ') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.Weir.PtY') then
+       else if ( index(NomVar, 'Model.Weir.PtX') > 0) then
+          TypeVar = 'TABDOUBLE'
+          dimVar                = 1
+       else if ( index(NomVar, 'Model.Weir.PtY') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
       else
@@ -271,75 +271,67 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.Name') then
+      if ( index(NomVar, 'Model.Weir.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.Number') then
+      else if ( index(NomVar, 'Model.Weir.Number') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.ReachNum') then
+      else if ( index(NomVar, 'Model.Weir.ReachNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.RelAbscissa') then
+      else if ( index(NomVar, 'Model.Weir.RelAbscissa') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.Node') then
+      else if ( index(NomVar, 'Model.Weir.Node') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.Type') then
+      else if ( index(NomVar, 'Model.Weir.Type') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.State') then
+      else if ( index(NomVar, 'Model.Weir.State') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.Thickness') then
+      else if ( index(NomVar, 'Model.Weir.Thickness') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.CrestLevel') then
+      else if ( index(NomVar, 'Model.Weir.CrestLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.DischCoef') then
+      else if ( index(NomVar, 'Model.Weir.DischCoef') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.BrkLevel') then
+      else if ( index(NomVar, 'Model.Weir.BrkLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.Slope') then
+      else if ( index(NomVar, 'Model.Weir.Slope') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.Discharge') then
+      else if ( index(NomVar, 'Model.Weir.Discharge') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.GateLength') then
+      else if ( index(NomVar, 'Model.Weir.GateLength') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.GraphNum') then
+      else if ( index(NomVar, 'Model.Weir.GraphNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtZ') then
-         if (ASSOCIATED(Instance%PtZ)) then
-            taille1 = size(Instance%PtZ)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtQ') then
+      else if ( index(NomVar, 'Model.Weir.PtQ') > 0) then
          if (ASSOCIATED(Instance%PtQ)) then
             taille1 = size(Instance%PtQ)
          else
@@ -347,7 +339,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtZus') then
+      else if ( index(NomVar, 'Model.Weir.PtZus') > 0) then
          if (ASSOCIATED(Instance%PtZamont)) then
             taille1 = size(Instance%PtZamont, 1)
             taille2 = size(Instance%PtZamont, 2)
@@ -356,7 +348,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtZds') then
+      else if ( index(NomVar, 'Model.Weir.PtZds') > 0) then
          if (ASSOCIATED(Instance%PtZaval)) then
             taille1 = size(Instance%PtZaval)
          else
@@ -364,15 +356,23 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtZup') then
+      else if ( index(NomVar, 'Model.Weir.PtZup') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtZlo') then
+      else if ( index(NomVar, 'Model.Weir.PtZlo') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtX') then
+      else if ( index(NomVar, 'Model.Weir.PtZ') > 0) then
+         if (ASSOCIATED(Instance%PtZ)) then
+            taille1 = size(Instance%PtZ)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Weir.PtX') > 0) then
          if (ASSOCIATED(Instance%PtX)) then
             taille1 = size(Instance%PtX)
          else
@@ -380,7 +380,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Weir.PtY') then
+      else if ( index(NomVar, 'Model.Weir.PtY') > 0) then
          if (ASSOCIATED(Instance%PtY)) then
             taille1 = size(Instance%PtY)
          else
@@ -424,27 +424,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.Weir.PtZ') then
-        if (ASSOCIATED(Instance%PtZ)) then
-           t1 = size(Instance%PtZ)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%PtZ, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SINGULARITE = err
-                 MessageErreur = 'SET_TAILLE_VAR_SINGULARITE : Unable to deallocate SINGULARITE_T.PtZ'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%PtZ) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%PtZ(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SINGULARITE = err
-              MessageErreur = 'SET_TAILLE_VAR_SINGULARITE : Unable to allocate SINGULARITE_T.PtZ'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.Weir.PtQ') then
+      if ( index(NomVar, 'Model.Weir.PtQ') > 0) then
         if (ASSOCIATED(Instance%PtQ)) then
            t1 = size(Instance%PtQ)
            if (t1 /= NewT1) then
@@ -464,7 +444,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Weir.PtZus') then
+      else if ( index(NomVar, 'Model.Weir.PtZus') > 0) then
         if (ASSOCIATED(Instance%PtZamont)) then
            t1 = size(Instance%PtZamont, 1)
            t2 = size(Instance%PtZamont, 2)
@@ -485,7 +465,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Weir.PtZds') then
+      else if ( index(NomVar, 'Model.Weir.PtZds') > 0) then
         if (ASSOCIATED(Instance%PtZaval)) then
            t1 = size(Instance%PtZaval)
            if (t1 /= NewT1) then
@@ -505,7 +485,27 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Weir.PtX') then
+      else if ( index(NomVar, 'Model.Weir.PtZ') > 0) then
+        if (ASSOCIATED(Instance%PtZ)) then
+           t1 = size(Instance%PtZ)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%PtZ, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SINGULARITE = err
+                 MessageErreur = 'SET_TAILLE_VAR_SINGULARITE : Unable to deallocate SINGULARITE_T.PtZ'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%PtZ) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%PtZ(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SINGULARITE = err
+              MessageErreur = 'SET_TAILLE_VAR_SINGULARITE : Unable to allocate SINGULARITE_T.PtZ'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.Weir.PtX') > 0) then
         if (ASSOCIATED(Instance%PtX)) then
            t1 = size(Instance%PtX)
            if (t1 /= NewT1) then
@@ -525,7 +525,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Weir.PtY') then
+      else if ( index(NomVar, 'Model.Weir.PtY') > 0) then
         if (ASSOCIATED(Instance%PtY)) then
            t1 = size(Instance%PtY)
            if (t1 /= NewT1) then
@@ -575,35 +575,35 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.RelAbscissa') then
+      if ( index(NomVar, 'Model.Weir.RelAbscissa') > 0) then
          valeur = Instance%AbscisseRel
-      else if ( NomVar == 'Model.Weir.CrestLevel') then
+      else if ( index(NomVar, 'Model.Weir.CrestLevel') > 0) then
          valeur = Instance%CoteCrete
-      else if ( NomVar == 'Model.Weir.DischCoef') then
+      else if ( index(NomVar, 'Model.Weir.DischCoef') > 0) then
          valeur = Instance%CoeffDebit
-      else if ( NomVar == 'Model.Weir.BrkLevel') then
+      else if ( index(NomVar, 'Model.Weir.BrkLevel') > 0) then
          valeur = Instance%CoteRupture
-      else if ( NomVar == 'Model.Weir.Slope') then
+      else if ( index(NomVar, 'Model.Weir.Slope') > 0) then
          valeur = Instance%Pente
-      else if ( NomVar == 'Model.Weir.Discharge') then
+      else if ( index(NomVar, 'Model.Weir.Discharge') > 0) then
          valeur = Instance%Debit
-      else if ( NomVar == 'Model.Weir.GateLength') then
+      else if ( index(NomVar, 'Model.Weir.GateLength') > 0) then
          valeur = Instance%LargeurVanne
-      else if ( NomVar == 'Model.Weir.PtZ') then
-         valeur = Instance%PtZ(index1)
-      else if ( NomVar == 'Model.Weir.PtQ') then
+      else if ( index(NomVar, 'Model.Weir.PtQ') > 0) then
          valeur = Instance%PtQ(index1)
-      else if ( NomVar == 'Model.Weir.PtZus') then
+      else if ( index(NomVar, 'Model.Weir.PtZus') > 0) then
          valeur = Instance%PtZamont(index1, index2)
-      else if ( NomVar == 'Model.Weir.PtZds') then
+      else if ( index(NomVar, 'Model.Weir.PtZds') > 0) then
          valeur = Instance%PtZaval(index1)
-      else if ( NomVar == 'Model.Weir.PtZup') then
+      else if ( index(NomVar, 'Model.Weir.PtZup') > 0) then
          valeur = Instance%PtZsup
-      else if ( NomVar == 'Model.Weir.PtZlo') then
+      else if ( index(NomVar, 'Model.Weir.PtZlo') > 0) then
          valeur = Instance%PtZinf
-      else if ( NomVar == 'Model.Weir.PtX') then
+      else if ( index(NomVar, 'Model.Weir.PtZ') > 0) then
+         valeur = Instance%PtZ(index1)
+      else if ( index(NomVar, 'Model.Weir.PtX') > 0) then
          valeur = Instance%PtX(index1)
-      else if ( NomVar == 'Model.Weir.PtY') then
+      else if ( index(NomVar, 'Model.Weir.PtY') > 0) then
          valeur = Instance%PtY(index1)
       else
          GET_DOUBLE_SINGULARITE = 1
@@ -628,17 +628,17 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.Number') then
+      if ( index(NomVar, 'Model.Weir.Number') > 0) then
          valeur = Instance%Numero
-      else if ( NomVar == 'Model.Weir.ReachNum') then
+      else if ( index(NomVar, 'Model.Weir.ReachNum') > 0) then
          valeur = Instance%NumBranche
-      else if ( NomVar == 'Model.Weir.Node') then
+      else if ( index(NomVar, 'Model.Weir.Node') > 0) then
          valeur = Instance%Section
-      else if ( NomVar == 'Model.Weir.Type') then
+      else if ( index(NomVar, 'Model.Weir.Type') > 0) then
          valeur = Instance%Type
-      else if ( NomVar == 'Model.Weir.Thickness') then
+      else if ( index(NomVar, 'Model.Weir.Thickness') > 0) then
          valeur = Instance%Epaisseur_seuil
-      else if ( NomVar == 'Model.Weir.GraphNum') then
+      else if ( index(NomVar, 'Model.Weir.GraphNum') > 0) then
          valeur = Instance%NumeroLoi
       else
          GET_INT_SINGULARITE = 1
@@ -663,7 +663,7 @@ contains
       valeur                = .FALSE.
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.State') then
+      if ( index(NomVar, 'Model.Weir.State') > 0) then
          valeur = Instance%EtatEfface
       else
          GET_BOOL_SINGULARITE = 1
@@ -688,7 +688,7 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.Name') then
+      if ( index(NomVar, 'Model.Weir.Name') > 0) then
          valeur = Instance%Nom
       else
          GET_STRING_SINGULARITE = 1
@@ -718,35 +718,35 @@ contains
       SET_DOUBLE_SINGULARITE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.RelAbscissa') then
+      if ( index(NomVar, 'Model.Weir.RelAbscissa') > 0) then
          Instance%AbscisseRel = valeur
-      else if ( NomVar == 'Model.Weir.CrestLevel') then
+      else if ( index(NomVar, 'Model.Weir.CrestLevel') > 0) then
          Instance%CoteCrete = valeur
-      else if ( NomVar == 'Model.Weir.DischCoef') then
+      else if ( index(NomVar, 'Model.Weir.DischCoef') > 0) then
          Instance%CoeffDebit = valeur
-      else if ( NomVar == 'Model.Weir.BrkLevel') then
+      else if ( index(NomVar, 'Model.Weir.BrkLevel') > 0) then
          Instance%CoteRupture = valeur
-      else if ( NomVar == 'Model.Weir.Slope') then
+      else if ( index(NomVar, 'Model.Weir.Slope') > 0) then
          Instance%Pente = valeur
-      else if ( NomVar == 'Model.Weir.Discharge') then
+      else if ( index(NomVar, 'Model.Weir.Discharge') > 0) then
          Instance%Debit = valeur
-      else if ( NomVar == 'Model.Weir.GateLength') then
+      else if ( index(NomVar, 'Model.Weir.GateLength') > 0) then
          Instance%LargeurVanne = valeur
-      else if ( NomVar == 'Model.Weir.PtZ') then
-         Instance%PtZ(index1) = valeur
-      else if ( NomVar == 'Model.Weir.PtQ') then
+      else if ( index(NomVar, 'Model.Weir.PtQ') > 0) then
          Instance%PtQ(index1) = valeur
-      else if ( NomVar == 'Model.Weir.PtZus') then
+      else if ( index(NomVar, 'Model.Weir.PtZus') > 0) then
          Instance%PtZamont(index1, index2) = valeur
-      else if ( NomVar == 'Model.Weir.PtZds') then
+      else if ( index(NomVar, 'Model.Weir.PtZds') > 0) then
          Instance%PtZaval(index1) = valeur
-      else if ( NomVar == 'Model.Weir.PtZup') then
+      else if ( index(NomVar, 'Model.Weir.PtZup') > 0) then
          Instance%PtZsup = valeur
-      else if ( NomVar == 'Model.Weir.PtZlo') then
+      else if ( index(NomVar, 'Model.Weir.PtZlo') > 0) then
          Instance%PtZinf = valeur
-      else if ( NomVar == 'Model.Weir.PtX') then
+      else if ( index(NomVar, 'Model.Weir.PtZ') > 0) then
+         Instance%PtZ(index1) = valeur
+      else if ( index(NomVar, 'Model.Weir.PtX') > 0) then
          Instance%PtX(index1) = valeur
-      else if ( NomVar == 'Model.Weir.PtY') then
+      else if ( index(NomVar, 'Model.Weir.PtY') > 0) then
          Instance%PtY(index1) = valeur
       else
          SET_DOUBLE_SINGULARITE = 1
@@ -769,17 +769,17 @@ contains
       SET_INT_SINGULARITE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.Number') then
+      if ( index(NomVar, 'Model.Weir.Number') > 0) then
          Instance%Numero = valeur
-      else if ( NomVar == 'Model.Weir.ReachNum') then
+      else if ( index(NomVar, 'Model.Weir.ReachNum') > 0) then
          Instance%NumBranche = valeur
-      else if ( NomVar == 'Model.Weir.Node') then
+      else if ( index(NomVar, 'Model.Weir.Node') > 0) then
          Instance%Section = valeur
-      else if ( NomVar == 'Model.Weir.Type') then
+      else if ( index(NomVar, 'Model.Weir.Type') > 0) then
          Instance%Type = valeur
-      else if ( NomVar == 'Model.Weir.Thickness') then
+      else if ( index(NomVar, 'Model.Weir.Thickness') > 0) then
          Instance%Epaisseur_seuil = valeur
-      else if ( NomVar == 'Model.Weir.GraphNum') then
+      else if ( index(NomVar, 'Model.Weir.GraphNum') > 0) then
          Instance%NumeroLoi = valeur
       else
          SET_INT_SINGULARITE = 1
@@ -802,7 +802,7 @@ contains
       SET_BOOL_SINGULARITE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.State') then
+      if ( index(NomVar, 'Model.Weir.State') > 0) then
          Instance%EtatEfface = valeur
       else
          SET_BOOL_SINGULARITE = 1
@@ -825,7 +825,7 @@ contains
       SET_STRING_SINGULARITE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Weir.Name') then
+      if ( index(NomVar, 'Model.Weir.Name') > 0) then
          Instance%Nom = valeur
       else
          SET_STRING_SINGULARITE = 1

@@ -855,7 +855,7 @@ def vnv_plot2d(\
     @param cmap_name (str) name of the scalar map
     @param cbar (bool) trigger for colorbar plot
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
@@ -900,18 +900,18 @@ def vnv_plot2d(\
             and var_type is 'scalar':
         var_type = 'vector'
 
-    # If time is positive searched for record
-    if time is not None:
-        record = res.get_closest_record(time)
-    else:
-        time = res.times[record]
-
     # default variables
     mesh = res.tri
     ndim = res.get_mesh_dimension()
 
     # Get scalar data for 2d maps and contours
     if var_name != '':
+        # If time is positive searched for record
+        if time is not None:
+            record = res.get_closest_record(time)
+        else:
+            time = res.times[record]
+
         if var_type == 'scalar':
             mesh, scalar = get_data(res, var_name, record, zslice,
                                     poly, poly_number, plane)
@@ -1272,7 +1272,7 @@ def vnv_plot3d(varname, res, record=-1, time=None,
     @param cmap_name (str) name of the scalar map
     @param cbar (bool) trigger for colorbar plot
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.

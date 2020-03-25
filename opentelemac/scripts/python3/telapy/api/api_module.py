@@ -40,12 +40,43 @@ def get_file_format(key, cas):
         # and the word FORMAT (same word in french and english)
         if key in k and ('FORMAT ' in k or ' FORMAT' in k):
             return cas.values[k]
-        else:
-            i = i + 1
+        i = i + 1
     # By default if there is no format keyword the file is SERAFIN
 
     return 'SERAFIN'
 
+def get_dico(name):
+    """
+    Returns path to the dictionary associated with the short_name (t2d,sis...)
+    If HOMETEL is set the full path otherwise just the name
+
+    @parm name (str) Short name of the module
+
+    @returns (str) Path to the dictionary
+    """
+    if name == "t2d":
+        module = "telemac2d"
+    elif name == "t3d":
+        module = "telemac3d"
+    elif name == "waq":
+        module = "waqtel"
+    elif name == "sis":
+        module = "sisyphe"
+    elif name == "gaia":
+        module = "gaia"
+    else:
+        raise TelemacException("Unknow module short name: "+name)
+
+    hometel = os.getenv("HOMETEL")
+    if hometel is not None:
+        dico = os.path.join(os.getenv("HOMETEL"),
+                            "sources",
+                            module,
+                            module+".dico")
+    else:
+        dico = module+'.dico'
+
+    return dico
 
 class ApiModule():
     """The Generic Python class for TELEMAC-MASCARET APIs"""
@@ -58,9 +89,7 @@ class ApiModule():
                  dicofile,
                  lang, stdout,
                  comm, recompile,
-                 code=None, log_lvl='INFO',
-                 waqfile=None,
-                 waqdico=None):
+                 code=None, log_lvl='INFO'):
         """
         Constructor for apiModule
 
@@ -73,8 +102,6 @@ class ApiModule():
         @param comm MPI communicator
         @param recompile If true recompiling the API
         @param code For coupling
-        @param waqfile Name of the waqtel steering file
-        @param waqdico Path to the waqtel dictionary
         """
 
         self.name = name
@@ -115,7 +142,7 @@ class ApiModule():
                 cfg = CFGS.configs[CFGS.cfgname]
                 # compile user fortran
                 if self.rank == 0:
-                    self.logger.debug('%d: starting compilation', self.rank)
+                    self.logger.debug('%d: starting compilation: %s', self.rank, user_fortran)
                     incs_flags = get_api_incs_flags()
                     ld_flags = get_api_ld_flags(False)
                     compile_princi_lib(user_fortran,
@@ -164,32 +191,27 @@ class ApiModule():
         self.run_init = getattr(self.api_inter, "run_init_"+self.name)
         self.run_timestep = getattr(self.api_inter, "run_timestep_"+self.name)
         self.run_finalize = getattr(self.api_inter, "run_finalize_"+self.name)
-        self.api_get_integer = getattr(self.api_inter, "get_integer_"
-                                       + self.name)
-        self.api_set_integer = getattr(self.api_inter, "set_integer_"
-                                       + self.name)
-        self.api_get_integer_array = \
-            getattr(self.api_inter, "get_integer_array_" + self.name)
-        self.api_set_integer_array = \
-            getattr(self.api_inter, "set_integer_array_" + self.name)
-        self.api_get_double = getattr(self.api_inter, "get_double_"+self.name)
-        self.api_set_double = getattr(self.api_inter, "set_double_"+self.name)
-        self.api_get_double_array = \
-                getattr(self.api_inter, "get_double_array_"+self.name)
-        self.api_set_double_array = \
-                getattr(self.api_inter, "set_double_array_"+self.name)
-        self.api_get_string = getattr(self.api_inter, "get_string_"+self.name)
-        self.api_set_string = getattr(self.api_inter, "set_string_"+self.name)
-        self.api_get_boolean = getattr(self.api_inter, "get_boolean_"
-                                       + self.name)
-        self.api_set_boolean = getattr(self.api_inter, "set_boolean_"
-                                       + self.name)
-        self.get_var_type = getattr(self.api_inter, "get_var_type_"+self.name)
-        self.get_var_size = getattr(self.api_inter, "get_var_size_"+self.name)
+        self.api_get_integer = self.api_inter.get_integer
+        self.api_set_integer = self.api_inter.set_integer
+        self.api_get_integer_array = self.api_inter.get_integer_array
+        self.api_set_integer_array = self.api_inter.set_integer_array
+        self.api_get_double = self.api_inter.get_double
+        self.api_set_double = self.api_inter.set_double
+        self.api_get_double_array = self.api_inter.get_double_array
+        self.api_set_double_array = self.api_inter.set_double_array
+        self.api_get_string = self.api_inter.get_string
+        self.api_set_string = self.api_inter.set_string
+        self.api_get_boolean = self.api_inter.get_boolean
+        self.api_set_boolean = self.api_inter.set_boolean
+        self.get_var_type = self.api_inter.get_var_type
+        self.get_var_size = self.api_inter.get_var_size
         self.mod_handle_var = getattr(ApiModule._api,
                                       "api_handle_var_"+self.name)
         self.get_var_info = getattr(self.mod_handle_var,
                                     "get_var_info_{}_d".format(self.name))
+        if self.name =='t2d':
+            self.run_timestep_res = getattr(self.api_inter, "run_timestep_res_"+self.name)
+            self.run_timestep_compute = getattr(self.api_inter, "run_timestep_compute_" + self.name)
 
         self.api_handle_error = ApiModule._api.api_handle_error
 
@@ -197,8 +219,6 @@ class ApiModule():
         self.stdout = stdout
         self.casfile = casfile
         self.dicofile = dicofile
-        self.waqfile = waqfile
-        self.waqdico = waqdico
         if comm is not None:
             self.fcomm = comm.py2f()
             self.ncsize = comm.Get_size()
@@ -213,6 +233,28 @@ class ApiModule():
 
         # Parsing steering file
         self.cas = TelemacCas(self.casfile, self.dicofile)
+        # Looking for coupling steering files
+        # For gaia
+        try:
+            self.gaia_file = self.cas.get("GAIA STEERING FILE")
+        except TelemacException:
+            self.gaia_file = None
+        if self.gaia_file == '':
+            self.gaia_file = None
+        self.gaia_dico = get_dico("gaia")
+        if self.gaia_file is not None:
+            self.gaia_cas = TelemacCas(self.gaia_file, self.gaia_dico)
+
+        # For waqtel
+        try:
+            self.waqfile = self.cas.get("WAQTEL STEERING FILE", None)
+        except TelemacException:
+            self.waqfile = None
+        if self.waqfile == '':
+            self.waqfile = None
+        self.waqdico = get_dico("waq")
+        if self.waqfile is not None:
+            self.waq_cas = TelemacCas(self.waqfile, self.waqdico)
 
         # run_set_config
         self.logger.debug('%d: starting run_set_config', self.rank)
@@ -222,7 +264,25 @@ class ApiModule():
         # Running partitionning step if in parallel
         if self.ncsize > 1:
             if self.rank == 0:
-                self.partitionning_step()
+                self.logger.debug("starting partitionning for %s",
+                                  self.cas.file_name)
+                self.partitionning_step(self.cas)
+                self.logger.debug("ending partitionning for %s",
+                                  self.cas.file_name)
+                # Gaia partitioning
+                if self.gaia_file is not None:
+                    self.logger.debug("starting partitionning for %s",
+                                      self.gaia_file)
+                    self.partitionning_step(self.gaia_cas, code="GAI")
+                    self.logger.debug("ending partitionning for %s",
+                                      self.gaia_file)
+                # Waqtel partitioning
+                if self.waqfile is not None:
+                    self.logger.debug("starting partitionning for %s",
+                                      self.waqfile)
+                    self.partitionning_step(self.waq_cas, code="WAQ")
+                    self.logger.debug("ending partitionning for %s",
+                                      self.waqfile)
             self.comm.Barrier()
 
         # Array used for numbering in parallel
@@ -250,54 +310,58 @@ class ApiModule():
             raise SystemExit
         self._error = 0
 
-    def partitionning_step(self):
+    def partitionning_step(self, cas, code=None):
         """
-           Partition function
-           It will run partel for the files that needs to be split
-           and copy the others
+        Partition function
+        It will run partel for the files that needs to be split
+        and copy the others
 
+        @param cas (TelemacCas) Steering file for which to run partitionning
+        @param code (str) Code name for partel (T2D, SIS...)
         """
+        if code is None:
+            code = self.name.upper()
 
         # Get the name of the boundary conditions file
-        cli_file = self.cas.get('BOUNDARY CONDITIONS FILE')
+        cli_file = cas.get('BOUNDARY CONDITIONS FILE')
 
         # Check if we have some of the optionnals file for
 
         # Getting sections file if there is one
-        sec_file = self.cas.get('SECTIONS INPUT FILE', '')
+        sec_file = cas.get('SECTIONS INPUT FILE', '')
 
         # Getting zones file if there is one
-        zone_file = self.cas.get('ZONES FILE', '')
+        zone_file = cas.get('ZONES FILE', '')
 
         # Getting weirs data file if there is one and we have weirs type == 2
-        weirs_file = self.cas.get('WEIRS DATA FILE', '')
+        weirs_file = cas.get('WEIRS DATA FILE', '')
         if weirs_file != '':
-            type_s = self.cas.get('TYPE OF WEIRS')
+            type_s = cas.get('TYPE OF WEIRS')
             if type_s != 2:
                 weirs_file = ' '
 
         # Partionning the geometry file first
-        geo_file = self.cas.get('GEOMETRY FILE')
-        geo_fmt = get_file_format('GEOMETRY FILE', self.cas)
+        geo_file = cas.get('GEOMETRY FILE')
+        geo_fmt = get_file_format('GEOMETRY FILE', cas)
         self.logger.debug('%d: starting partel for %s', self.rank, geo_file)
         self._error = self.api_inter.run_partel(\
-                         self.my_id, geo_file, cli_file,
+                         code, geo_file, cli_file,
                          self.ncsize, 1, geo_fmt,
                          sec_file, zone_file, weirs_file)
         self.logger.debug('%d: starting partel for %s', self.rank, geo_file)
         # Loop on all input files
-        for key in self.cas.in_files:
-            ffile = self.cas.values[key]
+        for key in cas.in_files:
+            ffile = cas.values[key]
             if ffile != '':
-                submit = self.cas.in_files[key].split(';')
+                submit = cas.in_files[key].split(';')
                 if key == 'GEOMETRY FILE':
                     continue
                 elif submit[5][0:7] == 'SELAFIN':
-                    file_fmt = get_file_format(key, self.cas)
+                    file_fmt = get_file_format(key, cas)
                     self.logger.debug('%d: starting parres for %s',
                                       self.rank, ffile)
                     self._error = self.api_inter.run_parres(\
-                            self.my_id, geo_file, ffile,
+                            code, geo_file, ffile,
                             self.ncsize, geo_fmt, file_fmt)
                     self.logger.debug('%d: endding parres for %s',
                                       self.rank, ffile)
@@ -308,29 +372,35 @@ class ApiModule():
                                         ffile + '{0:05d}-{1:05d}'
                                         .format(self.ncsize-1, i))
 
-    def concatenation_step(self):
+    def concatenation_step(self, cas, code=None):
         """
-           Concatenate function
-           will run gretel for the file where it is necessary
+        Concatenate function
+        will run gretel for the file where it is necessary
+
+        @param cas (TelemacCas) Steering for which we run contatenation
+        @param code (str) Code name for gretel (T2D, SIS...)
         """
 
+        if code is None:
+            code = self.name.upper()
+
         # Get name of the geometry file
-        geo_file = self.cas.get('GEOMETRY FILE')
-        geo_fmt = get_file_format('GEOMETRY FILE', self.cas)
+        geo_file = cas.get('GEOMETRY FILE')
+        geo_fmt = get_file_format('GEOMETRY FILE', cas)
 
         # Get the name of the boundary conditions file
-        cli_file = self.cas.get('BOUNDARY CONDITIONS FILE')
+        cli_file = cas.get('BOUNDARY CONDITIONS FILE')
 
         # Get name of the geometry file
-        nplan = self.cas.get('NUMBER OF HORIZONTAL LEVELS', default=0)
+        nplan = cas.get('NUMBER OF HORIZONTAL LEVELS', default=0)
 
         # Loop on all output files
-        for key in self.cas.out_files:
-            ffile = self.cas.values[key]
+        for key in cas.out_files:
+            ffile = cas.values[key]
             if ffile != '':
-                submit = self.cas.out_files[key].split(';')
+                submit = cas.out_files[key].split(';')
                 if submit[5][0:7] == 'SELAFIN':
-                    file_fmt = get_file_format(key, self.cas)
+                    file_fmt = get_file_format(key, cas)
                     self.logger.debug('%d: starting gretel for %s',
                                       self.rank, ffile)
                     part_file = ffile+'{0:05d}-{1:05d}'.format(self.ncsize-1, 0)
@@ -342,7 +412,7 @@ class ApiModule():
                             "to run gretel manually")
                         continue
                     self._error = self.api_inter.run_gretel(\
-                            self.my_id, geo_file, geo_fmt,
+                            code, geo_file, geo_fmt,
                             cli_file, ffile, file_fmt,
                             self.ncsize, nplan)
                     self.logger.debug('%d: endding gretel for %s',
@@ -363,9 +433,23 @@ class ApiModule():
             self._error = self.run_read_case(self.my_id, self.code,
                                              self.casfile, self.dicofile,
                                              init)
-        elif self.name is "t3d" and self.waqfile is not None:
-            self._error = self.run_read_case(self.my_id, self.casfile,
-                                             self.dicofile, init, self.waqfile, self.waqdico)
+        elif self.name == "t3d":
+            waqfile = ' '*250 if self.waqfile is None else self.waqfile
+            waqdico = ' '*250 if self.waqdico is None else self.waqdico
+            gaia_file = ' '*250 if self.gaia_file is None else self.gaia_file
+            gaia_dico = ' '*250 if self.gaia_dico is None else self.gaia_dico
+            self._error = self.run_read_case(\
+                    self.my_id, self.casfile,
+                    self.dicofile, init,
+                    waqfile, waqdico,
+                    gaia_file, gaia_dico)
+        elif self.name == "t2d":
+            self._error = self.run_read_case(\
+                    self.my_id, self.casfile,
+                    self.dicofile, init,
+                    gaia_cas=self.gaia_file,
+                    gaia_dico=self.gaia_dico)
+
         else:
             self._error = self.run_read_case(self.my_id, self.casfile,
                                              self.dicofile, init)
@@ -547,7 +631,7 @@ class ApiModule():
 
             for i in range(nb_var):
                 tmp_varname, tmp_varinfo, self._error = \
-                        self.get_var_info(i+1, var_len, info_len)
+                        self.get_var_info(self.name.upper(), i+1, var_len, info_len)
                 varname = b''.join(tmp_varname).decode('utf-8').strip()
                 varinfo = b''.join(tmp_varinfo).decode('utf-8').strip()
                 self._variables[varname] = varinfo
@@ -566,7 +650,7 @@ class ApiModule():
 
         return vnames, vinfo
 
-    def get(self, varname, i=-1, j=-1, k=-1, global_num=True):
+    def get(self, varname, i=-1, j=-1, k=-1):
         """
         Get the value of a variable of Telemac 2D
 
@@ -574,15 +658,14 @@ class ApiModule():
         @param i index on first dimension
         @param j index on second dimension
         @param k index on third dimension
-        @param global_num Are the index on local/global numbering
 
         @retuns variable value
         """
         value = None
         vartype, _, ndim, _, _, _, _, _, self._error = \
-            self.get_var_type(varname.encode('utf-8'))
+            self.get_var_type(self.name.upper(), varname.encode('utf-8'))
         dim1, dim2, dim3, self._error = \
-                self.get_var_size(self.my_id, varname.encode('utf-8'))
+                self.get_var_size(self.my_id, self.name.upper(), varname.encode('utf-8'))
         # If we have a string the first dimension is the size of the string
         if b"STRING" in vartype:
             ndim -= 1
@@ -593,7 +676,7 @@ class ApiModule():
         # Checking that index are within bound
         # Only doing that for local numbering and sequential runs
         # TODO: See how to hand that so that it works for both
-        if not global_num or not self.parallel_run:
+        if not self.parallel_run:
             if ndim >= 1:
                 if not 0 <= i < dim1:
                     raise TelemacException(\
@@ -612,17 +695,18 @@ class ApiModule():
         # Getting value depending on type
         if b"DOUBLE" in vartype:
             value, self._error = \
-                 self.api_get_double(self.my_id, varname, global_num,
+                 self.api_get_double(self.my_id, self.name.upper(), varname,
                                      i+1, j+1, k+1)
         elif b"INTEGER" in vartype:
-            value, self._error = self.api_get_integer(self.my_id, varname,
+            value, self._error = self.api_get_integer(self.my_id, self.name.upper(), varname,
                                                       i+1, j+1, k+1)
         elif b"STRING" in vartype:
-            tmp_value, self._error = self.api_get_string(self.my_id, varname,
-                                                         dim0, i+1, j+1)
-            value = tmp_value.tostring().strip().decode('utf-8')
+
+            tmp_value, self._error = self.api_get_string(self.my_id, self.name.upper(), varname,
+                                              dim0, i+1, j+1)
+            value = tmp_value.decode('utf-8').strip()
         elif b"BOOLEAN" in vartype:
-            value, self._error = self.api_get_boolean(self.my_id, varname,
+            value, self._error = self.api_get_boolean(self.my_id, self.name.upper(), varname,
                                                       i+1, j+1, k+1)
         else:
             raise TelemacException(\
@@ -631,7 +715,7 @@ class ApiModule():
         return value
 
 
-    def set(self, varname, value, i=-1, j=-1, k=-1, global_num=True):
+    def set(self, varname, value, i=-1, j=-1, k=-1):
         """
         Set the value of a variable of the telemac-mascare module
 
@@ -640,14 +724,13 @@ class ApiModule():
         @param i (int) index on first dimension
         @param j (int) index on second dimension
         @param k (int) index on third dimension
-        @param global_num (bool) Are the index on local/global numbering
 
         @retuns variable value
         """
         vartype, readonly, ndim, _, _, _, _, _, self._error = \
-            self.get_var_type(varname)
+            self.get_var_type(self.name.upper(), varname)
 
-        dim1, dim2, dim3, self._error = self.get_var_size(self.my_id, varname)
+        dim1, dim2, dim3, self._error = self.get_var_size(self.my_id, self.name.upper(), varname)
 
         # In case of a string bypassing check on first dimension (it is the
         # size of the string)
@@ -666,7 +749,7 @@ class ApiModule():
         # Checking that index are within bound
         # Only doing that for local numbering and sequential runs
         # TODO: See how to hand that so that it works for both
-        if not global_num or not self.parallel_run:
+        if not self.parallel_run:
             if ndim >= 1:
                 if not 0 <= i < dim1:
                     raise TelemacException(\
@@ -685,18 +768,18 @@ class ApiModule():
         # Getting value depending on type
         if b"DOUBLE" in vartype:
             self._error = \
-               self.api_set_double(self.my_id, varname, value, global_num,
+               self.api_set_double(self.my_id, self.name.upper(), varname, value,
                                    i+1, j+1, k+1)
         elif b"INTEGER" in vartype:
-            self._error = self.api_set_integer(self.my_id, varname, value,
+            self._error = self.api_set_integer(self.my_id, self.name.upper(), varname, value,
                                                i+1, j+1, k+1)
         elif b"STRING" in vartype:
             # Filling value with spaces to reach dim1
             tmp_str = value + ' '*(dim0 - len(value))
-            self._error = self.api_set_string(self.my_id, varname, tmp_str,
+            self._error = self.api_set_string(self.my_id, self.name.upper(), varname, tmp_str,
                                               i+1, j+1)
         elif b"BOOLEAN" in vartype:
-            self._error = self.api_set_boolean(self.my_id, varname, value,
+            self._error = self.api_set_boolean(self.my_id, self.name.upper(), varname, value,
                                                i+1, j+1, k+1)
         else:
             raise TelemacException(\
@@ -712,8 +795,8 @@ class ApiModule():
         @returns A numpy array containing the values
         """
         var_type, _, ndim, _, _, _, _, _, self._error = \
-                self.get_var_type(varname)
-        dim1, dim2, dim3, self._error = self.get_var_size(self.my_id, varname)
+                self.get_var_type(self.name.upper(), varname)
+        dim1, dim2, dim3, self._error = self.get_var_size(self.my_id, self.name.upper(), varname)
         if not(b"DOUBLE" in var_type or b"INTEGER" in var_type):
             raise TelemacException(\
                     "get_array only works for integer and double"+\
@@ -723,30 +806,30 @@ class ApiModule():
             # Initialising array
             if b"DOUBLE" in var_type:
                 res = np.zeros((dim1), dtype=np.float64)
-                self.api_get_double_array(self.my_id, varname, res, dim1)
+                self.api_get_double_array(self.my_id, self.name.upper(), varname, res, dim1)
             else:
                 res = np.zeros((dim1), dtype=np.int32)
-                self.api_get_integer_array(self.my_id, varname, res, dim1)
+                self.api_get_integer_array(self.my_id, self.name.upper(), varname, res, dim1)
         elif ndim == 2:
             if b"DOUBLE_BLOCK" in var_type:
                 res = np.zeros(dim2, dtype=np.float64)
-                self.api_get_double_array(self.my_id, varname, res, dim2,
+                self.api_get_double_array(self.my_id, self.name.upper(), varname, res, dim2,
                                           block_index=block_index+1)
             elif b"DOUBLE" in var_type:
                 res = np.zeros((dim1*dim2), dtype=np.float64)
-                self.api_get_double_array(self.my_id, varname, res, dim1*dim2)
+                self.api_get_double_array(self.my_id, self.name.upper(), varname, res, dim1*dim2)
             else:
                 res = np.zeros((dim1*dim2), dtype=np.int32)
-                self.api_get_integer_array(self.my_id, varname, res, dim1*dim2)
+                self.api_get_integer_array(self.my_id, self.name.upper(), varname, res, dim1*dim2)
             res = res.reshape((dim1, dim2))
         elif ndim == 3:
             if b"DOUBLE" in var_type:
                 res = np.zeros((dim1*dim2*dim3), dtype=np.float64)
-                self.api_get_double_array(self.my_id, varname, res,
+                self.api_get_double_array(self.my_id, self.name.upper(), varname, res,
                                           dim1*dim2*dim3)
             else:
                 res = np.zeros((dim1*dim2*dim3), dtype=np.int32)
-                self.api_get_integer_array(self.my_id, varname, res,
+                self.api_get_integer_array(self.my_id, self.name.upper(), varname, res,
                                            dim1*dim2*dim3)
             res = res.reshape((dim1, dim2, dim3))
         else:
@@ -764,8 +847,8 @@ class ApiModule():
         @param values Value for each index of the array
         """
         var_type, _, ndim, _, _, _, _, _, self._error = \
-                self.get_var_type(varname)
-        dim1, dim2, dim3, self._error = self.get_var_size(self.my_id, varname)
+                self.get_var_type(self.name.upper(), varname)
+        dim1, dim2, dim3, self._error = self.get_var_size(self.my_id, self.name.upper(), varname)
         if not(b"DOUBLE" in var_type or b"INTEGER" in var_type):
             raise TelemacException(\
                     "set_array only works for integer and double"+\
@@ -778,9 +861,9 @@ class ApiModule():
                         "Error in shape of values is %s should be %s"
                         % (str(values.shape), str((dim1,))))
             if b"DOUBLE" in var_type:
-                self.api_set_double_array(self.my_id, varname, values, dim1)
+                self.api_set_double_array(self.my_id, self.name.upper(), varname, values, dim1)
             else:
-                self.api_set_integer_array(self.my_id, varname, values, dim1)
+                self.api_set_integer_array(self.my_id, self.name.upper(), varname, values, dim1)
         elif ndim == 2:
             # Checking shape
             if values.shape != (dim1, dim2):
@@ -789,11 +872,12 @@ class ApiModule():
                         % (str(values.shape), str((dim1, dim2))))
             tmp = values.reshape(dim1*dim2)
             if b"DOUBLE_BLOCK" in var_type:
-                self.api_set_double_array(self.my_id, varname, tmp, dim1*dim2, block_index=block_index+1)
+                self.api_set_double_array(self.my_id, self.name.upper(), varname, tmp, dim3*dim2,
+                                          block_index=block_index+1)
             elif b"DOUBLE" in var_type:
-                self.api_set_double_array(self.my_id, varname, tmp, dim1*dim2)
+                self.api_set_double_array(self.my_id, self.name.upper(), varname, tmp, dim1*dim2)
             else:
-                self.api_set_integer_array(self.my_id, varname, tmp, dim1*dim2)
+                self.api_set_integer_array(self.my_id, self.name.upper(), varname, tmp, dim1*dim2)
         elif ndim == 3:
             # Checking shape
             if values.shape != (dim1, dim2, dim3):
@@ -802,10 +886,10 @@ class ApiModule():
                         % (str(values.shape), str((dim1, dim2, dim3))))
             tmp = values.reshape(dim1*dim2*dim3)
             if b"DOUBLE" in var_type:
-                self.api_set_double_array(self.my_id, varname, tmp,
+                self.api_set_double_array(self.my_id, self.name.upper(), varname, tmp,
                                           dim1*dim2*dim3)
             else:
-                self.api_set_integer_array(self.my_id, varname, tmp,
+                self.api_set_integer_array(self.my_id, self.name.upper(), varname, tmp,
                                            dim1*dim2*dim3)
         else:
             raise TelemacException(\
@@ -864,8 +948,7 @@ class ApiModule():
                                  self.coordx,
                                  self.coordy):
             if is_in_polygon(pt_x, pt_y, poly):
-                self.set(varname, value, i=i,
-                         global_num=not self.parallel_run)
+                self.set(varname, value, i=i)
 
     def get_on_range(self, varname, irange, jrange="", krange=""):
         """
@@ -1024,8 +1107,45 @@ class ApiModule():
         # Running merging step if in parallel
         if self.ncsize > 1:
             if self.rank == 0:
-                self.concatenation_step()
+                self.logger.debug("starting concatenation for %s",
+                                  self.casfile)
+                self.concatenation_step(self.cas)
+                self.logger.debug("ending concatenation for %s",
+                                  self.casfile)
+                # Gaia concatenation
+                if self.gaia_file is not None:
+                    self.logger.debug("starting concatenation for %s",
+                                      self.gaia_file)
+                    self.concatenation_step(self.gaia_cas, code="GAI")
+                    self.logger.debug("ending concatenation for %s",
+                                      self.gaia_cas)
+                # Waqtel concatenation
+                if self.waqfile is not None:
+                    self.logger.debug("starting concatenation for %s",
+                                      self.waqfile)
+                    self.concatenation_step(self.waq_cas, code="WAQ")
+                    self.logger.debug("ending concatenation for %s",
+                                      self.waqfile)
+                # This will remove all partionned files
+                self.cleanup()
             self.comm.Barrier()
+
+    def cleanup(self):
+        """
+        Remove temporary files created when running in parallel
+        """
+        import re
+        # We only have temporary files in parallel
+        if self.ncsize <= 1:
+            return
+
+        # Removing all files finishin by a 0000x-0000y pattern
+        self.logger.debug('Clean up of temporary files')
+        prog = re.compile('.*[0-9]{5}-[0-9]{5}$')
+        for ffile in os.listdir('.'):
+            if prog.match(ffile):
+                self.logger.debug(' ~> Removing: %s', ffile)
+                os.remove(ffile)
 
     def generate_var_info(self):
         """
@@ -1040,7 +1160,7 @@ class ApiModule():
 
         for varname, varinfo in zip(vnames, vinfo):
             vartype, _, _, _, _, _, get_pos, set_pos, self._error = \
-                    self.get_var_type(varname)
+                    self.get_var_type(self.name.upper(), varname)
             var_info[varname.rstrip()] = {'get_pos': get_pos,
                                           'set_pos': set_pos,
                                           'info': varinfo.rstrip(),
@@ -1059,9 +1179,9 @@ class ApiModule():
         for varname, _ in zip(vnames, vinfo):
             print("For Variable "+varname.strip())
             vartype, _, ndim, _, _, _, get_pos, set_pos, self._error = \
-                self.get_var_type(varname)
+                self.get_var_type(self.name.upper(), varname)
             dim1, dim2, dim3, self._error = \
-                self.get_var_size(self.my_id, varname)
+                self.get_var_size(self.my_id, self.name.upper(), varname)
 
             if get_pos == -1:
                 print(" - Missing get position")
@@ -1154,11 +1274,11 @@ class ApiModule():
         from mpi4py import MPI
 
         vartype, _, ndim, _, _, _, _, _, self._error = \
-            self.get_var_type(varname.encode('utf-8'))
+            self.get_var_type(self.name.upper(), varname.encode('utf-8'))
         dim1, dim2, dim3, self._error = \
-                self.get_var_size(self.my_id, varname.encode('utf-8'))
+                self.get_var_size(self.my_id, self.name.upper(), varname.encode('utf-8'))
         # If we have a string the first dimension is the size of the string
-        if vartype != b'DOUBLE':
+        if vartype.strip() != b'DOUBLE':
             raise TelemacException(\
                     "mpi_get only works with double")
 
@@ -1171,7 +1291,7 @@ class ApiModule():
 
         if local_i != -1:
             tmp, self._error = \
-                 self.api_get_double(self.my_id, varname, False,
+                 self.api_get_double(self.my_id, self.name.upper(), varname,
                                      local_i+1, 0, 0)
             local_value = np.array(tmp, dtype=np.float64)
         else:
@@ -1208,7 +1328,7 @@ class ApiModule():
         from mpi4py import MPI
 
         vartype, _, ndim, _, _, _, _, _, self._error = \
-            self.get_var_type(varname.encode('utf-8'))
+            self.get_var_type(self.name.upper(), varname.encode('utf-8'))
         # If we have a string the first dimension is the size of the string
         if vartype != b'DOUBLE':
             raise TelemacException(\
@@ -1229,7 +1349,7 @@ class ApiModule():
 
         if local_i != -1:
             self._error = \
-                 self.api_set_double(self.my_id, varname, value, False,
+                 self.api_set_double(self.my_id, self.name.upper(), varname, value, False,
                                      local_i+1, 0, 0)
 
     def mpi_get_npoin(self):

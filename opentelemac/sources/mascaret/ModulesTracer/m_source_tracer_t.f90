@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -20,7 +20,7 @@ module M_SOURCE_TRACER_T
 !***********************************************************************
 ! PROGICIEL : TRACER         S.MANDELKERN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -114,37 +114,37 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.Name') then
+      if ( index(NomVar, 'Model.Tracer.Sources.Name') > 0) then
          TypeVar = 'STRING'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.Type') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Type') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.ReachNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.ReachNumber') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.RelAbscissa') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.RelAbscissa') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.Length') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Length') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.UpStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.UpStreamNode') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.DownStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.DownStreamNode') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.GraphNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.GraphNumber') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.Source') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Source') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Sources.withInflow') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.withInflow') > 0) then
          TypeVar = 'BOOL'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Sources.InflowName') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.InflowName') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
       else
@@ -179,47 +179,47 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.Name') then
+      if ( index(NomVar, 'Model.Tracer.Sources.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.Type') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Type') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.ReachNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.ReachNumber') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.RelAbscissa') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.RelAbscissa') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.Length') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Length') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.UpStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.UpStreamNode') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.DownStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.DownStreamNode') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.GraphNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.GraphNumber') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.Source') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Source') > 0) then
          taille1 = size(Instance%Apport_source)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.withInflow') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.withInflow') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Sources.InflowName') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.InflowName') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -254,7 +254,7 @@ contains
       !------------------------------------------------------------------------------
       ! Fin des appels aux fonctions SET_TAILLE_VAR_XXXX des membres de type primitif
       !------------------------------------------------------------------------------
-      if ( NomVar == 'Model.Tracer.Sources.Source') then
+      if ( index(NomVar, 'Model.Tracer.Sources.Source') > 0) then
         if (ASSOCIATED(Instance%Apport_source)) then
            t1 = size(Instance%Apport_source)
            if (t1 /= NewT1) then
@@ -304,11 +304,11 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.RelAbscissa') then
+      if ( index(NomVar, 'Model.Tracer.Sources.RelAbscissa') > 0) then
          valeur = Instance%AbscisseRel
-      else if ( NomVar == 'Model.Tracer.Sources.Length') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Length') > 0) then
          valeur = Instance%Longueur
-      else if ( NomVar == 'Model.Tracer.Sources.Source') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Source') > 0) then
          valeur = Instance%Apport_source(index1)
       else
          GET_DOUBLE_SOURCE_TRACER = 1
@@ -332,17 +332,17 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.Type') then
+      if ( index(NomVar, 'Model.Tracer.Sources.Type') > 0) then
          valeur = Instance%Type
-      else if ( NomVar == 'Model.Tracer.Sources.ReachNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.ReachNumber') > 0) then
          valeur = Instance%NumBranche
-      else if ( NomVar == 'Model.Tracer.Sources.UpStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.UpStreamNode') > 0) then
          valeur = Instance%SectionAm
-      else if ( NomVar == 'Model.Tracer.Sources.DownStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.DownStreamNode') > 0) then
          valeur = Instance%SectionAv
-      else if ( NomVar == 'Model.Tracer.Sources.GraphNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.GraphNumber') > 0) then
          valeur = Instance%NumeroLoi
-      else if ( NomVar == 'Model.Tracer.Sources.InflowName') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.InflowName') > 0) then
          valeur = Instance%NumeroApport
       else
          GET_INT_SOURCE_TRACER = 1
@@ -366,7 +366,7 @@ contains
       valeur                = .FALSE.
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.withInflow') then
+      if ( index(NomVar, 'Model.Tracer.Sources.withInflow') > 0) then
          valeur = Instance%SuperpositionApport
       else
          GET_BOOL_SOURCE_TRACER = 1
@@ -418,11 +418,11 @@ contains
       SET_DOUBLE_SOURCE_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.RelAbscissa') then
+      if ( index(NomVar, 'Model.Tracer.Sources.RelAbscissa') > 0) then
          Instance%AbscisseRel = valeur
-      else if ( NomVar == 'Model.Tracer.Sources.Length') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Length') > 0) then
          Instance%Longueur = valeur
-      else if ( NomVar == 'Model.Tracer.Sources.Source') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.Source') > 0) then
          Instance%Apport_source(index1) = valeur
       else
          SET_DOUBLE_SOURCE_TRACER = 1
@@ -444,17 +444,17 @@ contains
       SET_INT_SOURCE_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.Type') then
+      if ( index(NomVar, 'Model.Tracer.Sources.Type') > 0) then
          Instance%Type = valeur
-      else if ( NomVar == 'Model.Tracer.Sources.ReachNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.ReachNumber') > 0) then
          Instance%NumBranche = valeur
-      else if ( NomVar == 'Model.Tracer.Sources.UpStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.UpStreamNode') > 0) then
          Instance%SectionAm = valeur
-      else if ( NomVar == 'Model.Tracer.Sources.DownStreamNode') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.DownStreamNode') > 0) then
          Instance%SectionAv = valeur
-      else if ( NomVar == 'Model.Tracer.Sources.GraphNumber') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.GraphNumber') > 0) then
          Instance%NumeroLoi = valeur
-      else if ( NomVar == 'Model.Tracer.Sources.InflowName') then
+      else if ( index(NomVar, 'Model.Tracer.Sources.InflowName') > 0) then
          Instance%NumeroApport = valeur
       else
          SET_INT_SOURCE_TRACER = 1
@@ -476,7 +476,7 @@ contains
       SET_BOOL_SOURCE_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Sources.withInflow') then
+      if ( index(NomVar, 'Model.Tracer.Sources.withInflow') > 0) then
          Instance%SuperpositionApport = valeur
       else
          SET_BOOL_SOURCE_TRACER = 1

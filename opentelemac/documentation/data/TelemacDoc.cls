@@ -48,6 +48,7 @@
 \definecolor{LightOceanGreen}{RGB}{90, 225, 146}
 \definecolor{BostonUniversityRed}{RGB}{204, 0, 0}
 \definecolor{LightGreen}{RGB}{87, 151, 47}
+\definecolor{LimeGreen}{RGB}{44, 85, 66}
 \definecolor{ZinnwalditeBrown}{RGB}{44, 22, 8}
 \definecolor{Salmon}{RGB}{250, 128, 114}
 \definecolor{T3D}{RGB}{165, 57, 76}
@@ -73,6 +74,7 @@
 \DeclareOption{Waqtel}{\colorlet{ColorBase1}{ZinnwalditeBrown}}
 \DeclareOption{Misc}{\colorlet{ColorBase1}{Salmon}}
 \DeclareOption{TelApy}{\colorlet{ColorBase1}{Corail}}
+\DeclareOption{Coupling}{\colorlet{ColorBase1}{LimeGreen}}
 \DeclareOption{Mascaret}{\colorlet{ColorBase1}{LightPastelPurple}}
 \newcommand{\degree}{$^\circ$}
 \DeclareOption{french}{
@@ -134,6 +136,7 @@
 \newcommand{\estel}{{\scshape Estel-3D}\xspace}
 \newcommand{\damocles}{{\scshape Damocles}\xspace}
 \newcommand{\TelApy}{{\scshape TelApy}\xspace}
+\newcommand{\Coupling}{{\scshape Telemac2D-Mascaret Coupling}\xspace}
 \newcommand{\salome}{{\scshape Salome}\xspace}
 \newcommand{\gaia}{{\scshape Gaia}\xspace}
 \newcommand{\nestor}{{\scshape Nestor}\xspace}

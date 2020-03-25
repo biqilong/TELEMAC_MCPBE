@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -19,7 +19,7 @@
 ! *********************************************************************
 ! PROGICIEL : MASCARET       J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
    ! .................................................................................................................................
    ! Mutateurs permettant de modifier une valeur d'une variable d'une instance du modele ou de l'etat
@@ -42,7 +42,7 @@
      character(LEN=40)  NomVarTrim
      integer ind1,taille1,taille2,taille3
 
-     ind1 = 0
+     ind1 = index1
 
      Erreur = TEST_INIT_AND_ID(Identifiant, 'SET_DOUBLE_MASCARET')
      if (Erreur > 0 ) then

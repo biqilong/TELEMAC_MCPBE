@@ -40,7 +40,7 @@ class TestGenop(unittest.TestCase):
         self.assertEqual(error, 0)
         fcost, _ = mypb.optimize(30, nproc=2)
         print(fcost)
-        self.assertTrue(fcost[-1] < 1.e-2)
+        self.assertTrue(fcost[-1] < 5.e-2)
 
     def test_maccormick(self):
         """
@@ -126,7 +126,7 @@ class TestGenop(unittest.TestCase):
         error = mypb.initialize(myfunc, nvar, vbounds)
         self.assertEqual(error, 0)
         fcost, _ = mypb.optimize(200)
-        self.assertTrue(fcost[-1] < -23.1)
+        self.assertTrue(fcost[-1] < -20.)
 
     def test_abslinear(self):
         """

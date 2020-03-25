@@ -8,21 +8,21 @@ name: partel_para
 path: <root>|sources|utils|bief
 files: bief_def.f
   bief.f
+  elebd.f
   front2.f
   voisin.f
-  elebd.f
 
 [parallel]
 path: <root>|sources|utils|parallel
 files: declarations_parallel.F
   interface_parallel.f
-  p_time.F
-  p_exit.F
   p_allgatherv_i.F
-  p_sync.F
-  p_isum_array.F
+  p_exit.F
   p_imax_array.F
   p_init.F
+  p_isum_array.F
+  p_sync.F
+  p_time.F
 
 [partel]
 path: <root>|sources|utils|partel

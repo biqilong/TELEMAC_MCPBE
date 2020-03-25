@@ -51,7 +51,7 @@ the 2D mesh,
 
 \item The output listing, which is simulation report. In case of difficulty in
 performing a calculation, the user can request the printing of additional
-information by activating the logical keyword \telkey{DEBUGGER}.
+information by activating the logical keyword \telkey{DEBUGGER} (default = 0).
 \telkey{DEBUGGER = 1} provides the calling sequences of subroutines from the
 main program \telfile{telemac3d.f}. This technique is useful in case of
 critical computation crash to identify the responsible subroutine,
@@ -96,7 +96,7 @@ FUDAA-PREPRO or Blue Kenue.
 The selection of the format of a file is done by the corresponding keyword.
 Thereby, the keyword \telkey{GEOMETRY FILE FORMAT} specifies the format of the
 geometry file. Those keywords may take 3 different values (as an 8 character
-string): the value 'SERAFIN' corresponds to the standard single precision
+string): the value 'SERAFIN ' corresponds to the standard single precision
 SERAFIN format, which is the default and recommended value (do not forget the
 space in last position). The 'SERAFIND' value corresponds to the double
 precision SERAFIN format which allows to increase the precision of the results,
@@ -114,7 +114,7 @@ The keywords involved are:
 
 \item \telkey{FILE FOR 2D CONTINUATION FORMAT},
 
-\item \telkey{GEOMETRY FILE FORMATGEOMETRY FILE FORMAT},
+\item \telkey{GEOMETRY FILE FORMAT},
 
 \item \telkey{PREVIOUS COMPUTATION FILE FORMAT},
 
@@ -299,7 +299,8 @@ FILE}.
 
 \section{The FORTRAN file}
 
-The FORTRAN file may include a number of subroutines (so-called "user"
+The FORTRAN file (a single file or a directory containing one or several file(s))
+may include a number of subroutines (so-called "user"
 subroutines) available under the \telemac{3D} tree structure which the user can
 modify as well as those subroutines which have been specifically developed for
 the computation.
@@ -313,7 +314,8 @@ occurring in the \telemac{3D} compiled libraries.
 Upon the creation and every amendment of the FORTRAN file, a new executable
 program is generated (compilation and link) for the simulation.
 
-That file name is provided using the keyword: \telkey{FORTRAN FILE}.
+That file name or directory name is provided using the keyword
+\telkey{FORTRAN FILE}.
 
 
 \section{The liquid boundaries file}
@@ -335,7 +337,8 @@ FILE}.
 
 It is a \telemac{3D} result file which is used for initializing a new
 computation. In order to activate the optional use of that file, the keyword
-\telkey{COMPUTATION CONTINUED} should be activated. In order to specify the
+\telkey{COMPUTATION CONTINUED} should be activated (default = NO).
+In order to specify the
 previous computation file, its name should be stated through the keyword:
 \telkey{PREVIOUS COMPUTATION FILE}. The initial conditions of the new
 computation are defined by the last recorded time step in the previous
@@ -345,8 +348,9 @@ addition or deletion of a tracer\dots).
 
 A computation can also be initialized from a \telemac{2D} result. In order to
 activate that option, the \telkey{2D CONTINUATION} keyword
-should be validated. The \telemac{2D} result file should then be associated with
-the \telkey{FILE FOR 2D CONTINUATION} keyword (default
+should be validated (default = NO).
+The \telemac{2D} result file should then be associated with
+the \telkey{FILE FOR 2D CONTINUATION FORMAT} keyword (default
 value: 'SERAFIN '), see subsection \ref{sec:binfile}.
 
 
@@ -597,16 +601,26 @@ at YES (default value).
 
 It is a formatted file which can be created by \telemac{3D} during the
 computation (program launched with the -s option). It contains the report of a
-\telemac{3D} running. Its contents vary according to the values of the following
-keywords:
+\telemac{3D} running.
+The default value of the keyword \telkey{LISTING PRINTOUT} is YES,
+which means the listing is written.
+If NO is selected, the listing only includes the heading and the
+phrase "NORMAL END OF PROGRAM".
+It is not recommended to change the default value.
+In addition, the options \telkey{MASS-BALANCE} and \telkey{VALIDATION} are inhibited.
+
+Its contents vary according to the values of the following keywords:
 
 \telkey{NUMBER OF FIRST TIME STEP FOR LISTING PRINTOUTS}: provided to set at
 which time step it is desired to begin printing the data, in order to prevent
 too large files.
+The default value is 0 (writing of the listing printouts at the
+beginning of the simulation).
 
 \telkey{LISTING PRINTOUT PERIOD}: sets the period between two time step
-printings. The value is given as a time step number. For instance, the
-following sequence:
+printings. The value is given as a time step number.
+By default, it is equal to 1, i.e. every time step.
+For instance, the following sequence:
 
 \begin{lstlisting}[language=TelemacCas]
 TIME STEP = 30.0
@@ -652,6 +666,7 @@ Other files can be used by \telemac{3D}:
 \telkey{BINARY DATA FILE 1} and \telkey{BINARY DATA FILE 2}. These files can be
 used to provide data to the program, the user has to handle their reading
 within the \telkey{FORTRAN FILE}. The data from these files shall be read using
+the \telfile{GET\_FREE\_ID} subroutine,
 the \telfile{T3DBI1} logic unit for binary data file 1 and the \telfile{T3DBI2}
 logic unit for binary data file 2,
 
@@ -659,19 +674,21 @@ logic unit for binary data file 2,
 \telkey{FORMATTED DATA FILE 1} and \telkey{FORMATTED DATA FILE 2}. These files
 can be used to provide data to the program, the user has to handle their
 reading within the \telkey{FORTRAN FILE}. The data from these files shall be
-read using the \telfile{T3DFO1} logic unit for formatted data file 1 and the
+read using the \telfile{GET\_FREE\_ID} subroutine,
+the \telfile{T3DFO1} logic unit for formatted data file 1 and the
 \telfile{T3DFO2} logic unit for formatted data file 2,
 
 \item A binary results file, as specified by the keyword \telkey{BINARY
 RESULTS FILE}. This file can be used to store
 additional results, the user has to handle their writing within the FORTRAN
-program using the \telkey{T3DRBI} logic unit.
+program using the \telfile{GET\_FREE\_ID} subroutine
+and the \telfile{T3DRBI} logic unit,
 
 \item A formatted results file, as specified by the keyword \telkey{FORMATTED
 RESULTS FILE}. This file can be used to store additional results (for instance,
 results readable by an external 1D simulation code used for a coupling with
 TELEMAC), the user has to handle their writing within the FORTRAN program using
-the \telkey{T3DRFO} logic unit.
+the \telfile{GET\_FREE\_ID} subroutine and the \telfile{T3DRFO} logic unit.
 \end{itemize}
 
 The read or write operations from/into these files should be thoroughly managed

@@ -16,6 +16,7 @@ from utils.messages import Messages, svn_banner
 from utils.files import check_sym_link
 from utils.exceptions import TelemacException
 from vvytel.run_notebook import run_notebook
+from vvytel.vnv_api import check_api, pre_api
 from vvytel.report_class import Report
 from config import update_config, CFGS
 from runcode import add_runcode_argument
@@ -35,6 +36,8 @@ TAGS = ["telemac2d",
         "waqtel",
         "python2",
         "python3",
+        "apistudy",
+        "coupling",
         "postel3d",
         "stbtel",
         "khione",
@@ -57,7 +60,6 @@ def check_python_rank_tags(py_file, options):
     try:
         # Code foor Python 3.5+
         import importlib.util
-        import sys
         # This allow Python script decalared in the example folder to be loaded
         sys.path.append(val_dir)
         spec = importlib.util.spec_from_file_location("vnv_module", py_file)
@@ -147,6 +149,7 @@ def run_validation_python(cfg, options, report, xcpts):
         # Loop on modules
         for code_name in cfg['VALIDATION']:
             val_root = cfg['val_root']
+
             dirpath, dirnames, _ = next(walk(path.join(val_root, code_name)))
             for ddir in dirnames:
                 _, _, filenames = next(walk(path.join(dirpath, ddir)))
@@ -197,7 +200,6 @@ def run_python(py_file, options, report, xcpts):
     """
     try:
         abs_py_file = path.abspath(py_file)
-
         if not path.isfile(abs_py_file):
             raise TelemacException(\
                '\nNot able to find your Python file:\n{}'\
@@ -211,7 +213,6 @@ def run_python(py_file, options, report, xcpts):
             # Code foor Python 3.5+
             import importlib.util
             # This allow Python script decalared in the example folder to be loaded
-            import sys
             sys.path.append(val_dir)
             spec = importlib.util.spec_from_file_location("vnv_module", py_file)
             vnv_stuff = importlib.util.module_from_spec(spec)
@@ -227,6 +228,9 @@ def run_python(py_file, options, report, xcpts):
         # Pre-treatment part
         # It is always done
         my_vnv_study.pre()
+
+        if options.api:
+            pre_api(my_vnv_study)
 
         # Cleaning ?
         if options.cleanup or options.full_cleanup:
@@ -247,6 +251,8 @@ def run_python(py_file, options, report, xcpts):
         if options.vnv_check:
             chdir(val_dir)
             my_vnv_study.check_results()
+            if options.api:
+                check_api(my_vnv_study)
 
         # Post_treatment part
         if options.vnv_post:
@@ -278,11 +284,8 @@ def run_validation_notebooks(options, report, xcpts):
     """
     Run validation of the notebooks
 
-    @param bypass (boolean) If True exception are bypassed
-    @param timeout (int) Timeout of the notebook (time after which it will stop
-    if still running)
-    @param update (boolean) If update is true the result of the run will be
-    written in the notebook
+    @param options (ArgumentParser) Options of the script
+    @param report (Report) Contains execution time
     @param xcpts (Message) Error handler
     """
     root = CFGS.get_root()
@@ -401,6 +404,13 @@ a certain rank, and a certain tag'''))
         dest="verbose",
         action="store_true", default=False,
         help="More verbose validation")
+
+    # Options for api
+    parser.add_argument(
+        "--api",
+        dest="api",
+        action="store_true", default=False,
+        help="Run validation of api")
 
     parser.add_argument("args", metavar='Python file(s)', nargs='*')
     options = parser.parse_args()

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_BARRAGE_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -83,19 +83,19 @@ contains
       MessageErreur         = ""
 
 
-      if ( NomVar == 'Model.Dam.ReachNum') then
+      if ( index(NomVar, 'Model.Dam.ReachNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Dam.RelAbscissa') then
+       else if ( index(NomVar, 'Model.Dam.RelAbscissa') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Dam.Node') then
+       else if ( index(NomVar, 'Model.Dam.Node') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Dam.BreakType') then
+       else if ( index(NomVar, 'Model.Dam.BreakType') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Dam.CrestLevel') then
+       else if ( index(NomVar, 'Model.Dam.CrestLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
       else
@@ -131,23 +131,23 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Dam.ReachNum') then
+      if ( index(NomVar, 'Model.Dam.ReachNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Dam.RelAbscissa') then
+      else if ( index(NomVar, 'Model.Dam.RelAbscissa') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Dam.Node') then
+      else if ( index(NomVar, 'Model.Dam.Node') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Dam.BreakType') then
+      else if ( index(NomVar, 'Model.Dam.BreakType') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Dam.CrestLevel') then
+      else if ( index(NomVar, 'Model.Dam.CrestLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -201,9 +201,9 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Dam.RelAbscissa') then
+      if ( index(NomVar, 'Model.Dam.RelAbscissa') > 0) then
          valeur = Instance%AbscisseRel
-      else if ( NomVar == 'Model.Dam.CrestLevel') then
+      else if ( index(NomVar, 'Model.Dam.CrestLevel') > 0) then
          valeur = Instance%CoteCrete
       else
          GET_DOUBLE_BARRAGE = 1
@@ -228,11 +228,11 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Dam.ReachNum') then
+      if ( index(NomVar, 'Model.Dam.ReachNum') > 0) then
          valeur = Instance%NumBranche
-      else if ( NomVar == 'Model.Dam.Node') then
+      else if ( index(NomVar, 'Model.Dam.Node') > 0) then
          valeur = Instance%Section
-      else if ( NomVar == 'Model.Dam.BreakType') then
+      else if ( index(NomVar, 'Model.Dam.BreakType') > 0) then
          valeur = Instance%TypeRupture
       else
          GET_INT_BARRAGE = 1
@@ -262,9 +262,9 @@ contains
       SET_DOUBLE_BARRAGE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Dam.RelAbscissa') then
+      if ( index(NomVar, 'Model.Dam.RelAbscissa') > 0) then
          Instance%AbscisseRel = valeur
-      else if ( NomVar == 'Model.Dam.CrestLevel') then
+      else if ( index(NomVar, 'Model.Dam.CrestLevel') > 0) then
          Instance%CoteCrete = valeur
       else
          SET_DOUBLE_BARRAGE = 1
@@ -287,11 +287,11 @@ contains
       SET_INT_BARRAGE = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Dam.ReachNum') then
+      if ( index(NomVar, 'Model.Dam.ReachNum') > 0) then
          Instance%NumBranche = valeur
-      else if ( NomVar == 'Model.Dam.Node') then
+      else if ( index(NomVar, 'Model.Dam.Node') > 0) then
          Instance%Section = valeur
-      else if ( NomVar == 'Model.Dam.BreakType') then
+      else if ( index(NomVar, 'Model.Dam.BreakType') > 0) then
          Instance%TypeRupture = valeur
       else
          SET_INT_BARRAGE = 1

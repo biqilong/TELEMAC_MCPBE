@@ -26,6 +26,9 @@ The computation title is specified by the keyword \telkey{TITLE}.
 \section{Mesh definition}
 
 The three-dimensional mesh, consisting of prisms possibly cut into
+%(\telkey{ELEMENT} = 'TETRAHEDRON'
+%in that case but the default element for discretization is a prism
+%with \telkey{ELEMENT} = 'PRISM'),
 tetrahedrons, is automatically constructed by \telemac{3D} from the
 two-dimensional mesh. This construction is done in the subroutine
 \telfile{CALCOT} from the information given by the subroutine defining the
@@ -54,6 +57,7 @@ allows defining the behaviour of each level.
 The keyword \telkey{MESH TRANSFORMATION} sets the kind of level distribution
 along the vertical. The value 0 corresponds to a distribution directly defined
 by the user in the \telfile{CALCOT} subroutine.
+The default value 1 corresponds to the classical sigma transformation.
 
 \begin{figure}[H]%
 \begin{center}
@@ -230,7 +234,8 @@ to 0 (default value). The initial water depths are then computed from the
 bottom depth,
 
 \item 'CONSTANT ELEVATION': Initializes the free surface elevation to the
-values as provided by the keyword \telkey{INITIAL ELEVATION}. The initial water
+values as provided by the keyword \telkey{INITIAL ELEVATION}
+(default value = 0.). The initial water
 depths are then computed by getting the difference between the free surface
 elevation and the bottom depth.  In those areas where the bottom depth exceeds
 the initial elevation, the initial water depth is zero,
@@ -240,7 +245,7 @@ the initial elevation, the initial water depth is zero,
 "dry" at the beginning of the computation,
 
 \item 'CONSTANT DEPTH': Initializes the water depths to the value as provided
-by the keyword \telkey{INITIAL DEPTH},
+by the keyword \telkey{INITIAL DEPTH} (default value = 0.),
 
 \item `TPXO SATELLITE ALTIMETRY': The initial conditions are set using
 information provided by the OSU harmonic constants database (TPXO for instance)
@@ -328,7 +333,8 @@ files:
 
 \begin{itemize}
 \item In the first computation, the keyword \telkey{RESTART MODE} is set to
-YES, which generates a specific file containing the full information only of
+YES (default = NO),
+which generates a specific file containing the full information only of
 the last time step of the simulation (in particular information on the
 advection field of the last time step). The name of this file is specified
 using the keyword \telkey{RESTART FILE},
@@ -1297,20 +1303,20 @@ To do this, the user has three keywords:
 
 \begin{itemize}
 \item The keyword \telkey{COEFFICIENT TO CALIBRATE SEA LEVEL} (default real
-value 0.0) is used to calibrate the mean tide level (the harmonic decomposition
+value 0.) is used to calibrate the mean tide level (the harmonic decomposition
 of information provided by the various databases are used to generate the tidal
 signal oscillating around mean tide level). The calibration of the mean tide
 level must obviously be made depending on the altimetric reference used in the
 model,
 
 \item The keyword \telkey{COEFFICIENT TO CALIBRATE TIDAL RANGE} (default real
-value 1.0) is used to specify a calibration coefficient applied on the
+value 1.) is used to specify a calibration coefficient applied on the
 amplitude of the tidal wave. This coefficient is applied to the amplitude of
 the overall signal, and not on the amplitude of each of the elementary waves,
 
 \item The keyword \telkey{COEFFICIENT TO CALIBRATE TIDAL VELOCITIES} (default
 real value 999,999.0) is used to specify the coefficient applied on velocities.
-The default value (999, 999.0) means that the square root of the value
+The default value (999,999.0) means that the square root of the value
 specified by the keyword \telkey{COEFFICIENT TO CALIBRATE TIDAL RANGE} tidal is
 used.
 \end{itemize}

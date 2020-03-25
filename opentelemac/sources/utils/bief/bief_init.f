@@ -63,10 +63,10 @@
 
 #if defined BOGUS
       ! Bogus call so that they are added when running rescan
-      call inpoly
-      call p_sync
-      call p_dmax
-      call p_dmin
+      CALL INPOLY
+      CALL P_SYNC
+      CALL P_DMAX
+      CALL P_DMIN
 #endif
 !
 !-----------------------------------------------------------------------

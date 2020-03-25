@@ -423,7 +423,8 @@ places without any momentum input. The user may prescribe a particular
 velocity. If the latter is constant throughout the simulation, then its value
 can be given using the keywords \telkey{VELOCITIES OF THE SOURCES ALONG X},
 \telkey{VELOCITIES OF THE SOURCES ALONG Y} and
-\telkey{VELOCITIES OF THE SOURCES ALONG Z}. Otherwise, the user
+\telkey{VELOCITIES OF THE SOURCES ALONG Z} (default values = 0.).
+Otherwise, the user
 should program the SOURCE subroutine in order to amend \telfile{USCE} (for the
 velocity at sources along $X$) and \telfile{VSCE} (for the velocity at sources
 along $Y$). The user can use the time and all the parameters of the sources
@@ -450,12 +451,33 @@ which required recompiling the whole package.
 \telemac{3D} can be used to simulate flow while taking into account the influence
 of a wind blowing on the water surface. The logical keyword \telkey{WIND} is
 used first of all for determining whether this influence is taken into account
-and if so, the coefficient is then provided with the keyword
+(default value = NO, i.e. no influence).
+
+If so, the coefficient is then provided with the keyword
 \telkey{COEFFICIENT OF WIND INFLUENCE} (default value =
-$1.55 \times 10^{-6}$ since version 8.0). Lastly, if the
-wind is constant in time and space, wind speed in directions X and Y is
-supplied with the keywords \telkey{WIND VELOCITY ALONG X} and \telkey{WIND
-VELOCITY ALONG Y}. Default values for these three coefficients are 0.
+$1.55 \times 10^{-6}$ since version 8.0, 0. before), see below.\\
+
+Wind effect can be managed using the keyword \telkey {OPTION FOR WIND}
+(default = 0). This keyword can have the following values:
+
+\begin{itemize}
+\item 0: this means no wind effect (this is equivalent to put the keyword
+\telkey{WIND} to FALSE),
+
+\item 1: wind is constant in time and space, wind speed in directions $x$ and $y$
+are supplied with the keywords \telkey{WIND VELOCITY ALONG X} and
+\telkey{WIND VELOCITY ALONG Y}.
+Default values for these three coefficients are 0.,
+
+\item 2: wind variable in time, constant is space, it is given through
+the formatted file \telkey{ASCII ATMOSPHERIC DATA FILE},
+
+\item 3: wind is variable in time and space,
+this option is not implemented while there are multiple choices of implementation.
+In this case, the user has to program him/herself the \telfile{METEO} subroutine.
+An example of implementation is given in the \telemac{2d} validation test case
+``wind\_txy'' (in folder examples/telemac2d/wind\_txy).
+\end{itemize}
 
 The coefficient of wind influence hides complex phenomena. In fact, the
 influence of the wind depends on the smoothness (or, lack of it) of the free
@@ -466,9 +488,10 @@ This is the formula used by the Institute of Oceanographic Sciences (United
 Kingdom):
 
 \begin{tabular}{ll}
-if $\overrightarrow{U}_{vent} < 5$ m/s & $a_{vent}  = 0.565 \times 10^{-3}$ \\
-if $5 < \overrightarrow{U}_{vent}  < 19.22$ m/s & $a_{vent} = (- 0.12 + 0.137\overrightarrow{U}_{vent} ) 10^{-3}$ \\
-if $\overrightarrow{U}_{vent} > 19.22$ m/s & $a_{vent} = 2.513 \times 10^{-3}$ \\
+if $\| \overrightarrow{U}_{vent} \| < 5$ m/s & $a_{vent}  = 0.565 \times 10^{-3}$ \\
+if $5 < \| \overrightarrow{U}_{vent} \| < 19.22$ m/s &
+ $a_{vent} = (- 0.12 + 0.137 \| \overrightarrow{U}_{vent} \| ) 10^{-3}$ \\
+if $\| \overrightarrow{U}_{vent} \| > 19.22$ m/s & $a_{vent} = 2.513 \times 10^{-3}$ \\
 \end{tabular}
 
 This formula can be activated by setting the keyword
@@ -515,7 +538,8 @@ it is constant in time and space.
 
 The influence of air pressure is taken into account from the moment when the
 keyword \telkey{AIR PRESSURE} is set to YES (the default value is
-NO). The value of that pressure is directly set in the \telfile{METEO} subroutine.
+NO). The value of that pressure is set in the \telfile{METEO} subroutine
+with the value of \telkey{VALUE OF ATMOSPHERIC PRESSURE}.
 By default, the latter initializes a pressure of $10^5$ Pa ($\approx$ 1 atm) over
 the whole domain.
 
@@ -523,7 +547,8 @@ the whole domain.
 \subsection{Rain or evaporation}
 
 The modelling of the influence of precipitation or evaporation is activated
-with the logical keyword \telkey{RAIN OR EVAPORATION}. The value of the
+with the logical keyword \telkey{RAIN OR EVAPORATION} (default value = NO).
+The value of the
 contribution or the loss of water at the surface is specified using the keyword
 \telkey{RAIN OR EVAPORATION IN MM PER DAY} which default value is 0. (a
 negative value reflects an evaporation).
@@ -580,6 +605,9 @@ implementation of the reading and the interpolation of the meteorological data.
 When using the complete module, evaporation is calculated by \telemac{3D}, but
 the user has to provide rainfall data with units homogeneous with length over
 time.
+The user can also define metocean data with the
+\telkey{BINARY ATMOSPHERIC DATA FILE} but has to change some subroutines
+to deal with it.
 
 The main developments of this module are implemented in the module
 \telfile{EXCHANGE\_WITH\_ATMOSPHERE}.
@@ -658,7 +686,7 @@ case of \tomawac, the variables \telfile{FX} and \telfile{FY},
 \item  Get the wave results file and provide its name through the keyword
 \telkey{BINARY DATA FILE 1},
 
-\item  Activate the keyword \telkey{WAVE DRIVEN CURRENTS},
+\item  Activate the keyword \telkey{WAVE DRIVEN CURRENTS} (default = NO),
 
 \item  Fill the keyword \telkey{RECORD NUMBER IN WAVE FILE}. This value
 corresponds to the iteration number stored in the wave file which must be taken

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_LIAISONRC_T
 !***********************************************************************
 ! PROGICIEL : MASCARET       C. RISSOAN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -88,22 +88,22 @@ module M_LIAISONRC_T
       MessageErreur         = ""
 
 
-      if ( NomVar == 'Model.Link.StoR.NumS') then
+      if ( index(NomVar, 'Model.Link.StoR.NumS') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.StoR.Abscissa') then
+       else if ( index(NomVar, 'Model.Link.StoR.Abscissa') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.StoR.Node') then
+       else if ( index(NomVar, 'Model.Link.StoR.Node') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.StoR.ReachNum') then
+       else if ( index(NomVar, 'Model.Link.StoR.ReachNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.StoR.DQDZsto') then
+       else if ( index(NomVar, 'Model.Link.StoR.DQDZsto') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.Link.StoR.DQDZriv') then
+       else if ( index(NomVar, 'Model.Link.StoR.DQDZriv') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
       else
@@ -139,27 +139,27 @@ module M_LIAISONRC_T
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoR.NumS') then
+      if ( index(NomVar, 'Model.Link.StoR.NumS') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoR.Abscissa') then
+      else if ( index(NomVar, 'Model.Link.StoR.Abscissa') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoR.Node') then
+      else if ( index(NomVar, 'Model.Link.StoR.Node') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoR.ReachNum') then
+      else if ( index(NomVar, 'Model.Link.StoR.ReachNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoR.DQDZsto') then
+      else if (index(NomVar, 'Model.Link.StoR.DQDZsto') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Link.StoR.DQDZriv') then
+      else if ( index(NomVar, 'Model.Link.StoR.DQDZriv') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -213,11 +213,11 @@ module M_LIAISONRC_T
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoR.Abscissa') then
+      if ( index(NomVar, 'Model.Link.StoR.Abscissa') > 0) then
          valeur = Instance%Abscisse
-      else if ( NomVar == 'Model.Link.StoR.DQDZsto') then
+      else if ( index(NomVar, 'Model.Link.StoR.DQDZsto') > 0) then
          valeur = Instance%DQDZcasier
-      else if ( NomVar == 'Model.Link.StoR.DQDZriv') then
+      else if ( index(NomVar, 'Model.Link.StoR.DQDZriv') > 0) then
          valeur = Instance%DQDZriviere
       else
          GET_DOUBLE_LIAISONRC = 1
@@ -242,11 +242,11 @@ module M_LIAISONRC_T
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoR.NumS') then
+      if ( index(NomVar, 'Model.Link.StoR.NumS') > 0) then
          valeur = Instance%NumCasier
-      else if ( NomVar == 'Model.Link.StoR.Node') then
+      else if ( index(NomVar, 'Model.Link.StoR.Node') > 0) then
          valeur = Instance%Section
-      else if ( NomVar == 'Model.Link.StoR.ReachNum') then
+      else if ( index(NomVar, 'Model.Link.StoR.ReachNum') > 0) then
          valeur = Instance%NumBief
       else
          GET_INT_LIAISONRC = 1
@@ -276,11 +276,11 @@ module M_LIAISONRC_T
       SET_DOUBLE_LIAISONRC = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoR.Abscissa') then
+      if ( index(NomVar, 'Model.Link.StoR.Abscissa') > 0) then
          Instance%Abscisse = valeur
-      else if ( NomVar == 'Model.Link.StoR.DQDZsto') then
+      else if ( index(NomVar, 'Model.Link.StoR.DQDZsto') > 0) then
          Instance%DQDZcasier = valeur
-      else if ( NomVar == 'Model.Link.StoR.DQDZriv') then
+      else if ( index(NomVar, 'Model.Link.StoR.DQDZriv') > 0) then
          Instance%DQDZriviere = valeur
       else
          SET_DOUBLE_LIAISONRC = 1
@@ -303,11 +303,11 @@ module M_LIAISONRC_T
       SET_INT_LIAISONRC = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Link.StoR.NumS') then
+      if ( index(NomVar, 'Model.Link.StoR.NumS') > 0) then
          Instance%NumCasier = valeur
-      else if ( NomVar == 'Model.Link.StoR.Node') then
+      else if ( index(NomVar, 'Model.Link.StoR.Node') > 0) then
          Instance%Section = valeur
-      else if ( NomVar == 'Model.Link.StoR.ReachNum') then
+      else if ( index(NomVar, 'Model.Link.StoR.ReachNum') > 0) then
          Instance%NumBief = valeur
       else
          SET_INT_LIAISONRC = 1

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -22,7 +22,7 @@ subroutine CHAINAGE_REZO( Connect , Extremite , Matrice , OptionCasier, Liaison 
 ! PROGICIEL : MASCARET        F. ZAOUI
 !                             S. DELMAS     C. COULET
 !
-! VERSION : 8.1.4               EDF-CEREMA-ARTELIA
+! VERSION : V8P2R0               EDF-CEREMA-ARTELIA
 ! *********************************************************************
 ! - FONCTION :
 !              DETERMINATION DE LA TOPOLOGIE DE LA MATRICE CREUSE

@@ -3,7 +3,8 @@
 !                    ***************************
 !
      &(MOTCAR,FILE_DESC,PATH,NCAR,
-     & CAS_FILE,DICO_FILE)
+     & CAS_FILE,DICO_FILE,
+     & CAS_FILE_GAIA,DICO_FILE_GAIA)
 !
 !***********************************************************************
 ! TELEMAC2D   V8P1
@@ -158,6 +159,8 @@
 !     API
       CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: DICO_FILE
       CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE
+      CHARACTER(LEN=PATH_LEN), INTENT(IN) ,OPTIONAL   :: CAS_FILE_GAIA
+      CHARACTER(LEN=PATH_LEN), INTENT(IN) ,OPTIONAL   :: DICO_FILE_GAIA
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -166,7 +169,7 @@
 !
       CHARACTER(LEN=8) MNEMO(MAXVAR)
       CHARACTER(LEN=PATH_LEN) NOM_CAS,NOM_DIC
-      CHARACTER(LEN=PATH_LEN) DUMMY
+      CHARACTER(LEN=PATH_LEN) DUMMY, DUMMY2
       CHARACTER(LEN=PATH_LEN) MOTCAR_GAIA(MAXKEYWORD)
       CHARACTER(LEN=PATH_LEN) FILE_DESC_GAIA(4,MAXKEYWORD)
 !
@@ -708,8 +711,15 @@
       IND_SED = 0
       IF( INCLUS(COUPLING,'GAIA') ) THEN
         DUMMY = ' '
+        DUMMY2 = ' '
+        ! Case where we have a api call using full name instead
+        IF(PRESENT(CAS_FILE_GAIA)) THEN
+          DUMMY = CAS_FILE_GAIA
+          DUMMY2 = DICO_FILE_GAIA
+        ENDIF
+
         CALL LECDON_TELEMAC2D_GAIA(MOTCAR_GAIA,FILE_DESC_GAIA,PATH,
-     &                             NCAR,DUMMY,DUMMY)
+     &                             NCAR,DUMMY,DUMMY2)
       ENDIF
 !
 !     LOCATING TRACERS OF IMPORTANCE TO TELEMAC-2D
@@ -749,6 +759,8 @@
           SLVTRA(ITRAC)%SLV    = MOTINT( ADRESS(1,11) )
           SLVTRA(ITRAC)%PRECON = MOTINT( ADRESS(1,24) )
           SLVTRA(ITRAC)%KRYLOV = MOTINT( ADRESS(1,32) )
+          SLVTRA(ITRAC)%NIT = 0
+          SLVTRA(ITRAC)%OK = .FALSE.
         ENDDO
 !       MULTIPLE VALUES MAY BE GIVEN (AND A FEW LAST MAY BE FORGOTTEN)
         DO ITRAC=1,DIMEN(1,9)

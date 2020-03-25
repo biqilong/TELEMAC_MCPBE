@@ -20,9 +20,10 @@
       USE DECLARATIONS_TELEMAC3D
       USE DECLARATIONS_TELEMAC2D, ONLY:WINDX,WINDY
       USE INTERFACE_WAQTEL
+      USE INTERFACE_GAIA
 !
       USE DECLARATIONS_SPECIAL
-      
+
       IMPLICIT NONE
       PRIVATE
       ! COMMON VALUES TO DEFINE OUTPUT + LANGUAGE
@@ -34,8 +35,11 @@
       CHARACTER(LEN=24), PARAMETER :: CODE2='SISYPHE                 '
       CHARACTER(LEN=24), PARAMETER :: CODE3='TOMAWAC                 '
       CHARACTER(LEN=24), PARAMETER :: CODE4='WAQTEL                  '
+      CHARACTER(LEN=24), PARAMETER :: CODE5='GAIA                    '
 !
       CHARACTER(LEN=MAXLENTMPDIR) PATH
+
+      LOGICAL :: GAIA_CPL, WAQ_CPL
 
 !
 ! List the public subroutines
@@ -102,21 +106,23 @@
       !+                        ERROR ID OTHERWISE
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_T3D_D(INST,CAS_FILE, DICO_FILE,INIT,IERR,
-     &                              WAQ_CAS_FILE,WAQ_DICO_FILE)
+     &                              WAQ_CAS_FILE,WAQ_DICO_FILE,
+     &                              GAIA_CAS_FILE,GAIA_DICO_FILE)
 
         TYPE(INSTANCE_T3D), INTENT(INOUT) :: INST
         CHARACTER(LEN=250), INTENT(IN) :: CAS_FILE
         CHARACTER(LEN=250), INTENT(IN) :: DICO_FILE
-        CHARACTER(LEN=250), OPTIONAL, INTENT(IN) :: WAQ_CAS_FILE
-        CHARACTER(LEN=250), OPTIONAL, INTENT(IN) :: WAQ_DICO_FILE
         LOGICAL,            INTENT(IN) :: INIT
         INTEGER,            INTENT(OUT) :: IERR
+        CHARACTER(LEN=250), INTENT(IN) :: GAIA_CAS_FILE
+        CHARACTER(LEN=250), INTENT(IN) :: GAIA_DICO_FILE
+        CHARACTER(LEN=250), INTENT(IN) :: WAQ_CAS_FILE
+        CHARACTER(LEN=250), INTENT(IN) :: WAQ_DICO_FILE
 !
         CHARACTER(LEN=250) MOTCAR(INST%MAXKEYWORD)
         CHARACTER(LEN=250) FILE_DESC(4,INST%MAXKEYWORD)
         CHARACTER(LEN=250) WAQ_FILE_DESC(4,INST%MAXKEYWORD)
 
-        LOGICAL :: IS_COUPLED
 !
         IERR = 0
 !
@@ -134,23 +140,49 @@
 !
 !     READS THE STEERING FILE
         CALL LECDON_TELEMAC3D(MOTCAR,FILE_DESC,
-     &                       PATH,NCAR,CAS_FILE,DICO_FILE)
+     &                       PATH,NCAR,
+     &                       CAS_FILE,DICO_FILE,
+     &                       GAIA_CAS_FILE=GAIA_CAS_FILE,
+     &                       GAIA_DICO_FILE=GAIA_DICO_FILE)
 
-        IS_COUPLED = INCLUS(INST%COUPLING,'WAQTEL')
+        GAIA_CPL = INCLUS(INST%COUPLING,'GAIA')
+        WAQ_CPL = INCLUS(INST%COUPLING,'WAQTEL')
 
-        IF(IS_COUPLED.AND.(PRESENT(WAQ_CAS_FILE)
-     &                    .AND.PRESENT(WAQ_DICO_FILE))) THEN
+        ! Gaia coupling
+        IF(GAIA_CPL) THEN
 !
+          IF ((GAIA_CAS_FILE(1:1).EQ.' ').OR.
+     &        (GAIA_DICO_FILE(1:1).EQ.' ')) THEN
+            IERR = FILE_NOT_FOUND_ERROR
+            ERR_MESS = 'THE COUPLING CAS AND DICO FILES ARE MISSING FOR'
+     &                 //TRIM(CODE4)
+            RETURN
+          ENDIF
+!
+          CALL PRINT_HEADER(CODE5,CODE1)
+!
+          CALL LECDON_GAIA(MOTCAR,FILE_DESC,PATH,NCAR,CODE1,
+     &                     GAIA_CAS_FILE, GAIA_DICO_FILE)
+!
+        ENDIF
+
+        ! Waqtel coupling
+        IF(WAQ_CPL) THEN
+!
+          IF ((WAQ_CAS_FILE(1:1).EQ.' ').OR.
+     &        (WAQ_DICO_FILE(1:1).EQ.' ')) THEN
+            IERR = FILE_NOT_FOUND_ERROR
+            ERR_MESS = 'THE COUPLING CAS AND DICO FILES ARE MISSING FOR'
+     &                 //TRIM(CODE4)
+            RETURN
+          ENDIF
+
           CALL PRINT_HEADER(CODE4,CODE1)
 !
-          CALL LECDON_WAQTEL(WAQ_FILE_DESC,PATH,NCAR,WAQ_CAS_FILE,
-     &         WAQ_DICO_FILE)
-        ELSE
-          IERR = FILE_NOT_FOUND_ERROR
-          ERR_MESS = 'THE COUPLING CAS AND DICO FILES ARE MISSING FOR'
-     &               //TRIM(CODE4)
+          CALL LECDON_WAQTEL(FILE_DESC,PATH,NCAR,
+     &                       WAQ_CAS_FILE,WAQ_DICO_FILE)
 !
-        ENDIF  
+        ENDIF
 !
 !-----------------------------------------------------------------------
 !
@@ -175,17 +207,12 @@
         INTEGER,            INTENT(OUT) :: IERR
 !
         INTEGER :: IFLOT
-        LOGICAL :: IS_COUPLED
-        CHARACTER(LEN=250) MOTCAR(INST%MAXKEYWORD)
-        CHARACTER(LEN=250) FILE_DESC(4,INST%MAXKEYWORD)
 !
 !       OPENS THE FILES FOR TELEMAC3D
 !
         IERR = 0
 !
         IFLOT = 0
-
-        IS_COUPLED = INCLUS(INST%COUPLING,'WAQTEL')
 !
         CALL BIEF_OPEN_FILES(CODE1,INST%T3D_FILES,
      &                       INST%MAXLU_T3D,
@@ -194,26 +221,44 @@
 !
 !-----------------------------------------------------------------------
 !
-!     ALLOCATES MEMORY
+!       ALLOCATES MEMORY
 !
         CALL POINT_TELEMAC3D
+!
 !-----------------------------------------------------------------------
 !
-!     INITIALISES WAQTEL
+!       INITIALISES GAIA
 !
-      IF(IS_COUPLED) THEN
+        IF(GAIA_CPL) THEN
 !
-        CALL BIEF_OPEN_FILES(CODE4,INST%WAQ_FILES,INST%MAXLU_WAQ,PATH,
-     &                       NCAR,4,.TRUE.)
+          CALL BIEF_OPEN_FILES(CODE5,INST%GAI_FILES,INST%MAXLU_GAI,
+     &                         PATH,NCAR,2,.TRUE.)
 !
-        CALL CONFIG_CODE(1)
+          CALL CONFIG_CODE(1)
 !
-!     MEMORY ORGANISATION
+!         MEMORY ORGANISATION
 !
-        CALL POINT_WAQTEL(MESH2D,IELM2H,VENT,WINDX,WINDY,
-     &                    ATMOS,PATMOS,MESH3D,IELM3)
+          CALL POINT_GAIA
 !
-      ENDIF
+        ENDIF
+!
+!-----------------------------------------------------------------------
+!
+!       INITIALISES WAQTEL
+!
+        IF(WAQ_CPL) THEN
+!
+          CALL BIEF_OPEN_FILES(CODE4,INST%WAQ_FILES,INST%MAXLU_WAQ,PATH,
+     &                         NCAR,4,.TRUE.)
+!
+          CALL CONFIG_CODE(1)
+!
+!         MEMORY ORGANISATION
+!
+          CALL POINT_WAQTEL(MESH2D,IELM2H,VENT,WINDX,WINDY,
+     &                      ATMOS,PATMOS,MESH3D,IELM3)
+!
+        ENDIF
 !
 !-----------------------------------------------------------------------
 !
@@ -296,6 +341,20 @@
 !
         CALL BIEF_CLOSE_FILES(INST%T3D_FILES,
      &                        INST%MAXLU_T3D,.FALSE.)
+
+        IF(WAQ_CPL) THEN
+          CALL CONFIG_CODE(4)
+          CALL BIEF_CLOSE_FILES(INST%WAQ_FILES,
+     &                          INST%MAXLU_WAQ,.FALSE.)
+          CALL DEALL_WAQTEL
+        ENDIF
+        !
+        IF(GAIA_CPL) THEN
+          CALL CONFIG_CODE(5)
+          CALL BIEF_CLOSE_FILES(INST%GAI_FILES,
+     &                          INST%MAXLU_GAI,.FALSE.)
+          CALL DEALL_GAIA
+        ENDIF
 !
 !       DEALLOCATE ALL OF BIEF AND TELEMAC3D ARRAYS
         CALL DEALL_TELEMAC3D()

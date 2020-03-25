@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_DEVERSOIR_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -116,40 +116,40 @@ contains
       MessageErreur         = ""
 
 
-       if ( NomVar == 'Model.LateralWeir.Name') then
+       if ( index(NomVar, 'Model.LateralWeir.Name') > 0) then
           TypeVar = 'STRING'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.Type') then
+       else if ( index(NomVar, 'Model.LateralWeir.Type') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.ReachNum') then
+       else if ( index(NomVar, 'Model.LateralWeir.ReachNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.RelAbscissa') then
+       else if ( index(NomVar, 'Model.LateralWeir.RelAbscissa') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.Length') then
+       else if ( index(NomVar, 'Model.LateralWeir.Length') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.UpNode') then
+       else if ( index(NomVar, 'Model.LateralWeir.UpNode') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.DownNode') then
+       else if ( index(NomVar, 'Model.LateralWeir.DownNode') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.CrestLevel') then
+       else if ( index(NomVar, 'Model.LateralWeir.CrestLevel') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.DischCoef') then
+       else if ( index(NomVar, 'Model.LateralWeir.DischCoef') > 0) then
           TypeVar = 'DOUBLE'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.GraphNum') then
+       else if ( index(NomVar, 'Model.LateralWeir.GraphNum') > 0) then
           TypeVar = 'INT'
           dimVar                = 0
-       else if ( NomVar == 'Model.LateralWeir.PtZ') then
+       else if ( index(NomVar, 'Model.LateralWeir.PtZ') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
-       else if ( NomVar == 'Model.LateralWeir.PtQ') then
+       else if ( index(NomVar, 'Model.LateralWeir.PtQ') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 1
       else
@@ -185,47 +185,47 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.LateralWeir.Name') then
+      if ( index(NomVar, 'Model.LateralWeir.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.Type') then
+      else if ( index(NomVar, 'Model.LateralWeir.Type') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.ReachNum') then
+      else if ( index(NomVar, 'Model.LateralWeir.ReachNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.RelAbscissa') then
+      else if ( index(NomVar, 'Model.LateralWeir.RelAbscissa') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.Length') then
+      else if ( index(NomVar, 'Model.LateralWeir.Length') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.UpNode') then
+      else if ( index(NomVar, 'Model.LateralWeir.UpNode') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.DownNode') then
+      else if ( index(NomVar, 'Model.LateralWeir.DownNode') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.CrestLevel') then
+      else if ( index(NomVar, 'Model.LateralWeir.CrestLevel') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.DischCoef') then
+      else if ( index(NomVar, 'Model.LateralWeir.DischCoef') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.GraphNum') then
+      else if ( index(NomVar, 'Model.LateralWeir.GraphNum') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.PtZ') then
+      else if ( index(NomVar, 'Model.LateralWeir.PtZ') > 0) then
          if (ASSOCIATED(Instance%PtZ)) then
             taille1 = size(Instance%PtZ)
          else
@@ -233,7 +233,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.LateralWeir.PtQ') then
+      else if ( index(NomVar, 'Model.LateralWeir.PtQ') > 0) then
          if (ASSOCIATED(Instance%PtQ)) then
             taille1 = size(Instance%PtQ)
          else
@@ -277,7 +277,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.LateralWeir.PtZ') then
+      if ( index(NomVar, 'Model.LateralWeir.PtZ') > 0) then
         if (ASSOCIATED(Instance%PtZ)) then
            t1 = size(Instance%PtZ)
            if (t1 /= NewT1) then
@@ -297,7 +297,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.LateralWeir.PtQ') then
+      else if ( index(NomVar, 'Model.LateralWeir.PtQ') > 0) then
         if (ASSOCIATED(Instance%PtQ)) then
            t1 = size(Instance%PtQ)
            if (t1 /= NewT1) then
@@ -347,17 +347,17 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.LateralWeir.RelAbscissa') then
+      if ( index(NomVar, 'Model.LateralWeir.RelAbscissa') > 0) then
          valeur = Instance%AbscisseRel
-      else if ( NomVar == 'Model.LateralWeir.Length') then
+      else if ( index(NomVar, 'Model.LateralWeir.Length') > 0) then
          valeur = Instance%Longueur
-      else if ( NomVar == 'Model.LateralWeir.CrestLevel') then
+      else if ( index(NomVar, 'Model.LateralWeir.CrestLevel') > 0) then
          valeur = Instance%CoteCrete
-      else if ( NomVar == 'Model.LateralWeir.DischCoef') then
+      else if ( index(NomVar, 'Model.LateralWeir.DischCoef') > 0) then
          valeur = Instance%CoeffDebit
-      else if ( NomVar == 'Model.LateralWeir.PtZ') then
+      else if ( index(NomVar, 'Model.LateralWeir.PtZ') > 0) then
          valeur = Instance%PtZ(index1)
-      else if ( NomVar == 'Model.LateralWeir.PtQ') then
+      else if ( index(NomVar, 'Model.LateralWeir.PtQ') > 0) then
          valeur = Instance%PtQ(index1)
       else
          GET_DOUBLE_DEVERSOIR = 1
@@ -382,15 +382,15 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.LateralWeir.Type') then
+      if ( index(NomVar, 'Model.LateralWeir.Type') > 0) then
          valeur = Instance%Type
-      else if ( NomVar == 'Model.LateralWeir.ReachNum') then
+      else if ( index(NomVar, 'Model.LateralWeir.ReachNum') > 0) then
          valeur = Instance%NumBranche
-      else if ( NomVar == 'Model.LateralWeir.UpNode') then
+      else if ( index(NomVar, 'Model.LateralWeir.UpNode') > 0) then
          valeur = Instance%SectionAm
-      else if ( NomVar == 'Model.LateralWeir.DownNode') then
+      else if ( index(NomVar, 'Model.LateralWeir.DownNode') > 0) then
          valeur = Instance%SectionAv
-      else if ( NomVar == 'Model.LateralWeir.GraphNum') then
+      else if ( index(NomVar, 'Model.LateralWeir.GraphNum') > 0) then
          valeur = Instance%NumeroLoi
       else
          GET_INT_DEVERSOIR = 1
@@ -415,7 +415,7 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.LateralWeir.Name') then
+      if ( index(NomVar, 'Model.LateralWeir.Name') > 0) then
          valeur = Instance%Nom
       else
          GET_STRING_DEVERSOIR = 1
@@ -445,17 +445,17 @@ contains
       SET_DOUBLE_DEVERSOIR = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.LateralWeir.RelAbscissa') then
+      if ( index(NomVar, 'Model.LateralWeir.RelAbscissa') > 0) then
          Instance%AbscisseRel = valeur
-      else if ( NomVar == 'Model.LateralWeir.Length') then
+      else if ( index(NomVar, 'Model.LateralWeir.Length') > 0) then
          Instance%Longueur = valeur
-      else if ( NomVar == 'Model.LateralWeir.CrestLevel') then
+      else if ( index(NomVar, 'Model.LateralWeir.CrestLevel') > 0) then
          Instance%CoteCrete = valeur
-      else if ( NomVar == 'Model.LateralWeir.DischCoef') then
+      else if ( index(NomVar, 'Model.LateralWeir.DischCoef') > 0) then
          Instance%CoeffDebit = valeur
-      else if ( NomVar == 'Model.LateralWeir.PtZ') then
+      else if ( index(NomVar, 'Model.LateralWeir.PtZ') > 0) then
          Instance%PtZ(index1) = valeur
-      else if ( NomVar == 'Model.LateralWeir.PtQ') then
+      else if ( index(NomVar, 'Model.LateralWeir.PtQ') > 0) then
          Instance%PtQ(index1) = valeur
       else
          SET_DOUBLE_DEVERSOIR = 1
@@ -478,15 +478,15 @@ contains
       SET_INT_DEVERSOIR = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.LateralWeir.Type') then
+      if ( index(NomVar, 'Model.LateralWeir.Type') > 0) then
          Instance%Type = valeur
-      else if ( NomVar == 'Model.LateralWeir.ReachNum') then
+      else if ( index(NomVar, 'Model.LateralWeir.ReachNum') > 0) then
          Instance%NumBranche = valeur
-      else if ( NomVar == 'Model.LateralWeir.UpNode') then
+      else if ( index(NomVar, 'Model.LateralWeir.UpNode') > 0) then
          Instance%SectionAm = valeur
-      else if ( NomVar == 'Model.LateralWeir.DownNode') then
+      else if ( index(NomVar, 'Model.LateralWeir.DownNode') > 0) then
          Instance%SectionAv = valeur
-      else if ( NomVar == 'Model.LateralWeir.GraphNum') then
+      else if ( index(NomVar, 'Model.LateralWeir.GraphNum') > 0) then
          Instance%NumeroLoi = valeur
       else
          SET_INT_DEVERSOIR = 1
@@ -509,7 +509,7 @@ contains
       SET_STRING_DEVERSOIR = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.LateralWeir.Name') then
+      if ( index(NomVar, 'Model.LateralWeir.Name') > 0) then
          Instance%Nom = valeur
       else
          SET_STRING_DEVERSOIR = 1

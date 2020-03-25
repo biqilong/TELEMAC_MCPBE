@@ -423,7 +423,7 @@
       DOUBLE PRECISION, INTENT(OUT)    :: EPS_AV(NP_TOT)
       DOUBLE PRECISION, INTENT(OUT)    :: H_FLU(NP_TOT)
 ! BUFFERS (USED ON FREQUENCY)
-      DOUBLE PRECISION, INTENT(IN)    :: W1(NP_TOT)
+      DOUBLE PRECISION, INTENT(IN)    :: W1(*)
       INTEGER FRE(1)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

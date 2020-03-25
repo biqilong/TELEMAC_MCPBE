@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -19,7 +19,7 @@
 ! *********************************************************************
 ! PROGICIEL : MASCARET       J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
    ! .................................................................................................................................
    ! Accesseurs permettant d'acceder aux valeurs d'une instance du modele ou de l'etat
@@ -41,7 +41,7 @@
      real(DOUBLE)       v
      integer ind1,taille1,taille2,taille3
 
-     ind1   = 0
+     ind1   = index1
      Erreur = 0
      valeur = -99999.99999
 

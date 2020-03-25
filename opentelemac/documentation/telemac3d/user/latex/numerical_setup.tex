@@ -35,7 +35,8 @@ advection terms can be deactivated by means of the following complete keywords
 velocities,
 
 \item \telkey{SCHEME FOR ADVECTION OF DEPTH}: for taking the advection of
-depth into account,
+depth into account (default value = 5 which is the single choice and now
+mandatory),
 
 \item \telkey{SCHEME FOR ADVECTION OF K-EPSILON}: for the advection of power
 and turbulent dissipation,
@@ -88,9 +89,11 @@ The propagation step can be linearized by activating the keyword
 conducts a case study for which an analytical solution in the linearized case
 is available. It is then necessary to set the water depth around which the
 linearization is performed by means of the keyword \telkey{MEAN DEPTH FOR
-LINEARIZATION} (default value 0).
+LINEARIZATION} (default value 0.).
 
-With the "wave equation" option, the keyword \telkey{FREE SURFACE GRADIENT COMPATIBILITY} can be used. A value lower than 1. (which is the default value) makes
+With the "wave equation" option, the keyword
+\telkey{FREE SURFACE GRADIENT COMPATIBILITY} can be used.
+A value lower than 1. (which is the default value) makes
 it possible to delete the spurious oscillations of the free surface, but
 slightly alters the consistency between the water depth and the velocities in
 the continuity equation.
@@ -172,9 +175,19 @@ number of sub-iterations exceeds 100, \telemac{3D} considers that the treatment
 of the advection term is problematic and the calculation is interrupted,
 printing an error message in the list control.
 
-The default value for both velocity and $k$-$\epsilon$ is 1. That value
-is advisable, since it is satisfactory in many instances and is by far the
-fastest. On the contrary, the default value for the tracers is 5. It is the
+The default value for both
+\telkey{SCHEME FOR ADVECTION OF VELOCITIES} and
+\telkey{SCHEME FOR ADVECTION OF K-EPSILON}
+is 5 since version 8.1
+(old value until version 8.0 was 1 i.e. method of characteristics). 
+Combined with the new default values of the keywords
+\telkey{SCHEME OPTION FOR ADVECTION OF VELOCITIES} = 4
+and \telkey{SCHEME OPTION FOR ADVECTION OF K-EPSILON} = 4,
+that means that a LIPS scheme is used (see \ref{sec:MURD}).
+That value is advisable, since it is satisfactory in many instances.
+% and is by far the fastest.
+The default value for the tracers is still 5 and also with the default value of
+\telkey{SCHEME OPTION FOR ADVECTION OF TRACERS} equal to 4. It is the
 most reliable scheme, since the "mass" conservation of the active tracers is a
 frequently essential point in \telemac{3D}.
 
@@ -183,7 +196,7 @@ ignored by \telemac{3D}. The optimum advection scheme is automatically selected
 by the software (conservative scheme).
 
 According to the schemes used, the mass conservation can be improved by
-performing sub-iterations. That consists in a updating, for one given time
+performing sub-iterations. That consists in an updating, for one given time
 step, both advective field and propagative field during several sub-iterations.
 Upon the first sub-iteration, the field of velocities is yielded by the results
 achieved during the previous time steps. Through that procedure, the
@@ -203,6 +216,7 @@ When using the SUPG method, the user must determine the type of upwinding
 desired using the keyword \telkey{SUPG OPTION} which is an array of
 4 integers related, to the velocity, the water depth, tracers and
 $k$-$\varepsilon $ model respectively.
+Default value = (1;0;1;1).
 
 The possible values are:
 
@@ -229,7 +243,7 @@ to increase the accuracy of the numerical scheme or to deal with tidal flats.
 The keyword \telkey{SCHEME OPTION FOR ADVECTION OF VELOCITIES} (which can be
 found also for $k$-$\epsilon$ and tracers) specifies the desired option and must
 be used coupled with the keyword
-\telkey{SCHEME FOR ADVECTION OF VELOCITIES}= 4 (or 5).
+\telkey{SCHEME FOR ADVECTION OF VELOCITIES} = 4 (or 5).
 It can be set to:
 \begin{itemize}
  \item 1: explicit scheme,
@@ -248,17 +262,18 @@ work with tidal flats.
 Like in \telemac{2D}, the predictor-corrector schemes need an additional
 parameter which represents the number of iterations for every time step
 (or sub-time step) to converge to the solution.
-The keyword \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES} plays this
-role and it is useful for unsteady cases.
+The keyword \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES}
+(default value = 1) plays this role and it is useful for unsteady cases.
 For quasi-steady flows, the number of corrections does not have a large impact
 on the solution, so it can be set to 0.
 On the other hand, for unsteady flows, it is suggested to set the keyword
-\telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES}= 2 (at least),
+\telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES} = 2 (at least),
 which is a good compromise between accuracy and computational time.
 Indeed, by increasing the number of corrections, the scheme is more accurate but
 the CPU time rapidly increases.\\
 The keyword \telkey{NUMBER OF SUB-STEPS OF DISTRIBUTIVE SCHEMES} can be
 activated only for locally semi-implicit predictor-corrector schemes (LIPS).
+The default value is 1.
 As the keyword mentions, it allows to subdivide the time step given by the user
 in the steering file, into several sub-steps.
 Again, it produces an effect on the precision of the scheme and it is convenient
@@ -281,9 +296,10 @@ mass conservative. The weak form will decrease the diffusion. If the keyword
 mass-lumping), monotonicity of the scheme appears. This weak form should be
 more conservative than the strong form. The \telkey{NUMBER OF GAUSS POINTS FOR
 WEAK CHARACTERISTICS} defines the number of Gauss points used to compute the
-weak characteristics. Possible choices are 1, 3 (default value) and 6. The
-bigger the number is, the more conservative the scheme is, but the higher the
-computational costs are.
+weak characteristics. One single choice is possible for \telemac{3d}: 6 points
+(default value).
+%The bigger the number is, the more conservative the scheme is, but the higher the
+%computational costs are.
 
 
 \section{Specific parameters in the non-hydrostatic version}
@@ -463,7 +479,7 @@ Accuracy is specified by the following keywords:
 %  since version 8.1, old default value = 1.E-6 until version 8.0),
 %
 \item \telkey{ACCURACY FOR DIFFUSION OF TRACERS} (default value: 1.E-8
-since version 8.0),
+since version 8.0, one value common to all tracers),
 
 \item \telkey{ACCURACY FOR DIFFUSION OF K-EPSILON} (default value: 1.E-8
   since version 8.1, old default value = 1.E-6 until version 8.0).
@@ -484,7 +500,7 @@ The maximum number of iterations is specified by the following keywords:
 %value: 100),
 %
 \item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF TRACERS }(default
-value: 60),
+value: 60, one value common to all tracers),
 
 \item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF K-EPSILON }(default
 value: 200),
@@ -633,7 +649,7 @@ element (default value),
 \end{itemize}
 
 The keyword \telkey{THRESHOLD FOR VISCOSITY CORRECTION ON TIDAL FLATS} (default
-value is 0.2) allows to specify the minimum water depth from which the
+value is 0.2~m) allows to specify the minimum water depth from which the
 viscosity is gradually reduced (see programming within the \telfile{VISCLIP}
 subroutine).
 
@@ -642,7 +658,8 @@ level "hitting" the bottom), it is recommended to activate a specific treatment
 that prevents the transfer of very small amounts of water at the calculation
 points which have no volume (this situation also tends to degrade the mass
 conservation when using distributives PSI and N schemes). This algorithm is
-activated with the keyword logical \telkey{BYPASS VOID VOLUMES}. When using PSI
+activated with the keyword logical \telkey{BYPASS VOID VOLUMES}
+(default value = NO). When using PSI
 and N schemes compatible with tidal flats, the option is automatically enabled,
 even if the keyword is set to NO.
 

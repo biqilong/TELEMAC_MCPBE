@@ -148,7 +148,7 @@
       !
       WRITE(NFIC,'(A,A)') '%',REPEAT('-',80)
       IF(LNG.EQ.LNG_FR) THEN
-        WRITE(NFIC,'(A)') '\chapter{Liste detaille des mots clefs}'
+        WRITE(NFIC,'(A)') '\chapter{Liste detaillée des mots clefs}'
       ELSE
         WRITE(NFIC,'(A)') '\chapter{Detail list of keywords}'
       ENDIF
@@ -229,7 +229,7 @@
         CALL WRITE_DEFAULT(NFIC,IKEY,LNG)
         ! And the name of the keyword in the other language
         IF(LNG.EQ.LNG_FR) THEN
-          WRITE(NFIC,'(3A)') "Mot cles anglais : & ",
+          WRITE(NFIC,'(3A)') "Mot clef anglais : & ",
      &                         TRIM(MYDICO(IKEY)%KNOM(2)),"\\"
         ELSE
           WRITE(NFIC,'(3A)') "French keyword : & \telkey{",

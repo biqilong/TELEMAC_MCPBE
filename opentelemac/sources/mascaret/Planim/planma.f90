@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -44,7 +44,7 @@ subroutine PLANMA         ( &
 ! *********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4                EDF-CEREMA
+! VERSION : V8P2R0                EDF-CEREMA
 ! *********************************************************************
 ! FONCTION :
 ! --------
@@ -375,13 +375,15 @@ subroutine PLANMA         ( &
    ! ***********************
    boucle1_section : do isec = 1 , size(X)
 
-      if(OptionCourlis) then
+      if(optionCourlis .AND. clipping_option) then
+        ! critere de variation sedimentaire
         Hthres = fracH*(myZsl(isec)-Profil(isec)%ZRef)
         condition_courlis = abs(varsed(isec)) > Hthres
+      else if (optionCourlis) then
+        condition_courlis = abs(varsed(isec)) > absolute_clip
       else
         condition_courlis = .false.
       endif
-
 
       if ( Temps .EQ. TempsInitial .OR. condition_courlis ) then ! PU2017: Changement du critere sur le planimetrage
 
@@ -461,9 +463,12 @@ subroutine PLANMA         ( &
    ! ********************
    boucle2_bief : do ibief = 1 , size(Connect%OrigineBief)
       boucle2_section : do isec = Connect%OrigineBief(ibief) , Connect%FinBief(ibief)
-         if(OptionCourlis) then
+         if(optionCourlis .AND. clipping_option) then
+           ! critere de variation sedimentaire
            Hthres = fracH*(myZsl(isec)-Profil(isec)%ZRef)
            condition_courlis = abs(varsed(isec)) > Hthres
+         else if (optionCourlis) then
+           condition_courlis = abs(varsed(isec)) > absolute_clip
          else
            condition_courlis = .false.
          endif
@@ -548,9 +553,12 @@ subroutine PLANMA         ( &
    ! ***********************************************
    boucle3_bief : do ibief = 1 , size(Connect%OrigineBief)
       boucle3_section : do isec = Connect%OrigineBief(ibief), Connect%FinBief(ibief) - 1
-         if(OptionCourlis) then
+         if(optionCourlis .AND. clipping_option) then
+           ! critere de variation sedimentaire
            Hthres = fracH*(myZsl(isec)-Profil(isec)%ZRef)
            condition_courlis = abs(varsed(isec)) > Hthres
+         else if (optionCourlis) then
+           condition_courlis = abs(varsed(isec)) > absolute_clip
          else
            condition_courlis = .false.
          endif

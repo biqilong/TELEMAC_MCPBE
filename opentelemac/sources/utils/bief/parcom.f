@@ -158,8 +158,6 @@
 !
 !     ERROR ON THE STRUCTURE
 !
-      WRITE(LU,53)
-53    FORMAT(1X,'                CAS NON PREVU')
       WRITE(LU,54)
 54    FORMAT(1X,'               UNEXPECTED CASE')
       CALL PLANTE(1)

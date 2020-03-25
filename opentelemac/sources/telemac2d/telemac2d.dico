@@ -2727,7 +2727,7 @@ RUBRIQUE1 =
 'HYDRO';'PHYSICAL PARAMETERS HYDRO';'METEOROLOGY'
 NIVEAU = 2
 AIDE =
-'Format du fichier binaire de donn\E9es atmospheriques.
+'Format du fichier binaire de donnees atmospheriques.
 Les valeurs possibles sont :
 - SERAFIN : format standard simple precision pour Telemac;
 - SERAFIND: format standard double precision pour Telemac;
@@ -8440,9 +8440,9 @@ RUBRIQUE = ''
 RUBRIQUE1 = ''
 NIVEAU = 0
 AIDE =
-'Avec cette option partel ne genereras non plus un fichier (GEO/CLI/PAR)
-par processeur mais une concaténation de ceux-ci, ainsi qu''un fichier
-d''index associé. Ainsi plutot que d''avoir 3P fichiers, il n''y en a
+'Avec cette option partel ne generera non plus un fichier (GEO/CLI/PAR)
+par processeur mais une concatenation de ceux-ci, ainsi qu''un fichier
+d''index associe. Ainsi plutot que d''avoir 3P fichiers, il n''y en a
 plus que 6.'
 AIDE1 =
 'With this option partel no more generates a file (GEO/CLI/PAR) per

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_MASCARET_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 use M_MODELE_MASCARET_T         ! Type MODELE_MASCARET_T
 use M_ETAT_MASCARET_T           ! Type ETAT_MASCARET_T
@@ -64,7 +64,7 @@ contains
       GET_TYPE_VAR_MASC     = 0
       TypeVar               = ""
       Categorie             = ""
-      Modifiable            = .FALSE.
+      Modifiable            = .TRUE.
       dimVar                = 0
       MessageErreur         = ""
 

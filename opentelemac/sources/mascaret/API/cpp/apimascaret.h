@@ -1,4 +1,4 @@
-//== Copyright (C) 2000-2017 EDF-CEREMA ==
+//== Copyright (C) 2000-2020 EDF-CEREMA ==
 //
 //   This file is part of MASCARET.
 //
@@ -19,7 +19,7 @@
 //***********************************************************************
 // PROGICIEL : MASCARET        J.-M. LACOMBE
 //
-// VERSION : 8.1.4               EDF-CEREMA
+// VERSION : V8P2R0               EDF-CEREMA
 //***********************************************************************
 /************************************************************************
  *
@@ -35,7 +35,7 @@
    // Initialise les ressources associees a une instance de Mascaret (Modele et Etat)
    // Retourne l'identifiant de l'instance
    // .................................................................................................................................
-   EXTC int C_CREATE_MASCARET(int *Identifiant);
+   EXTC int C_CREATE_MASCARET(int *);
    // Argument en sortie :
    //      Identifiant de l'instance Mascaret utilise en argument des autres fonctions de l'API
 
@@ -43,7 +43,7 @@
    // Libere les ressources associees a une instance de Mascaret (Modele et Etat)
    // RQ : Depend de l'instance du modele ou de l'etat
    // .................................................................................................................................
-   EXTC int C_DELETE_MASCARET(int Identifiant);
+   EXTC int C_DELETE_MASCARET(int );
    // Argument en entree :
    //      Identifiant :  Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
 
@@ -51,7 +51,7 @@
    // Retourne le message d'une erreur
    // RQ : Depend de l'instance du modele ou de l'etat
    // .................................................................................................................................
-   EXTC int C_GET_ERREUR_MASCARET(int Identifiant, char **Message);
+   EXTC int C_GET_ERREUR_MASCARET(int , char **);
    // Argument en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    // Argument en sortie :
@@ -60,7 +60,7 @@
    //.................................................................................................................................
    // Sauvegarde en memoire de l'etat courant d'une instance de Mascaret pour un usage ulterieur
    //.................................................................................................................................
-   EXTC int C_SAVE_ETAT_MASCARET(int Identifiant, int *IdentifiantEtat);
+   EXTC int C_SAVE_ETAT_MASCARET(int , int *);
    // Argument en entree :
    //      Identifiant :  Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    // Argument en sortie :
@@ -70,7 +70,7 @@
    // Initialise l'etat courant d'une instance de Mascaret a partir d'un etat prealablement sauvegarde par SAVE_ETAT_MASCARET
    // Supprime la sauvegarde de l'etat.
    //.................................................................................................................................
-   EXTC int C_SET_ETAT_MASCARET(int Identifiant, int IdentifiantEtat, int AndDelete);
+   EXTC int C_SET_ETAT_MASCARET(int , int , int );
    // Arguments en entree :
    //      Identifiant     :  Identifiant de l'instance de Mascaret dont l'etat va etre modifie
    //      IdentifiantEtat :  Identifiant de l'etat Mascaret sauvegarde par SAVE_ETAT_MASCARET
@@ -79,21 +79,21 @@
    //.................................................................................................................................
    // Desallocation de tous les etats sauvegardes concernant un identifiant Mascaret
    //.................................................................................................................................
-   EXTC int C_FREE_ALL_SAVE_ETAT_MASCARET(int Identifiant);
+   EXTC int C_FREE_ALL_SAVE_ETAT_MASCARET(int );
    // Arguments en entree :
    //      Identifiant     :  Identifiant de l'instance de Mascaret dont les etats sauvegardes vont etre supprimes
-  
+
    //.................................................................................................................................
    // Desallocation d'un etat sauvegarde
    //.................................................................................................................................
-   EXTC int C_FREE_SAVE_ETAT_MASCARET(int IdentifiantEtat);
+   EXTC int C_FREE_SAVE_ETAT_MASCARET(int );
    // Arguments en entree :
    //      IdentifiantEtat     :  Identifiant de l'etat Mascaret sauvegarde par SAVE_ETAT_MASCARET qui va etre supprime
 
    //.................................................................................................................................
    // Importation d'un modele mascaret a partir des fichiers natifs de Mascaret
    // .................................................................................................................................
-   EXTC int C_IMPORT_MODELE_MASCARET(int Identifiant, char *TabNomFichier[], char *TypeNomFichier[], int Taille, int Impression);
+   EXTC int C_IMPORT_MODELE_MASCARET(int , char *[], char *[], int , int);
    // Arguments en entree :
    //      Identifiant    : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      TabNomFichier  : Tableau des noms des fichiers natifs Mascaret a importer (un nom de fichier ne doit pas depasser 255 caracteres)
@@ -103,11 +103,19 @@
    //      Taille         : Taille des 2 tableaux TabNomFichier et TypeNomFichier
    //      Impression     : impression sur les fichiers listing (1-> Vrai 0-> Faux)
 
+   //.................................................................................................................................
+   // Importation d'un modele mascaret a partir d'un fichier listant les fichiers natifs de Mascaret
+   // .................................................................................................................................
+   EXTC int C_IMPORT_MODELE_MASCARET_ONEFILE(int *, int *, char **);
+   // Arguments en entree :
+   //      Identifiant    : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
+   //      Impression     : impression sur les fichiers listing (1-> Vrai 0-> Faux)
+   //      MascFile       : Fichier listant les fichiers Mascaret (.xcas, .geo, .loi, etc...)
 
    //.................................................................................................................................
    // Importation de l'etat Mascaret a partir du fichier natif contenant la ligne d'eau initiale
    // .................................................................................................................................
-   EXTC int C_INIT_ETAT_MASCARET(int Identifiant, char *NomFichier, int Impression);
+   EXTC int C_INIT_ETAT_MASCARET(int *, char **, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomFichier  : Nom du fichier natif contenant la ligne d'eau initiale (max 255 carateres)
@@ -116,7 +124,7 @@
    //.................................................................................................................................
    // Importation de l'etat Mascaret a partir de la ligne d'eau initiale (debit, cote) passee en argument
    // .................................................................................................................................
-   EXTC int C_INIT_LIGNE_MASCARET(int Identifiant, double Q[], double Z[], int Taille);
+   EXTC int C_INIT_LIGNE_MASCARET(int , double [], double [], int );
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      Q           : Tableau des debits de la ligne d'eau initiale
@@ -126,7 +134,7 @@
    //.................................................................................................................................
    // Renvoie la ligne d'eau (debit, cote) du modele a l'instant courant
    // .................................................................................................................................
-   EXTC int C_GET_LIGNE(int Identifiant, double Q[], double Z[]);
+   EXTC int C_GET_LIGNE(int *, double [], double []);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      Q           : Tableau des debits de la ligne d'eau
@@ -135,7 +143,7 @@
    //.................................................................................................................................
    // Importation de l'etat Tracer a partir des concentrations initiales passees en argument
    // .................................................................................................................................
-   EXTC int C_INIT_LIGNE_TRACER(int Identifiant, double C[], int Taille, int NbTrac, int Impression);
+   EXTC int C_INIT_LIGNE_TRACER(int , double [], int , int , int );
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      C           : Tableau 2D des concentrations initiales
@@ -146,7 +154,7 @@
    //.................................................................................................................................
    // Renvoie les concentrations des traceurs a l'instant courant
    // .................................................................................................................................
-   EXTC int C_GET_LIGNE_TRACER(int Identifiant, double C[]);
+   EXTC int C_GET_LIGNE_TRACER(int , double []);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      C           : Tableau des concentrations des traceurs
@@ -154,7 +162,7 @@
    //.................................................................................................................................
    // Importation de l'etat Tracer a partir du fichier natif contenant la concentration initiale ou a zero
    // .................................................................................................................................
-   EXTC int C_INIT_ETAT_TRACER(int Identifiant, int Impression);
+   EXTC int C_INIT_ETAT_TRACER(int , int );
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      Impression  : impression sur les fichiers listing (1-> Vrai 0-> Faux)
@@ -162,7 +170,7 @@
    //.................................................................................................................................
    // Calcul d'un nouvel etat au "TpsFinal" en utilisant le modele courant et l'etat precedent
    // .................................................................................................................................
-   EXTC int C_CALCUL_MASCARET(int Identifiant, double TpsInitial, double TpsFinal, double PasTps, int Impression);
+   EXTC int C_CALCUL_MASCARET(int , double , double , double , int );
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      TpsInitial  : Temps initiale du calcul
@@ -177,7 +185,7 @@
    // Arguments en sortie :
    //        NbCL : le nombre de condition limite dans le modele
    //.................................................................................................................................
-   EXTC int C_GET_NB_CONDITION_LIMITE_MASCARET(int Identifiant, int *NbCL);
+   EXTC int C_GET_NB_CONDITION_LIMITE_MASCARET(int , int *);
 
    //.................................................................................................................................
    // Recupere le nom d'une condition limite du modele ainsi que le numero de la loi correspondante
@@ -188,12 +196,12 @@
    //        NomCL  : Le nom de la condition limite dans le modele
    //        NumLoi : Numero de la Loi correspondant a la condition limite dans le modele
    //.................................................................................................................................
-   EXTC int C_GET_NOM_CONDITION_LIMITE_MASCARET(int Identifiant, int NumCL, char **NomCL, int *NumLoi);
+   EXTC int C_GET_NOM_CONDITION_LIMITE_MASCARET(int , int , char **, int *);
 
    //.................................................................................................................................
    // Calcul d'un nouvel etat au "TpsFinal" en utilisant le modele courant, les nouvelles contions limites et l'etat precedent
    //.................................................................................................................................
-   EXTC int C_CALCUL_MASCARET_CONDITION_LIMITE(int Identifiant, double TpsInitial, double TpsFinal, double PasTps, double TpsCl[], int TailleTpsCL, double **Cl1, double **Cl2, int Impression);
+   EXTC int C_CALCUL_MASCARET_CONDITION_LIMITE(int , double , double , double , double [], int , double **, double **, int );
    // Arguments en entree :
    //       Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //       TpsInitial  : Temps initiale du calcul
@@ -210,7 +218,7 @@
    // Recupere la liste des variables de Mascaret accompagne d'une description
    // RQ : Ne depend pas de l'instance du modele ou de l'etat
    //.................................................................................................................................
-   EXTC int C_GET_DESC_VAR_MASCARET(int Identifiant, char **TabNom[], char **TabDesc[], int *Taille);
+   EXTC int C_GET_DESC_VAR_MASCARET(int , char **[], char **[], int *);
    // Argument en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    // Arguments en sortie :
@@ -227,7 +235,7 @@
    //   * le nombre d'indexe pour acceder a la variable
    // RQ : Ne depend pas de l'instance du modele ou de l'etat
    // .................................................................................................................................
-   EXTC int C_GET_TYPE_VAR_MASCARET(int Identifiant, char *NomVar, char **TypeVar, char **Categorie, int *Modifiable, int *dimVar);
+   EXTC int C_GET_TYPE_VAR_MASCARET(int *, char **, char **, char **, int *, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -241,7 +249,7 @@
    // Accede a la taille maximum des indexes pour acceder a une variable
    // RQ : Depend de l'instance du modele ou de l'etat
    // .................................................................................................................................
-   EXTC int C_GET_TAILLE_VAR_MASCARET(int Identifiant, char *NomVar, int index1, int *taille1, int *taille2, int *taille3);
+   EXTC int C_GET_TAILLE_VAR_MASCARET(int *, char **, int *, int *, int *, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -255,7 +263,7 @@
    // Definit la taille maximum des indexes pour acceder a une variable
    // RQ : Depend de l'instance du modele ou de l'etat
    // .................................................................................................................................
-   EXTC int C_SET_TAILLE_VAR_MASCARET(int Identifiant, char *NomVar, int index1,int taille1, int taille2, int taille3); 
+   EXTC int C_SET_TAILLE_VAR_MASCARET(int , char *, int ,int , int , int );
    // Arguments en entree :
    //        Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //        NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -263,14 +271,14 @@
    //        taille1     : valeur max du 1er indice
    //        taille2     : valeur max du 2e  indice
    //        taille3     : valeur max du 3e  indice
-  
+
    /*********************************************************************************************************************************
     *
     *  Accesseurs permettant d'acceder aux valeurs des variables d'une instance du modele ou de l'etat
     * RQ : Depend de l'instance du modele ou de l'etat
     *
     *********************************************************************************************************************************/
-   EXTC int C_GET_DOUBLE_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, double *valeur);
+   EXTC int C_GET_DOUBLE_MASCARET(int *, char **, int *, int *, int *, double *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -280,7 +288,7 @@
    // Argument en sortie :
    //      valeur       : valeur du double de la variable pour les indexes specifies
 
-   EXTC int C_GET_INT_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int *valeur);
+   int C_GET_INT_MASCARET(int *, char **, int *, int *, int *, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -290,7 +298,7 @@
    // Argument en sortie :
    //      valeur       : valeur de l'entier de la variable pour les indexes specifies
 
-   EXTC int C_GET_BOOL_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int *valeur, int *trueref);
+   EXTC int C_GET_BOOL_MASCARET(int *, char **, int *, int *, int *, int *, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -301,7 +309,7 @@
    //      valeur       : valeur du boolean (sous la forme d'un entier : 1 ->VRAI, 0 ->FAUX) de la variable pour les indexes specifies
    //      trueref      : valeur du boolean pour true sous la forme d'un entier
 
-   EXTC int C_GET_STRING_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, char **valeur);
+   EXTC int C_GET_STRING_MASCARET(int *, char **, int *, int *, int *, char **);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -317,7 +325,7 @@
     * RQ : Depend de l'instance du modele ou de l'etat
     *
     *********************************************************************************************************************************/
-   EXTC int C_SET_DOUBLE_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, double valeur);
+   EXTC int C_SET_DOUBLE_MASCARET(int *, char **, int *, int *, int *, double *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -326,7 +334,7 @@
    //      index3      : valeur du 3e indice
    //      valeur      : nouvelle valeur de la variable pour les indexes specifies
 
-   EXTC int C_SET_INT_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int valeur);
+   EXTC int C_SET_INT_MASCARET(int *, char **, int *, int *, int *, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -335,7 +343,7 @@
    //      index3      : valeur du 3e indice
    //      valeur      : nouvelle valeur de la variable pour les indexes specifies
 
-   EXTC int C_SET_BOOL_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, int valeur);
+   EXTC int C_SET_BOOL_MASCARET(int *, char **, int *, int *, int *, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -344,7 +352,7 @@
    //      index3      : valeur du 3e indice
    //      valeur      : nouvelle valeur de la variable pour les indexes specifies (sous la forme d'un entier : 1 ->VRAI, 0 ->FAUX)
 
-   EXTC int C_SET_STRING_MASCARET(int Identifiant, char *NomVar, int index1, int index2, int index3, char *valeur);
+   EXTC int C_SET_STRING_MASCARET(int *, char **, int *, int *, int *, char **);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET
@@ -361,7 +369,7 @@
    //.................................................................................................................................
    // Retourne la version courante de Mascaret
    // .................................................................................................................................
-   EXTC int C_VERSION_MASCARET(int *Majeur, int *Mineur, int *Micro);
+   EXTC int C_VERSION_MASCARET(int *, int *, int *);
    // Arguments en sortie :
    //      Majeur  : Numero de la version Majeur de Mascaret
    //      Mineur  : Numero de la version Mineur de Mascaret
@@ -376,7 +384,7 @@
    //.................................................................................................................................
    //  Import d'un modele ou d'un etat Mascaret depuis un fichier XML
    //.................................................................................................................................
-   EXTC int C_IMPORT_XML(int Identifiant, char *NomFichier, int importModele);
+   EXTC int C_IMPORT_XML(int , char *, int );
    // Arguments en entree :
    //      Identifiant  : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomFichier   : Nom du fichier XML contenant le Modele ou l'etat Mascaret (max 132 caracteres)
@@ -385,7 +393,7 @@
    //.................................................................................................................................
    //  Export d'un modele ou d'un etat Mascaret dans un fichier XML
    //.................................................................................................................................
-   EXTC int C_EXPORT_XML(int Identifiant, char *NomFichier, int AvecDesc, int exportModele);
+   EXTC int C_EXPORT_XML(int , char *, int , int );
    // Arguments en entree :
    //      Identifiant  : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomFichier   : Nom du fichier XML cree contenant le Modele ou l'etat Mascaret (max 132 caracteres)
@@ -395,17 +403,17 @@
    //.................................................................................................................................
    //  Export d'un modele Saint Venant dans un fichier XML
    //.................................................................................................................................
-   EXTC int C_EXPORT_XML_SAINT_VENANT(int Identifiant, char *NomFichier);
+   EXTC int C_EXPORT_XML_SAINT_VENANT(int , char *);
    // Arguments en entree :
    //      Identifiant  : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomFichier   : Nom du fichier XML cree contenant le Modele ou l'etat Mascaret (max 132 caracteres)
 
-   
+
    //-------------------------------------------------------------------------------
    // Ouverture du fichier XML suivi de l'ouverture de la balise XML racine
    // Ce fichier est prevu pour contenir des variables au choix de Mascaret via l'utilisation de C_EXPORT_VAR_XML
    //-------------------------------------------------------------------------------
-   EXTC int C_OUVERTURE_BALISE_XML(int Identifiant, char *NomFichier, int uniteLogique, char *balise);
+   EXTC int C_OUVERTURE_BALISE_XML(int , char *, int , char *);
    // Arguments en entree :
    //      Identifiant  : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomFichier   : Nom du fichier XML cree contenant l'entete du fichier XML (max 132 caracteres)
@@ -418,7 +426,7 @@
    // et avoir initialiser le modele avec IMPORT_MODELE_MASCARET.
    // On peut ensuite utiliser plusieurs fois cette procedure
    //-----------------------------------------------------------------------------------
-   EXTC int C_EXPORT_VAR_XML(int Identifiant, int uniteLogique, char *nomVar, int avecDesc);
+   EXTC int C_EXPORT_VAR_XML(int , int , char *, int );
    // Arguments en entree :
    //      Identifiant  : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      uniteLogique : Unite logique utilise par le fichier XML - Doit egale a celle de l'ouverture (utilisation de C_OUVERTURE_BALISE_XML)
@@ -432,7 +440,7 @@
    // et avoir initialiser le modele avec IMPORT_MODELE_MASCARET.
    // On peut ensuite utiliser plusieurs fois cette procedure
    //-----------------------------------------------------------------------------------
-   EXTC int C_EXPORT_USERVAR_XML(int Identifiant, int uniteLogique, char *nomUserVar, char *typeVar, char *descVar, char *valeurVar);
+   EXTC int C_EXPORT_USERVAR_XML(int , int , char *, char *, char *, char *);
    // Arguments en entree :
    //      Identifiant  : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      uniteLogique : Unite logique utilise par le fichier XML - Doit egale a celle de l'ouverture (utilisation de C_OUVERTURE_BALISE_XML)
@@ -440,15 +448,14 @@
    //      typeVar      : chaine du type de la variable "INT", "DOUBLE", "STRING", ...
    //      descVar      : chaine de description de la variable
    //      valeurVar    : chaine de la valeur a ecrire dans la balise XML
- 
-   
+
+
    //------------------------------------------------------------------------------------
    // Fermeture du la balise XML racine puis fermeture du fichier
    // Doit etre utiliser apres OUVERTURE_BALISE_XML et normalement apres C_EXPORT_VAR_XML
    //------------------------------------------------------------------------------------
-   EXTC int C_FERMETURE_BALISE_XML(int Identifiant, int uniteLogique, char *balise);
+   EXTC int C_FERMETURE_BALISE_XML(int , int , char *);
    // Arguments en entree :
    //      Identifiant  : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      uniteLogique : Unite logique utilise par le fichier XML - Doit egale a celle de l'ouverture (utilisation de C_OUVERTURE_BALISE_XML)
    //      balise       : balise racine du fichier XML - Doit egale a celle de l'ouverture (utilisation de C_OUVERTURE_BALISE_XML)
-

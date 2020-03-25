@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -19,7 +19,7 @@
 ! *********************************************************************
 ! PROGICIEL : MASCARET       J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
    !.................................................................................................................................
    ! Calcul d'un nouvel etat au "TpsFinal" en utilisant le modele courant et l'etat precedent
@@ -173,7 +173,7 @@ subroutine CALCUL_MASCARET(RetourErreur, Identifiant, TpsInitial, TpsFinal, PasT
 
  ! Variables Courlis
 
-   real(DOUBLE)    , dimension(:), pointer :: varsed ! Courlis : profil evolution
+   real(DOUBLE)    , dimension(:), pointer :: varsed => null() ! Courlis : profil evolution
 
 !
 ! Instructions

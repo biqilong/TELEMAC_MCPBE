@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_SECTION_PLAN_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
   !***********************************************************************
@@ -153,65 +153,64 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-
-       if ( NomVar == 'Model.VDSection.S') then
+       if ( index(NomVar, 'Model.VDSection.S1GEO') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.S1') then
+       else if ( index(NomVar, 'Model.VDSection.S1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.S2') then
+       else if ( index(NomVar, 'Model.VDSection.S2') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.SS') then
+       else if ( index(NomVar, 'Model.VDSection.SS') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.S1GEO') then
+       else if ( index(NomVar, 'Model.VDSection.S') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.CELER') then
+       else if ( index(NomVar, 'Model.VDSection.CELER') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.B') then
+       else if ( index(NomVar, 'Model.VDSection.B') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.INV') then
+       else if ( index(NomVar, 'Model.VDSection.INV') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.INTE') then
+       else if ( index(NomVar, 'Model.VDSection.INTE') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.DYDX') then
+       else if ( index(NomVar, 'Model.VDSection.DYDX') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.PRESS') then
+       else if ( index(NomVar, 'Model.VDSection.PRESS') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.DEB') then
+       else if ( index(NomVar, 'Model.VDSection.DEB1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.DEB1') then
+       else if ( index(NomVar, 'Model.VDSection.DEB2') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.DEB2') then
+       else if ( index(NomVar, 'Model.VDSection.DEBD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.SD') then
+       else if ( index(NomVar, 'Model.VDSection.DEB') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.SD1') then
+       else if ( index(NomVar, 'Model.VDSection.SD1') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.SD2') then
+       else if ( index(NomVar, 'Model.VDSection.SD2') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.PRESSD') then
+       else if ( index(NomVar, 'Model.VDSection.SD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.BD') then
+       else if ( index(NomVar, 'Model.VDSection.PRESSD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
-       else if ( NomVar == 'Model.VDSection.DEBD') then
+       else if ( index(NomVar, 'Model.VDSection.BD') > 0) then
           TypeVar = 'TABDOUBLE'
           dimVar                = 2
       else
@@ -247,43 +246,7 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.VDSection.S') then
-         if (ASSOCIATED(Instance%S)) then
-            taille1 = size(Instance%S, 1)
-            taille2 = size(Instance%S, 2)
-         else
-            taille1 = 0
-            taille2 = 0
-         endif
-         taille3 = 0
-      else if ( NomVar == 'Model.VDSection.S1') then
-         if (ASSOCIATED(Instance%S1)) then
-            taille1 = size(Instance%S1, 1)
-            taille2 = size(Instance%S1, 2)
-         else
-            taille1 = 0
-            taille2 = 0
-         endif
-         taille3 = 0
-      else if ( NomVar == 'Model.VDSection.S2') then
-         if (ASSOCIATED(Instance%S2)) then
-            taille1 = size(Instance%S2, 1)
-            taille2 = size(Instance%S2, 2)
-         else
-            taille1 = 0
-            taille2 = 0
-         endif
-         taille3 = 0
-      else if ( NomVar == 'Model.VDSection.SS') then
-         if (ASSOCIATED(Instance%SS)) then
-            taille1 = size(Instance%SS, 1)
-            taille2 = size(Instance%SS, 2)
-         else
-            taille1 = 0
-            taille2 = 0
-         endif
-         taille3 = 0
-      else if ( NomVar == 'Model.VDSection.S1GEO') then
+      if ( index(NomVar, 'Model.VDSection.S1GEO') > 0) then
          if (ASSOCIATED(Instance%S1GEO)) then
             taille1 = size(Instance%S1GEO, 1)
             taille2 = size(Instance%S1GEO, 2)
@@ -292,7 +255,43 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.CELER') then
+      else if ( index(NomVar, 'Model.VDSection.S1') > 0) then
+         if (ASSOCIATED(Instance%S1)) then
+            taille1 = size(Instance%S1, 1)
+            taille2 = size(Instance%S1, 2)
+         else
+            taille1 = 0
+            taille2 = 0
+         endif
+         taille3 = 0
+      else if ( index(NomVar, 'Model.VDSection.S2') > 0) then
+         if (ASSOCIATED(Instance%S2)) then
+            taille1 = size(Instance%S2, 1)
+            taille2 = size(Instance%S2, 2)
+         else
+            taille1 = 0
+            taille2 = 0
+         endif
+         taille3 = 0
+      else if ( index(NomVar, 'Model.VDSection.SS') > 0) then
+         if (ASSOCIATED(Instance%SS)) then
+            taille1 = size(Instance%SS, 1)
+            taille2 = size(Instance%SS, 2)
+         else
+            taille1 = 0
+            taille2 = 0
+         endif
+         taille3 = 0
+      else if ( index(NomVar, 'Model.VDSection.S') > 0) then
+         if (ASSOCIATED(Instance%S)) then
+            taille1 = size(Instance%S, 1)
+            taille2 = size(Instance%S, 2)
+         else
+            taille1 = 0
+            taille2 = 0
+         endif
+         taille3 = 0
+      else if ( index(NomVar, 'Model.VDSection.CELER') > 0) then
          if (ASSOCIATED(Instance%CELER)) then
             taille1 = size(Instance%CELER, 1)
             taille2 = size(Instance%CELER, 2)
@@ -301,7 +300,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.B') then
+      else if ( index(NomVar, 'Model.VDSection.B') > 0) then
          if (ASSOCIATED(Instance%B)) then
             taille1 = size(Instance%B, 1)
             taille2 = size(Instance%B, 2)
@@ -310,7 +309,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.INV') then
+      else if ( index(NomVar, 'Model.VDSection.INV') > 0) then
          if (ASSOCIATED(Instance%INV)) then
             taille1 = size(Instance%INV, 1)
             taille2 = size(Instance%INV, 2)
@@ -319,7 +318,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.INTE') then
+      else if ( index(NomVar, 'Model.VDSection.INTE') > 0) then
          if (ASSOCIATED(Instance%INTE)) then
             taille1 = size(Instance%INTE, 1)
             taille2 = size(Instance%INTE, 2)
@@ -328,7 +327,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.DYDX') then
+      else if ( index(NomVar, 'Model.VDSection.DYDX') > 0) then
          if (ASSOCIATED(Instance%DYDX)) then
             taille1 = size(Instance%DYDX, 1)
             taille2 = size(Instance%DYDX, 2)
@@ -337,7 +336,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.PRESS') then
+      else if ( index(NomVar, 'Model.VDSection.PRESS') > 0) then
          if (ASSOCIATED(Instance%PRESS)) then
             taille1 = size(Instance%PRESS, 1)
             taille2 = size(Instance%PRESS, 2)
@@ -346,16 +345,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.DEB') then
-         if (ASSOCIATED(Instance%DEB)) then
-            taille1 = size(Instance%DEB, 1)
-            taille2 = size(Instance%DEB, 2)
-         else
-            taille1 = 0
-            taille2 = 0
-         endif
-         taille3 = 0
-      else if ( NomVar == 'Model.VDSection.DEB1') then
+      else if ( index(NomVar, 'Model.VDSection.DEB1') > 0) then
          if (ASSOCIATED(Instance%DEB1)) then
             taille1 = size(Instance%DEB1, 1)
             taille2 = size(Instance%DEB1, 2)
@@ -364,7 +354,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.DEB2') then
+      else if ( index(NomVar, 'Model.VDSection.DEB2') > 0) then
          if (ASSOCIATED(Instance%DEB2)) then
             taille1 = size(Instance%DEB2, 1)
             taille2 = size(Instance%DEB2, 2)
@@ -373,16 +363,25 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.SD') then
-         if (ASSOCIATED(Instance%SD)) then
-            taille1 = size(Instance%SD, 1)
-            taille2 = size(Instance%SD, 2)
+      else if ( index(NomVar, 'Model.VDSection.DEBD') > 0) then
+         if (ASSOCIATED(Instance%DEBD)) then
+            taille1 = size(Instance%DEBD, 1)
+            taille2 = size(Instance%DEBD, 2)
          else
             taille1 = 0
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.SD1') then
+      else if ( index(NomVar, 'Model.VDSection.DEB') > 0) then
+         if (ASSOCIATED(Instance%DEB)) then
+            taille1 = size(Instance%DEB, 1)
+            taille2 = size(Instance%DEB, 2)
+         else
+            taille1 = 0
+            taille2 = 0
+         endif
+         taille3 = 0
+      else if ( index(NomVar, 'Model.VDSection.SD1') > 0) then
          if (ASSOCIATED(Instance%SD1)) then
             taille1 = size(Instance%SD1, 1)
             taille2 = size(Instance%SD1, 2)
@@ -391,7 +390,7 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.SD2') then
+      else if ( index(NomVar, 'Model.VDSection.SD2') > 0) then
          if (ASSOCIATED(Instance%SD2)) then
             taille1 = size(Instance%SD2, 1)
             taille2 = size(Instance%SD2, 2)
@@ -400,7 +399,16 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.PRESSD') then
+      else if ( index(NomVar, 'Model.VDSection.SD') > 0) then
+         if (ASSOCIATED(Instance%SD)) then
+            taille1 = size(Instance%SD, 1)
+            taille2 = size(Instance%SD, 2)
+         else
+            taille1 = 0
+            taille2 = 0
+         endif
+         taille3 = 0
+      else if ( index(NomVar, 'Model.VDSection.PRESSD') > 0) then
          if (ASSOCIATED(Instance%PRESSD)) then
             taille1 = size(Instance%PRESSD, 1)
             taille2 = size(Instance%PRESSD, 2)
@@ -409,19 +417,10 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.VDSection.BD') then
+      else if ( index(NomVar, 'Model.VDSection.BD') > 0) then
          if (ASSOCIATED(Instance%BD)) then
             taille1 = size(Instance%BD, 1)
             taille2 = size(Instance%BD, 2)
-         else
-            taille1 = 0
-            taille2 = 0
-         endif
-         taille3 = 0
-      else if ( NomVar == 'Model.VDSection.DEBD') then
-         if (ASSOCIATED(Instance%DEBD)) then
-            taille1 = size(Instance%DEBD, 1)
-            taille2 = size(Instance%DEBD, 2)
          else
             taille1 = 0
             taille2 = 0
@@ -463,91 +462,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.VDSection.S') then
-        if (ASSOCIATED(Instance%S)) then
-           t1 = size(Instance%S, 1)
-           t2 = size(Instance%S, 2)
-           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%S, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SECTION_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.S'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%S).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%S(NewT1, NewT2), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SECTION_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.S'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.VDSection.S1') then
-        if (ASSOCIATED(Instance%S1)) then
-           t1 = size(Instance%S1, 1)
-           t2 = size(Instance%S1, 2)
-           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%S1, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SECTION_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.S1'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%S1).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%S1(NewT1, NewT2), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SECTION_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.S1'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.VDSection.S2') then
-        if (ASSOCIATED(Instance%S2)) then
-           t1 = size(Instance%S2, 1)
-           t2 = size(Instance%S2, 2)
-           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%S2, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SECTION_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.S2'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%S2).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%S2(NewT1, NewT2), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SECTION_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.S2'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.VDSection.SS') then
-        if (ASSOCIATED(Instance%SS)) then
-           t1 = size(Instance%SS, 1)
-           t2 = size(Instance%SS, 2)
-           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%SS, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SECTION_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.SS'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%SS).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%SS(NewT1, NewT2), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SECTION_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.SS'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.VDSection.S1GEO') then
+      if ( index(NomVar, 'Model.VDSection.S1GEO') > 0) then
         if (ASSOCIATED(Instance%S1GEO)) then
            t1 = size(Instance%S1GEO, 1)
            t2 = size(Instance%S1GEO, 2)
@@ -568,7 +483,91 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.CELER') then
+      else if ( index(NomVar, 'Model.VDSection.S1') > 0) then
+        if (ASSOCIATED(Instance%S1)) then
+           t1 = size(Instance%S1, 1)
+           t2 = size(Instance%S1, 2)
+           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
+              DEALLOCATE(Instance%S1, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SECTION_PLAN = err
+                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.S1'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%S1).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%S1(NewT1, NewT2), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SECTION_PLAN = err
+              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.S1'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.VDSection.S2') > 0) then
+        if (ASSOCIATED(Instance%S2)) then
+           t1 = size(Instance%S2, 1)
+           t2 = size(Instance%S2, 2)
+           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
+              DEALLOCATE(Instance%S2, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SECTION_PLAN = err
+                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.S2'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%S2).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%S2(NewT1, NewT2), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SECTION_PLAN = err
+              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.S2'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.VDSection.SS') > 0) then
+        if (ASSOCIATED(Instance%SS)) then
+           t1 = size(Instance%SS, 1)
+           t2 = size(Instance%SS, 2)
+           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
+              DEALLOCATE(Instance%SS, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SECTION_PLAN = err
+                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.SS'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%SS).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%SS(NewT1, NewT2), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SECTION_PLAN = err
+              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.SS'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.VDSection.S') > 0) then
+        if (ASSOCIATED(Instance%S)) then
+           t1 = size(Instance%S, 1)
+           t2 = size(Instance%S, 2)
+           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
+              DEALLOCATE(Instance%S, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SECTION_PLAN = err
+                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.S'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%S).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%S(NewT1, NewT2), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SECTION_PLAN = err
+              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.S'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.VDSection.CELER') > 0) then
         if (ASSOCIATED(Instance%CELER)) then
            t1 = size(Instance%CELER, 1)
            t2 = size(Instance%CELER, 2)
@@ -589,7 +588,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.B') then
+      else if ( index(NomVar, 'Model.VDSection.B') > 0) then
         if (ASSOCIATED(Instance%B)) then
            t1 = size(Instance%B, 1)
            t2 = size(Instance%B, 2)
@@ -610,7 +609,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.INV') then
+      else if ( index(NomVar, 'Model.VDSection.INV') > 0) then
         if (ASSOCIATED(Instance%INV)) then
            t1 = size(Instance%INV, 1)
            t2 = size(Instance%INV, 2)
@@ -631,7 +630,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.INTE') then
+      else if ( index(NomVar, 'Model.VDSection.INTE') > 0) then
         if (ASSOCIATED(Instance%INTE)) then
            t1 = size(Instance%INTE, 1)
            t2 = size(Instance%INTE, 2)
@@ -652,7 +651,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.DYDX') then
+      else if ( index(NomVar, 'Model.VDSection.DYDX') > 0) then
         if (ASSOCIATED(Instance%DYDX)) then
            t1 = size(Instance%DYDX, 1)
            t2 = size(Instance%DYDX, 2)
@@ -673,7 +672,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.PRESS') then
+      else if ( index(NomVar, 'Model.VDSection.PRESS') > 0) then
         if (ASSOCIATED(Instance%PRESS)) then
            t1 = size(Instance%PRESS, 1)
            t2 = size(Instance%PRESS, 2)
@@ -694,28 +693,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.DEB') then
-        if (ASSOCIATED(Instance%DEB)) then
-           t1 = size(Instance%DEB, 1)
-           t2 = size(Instance%DEB, 2)
-           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%DEB, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SECTION_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.DEB'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%DEB).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%DEB(NewT1, NewT2), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SECTION_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.DEB'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.VDSection.DEB1') then
+      else if ( index(NomVar, 'Model.VDSection.DEB1') > 0) then
         if (ASSOCIATED(Instance%DEB1)) then
            t1 = size(Instance%DEB1, 1)
            t2 = size(Instance%DEB1, 2)
@@ -736,7 +714,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.DEB2') then
+      else if ( index(NomVar, 'Model.VDSection.DEB2') > 0) then
         if (ASSOCIATED(Instance%DEB2)) then
            t1 = size(Instance%DEB2, 1)
            t2 = size(Instance%DEB2, 2)
@@ -757,28 +735,49 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.SD') then
-        if (ASSOCIATED(Instance%SD)) then
-           t1 = size(Instance%SD, 1)
-           t2 = size(Instance%SD, 2)
+      else if ( index(NomVar, 'Model.VDSection.DEBD') > 0) then
+        if (ASSOCIATED(Instance%DEBD)) then
+           t1 = size(Instance%DEBD, 1)
+           t2 = size(Instance%DEBD, 2)
            if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%SD, STAT=err)
+              DEALLOCATE(Instance%DEBD, STAT=err)
               if (err /= 0) then
                  SET_TAILLE_VAR_SECTION_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.SD'
+                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.DEBD'
                  return
               endif
            endif
         endif
-        if (.not.ASSOCIATED(Instance%SD).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%SD(NewT1, NewT2), STAT=err)
+        if (.not.ASSOCIATED(Instance%DEBD).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%DEBD(NewT1, NewT2), STAT=err)
            if (err /= 0) then
               SET_TAILLE_VAR_SECTION_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.SD'
+              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.DEBD'
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.SD1') then
+      else if ( index(NomVar, 'Model.VDSection.DEB') > 0) then
+        if (ASSOCIATED(Instance%DEB)) then
+           t1 = size(Instance%DEB, 1)
+           t2 = size(Instance%DEB, 2)
+           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
+              DEALLOCATE(Instance%DEB, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SECTION_PLAN = err
+                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.DEB'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%DEB).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%DEB(NewT1, NewT2), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SECTION_PLAN = err
+              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.DEB'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.VDSection.SD1') > 0) then
         if (ASSOCIATED(Instance%SD1)) then
            t1 = size(Instance%SD1, 1)
            t2 = size(Instance%SD1, 2)
@@ -799,7 +798,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.SD2') then
+      else if ( index(NomVar, 'Model.VDSection.SD2') > 0) then
         if (ASSOCIATED(Instance%SD2)) then
            t1 = size(Instance%SD2, 1)
            t2 = size(Instance%SD2, 2)
@@ -820,7 +819,28 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.PRESSD') then
+      else if ( index(NomVar, 'Model.VDSection.SD') > 0) then
+        if (ASSOCIATED(Instance%SD)) then
+           t1 = size(Instance%SD, 1)
+           t2 = size(Instance%SD, 2)
+           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
+              DEALLOCATE(Instance%SD, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_SECTION_PLAN = err
+                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.SD'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%SD).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
+           ALLOCATE(Instance%SD(NewT1, NewT2), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_SECTION_PLAN = err
+              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.SD'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.VDSection.PRESSD') > 0) then
         if (ASSOCIATED(Instance%PRESSD)) then
            t1 = size(Instance%PRESSD, 1)
            t2 = size(Instance%PRESSD, 2)
@@ -841,7 +861,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.VDSection.BD') then
+      else if ( index(NomVar, 'Model.VDSection.BD') > 0) then
         if (ASSOCIATED(Instance%BD)) then
            t1 = size(Instance%BD, 1)
            t2 = size(Instance%BD, 2)
@@ -859,27 +879,6 @@ contains
            if (err /= 0) then
               SET_TAILLE_VAR_SECTION_PLAN = err
               MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.BD'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.VDSection.DEBD') then
-        if (ASSOCIATED(Instance%DEBD)) then
-           t1 = size(Instance%DEBD, 1)
-           t2 = size(Instance%DEBD, 2)
-           if ( (t1 /= NewT1).OR.(t2 /= NewT2) ) then
-              DEALLOCATE(Instance%DEBD, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_SECTION_PLAN = err
-                 MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to deallocate SECTION_PLAN_T.DEBD'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%DEBD).OR.(t1/=NewT1).OR.(t2/=NewT2)) then
-           ALLOCATE(Instance%DEBD(NewT1, NewT2), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_SECTION_PLAN = err
-              MessageErreur = 'SET_TAILLE_VAR_SECTION_PLAN : Unable to allocate SECTION_PLAN_T.DEBD'
               return
            endif
         endif
@@ -913,46 +912,46 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.VDSection.S') then
-         valeur = Instance%S(index1, index2)
-      else if ( NomVar == 'Model.VDSection.S1') then
-         valeur = Instance%S1(index1, index2)
-      else if ( NomVar == 'Model.VDSection.S2') then
-         valeur = Instance%S2(index1, index2)
-      else if ( NomVar == 'Model.VDSection.SS') then
-         valeur = Instance%SS(index1, index2)
-      else if ( NomVar == 'Model.VDSection.S1GEO') then
+      if ( index(NomVar, 'Model.VDSection.S1GEO') > 0) then
          valeur = Instance%S1GEO(index1, index2)
-      else if ( NomVar == 'Model.VDSection.CELER') then
+      else if ( index(NomVar, 'Model.VDSection.S1') > 0) then
+         valeur = Instance%S1(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.S2') > 0) then
+         valeur = Instance%S2(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.SS') > 0) then
+         valeur = Instance%SS(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.S') > 0) then
+         valeur = Instance%S(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.CELER') > 0) then
          valeur = Instance%CELER(index1, index2)
-      else if ( NomVar == 'Model.VDSection.B') then
+      else if ( index(NomVar, 'Model.VDSection.B') > 0) then
          valeur = Instance%B(index1, index2)
-      else if ( NomVar == 'Model.VDSection.INV') then
+      else if ( index(NomVar, 'Model.VDSection.INV') > 0) then
          valeur = Instance%INV(index1, index2)
-      else if ( NomVar == 'Model.VDSection.INTE') then
+      else if ( index(NomVar, 'Model.VDSection.INTE') > 0) then
          valeur = Instance%INTE(index1, index2)
-      else if ( NomVar == 'Model.VDSection.DYDX') then
+      else if ( index(NomVar, 'Model.VDSection.DYDX') > 0) then
          valeur = Instance%DYDX(index1, index2)
-      else if ( NomVar == 'Model.VDSection.PRESS') then
+      else if ( index(NomVar, 'Model.VDSection.PRESS') > 0) then
          valeur = Instance%PRESS(index1, index2)
-      else if ( NomVar == 'Model.VDSection.DEB') then
-         valeur = Instance%DEB(index1, index2)
-      else if ( NomVar == 'Model.VDSection.DEB1') then
+      else if ( index(NomVar, 'Model.VDSection.DEB1') > 0) then
          valeur = Instance%DEB1(index1, index2)
-      else if ( NomVar == 'Model.VDSection.DEB2') then
+      else if ( index(NomVar, 'Model.VDSection.DEB2') > 0) then
          valeur = Instance%DEB2(index1, index2)
-      else if ( NomVar == 'Model.VDSection.SD') then
-         valeur = Instance%SD(index1, index2)
-      else if ( NomVar == 'Model.VDSection.SD1') then
-         valeur = Instance%SD1(index1, index2)
-      else if ( NomVar == 'Model.VDSection.SD2') then
-         valeur = Instance%SD2(index1, index2)
-      else if ( NomVar == 'Model.VDSection.PRESSD') then
-         valeur = Instance%PRESSD(index1, index2)
-      else if ( NomVar == 'Model.VDSection.BD') then
-         valeur = Instance%BD(index1, index2)
-      else if ( NomVar == 'Model.VDSection.DEBD') then
+      else if ( index(NomVar, 'Model.VDSection.DEBD') > 0) then
          valeur = Instance%DEBD(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.DEB') > 0) then
+         valeur = Instance%DEB(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.SD1') > 0) then
+         valeur = Instance%SD1(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.SD2') > 0) then
+         valeur = Instance%SD2(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.SD') > 0) then
+         valeur = Instance%SD(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.PRESSD') > 0) then
+         valeur = Instance%PRESSD(index1, index2)
+      else if ( index(NomVar, 'Model.VDSection.BD') > 0) then
+         valeur = Instance%BD(index1, index2)
       else
          GET_DOUBLE_SECTION_PLAN = 1
          valeur                = -9999999.9999
@@ -981,46 +980,46 @@ contains
       SET_DOUBLE_SECTION_PLAN = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.VDSection.S') then
-         Instance%S(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.S1') then
-         Instance%S1(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.S2') then
-         Instance%S2(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.SS') then
-         Instance%SS(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.S1GEO') then
+      if ( index(NomVar, 'Model.VDSection.S1GEO') > 0) then
          Instance%S1GEO(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.CELER') then
+      else if ( index(NomVar, 'Model.VDSection.S1') > 0) then
+         Instance%S1(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.S2') > 0) then
+         Instance%S2(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.SS') > 0) then
+         Instance%SS(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.S') > 0) then
+         Instance%S(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.CELER') > 0) then
          Instance%CELER(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.B') then
+      else if ( index(NomVar, 'Model.VDSection.B') > 0) then
          Instance%B(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.INV') then
+      else if ( index(NomVar, 'Model.VDSection.INV') > 0) then
          Instance%INV(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.INTE') then
+      else if ( index(NomVar, 'Model.VDSection.INTE') > 0) then
          Instance%INTE(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.DYDX') then
+      else if ( index(NomVar, 'Model.VDSection.DYDX') > 0) then
          Instance%DYDX(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.PRESS') then
+      else if ( index(NomVar, 'Model.VDSection.PRESS') > 0) then
          Instance%PRESS(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.DEB') then
-         Instance%DEB(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.DEB1') then
+      else if ( index(NomVar, 'Model.VDSection.DEB1') > 0) then
          Instance%DEB1(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.DEB2') then
+      else if ( index(NomVar, 'Model.VDSection.DEB2') > 0) then
          Instance%DEB2(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.SD') then
-         Instance%SD(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.SD1') then
-         Instance%SD1(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.SD2') then
-         Instance%SD2(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.PRESSD') then
-         Instance%PRESSD(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.BD') then
-         Instance%BD(index1, index2) = valeur
-      else if ( NomVar == 'Model.VDSection.DEBD') then
+      else if ( index(NomVar, 'Model.VDSection.DEBD') > 0) then
          Instance%DEBD(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.DEB') > 0) then
+         Instance%DEB(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.SD1') > 0) then
+         Instance%SD1(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.SD2') > 0) then
+         Instance%SD2(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.SD') > 0) then
+         Instance%SD(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.PRESSD') > 0) then
+         Instance%PRESSD(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.VDSection.BD') > 0) then
+         Instance%BD(index1, index2) = valeur
       else
          SET_DOUBLE_SECTION_PLAN = 1
          MessageErreur         = "SET_DOUBLE_SECTION_PLAN - Unknown variable name"

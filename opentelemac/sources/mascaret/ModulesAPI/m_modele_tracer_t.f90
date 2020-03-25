@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -154,43 +154,43 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.Number') then
+      if ( index(NomVar, 'Model.Tracer.Number') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.CouplingFreq') then
+      else if ( index(NomVar, 'Model.Tracer.CouplingFreq') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.DT') then
+      else if ( index(NomVar, 'Model.Tracer.DT') > 0) then
          TypeVar = 'DOUBLE'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.ID') then
+      else if ( index(NomVar, 'Model.Tracer.ID') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.WaterQualMod') then
+      else if ( index(NomVar, 'Model.Tracer.WaterQualMod') > 0) then
          TypeVar = 'STRING'
          dimVar                = 0
       else if ( index(NomVar,'Model.File.Tracer.Listing.') > 0) then
          GET_TYPE_VAR_MODELE_TRACER = GET_TYPE_VAR_FICHIER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
       else if ( index(NomVar,'Model.File.Tracer.Result.') > 0) then
          GET_TYPE_VAR_MODELE_TRACER = GET_TYPE_VAR_FICHIER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
+      else if ( index(NomVar, 'Model.Tracer.IniConcFromFile') > 0) then
+         TypeVar = 'BOOL'
+         dimVar                = 0
       else if ( index(NomVar,'Model.File.Tracer.IniConc.') > 0) then
          GET_TYPE_VAR_MODELE_TRACER = GET_TYPE_VAR_FICHIER(NomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
-      else if ( NomVar == 'Model.Tracer.IniConcFromFile') then
-         TypeVar = 'BOOL'
-         dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.TracerResultFormat') then
+      else if ( index(NomVar, 'Model.Tracer.TracerResultFormat') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Var2Save') then
+      else if ( index(NomVar, 'Model.Tracer.Var2Save') > 0) then
          TypeVar = 'TABBOOL'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.printListing') then
+      else if ( index(NomVar, 'Model.Tracer.printListing') > 0) then
          TypeVar = 'BOOL'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.printIniConc') then
+      else if ( index(NomVar, 'Model.Tracer.printIniConc') > 0) then
          TypeVar = 'BOOL'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.globalResults') then
+      else if ( index(NomVar, 'Model.Tracer.globalResults') > 0) then
          TypeVar = 'BOOL'
          dimVar                = 0
       else if ( index(NomVar,'Model.Tracer.ParPhy.') > 0) then
@@ -253,23 +253,23 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Number') then
+      if ( index(NomVar, 'Model.Tracer.Number') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.CouplingFreq') then
+      else if ( index(NomVar, 'Model.Tracer.CouplingFreq') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.DT') then
+      else if ( index(NomVar, 'Model.Tracer.DT') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.ID') then
+      else if ( index(NomVar, 'Model.Tracer.ID') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.WaterQualMod') then
+      else if ( index(NomVar, 'Model.Tracer.WaterQualMod') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -279,30 +279,30 @@ contains
       else if (INDEX(NomVar,'Model.File.Tracer.Result.') > 0) then
          GET_TAILLE_VAR_MODELE_TRACER = GET_TAILLE_VAR_FICHIER(Instance%FichierResuTracer,&
                                                NomVar, taille1, taille2, taille3, MessageErreur)
+      else if ( index(NomVar, 'Model.Tracer.IniConcFromFile') > 0) then
+         taille1 = 0
+         taille2 = 0
+         taille3 = 0
       else if (INDEX(NomVar,'Model.File.Tracer.IniConc.') > 0) then
          GET_TAILLE_VAR_MODELE_TRACER = GET_TAILLE_VAR_FICHIER(Instance%FichierConcInit,&
                                                NomVar, taille1, taille2, taille3, MessageErreur)
-      else if ( NomVar == 'Model.Tracer.IniConcFromFile') then
+      else if ( index(NomVar, 'Model.Tracer.TracerResultFormat') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.TracerResultFormat') then
-         taille1 = 0
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Var2Save') then
+      else if ( index(NomVar, 'Model.Tracer.Var2Save') > 0) then
          taille1 = size(Instance%VarStoTracer)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.printListing') then
+      else if ( index(NomVar, 'Model.Tracer.printListing') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.printIniConc') then
+      else if ( index(NomVar, 'Model.Tracer.printIniConc') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.globalResults') then
+      else if ( index(NomVar, 'Model.Tracer.globalResults') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
@@ -683,7 +683,7 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.DT') then
+      if ( index(NomVar, 'Model.Tracer.DT') > 0) then
          valeur = Instance%DT_trac
       else if (INDEX(NomVar,'Model.Tracer.ParPhy.') > 0) then
            GET_DOUBLE_MODELE_TRACER = GET_DOUBLE_PARAMETRES_QUALITE_EAU(instance%ParPhy, NomVar, index1,&
@@ -726,13 +726,13 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Number') then
+      if ( index(NomVar, 'Model.Tracer.Number') > 0) then
          valeur = Instance%Nbtrac
-      else if ( NomVar == 'Model.Tracer.CouplingFreq') then
+      else if ( index(NomVar, 'Model.Tracer.CouplingFreq') > 0) then
          valeur = Instance%FreqCouplage
-      else if ( NomVar == 'Model.Tracer.ID') then
+      else if ( index(NomVar, 'Model.Tracer.ID') > 0) then
          valeur = Instance%Modele_Qual_Eau
-      else if ( NomVar == 'Model.Tracer.TracerResultFormat') then
+      else if ( index(NomVar, 'Model.Tracer.TracerResultFormat') > 0) then
          valeur = Instance%FormatResuTracer
       else if (INDEX(NomVar,'Model.File.Tracer.Listing.') > 0) then
            GET_INT_MODELE_TRACER = GET_INT_FICHIER(instance%FichierListingTracer, NomVar, index1,&
@@ -781,15 +781,15 @@ contains
       valeur                = .FALSE.
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Var2Save') then
+      if ( index(NomVar, 'Model.Tracer.Var2Save') > 0) then
          valeur = Instance%VarStoTracer(index1)
-      else if ( NomVar == 'Model.Tracer.printListing') then
+      else if ( index(NomVar, 'Model.Tracer.printListing') > 0) then
          valeur = Instance%ImpressionConcListing
-      else if ( NomVar == 'Model.Tracer.printIniConc') then
+      else if ( index(NomVar, 'Model.Tracer.printIniConc') > 0) then
          valeur = Instance%ImpressionConcIni
-      else if ( NomVar == 'Model.Tracer.globalResults') then
+      else if ( index(NomVar, 'Model.Tracer.globalResults') > 0) then
          valeur = Instance%ImpressionBilanTracer
-      else if ( NomVar == 'Model.Tracer.IniConcFromFile') then
+      else if ( index(NomVar, 'Model.Tracer.IniConcFromFile') > 0) then
          valeur = Instance%Presence_ConcIni
       else if (INDEX(NomVar,'Model.Tracer.Constant.') > 0) then
            GET_BOOL_MODELE_TRACER = GET_BOOL_CONSTANTES_TRACER(instance%ConsTrac(index1), NomVar, index2,&
@@ -820,7 +820,7 @@ contains
       valeur                = ""
       MessageErreur          = ""
 
-      if (NomVar == 'Model.Tracer.WaterQualMod') then
+      if (index(NomVar, 'Model.Tracer.WaterQualMod') > 0) then
          valeur = TRIM(NOM_MODELE_QE(Instance%Modele_Qual_Eau))
       else if (INDEX(NomVar,'Model.File.Tracer.Listing.') > 0) then
            GET_STRING_MODELE_TRACER = GET_STRING_FICHIER(instance%FichierListingTracer, NomVar, index1,&
@@ -868,7 +868,7 @@ contains
       SET_DOUBLE_MODELE_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.DT') then
+      if ( index(NomVar, 'Model.Tracer.DT') > 0) then
          Instance%DT_trac = valeur
       else if (INDEX(NomVar,'Model.Tracer.ParPhy.') > 0) then
            SET_DOUBLE_MODELE_TRACER = SET_DOUBLE_PARAMETRES_QUALITE_EAU(instance%ParPhy, NomVar, index1,&
@@ -909,13 +909,13 @@ contains
       SET_INT_MODELE_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Number') then
+      if ( index(NomVar, 'Model.Tracer.Number') > 0) then
          Instance%Nbtrac = valeur
-      else if ( NomVar == 'Model.Tracer.CouplingFreq') then
+      else if ( index(NomVar, 'Model.Tracer.CouplingFreq') > 0) then
          Instance%FreqCouplage = valeur
-      else if ( NomVar == 'Model.Tracer.ID') then
+      else if ( index(NomVar, 'Model.Tracer.ID') > 0) then
          Instance%Modele_Qual_Eau = valeur
-      else if ( NomVar == 'Model.Tracer.TracerResultFormat') then
+      else if ( index(NomVar, 'Model.Tracer.TracerResultFormat') > 0) then
          Instance%FormatResuTracer = valeur
       else if (INDEX(NomVar,'Model.File.Tracer.Listing.') > 0) then
            SET_INT_MODELE_TRACER = SET_INT_FICHIER(instance%FichierListingTracer, NomVar, index1,&
@@ -962,15 +962,15 @@ contains
       SET_BOOL_MODELE_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Var2Save') then
+      if ( index(NomVar, 'Model.Tracer.Var2Save') > 0) then
          Instance%VarStoTracer(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.printListing') then
+      else if ( index(NomVar, 'Model.Tracer.printListing') > 0) then
          Instance%ImpressionConcListing = valeur
-      else if ( NomVar == 'Model.Tracer.printIniConc') then
+      else if ( index(NomVar, 'Model.Tracer.printIniConc') > 0) then
          Instance%ImpressionConcIni = valeur
-      else if ( NomVar == 'Model.Tracer.globalResults') then
+      else if ( index(NomVar, 'Model.Tracer.globalResults') > 0) then
          Instance%ImpressionBilanTracer = valeur
-      else if ( NomVar == 'Model.Tracer.IniConcFromFile') then
+      else if ( index(NomVar, 'Model.Tracer.IniConcFromFile') > 0) then
          Instance%Presence_ConcIni = valeur
       else if (INDEX(NomVar,'Model.Tracer.Constant.') > 0) then
            SET_BOOL_MODELE_TRACER = SET_BOOL_CONSTANTES_TRACER(instance%ConsTrac(index1), NomVar, index2,&
@@ -1000,10 +1000,10 @@ contains
       SET_STRING_MODELE_TRACER = 0
       MessageErreur          = ""
 
-      if (NomVar == 'Model.Tracer.WaterQualMod') then
+      if (index(NomVar, 'Model.Tracer.WaterQualMod') > 0) then
          noqual = .true.
          do bidon1 = 1, NB_MODELE
-            if (trim(valeur) == trim(NOM_MODELE_QE(bidon1))) then
+            if (index(trim(valeur), trim(NOM_MODELE_QE(bidon1))) > 0) then
                Instance%Modele_Qual_Eau = bidon1
                noqual = .false.
                exit

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -24,7 +24,7 @@ module M_INIT_VAR_SORTIE_TRACER_S
 !                            S. MANDELKERN
 !                            D. POIZAT
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 !
 ! MODULE DECLARANT LES TYPES ET DEFINISSANT LES STRUCTURES

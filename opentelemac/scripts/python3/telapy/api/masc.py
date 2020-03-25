@@ -140,12 +140,29 @@ class Mascaret(object):
         file_name_c = (ctypes.c_char_p * len_file)(*file_name)
         file_type_c = (ctypes.c_char_p * len_file)(*file_type)
         self.logger.debug('Importing a model...')
-        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(\
+        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(
                 self.id_masc, file_name_c,
                 file_type_c, len_file, self.iprint)
         self.logger.info("Model imported with:\n"
                          + "-> file_name: {}\n-> file_type: {}."
                          .format(file_name, file_type))
+
+    def import_model_onefile(self, masc_file):
+        """Read model from Mascaret files
+
+        Uses Mascaret Api :meth:`C_IMPORT_MODELE_MASCARET_ONEFILE`
+
+        @param str masc_files: file name listing all the Mascaret files
+        """
+        masc_file_c = (ctypes.c_char_p * 1)(masc_file.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
+        iprint_c = (ctypes.c_int * 1)(self.iprint)
+        self.logger.debug('Importing a model...')
+        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET_ONEFILE(
+                id_masc_c, iprint_c, masc_file_c)
+        self.logger.info("Model imported with:\n"
+                         + "-> masc_file: {}\n"
+                         .format(masc_file))
 
     def delete_mascaret(self):
         """Delete a model."""
@@ -191,12 +208,13 @@ class Mascaret(object):
         """
         if self.nb_nodes is None:
             self.nb_nodes, _, _ = self.get_var_size('Model.X')
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         # (Q, Z)
         q_c = (ctypes.c_double * self.nb_nodes)(0.0)
         z_c = (ctypes.c_double * self.nb_nodes)(0.0)
         self.logger.debug('Get hydro (Q,Z) at the current time...')
         self.error = self.libmascaret.C_GET_LIGNE(
-            self.id_masc, ctypes.byref(q_c), ctypes.byref(z_c))
+            id_masc_c, ctypes.byref(q_c), ctypes.byref(z_c))
         self.logger.debug(
             'Getter successfull at the current time.')
         return np.array(z_c), np.array(q_c)
@@ -254,10 +272,12 @@ class Mascaret(object):
 
         @param str hydro_file: '.lig' Mascaret file
         """
-        init_file_name_c = (ctypes.c_char_p)(hydro_file.encode("utf-8"))
+        init_file_name_c = (ctypes.c_char_p * 1)(hydro_file.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
+        iprint_c = (ctypes.c_int * 1)(self.iprint)
         self.logger.debug('Initializing MASCARET from .lig ...')
         self.error = self.libmascaret.C_INIT_ETAT_MASCARET(
-            self.id_masc, init_file_name_c, self.iprint)
+            id_masc_c, init_file_name_c, iprint_c)
         self.logger.debug('State initialisation successfull from .lig')
 
     def init_tracer_state(self):
@@ -316,14 +336,16 @@ class Mascaret(object):
         :return: scalar value
         :rtype: float
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.c_double()
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         self.logger.debug('Getting {}...'.format(var_name))
         self.error = self.libmascaret.C_GET_DOUBLE_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c, ctypes.byref(val_c))
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
 
         return val_c.value
@@ -340,14 +362,16 @@ class Mascaret(object):
         :return: scalar value
         :rtype: int
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.c_int()
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         self.logger.debug('Getting {}...'.format(var_name))
         self.error = self.libmascaret.C_GET_INT_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c, ctypes.byref(val_c))
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
 
         return val_c.value
@@ -364,16 +388,17 @@ class Mascaret(object):
         :return: scalar value
         :rtype: bool
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.c_int()
         true_c = ctypes.c_int()
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         self.logger.debug('Getting {}...'.format(var_name))
         self.error = self.libmascaret.C_GET_BOOL_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c,
-            ctypes.byref(val_c), ctypes.byref(true_c))
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), ctypes.byref(val_c), ctypes.byref(true_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
 
         return val_c.value == true_c.value
@@ -390,14 +415,16 @@ class Mascaret(object):
         :return: scalar value
         :rtype: str
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.POINTER(ctypes.c_char_p)()
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         self.logger.debug('Getting {}...'.format(var_name))
         self.error = self.libmascaret.C_GET_STRING_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c, ctypes.byref(val_c))
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(ctypes.string_at(val_c)))
 
         return str(ctypes.string_at(val_c), 'utf-8')
@@ -413,14 +440,16 @@ class Mascaret(object):
         @param int j: second index of the Mascaret variable
         @param int k: third index of the Mascaret variable
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.c_int(val)
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         self.logger.debug('Setting {}...'.format(var_name))
         self.error = self.libmascaret.C_SET_INT_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c, val_c)
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
 
     def set_bool(self, var_name, val, i=0, j=0, k=0):
@@ -434,14 +463,16 @@ class Mascaret(object):
         @param int j: second index of the Mascaret variable
         @param int k: third index of the Mascaret variable
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.c_int(val)
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         self.logger.debug('Setting {}...'.format(var_name))
         self.error = self.libmascaret.C_SET_BOOL_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c, val_c)
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
 
     def set_string(self, var_name, val, i=0, j=0, k=0):
@@ -455,14 +486,16 @@ class Mascaret(object):
         @param int j: second index of the Mascaret variable
         @param int k: third index of the Mascaret variable
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
-        val_c = ctypes.c_char_p(val.encode("utf-8"))
+        val_c = (ctypes.c_char_p * 1)(val.encode("utf-8"))
         self.logger.debug('Setting {}...'.format(var_name))
         self.error = self.libmascaret.C_SET_STRING_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c, val_c)
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), val_c)
         self.logger.debug('Value: val={}.'.format(ctypes.string_at(val_c)))
 
     def set_double(self, var_name, val, i=0, j=0, k=0):
@@ -476,14 +509,16 @@ class Mascaret(object):
         @param int j: second index of the Mascaret variable
         @param int k: third index of the Mascaret variable
         """
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.c_double(val)
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
-        var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         self.logger.debug('Setting {}...'.format(var_name))
         self.error = self.libmascaret.C_SET_DOUBLE_MASCARET(
-            self.id_masc, var_name_c, i_c, j_c, k_c, val_c)
+            id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
+            ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
 
     def get_type_var(self, var_name):
@@ -495,15 +530,16 @@ class Mascaret(object):
         :return: type, category, modifiable, dimension
         :rtype: str, str, int, int
         """
-        var_name_c = ctypes.c_char_p(var_name.encode('utf-8'))
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         var_type_c = ctypes.POINTER(ctypes.c_char_p)()
         category_c = ctypes.POINTER(ctypes.c_char_p)()
         acces_c = ctypes.c_int()
         var_dim_c = ctypes.c_int()
 
         self.logger.debug('Getting the type of {}...'.format(var_name))
-        self.error = self.libmascaret.C_GET_TYPE_VAR_MASCARET(\
-                self.id_masc, var_name_c, ctypes.byref(var_type_c),
+        self.error = self.libmascaret.C_GET_TYPE_VAR_MASCARET(
+                id_masc_c, var_name_c, ctypes.byref(var_type_c),
                 ctypes.byref(category_c), ctypes.byref(acces_c),
                 ctypes.byref(var_dim_c))
         self.logger.debug('type = {} {} {} {}.'
@@ -512,7 +548,7 @@ class Mascaret(object):
                                   acces_c.value,
                                   var_dim_c.value))
         return ctypes.string_at(var_type_c), ctypes.string_at(category_c),\
-               acces_c.value, var_dim_c.value
+            acces_c.value, var_dim_c.value
 
     def get_var_size(self, var_name, index=0):
         """Get the size(s) of a Mascaret variable
@@ -525,15 +561,16 @@ class Mascaret(object):
         :return: sizes
         :rtype: int, int, int
         """
-        var_name_c = ctypes.c_char_p(var_name.encode('utf-8'))
-
+        var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         index = ctypes.c_int(index+1)
         size1 = ctypes.c_int()
         size2 = ctypes.c_int()
         size3 = ctypes.c_int()
+
         self.logger.debug('Getting the size of {}...'.format(var_name))
         self.error = self.libmascaret.C_GET_TAILLE_VAR_MASCARET(
-            self.id_masc, var_name_c, index, ctypes.byref(size1),
+            id_masc_c, var_name_c, ctypes.byref(index), ctypes.byref(size1),
             ctypes.byref(size2), ctypes.byref(size3))
         self.logger.debug('size = {} {} {}.'
                           .format(size1.value, size2.value, size3.value))
@@ -616,7 +653,7 @@ class Mascaret(object):
                 tab_cl2_c[i][j] = tab_cl2[j][i]
 
         self.logger.debug('Running Mascaret cl...from {}'.format(t_0))
-        self.error = self.libmascaret.C_CALCUL_MASCARET_CONDITION_LIMITE(\
+        self.error = self.libmascaret.C_CALCUL_MASCARET_CONDITION_LIMITE(
                  self.id_masc, t0_c,
                  tend_c, dt_c, ctypes.byref(tab_timebc_c),
                  nb_timebc_c, ctypes.byref(tab_cl1_c), ctypes.byref(tab_cl2_c),
@@ -645,7 +682,8 @@ class Mascaret(object):
 
         var_desc = {}
         for i in range(size_c.value):
-            if str(ctypes.string_at(tab_name_c[i]), 'utf-8').startswith(prefix):
+            if str(ctypes.string_at(tab_name_c[i]), 'utf-8')\
+                    .startswith(prefix):
                 var_desc[str(ctypes.string_at(tab_name_c[i]), 'utf-8')] = \
                            str(ctypes.string_at(tab_desc_c[i]), 'utf-8')
         return var_desc
@@ -661,11 +699,12 @@ class Mascaret(object):
         v_c1 = ctypes.c_int()
         v_c2 = ctypes.c_int()
         v_c3 = ctypes.c_int()
-        error = self.libmascaret.C_VERSION_MASCARET(\
+        error = self.libmascaret.C_VERSION_MASCARET(
                 ctypes.byref(v_c1), ctypes.byref(v_c2), ctypes.byref(v_c3))
         if error != 0:
             return 'Version number could not be retrieved from MASCARET...'
-        return str(v_c1.value) + '.' + str(v_c2.value) + '.' + str(v_c3.value)
+        return 'v' + str(v_c1.value) + 'p' + str(v_c2.value) + \
+            'r' + str(v_c3.value)
 
     def import_xml(self, file_name, import_model):
         """Import Model or State of Mascaret from xml files
@@ -747,7 +786,7 @@ class Mascaret(object):
         description_c = ctypes.c_int(description)
 
         self.logger.debug('Export variable in xml...')
-        self.error = self.libmascaret.C_EXPORT_VAR_XML(\
+        self.error = self.libmascaret.C_EXPORT_VAR_XML(
           self.id_masc, unit_c, var_name_c, description_c)
         self.logger.debug('Export variable in xml done.')
 
@@ -770,7 +809,7 @@ class Mascaret(object):
         description_c = ctypes.c_char_p(description.encode("utf-8"))
 
         self.logger.debug('Export user variable in xml...')
-        self.error = self.libmascaret.C_EXPORT_USERVAR_XML(\
+        self.error = self.libmascaret.C_EXPORT_USERVAR_XML(
           self.id_masc, unit_c, var_name_c, var_type_c,
           description_c, var_val_c)
         self.logger.debug('Export user variable in xml done.')
@@ -787,7 +826,7 @@ class Mascaret(object):
         unit_c = ctypes.c_int(unit)
 
         self.logger.debug('Close xml anchor...')
-        self.error = self.libmascaret.C_FERMETURE_BALISE_XML(\
+        self.error = self.libmascaret.C_FERMETURE_BALISE_XML(
           self.id_masc, unit_c, anchor_c)
         self.logger.debug('Close xml anchor done.')
 
@@ -875,7 +914,7 @@ class Mascaret(object):
         elif b'BOOL' in vartype:
             value = self.get_bool(varname, index_i, index_j, index_k)
         else:
-            raise TelemacException(\
+            raise TelemacException(
                     "Unknown data type %s for %s" % (vartype, varname))
 
         return value
@@ -929,5 +968,5 @@ class Mascaret(object):
         elif b"BOOL" in vartype:
             self.set_bool(varname, value, index_i, index_j, index_k)
         else:
-            raise TelemacException(\
+            raise TelemacException(
                     "Unknown data type %s for %s" % (vartype, varname))

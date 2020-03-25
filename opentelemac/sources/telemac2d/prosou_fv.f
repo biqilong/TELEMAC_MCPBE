@@ -144,7 +144,7 @@
      &                                   SEC_TAU,T2,T3,T7,ROEAU,CF,S,
      &                                   IELMU,T,ACCROF,RUNOFFOPT,AMC,
      &                                   T2DFO2,ZF,ZFSLOP,PATMOS,
-     &                                   FAIRACCU
+     &                                   FAIRACCU, PROSOU_FV_DEJALU
       USE INTERFACE_TELEMAC2D, EX_PROSOU_FV => PROSOU_FV
       USE M_COUPLING_ESTEL3D
       USE INTERFACE_HERMES
@@ -210,7 +210,6 @@
       CHARACTER(LEN=8) :: FFORMAT
       INTEGER :: FILE_ID, IREC
       LOGICAL OKX,OKY
-      LOGICAL :: DEJALU = .FALSE.
 !
       INTRINSIC SQRT,MAX
 !
@@ -585,7 +584,8 @@
 !       WITH NO COUPLING, TAKING THE WAVE STRESSES ONCE FOR ALL
 !       IN A BINARY DATA FILE
 !
-        IF(.NOT.DEJALU.AND..NOT.INCLUS(COUPLING,'TOMAWAC')) THEN
+        IF(.NOT.PROSOU_FV_DEJALU.AND.
+     &     .NOT.INCLUS(COUPLING,'TOMAWAC')) THEN
 !
             ! Records numbering starts from 0
             IREC = NPTH - 1
@@ -655,7 +655,7 @@
             CALL CHGDIS(FXWAVE,IELM1,IELMU,MESH)
             CALL CHGDIS(FYWAVE,IELM1,IELMU,MESH)
           ENDIF
-          DEJALU = .TRUE.
+          PROSOU_FV_DEJALU = .TRUE.
 !
         ENDIF
 !

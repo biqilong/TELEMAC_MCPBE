@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -74,7 +74,7 @@ subroutine  PRETRAIT                                       ( &
 ! PROGICIEL : MASCARET       S. MANDELKERN - N. GOUTAL
 !                            F. ZAOUI
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
 !  FONCTION : LECTURE DU FICHIER CAS PAR APPEL DU LOGICIEL DAMOCLES.
 !----------------------------------------------------------------------
@@ -420,7 +420,7 @@ subroutine  PRETRAIT                                       ( &
    call DATE_S(chaine_date)
 
    if( VersionCode == 3 ) then
-      write(UniteListing,10000) ' 8.1.4 ', chaine_date
+      write(UniteListing,10000) ' V8P2R0 ', chaine_date
    endif
 
    if( VersionCode == 2 ) then
@@ -2220,8 +2220,10 @@ subroutine  PRETRAIT                                       ( &
       iprof = iprof_inf
       do while( ( X(isect) <  (Profil(iprof)%AbsAbs   - EPS4) ) .or.    &
                 ( X(isect) >= (Profil(iprof+1)%AbsAbs - EPS4) ) )
-         if( ( dabs(X(isect)- Profil(size(Profil(:)))%AbsAbs)) <= 0.0001_DOUBLE ) exit
-
+         if( ( dabs(X(isect)- Profil(size(Profil(:)))%AbsAbs)) <= 0.0001_DOUBLE ) then
+             iprof = size(Profil(:)) - 1
+             exit
+         endif 
          iprof = iprof + 1
       end do
       XDT(isect) = ( X(isect) - Profil(iprof)%AbsAbs ) / ( Profil(iprof + 1)%AbsAbs - Profil(iprof)%AbsAbs )

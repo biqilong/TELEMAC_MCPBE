@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_REZOMAT_T
 !***********************************************************************
 ! PROGICIEL : MASCARET      F. ZAOUI
 !
-! VERSION : 8.1.4             EDF-CEREMA
+! VERSION : V8P2R0             EDF-CEREMA
 !***********************************************************************
 
 !=========================== Declarations ==============================
@@ -193,100 +193,100 @@ function GET_TYPE_VAR_REZOMAT(NomVar, TypeVar, Categorie, Modifiable, dimVar, Me
   dimVar                = 0
   MessageErreur         = ""
 
-  if ( NomVar == 'State.Rezomat.SOLV') then
+  if ( index(NomVar, 'State.Rezomat.SOLV') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.N') then
+  else if ( index(NomVar, 'State.Rezomat.NNZ') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.NNZ') then
+  else if ( index(NomVar, 'State.Rezomat.NN1') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.NN') then
+  else if ( index(NomVar, 'State.Rezomat.NN') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.NN1') then
+  else if ( index(NomVar, 'State.Rezomat.N') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.IHA') then
+  else if ( index(NomVar, 'State.Rezomat.IHA') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.KL') then
+  else if ( index(NomVar, 'State.Rezomat.KL') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.KU') then
+  else if ( index(NomVar, 'State.Rezomat.KU') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.LDAB') then
+  else if ( index(NomVar, 'State.Rezomat.LDAB') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else if ( NomVar == 'State.Rezomat.IFAIL') then
+  else if ( index(NomVar, 'State.Rezomat.IFAIL') > 0) then
      TypeVar = 'INT'
      dimVar                = 0
-  else  if ( NomVar == 'State.Rezomat.ipiv') then
+  else  if ( index(NomVar, 'State.Rezomat.ipiv') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.IFLAG') then
+  else  if ( index(NomVar, 'State.Rezomat.IFLAG') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.RowA') then
+  else  if ( index(NomVar, 'State.Rezomat.RowA') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.ColA') then
+  else  if ( index(NomVar, 'State.Rezomat.ColA') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.snr') then
+  else  if ( index(NomVar, 'State.Rezomat.snr') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.rnr') then
+  else  if ( index(NomVar, 'State.Rezomat.rnr') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.ha') then
+  else  if ( index(NomVar, 'State.Rezomat.ha') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 2
-  else  if ( NomVar == 'State.Rezomat.noVarDQ') then
+  else  if ( index(NomVar, 'State.Rezomat.noVarDQ') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.noVarDZ') then
+  else  if ( index(NomVar, 'State.Rezomat.noVarDZ') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.noVarDQl') then
+  else  if ( index(NomVar, 'State.Rezomat.noVarDQl') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.noVarDZc') then
+  else  if ( index(NomVar, 'State.Rezomat.noVarDZc') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.KdNode') then
+  else  if ( index(NomVar, 'State.Rezomat.KdNode') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.headJunction') then
+  else  if ( index(NomVar, 'State.Rezomat.headJunction') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.nxtNdJunction') then
+  else  if ( index(NomVar, 'State.Rezomat.nxtNdJunction') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.WeirNd') then
+  else  if ( index(NomVar, 'State.Rezomat.WeirNd') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.LinkNd') then
+  else  if ( index(NomVar, 'State.Rezomat.LinkNd') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.NdLink') then
+  else  if ( index(NomVar, 'State.Rezomat.NdLink') > 0) then
      TypeVar = 'TABINT'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.AFLAG') then
+  else  if ( index(NomVar, 'State.Rezomat.AFLAG') > 0) then
      TypeVar = 'TABDOUBLE'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.valA') then
+  else  if ( index(NomVar, 'State.Rezomat.valA') > 0) then
      TypeVar = 'TABDOUBLE'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.b') then
+  else  if ( index(NomVar, 'State.Rezomat.b') > 0) then
      TypeVar = 'TABDOUBLE'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.pivot') then
+  else  if ( index(NomVar, 'State.Rezomat.pivot') > 0) then
      TypeVar = 'TABDOUBLE'
      dimVar                = 1
-  else  if ( NomVar == 'State.Rezomat.AB') then
+  else  if ( index(NomVar, 'State.Rezomat.AB') > 0) then
      TypeVar = 'TABDOUBLE'
      dimVar                = 2
   else
@@ -321,47 +321,47 @@ end function GET_TYPE_VAR_REZOMAT
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Rezomat.SOLV') then
+      if ( index(NomVar, 'State.Rezomat.SOLV') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.N') then
+      else if ( index(NomVar, 'State.Rezomat.NNZ') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.NNZ') then
+      else if ( index(NomVar, 'State.Rezomat.NN1') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.NN') then
+      else if ( index(NomVar, 'State.Rezomat.NN') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.NN1') then
+      else if ( index(NomVar, 'State.Rezomat.N') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.IHA') then
+      else if ( index(NomVar, 'State.Rezomat.IHA') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.KL') then
+      else if ( index(NomVar, 'State.Rezomat.KL') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.KU') then
+      else if ( index(NomVar, 'State.Rezomat.KU') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.LDAB') then
+      else if ( index(NomVar, 'State.Rezomat.LDAB') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-     else if ( NomVar == 'State.Rezomat.IFAIL') then
+     else if ( index(NomVar, 'State.Rezomat.IFAIL') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-     else if ( NomVar == 'State.Rezomat.ipiv') then
+     else if ( index(NomVar, 'State.Rezomat.ipiv') > 0) then
          if (ASSOCIATED(Instance%ipiv)) then
             taille1 = size(Instance%ipiv)
          else
@@ -369,7 +369,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-     else if ( NomVar == 'State.Rezomat.IFLAG') then
+     else if ( index(NomVar, 'State.Rezomat.IFLAG') > 0) then
          if (ASSOCIATED(Instance%IFLAG)) then
             taille1 = size(Instance%IFLAG)
          else
@@ -377,7 +377,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.RowA') then
+      else if ( index(NomVar, 'State.Rezomat.RowA') > 0) then
          if (ASSOCIATED(Instance%rowA)) then
             taille1 = size(Instance%rowA)
          else
@@ -385,7 +385,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.ColA') then
+      else if ( index(NomVar, 'State.Rezomat.ColA') > 0) then
          if (ASSOCIATED(Instance%colA)) then
             taille1 = size(Instance%colA)
          else
@@ -393,7 +393,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.snr') then
+      else if ( index(NomVar, 'State.Rezomat.snr') > 0) then
          if (ASSOCIATED(Instance%snr)) then
             taille1 = size(Instance%snr)
          else
@@ -401,7 +401,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.rnr') then
+      else if ( index(NomVar, 'State.Rezomat.rnr') > 0) then
          if (ASSOCIATED(Instance%rnr)) then
             taille1 = size(Instance%rnr)
          else
@@ -409,7 +409,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.ha') then
+      else if ( index(NomVar, 'State.Rezomat.ha') > 0) then
          if (ASSOCIATED(Instance%ha)) then
             taille1 = size(Instance%ha, 1)
             taille2 = size(Instance%ha, 2)
@@ -418,7 +418,7 @@ end function GET_TYPE_VAR_REZOMAT
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.noVarDQ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQ') > 0) then
          if (ASSOCIATED(Instance%noVarDQ)) then
             taille1 = size(Instance%noVarDQ)
          else
@@ -426,7 +426,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.noVarDZ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZ') > 0) then
          if (ASSOCIATED(Instance%noVarDZ)) then
             taille1 = size(Instance%noVarDZ)
          else
@@ -434,7 +434,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.noVarDQl') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQl') > 0) then
          if (ASSOCIATED(Instance%noVarDQl)) then
             taille1 = size(Instance%noVarDQl)
          else
@@ -442,7 +442,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.noVarDZc') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZc') > 0) then
          if (ASSOCIATED(Instance%noVarDZc)) then
             taille1 = size(Instance%noVarDZc)
          else
@@ -450,7 +450,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.KdNode') then
+      else if ( index(NomVar, 'State.Rezomat.KdNode') > 0) then
          if (ASSOCIATED(Instance%typSec)) then
             taille1 = size(Instance%typSec)
          else
@@ -458,7 +458,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.headJunction') then
+      else if ( index(NomVar, 'State.Rezomat.headJunction') > 0) then
          if (ASSOCIATED(Instance%headConflu)) then
             taille1 = size(Instance%headConflu)
          else
@@ -466,7 +466,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.nxtNdJunction') then
+      else if ( index(NomVar, 'State.Rezomat.nxtNdJunction') > 0) then
          if (ASSOCIATED(Instance%nextSecConflu)) then
             taille1 = size(Instance%nextSecConflu)
          else
@@ -474,7 +474,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.WeirNd') then
+      else if ( index(NomVar, 'State.Rezomat.WeirNd') > 0) then
          if (ASSOCIATED(Instance%SecSin)) then
             taille1 = size(Instance%SecSin)
          else
@@ -482,7 +482,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.LinkNd') then
+      else if ( index(NomVar, 'State.Rezomat.LinkNd') > 0) then
          if (ASSOCIATED(Instance%SecLiai)) then
             taille1 = size(Instance%SecLiai)
          else
@@ -490,7 +490,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.NdLink') then
+      else if ( index(NomVar, 'State.Rezomat.NdLink') > 0) then
          if (ASSOCIATED(Instance%LiaiSec)) then
             taille1 = size(Instance%LiaiSec)
          else
@@ -498,7 +498,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.AFLAG') then
+      else if ( index(NomVar, 'State.Rezomat.AFLAG') > 0) then
          if (ASSOCIATED(Instance%AFLAG)) then
             taille1 = size(Instance%AFLAG)
          else
@@ -506,7 +506,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.valA') then
+      else if ( index(NomVar, 'State.Rezomat.valA') > 0) then
          if (ASSOCIATED(Instance%valA)) then
             taille1 = size(Instance%valA)
          else
@@ -514,7 +514,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.b') then
+      else if ( index(NomVar, 'State.Rezomat.b') > 0) then
          if (ASSOCIATED(Instance%b)) then
             taille1 = size(Instance%b)
          else
@@ -522,7 +522,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.pivot') then
+      else if ( index(NomVar, 'State.Rezomat.pivot') > 0) then
          if (ASSOCIATED(Instance%pivot)) then
             taille1 = size(Instance%pivot)
          else
@@ -530,7 +530,7 @@ end function GET_TYPE_VAR_REZOMAT
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Rezomat.AB') then
+      else if ( index(NomVar, 'State.Rezomat.AB') > 0) then
          if (ASSOCIATED(Instance%AB)) then
             taille1 = size(Instance%AB,1)
             taille2 = size(Instance%AB,2)
@@ -575,7 +575,7 @@ end function GET_TYPE_VAR_REZOMAT
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'State.Rezomat.ipiv') then
+      if ( index(NomVar, 'State.Rezomat.ipiv') > 0) then
         if (ASSOCIATED(Instance%ipiv)) then
            t1 = size(Instance%ipiv)
            if (t1 /= NewT1) then
@@ -595,7 +595,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.IFLAG') then
+      else if ( index(NomVar, 'State.Rezomat.IFLAG') > 0) then
         if (ASSOCIATED(Instance%IFLAG)) then
            t1 = size(Instance%IFLAG)
            if (t1 /= NewT1) then
@@ -615,7 +615,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.RowA') then
+      else if ( index(NomVar, 'State.Rezomat.RowA') > 0) then
         if (ASSOCIATED(Instance%rowA)) then
            t1 = size(Instance%rowA)
            if (t1 /= NewT1) then
@@ -635,7 +635,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.ColA') then
+      else if ( index(NomVar, 'State.Rezomat.ColA') > 0) then
         if (ASSOCIATED(Instance%colA)) then
            t1 = size(Instance%colA)
            if (t1 /= NewT1) then
@@ -655,7 +655,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.snr') then
+      else if ( index(NomVar, 'State.Rezomat.snr') > 0) then
         if (ASSOCIATED(Instance%snr)) then
            t1 = size(Instance%snr)
            if (t1 /= NewT1) then
@@ -675,7 +675,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.rnr') then
+      else if ( index(NomVar, 'State.Rezomat.rnr') > 0) then
         if (ASSOCIATED(Instance%rnr)) then
            t1 = size(Instance%rnr)
            if (t1 /= NewT1) then
@@ -695,7 +695,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.ha') then
+      else if ( index(NomVar, 'State.Rezomat.ha') > 0) then
         if (ASSOCIATED(Instance%ha)) then
            t1 = size(Instance%ha, 1)
            t2 = size(Instance%ha, 2)
@@ -716,7 +716,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.noVarDQ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQ') > 0) then
         if (ASSOCIATED(Instance%noVarDQ)) then
            t1 = size(Instance%noVarDQ)
            if (t1 /= NewT1) then
@@ -736,7 +736,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.noVarDZ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZ') > 0) then
         if (ASSOCIATED(Instance%noVarDZ)) then
            t1 = size(Instance%noVarDZ)
            if (t1 /= NewT1) then
@@ -756,7 +756,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.noVarDQl') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQl') > 0) then
         if (ASSOCIATED(Instance%noVarDQl)) then
            t1 = size(Instance%noVarDQl)
            if (t1 /= NewT1) then
@@ -776,7 +776,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.noVarDZc') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZc') > 0) then
         if (ASSOCIATED(Instance%noVarDZc)) then
            t1 = size(Instance%noVarDZc)
            if (t1 /= NewT1) then
@@ -796,7 +796,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.KdNode') then
+      else if ( index(NomVar, 'State.Rezomat.KdNode') > 0) then
         if (ASSOCIATED(Instance%typSec)) then
            t1 = size(Instance%typSec)
            if (t1 /= NewT1) then
@@ -816,7 +816,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.headJunction') then
+      else if ( index(NomVar, 'State.Rezomat.headJunction') > 0) then
         if (ASSOCIATED(Instance%headConflu)) then
            t1 = size(Instance%headConflu)
            if (t1 /= NewT1) then
@@ -836,7 +836,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.nxtNdJunction') then
+      else if ( index(NomVar, 'State.Rezomat.nxtNdJunction') > 0) then
         if (ASSOCIATED(Instance%nextSecConflu)) then
            t1 = size(Instance%nextSecConflu)
            if (t1 /= NewT1) then
@@ -856,7 +856,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.WeirNd') then
+      else if ( index(NomVar, 'State.Rezomat.WeirNd') > 0) then
         if (ASSOCIATED(Instance%SecSin)) then
            t1 = size(Instance%SecSin)
            if (t1 /= NewT1) then
@@ -876,7 +876,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.LinkNd') then
+      else if ( index(NomVar, 'State.Rezomat.LinkNd') > 0) then
         if (ASSOCIATED(Instance%SecLiai)) then
            t1 = size(Instance%SecLiai)
            if (t1 /= NewT1) then
@@ -896,7 +896,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.NdLink') then
+      else if ( index(NomVar, 'State.Rezomat.NdLink') > 0) then
         if (ASSOCIATED(Instance%LiaiSec)) then
            t1 = size(Instance%LiaiSec)
            if (t1 /= NewT1) then
@@ -916,7 +916,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.AFLAG') then
+      else if ( index(NomVar, 'State.Rezomat.AFLAG') > 0) then
         if (ASSOCIATED(Instance%AFLAG)) then
            t1 = size(Instance%AFLAG)
            if (t1 /= NewT1) then
@@ -936,7 +936,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.valA') then
+      else if ( index(NomVar, 'State.Rezomat.valA') > 0) then
         if (ASSOCIATED(Instance%valA)) then
            t1 = size(Instance%valA)
            if (t1 /= NewT1) then
@@ -956,7 +956,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.b') then
+      else if ( index(NomVar, 'State.Rezomat.b') > 0) then
         if (ASSOCIATED(Instance%b)) then
            t1 = size(Instance%b)
            if (t1 /= NewT1) then
@@ -976,7 +976,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.pivot') then
+      else if ( index(NomVar, 'State.Rezomat.pivot') > 0) then
         if (ASSOCIATED(Instance%pivot)) then
            t1 = size(Instance%pivot)
            if (t1 /= NewT1) then
@@ -996,7 +996,7 @@ end function GET_TYPE_VAR_REZOMAT
               return
            endif
         endif
-      else if ( NomVar == 'State.Rezomat.AB') then
+      else if ( index(NomVar, 'State.Rezomat.AB') > 0) then
         if (ASSOCIATED(Instance%AB)) then
            t1 = size(Instance%AB,1)
            t2 = size(Instance%AB,2)
@@ -1047,15 +1047,15 @@ end function GET_TYPE_VAR_REZOMAT
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Rezomat.AFLAG') then
+      if ( index(NomVar, 'State.Rezomat.AFLAG') > 0) then
          valeur = Instance%AFLAG(index1)
-      else if ( NomVar == 'State.Rezomat.valA') then
+      else if ( index(NomVar, 'State.Rezomat.valA') > 0) then
          valeur = Instance%valA(index1)
-      else if ( NomVar == 'State.Rezomat.b') then
+      else if ( index(NomVar, 'State.Rezomat.b') > 0) then
          valeur = Instance%b(index1)
-      else if ( NomVar == 'State.Rezomat.pivot') then
+      else if ( index(NomVar, 'State.Rezomat.pivot') > 0) then
          valeur = Instance%pivot(index1)
-      else if ( NomVar == 'State.Rezomat.AB') then
+      else if ( index(NomVar, 'State.Rezomat.AB') > 0) then
          valeur = Instance%AB(index1,index2)
       else
          GET_DOUBLE_REZOMAT = 1
@@ -1080,59 +1080,59 @@ end function GET_TYPE_VAR_REZOMAT
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Rezomat.SOLV') then
+      if ( index(NomVar, 'State.Rezomat.SOLV') > 0) then
          valeur = Instance%SOLV
-      else if ( NomVar == 'State.Rezomat.N') then
-         valeur = Instance%N
-      else if ( NomVar == 'State.Rezomat.NNZ') then
+      else if ( index(NomVar, 'State.Rezomat.NNZ') > 0) then
          valeur = Instance%NNZ
-      else if ( NomVar == 'State.Rezomat.NN') then
-         valeur = Instance%NN
-      else if ( NomVar == 'State.Rezomat.NN1') then
+      else if ( index(NomVar, 'State.Rezomat.NN1') > 0) then
          valeur = Instance%NN1
-      else if ( NomVar == 'State.Rezomat.IHA') then
+      else if ( index(NomVar, 'State.Rezomat.NN') > 0) then
+         valeur = Instance%NN
+      else if ( index(NomVar, 'State.Rezomat.N') > 0) then
+         valeur = Instance%N
+      else if ( index(NomVar, 'State.Rezomat.IHA') > 0) then
          valeur = Instance%IHA
-      else if ( NomVar == 'State.Rezomat.KL') then
+      else if ( index(NomVar, 'State.Rezomat.KL') > 0) then
          valeur = Instance%KL
-      else if ( NomVar == 'State.Rezomat.KU') then
+      else if ( index(NomVar, 'State.Rezomat.KU') > 0) then
          valeur = Instance%KU
-      else if ( NomVar == 'State.Rezomat.LDAB') then
+      else if ( index(NomVar, 'State.Rezomat.LDAB') > 0) then
          valeur = Instance%LDAB
-      else if ( NomVar == 'State.Rezomat.IFAIL') then
+      else if ( index(NomVar, 'State.Rezomat.IFAIL') > 0) then
          valeur = Instance%IFAIL
-      else if ( NomVar == 'State.Rezomat.ipiv') then
+      else if ( index(NomVar, 'State.Rezomat.ipiv') > 0) then
          valeur = Instance%ipiv(index1)
-      else if ( NomVar == 'State.Rezomat.IFLAG') then
+      else if ( index(NomVar, 'State.Rezomat.IFLAG') > 0) then
          valeur = Instance%IFLAG(index1)
-      else if ( NomVar == 'State.Rezomat.RowA') then
+      else if ( index(NomVar, 'State.Rezomat.RowA') > 0) then
          valeur = Instance%rowA(index1)
-      else if ( NomVar == 'State.Rezomat.ColA') then
+      else if ( index(NomVar, 'State.Rezomat.ColA') > 0) then
          valeur = Instance%colA(index1)
-      else if ( NomVar == 'State.Rezomat.snr') then
+      else if ( index(NomVar, 'State.Rezomat.snr') > 0) then
          valeur = Instance%snr(index1)
-      else if ( NomVar == 'State.Rezomat.rnr') then
+      else if ( index(NomVar, 'State.Rezomat.rnr') > 0) then
          valeur = Instance%rnr(index1)
-      else if ( NomVar == 'State.Rezomat.ha') then
+      else if ( index(NomVar, 'State.Rezomat.ha') > 0) then
          valeur = Instance%ha(index1, index2)
-      else if ( NomVar == 'State.Rezomat.noVarDQ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQ') > 0) then
          valeur = Instance%noVarDQ(index1)
-      else if ( NomVar == 'State.Rezomat.noVarDZ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZ') > 0) then
          valeur = Instance%noVarDZ(index1)
-      else if ( NomVar == 'State.Rezomat.noVarDQl') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQl') > 0) then
          valeur = Instance%noVarDQl(index1)
-      else if ( NomVar == 'State.Rezomat.noVarDZc') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZc') > 0) then
          valeur = Instance%noVarDZc(index1)
-      else if ( NomVar == 'State.Rezomat.KdNode') then
+      else if ( index(NomVar, 'State.Rezomat.KdNode') > 0) then
          valeur = Instance%typSec(index1)
-      else if ( NomVar == 'State.Rezomat.headJunction') then
+      else if ( index(NomVar, 'State.Rezomat.headJunction') > 0) then
          valeur = Instance%headConflu(index1)
-      else if ( NomVar == 'State.Rezomat.nxtNdJunction') then
+      else if ( index(NomVar, 'State.Rezomat.nxtNdJunction') > 0) then
          valeur = Instance%nextSecConflu(index1)
-      else if ( NomVar == 'State.Rezomat.WeirNd') then
+      else if ( index(NomVar, 'State.Rezomat.WeirNd') > 0) then
          valeur = Instance%SecSin(index1)
-      else if ( NomVar == 'State.Rezomat.LinkNd') then
+      else if ( index(NomVar, 'State.Rezomat.LinkNd') > 0) then
          valeur = Instance%SecLiai(index1)
-      else if ( NomVar == 'State.Rezomat.NdLink') then
+      else if ( index(NomVar, 'State.Rezomat.NdLink') > 0) then
          valeur = Instance%LiaiSec(index1)
       else
          GET_INT_REZOMAT = 1
@@ -1162,15 +1162,15 @@ end function GET_TYPE_VAR_REZOMAT
       SET_DOUBLE_REZOMAT = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Rezomat.AFLAG') then
+      if ( index(NomVar, 'State.Rezomat.AFLAG') > 0) then
          Instance%AFLAG(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.valA') then
+      else if ( index(NomVar, 'State.Rezomat.valA') > 0) then
          Instance%valA(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.b') then
+      else if ( index(NomVar, 'State.Rezomat.b') > 0) then
          Instance%b(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.pivot') then
+      else if ( index(NomVar, 'State.Rezomat.pivot') > 0) then
          Instance%pivot(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.AB') then
+      else if ( index(NomVar, 'State.Rezomat.AB') > 0) then
          Instance%AB(index1,index2) = valeur
       else
          SET_DOUBLE_REZOMAT = 1
@@ -1193,59 +1193,59 @@ end function GET_TYPE_VAR_REZOMAT
       SET_INT_REZOMAT = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Rezomat.SOLV') then
+      if ( index(NomVar, 'State.Rezomat.SOLV') > 0) then
          Instance%SOLV = valeur
-      else if ( NomVar == 'State.Rezomat.N') then
-         Instance%N = valeur
-      else if ( NomVar == 'State.Rezomat.NNZ') then
+      else if ( index(NomVar, 'State.Rezomat.NNZ') > 0) then
          Instance%NNZ = valeur
-      else if ( NomVar == 'State.Rezomat.NN') then
-         Instance%NN = valeur
-      else if ( NomVar == 'State.Rezomat.NN1') then
+      else if ( index(NomVar, 'State.Rezomat.NN1') > 0) then
          Instance%NN1 = valeur
-      else if ( NomVar == 'State.Rezomat.IHA') then
+      else if ( index(NomVar, 'State.Rezomat.NN') > 0) then
+         Instance%NN = valeur
+      else if ( index(NomVar, 'State.Rezomat.N') > 0) then
+         Instance%N = valeur
+      else if ( index(NomVar, 'State.Rezomat.IHA') > 0) then
          Instance%IHA = valeur
-      else if ( NomVar == 'State.Rezomat.KL') then
+      else if ( index(NomVar, 'State.Rezomat.KL') > 0) then
          Instance%KL = valeur
-      else if ( NomVar == 'State.Rezomat.KU') then
+      else if ( index(NomVar, 'State.Rezomat.KU') > 0) then
          Instance%KU = valeur
-      else if ( NomVar == 'State.Rezomat.LDAB') then
+      else if ( index(NomVar, 'State.Rezomat.LDAB') > 0) then
          Instance%LDAB = valeur
-      else if ( NomVar == 'State.Rezomat.IFAIL') then
+      else if ( index(NomVar, 'State.Rezomat.IFAIL') > 0) then
          Instance%IFAIL = valeur
-      else if ( NomVar == 'State.Rezomat.ipiv') then
+      else if ( index(NomVar, 'State.Rezomat.ipiv') > 0) then
          Instance%ipiv(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.IFLAG') then
+      else if ( index(NomVar, 'State.Rezomat.IFLAG') > 0) then
          Instance%IFLAG(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.RowA') then
+      else if ( index(NomVar, 'State.Rezomat.RowA') > 0) then
          Instance%rowA(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.ColA') then
+      else if ( index(NomVar, 'State.Rezomat.ColA') > 0) then
          Instance%colA(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.snr') then
+      else if ( index(NomVar, 'State.Rezomat.snr') > 0) then
          Instance%snr(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.rnr') then
+      else if ( index(NomVar, 'State.Rezomat.rnr') > 0) then
          Instance%rnr(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.ha') then
+      else if ( index(NomVar, 'State.Rezomat.ha') > 0) then
          Instance%ha(index1, index2) = valeur
-      else if ( NomVar == 'State.Rezomat.noVarDQ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQ') > 0) then
          Instance%noVarDQ(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.noVarDZ') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZ') > 0) then
          Instance%noVarDZ(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.noVarDQl') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDQl') > 0) then
          Instance%noVarDQl(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.noVarDZc') then
+      else if ( index(NomVar, 'State.Rezomat.noVarDZc') > 0) then
          Instance%noVarDZc(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.KdNode') then
+      else if ( index(NomVar, 'State.Rezomat.KdNode') > 0) then
          Instance%typSec(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.headJunction') then
+      else if ( index(NomVar, 'State.Rezomat.headJunction') > 0) then
          Instance%headConflu(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.nxtNdJunction') then
+      else if ( index(NomVar, 'State.Rezomat.nxtNdJunction') > 0) then
          Instance%nextSecConflu(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.WeirNd') then
+      else if ( index(NomVar, 'State.Rezomat.WeirNd') > 0) then
          Instance%SecSin(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.LinkNd') then
+      else if ( index(NomVar, 'State.Rezomat.LinkNd') > 0) then
          Instance%SecLiai(index1) = valeur
-      else if ( NomVar == 'State.Rezomat.NdLink') then
+      else if ( index(NomVar, 'State.Rezomat.NdLink') > 0) then
          Instance%LiaiSec(index1) = valeur
       else
          SET_INT_REZOMAT = 1

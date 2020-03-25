@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -20,7 +20,7 @@ Module M_NODE_TRACER_T
 !***********************************************************************
 ! PROGICIEL : MASCARET-TRACER     F. ZAOUI
 !
-! VERSION : 8.1.4                   EDF-CEREMA
+! VERSION : V8P2R0                   EDF-CEREMA
 !***********************************************************************
 
    type NODE_TRACER_T
@@ -77,16 +77,16 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.NodeTrac.NB_CHILD') then
+      if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_CHILD') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.NodeTrac.NB_PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_PARENT') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.NodeTrac.CHILD') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.CHILD') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 2
-      else if ( NomVar == 'Model.Tracer.NodeTrac.PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.PARENT') > 0) then
          TypeVar = 'TABINT'
          dimVar                = 2
       else
@@ -122,19 +122,19 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.NodeTrac.NB_CHILD') then
+      if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_CHILD') > 0) then
          taille1 = size(Instance%NB_CHILD, 1)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.NodeTrac.NB_PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_PARENT') > 0) then
          taille1 = size(Instance%NB_PARENT)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.NodeTrac.CHILD') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.CHILD') > 0) then
          taille1 = size(Instance%CHILD, 1)
          taille2 = size(Instance%CHILD, 2)
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.NodeTrac.PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.PARENT') > 0) then
          taille1 = size(Instance%PARENT, 1)
          taille2 = size(Instance%PARENT, 2)
          taille3 = 0
@@ -173,7 +173,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.Tracer.NodeTrac.NB_CHILD') then
+      if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_CHILD') > 0) then
          if (associated(Instance%NB_CHILD)) then
             t1 = size(Instance%NB_CHILD)
             if (t1 /= NewT1) then
@@ -193,7 +193,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'Model.Tracer.NodeTrac.NB_PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_PARENT') > 0) then
          if (associated(Instance%NB_PARENT)) then
             t1 = size(Instance%NB_PARENT)
             if (t1 /= NewT1) then
@@ -213,7 +213,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'Model.Tracer.NodeTrac.CHILD') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.CHILD') > 0) then
          if (associated(Instance%CHILD)) then
             t1 = size(Instance%CHILD, 1)
             t2 = size(Instance%CHILD, 2)
@@ -234,7 +234,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'Model.Tracer.NodeTrac.PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.PARENT') > 0) then
          if (associated(Instance%PARENT)) then
             t1 = size(Instance%PARENT, 1)
             t2 = size(Instance%PARENT, 2)
@@ -285,13 +285,13 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.NodeTrac.NB_CHILD') then
+      if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_CHILD') > 0) then
          valeur = Instance%NB_CHILD(index1)
-      else if ( NomVar == 'Model.Tracer.NodeTrac.NB_PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_PARENT') > 0) then
          valeur = Instance%NB_PARENT(index1)
-      else if ( NomVar == 'Model.Tracer.NodeTrac.CHILD') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.CHILD') > 0) then
          valeur = Instance%CHILD(index1,index2)
-      else if ( NomVar == 'Model.Tracer.NodeTrac.PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.PARENT') > 0) then
          valeur = Instance%PARENT(index1,index2)
       else
          GET_INT_NODE_TRACER = 1
@@ -319,13 +319,13 @@ contains
       SET_INT_NODE_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.NodeTrac.NB_CHILD') then
+      if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_CHILD') > 0) then
          Instance%NB_CHILD(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.NodeTrac.NB_PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.NB_PARENT') > 0) then
          Instance%NB_PARENT(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.NodeTrac.CHILD') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.CHILD') > 0) then
          Instance%CHILD(index1,index2) = valeur
-      else if ( NomVar == 'Model.Tracer.NodeTrac.PARENT') then
+      else if ( index(NomVar, 'Model.Tracer.NodeTrac.PARENT') > 0) then
          Instance%PARENT(index1,index2) = valeur
       else
          SET_INT_NODE_TRACER = 1

@@ -251,7 +251,7 @@
 !
 !     INITIALISATION OF ARRAYS WITH DEFAULT VALUES
 !
-      DO I=1,NSICLA
+      DO I=1,NSICLM
         XMVS0(I) = 2650.D0
         DCLA(I)  = 0.01D0
         AC(I)    = -9.D0

@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -20,7 +20,7 @@ module M_CONNECT_T
 !***********************************************************************
 ! PROGICIEL : MASCARET        N. GOUTAL
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -91,27 +91,27 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-       if ( NomVar == 'Model.Connect.FirstNdNum') then
+       if ( index(NomVar, 'Model.Connect.FirstNdNum') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.Connect.LastNdNum') then
+       else if ( index(NomVar, 'Model.Connect.LastNdNum') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.Connect.NumReachJunction') then
+       else if ( index(NomVar, 'Model.Connect.NumReachJunction') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 1
-       else if ( NomVar == 'Model.Connect.ReachNum') then
+       else if ( index(NomVar, 'Model.Connect.ReachNumFreeOutflow') > 0) then
+          TypeVar = 'TABINT'
+          dimVar                = 1
+       else if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 2
-       else if ( NomVar == 'Model.Connect.NodeNum') then
+       else if ( index(NomVar, 'Model.Connect.NodeNumFreeOutflow') > 0) then
+          TypeVar = 'TABINT'
+          dimVar                = 1
+       else if ( index(NomVar, 'Model.Connect.NodeNum') > 0) then
           TypeVar = 'TABINT'
           dimVar                = 2
-       else if ( NomVar == 'Model.Connect.ReachNumFreeOutflow') then
-          TypeVar = 'TABINT'
-          dimVar                = 1
-       else if ( NomVar == 'Model.Connect.NodeNumFreeOutflow') then
-          TypeVar = 'TABINT'
-          dimVar                = 1
       else
         GET_TYPE_VAR_CONNECT = 1
         TypeVar = "?"
@@ -144,7 +144,7 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Connect.FirstNdNum') then
+      if ( index(NomVar, 'Model.Connect.FirstNdNum') > 0) then
          if (ASSOCIATED(Instance%OrigineBief)) then
             taille1 = size(Instance%OrigineBief)
          else
@@ -152,7 +152,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Connect.LastNdNum') then
+      else if ( index(NomVar, 'Model.Connect.LastNdNum') > 0) then
          if (ASSOCIATED(Instance%FinBief)) then
             taille1 = size(Instance%FinBief)
          else
@@ -160,7 +160,7 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Connect.NumReachJunction') then
+      else if ( index(NomVar, 'Model.Connect.NumReachJunction') > 0) then
          if (ASSOCIATED(Instance%NbBiefConfluence)) then
             taille1 = size(Instance%NbBiefConfluence)
          else
@@ -168,7 +168,15 @@ contains
          endif
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Connect.ReachNum') then
+      else if ( index(NomVar, 'Model.Connect.ReachNumFreeOutflow') > 0) then
+         if (ASSOCIATED(Instance%NumBiefExtLibre)) then
+            taille1 = size(Instance%NumBiefExtLibre)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
          if (ASSOCIATED(Instance%NumBiefConfluence)) then
             taille1 = size(Instance%NumBiefConfluence, 1)
             taille2 = size(Instance%NumBiefConfluence, 2)
@@ -177,7 +185,15 @@ contains
             taille2 = 0
          endif
          taille3 = 0
-      else if ( NomVar == 'Model.Connect.NodeNum') then
+      else if ( index(NomVar, 'Model.Connect.NodeNumFreeOutflow') > 0) then
+         if (ASSOCIATED(Instance%NumSectionExtLibre)) then
+            taille1 = size(Instance%NumSectionExtLibre)
+         else
+            taille1 = 0
+         endif
+         taille2 = 0
+         taille3 = 0
+      else if ( index(NomVar, 'Model.Connect.NodeNum') > 0) then
          if (ASSOCIATED(Instance%NumSectionConfluence)) then
             taille1 = size(Instance%NumSectionConfluence, 1)
             taille2 = size(Instance%NumSectionConfluence, 2)
@@ -185,22 +201,6 @@ contains
             taille1 = 0
             taille2 = 0
          endif
-         taille3 = 0
-      else if ( NomVar == 'Model.Connect.ReachNumFreeOutflow') then
-         if (ASSOCIATED(Instance%NumBiefExtLibre)) then
-            taille1 = size(Instance%NumBiefExtLibre)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
-         taille3 = 0
-      else if ( NomVar == 'Model.Connect.NodeNumFreeOutflow') then
-         if (ASSOCIATED(Instance%NumSectionExtLibre)) then
-            taille1 = size(Instance%NumSectionExtLibre)
-         else
-            taille1 = 0
-         endif
-         taille2 = 0
          taille3 = 0
       else
          GET_TAILLE_VAR_CONNECT = 1
@@ -238,7 +238,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'Model.Connect.FirstNdNum') then
+      if ( index(NomVar, 'Model.Connect.FirstNdNum') > 0) then
         if (ASSOCIATED(Instance%OrigineBief)) then
            t1 = size(Instance%OrigineBief)
            if (t1 /= NewT1) then
@@ -258,7 +258,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Connect.LastNdNum') then
+      else if ( index(NomVar, 'Model.Connect.LastNdNum') > 0) then
         if (ASSOCIATED(Instance%FinBief)) then
            t1 = size(Instance%FinBief)
            if (t1 /= NewT1) then
@@ -278,7 +278,7 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Connect.NumReachJunction') then
+      else if ( index(NomVar, 'Model.Connect.NumReachJunction') > 0) then
         if (ASSOCIATED(Instance%NbBiefConfluence)) then
            t1 = size(Instance%NbBiefConfluence)
            if (t1 /= NewT1) then
@@ -298,7 +298,27 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Connect.ReachNum') then
+      else if ( index(NomVar, 'Model.Connect.ReachNumFreeOutflow') > 0) then
+        if (ASSOCIATED(Instance%NumBiefExtLibre)) then
+           t1 = size(Instance%NumBiefExtLibre)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%NumBiefExtLibre, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_CONNECT = err
+                 MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to deallocate CONNECT_T.NumBiefExtLibre'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%NumBiefExtLibre) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%NumBiefExtLibre(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_CONNECT = err
+              MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to allocate CONNECT_T.NumBiefExtLibre'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
         if (ASSOCIATED(Instance%NumBiefConfluence)) then
            t1 = size(Instance%NumBiefConfluence, 1)
            t2 = size(Instance%NumBiefConfluence, 2)
@@ -319,7 +339,27 @@ contains
               return
            endif
         endif
-      else if ( NomVar == 'Model.Connect.NodeNum') then
+      else if ( index(NomVar, 'Model.Connect.NodeNumFreeOutflow') > 0) then
+        if (ASSOCIATED(Instance%NumSectionExtLibre)) then
+           t1 = size(Instance%NumSectionExtLibre)
+           if (t1 /= NewT1) then
+              DEALLOCATE(Instance%NumSectionExtLibre, STAT=err)
+              if (err /= 0) then
+                 SET_TAILLE_VAR_CONNECT = err
+                 MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to deallocate CONNECT_T.NumSectionExtLibre'
+                 return
+              endif
+           endif
+        endif
+        if (.not.ASSOCIATED(Instance%NumSectionExtLibre) .OR. (t1 /= NewT1)) then
+           ALLOCATE(Instance%NumSectionExtLibre(NewT1), STAT=err)
+           if (err /= 0) then
+              SET_TAILLE_VAR_CONNECT = err
+              MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to allocate CONNECT_T.NumSectionExtLibre'
+              return
+           endif
+        endif
+      else if ( index(NomVar, 'Model.Connect.NodeNum') > 0) then
         if (ASSOCIATED(Instance%NumSectionConfluence)) then
            t1 = size(Instance%NumSectionConfluence, 1)
            t2 = size(Instance%NumSectionConfluence, 2)
@@ -337,46 +377,6 @@ contains
            if (err /= 0) then
               SET_TAILLE_VAR_CONNECT = err
               MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to allocate CONNECT_T.NumSectionConfluence'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.Connect.ReachNumFreeOutflow') then
-        if (ASSOCIATED(Instance%NumBiefExtLibre)) then
-           t1 = size(Instance%NumBiefExtLibre)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%NumBiefExtLibre, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_CONNECT = err
-                 MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to deallocate CONNECT_T.NumBiefExtLibre'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%NumBiefExtLibre) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%NumBiefExtLibre(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_CONNECT = err
-              MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to allocate CONNECT_T.NumBiefExtLibre'
-              return
-           endif
-        endif
-      else if ( NomVar == 'Model.Connect.NodeNumFreeOutflow') then
-        if (ASSOCIATED(Instance%NumSectionExtLibre)) then
-           t1 = size(Instance%NumSectionExtLibre)
-           if (t1 /= NewT1) then
-              DEALLOCATE(Instance%NumSectionExtLibre, STAT=err)
-              if (err /= 0) then
-                 SET_TAILLE_VAR_CONNECT = err
-                 MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to deallocate CONNECT_T.NumSectionExtLibre'
-                 return
-              endif
-           endif
-        endif
-        if (.not.ASSOCIATED(Instance%NumSectionExtLibre) .OR. (t1 /= NewT1)) then
-           ALLOCATE(Instance%NumSectionExtLibre(NewT1), STAT=err)
-           if (err /= 0) then
-              SET_TAILLE_VAR_CONNECT = err
-              MessageErreur = 'SET_TAILLE_VAR_CONNECT : Unable to allocate CONNECT_T.NumSectionExtLibre'
               return
            endif
         endif
@@ -410,20 +410,20 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Connect.FirstNdNum') then
+      if ( index(NomVar, 'Model.Connect.FirstNdNum') > 0) then
          valeur = Instance%OrigineBief(index1)
-      else if ( NomVar == 'Model.Connect.LastNdNum') then
+      else if ( index(NomVar, 'Model.Connect.LastNdNum') > 0) then
          valeur = Instance%FinBief(index1)
-      else if ( NomVar == 'Model.Connect.NumReachJunction') then
+      else if ( index(NomVar, 'Model.Connect.NumReachJunction') > 0) then
          valeur = Instance%NbBiefConfluence(index1)
-      else if ( NomVar == 'Model.Connect.ReachNum') then
-         valeur = Instance%NumBiefConfluence(index1, index2)
-      else if ( NomVar == 'Model.Connect.NodeNum') then
-         valeur = Instance%NumSectionConfluence(index1, index2)
-      else if ( NomVar == 'Model.Connect.ReachNumFreeOutflow') then
+      else if ( index(NomVar, 'Model.Connect.ReachNumFreeOutflow') > 0) then
          valeur = Instance%NumBiefExtLibre(index1)
-      else if ( NomVar == 'Model.Connect.NodeNumFreeOutflow') then
+      else if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
+         valeur = Instance%NumBiefConfluence(index1, index2)
+      else if ( index(NomVar, 'Model.Connect.NodeNumFreeOutflow') > 0) then
          valeur = Instance%NumSectionExtLibre(index1)
+      else if ( index(NomVar, 'Model.Connect.NodeNum') > 0) then
+         valeur = Instance%NumSectionConfluence(index1, index2)
       else
          GET_INT_CONNECT = 1
          valeur                = -9999
@@ -452,20 +452,20 @@ contains
       SET_INT_CONNECT = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Connect.FirstNdNum') then
+      if ( index(NomVar, 'Model.Connect.FirstNdNum') > 0) then
          Instance%OrigineBief(index1) = valeur
-      else if ( NomVar == 'Model.Connect.LastNdNum') then
+      else if ( index(NomVar, 'Model.Connect.LastNdNum') > 0) then
          Instance%FinBief(index1) = valeur
-      else if ( NomVar == 'Model.Connect.NumReachJunction') then
+      else if ( index(NomVar, 'Model.Connect.NumReachJunction') > 0) then
          Instance%NbBiefConfluence(index1) = valeur
-      else if ( NomVar == 'Model.Connect.ReachNum') then
-         Instance%NumBiefConfluence(index1, index2) = valeur
-      else if ( NomVar == 'Model.Connect.NodeNum') then
-         Instance%NumSectionConfluence(index1, index2) = valeur
-      else if ( NomVar == 'Model.Connect.ReachNumFreeOutflow') then
+      else if ( index(NomVar, 'Model.Connect.ReachNumFreeOutflow') > 0) then
          Instance%NumBiefExtLibre(index1) = valeur
-      else if ( NomVar == 'Model.Connect.NodeNumFreeOutflow') then
+      else if ( index(NomVar, 'Model.Connect.ReachNum') > 0) then
+         Instance%NumBiefConfluence(index1, index2) = valeur
+      else if ( index(NomVar, 'Model.Connect.NodeNumFreeOutflow') > 0) then
          Instance%NumSectionExtLibre(index1) = valeur
+      else if ( index(NomVar, 'Model.Connect.NodeNum') > 0) then
+         Instance%NumSectionConfluence(index1, index2) = valeur
       else
          SET_INT_CONNECT = 1
          MessageErreur         = "SET_INT_CONNECT - Unknown variable name"

@@ -8,53 +8,53 @@ name: partel
 path: <root>|sources|utils|bief
 files: bief_def.f
   bief.f
-  front2.f
-  elebd.f
-  voisin.f
   read_mesh_info.f
+  elebd.f
+  front2.f
+  voisin.f
 
 [hermes]
 path: <root>|sources|utils|hermes
-files: hermes_index_file.f
+files: interface_hermes.f
   hash_table.f
-  utils_med.F
   utils_cgns.F
+  hermes_index_file.f
+  utils_med.F
   utils_serafin.F
-  get_data_value.f
-  interface_hermes.f
   lib_vtk_io.F
   utils_vtk.F
+  add_data.f
+  close_mesh.f
+  get_data_ntimestep.f
+  get_data_nvar.f
+  get_data_time.f
+  get_data_value.f
+  get_data_var_list.f
+  get_mesh_connectivity.f
+  get_mesh_coord.f
+  get_mesh_date.f
+  get_mesh_l2g_numbering.f
+  get_mesh_title.f
+  open_mesh.f
+  get_bnd_nelem.f
+  get_bnd_npoin.f
+  get_mesh_dimension.f
+  get_mesh_nelem.f
+  get_mesh_nplan.f
+  get_mesh_npoin.f
+  get_mesh_npoin_per_element.f
+  get_mesh_nptir.f
   set_header.f
   set_mesh.f
-  add_data.f
-  transfer_group_part_info.f
-  get_data_time.f
-  open_mesh.f
-  close_mesh.f
   close_bnd.f
-  set_bnd.f
   open_bnd.f
-  get_bnd_numbering.f
-  get_data_var_list.f
-  get_data_ntimestep.f
-  get_mesh_coord.f
-  get_bnd_ipobo.f
-  get_bnd_npoin.f
+  set_bnd.f
+  transfer_group_part_info.f
   get_bnd_color.f
   get_bnd_connectivity.f
-  get_bnd_nelem.f
-  get_mesh_nelem.f
-  get_mesh_npoin_per_element.f
-  get_mesh_nplan.f
-  get_mesh_nptir.f
-  get_mesh_title.f
-  get_data_nvar.f
-  get_mesh_dimension.f
-  get_mesh_npoin.f
+  get_bnd_ipobo.f
+  get_bnd_numbering.f
   get_bnd_value.f
-  get_mesh_date.f
-  get_mesh_connectivity.f
-  get_mesh_l2g_numbering.f
 
 [parallel]
 path: <root>|sources|utils|parallel
@@ -64,18 +64,18 @@ files: declarations_parallel.F
 [partel]
 path: <root>|sources|utils|partel
 files: declarations_partel.f
+  parres.f
   mod_hash_table.f
   mod_compute_boundary_and_interface.f
+  mod_handle_friction_zones.f
+  mod_handle_sections.f
   mod_handle_weirs.f
   mod_init_dataval.f
-  mod_write_solutions.f
-  mod_handle_sections.f
   mod_numbering_open_boundaries.f
-  mod_handle_friction_zones.f
+  mod_write_solutions.f
   c_binding.F
   partitioner.F
   partel.F
-  parres.f
   homere_partel.f
 
 [special]
@@ -83,9 +83,9 @@ path: <root>|sources|utils|special
 files: declarations_special.F
   extens.f
   plante.F
-  check_allocate.f
   get_free_id.f
-  write_error.f
-  check_call.f
   get_nodes_per_element.f
   blanc2uscore.f
+  check_allocate.f
+  write_error.f
+  check_call.f

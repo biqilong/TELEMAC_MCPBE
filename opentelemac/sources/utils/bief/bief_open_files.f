@@ -101,6 +101,8 @@
         RDONLY_PARAL=.FALSE.
         IF(FILES(I)%NAME(1:1).NE.' ') THEN
 !
+          write(lu,*) 'Opening: ', trim(FILES(I)%TELNAME), '-',
+     &                trim(FILES(I)%NAME)
 !         GET LOGICAL UNIT
           CALL GET_FREE_ID(FILES(I)%LU)
 !

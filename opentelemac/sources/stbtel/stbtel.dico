@@ -141,7 +141,7 @@ RUBRIQUE1 =
 'TREATMENT';'';''
 NIVEAU = 1
 AIDE =
-'Adapte l''ecriture du \teleky{FICHIER DE GEOMETRIE POUR TELEMAC} au
+'Adapte l''ecriture du \telkey{FICHIER DE GEOMETRIE POUR TELEMAC} au
 standard binaire choisi pour celui-ci. Ce peut etre :
 \begin{itemize}
 \item IBM : binaire IBM,

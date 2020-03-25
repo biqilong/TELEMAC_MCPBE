@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -20,7 +20,7 @@ module M_METEO_T
 !***********************************************************************
 ! PROGICIEL : TRACER         S.MANDELKERN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -111,34 +111,34 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.Weather.Name') then
+      if ( index(NomVar, 'Model.Tracer.Weather.Name') > 0) then
          TypeVar = 'STRING'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.Weather.Time') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Time') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.Temperature') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Temperature') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.I0') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.I0') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.AirTemp') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirTemp') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.AirPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirPress') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.WindSpeed') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.WindSpeed') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.Nebulosity') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Nebulosity') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.Radiation') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Radiation') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'Model.Tracer.Weather.AtmPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AtmPress') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
       else
@@ -172,43 +172,43 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Weather.Name') then
+      if ( index(NomVar, 'Model.Tracer.Weather.Name') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.Time') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Time') > 0) then
          taille1 = size(Instance%Temps)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.Temperature') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Temperature') > 0) then
          taille1 = size(Instance%Temp)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.I0') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.I0') > 0) then
          taille1 = size(Instance%I0)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.AirTemp') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirTemp') > 0) then
          taille1 = size(Instance%T_Air)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.AirPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirPress') > 0) then
          taille1 = size(Instance%P_Vap)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.WindSpeed') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.WindSpeed') > 0) then
          taille1 = size(Instance%Vit_Vent)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.Nebulosity') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Nebulosity') > 0) then
          taille1 = size(Instance%Nebulo)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.Radiation') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Radiation') > 0) then
          taille1 = size(Instance%Ray3)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.Weather.AtmPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AtmPress') > 0) then
          taille1 = size(Instance%P_atm)
          taille2 = 0
          taille3 = 0
@@ -242,7 +242,7 @@ contains
       !------------------------------------------------------------------------------
       ! Fin des appels aux fonctions SET_TAILLE_VAR_XXXX des membres de type primitif
       !------------------------------------------------------------------------------
-      if ( NomVar == 'Model.Tracer.Weather.Time') then
+      if ( index(NomVar, 'Model.Tracer.Weather.Time') > 0) then
         if (ASSOCIATED(Instance%Temps)) then
            t1 = size(Instance%Temps)
            if (t1 /= NewT1) then
@@ -262,7 +262,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.Temperature') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.Temperature') > 0) then
         if (ASSOCIATED(Instance%Temp)) then
            t1 = size(Instance%Temp)
            if (t1 /= NewT1) then
@@ -282,7 +282,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.I0') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.I0') > 0) then
         if (ASSOCIATED(Instance%I0)) then
            t1 = size(Instance%I0)
            if (t1 /= NewT1) then
@@ -302,7 +302,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.AirTemp') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.AirTemp') > 0) then
         if (ASSOCIATED(Instance%T_Air)) then
            t1 = size(Instance%T_Air)
            if (t1 /= NewT1) then
@@ -322,7 +322,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.AirPress') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.AirPress') > 0) then
         if (ASSOCIATED(Instance%P_Vap)) then
            t1 = size(Instance%P_Vap)
            if (t1 /= NewT1) then
@@ -342,7 +342,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.WindSpeed') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.WindSpeed') > 0) then
         if (ASSOCIATED(Instance%Vit_Vent)) then
            t1 = size(Instance%Vit_Vent)
            if (t1 /= NewT1) then
@@ -362,7 +362,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.Nebulosity') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.Nebulosity') > 0) then
         if (ASSOCIATED(Instance%Nebulo)) then
            t1 = size(Instance%Nebulo)
            if (t1 /= NewT1) then
@@ -382,7 +382,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.Radiation') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.Radiation') > 0) then
         if (ASSOCIATED(Instance%Ray3)) then
            t1 = size(Instance%Ray3)
            if (t1 /= NewT1) then
@@ -402,7 +402,7 @@ contains
               return
            endif
         endif
-     else if ( NomVar == 'Model.Tracer.Weather.AtmPress') then
+     else if ( index(NomVar, 'Model.Tracer.Weather.AtmPress') > 0) then
         if (ASSOCIATED(Instance%P_atm)) then
            t1 = size(Instance%P_atm)
            if (t1 /= NewT1) then
@@ -452,23 +452,23 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Weather.Time') then
+      if ( index(NomVar, 'Model.Tracer.Weather.Time') > 0) then
          valeur = Instance%Temps(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.Temperature') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Temperature') > 0) then
          valeur = Instance%Temp(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.I0') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.I0') > 0) then
          valeur = Instance%I0(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.AirTemp') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirTemp') > 0) then
          valeur = Instance%T_Air(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.AirPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirPress') > 0) then
          valeur = Instance%P_Vap(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.WindSpeed') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.WindSpeed') > 0) then
          valeur = Instance%Vit_Vent(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.Nebulosity') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Nebulosity') > 0) then
          valeur = Instance%Nebulo(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.Radiation') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Radiation') > 0) then
          valeur = Instance%Ray3(index1)
-      else if ( NomVar == 'Model.Tracer.Weather.AtmPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AtmPress') > 0) then
          valeur = Instance%P_atm(index1)
       else
          GET_DOUBLE_METEO = 1
@@ -520,23 +520,23 @@ contains
       SET_DOUBLE_METEO = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.Weather.Time') then
+      if ( index(NomVar, 'Model.Tracer.Weather.Time') > 0) then
          Instance%Temps(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.Temperature') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Temperature') > 0) then
          Instance%Temp(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.I0') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.I0') > 0) then
          Instance%I0(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.AirTemp') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirTemp') > 0) then
          Instance%T_Air(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.AirPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AirPress') > 0) then
          Instance%P_Vap(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.WindSpeed') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.WindSpeed') > 0) then
          Instance%Vit_Vent(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.Nebulosity') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Nebulosity') > 0) then
          Instance%Nebulo(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.Radiation') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.Radiation') > 0) then
          Instance%Ray3(index1) = valeur
-      else if ( NomVar == 'Model.Tracer.Weather.AtmPress') then
+      else if ( index(NomVar, 'Model.Tracer.Weather.AtmPress') > 0) then
          Instance%P_atm(index1) = valeur
       else
          SET_DOUBLE_METEO = 1

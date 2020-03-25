@@ -147,8 +147,8 @@
 !      CALL OS( 'X=X+Y   ' ,X=TEXP%ADR(IND_CSS)%P,Y=T4                  )
 !                                 RS
       CALL OS( 'X=Y     ' ,X=T1,Y=T3)
-      CALL OS( 'X=CXY/Z ' ,X=T1,Y=TN%ADR(IND_CSF)%P,Z=TN%ADR(IND_SF)%P,
-     &                     C=1.D0)
+      CALL OVD('X=CXY/Z ' ,T1%R,TN%ADR(IND_CSF)%P%R,TN%ADR(IND_SF)%P%R,
+     &                     1.D0, NPOIN,2,0.D0,EPS)
 !                                 SEDP
       CALL OS( 'X=X-YZ  ' ,X=T1,Y=T4,Z=TN%ADR(IND_CSS)%P)
       CALL OVD('X=X+CY/Z', TEXP%ADR(IND_CSS)%P%R,T1%R,HPROP%R,

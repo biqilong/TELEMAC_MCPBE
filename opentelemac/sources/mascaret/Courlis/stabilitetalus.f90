@@ -220,10 +220,18 @@ use M_TRAITER_ERREUR_I		! Traitement de l'errreur
 
 
 	! Si la pente est superieure a la pente limite de stabilite, il y a instabilite
-	  If (((ImD-W1) < EPS1) .and. ((ImG-W1) < EPS1)) Then
-	    If (Abs(Pente) > Talus%PstabI)  Stab(j) = W0
+
+	  !MS2018: modif erreur test ==> ne prenait pas en compte la pente emmergee (cf. PN Gavet 2018)
+    !If (((ImD-W1) < EPS1) .and. ((ImG-W1) < EPS1)) Then
+	  If ((ImD > W0) .and. (ImG > W0)) Then
+	    If (Abs(Pente) > Talus%PstabI) Then
+        Stab(j) = W0
+      endif
 	  Else
-		If (Abs(Pente) > Talus%PstabE)  Stab(j) = W0
+		  If (Abs(Pente) > Talus%PstabE) Then
+        Stab(j) = W0
+      endif
+
 	  Endif
 
 	  If ((dble(SurPl(j,i)) - Stab(j)) > 0.99_DOUBLE)  SurPl(j,i) = 0

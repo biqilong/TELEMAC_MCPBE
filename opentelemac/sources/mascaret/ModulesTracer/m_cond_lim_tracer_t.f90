@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET-TRACER.
 !
@@ -20,7 +20,7 @@ module M_COND_LIM_TRACER_T
 !***********************************************************************
 ! PROGICIEL : TRACER         S.MANDELKERN
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 !***********************************************************************
 
    !=========================== Declarations ==============================
@@ -74,13 +74,13 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'Model.Tracer.BoundaryCond.Type') then
+      if ( index(NomVar, 'Model.Tracer.BoundaryCond.Type') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.BoundaryCond.Number') then
+      else if ( index(NomVar, 'Model.Tracer.BoundaryCond.Number') > 0) then
          TypeVar = 'INT'
          dimVar                = 0
-      else if ( NomVar == 'Model.Tracer.BoundaryCond.Concentration') then
+      else if ( index(NomVar, 'Model.Tracer.BoundaryCond.Concentration') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
       else
@@ -114,15 +114,15 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.BoundaryCond.Type') then
+      if ( index(NomVar, 'Model.Tracer.BoundaryCond.Type') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.BoundaryCond.Number') then
+      else if ( index(NomVar, 'Model.Tracer.BoundaryCond.Number') > 0) then
          taille1 = 0
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'Model.Tracer.BoundaryCond.Concentration') then
+      else if ( index(NomVar, 'Model.Tracer.BoundaryCond.Concentration') > 0) then
          taille1 = size(Instance%Conc_lim)
          taille2 = 0
          taille3 = 0
@@ -156,7 +156,7 @@ contains
       !------------------------------------------------------------------------------
       ! Fin des appels aux fonctions SET_TAILLE_VAR_XXXX des membres de type primitif
       !------------------------------------------------------------------------------
-      if ( NomVar == 'Model.Tracer.BoundaryCond.Concentration') then
+      if ( index(NomVar, 'Model.Tracer.BoundaryCond.Concentration') > 0) then
         if (ASSOCIATED(Instance%Conc_lim)) then
            t1 = size(Instance%Conc_lim)
            if (t1 /= NewT1) then
@@ -205,7 +205,7 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.BoundaryCond.Concentration') then
+      if ( index(NomVar, 'Model.Tracer.BoundaryCond.Concentration') > 0) then
          valeur = Instance%Conc_lim(index1)
       else
          GET_DOUBLE_COND_LIM_TRACER = 1
@@ -229,9 +229,9 @@ contains
       valeur                = -9999
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.BoundaryCond.Type') then
+      if ( index(NomVar, 'Model.Tracer.BoundaryCond.Type') > 0) then
          valeur = Instance%Type
-      else if ( NomVar == 'Model.Tracer.BoundaryCond.Number') then
+      else if ( index(NomVar, 'Model.Tracer.BoundaryCond.Number') > 0) then
          valeur = Instance%NumeroLoi
       else
          GET_INT_COND_LIM_TRACER = 1
@@ -258,7 +258,7 @@ contains
       SET_DOUBLE_COND_LIM_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.BoundaryCond.Concentration') then
+      if ( index(NomVar, 'Model.Tracer.BoundaryCond.Concentration') > 0) then
          Instance%Conc_lim(index1) = valeur
       else
          SET_DOUBLE_COND_LIM_TRACER = 1
@@ -280,9 +280,9 @@ contains
       SET_INT_COND_LIM_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'Model.Tracer.BoundaryCond.Type') then
+      if ( index(NomVar, 'Model.Tracer.BoundaryCond.Type') > 0) then
          Instance%Type = valeur
-      else if ( NomVar == 'Model.Tracer.BoundaryCond.Number') then
+      else if ( index(NomVar, 'Model.Tracer.BoundaryCond.Number') > 0) then
          Instance%NumeroLoi = valeur
       else
          SET_INT_COND_LIM_TRACER = 1

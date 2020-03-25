@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -113,43 +113,43 @@ contains
       dimVar                = 0
       MessageErreur         = ""
 
-      if ( NomVar == 'State.Tracer.Concentration') then
+      if ( index(NomVar, 'State.Tracer.Concentration') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
-      else if ( NomVar == 'State.Tracer.Q') then
+      else if ( index(NomVar, 'State.Tracer.Q') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Tracer.WetArea') then
+      else if ( index(NomVar, 'State.Tracer.WetArea') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Tracer.Width') then
+      else if ( index(NomVar, 'State.Tracer.Width') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Tracer.Qprior') then
+      else if ( index(NomVar, 'State.Tracer.Qprior') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Tracer.WetAreaPrior') then
+      else if ( index(NomVar, 'State.Tracer.WetAreaPrior') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Tracer.WidthPrior') then
+      else if ( index(NomVar, 'State.Tracer.WidthPrior') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Tracer.CourantNumber') then
+      else if ( index(NomVar, 'State.Tracer.CourantNumber') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 1
-      else if ( NomVar == 'State.Tracer.Mass') then
+      else if ( index(NomVar, 'State.Tracer.MassFlux') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
-      else if ( NomVar == 'State.Tracer.MassFlux') then
+      else if ( index(NomVar, 'State.Tracer.Mass') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
-      else if ( NomVar == 'State.Tracer.InMass') then
+      else if ( index(NomVar, 'State.Tracer.InMass') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
-      else if ( NomVar == 'State.Tracer.OutMass') then
+      else if ( index(NomVar, 'State.Tracer.OutMass') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
-      else if ( NomVar == 'State.Tracer.PtMass') then
+      else if ( index(NomVar, 'State.Tracer.PtMass') > 0) then
          TypeVar = 'TABDOUBLE'
          dimVar                = 2
       else
@@ -185,55 +185,55 @@ contains
       taille3                = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Tracer.Concentration') then
+      if ( index(NomVar, 'State.Tracer.Concentration') > 0) then
          taille1 = size(Instance%Ctraceur, 1)
          taille2 = size(Instance%Ctraceur, 2)
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.Q') then
+      else if ( index(NomVar, 'State.Tracer.Q') > 0) then
          taille1 = size(Instance%QT)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.WetArea') then
+      else if ( index(NomVar, 'State.Tracer.WetArea') > 0) then
          taille1 = size(Instance%ST)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.Width') then
+      else if ( index(NomVar, 'State.Tracer.Width') > 0) then
          taille1 = size(Instance%BT)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.Qprior') then
+      else if ( index(NomVar, 'State.Tracer.Qprior') > 0) then
          taille1 = size(Instance%QT_ANT)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.WetAreaPrior') then
+      else if ( index(NomVar, 'State.Tracer.WetAreaPrior') > 0) then
          taille1 = size(Instance%ST_ANT)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.WidthPrior') then
+      else if ( index(NomVar, 'State.Tracer.WidthPrior') > 0) then
          taille1 = size(Instance%BT_ANT)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.CourantNumber') then
+      else if ( index(NomVar, 'State.Tracer.CourantNumber') > 0) then
          taille1 = size(Instance%NbCourant)
          taille2 = 0
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.Mass') then
-         taille1 = size(Instance%MASS, 1)
-         taille2 = size(Instance%MASS, 2)
-         taille3 = 0
-      else if ( NomVar == 'State.Tracer.MassFlux') then
+      else if ( index(NomVar, 'State.Tracer.MassFlux') > 0) then
          taille1 = size(Instance%FLUMAS, 1)
          taille2 = size(Instance%FLUMAS, 2)
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.InMass') then
+      else if ( index(NomVar, 'State.Tracer.Mass') > 0) then
+         taille1 = size(Instance%MASS, 1)
+         taille2 = size(Instance%MASS, 2)
+         taille3 = 0
+      else if ( index(NomVar, 'State.Tracer.InMass') > 0) then
          taille1 = size(Instance%FLUENT, 1)
          taille2 = size(Instance%FLUENT, 2)
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.OutMass') then
+      else if ( index(NomVar, 'State.Tracer.OutMass') > 0) then
          taille1 = size(Instance%FLUSOR, 1)
          taille2 = size(Instance%FLUSOR, 2)
          taille3 = 0
-      else if ( NomVar == 'State.Tracer.PtMass') then
+      else if ( index(NomVar, 'State.Tracer.PtMass') > 0) then
          taille1 = size(Instance%FLUSRC, 1)
          taille2 = size(Instance%FLUSRC, 2)
          taille3 = 0
@@ -272,7 +272,7 @@ contains
       !----------------------------------------------------------
       ! Modification de la taille des pointers de types primitifs
       !----------------------------------------------------------
-      if ( NomVar == 'State.Tracer.Concentration') then
+      if ( index(NomVar, 'State.Tracer.Concentration') > 0) then
          if (associated(Instance%Ctraceur)) then
             t1 = size(Instance%Ctraceur, 1)
             t2 = size(Instance%Ctraceur, 2)
@@ -293,7 +293,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.Q') then
+      else if ( index(NomVar, 'State.Tracer.Q') > 0) then
          if (associated(Instance%QT)) then
             t1 = size(Instance%QT)
             if (t1 /= NewT1) then
@@ -313,7 +313,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.WetArea') then
+      else if ( index(NomVar, 'State.Tracer.WetArea') > 0) then
          if (associated(Instance%ST)) then
             t1 = size(Instance%ST)
             if (t1 /= NewT1) then
@@ -333,7 +333,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.Width') then
+      else if ( index(NomVar, 'State.Tracer.Width') > 0) then
          if (associated(Instance%BT)) then
             t1 = size(Instance%BT)
             if (t1 /= NewT1) then
@@ -353,7 +353,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.Qprior') then
+      else if ( index(NomVar, 'State.Tracer.Qprior') > 0) then
          if (associated(Instance%QT_ANT)) then
             t1 = size(Instance%QT_ANT)
             if (t1 /= NewT1) then
@@ -373,7 +373,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.WetAreaPrior') then
+      else if ( index(NomVar, 'State.Tracer.WetAreaPrior') > 0) then
          if (associated(Instance%ST_ANT)) then
             t1 = size(Instance%ST_ANT)
             if (t1 /= NewT1) then
@@ -393,7 +393,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.WidthPrior') then
+      else if ( index(NomVar, 'State.Tracer.WidthPrior') > 0) then
          if (associated(Instance%BT_ANT)) then
             t1 = size(Instance%BT_ANT)
             if (t1 /= NewT1) then
@@ -413,7 +413,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.CourantNumber') then
+      else if ( index(NomVar, 'State.Tracer.CourantNumber') > 0) then
          if (associated(Instance%NbCourant)) then
             t1 = size(Instance%NbCourant)
             if (t1 /= NewT1) then
@@ -433,28 +433,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.Mass') then
-         if (associated(Instance%MASS)) then
-            t1 = size(Instance%MASS, 1)
-            t2 = size(Instance%MASS, 2)
-            if ( (t1 /= NewT1).or.(t2 /= NewT2) ) then
-               deallocate(Instance%MASS, STAT=err)
-               if (err /= 0) then
-                  SET_TAILLE_VAR_ETAT_TRACER = err
-                  MessageErreur = 'SET_TAILLE_VAR_ETAT_TRACER : Unable to deallocate ETAT_TRACER_T.MASS'
-                  return
-               endif
-            endif
-         endif
-         if (.not.associated(Instance%MASS) .or. (t1 /= NewT1).or.(t2/=NewT2)) then
-            allocate(Instance%MASS(NewT1, NewT2), STAT=err)
-            if (err /= 0) then
-               SET_TAILLE_VAR_ETAT_TRACER = err
-               MessageErreur = 'SET_TAILLE_VAR_ETAT_TRACER : Unable to allocate ETAT_TRACER_T.MASS'
-               return
-            endif
-         endif
-      else if ( NomVar == 'State.Tracer.MassFlux') then
+      else if ( index(NomVar, 'State.Tracer.MassFlux') > 0) then
          if (associated(Instance%FLUMAS)) then
             t1 = size(Instance%FLUMAS, 1)
             t2 = size(Instance%FLUMAS, 2)
@@ -475,7 +454,28 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.InMass') then
+      else if ( index(NomVar, 'State.Tracer.Mass') > 0) then
+         if (associated(Instance%MASS)) then
+            t1 = size(Instance%MASS, 1)
+            t2 = size(Instance%MASS, 2)
+            if ( (t1 /= NewT1).or.(t2 /= NewT2) ) then
+               deallocate(Instance%MASS, STAT=err)
+               if (err /= 0) then
+                  SET_TAILLE_VAR_ETAT_TRACER = err
+                  MessageErreur = 'SET_TAILLE_VAR_ETAT_TRACER : Unable to deallocate ETAT_TRACER_T.MASS'
+                  return
+               endif
+            endif
+         endif
+         if (.not.associated(Instance%MASS) .or. (t1 /= NewT1).or.(t2/=NewT2)) then
+            allocate(Instance%MASS(NewT1, NewT2), STAT=err)
+            if (err /= 0) then
+               SET_TAILLE_VAR_ETAT_TRACER = err
+               MessageErreur = 'SET_TAILLE_VAR_ETAT_TRACER : Unable to allocate ETAT_TRACER_T.MASS'
+               return
+            endif
+         endif
+      else if ( index(NomVar, 'State.Tracer.InMass') > 0) then
          if (associated(Instance%FLUENT)) then
             t1 = size(Instance%FLUENT, 1)
             t2 = size(Instance%FLUENT, 2)
@@ -496,7 +496,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.OutMass') then
+      else if ( index(NomVar, 'State.Tracer.OutMass') > 0) then
          if (associated(Instance%FLUSOR)) then
             t1 = size(Instance%FLUSOR, 1)
             t2 = size(Instance%FLUSOR, 2)
@@ -517,7 +517,7 @@ contains
                return
             endif
          endif
-      else if ( NomVar == 'State.Tracer.PtMass') then
+      else if ( index(NomVar, 'State.Tracer.PtMass') > 0) then
          if (associated(Instance%FLUSRC)) then
             t1 = size(Instance%FLUSRC, 1)
             t2 = size(Instance%FLUSRC, 2)
@@ -569,31 +569,31 @@ contains
       valeur                = -9999999.9999
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Tracer.Concentration') then
+      if ( index(NomVar, 'State.Tracer.Concentration') > 0) then
          valeur = Instance%Ctraceur(index1, index2)
-      else if ( NomVar == 'State.Tracer.Q') then
+      else if ( index(NomVar, 'State.Tracer.Q') > 0) then
          valeur = Instance%QT(index1)
-      else if ( NomVar == 'State.Tracer.WetArea') then
+      else if ( index(NomVar, 'State.Tracer.WetArea') > 0) then
          valeur = Instance%ST(index1)
-      else if ( NomVar == 'State.Tracer.Width') then
+      else if ( index(NomVar, 'State.Tracer.Width') > 0) then
          valeur = Instance%BT(index1)
-      else if ( NomVar == 'State.Tracer.Qprior') then
+      else if ( index(NomVar, 'State.Tracer.Qprior') > 0) then
          valeur = Instance%QT_ANT(index1)
-      else if ( NomVar == 'State.Tracer.WetAreaPrior') then
+      else if ( index(NomVar, 'State.Tracer.WetAreaPrior') > 0) then
          valeur = Instance%ST_ANT(index1)
-      else if ( NomVar == 'State.Tracer.WidthPrior') then
+      else if ( index(NomVar, 'State.Tracer.WidthPrior') > 0) then
          valeur = Instance%BT_ANT(index1)
-      else if ( NomVar == 'State.Tracer.CourantNumber') then
+      else if ( index(NomVar, 'State.Tracer.CourantNumber') > 0) then
          valeur = Instance%NbCourant(index1)
-      else if ( NomVar == 'State.Tracer.Mass') then
-         valeur = Instance%MASS(index1, index2)
-      else if ( NomVar == 'State.Tracer.MassFlux') then
+      else if ( index(NomVar, 'State.Tracer.MassFlux') > 0) then
          valeur = Instance%FLUMAS(index1, index2)
-      else if ( NomVar == 'State.Tracer.InMass') then
+      else if ( index(NomVar, 'State.Tracer.Mass') > 0) then
+         valeur = Instance%MASS(index1, index2)
+      else if ( index(NomVar, 'State.Tracer.InMass') > 0) then
          valeur = Instance%FLUENT(index1, index2)
-      else if ( NomVar == 'State.Tracer.OutMass') then
+      else if ( index(NomVar, 'State.Tracer.OutMass') > 0) then
          valeur = Instance%FLUSOR(index1, index2)
-      else if ( NomVar == 'State.Tracer.PtMass') then
+      else if ( index(NomVar, 'State.Tracer.PtMass') > 0) then
          valeur = Instance%FLUSRC(index1, index2)
       else
          GET_DOUBLE_ETAT_TRACER = 1
@@ -621,31 +621,31 @@ contains
       SET_DOUBLE_ETAT_TRACER = 0
       MessageErreur          = ""
 
-      if ( NomVar == 'State.Tracer.Concentration') then
+      if ( index(NomVar, 'State.Tracer.Concentration') > 0) then
          Instance%Ctraceur(index1, index2) = valeur
-      else if ( NomVar == 'State.Tracer.Q') then
+      else if ( index(NomVar, 'State.Tracer.Q') > 0) then
          Instance%QT(index1) = valeur
-      else if ( NomVar == 'State.Tracer.WetArea') then
+      else if ( index(NomVar, 'State.Tracer.WetArea') > 0) then
          Instance%ST(index1) = valeur
-      else if ( NomVar == 'State.Tracer.Width') then
+      else if ( index(NomVar, 'State.Tracer.Width') > 0) then
          Instance%BT(index1) = valeur
-      else if ( NomVar == 'State.Tracer.Qprior') then
+      else if ( index(NomVar, 'State.Tracer.Qprior') > 0) then
          Instance%QT_ANT(index1) = valeur
-      else if ( NomVar == 'State.Tracer.WetAreaPrior') then
+      else if ( index(NomVar, 'State.Tracer.WetAreaPrior') > 0) then
          Instance%ST_ANT(index1) = valeur
-      else if ( NomVar == 'State.Tracer.WidthPrior') then
+      else if ( index(NomVar, 'State.Tracer.WidthPrior') > 0) then
          Instance%BT_ANT(index1) = valeur
-      else if ( NomVar == 'State.Tracer.CourantNumber') then
+      else if ( index(NomVar, 'State.Tracer.CourantNumber') > 0) then
          Instance%NbCourant(index1) = valeur
-      else if ( NomVar == 'State.Tracer.Mass') then
-         Instance%MASS(index1, index2) = valeur
-      else if ( NomVar == 'State.Tracer.MassFlux') then
+      else if ( index(NomVar, 'State.Tracer.MassFlux') > 0) then
          Instance%FLUMAS(index1, index2) = valeur
-      else if ( NomVar == 'State.Tracer.InMass') then
+      else if ( index(NomVar, 'State.Tracer.Mass') > 0) then
+         Instance%MASS(index1, index2) = valeur
+      else if ( index(NomVar, 'State.Tracer.InMass') > 0) then
          Instance%FLUENT(index1, index2) = valeur
-      else if ( NomVar == 'State.Tracer.OutMass') then
+      else if ( index(NomVar, 'State.Tracer.OutMass') > 0) then
          Instance%FLUSOR(index1, index2) = valeur
-      else if ( NomVar == 'State.Tracer.PtMass') then
+      else if ( index(NomVar, 'State.Tracer.PtMass') > 0) then
          Instance%FLUSRC(index1, index2) = valeur
       else
          SET_DOUBLE_ETAT_TRACER = 1

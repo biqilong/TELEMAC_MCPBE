@@ -1,4 +1,4 @@
-!== Copyright (C) 2000-2017 EDF-CEREMA ==
+!== Copyright (C) 2000-2020 EDF-CEREMA ==
 !
 !   This file is part of MASCARET.
 !
@@ -19,7 +19,7 @@
 ! *********************************************************************
 ! PROGICIEL : MASCARET       J.-M. LACOMBE
 !
-! VERSION : 8.1.4              EDF-CEREMA
+! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
    !.................................................................................................................................
    ! Importation de l'etat Mascaret a partir du fichier natif contenant la ligne d'eau initiale
@@ -320,6 +320,12 @@ subroutine INIT_ETAT_MASCARET(Erreur, Identifiant, NomFichier, Impression)
        deallocate(Etat%ZINIT)
        nullify(Etat%ZINIT)
    endif
+
+   Etat%tempsPrecedent = 0.
+   Etat%numPasTps = 0
+   Etat%DT = 0.
+   Etat%DTRezo = 0.
+   Etat%NBARAD = 0
 
    FichierLigne%Unite = 19
    FichierLigne%Nom = NomFichier

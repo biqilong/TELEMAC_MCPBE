@@ -30,8 +30,10 @@
       CHARACTER(LEN=24), PARAMETER :: CODE1='TELEMAC2D               '
       CHARACTER(LEN=24), PARAMETER :: CODE2='SISYPHE                 '
       CHARACTER(LEN=24), PARAMETER :: CODE3='TOMAWAC                 '
+      CHARACTER(LEN=24), PARAMETER :: CODE6='GAIA                    '
 !
       CHARACTER(LEN=MAXLENTMPDIR) PATH
+      LOGICAL CPL_GAIA
 
 !
 ! List the public subroutines
@@ -43,6 +45,7 @@
       PUBLIC :: RUN_TIMESTEP_COMPUTE_T2D_D
       PUBLIC :: RUN_TIMESTEP_RES_T2D_D
       PUBLIC :: RUN_FINALIZE_T2D_D
+      PUBLIC :: RUN_WRITE_T2D_D
       SAVE
 
 !
@@ -99,14 +102,19 @@
       !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
       !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
       !+                        ERROR ID OTHERWISE
+      !PARAM GAIA_CAS   [IN]    PATH TO THE GAIA CASE FILE
+      !PARAM GAIA_DICO  [IN]    PATH TO THE GAIA DICTIONARY FILE
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      SUBROUTINE RUN_READ_CASE_T2D_D(INST,CAS_FILE, DICO_FILE,INIT,IERR)
+      SUBROUTINE RUN_READ_CASE_T2D_D(INST,CAS_FILE, DICO_FILE,INIT,
+     &                               IERR,GAIA_CAS,GAIA_DICO)
 !
         TYPE(INSTANCE_T2D), INTENT(INOUT) :: INST
         CHARACTER(LEN=250), INTENT(IN) :: CAS_FILE
         CHARACTER(LEN=250), INTENT(IN) :: DICO_FILE
         LOGICAL,            INTENT(IN) :: INIT
         INTEGER,            INTENT(OUT) :: IERR
+        CHARACTER(LEN=250), INTENT(IN) :: GAIA_CAS
+        CHARACTER(LEN=250), INTENT(IN) :: GAIA_DICO
 !
         CHARACTER(LEN=250) MOTCAR(INST%MAXKEYWORD)
         CHARACTER(LEN=250) FILE_DESC(4,INST%MAXKEYWORD)
@@ -115,24 +123,33 @@
 !
         CALL BIEF_INIT(PATH,NCAR,INIT)
 !
-!     INITIAL TIME FOR COMPUTATION DURATION
+!       INITIAL TIME FOR COMPUTATION DURATION
 !
         CALL DATE_AND_TIME(VALUES=TDEB)
 !
-!     PRINTS BANNER TO LISTING
+!       PRINTS BANNER TO LISTING
 !
-      CALL PRINT_HEADER(CODE1,'                        ')
+        CALL PRINT_HEADER(CODE1,'                        ')
 !
 !-----------------------------------------------------------------------
 !
-!     READS THE STEERING FILE
+!       READS THE STEERING FILE
         CALL LECDON_TELEMAC2D(MOTCAR,FILE_DESC,
-     &                        PATH,NCAR,CAS_FILE,DICO_FILE)
+     &                        PATH,NCAR,CAS_FILE,DICO_FILE,
+     &                        CAS_FILE_GAIA=GAIA_CAS,
+     &                        DICO_FILE_GAIA=GAIA_DICO)
 !
 !-----------------------------------------------------------------------
 !
-!     OPENS THE FILES FOR TELEMAC2D
+        CPL_GAIA = INCLUS(INST%COUPLING, 'GAIA')
+
+        IF(CPL_GAIA) THEN
 !
+          CALL PRINT_HEADER(CODE6,CODE1)
+!
+          CALL LECDON_GAIA(MOTCAR,FILE_DESC,PATH,NCAR,CODE1,
+     &                     GAIA_CAS,GAIA_DICO)
+        ENDIF
       END SUBROUTINE RUN_READ_CASE_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,15 +170,8 @@
         TYPE(INSTANCE_T2D), INTENT(INOUT) :: INST
         INTEGER,            INTENT(OUT) :: IERR
 !
-        INTEGER :: IFLOT
-        LOGICAL :: IS_COUPLED
-!
         IERR = 0
 !
-        IFLOT = 0
-        IS_COUPLED = INCLUS(INST%COUPLING,'SISYPHE')
-     &           .OR. INCLUS(INST%COUPLING,'TOMAWAC')
-
         CALL BIEF_OPEN_FILES(CODE1,INST%T2D_FILES,
      &                       INST%MAXLU_T2D,
      &                       PATH,NCAR,
@@ -169,12 +179,27 @@
 !
 !-----------------------------------------------------------------------
 !
-!     ALLOCATES MEMORY
+!       ALLOCATES MEMORY
 !
         CALL POINT_TELEMAC2D
 !
 !-----------------------------------------------------------------------
 !
+        IF(CPL_GAIA) THEN
+          CALL BIEF_OPEN_FILES(CODE6,INST%GAI_FILES,
+     &                         INST%MAXLU_GAI,
+     &                         PATH,NCAR,
+     &                         2,.TRUE.)
+!
+!         RESETS TELEMAC2D CONFIGURATION
+!
+          CALL CONFIG_CODE(1)
+!
+!         MEMORY ORGANISATION
+!
+          CALL POINT_GAIA
+!
+        ENDIF
 !
       END SUBROUTINE RUN_ALLOCATION_T2D_D
 !
@@ -258,6 +283,32 @@
       END SUBROUTINE RUN_TIMESTEP_RES_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !BRIEF WRITE OUTPUT IN TELEMAC2D
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !
+      !HISTORY MP DAOU (ARTELIA)
+      !+       21/08/2013
+      !+       V6P3
+      !+       CREATION OF THE FILE
+      !
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      !PARAM INST   [IN,OUT]    THE INSTANCE
+      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
+      !+                        ERROR ID OTHERWISE
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      SUBROUTINE RUN_WRITE_T2D_D(INST,IERR)
+!
+        TYPE(INSTANCE_T2D), INTENT(INOUT) :: INST
+        INTEGER,            INTENT(OUT) :: IERR
+!
+        IERR = 0
+!
+        INST%NIT = INST%LT
+        CALL TELEMAC2D(PASS=2,ATDEP=0.D0,NITER=INST%LT,
+     &       CODE='       ',NITERORI=NIT_ORI)
+      END SUBROUTINE RUN_WRITE_T2D_D
+!
+      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       !BRIEF FINALIZE A TELEMAC2D RUN
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       !
@@ -282,6 +333,12 @@
         CALL BIEF_CLOSE_FILES(INST%T2D_FILES,
      &                        INST%MAXLU_T2D,.FALSE.)
 !
+        IF(CPL_GAIA) THEN
+          CALL CONFIG_CODE(6)
+          CALL BIEF_CLOSE_FILES(INST%GAI_FILES,INST%MAXLU_GAI,.FALSE.)
+          CALL DEALL_GAIA
+        ENDIF
+
 !       DEALLOCATE ALL OF BIEF AND TELEMAC2D ARRAYS
         CALL DEALL_TELEMAC2D(.TRUE.)
         CALL DEALL_BIEF()

@@ -813,6 +813,9 @@
       IF(NTRAC.GT.0) THEN
         CALL BIEF_ALLVEC_IN_BLOCK(T     ,NTRAC,1,'T     ',
      &                            IELMT,1,1,MESH)
+        DO ITRAC=1,NTRAC
+          CALL OV('X=0     ', X=T%ADR(ITRAC)%P%R, DIM1=MESH%NPOIN)
+        ENDDO
         CALL BIEF_ALLVEC_IN_BLOCK(TTILD ,NTRAC,1,'TTILD ',
      &                            IELMT,1,1,MESH)
         CALL BIEF_ALLVEC_IN_BLOCK(TN    ,NTRAC,1,'TN    ',

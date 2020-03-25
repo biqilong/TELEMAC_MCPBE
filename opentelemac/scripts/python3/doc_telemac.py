@@ -420,7 +420,8 @@ use the options --validation/reference/user/release/theory to compile only one
         # all modules
         module_list = ['artemis', 'stbtel', 'sisyphe', 'postel3d',
                        'telemac2d', 'telemac3d', 'tomawac', 'waqtel',
-                       'telapy', 'mascaret', 'gaia', 'nestor', 'khione']
+                       'telapy', 'mascaret', 'gaia', 'nestor', 'khione',
+                       'coupling']
     if options.misc != '':
         misc_list = options.misc.split(',')
         module_list = []
@@ -448,7 +449,7 @@ use the options --validation/reference/user/release/theory to compile only one
         # list of what to do for the module
         todo = []
         if options.validation or doall:
-            if code_name not in ['telapy', 'mascaret']:
+            if code_name not in ['telapy', 'mascaret', 'coupling']:
                 # Building Validation LaTeX file
                 doc_dir = path.join(root, 'documentation',
                                     code_name, 'validation')
@@ -469,7 +470,7 @@ use the options --validation/reference/user/release/theory to compile only one
                                    case+'\n'
                 todo.append('validation')
         if options.reference or doall:
-            if code_name not in ['telapy', 'mascaret', 'nestor']:
+            if code_name not in ['telapy', 'mascaret', 'nestor', 'coupling']:
                 # Path to the dictionary
                 dictionary = path.join(root, 'sources', code_name,
                                        code_name+'.dico')

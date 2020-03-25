@@ -426,8 +426,8 @@
             IF(READ_BIN_U.AND.READ_BIN_V) THEN
               ! GET U AND V FROM THE BINARY BOUNDARY DATA FILE
               IF(INFOGR.AND..NOT.DEJA) THEN
-                WRITE(LU,*) 'U,V AT THE BOUNDARIES READ
-     &                       IN THE BINARY FILE'
+                WRITE(LU,*) 'U,V AT THE BOUNDARIES READ'//
+     &                      ' IN THE BINARY FILE'
                 DEJA = .TRUE.
               ENDIF
               UBORL%R(IBORD)=T3_01%R(N)
@@ -437,8 +437,8 @@
               ! THE NORM OF THE VELOCITY IS SET
               ! VELOCITY ORIENTED ALONG THE NORMAL TO THE BOUNDARY
               IF(INFOGR.AND..NOT.DEJA) THEN
-                WRITE(LU,*) 'U,V AT THE BOUNDARIES READ
-     &                       IN THE ASCII FILE'
+                WRITE(LU,*) 'U,V AT THE BOUNDARIES READ'//
+     &                      ' IN THE ASCII FILE'
                 DEJA = .TRUE.
               ENDIF
               UBORL%R(IBORD)=-MESH2D%XNEBOR%R(K)*VIT3(IVIT,AT,N,INFOGR)
@@ -505,8 +505,8 @@
                 ! GET ITRAC VALUES FROM THE BINARY BOUNDARY DATA FILE
                 IF(INFOGR.AND..NOT.DEJA) THEN
                   WRITE(LU,*) 'VALUE OF THE TRACER', ITRAC,
-     &                         'AT THE BOUNDARIES READ IN THE
-     &                          BINARY FILE'
+     &                         'AT THE BOUNDARIES READ IN THE'//
+     &                         ' BINARY FILE'
                   DEJA = .TRUE.
                 ENDIF
                 TABORL%ADR(ITRAC)%P%R(IBORD)= T3_01%R(N)
@@ -514,8 +514,8 @@
                 ! GET ITRAC VALUES FROM THE STEERING FILE
                 IF(INFOGR.AND..NOT.DEJA) THEN
                   WRITE(LU,*) 'VALUE OF THE TRACER', ITRAC,
-     &                         'AT THE BOUNDARIES READ IN THE
-     &                          ASCII FILE'
+     &                         'AT THE BOUNDARIES READ IN THE'//
+     &                         ' ASCII FILE'
                   WRITE(LU,*) INFOGR
                   DEJA = .TRUE.
                 ENDIF
