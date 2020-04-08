@@ -587,7 +587,7 @@ def hycom2srf_parser(subparser):
     """
     Adding options for hycom2srf
 
-    @param parser (ArgumentParser) The argument parser to update
+    @param subparser (ArgumentParser) The argument parser to update
 
     @return (ArgumentParser) the updated argument parser
     """

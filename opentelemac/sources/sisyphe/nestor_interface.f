@@ -5,9 +5,9 @@
      &(OPTION)
 !
 !***********************************************************************
-! SISYPHE VERSION 
+! SISYPHE VERSION
 !
-! 
+!
 !***********************************************************************
 !
 !  FUNCTION: THIS IS THE INTERFACE TO NESTOR, CONTAINING ALL
@@ -50,6 +50,7 @@
       INTEGER, INTENT(IN) :: OPTION
       DOUBLE PRECISION    :: DTS
       LOGICAL             :: CALLEDBY_T2D
+      DOUBLE PRECISION, ALLOCATABLE :: TMP_AVAIL(:,:,:)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -116,6 +117,8 @@
 !
         IF (NESTOR.EQV..TRUE.) THEN
           DTS = DT/NSOUS
+          ALLOCATE(TMP_AVAIL(NPOIN,1,NSICLA))
+          TMP_AVAIL = AVAIL(1:NPOIN,1:1,1:NSICLA)
           CALL INTERFACERUNNESTOR(  NPOIN      !  NUMBER OF POINTS (NODES)
      &                            , NSICLA     !  number of SIze CLAsses
      &                            , LT         !  Telemac time step
@@ -124,10 +127,11 @@
      &                            , ES(1:NPOIN,1)   !(non const.) thickness of active laver [m]
      &                            , ZF%R       !  bottom [m+NN]
      &                            , ZFCL_C     !  evolution per class per time step [m]
-     &                            , AVAIL(1:NPOIN,1,1:NSICLA)    !
+     &                            , TMP_AVAIL
      &                            , MESH%KNOLG%I    ! index list: Local to Global node index
      &                            , HN%R       !  water depth [m]                               ! Itera
      &                           )
+          DEALLOCATE(TMP_AVAIL)
         ENDIF
 !
 !

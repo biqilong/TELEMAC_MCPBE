@@ -203,7 +203,6 @@ class Parafins(Selafins):
         Apply existing partition to other files
 
         @param root (string) Name of the global geometry file
-        @param showbar (bolean) to display the showbar
         """
         islf = Selafin(root)
         print('      +> Writing the core of the following partitions:')

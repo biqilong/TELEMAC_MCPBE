@@ -103,6 +103,7 @@
       TYPE(BIEF_OBJ) :: BID
       TYPE(SLVCFG) :: SLVBID
       INTEGER :: SIZ_ISUB, SIZ_FRE, JF_ISUB, JF_FRE
+      INTEGER, ALLOCATABLE :: TMP_ISUB(:)
 !
 !----------------------------------------------------------------------
 !
@@ -145,13 +146,15 @@
             SIZ_ISUB = 1
             JF_ISUB = 1
           ENDIF
+          ALLOCATE(TMP_ISUB(SIZ_ISUB))
+          TMP_ISUB = SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB)
           CALL CHARAC(SSHZ%ADR(JF)%P,SSHZ%ADR(JF)%P,0,
      &            CX,CY,SCT,SCT,STETA,STETA,DT,MESH3D%IFABOR,IELM3,
      &            NPOIN2,NPLAN,1,1,.FALSE.,SSHP1%ADR(JF)%P,
      &            SSHZ%ADR(JF)%P,SSHZ%ADR(JF)%P,TB,
      &            ELT(1:NPOIN3,JF),ETA(1:NPOIN3,JF),ETA(1:NPOIN3,JF),
      &            ITR01(1:NPOIN3,1),
-     &            SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB),
+     &            TMP_ISUB,
      &            ITR01(1:NPOIN3,2),MESH3D,NELEM2,NELEM2,
      &            MESH%IKLE,
      &            MESH%SURDET,
@@ -160,6 +163,8 @@
      &            .TRUE.,
 !                 AND PERIODICITY
      &            .TRUE.)
+          SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB) = TMP_ISUB
+          DEALLOCATE(TMP_ISUB)
 !
         ENDDO ! JF
 !

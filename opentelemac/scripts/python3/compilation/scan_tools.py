@@ -46,10 +46,11 @@ def get_scan_content(fle, root, bypass):
          the list of files included in the tree fo calls that are in the path,
          noting the indent with one file per line, and that file names could
          also include subdirectory path, relative to the common path location
-    @param fle(string) name of the cmdf file (with its path) to be parsed
-    @param root(string) root of the system to replace reference to <root>
-    @param bypass(boolean) whether exception raised should be bypassed or not
-    @return content(dictionary) a dictionary of sections and their keys
+
+    @param fle (string) name of the cmdf file (with its path) to be parsed
+    @param root (string) root of the system to replace reference to <root>
+    @param bypass (boolean) whether exception raised should be bypassed or not
+    @return content (dictionary) a dictionary of sections and their keys
 
     """
     # ~~> cmdf format follows the raw config parser standard
@@ -141,14 +142,12 @@ def get_scan_content(fle, root, bypass):
 
 def put_scan_content(fle, root, content):
     """
-         title: Writer of the cmdf file.
-         brief:See format description at get_scan_content()
-         @param
-         @param fle(string) name of the cmdf file (with its path) to be saved as
-         @param root(sting)  root of the system to replace reference to <root>
-         @param bypass(boolean) whether exception raised should be bypassed or
-                                not
-         @return None
+    Writer of the cmdf file.
+    See format description at get_scan_content()
+
+    @param fle (string) name of the cmdf file (with its path) to be saved as
+    @param root (sting)  root of the system to replace reference to <root>
+    @param content (dict) dictionary containing scan information
     """
 
     # ~~> return lines to be stored

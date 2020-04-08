@@ -4,7 +4,8 @@
 \section{ Scope of sea state modelling}
  The directional spectrum of wave action density, as defined in paragraph \ref{se:seastate}, is considered as a function of five variables:
 \[N(\vec{x},\vec{k},t)=N(x,y,k_{x} ,k_{y} ,t)\]
-using, as discretization variables:
+using,
+as discretization variables:
 
  \begin{enumerate}
 \item the position vector $\vec{x} = (x, y)$ for spatial location in a Cartesian coordinate system
@@ -281,7 +282,7 @@ with the following transfer rates:
 \item $Q_{tr}$: non-linear triad interactions
 \item $Q_{ds,cur}$: enhanced breaking dissipation of waves on a current
 \item $Q_{veg}$: dissipation due to vegetation.
-\item $Q_{veg}$: dissipation due to porous media.
+\item $Q_{porous}$: dissipation due to porous media.
 \end{itemize}
 
 These source and sink terms are numerically modelled and parameterized as detailed in the next paragraphs. For most of these processes, several models or formulations are proposed and available in \tomawac.

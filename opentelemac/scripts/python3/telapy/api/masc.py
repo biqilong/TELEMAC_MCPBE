@@ -10,11 +10,11 @@ import logging
 import ctypes
 import os
 import sys
-from utils.exceptions import TelemacException
 import numpy as np
+from utils.exceptions import TelemacException
 
 
-class Mascaret(object):
+class Mascaret():
     """The Python class for MASCARET APIs"""
     libmascaret = None
     logger = logging.getLogger(__name__)
@@ -46,8 +46,7 @@ class Mascaret(object):
     def error_message(self):
         """Error message wrapper
 
-        :return: Error message
-        :rtype: str
+        @return (str) Error message
         """
         err_mess_c = ctypes.POINTER(ctypes.c_char_p)()
         error = \
@@ -84,15 +83,7 @@ class Mascaret(object):
         """
         Constructor for apiModule
 
-        @param name Name of the code (t2d, sis, ...)
-        @param casFile Name of the steering file
-        @param user_fortran Name of the user Fortran
-        @param dicofile Path to the dictionary
-        @param lang Language for ouput (1: French, 2:English)
-        @param stdout Where to put the listing
-        @param comm MPI communicator
-        @param recompile If true recompiling the API
-        @param code For coupling
+        @param log_level (str) Logger level
         """
         if log_level == 'INFO':
             i_log = logging.INFO
@@ -113,7 +104,7 @@ class Mascaret(object):
 
         Uses Mascaret Api :meth:`C_CREATE_MASCARET`
 
-        @oaram iprint integer flag value for the Mascaret listing files
+        @param iprint (int) flag value for the Mascaret listing files
         """
         id_masc = ctypes.c_int()
         self.logger.debug('Creating a model...')
@@ -128,8 +119,8 @@ class Mascaret(object):
 
         Uses Mascaret Api :meth:`C_IMPORT_MODELE_MASCARET`
 
-        @param str files_name: array of the Mascaret data files
-        @param str files_type: array of the file name extensions
+        @param files_name (str) array of the Mascaret data files
+        @param files_type (str) array of the file name extensions
         """
         len_file = len(files_name)
         file_type = []
@@ -140,7 +131,7 @@ class Mascaret(object):
         file_name_c = (ctypes.c_char_p * len_file)(*file_name)
         file_type_c = (ctypes.c_char_p * len_file)(*file_type)
         self.logger.debug('Importing a model...')
-        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(
+        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(\
                 self.id_masc, file_name_c,
                 file_type_c, len_file, self.iprint)
         self.logger.info("Model imported with:\n"
@@ -152,13 +143,13 @@ class Mascaret(object):
 
         Uses Mascaret Api :meth:`C_IMPORT_MODELE_MASCARET_ONEFILE`
 
-        @param str masc_files: file name listing all the Mascaret files
+        @param masc_file (str) file name listing all the Mascaret files
         """
         masc_file_c = (ctypes.c_char_p * 1)(masc_file.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         iprint_c = (ctypes.c_int * 1)(self.iprint)
         self.logger.debug('Importing a model...')
-        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET_ONEFILE(
+        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET_ONEFILE(\
                 id_masc_c, iprint_c, masc_file_c)
         self.logger.info("Model imported with:\n"
                          + "-> masc_file: {}\n"
@@ -176,8 +167,7 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_SAVE_ETAT_MASCARET`
 
-        :return: id number for the saved state
-        :rtype: int
+        @return (int) id number for the saved state
         """
         saved_state_c = ctypes.c_int()
         self.logger.debug('Save MASCARET state...')
@@ -192,7 +182,7 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_FREE_SAVE_ETAT_MASCARET`
 
-        @param int saved_state: id number of the state to delete
+        @param saved_state (int) id number of the state to delete
         """
         saved_state_c = ctypes.c_int(saved_state)
         self.logger.debug('Free saved state mascaret...')
@@ -203,8 +193,7 @@ class Mascaret(object):
     def get_hydro(self):
         """Get the water levels (m) and discharge values (m3/s)
 
-        :return: water levels and discharges for all 1D nodes
-        :rtype: list
+        @return (list) water levels and discharges for all 1D nodes
         """
         if self.nb_nodes is None:
             self.nb_nodes, _, _ = self.get_var_size('Model.X')
@@ -224,9 +213,9 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_SET_ETAT_MASCARET`
 
-        @param: int id_state: id number of the state to restore
-        @param: int to_delete: delete saved state after restore
-        @param: int id_masc: id number of the instance on which to restore
+        @param id_state (int) id number of the state to restore
+        @param to_delete (int) delete saved state after restore
+        @param id_masc (int) id number of the instance on which to restore
         """
         if id_masc is None:
             id_masc = self.id_masc
@@ -251,8 +240,8 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_INIT_LIGNE_MASCARET`
 
-        @param z_val list or array: water levels (m)
-        @param q_val list or array: discharges (m3/s)
+        @param z_val (list or array) water levels (m)
+        @param q_val (list or array) discharges (m3/s)
         """
         if self.nb_nodes is None:
             self.nb_nodes, _, _ = self.get_var_size('Model.X')
@@ -270,7 +259,7 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_INIT_ETAT_MASCARET`
 
-        @param str hydro_file: '.lig' Mascaret file
+        @param hydro_file (str) '.lig' Mascaret file
         """
         init_file_name_c = (ctypes.c_char_p * 1)(hydro_file.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -309,8 +298,7 @@ class Mascaret(object):
     def get_tracer(self):
         """Get the tracer concentrations
 
-        :return: tracer concentrations
-        :rtype: list
+        @return (list) tracer concentrations
         """
         nb_nodes, nb_trac, _ = self.get_var_size('State.Tracer.Concentration')
         nb_conc = nb_nodes * nb_trac
@@ -329,12 +317,12 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_GET_DOUBLE_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
-        :return: scalar value
-        :rtype: float
+        @param var_name (str) name of the Mascaret variable
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
+
+        @return (float) scalar value
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -355,12 +343,12 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_GET_INT_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
-        :return: scalar value
-        :rtype: int
+        @param var_name (str) name of the Mascaret variable
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
+
+        @return (int) scalar value
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -381,12 +369,11 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_GET_BOOL_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
-        :return: scalar value
-        :rtype: bool
+        @param var_name (str) name of the Mascaret variable
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
+        @return (bool) scalar value
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -408,12 +395,11 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_GET_STRING_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
-        :return: scalar value
-        :rtype: str
+        @param var_name (str) name of the Mascaret variable
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
+        @return (str) scalar value
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -434,11 +420,11 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_SET_INT_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param int val: scalar value to set
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
+        @param var_name (str) name of the Mascaret variable
+        @param val (int) scalar value to set
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -457,11 +443,11 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_SET_BOOL_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param bool val: scalar value to set
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
+        @param var_name (str) name of the Mascaret variable
+        @param val (bool) scalar value to set
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -470,7 +456,7 @@ class Mascaret(object):
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
         self.logger.debug('Setting {}...'.format(var_name))
-        self.error = self.libmascaret.C_SET_BOOL_MASCARET(
+        self.error = self.libmascaret.C_SET_BOOL_MASCARET(\
             id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
             ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
@@ -480,11 +466,11 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_SET_STRING_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param str val: scalar value to set
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
+        @param var_name (str) name of the Mascaret variable
+        @param val (str) scalar value to set
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -503,11 +489,11 @@ class Mascaret(object):
 
         Mascaret Api :meth:`C_SET_DOUBLE_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param float val: scalar value to set
-        @param int i: first index of the Mascaret variable
-        @param int j: second index of the Mascaret variable
-        @param int k: third index of the Mascaret variable
+        @param var_name (str) name of the Mascaret variable
+        @param val (float) scalar value to set
+        @param i (int) first index of the Mascaret variable
+        @param j (int) second index of the Mascaret variable
+        @param k (int) third index of the Mascaret variable
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -526,9 +512,8 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_GET_TYPE_VAR_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        :return: type, category, modifiable, dimension
-        :rtype: str, str, int, int
+        @param var_name (str) name of the Mascaret variable
+        @return (str, str, int, int) type, category, modifiable, dimension
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -538,7 +523,7 @@ class Mascaret(object):
         var_dim_c = ctypes.c_int()
 
         self.logger.debug('Getting the type of {}...'.format(var_name))
-        self.error = self.libmascaret.C_GET_TYPE_VAR_MASCARET(
+        self.error = self.libmascaret.C_GET_TYPE_VAR_MASCARET(\
                 id_masc_c, var_name_c, ctypes.byref(var_type_c),
                 ctypes.byref(category_c), ctypes.byref(acces_c),
                 ctypes.byref(var_dim_c))
@@ -555,11 +540,10 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_GET_TAILLE_VAR_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param int index: only for cross-sections, graphs, weirs,
+        @param var_name (str) name of the Mascaret variable
+        @param index (int) only for cross-sections, graphs, weirs,
                           junctions, storage areas
-        :return: sizes
-        :rtype: int, int, int
+        @return (int, int, int) sizes
         """
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
@@ -582,9 +566,11 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_SET_TAILLE_VAR_MASCARET`
 
-        @param str var_name: name of the Mascaret variable
-        @param int size1, size2, size3: size values to set
-        @param int index: only for cross-sections, graphs,
+        @param var_name (str) name of the Mascaret variable
+        @param size1 (int) size values to set
+        @param size2 (int) size values to set
+        @param size3 (int) size values to set
+        @param index (int) only for cross-sections, graphs,
                           weirs, junctions, storage areas
         """
         var_name_c = ctypes.c_char_p(var_name.encode('utf-8'))
@@ -605,9 +591,9 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_CALCUL_MASCARET`.
 
-        @param float t_0: initial time of the computation (s)
-        @param float t_end: end time of the computation (s)
-        @param float time_step: time step of the computation (s)
+        @param t_0 (float) initial time of the computation (s)
+        @param t_end (float) end time of the computation (s)
+        @param time_step (float) time step of the computation (s)
         """
         t0_c = ctypes.c_double(t_0)
         tend_c = ctypes.c_double(t_end)
@@ -625,14 +611,14 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_CALCUL_MASCARET_CONDITION_LIMITE`.
 
-        @param float t_0: initial time of the computation (s)
-        @param float t_end: end time of the computation (s)
-        @param float time_step: time step of the computation (s)
-        @param float tab_timebc: array of time values for boundary conditions
-        @param int nb_timebc: size of tab_timebc
-        @param int nb_bc: total number of boundary conditions
-        @param float tab_cl1: values of boundary conditions
-        @param float tab_cl2: values of boundary conditions
+        @param t_0 (float) initial time of the computation (s)
+        @param t_end (float) end time of the computation (s)
+        @param time_step (float) time step of the computation (s)
+        @param tab_timebc (float) array of time values for boundary conditions
+        @param nb_timebc (int) size of tab_timebc
+        @param nb_bc (int) total number of boundary conditions
+        @param tab_cl1 (float) values of boundary conditions
+        @param tab_cl2 (float) values of boundary conditions
         """
         t0_c = ctypes.c_double(t_0)
         tend_c = ctypes.c_double(t_end)
@@ -665,8 +651,7 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_GET_DESC_VAR_MASCARET`
 
-        :return: information on all the Mascaret variables ('Model' or 'State')
-        :rtype: str, str, int
+        @return (str, str, int) information on all the Mascaret variables ('Model' or 'State')
         """
         tab_name_c = ctypes.POINTER(ctypes.c_char_p)()
         tab_desc_c = ctypes.POINTER(ctypes.c_char_p)()
@@ -693,8 +678,7 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_VERSION_MASCARET`
 
-        :return: Version X.Y.Z
-        :rtype: str
+        @return (str) Version X.Y.Z
         """
         v_c1 = ctypes.c_int()
         v_c2 = ctypes.c_int()
@@ -711,8 +695,8 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_IMPORT_XML`
 
-        @param str file_name: name the xml file
-        @param int import_model: flag to import Model or State
+        @param file_name (str) name the xml file
+        @param import_model (int) flag to import Model or State
         """
         import_model_c = ctypes.c_int(import_model)
         file_name_c = ctypes.c_char_p(file_name.encode("utf-8"))
@@ -727,9 +711,9 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_EXPORT_XML`
 
-        @param str file_name: name the xml file
-        @param int description:  flag to add info on variables
-        @param int export_model: flag to export Model or State
+        @param file_name (str) name the xml file
+        @param description (int)  flag to add info on variables
+        @param export_model (int) flag to export Model or State
         """
         export_model_c = ctypes.c_int(export_model)
         description_c = ctypes.c_int(description)
@@ -745,7 +729,7 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_EXPORT_XML_SAINT_VENANT`
 
-        @param str file_name: name of the xml file
+        @param file_name (str) name of the xml file
         """
         file_name_c = ctypes.c_char_p(file_name.encode("utf-8"))
 
@@ -759,9 +743,9 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_OUVERTURE_BALISE_XML`
 
-        @param str file_name: name of the xml file
-        @param int unit: logical unit
-        @param str anchor: root tag name
+        @param file_name (str) name of the xml file
+        @param unit (int) logical unit
+        @param anchor (str) root tag name
         """
         file_name_c = ctypes.c_char_p(file_name.encode("utf-8"))
         anchor_c = ctypes.c_char_p(anchor.encode("utf-8"))
@@ -777,9 +761,9 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_EXPORT_VAR_XML`
 
-        @param int unit: logical unit
-        @param str var_name: name of the Mascaret variable
-        @param int description: flag to add info of the variable
+        @param unit (int) logical unit
+        @param var_name (str) name of the Mascaret variable
+        @param description (int) flag to add info of the variable
         """
         var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         unit_c = ctypes.c_int(unit)
@@ -796,11 +780,11 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_EXPORT_USERVAR_XML`.
 
-        @param int unit: logical unit
-        @param str var_name: name of the user variable
-        @param str var_type: type of the user variable
-        @param str description: info of the user variable
-        @param str var_val: info to write on the xml tag
+        @param unit (int) logical unit
+        @param var_name (str) name of the user variable
+        @param var_type (str) type of the user variable
+        @param description (str) info of the user variable
+        @param var_val (str) info to write on the xml tag
         """
         var_name_c = ctypes.c_char_p(var_name.encode("utf-8"))
         var_type_c = ctypes.c_char_p(var_type.encode("utf-8"))
@@ -819,8 +803,8 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_FERMETURE_BALISE_XML`
 
-        @param int unit: logical unit
-        @param str anchor: root tag name
+        @param unit (int) logical unit
+        @param anchor (str) root tag name
         """
         anchor_c = ctypes.c_char_p(anchor.encode("utf-8"))
         unit_c = ctypes.c_int(unit)
@@ -835,8 +819,7 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_GET_NB_CONDITION_LIMITE_MASCARET`
 
-        :return: the number of BC of type 1,2,3,7
-        :rtype: int
+        @return (int) the number of BC of type 1,2,3,7
         """
         nb_bc_c = ctypes.c_int()
         self.logger.debug('Getting the number of boundary conditions...')
@@ -852,9 +835,9 @@ class Mascaret(object):
 
         Use Mascaret Api :meth:`C_GET_NOM_CONDITION_LIMITE_MASCARET`
 
-        @param int num_cl: number of the boundary condition to consider
-        :return: the number of BC and name of type 1,2,3,7
-        :rtype: int, str
+        @param num_cl (int) number of the boundary condition to consider
+
+        @return (int, str) the number of BC and name of type 1,2,3,7
         """
         num_cl_c = ctypes.c_int(num_cl)
         name_all_bc = ctypes.POINTER(ctypes.c_char_p)()
@@ -871,12 +854,12 @@ class Mascaret(object):
         """
         Get the value of a variable of Mascaret
 
-        @param varname Name of the variable
-        @param i index on first dimension
-        @param j index on second dimension
-        @param k index on third dimension
+        @param varname (str) Name of the variable
+        @param i (int) index on first dimension
+        @param j (int) index on second dimension
+        @param k (int) index on third dimension
 
-        :return: scalar value
+        @return scalar value
         """
         value = None
         vartype, _, _, ndim = self.get_type_var(varname)
@@ -923,11 +906,11 @@ class Mascaret(object):
         """
         Set the value of a variable of Mascaret
 
-        @param varname Name of the variable
-        @param value to set
-        @param i index on first dimension
-        @param j index on second dimension
-        @param k index on third dimension
+        @param varname (str) Name of the variable
+        @param value (str/float/int) to set
+        @param i (int) index on first dimension
+        @param j (int) index on second dimension
+        @param k (int) index on third dimension
         """
         vartype, _, modifiable, ndim = self.get_type_var(varname)
 

@@ -59,8 +59,6 @@ class UnknownLength(object):
     The ProgressBar object will call it's update value when an update
         is needed. It's size may change between call, but the results will
         not be good if the size changes drastically and repeatedly.
-        @param nothing
-        @retrun nothing
     """
 
     pass
@@ -86,7 +84,9 @@ class ProgressBarWidget(object):
         where one can access attributes of the class for knowing how
         the update must be made.
          At least this function must be overriden.
-        @parm pbar(object) pbar  ProgressBar object
+
+        @param pbar (object) pbar  ProgressBar object
+
         @return nothing
         """
         pass
@@ -112,10 +112,11 @@ class ProgressBarWidgetHFill(object):
             horizontal width the widget must have.
 
             At least this function must be overriden.
-            @parm pbar(object) pbar  ProgressBar object
-            @param width(float) total horizontal
+
+            @param pbar (object) pbar  ProgressBar object
+
+            @param width (float) total horizontal
             width the widget must have
-            @return nothing
         """
         pass
 
@@ -128,7 +129,7 @@ class ETA(ProgressBarWidget):
     def format_time(self, seconds):
         """
         Float time to string format
-        @param seconds(float) Time in s
+        @param seconds (float) Time in s
         @return (string)
         """
         return str(int(seconds+1))+'s'
@@ -137,9 +138,10 @@ class ETA(ProgressBarWidget):
     def update(self, pbar):
         """
         Update progress bar
-        @parm pbar(object) ProgressBar object
-        @return (string) new
-        sprogress bar
+
+        @param pbar (object) ProgressBar object
+
+        @return (string) new sprogress bar
         """
         if pbar.currval == 0:
             return ' | ---s'  # 'ETA:  --:--:--'
@@ -167,7 +169,7 @@ class FileTransferSpeed(ProgressBarWidget):
     def update(self, pbar):
         """
         Update progress bar element
-        @parm pbar(object) ProgressBar object
+        @param pbar (object) ProgressBar object
         @return (string) new element progress bar
         """
         if pbar.seconds_elapsed < 2e-6:
@@ -191,7 +193,7 @@ class RotatingMarker(ProgressBarWidget):
     def __init__(self, markers='|/-\\'):
         """
         Initialization function for RotatingMarker class
-        @param marker(string or updatable object) to use as a marker
+        @param markers (string or updatable object) to use as a marker
         """
         self.markers = markers
         self.curmark = -1
@@ -201,7 +203,7 @@ class RotatingMarker(ProgressBarWidget):
     def update(self, pbar):
         """
         Update progress bar element
-        @parm pbar(object) ProgressBar object
+        @param pbar (object) ProgressBar object
         @return (string) new element progress bar
         """
         if pbar.finished:
@@ -218,7 +220,7 @@ class Percentage(ProgressBarWidget):
     def update(self, pbar):
         """"
         Update progress bar percentage
-        @parm pbar(object) ProgressBar object
+        @param pbar (object) ProgressBar object
         @return (string) new percentage progress bar
         """
         return '%3d%%' % pbar.percentage()
@@ -237,9 +239,9 @@ class Bar(ProgressBarWidgetHFill):
     def __init__(self, marker='#', left='|', right='|'):
         """
         Initialization function for Bar class
-        @param marker(string or updatable object) to use as a marker
-        @param left(string or updatable object) to use as a left border
-        @param right(string or updatable object) use as a right border
+        @param marker (string or updatable object) to use as a marker
+        @param left (string or updatable object) to use as a left border
+        @param right (string or updatable object) use as a right border
         """
         self.marker = marker
         self.left = left
@@ -248,7 +250,7 @@ class Bar(ProgressBarWidgetHFill):
     def _format_marker(self, pbar):
         """
 
-        @param pbar(object) ProgressBar object
+        @param pbar (object) ProgressBar object
         @return marker( basestring or string)
         """
         found = isinstance(self.marker, str)
@@ -261,7 +263,8 @@ class Bar(ProgressBarWidgetHFill):
     def update(self, pbar, width):
         """
         Update progress bar
-        @parm pbar(object) ProgressBar object
+        @param pbar (object) ProgressBar object
+        @param width (float) width of the progress bar
         @return (string) new percentage progress bar
         """
         percent = pbar.percentage()
@@ -279,7 +282,8 @@ class ReverseBar(Bar):
     def update(self, pbar, width):
         """
         Update progress bar
-        @parm pbar(object) ProgressBar object
+        @param pbar (object) ProgressBar object
+        @param width (float) width of the progress bar
         @return (string) new percentage progress bar
         """
         percent = pbar.percentage()

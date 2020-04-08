@@ -101,13 +101,13 @@ subroutine SOLVRO(                   &
 ! !  NBBAR    !  I !    !                                              !
 ! !  IBAR     ! TI !    !                                              !
 ! !  ZDEV     ! TR !    !                                              !
-! !  NBSECT   !  I !  A ! NOMBRE DE MAILLES                            !  
-! !  FRTIMP   !  L !  A ! INDIQUE SI LE FROTTEMENT EST IMPLICITE       !  
+! !  NBSECT   !  I !  A ! NOMBRE DE MAILLES                            !
+! !  FRTIMP   !  L !  A ! INDIQUE SI LE FROTTEMENT EST IMPLICITE       !
 ! !  NMLARG   !  I !  D !                                              !
-! !___________!____!____!______________________________________________!  
+! !___________!____!____!______________________________________________!
 !
 !                             VARIABLES LOCALES
-! .___________.____.____.______________________________________________.  
+! .___________.____.____.______________________________________________.
 ! !  FLUX     ! TR !  A ! FLUX ASSEMBLE DANS CHAQUE CELLULE            !
 ! !  ZG       !  R !  A ! COTE SURFACE LIBRE CELLULE DE GAUCHE         !
 ! !  ZD       !  R !  A ! COTE SURFACE LIBRE CELLULE DE DROITE         !
@@ -117,7 +117,7 @@ subroutine SOLVRO(                   &
 ! !  SG(D)    !  R !  A ! SECTION MOUILLEE CELLULE DE GAUCHE (DROITE)  !
 ! !  UG(D     !  R !  A ! VITESSE CELLULE DE GAUCHE (DROITE)           !
 ! !  CG(D)    !  R !  A ! CELERITE CELLULE DE GAUCHE (DROITE)          !
-! !  FRG(D)   !  R !  A ! FROUDE CELLULE DE GAUCHE (DROITE)            ! 
+! !  FRG(D)   !  R !  A ! FROUDE CELLULE DE GAUCHE (DROITE)            !
 ! !  UTILD    !  R !  A ! VITESE MOYENNE DE ROE                        !
 ! !  CTILD    !  R !  A ! CELERITE MOYENNE DE ROE                      !
 ! !  SDIFF    !  R !  A ! DIFFERENCE ENTRE SECTION DROITE ET GAUCHE    !
@@ -150,7 +150,7 @@ subroutine SOLVRO(                   &
 !            A (AUXILIAIRE MODIFIE)
 !
 !***********************************************************************
-! SGEO ALGEO SGEOD PRGEOD DEBGEO DEBGED STRUCTURE DE DONNEES SECTION   
+! SGEO ALGEO SGEOD PRGEOD DEBGEO DEBGED STRUCTURE DE DONNEES SECTION
 
    !============================= Declarations ===========================
 
@@ -217,7 +217,7 @@ subroutine SOLVRO(                   &
    integer     ,                   intent(in)        :: NSECG,NSECD,KTEMPS
    integer     ,                   intent(in)        :: NBARAD,NBBAR
    ! Type singularite,
-   type(SINGULARITE_T), dimension(:) , intent(inout) :: SINGULARITE 
+   type(SINGULARITE_T), dimension(:) , intent(inout) :: SINGULARITE
    integer     ,                   intent(in)        :: NBSECT
    logical     ,                   intent(in)        :: FRTIMP
    logical     ,                   intent(in)        :: Impli_Trans
@@ -230,7 +230,7 @@ subroutine SOLVRO(                   &
    !.. Variables locales ..
    !-----------------------
    real(DOUBLE) :: SCUBE(NBSECT)
-   real(DOUBLE) :: S1D,S1G 
+   real(DOUBLE) :: S1D,S1G
    real(DOUBLE) :: FLULOC(NBSECT,2)
    real(DOUBLE) :: FLUSOD(NBSECT,2)
    real(DOUBLE) :: FLUSOC(NBSECT,2)
@@ -240,9 +240,9 @@ subroutine SOLVRO(                   &
    real(DOUBLE) :: FLULOD(NBSECT), FLULOG(NBSECT)
    real(DOUBLE) :: SOPRIM(2)
    integer      :: IVIDE(NBSECT),K,IS
-   integer      :: IB,IPOS,I,CELGAU,INDIC,J,JG,JD 
+   integer      :: IB,IPOS,I,CELGAU,INDIC,J,JG,JD
    integer      :: NC,NN,Nb_Point,NOEUD
-   integer      :: CORRG,NSECD0,NSECDL,ITYP,retour 
+   integer      :: CORRG,NSECD0,NSECDL,ITYP,retour
    real(DOUBLE) :: BETAM
    real(DOUBLE) :: ZD,ZG,FRD,FRG,PRDPREC
    real(DOUBLE) :: HG,QG,SG,UG,PRG,HD,QD,SD,UD,PRD,CG,CD
@@ -272,6 +272,7 @@ subroutine SOLVRO(                   &
    ! INITIALISATION
    !===============
    Erreur%Numero = 0
+   PRD = 0
    !
    If (Boussinesq) then
 
@@ -316,7 +317,7 @@ subroutine SOLVRO(                   &
       IVIDE(I) = 0
 !
 ! Modification Nicole 22/08/2012
-! 
+!
 !     IF( ( IFIGE(I) == 0 ) .OR. ( IFIGE(I+1) == 0 ) ) then
          ! CALCUL DE L'ETAT HYDRAULIQUE  A DROITE
          CELGAU = 0
@@ -457,7 +458,7 @@ subroutine SOLVRO(                   &
                  COTR    , &
                  SGEO    , &
                  SGEOD   , &
-                 PRGEOD  , & 
+                 PRGEOD  , &
                  DEBGED  , &
                  FRTIMP  , &
                  DZD     , &
@@ -591,7 +592,7 @@ subroutine SOLVRO(                   &
    ! PRISE EN COMPTE DES BARRAGES DEVERSANTS
    ! ---------------------------------------
    if( NBARAD >= 1 ) then
-      do IB = 1 , NBBAR 
+      do IB = 1 , NBBAR
          IPOS = SINGULARITE(IB)%Section
          ITYP = SINGULARITE(IB)%Type
          if( ( IPOS >= NSECG ) .and. ( IPOS <= NSECD ) .and. ( ITYP >= 4 ) .and. ( ITYP /= 8 ) ) then
@@ -613,7 +614,7 @@ subroutine SOLVRO(                   &
                       IPOS         , &
          SINGULARITE(IB)%CoteCrete , &
              SINGULARITE(IB)%Debit , &
-  SINGULARITE(IB)%Epaisseur_Seuil  , & 
+  SINGULARITE(IB)%Epaisseur_Seuil  , &
                       Nb_point     , &
                SINGULARITE(IB)%PtQ , &
                SINGULARITE(IB)%PtZ , &
@@ -760,14 +761,14 @@ subroutine SOLVRO(                   &
    do NOEUD = NSECG + 1 , NSECDL - 1
       K            = -NSECG + NOEUD + 1
       SNODE(NOEUD) = SPREC(NOEUD) + WW1(1,K)
-   enddo 
+   enddo
 
    !      Prise en compte des termes hydrostatiques
    IF( Boussinesq ) THEN
       !do NOEUD = NSECG + 1 , NSECDL - 1
       do NOEUD = NSECG , NSECDL - 1
          HNP1(NOEUD)  = CSURM1(SNODE(NOEUD), DZ(NOEUD),SGEO(NOEUD,:), Erreur)
-         JG           = int(HNP1(NOEUD)/DZ(NOEUD)) + 1 
+         JG           = int(HNP1(NOEUD)/DZ(NOEUD)) + 1
          JD           = JG + 1
          S1G          = S1GEO(NOEUD,JG)
          S1D          = S1GEO(NOEUD,JD)
@@ -789,14 +790,14 @@ subroutine SOLVRO(                   &
            YNODE   , &
            Z       , &
            SCUBE1  , &
-           SCUBE   , & 
+           SCUBE   , &
            SPREC   , &
            QPREC   , &
            CE      , &
            ZF      , &
            NSECG   , &
            NSECDL  , &
-           X       , & 
+           X       , &
            DX      , &
            DT      , &
            NS      , &

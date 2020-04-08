@@ -24,7 +24,7 @@ def elem2str(elem):
     """
     Return string version of elem from variable just before
 
-    @param eleme (int) Type of element
+    @param elem (int) Type of element
 
     @returns (str) Its name
     """
@@ -58,10 +58,11 @@ class HermesFile():
         """
         Constructor for HermesFile
 
-        @param file_name Name of the file
-        @param fformat File format
-        @param access Access to the file ('r' for read 'w' for write)
-        @param boundary_file Name of the boundary file
+        @param file_name (string) Name of the file
+        @param fformat (string) File format
+        @param access (string) Access to the file ('r' for read 'w' for write)
+        @param boundary_file (string) Name of the boundary file
+        @param log_lvl (string) Logger level
         """
 
         if log_lvl == 'INFO':
@@ -632,7 +633,10 @@ class HermesFile():
         @param var_name Name for each variable
         @param var_unit Unit for each variable
         """
-        tmp_title = title.encode('utf-8') + b' '*(80-len(title))
+        if len(title) > 80:
+            tmp_title = title[:80].encode('utf-8')
+        else:
+            tmp_title = title.encode('utf-8') + b' '*(80-len(title))
         tmp_var_name = [b' ']*32*nvar
         for i, (var, unit) in enumerate(zip(var_name, var_unit)):
             for j, varj in enumerate(var):
@@ -654,13 +658,13 @@ class HermesFile():
 
         @param mesh_dim
         @param mesh_dim Dimension of the mesh
-        @param typelm TYPE OF THE MESH ELEMENTS
+        @param typ_elem TYPE OF THE MESH ELEMENTS
         @param ndp Number of points per element
         @param nptfr Number of boundary point
         @param nptir Number of interface point
         @param nelem Number of element in the mesh
         @param npoin Number of points in the mesh
-        @param ikle Connectivity array for the main element
+        @param ikles Connectivity array for the main element
         @param ipobo Is a boundary point ? array
         @param knolg Local to global numbering array
         @param coordx X coordinates of the mesh points
@@ -695,10 +699,11 @@ class HermesFile():
         Write inform ation for a given variable and a given timestep
 
         @param var_name Name of the variable
+        @param var_unit Unit of the variable
         @param time Time of the data
         @param record Time step of the data (starts from 0)
         @param first_var True if it is the first variable of the dataset
-        @param var_value The value for each point of the mesh
+        @param values The value for each point of the mesh
         """
         nval = len(values)
         tmp_var_name = var_name.encode('utf-8') + b' '*(16-len(var_name)) +\
@@ -717,8 +722,8 @@ class HermesFile():
         """
         Write boundary information
 
+        @param typ_bnd_elem (int) Type of boundary element
         @param nelebd Number of boundary elements
-        @param ndp Number of points per boundary element
         @param ikle Connectivity array for the boundary elements
         @param lihbor Type of boundary conditions on depth
         @param liubor Type of boundary conditions on u
@@ -759,7 +764,7 @@ class HermesFile():
         @param show Display the graph (Default True)
         @param visu2d 2d display (Default True)
 
-        @retuns the figure object
+        @return the figure object
         """
         import matplotlib.pyplot as plt
         import matplotlib.cm as cm

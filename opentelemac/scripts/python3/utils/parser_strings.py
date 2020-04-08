@@ -67,7 +67,11 @@ def parse_array_frame(string, size=-1):
           (b) a 1D-tuple of a real value, representing a time or a depth
           (c) a 3D-tuple of integers, representing an array range [0;-1;1] by
               default
-    @examples of input / output
+
+    @param string (str) string to parse
+    @param size (int) size
+
+    examples of input / output
        '5'         =>  [5]
        '[4]'       =>  [4]
        '[5,6,7,0]' =>  [5, 6, 7, 0]
@@ -140,7 +144,8 @@ def parse_array_point(string, size=-1):
        The list of frames is delimiting points either by ',' or ';',
           and the ranges by ':'
        The output is an arry [..]. Each term is complicated ...
-    @examples of input / output
+
+    examples of input / output
        # either a 2D node value or a vertical 1D profile covering all planes
        # above the 2D node
        '5'  =>  [(5, [(0, -1, 1)])]

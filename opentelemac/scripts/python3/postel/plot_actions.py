@@ -428,12 +428,10 @@ def plot_mesh2d(res, display_bnd=False,
     Plot a 2d triangular mesh with either boundary conditions or liquid
     boundary number
 
-    @param input_file (string) File from wich to read the mesh
-    @param bnd_file (string) Name of the boundary file
-               (only used if display_bnd or display_liq_bnd is True)
+    @param res (TelemacFile) File from wich to read the mesh
     @param display_bnd (boolean) If True display boundary type for each
         boundary node
-    @param display_liq bnd (boolean) If True display liquidi boundary number
+    @param display_liq_bnd (boolean) If True display liquidi boundary number
         for each boundary node
     @param fig_name (str) If not empty save the plot in that file instead of
     showing it
@@ -489,7 +487,6 @@ def plot_vertical_slice(res, varname, poly,
     @param res (TelemacFile) Struct to file from which data will be read
     @param varname (str) Name of the variable to plot
     @param poly (list) List of polyline points
-    @param poly_discret (list) Number of dicsretization point for each segment
     @param record (str) Record to plot
     @param time (str) If >= 0.0 will get nearest record to that time (This
     overwrites record)

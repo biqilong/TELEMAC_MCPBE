@@ -62,7 +62,7 @@ from utils.progressbar import ProgressBar
 def check_sym_link(use_link):
     """
     Checking if symlink is available
-    @param use_link(boolean) option link instead of copy in the temporary folder
+    @param use_link (boolean) option link instead of copy in the temporary folder
     @return (boolean)
     """
     return SYMLINK_AVAIL and use_link
@@ -76,6 +76,9 @@ def recursive_glob(treeroot, pattern):
     """
     Returns list of files matching pattern in all subdirectories of treeroot
     (to avoid usage of glob.glob with recursive argument which is not suppoted by Python >3.5)
+
+    @param treeroot (str) Path of folder
+    @param pattern (str) Pattern to search for
     """
     results = []
     for base, dirs, files in walk(treeroot):
@@ -88,9 +91,9 @@ def add_to_list(lst, name, value):
     """
     Add item to dictionary
 
-    @param lst(dictionnary) list
-    @param name(???) key
-    @param value(???) adding value
+    @param lst (dictionnary) list
+    @param name (any) key
+    @param value (any) adding value
 
     @return (dictionary) updating lst
     """
@@ -107,8 +110,8 @@ def get_these_files(root, exts):
         the extension in [ext]
         -- Return the list
 
-        @param (string) path root
-        @param (string) extension file
+        @param root (string) path root
+        @param exts (string) extension file
 
         @return (list) files list
     """
@@ -133,8 +136,8 @@ def is_newer(nfile, ofile):
         > newer(ofile,nfile) is True if ofile exists and is more recent than
         nfile
 
-        @param nfile(string) new file
-        @param ofile(string) old file or directory
+        @param nfile (string) new file
+        @param ofile (string) old file or directory
 
         @return (integer) Return 1 is ofile exists and
         is more recent than nfile, 0 otherwise
@@ -156,9 +159,9 @@ def get_file_content(fle):
     """
     Read fle file
 
-    @param fle(string) file
+    @param fle (string) file
 
-    @return ilines(list) content line file
+    @return ilines (list) content line file
     """
     ilines = []
     src_file = codecs.open(fle, 'r', encoding='utf-8')
@@ -172,10 +175,8 @@ def put_file_content(fle, lines):
     """
     put line to file
 
-    @param fle(string) file
-    @param lines(string) adding line
-
-    @return nothing
+    @param fle (string) file
+    @param lines (string) adding line
     """
     if path.exists(fle):
         remove(fle)
@@ -201,10 +202,8 @@ def add_file_content(fle, lines):
     """
     Add line to file
 
-    @param fle(string) file
-    @param lines(string) adding line
-
-    @return nothing
+    @param fle (string) file
+    @param lines (string) adding line
     """
     src_file = open(fle, 'ab')
     ibar = 0
@@ -224,9 +223,7 @@ def create_directories(p_o):
     """
     create  directories tree
 
-    @param p_o(string) directory
-
-    @return nothing
+    @param p_o (string) directory
     """
     p_r = p_o
     p_d = []
@@ -241,8 +238,8 @@ def create_directories(p_o):
 
 def symlink_file(src, dest):
     """ Copy a file to its destination
-        @param src(string) source file
-        @param dest(string) target file
+        @param src (string) source file
+        @param dest (string) target file
     """
     # If link already exist overwrite it
     try:
@@ -256,9 +253,8 @@ def symlink_file(src, dest):
 def copy_files(src, dest):
     """
     Copy all the files within src
-    @param src(string) source directory
-    @param dest(string) target directory
-    @return:
+    @param src (string) source directory
+    @param dest (string) target directory
     """
     l_d = listdir(src)
     ibar = 0
@@ -269,43 +265,37 @@ def copy_files(src, dest):
         pbar.update(ibar)
         ibar += 1
     pbar.finish()
-    return
-
 
 def copy_file(src, dest):
     """
     Copy one file to directory
-    @param src(string) source file
-    @param dest(string) target directory
-    @return nothing
+
+    @param src (string) source file
+    @param dest (string) target directory
     """
     if path.exists(path.join(dest, path.basename(src))):
         remove(path.join(dest, path.basename(src)))
     if path.isfile(src):
         shutil.copy(src, dest)
-    return
-
 
 def copy_file2file(src, dest):
     """
     Copy one file to file
-    @param src(string) source file
-    @param dest(string) target file
-    @return nothing
+
+    @param src (string) source file
+    @param dest (string) target file
     """
     if path.exists(path.join(path.dirname(dest), path.basename(src))):
         remove(path.join(path.dirname(dest), path.basename(src)))
     if path.isfile(src):
         shutil.copy(src, dest)
-    return
-
 
 def move_file(src, dest):
     """
     Move file to directory
-    @param src(string) source file
-    @param dest(string) target directory
-    @return nothing
+
+    @param src (string) source file
+    @param dest (string) target directory
     """
     if path.exists(path.join(dest, path.basename(src))):
         try:
@@ -328,15 +318,13 @@ def move_file(src, dest):
                 raise TelemacException(\
                    'I could not move your file: ' + src
                    + '\n   ... maybe the detination exists?')
-    return
-
 
 def move_file2file(src, dest):
     """
     Move file to file
-    @param src(string) source file
-    @param dest(string) target file
-    @return nothing
+
+    @param src (string) source file
+    @param dest (string) target file
     """
     if dest == src:
         return
@@ -361,15 +349,13 @@ def move_file2file(src, dest):
                 raise TelemacException(
                     'I could not move your file: ' + src
                     + '\n   ... maybe the detination exists?')
-    return
-
 
 def remove_directories(root):
     """
-        Walk through the directory structure available from the root
-        and removes everything in it, including the root
-        @param root(string) directory structure to remove
-        @retrun nothing
+    Walk through the directory structure available from the root
+    and removes everything in it, including the root
+
+    @param root (string) directory structure to remove
     """
     for path_dir, pdirs, pfiles in walk(root, topdown=False):
         for fle in pfiles:
@@ -391,9 +377,11 @@ def remove_directories(root):
 def check_safe(src, safe, c_k):
     """
     Check
-    @param src(string) file to check
-    @param safe(string) directory to check
-    @param c_k(integer) ???? todo
+
+    @param src (string) file to check
+    @param safe (string) directory to check
+    @param c_k (integer) ???? todo
+
     @return (boolean) True if file exists
     """
     dest = path.join(safe, path.basename(src))
@@ -408,10 +396,12 @@ def check_safe(src, safe, c_k):
 def match_safe(src, ex, safe, c_k):
     """
     ???????? todo
-    @param src(string) file to check
-    @param ex(string) pattern file to check
-    @param safe(string) directory to check
-    @param c_k(integer) ???? todo
+
+    @param src (string) file to check
+    @param ex (string) pattern file to check
+    @param safe (string) directory to check
+    @param c_k (integer) ???? todo
+
     @return (boolean) True if file exists
     """
     # ~~> list all entries
@@ -460,11 +450,11 @@ def tel_zip(zname, bname, form):
     Return the name of the archive, zname, with its full path --
     form can be either 'zip', 'gztar' ... read from the config file
 
-    @param zname(string) archive name
-    @param bname(string) file or directory to archive
-    @param form(string) archive format
+    @param zname (string) archive name
+    @param bname (string) file or directory to archive
+    @param form (string) archive format
 
-    @return zipfile(string) name of the archive, zname, with its full path
+    @return zipfile (string) name of the archive, zname, with its full path
     """
     cpath = getcwd()
     chdir(path.dirname(bname))
@@ -475,9 +465,11 @@ def tel_zip(zname, bname, form):
 
 def zipsortie(sortie):
     """
-        zip files and remove virtually all of them !
-        @param sortie() output to archive
-        @return zname(string) name of the archive
+    zip files and remove virtually all of them !
+
+    @param sortie (string) output to archive
+
+    @return zname (string) name of the archive
     """
     head, tail = path.splitext(path.basename(sortie))
     zname = head + '.zip'
@@ -502,10 +494,10 @@ def zipsortie(sortie):
 
 def unzip(zip_name, bname):
     """
-        bname is a the root directory where the archive is to be extracted --
-        @param zip_name(string) archive file
-        @param bname(string) target directory
-        @return nothing
+    bname is a the root directory where the archive is to be extracted --
+
+    @param zip_name (string) archive file
+    @param bname (string) target directory
     """
     z = zipfile.ZipFile(path.realpath(zip_name), 'r')
     cpath = getcwd()
@@ -517,7 +509,6 @@ def unzip(zip_name, bname):
         else:
             z.extract(f)
     chdir(cpath)
-    return
 
 # _____               ______________________________________________
 # ____/ Diff Toolbox /_____________________________________________/
@@ -531,10 +522,12 @@ def diff_text_files(f_file, t_file, options):
     * context:  highlights clusters of changes in a before/after format.
     * unified:  highlights clusters of changes in an inline format.
     * html:     generates side by side comparison with change highlights.
-    @param f_file(string)
-    @param t_file(string)
-    @param options(string)
-    @return Nothing
+
+    @param f_file (string)
+    @param t_file (string)
+    @param options (string)
+
+    @return (str)
     """
     # we're passing these as arguments to the diff function
     f_date = time.ctime(stat(f_file).st_mtime)
@@ -546,19 +539,16 @@ def diff_text_files(f_file, t_file, options):
         return difflib.unified_diff(f_lines, t_lines,
                                     f_file, t_file, f_date, t_date,
                                     n=options.ablines)
-    elif options.ndiff:
+    if options.ndiff:
         return difflib.ndiff(f_lines, t_lines)
-    elif options.html:
+    if options.html:
         return difflib.HtmlDiff().make_file(f_lines, t_lines,
                                             f_file, t_file,
                                             context=options.context,
                                             numlines=options.ablines)
-    else:
-        return difflib.context_diff(f_lines, t_lines,
-                                    f_file, t_file, f_date, t_date,
-                                    n=options.ablines)
-
-    return
+    return difflib.context_diff(f_lines, t_lines,
+                                f_file, t_file, f_date, t_date,
+                                n=options.ablines)
 
 # _____                      _______________________________________
 # ____/ Internet connection /______________________________________/
@@ -568,9 +558,9 @@ def diff_text_files(f_file, t_file, options):
 def is_online(url='http://www.opentelemac.org/', timeout=5):
     """
     Check url
-    @param url(string) url
-    @param timeout(integer) timeout
-    @return:
+    @param url (string) url
+    @param timeout (integer) timeout
+    @return (bool)
     """
     try:
         urlopen(url, timeout=timeout)

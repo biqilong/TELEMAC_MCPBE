@@ -121,10 +121,12 @@ def create_case_list_file(doc_dir, val_dir, cfg_val, cleanup):
     @brief Creates the CASELIST.tex which includes
           all the test cases tex file
 
-    @param doc_dir Path to directry containing the main LaTeX file
+    @param doc_dir Path to directory containing the main LaTeX file
+    @param val_dir Path to directory containing validation test cases
     @param cfg_val list of path for the examples
     @param cleanup If yes clean up the temporay files instead
                    of creating the CASELIST.Tex file
+
     @return the list of cases that where missing the .tex file
     """
     case_list_file = path.join(doc_dir, 'latex', 'CASELIST.tex')
@@ -162,14 +164,15 @@ def generate_ref_from_dict(exe_path, dictionary, latex_file, lng,
     @brief Generate the Latex file for the
             reference manual from the dictionary
 
-    @param exe_path Path to homere_damocles executable
-    @param dictionary Path to the dictionary to read
-    @param latex_file Name of the outpu latex file that will
+    @param exe_path (string) Path to homere_damocles executable
+    @param dictionary (string) Path to the dictionary to read
+    @param latex_file (string) Name of the outpu latex file that will
                          contain the reference manual
-    @param lng Language for the reference manual
+    @param lng (int) Language for the reference manual
                  1: French
                  2: English
-    @param verbose If True display command
+    @param cleanup (boolean) If True removing genrated files
+    @param verbose (boolean) If True display command
     """
     # Building input parameter file
     latex_dir = path.dirname(latex_file)
@@ -235,14 +238,15 @@ def compile_doc(doc_dir, doc_name, version, cleanup, fullcleanup, verbose):
         # compiling the texfile
         compiletex(doc_name, version, verbose)
 
-def generate_notebook_pdf(doc_dir, notebook_dir):
+def generate_notebook_html(doc_dir, notebook_dir, verbose):
     """
     Generate an html layout of the notebooks using ipython nbconvert
     Than coying back the file into doc_dir
 
     @param doc_dir (string) Path to the folder that will contain the html
-                            version of the docuemntation
+                            version of the documentation
     @param notebook_dir (string) Path to the notebooks
+    @param verbose (bool) If True more verbose
     """
     # Creating doc folder if necessary
     if not path.exists(doc_dir):
@@ -250,22 +254,52 @@ def generate_notebook_pdf(doc_dir, notebook_dir):
 
     # Running convertion in notebook folder
     # Gathering all html files
-    for root, _, files in walk(notebook_dir):
+    for root, subdirs, files in walk(notebook_dir):
+        # Creating subfolders in advance
+        for subdir in subdirs:
+            if ".ipynb_checkpoint" in root:
+                continue
+            out_dir = path.join(doc_dir + root.replace(notebook_dir, ''),
+                                subdir)
+            if not path.exists(out_dir):
+                mkdir(out_dir)
         for ffile in files:
             if ffile.endswith("ipynb"):
                 # Skipping notebook tmp folders
                 if ".ipynb_checkpoint" in root:
                     continue
                 notebook = path.join(root, ffile)
-                cmd = "jupyter nbconvert --to pdf --output-dir={} {}"\
-                       .format(doc_dir, notebook)
-                print("   ~> Converting "+ffile)
+                out_dir = doc_dir + root.replace(notebook_dir, '')
+                if verbose:
+                    log_lvl = 'DEBUG'
+                else:
+                    log_lvl = 'ERROR'
+                cmd = "jupyter nbconvert --to html --log-level={log_lvl} "\
+                      "--output-dir={out_dir} --output={output} {nb}"\
+                       .format(log_lvl=log_lvl, out_dir=out_dir,
+                               output="tmp.html", nb=notebook)
+                print("   ~> Converting "+\
+                        path.join(root.replace(notebook_dir, '')[1:], ffile))
+                if verbose:
+                    print(cmd)
                 # Running convertion
                 mes = Messages(size=10)
                 tail, code = mes.run_cmd(cmd, bypass=False)
 
                 if code != 0:
                     raise TelemacException('nbconvert failed\n {}'.format(tail))
+
+                tmp_file = path.join(out_dir, 'tmp.html')
+                out_file = path.join(out_dir, ffile[:-5] + "html")
+
+                # Replacing .ipynb in content of file by .html
+                with open(tmp_file, 'r') as f:
+                    content = f.read()
+
+                remove(tmp_file)
+                with open(out_file, 'w') as f:
+                    f.write(content.replace(".ipynb", ".html"))
+
 
 def compile_doxygen(doxy_file, verbose):
     """
@@ -429,7 +463,7 @@ use the options --validation/reference/user/release/theory to compile only one
         # all docs
         misc_list = ['developer_guide', 'software_quality_plan',
                      'TelemacDocTemplate', 'git_guide',
-                     'doxypydocs']
+                     'doxypydocs', 'notebooks']
         # If a module was specified or a specific documentation for modules
         # not compiling Misc documentation
         if options.modules != '' or not doall:
@@ -527,9 +561,10 @@ use the options --validation/reference/user/release/theory to compile only one
         doc_dir = path.join(root, 'documentation',
                             'Misc', doc)
 
-        if doc == 'notebook':
+        if doc == 'notebooks':
             notebook_dir = path.join(root, 'notebooks')
-            generate_notebook_pdf(doc_dir, notebook_dir)
+            doc_dir = path.join(root, 'documentation', doc)
+            generate_notebook_html(doc_dir, notebook_dir, options.verbose)
         elif doc in ['doxydocs', 'doxypydocs']:
             generate_doxygen(doc, options.verbose)
         else:
@@ -543,10 +578,15 @@ use the options --validation/reference/user/release/theory to compile only one
                 raise TelemacException(\
                         "   - Error in {}, {}.tex "
                         "not found ".format(path.basename(doc_dir), doc))
-        if not (options.cleanup or options.fullcleanup) or \
-           doc not in ['notebooks', 'doxydocs', 'doxypydocs']:
-            output_mess += '   - Created %s_%s.pdf\n' % \
-                          (doc, version)
+
+        if not (options.cleanup or options.fullcleanup):
+            if doc not in ['notebooks', 'doxydocs', 'doxypydocs']:
+                output_mess += '   - Created %s for %s.pdf\n' % \
+                              (doc, version)
+            else:
+                output_mess += '   - Created %s_%s.pdf\n' % \
+                              (doc, version)
+
 
     print(output_mess)
     print('\n\n'+'~'*72)

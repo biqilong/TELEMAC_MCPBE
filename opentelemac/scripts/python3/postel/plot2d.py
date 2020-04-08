@@ -2,6 +2,7 @@
 """
 Contains functions to plot scalar and vectors in 2d
 """
+from collections import OrderedDict
 from data_manip.formats.regular_grid import interpolate_on_grid
 from postel.deco_cbar import deco_cbar
 import numpy as np
@@ -111,6 +112,7 @@ def plot2d_annotate_bnd(axe, tri, bnd_info,
     @param colors (list) colors associated to boundary conditions
     (default plt.rcParams['axes.prop_cycle'].by_key()['color'])
     @param bnd_info (tuple) boundary conditions information (default None)
+    @param kwargs (dict) rest of optional arguments given to plot
     """
     x, y = tri.x, tri.y
     nbor, lihbor, liubor, livbor, _ = bnd_info
@@ -118,7 +120,6 @@ def plot2d_annotate_bnd(axe, tri, bnd_info,
 
     if colors is None:
         colors = mpl.pyplot.rcParams['axes.prop_cycle'].by_key()['color']
-    label_bool = [False for i in range(len(colors))]
 
     bnd_types_dict = {'Closed boundaries/walls (2,2,2)': [2, 2, 2],
                       'Prescribed H (5,4,4)':            [5, 4, 4],
@@ -128,22 +129,31 @@ def plot2d_annotate_bnd(axe, tri, bnd_info,
                       'Prescribed UV and H (5,6,6)':     [5, 6, 6],
                       'Incident waves (1,1,1)':          [1, 1, 1],
                       'Custom (0,0,0)':                  [0, 0, 0],
-                      'Free boundaries (4,4,4)':          [4, 4, 4]}
+                      'Free boundaries (4,4,4)':         [4, 4, 4]}
+    label_bool = [False for i in range(len(bnd_types_dict))]
+
     labels = []
     handles = []
     for i in range(nbnd_poin):
         idx = 0
         bc_type = [lihbor[i], liubor[i], livbor[i]]
         colori = 'k'
-        for key, item in bnd_types_dict.items():
+        found = False
+        for key in sorted(bnd_types_dict.keys()):
+            item = bnd_types_dict[key]
             if bc_type == item:
                 colori = colors[idx]
+                # Adding to legends if never added
                 if not label_bool[idx]:
                     label_bool[idx] = True
                     labels.append(key)
                     handles.append(mpl.lines.Line2D([0], [0],\
                         lw=0., marker='o', color=colori))
+                found = True
+                break
             idx += 1
+        if not found:
+            print(" ~> Could not find name for boundary type {}".format(bc_type))
 
         xi, yi = x[nbor[i]], y[nbor[i]]
         axe.plot(xi, yi, color=colori, **kwargs)
@@ -159,6 +169,7 @@ def plot2d_annotate_liq_bnd(axe, tri, liq_bnd_info, colors=None, **kwargs):
     @param colors (list) colors associated to boundary conditions
     (default plt.rcParams['axes.prop_cycle'].by_key()['color'])
     @param liq_bnd_info (tuple) boundary conditions information (default None)
+    @param kwargs (dict) rest of optional arguments given to plot
     """
     x, y = tri.x, tri.y
     nbor, numliq = liq_bnd_info
@@ -223,6 +234,7 @@ def plot2d_image(axe, x_label='', y_label='',
     @param y_label (string) Name of the y_label (default '')
     @param image (array) image to plot (default: None)
     @param image_file (str) image file to plot (default: None)
+    @param kwargs (dict) rest of optional arguments given to imshow
     """
     assert image is not None or image_file is not None
 
@@ -256,7 +268,7 @@ def plot2d_scalar_map(fig, axe, mesh, data,\
     @param nv (integer) Number of sample for colorbar range
     @param colorbar (bool) show colorbar (default: True)
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
@@ -332,7 +344,7 @@ def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
     @param levels (np.array) levels used for contours (default None)
     @param colorbar (bool) show colorbar (default: True)
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
@@ -416,7 +428,7 @@ def plot2d_scalar_contour(fig, axe, mesh, data,\
     @param levels (np.array) levels used for contours (default None)
     @param colorbar (bool) show colorbar (default: True)
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
@@ -516,7 +528,7 @@ def plot2d_vectors(fig, axe, mesh, data_x, data_y,
     @param nv (integer) Number of sample for colorbar range (default 10)
     @param colorbar (bool) show colorbar (default: True)
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
@@ -629,7 +641,7 @@ def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
     @param nv (integer) Number of sample for colorbar range (default 10)
     @param colorbar (bool) show colorbar (default: True)
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
@@ -717,13 +729,13 @@ def custom_cbar(fig, img, cbar_ax,
     Adding custom cbar to a figure
 
     @param fig (matplotlib.figure) matplotlib figure structure
-    @param img (matplotlib object) matplotlib mappable object 
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param img (matplotlib object) matplotlib mappable object
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
     @param cbar_properties (dict) list additional properties of the colorbar
-    @param cbar_ticks (list) list of values where to show color bar ticks 
+    @param cbar_ticks (list) list of values where to show color bar ticks
     (will overwrite ticks contained in cbar_properties)
 
     @return colorbar (matplotlib.pyplot.colorbar)

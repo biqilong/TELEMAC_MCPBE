@@ -9685,8 +9685,10 @@ TAILLE = 1
 DEFAUT = NON
 DEFAUT1 = NO
 MNEMO = 'CONCAT\_PARTEL'
-RUBRIQUE = ''
-RUBRIQUE1 = ''
+RUBRIQUE =
+'INTERNE';'';''
+RUBRIQUE1 =
+'INTERNAL';'';''
 NIVEAU = 0
 AIDE =
 'Avec cette option partel ne generera non plus un fichier (GEO/CLI/PAR)

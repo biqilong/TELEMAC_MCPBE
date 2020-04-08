@@ -1,34 +1,35 @@
-\chapter{MANAGING WATER SOURCES}
+\chapter{Managing water sources}
 \label{ch:manag:ws}
 \telemac{2D} offers the possibility of placing water sources (with or without
 tracer discharge) at any point of the domain.
 
-The user has three options to place the various sources at differents points
+The user has a few options to place the various sources at differents points
 of the domain:
-\begin{enumerate}
+\begin{itemize}
 \item with the keywords \telkey{ABSCISSAE OF SOURCES} and
 \telkey{ORDINATES OF SOURCES}.
-These are tables of real numbers,
-giving the source coordinates in meters. In fact, \telemac{2D} will position a
+These are arrays of real numbers,
+giving the source coordinates in meters. Actually, \telemac{2D} will position a
 source at the closest mesh point to that specified by these keywords.
 In parallel mode, the sources must coincide exactly with one point of the mesh,
-so this is recommended in all cases;
+so this is recommended in all cases,
 \item with the keyword \telkey{GLOBAL NUMBERS OF SOURCE NODES}. This is an
 array of integers which contains the global numbers of nodes that correspond
  to source point locations.
-\end{enumerate}
+\end{itemize}
 The program itself will determine the number of sources as a function of the
 number of values given to these keywords.
 
 Another option consists in associating the source(s) to a spatial area(s) of the
 domain and not to a single point.
-To use this option the user must create an external file which contains the coordinates
-of every source region (polygons).
+To use this option the user must create an external file which contains the
+coordinates of every source region (polygons).
 In this case the source will be placed at every point contained in the
 region (the region must contain at least one node). The advantage of this option
 is that the user can control the surface of the source. However, it is worth to
-notice that the surface computed by the program will not correspond exactly to the
-surface of the polygon indicated by the user. Indeed, the surface will be computed as
+notice that the surface computed by the program will not correspond exactly to
+the surface of the polygon indicated by the user.
+Indeed, the surface will be computed as
 the sum of the surfaces of every point (integral of basis functions).
 An example of file is given here: it indicates three source regions, defined
 through 4 pair of coordinates.
@@ -70,14 +71,14 @@ At each source (single point or region), the user must indicate the discharge
 The discharge is specified in m${}^{3}$/s using
 the keyword \telkey{WATER DISCHARGE OF SOURCES} (and the value of the tracer by
 the keyword \telkey{VALUES OF THE TRACERS AT THE SOURCES}). However, if these
-two variables are time-dependent, the user can then program the two functions
-\telfile{DEBSCE} (source discharge) and \telfile{TRSCE} (value of tracer at
-source). It is also possible to use a specific file to define the time
+two variables are time-dependent, the user can then program the two subroutines
+\telfile{USER\_DEBSCE} (source discharge) and \telfile{USER\_TRSCE} (value of
+tracer at source). It is also possible to use a specific file to define the time
 evolution of the sources:
-the source file (keyword \telkey{SOURCES FILE}). This file has exactly the same
-structure as the one of the liquid boundary file. An example is presented here
-with 2 sources and 2 tracers. Between 2 given times, the values are obtained by
-linear interpolation.
+the \telkey{SOURCES FILE}. This file has exactly the same
+structure as the one of the \telkey{LIQUID BOUNDARY FILE}.
+An example is presented here with 2 sources and 2 tracers.
+Between 2 given times, the values are obtained by linear interpolation.
 \begin{lstlisting}[language=TelemacCas]
 #
 # TIME-DEPENDENT DISCHARGES AND TRACERS AT SOURCES 1 AND 2
@@ -103,26 +104,29 @@ equal to the velocity of the flow.
 
 To take into account a momentum flux from the sources with \telemac{2D}, the
 user must prescribe a particular velocity, which will be considered in the
-momentum equations.  If this is constant throughout the simulation, the value
+momentum equations. If this is constant throughout the simulation, the value
 may be given with the keywords \telkey{VELOCITIES OF THE SOURCES ALONG X} and
 \telkey{VELOCITIES OF THE SOURCES ALONG Y.} If not, the user must program the
-two functions \telfile{VUSCE} (for the velocity along X) and \telfile{VVSCE}
-(for the velocity along Y). In both functions, the time, source number and
-depth of water are available to the user.
+two subroutines \telfile{USER\_VUSCE} (for the velocity along $x$) and
+\telfile{USER\_VVSCE} (for the velocity along $y$).
+In both subroutines, time, source number and water depth are available to the
+user.
 
 When the sources are located through the keywords \telkey{ABSCISSAE OF SOURCES}
-or \telkey{GLOBAL NUMBERS OF SOURCE NODES}, the \telkey{WATER DISCHARGE OF SOURCES}
-is mandatory to take into account the velocity of the source.
+or \telkey{GLOBAL NUMBERS OF SOURCE NODES}, the
+\telkey{WATER DISCHARGE OF SOURCES}
+is mandatory to take into account the velocity of the sources.
 On the contrary, if the source is located in a region (through
 \telkey{ASCII SOURCE DATA FILE}), the user can choose
 to only impose the velocity of the source.
 The program will automatically compute the water discharge, using the surface
 of the region.
 
-Although it is possible, in a practical point of view, it is not recommended
+Although it is possible in a practical point of view, it is not recommended
 to use source point at the boundaries of the domain. In these cases, the
-velocity field could not be as expected by the user even though \telfile{VUSCE}
-and \telfile{VVSCE} functions are used. The imposition of hydrodynamics
+velocity field could not be as expected by the user even though
+\telfile{USER\_VUSCE} and \telfile{USER\_VVSCE} subroutines are used.
+The imposition of hydrodynamics
 boundary conditions could modify the prescribed components of the velocity of
 the source.
 
@@ -132,10 +136,8 @@ tracer, these must be introduced in the \telfile{DIFSOU} subroutine.
 From a theoretical point of view, complete mass conservation can only be
 ensured if the source is treated as a Dirac function and not as a linear
 function. The type of treatment is indicated by the user with the keyword
-\telkey{TYPE OF SOURCE}, which may have a value of 1 (linear function, default
+\telkey{TYPE OF SOURCES}, which may have a value of 1 (linear function, default
 value) or 2 (Dirac function). It should be noted that in the second case, the
 solutions are of course less smoothed.
 
 It is possible to manage sources without simulating tracer transport.
-
-

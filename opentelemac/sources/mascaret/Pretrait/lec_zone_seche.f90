@@ -32,7 +32,7 @@ subroutine LEC_ZONE_SECHE ( &
 
 ! *********************************************************************
 ! PROGICIEL : MASCARET       S. MANDELKERN
-!                            F. ZAOUI                          
+!                            F. ZAOUI
 !
 ! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
@@ -62,7 +62,7 @@ subroutine LEC_ZONE_SECHE ( &
    real(DOUBLE)      , dimension(:)  , intent(in   ) :: AbscRelExtDebBief
    real(DOUBLE)      , dimension(:)  , intent(in   ) :: AbscRelExtFinBief
    integer                           , intent(in   ) :: UniteListing
-   type(Node), pointer, intent(in)                   :: document  
+   type(Node), pointer, intent(in)                   :: document
    type(ERREUR_T)                    , intent(inout) :: Erreur
    ! Variables locales
    integer      :: nb_zone_seche    ! nombre de zones seches
@@ -85,6 +85,7 @@ subroutine LEC_ZONE_SECHE ( &
    ! --------------
    Erreur%Numero = 0
    retour        = 0
+   num_branche_prec = -1
    !arbredappel_old = trim(!Erreur%arbredappel)
    !Erreur%arbredappel = trim(!Erreur%arbredappel)//'=>LEC_ZONE_SECHE'
 
@@ -154,7 +155,7 @@ subroutine LEC_ZONE_SECHE ( &
            call TRAITER_ERREUR( Erreur , 'rtab2' )
            return
        end if
-      
+
       champ3 => item(getElementsByTagname(champ2, "branche"), 0)
       if(associated(champ3).eqv..false.) then
          print*,"Parse error => branche"
@@ -176,7 +177,7 @@ subroutine LEC_ZONE_SECHE ( &
          return
       endif
       call extractDataContent(champ3,rtab2)
-       
+
       ! Description des zones seches
       do izone = 1 , nb_zone_seche
          num_branche = itab(izone)
@@ -272,10 +273,10 @@ subroutine LEC_ZONE_SECHE ( &
          abs_rel_fin_prec = abs_rel_fin
 
       end do
-      
+
       deallocate(itab)
       deallocate(rtab1)
-      deallocate(rtab2)    
+      deallocate(rtab2)
 
    else
 
@@ -300,21 +301,21 @@ subroutine LEC_ZONE_SECHE ( &
    10020 format ('Zone n0',i3,' Branche n0 ',i3,' Abscisse debut : ',f12.3,' Abscisse fin : ',f12.3)
 
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
-   end subroutine xerror         
-   
+
+   end subroutine xerror
+
 end subroutine LEC_ZONE_SECHE

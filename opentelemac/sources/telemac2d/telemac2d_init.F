@@ -852,7 +852,11 @@
               IF(INPOLY(X(I),Y(I),XCOO(1:PTS_REG(IREG),IREG),
      &           YCOO(1:PTS_REG(IREG),IREG),PTS_REG(IREG))) THEN
 !               WRITING SOURCE POINTS IN THE LISTING
-                IF(NCSIZE.GT.1) II=MESH%KNOLG%I(I)
+                IF(NCSIZE.GT.1) THEN
+                  II=MESH%KNOLG%I(I)
+                ELSE
+                  II = I
+                ENDIF
                 WRITE(LU,26)IREG,II
 !
                 TNP(IREG)=TNP(IREG)+1

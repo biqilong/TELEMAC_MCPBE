@@ -89,14 +89,18 @@ def vnv_plotbar(\
     @param data (list) list of data to plot
     @param fig_size (list) figure size
     @param fig_name (str) file name of the figure saved
+    @param fig_title (str) figure title
     @param x_labels (list) list of ticks labels on x axis
     @param y_label (str) label of y axis
+    @param ylim (list) y limits
     @param legend_labels (list) list of legends labels
+    @param bar_width (float) bar width
     @param split_bars (bool) if False, bars are overlapped
     @param y_scale (str) y scaling method (default: 'linear')
     @param annotate (bool) if True annotate values on top of bars
     @param annotate_format (str) format of annotation (default: 'e')
     @param annotate_threshold (float) threshold for annotation (default: None)
+    @param kwargs (dict) Arguments passed to plt.bar
     """
     # plot initialization
     plt.style.use('default')
@@ -195,6 +199,7 @@ def vnv_plotbar_cpu_times(\
     @param action_time (dict) vnv_study cases action times
     @param fig_size (list) figure size
     @param fig_name (str) file name of the figure saved
+    @param kwargs (dict) Argument passed to plt.bar
     """
     # plot initialization
     plt.style.use('default')
@@ -271,6 +276,7 @@ def vnv_plot1d(\
     @param legend_labels (str or list) label of each result
     @param fig_size (list) figure size
     @param fig_name (str) file name of the figure saved
+    @param fig_title (str) Title of the figure
     @param ref (str) reference variables to plot
     @param ref_label (str) label of the reference
     @param xlim (list) x axis limits
@@ -281,6 +287,7 @@ def vnv_plot1d(\
     @param y_label (str) y axis label
     @param relative (bool) plot data(t)/data(t=0)
     @param markers (bool) plot markers
+    @param kwargs (dict) Argument passed to plot
     """
     # plot initialization
     plt.style.use('default')
@@ -366,6 +373,7 @@ def vnv_plot1d_history(\
     @param res (TelemacFile of list of TelemacFile) telemac result
     @param legend_labels (str or list) label of each result
     @param fig_size (list) figure size
+    @param fig_title (string) Title of the figure
     @param points (list) list of numpy.array containing points of extraction
     @param points_labels (list) legend labels of points
     @param nodes (list) list of nodes to extract
@@ -381,6 +389,7 @@ def vnv_plot1d_history(\
     @param x_label (str) x axis label
     @param y_label (str) y axis label
     @param markers (bool) plot markers
+    @param kwargs (dict) Arguments passed to plot
     """
     if nodes is None and points is None:
         raise TelemacException("Either points or nodes must be given")
@@ -506,6 +515,7 @@ def vnv_plot1d_polylines(\
     @param res (TelemacFile of list of TelemacFile) telemac result
     @param legend_labels (str or list) label of each result *
     @param fig_size (list) figure size
+    @param fig_title (list) figure title
     @param ref_name (str) name of the reference variable (in first res)
     @param ref_data (np.array) numpy array containing reference values
     @param ref_file (str) name of the file containing reference values
@@ -514,6 +524,7 @@ def vnv_plot1d_polylines(\
     @param poly_number (list) list of number of discretized points
     @param time (str) If >= 0.0 will get nearest record to that time (This
     overwrites record)
+    @param record (int) record to plot
     @param time (float) time to plot
     @param fig_name (str) file name of the figure saved
     @param xlim (list) x axis limits
@@ -525,6 +536,7 @@ def vnv_plot1d_polylines(\
     @param plot_bottom (bool) plot filled bathymetrie
     @param bottom_label (str) legend name of the bottom
     @param markers (bool) plot markers
+    @param kwargs (dict) Arguments passed to plot
     """
     # plot initialization
     plt.style.use('default')
@@ -694,8 +706,9 @@ def vnv_plot1d_convergence(\
     @param data (list) list of array data to plot (errors)
     @param fig_size (list) figure size
     @param fig_name (str) file name of the figure saved
+    @param fig_title (str) Title of the figure
     @param legend_labels (list) list of legends labels
-    @param x_labels (list) list of ticks labels on x axis
+    @param x_label (str) label of x axis
     @param y_label (str) label of y axis
     @param x_scale (str) x scaling method (default: 'log')
     @param y_scale (str) y scaling method (default: 'log')
@@ -703,6 +716,11 @@ def vnv_plot1d_convergence(\
     @param y_relative (bool) divide y by y[0] (default: True)
     @param plot_firstorder_slope (bool) plot 1st order slope (default: True)
     @param plot_secondorder_slope (bool) plot 2nd order slope (default: False)
+    @param markers (bool) Display markers
+    @param fancy_grid (bool) Display fancy grid
+    @param reference_data (list/np.array) data of reference solution
+    @param reference_labels (list) Labels for reference data
+    @param reference_colors (list) Colors for reference data
     """
     # plot initialization
     plt.style.use('default')
@@ -827,14 +845,16 @@ def vnv_plot2d(\
 
     @param var_name (str) name of the variable to plot
     @param res (TelemacFile) telemac result
-    @param time (str) If >= 0.0 will get nearest record to that time (This
+    @param time (float) If given will get nearest record to that time (This
     overwrites record)
-    @param time (float) time to plot
+    @param record (int) record to plot
+    @param adim_factor (float) Adimensional factor by which data is multiplied
     @param fig_name (str) file name of the figure saved
     @param fig_size (list) figure size
     @param fig_title (list) title of the figure
     @param poly (list) list of points defining the polyline
     @param poly_number (list) list of number of discretized points
+    @param zslice (float) Horzontal slice value
     @param plane (int) index of the plane to plot for 3D results
     @param var_type (str) type of the variable: scalar, vector or vector_3d
     (default: 'scalar') if var_type is 'vector' or 'vector_2d' plots the
@@ -847,6 +867,7 @@ def vnv_plot2d(\
     @param y_factor (float) y axis adim factor (default: 1.0)
     @param xlim (list) x axis limits
     @param ylim (list) y axis limits
+    @param aspect_ratio (string) matplotlib aspect_ratio
     @param x_label (str) x axis label
     @param y_label (str) y axis label
     @param vmin (float) Minimal value of data to plot
@@ -863,6 +884,8 @@ def vnv_plot2d(\
     @param cbar_label (str) name to show on scalar colorbar
     @param cbar_priority (str) defines which cbar to plot ('scalar', 'vector'
     or 'contours')
+    @param cbar_autoextend (bool) Extend bar in auto
+    @param cbar_extend (string) matplotlib cbar extend method
     @param plot_mesh (bool) plot mesh
     @param plot_only_dry_mesh (bool) plot mesh only on dry zones
     @param mask_tidal_flats (bool) mask scalar on dry zones
@@ -882,7 +905,7 @@ def vnv_plot2d(\
     (mutualy exclusive with colored streamlines)
     @param colored_streamlines (bool) plot colored velocity streamlines
     (mutualy exclusive with streamlines)
-    @param strealines_density (int) density of streamlines
+    @param streamlines_density (int) density of streamlines
     @param vectors (bool) plot velocity vectors (mutualy exclusive with colored
     vectors)
     @param colored_vectors (bool) plot colored velocity vectors
@@ -892,6 +915,7 @@ def vnv_plot2d(\
     @param grid_resolution (list) grid resolution for vectors and streamlines
     plots
     @param bathy_contours (bool) plot bathymetry contours
+    @param kwargs (dict) Argument passed to the plotting function
     """
     #TODO: add grid compatibility
 
@@ -1255,11 +1279,12 @@ def vnv_plot3d(varname, res, record=-1, time=None,
     @param res (TelemacFile) Struct to file from which data will be read
     @param varname (str) Name of the variable to plot
     @param record (str) Record to plot
-    @param time (str) If >= 0.0 will get nearest record to that time (This
+    @param time (float) If given will get nearest record to that time (This
+    overwrites record)
     @param fig_size (2-uple) Size of figure
     @param fig_name (str) If not empty save the plot in that file instead of
     showing it
-    overwrites record)
+    @param fig_title (str) Figure title
     @param vmin (float) Minimal value of data to plot
     @param vmax (float) Maximal value of data to plot
     @param nv (integer) Number of sample for colorbar range
@@ -1271,6 +1296,7 @@ def vnv_plot3d(varname, res, record=-1, time=None,
     @param z_label (str) z axis label
     @param cmap_name (str) name of the scalar map
     @param cbar (bool) trigger for colorbar plot
+    @param annotate_time (bool) Set time as title
     @param cbar_ticks (list) list of values where to show color bar ticks
     @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
@@ -1278,6 +1304,7 @@ def vnv_plot3d(varname, res, record=-1, time=None,
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
     @param cbar_properties (dict) list additional properties of the colorbar
     @param cbar_label (str) name to show on scalar colorbar
+    @param kwargs (dict) Argument given to the scalar_map
 
     """
     # If time is positive searched for record

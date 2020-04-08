@@ -9,6 +9,7 @@ def compute_datetimes(times,
     """
     Convert times from seconds to datetimes
 
+    @param times (list) List of time in seconds
     @param initial_date (datetime, str or np.array) initial date
     (default:'01/01/2019 00:00:00')
     @param time_format (str) time format (default: '%Y/%m/%d %H:%M:%S')

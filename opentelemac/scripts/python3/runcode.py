@@ -21,7 +21,7 @@ def add_mpi_argument(parser):
     """
     Adding argument for an mpi run
 
-    @param (ArgumentParser) where to add the arguemnts
+    @param parser (ArgumentParser) where to add the arguemnts
 
     @return (ArgumentParser) The updated parser
     """
@@ -51,7 +51,8 @@ def add_hpc_argument(parser, module=None):
     """
     Adding argument for an mpi run
 
-    @param (ArgumentParser) where to add the arguemnts
+    @param parser (ArgumentParser) where to add the arguemnts
+    @param module (string) Telemac module
 
     @return (ArgumentParser) The updated parser
     """
@@ -83,7 +84,8 @@ def add_runcode_argument(parser, module=None):
     """
     Adding argument for runcode
 
-    @param (ArgumentParser) where to add the arguemnts
+    @param parser (ArgumentParser) where to add the arguemnts
+    @param module (string) Telemac module
 
     @return (ArgumentParser) The updated parser
     """

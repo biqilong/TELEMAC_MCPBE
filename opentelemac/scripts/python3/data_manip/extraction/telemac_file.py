@@ -22,7 +22,10 @@ class TelemacFile(HermesFile):
 
         @param file_name (str) Name of the mesh file
         @param bnd_file (str) Name of the boundary file (default None)
-        @parma log_lvl (str) Level of log information
+        @param log_lvl (str) Level of log information
+        @param fformat (str) Format of the file if not given .med -> MED
+        otherwise SERAFIN
+        @param access (str) 'r' for read 'w' for write 'rw' for readwrite
         """
 
         # Identifying format from file extension if fformat not given
@@ -792,10 +795,10 @@ class TelemacFile(HermesFile):
         """
         Extract values of plan in telemac-3d result file for the given variable
 
-        @param zslice (numpy.array) Elevation of the slice
-        @param record (int) Number of desired record
-        @param nplanref (int) Number of reference plane
         @param varname (string) Name of variable for which to extract data
+        @param record (int) Number of desired record
+        @param zslices (numpy.array) Elevation of the slice
+        @param nplanref (int) Number of reference plane
 
         @returns (numpy.array)
         """
@@ -896,9 +899,9 @@ class TelemacFile(HermesFile):
         Extract values for each plane of a 2d points in telemac-3d result file
         for the given variable
 
-        @param point (numpy.array) Point of extraction
-        @param varname (string) Name of variable for which to extract data
+        @param var_name (string) Name of variable for which to extract data
         @param record (int) Number of desired record
+        @param point (numpy.array) Point of extraction
 
         @returns (numpy.array)
 

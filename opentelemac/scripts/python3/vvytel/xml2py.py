@@ -175,7 +175,7 @@ def xml2py_parser(subparser):
     """
     Add arguments for a xml2py conversion
 
-    @param parser (argumentParser) argument parser
+    @param subparser (argumentParser) argument parser
 
     @return (argumentParser) the updated argument parser
     """

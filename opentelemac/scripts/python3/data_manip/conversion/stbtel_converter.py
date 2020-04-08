@@ -109,11 +109,15 @@ def build_cas(extens, input_format, input_file,
     """
     Build the steering file for stbtel
 
-    @param extens Parrallel extension 00000-00000
-    @param input_format Format of the input file
-    @param input_file Path of the input file
-    @param output_format Format of the output file
-    @param output_file Path of the output file
+    @param extens (string) Parrallel extension 00000-00000
+    @param input_format (string) Format of the input file
+    @param input_file (string) Path of the input file
+    @param output_format (string) Format of the output file
+    @param output_file (string) Path of the output file
+    @param srf_bnd (string) 'YES' if we have Boundary file 'NO' otherwise
+    @param debug (boolean) If True running stbtel in debug
+    @param bnd_file (string) Boundary file name
+    @param log_file (string) Log file name (unv format)
 
     @return the steering file
     """

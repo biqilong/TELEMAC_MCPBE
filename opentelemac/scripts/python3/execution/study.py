@@ -1,9 +1,11 @@
 """
 File containing the Study class that is used to run a steering file
 """
-from config import CFGS
 from os import path, mkdir, sep, chdir
 from time import localtime, strftime
+import shutil
+
+from config import CFGS
 
 from execution.telemac_cas import TelemacCas
 from execution.process import process_lit, process_config, \
@@ -19,7 +21,6 @@ from utils.files import put_file_content, get_file_content, zipsortie, \
                         remove_directories
 from utils.exceptions import TelemacException
 from postel.parser_output import get_latest_output_files
-import shutil
 
 class StudyException(TelemacException):
     """
@@ -37,7 +38,7 @@ class StudyException(TelemacException):
                 study.steering_file)
         super().__init__(string+message)
 
-class Study(object):
+class Study():
     """
     Define a study it can them be split, compiled, run, merge
     """
@@ -48,7 +49,7 @@ class Study(object):
 
         @param steering_file (string) Name of the steering file to run
         @param code_name (string) Name of the module used
-        @param working_dir_name (string) If not empty will be the name of the
+        @param working_dir (string) If not empty will be the name of the
                                          working directory
         """
         if not path.exists(steering_file):
@@ -178,7 +179,7 @@ class Study(object):
 
         @param dir_path (str) Directory in which to copy the files
         @param verbose (bool) If True print info for each copy
-        @parma copy_cas_file (bool) If True copies the steerings files as well
+        @param copy_cas_file (bool) If True copies the steerings files as well
         """
         if not path.exists(dir_path):
             raise StudyException(self, "Copy dir does not exists:\n"+dir_path)
@@ -314,11 +315,6 @@ class Study(object):
     def compile_exe(self):
         """
         Compile the executable
-
-        @param hpcpass (boolean) If True not creating the PARAL and CONFIG
-                                 files
-        @param split (boolean) If True only doing split part
-        @param bypass (boolean) If True bypassing errors
         """
         if self.code_name == 'mascaret':
             # Nothing to do

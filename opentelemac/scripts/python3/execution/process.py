@@ -33,16 +33,16 @@ def check_para_tilling(in_tile, in_node, in_size, ncruns, cas_ncsize):
               + if nctile is given by the user, there will be a
                     re-adjustment of ncsize to accomodate
 
-    @param in_tile (int): number of cores per node given by user
-    @param in_node (int): number of nodes given by user
-    @param in_size (int): total number of cores given by the script options
+    @param in_tile (int) number of cores per node given by user
+    @param in_node (int) number of nodes given by user
+    @param in_size (int) total number of cores given by the script options
 
-    @param ncruns (int): allows a number of CAS files to be placed in the same
+    @param ncruns (int) allows a number of CAS files to be placed in the same
          queue and run in parallel as a single batch
+    @param cas_ncsize (int) Number of cores asked for in the steering file
 
-    @return nctile (int): number of processors per node
-    @return ncnode (int): actual number of nodes
-    @return cas_ncsize (int): Number of cores asked for in the steering file
+    @return nctile (int) number of processors per node
+    @return ncnode (int) actual number of nodes
 
     @note: ncsize = 0 is also supported.
     """
@@ -119,11 +119,10 @@ def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
     store the ascii file names that have to be split by partel.
 
     @param cas (TelemacCas): Structure of the CAS file
+    @param cas_dir (TelemacCas): Steering fiel directory
+    @param ncsize (int): total number of processors
     @param tmp_dir (string): complete name of the temporary directory where
         the simulation results will be written
-    @param ncsize (int): total number of processors
-    @param update (boolean): whether to force the source
-                             copying / re-compilation
     @param use_link (boolean): only create a link in the temporary folder
         or copy the input files
 
@@ -433,8 +432,6 @@ def process_artnim(cas, cas_dir):
 
     @param cas (string): name of the CAS file
     @param cas_dir (string): name of the CAS directory
-    @param dico (string): dictionnary file
-    @param frgb (int): language of CAS file, 1: French; 2: English
 
     @return file_name_wfs (string): file containing the time-series of
         free-surface values for Artemis
@@ -487,7 +484,7 @@ def process_config(lang):
     """
     @brief Process the CONFIG file
 
-    @param lan (int) Language to write in file (1:French, 2:English)
+    @param lang (int) Language to write in file (1:French, 2:English)
 
     @return True when file is correctly filled
 
@@ -506,12 +503,13 @@ def process_executable(working_dir, pbin, plib, pobj, system,
         - if necessary, compiling the FORTRAN into the executable
         The background of this function sits where the CAS file is
 
-    @param cas (string):  Everything that touches the CAS file.
-    @param pbin (string): Location of the default executables
-    @param plib (string): location of the associated libs (and cmdx files)
-    @param pobj (string): location of the associated objs (and cmdo files)
-    @param trace:
-    @param code_name (string): Name of the module
+    @param working_dir (string)  Working directory
+    @param pbin (string) Location of the default executables
+    @param plib (string) location of the associated libs (and cmdx files)
+    @param pobj (string) location of the associated objs (and cmdo files)
+    @param system (dict) Configuration info
+    @param trace TODO
+    @param code_name (string) Name of the module
 
     @return exe_fort: name of the executable whether copied or compiled and a
 

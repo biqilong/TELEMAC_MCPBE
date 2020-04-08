@@ -38,7 +38,8 @@ class Gebco(Selafin):
         @brief Main class that fetches the GEBCO bathymetry data and puts it
                  into the SELAFIN data format
 
-        @param fname (string): the name of the GEBCO file
+        @param fname (string) the name of the GEBCO file
+        @param vals (float, float) z min, max
         """
 
         # ~~> empty SELAFIN

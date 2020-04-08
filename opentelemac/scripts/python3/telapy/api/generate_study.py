@@ -230,7 +230,7 @@ def handle_variables(jdc):
     """
     Extract all the informations for the input and ouput variables
 
-    @param eficas dictionary
+    @param jdc (dict) eficas dictionary
 
     @returns list of input names, list if input types, list of input values
              list of output names, list of output types, getset array
@@ -310,7 +310,6 @@ def get_result_file(module):
     Generate the Api command to set the result file name
 
     @param module Module of TELEMAC-MACARET
-    @param res_file Name of the new result file
     """
 
     key_name = get_result_keyword(module)
@@ -495,7 +494,7 @@ def parametric_study_post(file_to_consider):
     """
     Will gather results from a parametric study (input, output, result_file)
 
-    @param List of type of files to handle
+    @param file_to_consider (list) List of type of files to handle
     """
     for indice, filetype in enumerate(file_to_consider):
         # Treatment for data files (ascii file containing parameters value)

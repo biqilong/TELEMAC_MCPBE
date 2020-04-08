@@ -22,6 +22,7 @@ class AbstractVnvStudy(ABC):
         """
         Init function
 
+        @param name (str) Name of the study
         @param case_dir (str) Path to the validation folder
         @param options (ArgumentParser) script options (from
         validate_telemac.py)
@@ -42,8 +43,9 @@ class AbstractVnvStudy(ABC):
         self.commands = OrderedDict()
         self.options = options
         self.action_time = OrderedDict()
-        # Walltime for cluster run (default one hour)
-        self.walltime = "01:00:00"
+        # Walltime for cluster run (default the one from options)
+        self.walltime = options.walltime
+        self.listing = False
 
         self._init()
 
@@ -148,6 +150,7 @@ class AbstractVnvStudy(ABC):
         Running a case
 
         @param name (str) name of the vnv study
+        @param study (study) study to run
         """
         #TODO: Add a silent option to the run of a case (at least for the
         # listing of telemac)
@@ -203,9 +206,12 @@ class AbstractVnvStudy(ABC):
 
         if run:
             print("  ~> {}: running on {} cores".format(name, study.ncsize))
+            if self.listing:
+                self.options.sortie_file = True
             # Forcing ncsize
             self.options.ncsize = study.ncsize
             self.options.walltime = self.walltime
+            self.options.jobname = "{}__{}".format(path.basename(self.name), name)
             if study.cfg['HPC'] == {} or self.options.mpi:
                 run_local_cas(study, self.options)
             else:
@@ -355,7 +361,6 @@ class AbstractVnvStudy(ABC):
 
         @param res1 (TelemacFile) first telemac-mascaret file
         @param res2 (TelemacFile) second telemac-mascaret file
-        @param eps (list) List of epsilon for each (if seq_and_par is True eps
         @param record (int) Record to read data from
         @param var1 (str) Variable name of the first telemac-mascaret file
         @param var2 (str) Variable name of the second telemac-mascaret file

@@ -103,6 +103,8 @@ def checkval(a_0, eps, norm='linf'):
 
     @param a_0 A Values object containg the difference between two results
     @param eps The epsilon for each variable or a global one
+
+    @param norm (str) Norm to apply (linf, l1, l2)
     @return True if all the variable max are below EPS; False otherwise
     """
     _, nvar, _ = a_0.values.shape

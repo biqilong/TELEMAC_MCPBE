@@ -46,7 +46,7 @@ def format72(value):
 
     @param value (string) The string to adapt
 
-    @param (string) The updated string
+    @return (string) The updated string
     """
 
     val72 = ''
@@ -124,7 +124,7 @@ def check_type(var_type, value):
     of it
 
     @param var_type (string) Type of val (INTEGER, REAL, LOGICAL, STRING)
-    @param val (int/boolean/float/string/list) Value to check
+    @param value (int/boolean/float/string/list) Value to check
 
     @return The value in (int, float, boolean, string)
     """

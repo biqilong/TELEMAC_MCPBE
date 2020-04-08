@@ -65,9 +65,9 @@ def get_segment_intersection(point_1, point_2, point_3, point_4):
     and (point_3,point_4) and ratio (exaplined below)
 
     @param point_1 (2-uple) first point of the first segment
-    @param point_1 (2-uple) second point of the first segment
-    @param point_1 (2-uple) first point of the second segment
-    @param point_1 (2-uple) second point of the second segment
+    @param point_2 (2-uple) second point of the first segment
+    @param point_3 (2-uple) first point of the second segment
+    @param point_4 (2-uple) second point of the second segment
 
     @return [[x0,y0], ratio] where x0 and y0 are the coordinates of the
     intersect point and ratio that is norm2(point0, point1)/norm2(point1,
@@ -163,9 +163,9 @@ def get_plane_equation(point_1, point_2, point_3):
     Find the equation of the plane defined by 3 points.
     The form of the equation is: Z = a*X + b*Y + c
 
-    @param point1 (2-uple) coordiantes of the first point
-    @param point1 (2-uple) coordiantes of the second point
-    @param point1 (2-uple) coordiantes of the third point
+    @param point_1 (2-uple) coordiantes of the first point
+    @param point_2 (2-uple) coordiantes of the second point
+    @param point_3 (2-uple) coordiantes of the third point
 
     @returns (3-uple) (a, b, c)
     """
@@ -214,8 +214,8 @@ def get_distance_point_to_line(point_0, point_1, point_2):
     Returns the distance between a point and a line
 
     @param point_0 (2-uple) Coodinates of the point
-    @param point_0 (2-uple) Coodinates of the first point of the line
-    @param point_0 (2-uple) Coodinates of the second point of the line
+    @param point_1 (2-uple) Coodinates of the first point of the line
+    @param point_2 (2-uple) Coodinates of the second point of the line
 
     @returns (float) the distance
 

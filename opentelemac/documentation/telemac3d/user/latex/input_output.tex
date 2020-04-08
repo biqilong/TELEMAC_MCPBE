@@ -85,8 +85,11 @@ format (described in Appendix \ref{sec:srffmt}). This SERAFIN format can be
 configured so as to store the real-typed values in single or double precision.
 The other available format is the MED format which is used by the SALOME
 platform jointly developed by EDF and the French atomic energy commission
-(CEA). In the current TELEMAC release, this format is restricted to EDF
-internal use.
+(CEA).
+The full description of the MED format is available on the SALOME website
+http://www.salome-platform.org.
+%In the current TELEMAC release, this format is restricted to EDF
+%internal use.
 
 Depending on the specified format, the binary files may be treated by different
 software. However, in the current release of TELEMAC, only the SERAFIN single
@@ -101,7 +104,7 @@ SERAFIN format, which is the default and recommended value (do not forget the
 space in last position). The 'SERAFIND' value corresponds to the double
 precision SERAFIN format which allows to increase the precision of the results,
 especially in case of a restart or reference file. Finally, the 'MED' value
-corresponds to the hdf5 MED format (internal EDF use), double precision.
+corresponds to the HDF5 MED format in double precision.
 
 The keywords involved are:
 
@@ -110,7 +113,11 @@ The keywords involved are:
 
 \item \telkey{3D RESULT FILE FORMAT},
 
+\item \telkey{BINARY ATMOSPHERIC DATA FILE FORMAT},
+
 \item \telkey{BINARY DATA FILE 1 FORMAT},
+
+\item \telkey{BINARY RESULTS FILE FORMAT},
 
 \item \telkey{FILE FOR 2D CONTINUATION FORMAT},
 
@@ -120,7 +127,9 @@ The keywords involved are:
 
 \item \telkey{REFERENCE FILE FORMAT},
 
-\item \telkey{RESTART FILE FORMAT}.
+\item \telkey{RESTART FILE FORMAT},
+
+\item \telkey{TIDAL MODEL FILE FORMAT}.
 \end{itemize}
 
 \section{The steering file}
@@ -341,8 +350,11 @@ computation. In order to activate the optional use of that file, the keyword
 In order to specify the
 previous computation file, its name should be stated through the keyword:
 \telkey{PREVIOUS COMPUTATION FILE}. The initial conditions of the new
-computation are defined by the last recorded time step in the previous
-computation file. The whole set of data from the steering file is read and it
+computation are defined by one recorded time step in the previous
+computation file given by the keyword \telkey{RECORD NUMBER FOR RESTART}.
+By default, its value is 0 which means it is the last time step
+to start from in the \telkey{PREVIOUS COMPUTATION FILE}.
+The whole set of data from the steering file is read and it
 makes possible to redefine or amend the variables (time step, turbulence model,
 addition or deletion of a tracer\dots).
 
@@ -611,13 +623,15 @@ In addition, the options \telkey{MASS-BALANCE} and \telkey{VALIDATION} are inhib
 
 Its contents vary according to the values of the following keywords:
 
-\telkey{NUMBER OF FIRST TIME STEP FOR LISTING PRINTOUTS}: provided to set at
+\begin{itemize}
+
+\item \telkey{NUMBER OF FIRST TIME STEP FOR LISTING PRINTOUTS}: provided to set at
 which time step it is desired to begin printing the data, in order to prevent
 too large files.
 The default value is 0 (writing of the listing printouts at the
-beginning of the simulation).
+beginning of the simulation),
 
-\telkey{LISTING PRINTOUT PERIOD}: sets the period between two time step
+\item \telkey{LISTING PRINTOUT PERIOD}: sets the period between two time step
 printings. The value is given as a time step number.
 By default, it is equal to 1, i.e. every time step.
 For instance, the following sequence:
@@ -627,14 +641,14 @@ TIME STEP = 30.0
 LISTING PRINTOUT PERIOD = 2
 \end{lstlisting}
 
-Prints the output listing every minute of simulation.
+prints the output listing every minute of simulation,
 
-\telkey{MASS-BALANCE}: if it is requested, the user will get
+\item \telkey{MASS-BALANCE}: if it is requested, the user will get
 information about the mass flow (or rather the volumes) and the errors
 (primarily linked to the precision achieved by the solvers) of that computation
-in the domain. This is not done by default.
+in the domain. This is not done by default,
 
-\telkey{INFORMATION ABOUT MASS-BALANCE FOR EACH LISTING PRINTOUT}: if they are
+\item \telkey{INFORMATION ABOUT MASS-BALANCE FOR EACH LISTING PRINTOUT}: if they are
 requested (that is done by default), the user will get, at each time step,
 information about the flows within the domain.
 
@@ -642,6 +656,8 @@ The file name is directly managed by the \telemac{3D} launching procedure.
 Generally, the file has a name which is created from the name in the steering
 file and the number of the processors used in the computation, followed by the
 suffix "\telfile{.sortie}".
+
+\end{itemize}
 
 %\section{The file for scope}
 %
@@ -698,9 +714,11 @@ The logic unit numbers are stated in the \telfile{DECLARATIONS\_TELEMAC3D}
 module and the user can access them through a
 \telfile{USE DECLARATIONS\_TELEMAC3D} command at the beginning of a
 subroutine. For instance, using a file for providing the initial conditions
-will result in managing that file within the \telfile{CONDIM subroutine}.
+will result in managing that file within the \telfile{CONDIM} subroutine
+or the subroutines called by it (e.g.: \telfile{USER\_CONDI3D\_H} etc.).
 Likewise, using a file for inserting boundary conditions will be possible at
-the \telfile{BORD3D} subroutine. In case of conflicting statements, one can use,
+the \telfile{USER\_BORD3D} subroutine.
+In case of conflicting statements, one can use,
 for example: \telfile{USE DECLARATIONS\_TELEMAC3D, ONLY: T3DBI1}.
 
 \section{The dictionnary file}
@@ -730,8 +748,8 @@ file name is provided by the keyword \telkey{BOTTOM TOPOGRAPHY FILE}. Unlike
 in SINUSX format or more simply a file consisting of three columns X, Y, Z. The
 SINUSX format is described in the RUBENS user manual,
 
-\item Or using the \telfile{T3D\_CORFON} subroutine. This is usually used for schematic
-test cases.
+\item Or using the \telfile{USER\_T3D\_CORFON} subroutine.
+This is usually what is done for schematic test cases.
 \end{itemize}
 
 In all cases, \telemac{3D} offers the possibility of smoothing the bottom

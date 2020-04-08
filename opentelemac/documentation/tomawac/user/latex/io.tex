@@ -495,8 +495,8 @@ will result in a print in the output listing every 60 seconds of simulation.
 \item  In the form of an irregular pattern of spot heights without any necessary relation to the mesh nodes, during the \tomawac computation. The interpolation is then performed directly by \tomawac with the same algorithm as used by STBTEL. The bathymetry file name is given by the character keyword \textit{BOTTOM TOPOGRAPHY FILE. }Unlike STBTEL, \tomawac only handles one bottom topography file. The file can be in SINUSX format or can consist of three columns X,Y,Z.
 \end{itemize}
 
- \tomawac also provides an opportunity to carry out a smoothing of the bathymetry in order to get a more consistent geometry. The smoothing algorithm can be iterated several times in order to achieve more or less extensive smoothing. The number of iterations is set using the keyword \textit{BOTTOM SMOOTHINGS} and is carried out within the CORFON subroutine. This keyword's default value is 0. (also refer to the programming of the CORFON user subroutine in \ref{se:corfon}).
+ \tomawac also provides an opportunity to carry out a smoothing of the bathymetry in order to get a more consistent geometry. The smoothing algorithm can be iterated several times in order to achieve more or less extensive smoothing. The number of iterations is set using the keyword \textit{BOTTOM SMOOTHINGS} and is carried out within the USER\_TOM\_CORFON subroutine. This keyword's default value is 0. (also refer to the programming of the CORFON user subroutine in \ref{se:corfon}).
 
- NOTE: the bathymetry data should preferably be supplied to \tomawac in the form of water depth and not of water height. If necessary, a conversion can be performed in the CORFON subroutine.
+ NOTE: the bathymetry data should preferably be supplied to \tomawac in the form of water depth and not of water height. If necessary, a conversion can be performed in the USER\_TOM\_CORFON subroutine.
 
 

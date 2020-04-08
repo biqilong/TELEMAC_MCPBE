@@ -32,7 +32,7 @@
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER LTT,I,J
+      INTEGER LTT,I,J,K
       LOGICAL IMP,LEO
 !
 !-----------------------------------------------------------------------
@@ -89,6 +89,76 @@
         IF((LEO.AND.SORLEO(19)).OR.(IMP.AND.SORIMP(19))) THEN
           CALL OS('X=0     ',X=KS)
         ENDIF
+      ENDIF
+!
+!=======================================================================
+! UPDATE THE Values of the writing blocks
+!=======================================================================
+!
+      ! For memory optimisation (from intel debug)
+      ! For RATIOS
+      IF ((LEO.AND.SORLEO(NVAR_RATIOS+1)).OR.
+     &    (IMP.AND.SORIMP(NVAR_RATIOS+1))) THEN
+        DO K=1,NOMBLAY
+          DO I=1,NSAND
+            RATIOS%ADR(K+(I-1)*NOMBLAY)%P%R=RATIO_SAND(I,K,1:NPOIN)
+          ENDDO
+        ENDDO
+      ENDIF
+      ! For RATIOM
+      IF((LEO.AND.SORLEO(NVAR_RATIOM+1)).OR.
+     &   (IMP.AND.SORIMP(NVAR_RATIOM+1))) THEN
+        DO K=1,NOMBLAY
+          DO I=1,NMUD
+            RATIOM%ADR(K+(I-1)*NOMBLAY)%P%R=RATIO_MUD(I,K,1:NPOIN)
+          ENDDO
+        ENDDO
+      ENDIF
+      ! For Layconc
+      IF((LEO.AND.SORLEO(NVAR_LAYCONC+1)).OR.
+     &   (IMP.AND.SORIMP(NVAR_LAYCONC+1))) THEN
+        DO K=1,NOMBLAY
+          LAYCONC%ADR(K)%P%R=CONC_MUD(K,1:NPOIN)
+        ENDDO
+      ENDIF
+      ! For mass_s
+      IF((LEO.AND.SORLEO(NVAR_MASS_S+1)).OR.
+     &   (IMP.AND.SORIMP(NVAR_MASS_S+1))) THEN
+        DO K=1,NOMBLAY
+          DO I=1,NSAND
+            MASS_S%ADR(K+(I-1)*NOMBLAY)%P%R=MASS_SAND(I,K,1:NPOIN)
+          ENDDO
+        ENDDO
+      ENDIF
+      ! For mass_m
+      IF((LEO.AND.SORLEO(NVAR_MASS_M+1)).OR.
+     &   (IMP.AND.SORIMP(NVAR_MASS_M+1))) THEN
+        DO K=1,NOMBLAY
+          DO I=1,NMUD
+            MASS_M%ADR(K+(I-1)*NOMBLAY)%P%R=MASS_MUD(I,K,1:NPOIN)
+          ENDDO
+        ENDDO
+      ENDIF
+      ! For mtransfer
+      IF((LEO.AND.SORLEO(NVAR_MTRANS+1)).OR.
+     &   (IMP.AND.SORIMP(NVAR_MTRANS+1))) THEN
+        DO K=1,NOMBLAY
+          MTRANSFER%ADR(K)%P%R=TRANS_MASS(K,1:NPOIN)
+        ENDDO
+      ENDIF
+      ! For tocemud
+      IF((LEO.AND.SORLEO(NVAR_TOCEMUD+1)).OR.
+     &   (IMP.AND.SORIMP(NVAR_TOCEMUD+1))) THEN
+        DO K=1,NOMBLAY
+          TOCEMUD%ADR(K)%P%R=TOCE_MUD(K,1:NPOIN)
+        ENDDO
+      ENDIF
+      ! For partheniades
+      IF((LEO.AND.SORLEO(NVAR_PARTHE+1)).OR.
+     &   (IMP.AND.SORIMP(NVAR_PARTHE+1))) THEN
+        DO K=1,NOMBLAY
+          PARTHE%ADR(K)%P%R=PARTHENIADES(K,1:NPOIN)
+        ENDDO
       ENDIF
 !
 !=======================================================================

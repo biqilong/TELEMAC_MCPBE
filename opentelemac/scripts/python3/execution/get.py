@@ -65,8 +65,6 @@ def get_ncsize(cas):
     @brief Get the number of processors for the case
 
     @param cas (string): name of the CAS file
-    @param dico (string): name of the dictionnary file
-    @param frgb (int): language of CAS file, 1: French; 2: English
 
     @return ncsize (int): number of processors for the CAS
     """
@@ -134,8 +132,8 @@ def get_hpc_depend(cfg_hpc):
     # ~~> Executable
     if 'DEPEND' in cfg_hpc:
         return cfg_hpc['DEPEND']
-    else:
-        return ''
+
+    return ''
 
 def get_conlim(cas):
     """
@@ -144,7 +142,6 @@ def get_conlim(cas):
 
 
     @param cas (TelemacCas): name of the CAS file
-    @param in_files (list): list of the input files for the CAS
 
     @return conlim: name of the conlim file (.cli)
     """
@@ -163,7 +160,6 @@ def get_glogeo(cas):
         list of input files
 
     @param cas (string):  name of the CAS file
-    @param in_files (list): list of the input files for the CAS
 
     @return glogeo: name of the glogeo file (.geo)
     @return fmtgeo: format of the glogeo file (serafin or med)

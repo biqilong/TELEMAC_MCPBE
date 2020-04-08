@@ -42,7 +42,7 @@ def generate_bnd_parser(subparser):
     """
     Add argument for generate_bnd to parser
 
-    @param parser (ArgumentParser) The paser to update
+    @param subparser (ArgumentParser) The paser to update
 
     @return (ArgumentParser) The updated parser
     """

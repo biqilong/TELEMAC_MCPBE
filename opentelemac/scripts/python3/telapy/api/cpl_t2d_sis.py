@@ -22,15 +22,13 @@ class CplT2dSis(object):
         """
         Constructor for apiModule
 
-        @param t2d_steering_file Name of the Telemac2d steering file
-        @param sis_steering_file Name of the Sisyphe steering file
-        @param user_fortran Name of the user Fortran
-        @param dicofile Path to the dictionary
-        @param lang Language for ouput (1: French, 2:English)
-        @param stdout Where to put the listing
-        @param comm MPI communicator
-        @param recompile If true recompiling the API
-        @param code For coupling
+        @param t2d_steering_file (string) Name of the Telemac2d steering file
+        @param sis_steering_file (string) Name of the Sisyphe steering file
+        @param user_fortran (string) Name of the user Fortran
+        @param stdout (int) Where to put the listing
+        @param comm (MPI.Comm) MPI communicator
+        @param recompile (boolean) If true recompiling the API
+        @param log_lvl (string) Logger level
         """
         self.t2d = Telemac2d(t2d_steering_file,
                              user_fortran=user_fortran,
@@ -89,7 +87,7 @@ class CplT2dSis(object):
         """
         Run all the time steps
 
-        @retuns the number of computed time steps
+        @return the number of computed time steps
         """
 
         ntimesteps = self.t2d.get('MODEL.NTIMESTEPS')
@@ -100,10 +98,10 @@ class CplT2dSis(object):
         """
         Delete the Telemac 2D instance
 
-        @retuns error code
+        @return error code
         """
-        self.sis.run_finalize(self.sis.my_id)
-        self.t2d.run_finalize(self.t2d.my_id)
+        self.sis.api_inter.run_finalize_sis(self.sis.my_id)
+        self.t2d.api_inter.run_finalize_t2d(self.t2d.my_id)
 
     def __del__(self):
         del self.sis

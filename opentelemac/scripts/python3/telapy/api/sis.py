@@ -33,13 +33,14 @@ class Sisyphe(ApiModule):
                  recompile=True):
         """
         Constructor for Sisyphe
-        @param casFile Name of the steering file
-        @param user_fortran Name of the user Fortran (default=None)
-        @param dicofile Path to the dictionary (default=None)
-        @param lang Language for ouput (1: French, 2:English) (default=2)
-        @param stdout Where to put the listing (default on terminal)
-        @param comm MPI communicator (default=None)
-        @param recompile If true recompiling the API (default=True)
+        @param casfile (string) Name of the steering file
+        @param user_fortran (string) Name of the user Fortran
+        @param dicofile (string) Path to the dictionary
+        @param lang (int) Language for ouput (1: French, 2:English)
+        @param stdout (int) Where to put the listing
+        @param comm (MPI.Comm) MPI communicator
+        @param recompile (boolean) If true recompiling the API
+        @param log_lvl (string) Logger level
         """
         if dicofile is None:
             hometel = os.getenv("HOMETEL")

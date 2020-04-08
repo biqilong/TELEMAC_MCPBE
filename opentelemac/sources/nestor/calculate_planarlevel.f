@@ -35,7 +35,8 @@
       TYPE(t_String_Length) :: SRname ! name of current Subroutine
 !
 !      dbug WRITE(6,*)'?>-------  SR Calculate_PlanarLevel --------'
-      
+      iSmaller = 0
+
       SRname%s = "Calculate_PlanarLevel"  ! subroutine name
 !
 670   FORMAT( 1(' ?> info:'),61('='), '+' )
@@ -109,7 +110,7 @@
             WRITE(6,672)
             WRITE(6,*)'?> info    max RefLevel = ',MAXVAL( F%refZ(:))
             WRITE(6,*)'?> info    min RefLevel = ',MINVAL( F%refZ(:))
-            WRITE(6,*)'?> info   target volume = ', TargetVolume     
+            WRITE(6,*)'?> info   target volume = ', TargetVolume
             WRITE(6,672)
             Call ErrMsgAndStop(
      &        "while calculate planar dump level           "

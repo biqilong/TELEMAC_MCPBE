@@ -1,4 +1,4 @@
-\chapter{Others configurations}
+\chapter{Other configurations}
 
 \section{Modification of bottom topography (\telfile{USER\_T3D\_CORFON})}
 
@@ -19,6 +19,7 @@ smoothings equal to \telfile{LISFON}, i.e. equal to the number specified by the 
 smoothing).
 
 The \telfile{T3D\_CORFON} subroutine is not called up if a computation is continued.
+Neither is \telfile{USER\_T3D\_CORFON} subroutine.
 This avoids having to carry out several bottom smoothings or modifications to
 the bottom topography during the computation.
 
@@ -57,15 +58,14 @@ computation. This calculates a set of tables depending on the latitude of each
 point. To do this, it uses the Cartesian coordinates of each point provided in
 the geometry file, and the latitude of the point of origin of the mesh provided
 by the user in the steering file with the keyword
-\telkey{LATITUDE OF ORIGIN POINT}.
+\telkey{LATITUDE OF ORIGIN POINT} (default value = 0 degrees).
 
 The spatial projection type used for the mesh is then specified with the
 keyword \telkey{SPATIAL PROJECTION TYPE}. That can take the following values:
 \begin{itemize}
-\item 1 : Lambert Cartesian not geo referenced (default value -- cannot be used
-in spherical)
+\item 1 : Lambert Cartesian not geo-referenced,
 
-\item 2 : Mercator;
+\item 2 : Mercator (default value),
 
 \item 3 : Latitude/longitude (in degrees).
 \end{itemize}
@@ -92,7 +92,7 @@ variables may differ and call three subroutines:
 
 \item  \telfile{NOMVAR\_TELEMAC3D}: to manage 3D variables names,
 
-\item  \telfile{PRERES\_TELEMAC3D}: to compute new variables (2D and 3D).
+\item  \telfile{USER\_PRERES\_TELEMAC3D}: to compute new variables (2D and 3D).
 \end{itemize}
 
 \telemac{3D} has a numbering system in which, for example, the array containing
@@ -123,9 +123,10 @@ In the software data structure, these four variables correspond to the tables
 \telfile{PRIVE\%ADR(1)\%P\%R(X), PRIVE\%ADR(2)\%P\%R(X), PRIVE\%ADR(3)\%P\%R(X)}
 and \telfile{PRIVE\%ADR(4)\%P\%R(X)} (in which \telfile{X} is the number of
 nodes in the mesh). These may be used in several places in the programming,
-like all TELEMAC variables.
+like all \tel variables.
 For example, they may be used in the subroutines \telfile{USER\_CORRXY},
-\telfile{CORSTR}, \telfile{USER\_BORD3D}, etc.  If a \telfile{PRIVE} table is used
+\telfile{USER\_CORSTR}, \telfile{USER\_BORD3D}, etc.
+If a \telfile{PRIVE} table is used
 to program a case, it is essential to check the value of the keyword
 \telkey{NUMBER OF PRIVATE ARRAYS}.
 This value fixes the number of tables used (0, 1, 2, 3 or 4)
@@ -154,9 +155,9 @@ read from the previous computation if this is a restart. This subroutine
 may also be modified when, for example, a file generated with the English
 version of \telemac{3D} is to be continued with the French version. In this
 case, the \telfile{TEXTPR} table of the French part of the subroutine must
-contain the English names of the variables.
+contain the English names of the variables,
 
-\item  Secondly, it is necessary to modify the \telfile{PRERES\_TELEMAC3D}
+\item  Secondly, it is necessary to modify the \telfile{USER\_PRERES\_TELEMAC3D}
 subroutine in order to introduce the computation of the new variable(s). The
 variables \telfile{LEO, SORG2D} and \telfile{SORG3D} are also used to
 determine whether the variable is to be printed in the printout file or in
@@ -231,7 +232,7 @@ module at the next time step, and so on.
 \end{itemize}
 
 Several modules can be coupled in the current version of the code:
-the sedimentary transport modules \gaia or \sisyphe,
+the sediment transport modules \gaia or \sisyphe,
 the sea state computational module \tomawac with 2 options (like with
 \telemac{2d} and forces constant along the vertical, or with 3D forces)
 and the water quality module \waqtel (and even DELWAQ). The
@@ -306,7 +307,7 @@ concerning communications with DELWAQ.
 
 \section{Checking the mesh (\telfile{CHECKMESH})}
 
-The subroutine \telfile{CHECKMESH} of the \bief library is available to look for
+The \telfile{CHECKMESH} subroutine of the \bief library is available to look for
 errors in the mesh, e.g. superimposed points \ldots
 The keyword \telkey{CHECKING THE MESH} (default value = NO) should be activated
 to YES to call this subroutine.

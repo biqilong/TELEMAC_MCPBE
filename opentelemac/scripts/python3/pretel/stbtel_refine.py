@@ -34,7 +34,7 @@ def build_refine_cas(input_file, boundary_file, output_name):
     @param input_file Name of the file to refine
     @param boundary_file Name of the boundary file associated with the file to
                          refine
-    @param ouput_name Basename of the ouput
+    @param output_name Basename of the ouput
 
     @return (string) the steering case
     """
@@ -85,7 +85,7 @@ def stbtel_refine_parser(subparser):
     """
     Adding argument to parser for stbtel refinment
 
-    @param (ArgumentParser) the parser to update
+    @param subparser (ArgumentParser) the parser to update
 
     @return (ArgumentParser) the updated parser
     """

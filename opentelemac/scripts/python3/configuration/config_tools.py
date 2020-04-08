@@ -21,11 +21,11 @@ def get_files_validation_telemac(root):
     r"""
     Get the root of the validation directory and walk from there
     through the directory structure to identify modules with the template
-    val_root\module_name\*\*.xml
+    val_root|module_name|*|vnv_*
 
-    @param root(sting) root of the system to replace reference to <root>
+    @param root (string) root of the system to replace reference to <root>
 
-    @return validation(dictionary) XML files of validation directory
+    @return validation (dictionary) Python files of validation directory
     """
     validation = {}
     dirpath, dirnames, _ = next(walk(root))
@@ -47,12 +47,12 @@ def get_folders_modules_telemac(root, rescan, bypass):
     and identifies modules with the template:
           sources|module-name or sources|utils|sub-module-name
 
-    @param root(sting) root of the system to replace reference to <root>
-    @param rescan(boolean) check if it must rescan
-    @param bypass(boolean) continue with a raise exception
+    @param root (string) root of the system to replace reference to <root>
+    @param rescan (boolean) check if it must rescan
+    @param bypass (boolean) continue with a raise exception
 
-    @return modules(dictionnary) module information
-    @return tobedel(dictionary)  Contains cmdf to de delete when doing a rescan
+    @return modules (dictionnary) module information
+    @return tobedel (dictionary)  Contains cmdf to de delete when doing a rescan
                                  and a clean
     """
     #
@@ -205,12 +205,12 @@ def add_externals(cfg_dict, ext, mod):
     whether a lib, a mod or an include following the template
     key ext_all and ext_..., with ext = mods, incs, libs, cmd_*
 
-    @param cfg_dict(dictionary)
-    @param ext(string) ext = mods, incs, libs, cmd_*
-    @param mod(string) module in the list of modules
+    @param cfg_dict (dictionary) configuration informations
+    @param ext (string) ext = mods, incs, libs, cmd_*
+    @param mod (string) module in the list of modules
                        to account for specific external
 
-    @return ext_list(string) links to user defined external dependencies
+    @return ext_list (string) links to user defined external dependencies
     """
     # ~~ Loads External Dependencies ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ext_list = ''
@@ -231,9 +231,9 @@ def get_externals(cfg_dict, ext, mod):
     whether a lib, a mod or an include following the template
     key ext_all and ext_..., with ext = cmd_obj, cmd_lib, cmd_exe
 
-    @param cfg_dict(dictionary) Globals configuration
-    @param ext(string) ext = cmd_obj, cmd_lib, cmd_exe
-    @param mod(string) module in the list of modules
+    @param cfg_dict (dictionary) Globals configuration
+    @param ext (string) ext = cmd_obj, cmd_lib, cmd_exe
+    @param mod (string) module in the list of modules
                        to account for specific external
 
     @return ext_list(string) links to user defined external dependencies
@@ -256,12 +256,12 @@ def get_tags(key, cfg_dict, sources):
     Extract full user defined command line for the treatment of the tags, where
     tag_(name) produce a special effect on (name)
 
-    @param key(string) key allowing to filter cfg_dict
-    @param cfg_dict(dictionary) globale configuration
-    @param sources(dictionary) globale modules information
+    @param key (string) key allowing to filter cfg_dict
+    @param cfg_dict (dictionary) globale configuration
+    @param sources (dictionary) globale modules information
 
-    @return tags(dictionary) tags dict
-    @return modules(dictionary)  user defined modules information
+    @return tags (dictionary) tags dict
+    @return modules (dictionary)  user defined modules information
     """
     # ~~ Loads tag and creates exception ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     modules = {}
@@ -298,11 +298,11 @@ def parse_user_modules(cfg_dict, modules):
     Will also read the specif option and build the list of modules
     according to the stwiches, i.e. parallel, openmi, xdmf, etc.
 
-    @param cfg_dict(dictionary) Globals configuration
-    @param modules(dictionary) modules information
+    @param cfg_dict (dictionary) Globals configuration
+    @param modules (dictionary) modules information
 
-    @return user_list(string)  modules list
-    @return type_build(integer) options for the switches
+    @return user_list (string)  modules list
+    @return type_build (integer) options for the switches
                                such as parallel, openmi, mumps, etc.
     """
     # ~~ Loads To-Be Compiled ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -356,9 +356,9 @@ def parse_validation_ranks(user_list):
            - >n: includes all numbers above n
            - n: includes the number n
 
-        @param user_list(string)  modules list
+        @param user_list (string)  modules list
 
-        @return ranks(List) user list of ranks to filter the list of validation
+        @return ranks (list) user list of ranks to filter the list of validation
                             cases
     """
 

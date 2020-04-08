@@ -47,11 +47,12 @@
       DOUBLE PRECISION :: MOFAC  ! MOrphological FACtor (dummy)
       DOUBLE PRECISION :: ES1_SIS
       LOGICAL          :: CALLEDBY_T2D
+      DOUBLE PRECISION,ALLOCATABLE :: TMP_AVAIL(:,:,:)
 !-----------------------------------------------------------------------
 !
       NSICLA       = 1        ! number of classes    in context with t2d always 1
       MOFAC        = 1.0D0    ! morphological factor in context with t2d always 1
-! 
+!
       CALLEDBY_T2D = .TRUE.
 !
       IF(OPTION.EQ.1) THEN
@@ -120,9 +121,12 @@
                             !  In case of exceedance Nestor will stop the computation.
         T14%R(:) = ES1_SIS  !> In case of pure hydrodynamic computation a single value would be enough
                             !  but due to compatibility reasons an array is needed at this point.
-                            !  ( When Nestor is coupled with Sisyphe    ES1_sis(:)   represents 
+                            !  ( When Nestor is coupled with Sisyphe    ES1_sis(:)   represents
                             !    the   active layer thickness   at each node.)
 !
+        ! Memory optimisation (from intel debug)
+        ALLOCATE(TMP_AVAIL(NPOIN,1,NSICLA))
+        TMP_AVAIL = AVAIL(1:NPOIN,1:1,1:NSICLA)    !
         CALL INTERFACERUNNESTOR(   NPOIN           !  Number of POINts (NODES)
      &                           , NSICLA          !  Number of SIze CLAsses (dummy)
      &                           , LT              !  Telemac time step
@@ -131,10 +135,11 @@
      &                           , T14%R           !  limit of the vertical movement of the bottom per time step
      &                           , ZF%R            !  bottom [m+NN]
      &                           , NES_DZ          !  bottom cange per time step by nestor [m]
-     &                           , AVAIL(1:NPOIN,1,1:NSICLA)    !
+     &                           , TMP_AVAIL
      &                           , MESH%KNOLG%I    !  index list: Local to Global node index
      &                           , HN%R            !  water depth [m]
      &                          )
+        DEALLOCATE(TMP_AVAIL)
 !
         CALL OS('X=X+Y   ', X=ZF, Y=NES_DZ%ADR(1)%P)   ! well  it happens here
 !

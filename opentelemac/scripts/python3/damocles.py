@@ -211,14 +211,15 @@ def gen_dump2(exe_path, input_dict, output_dict):
 def gen_cata(code_name, exe_path, input_dict, intput_dep,
              cata_name, enum_name, ts_path):
     """
-       Run damocles to generate an eficas catalogue
+    Run damocles to generate an eficas catalogue
 
-       @param exe_path Path to the damocles executable
-       @param input_dict Input Telemac dictionary
-       @param intput_dep Input Telemac depnedancies file
-       @param cata_name Name of the eficas Catalogue
-       @param enum_name Name of the enum for CHOIX
-       @param ts_path Path for where the ts file will be generated
+    @param code_name (string) Name of the code (telemac2d...)
+    @param exe_path (string )Path to the damocles executable
+    @param input_dict (string) Input Telemac dictionary
+    @param intput_dep (string) Input Telemac depnedancies file
+    @param cata_name (string) Name of the eficas Catalogue
+    @param enum_name (string) Name of the enum for CHOIX
+    @param ts_path (string) Path for where the ts file will be generated
     """
     param_file = path.join(path.dirname(input_dict), 'damo.par')
     fancy_module = code_name.lower()
@@ -321,7 +322,7 @@ def main():
     cfg = CFGS.configs[CFGS.cfgname]
 #   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # Defining which modules to use
-    if args.modules is '':
+    if args.modules == '':
         module_list = ['artemis', 'postel3d', 'stbtel', 'sisyphe',
                        'telemac2d', 'telemac3d', 'tomawac', 'waqtel',
                        'gaia', 'khione']

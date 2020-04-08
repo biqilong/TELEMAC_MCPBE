@@ -1,17 +1,18 @@
 """
 Class for Telemac dictionary file manipulation
 """
+from collections import OrderedDict
+import re
 
-from execution.tools import EMPTY_LINE, ENTRY_QUOTE, EXIT_SQUOTE, EXIT_DQUOTE,\
+from execution.tools import ENTRY_QUOTE, EXIT_SQUOTE, EXIT_DQUOTE,\
                             KEY_EQUALS, DICO_KEYS, EMPTY_LINE, VAL_EQUALS, \
                             convert_to_type
 from utils.exceptions import TelemacException
-import re
 
 # Global variable containing parsed dictionaries
 DICOS = {}
 
-class TelemacDico(object):
+class TelemacDico():
     """
     Class to manipulation a Telemac-Mascaret dictionary
     """
@@ -23,7 +24,7 @@ class TelemacDico(object):
         @param file_name (string) Name of the dictionary
         """
         self.file_name = file_name
-        self.data = {}
+        self.data = OrderedDict()
         self.fr2gb = {}
         self.gb2fr = {}
         self._scan_dico()
@@ -123,7 +124,7 @@ class TelemacDico(object):
         # ~~ Group pairs of keyword/val by each occurence of NOM
         while keylist != []:
             if keylist[0][0] != 'NOM' and keylist[1][0] != 'NOM1':
-                raise TelemacException('could not read NOM or NOM1 '
+                raise TelemacException('could not read NOM or NOM1 '\
                                 'from {}'.format(keylist[0][1]))
 
             fr_name = keylist[0][1][0].replace('"', "'")
@@ -171,36 +172,78 @@ class TelemacDico(object):
                         # List of strings just removing quotes for each value
                         key_info[key] = \
                              [val.strip("'\" ") for val in key_info[key]]
+                elif key in ['RUBRIQUE', 'RUBRIQUE1']:
+                    # If we have only one rubrique it will return a str
+                    rub = key_info[key]
+                    # Checking toat first rubique is not empty
+                    if rub[0] == '':
+                        raise TelemacException(\
+                           "First Rubrique for {} is empty".format(keyword))
+
+                    # rubrique must have 3 levels filling with empty ones
+                    for i in range(3-len(rub)):
+                        rub.append('')
+                    key_info[key] = rub
                 # AIDE*, APPARENCE, CHOIX*, COMPORT
                 # COMPOSE, CONTROLE, RUBRIQUE*, TYPE, SUBMIT
                 elif len(key_info[key]) == 1:
                     key_info[key] = key_info[key][0]
+            if 'RUBRIQUE' not in key_info:
+                raise TelemacException(\
+                        "Missing RUBRIQUE for {}".format(keyword))
+            if 'RUBRIQUE1' not in key_info:
+                raise TelemacException(\
+                        "Missing RUBRIQUE1 for {}".format(keyword))
 
     def __str__(self):
         """
-        Ascii representation of dicotionnary
+        Ascii representation of a dictionnary
         """
         #TODO: Make a fancy following section order
         string = "Printing: " + self.file_name + "\n\n"
+        # Name of current rubriques
+        rubs = ['', '', '']
+        # Numerotation of current rubrique
+        irubs = [0, 0, 0]
         for key in self.data:
-            string += "~> Key: {}\n   fr {}\n".format(key, self.gb2fr[key])
+            data = self.data[key]
+            for irub in range(3):
+                # Empty rubrique displaying keyword
+                print('rub: ', key, data['RUBRIQUE1'])
+                rub = data['RUBRIQUE1'][irub]
+                if rub == '':
+                    indent = (irub-1)*2
+                    break
+                if rub != rubs[irub]:
+                    indent = irub
+                    irubs[irub] += 1
+                    for i in range(irub+1, 3):
+                        irubs[i] = 0
+                    string += \
+                       "{indent}{sep}\n{indent}~> {num}-{rub}\n{indent}{sep}\n"\
+                       .format(sep="~"*(72-(indent)),
+                               indent=" "*indent,
+                               num=".".join([str(i) for i in irubs[:(irub+1)]]),
+                               rub=rub)
+                    rubs[irub] = rub
+            string += "  "*indent+"~> Key: {}\n   fr {}\n".format(key, self.gb2fr[key])
             for keyword in DICO_KEYS:
-                if keyword in self.data[key]:
+                if keyword in data:
                     # Specific display for CHOIX and CHOIX1
                     if keyword in ['CHOIX', 'CHOIX1']:
-                        string += '   {} = \n'.format(keyword)
+                        string += "   {} = \n".format(keyword)
                         # Integer choix
-                        if isinstance(self.data[key][keyword], dict):
-                            for idx, comment in self.data[key][keyword].items():
-                                string += '   -  {} : {}\n'.format(idx, comment)
+                        if isinstance(data[keyword], dict):
+                            for idx, comment in data[keyword].items():
+                                string += "   -  {} : {}\n".format(idx, comment)
                         # String choix
                         else:
-                            for val in self.data[key][keyword]:
-                                string += '   -  {}\n'.format(val)
+                            for val in data[keyword]:
+                                string += "   -  {}\n".format(val)
 
 
                     else:
                         string += "   {} = {}\n"\
-                                  .format(keyword, self.data[key][keyword])
+                                  .format(keyword, data[keyword])
 
         return string

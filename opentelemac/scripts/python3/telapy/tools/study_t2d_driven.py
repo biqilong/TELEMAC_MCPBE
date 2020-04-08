@@ -27,9 +27,11 @@ class Telemac2DTestCase(object):
     def __init__(self, steering_file, user_fortran, ks_area="ks_area.txt", path=".", name=None):
         """ Constructor
 
-        :param str steering_file: steering file
-        :param str user_fortran: user Fortran file
-        :param str name: name of the test case
+        @param steering_file (str) steering file
+        @param user_fortran (str) user Fortran file
+        @param name (str) name of the test case
+        @param ks_area (str) Name of file containing strickler area
+        @param path (str) path of the test case
         """
         # Configuration files
         self.steering_file = os.path.realpath(steering_file)
@@ -44,8 +46,8 @@ class Telemac2DTestCase(object):
     def __call__(self, t2d, x_val):
         """ Change configuration of a Telemac2d instance
 
-        :param Telemac2d t2d: instance of Telemac2d
-        :param list x_val: inputs
+        @param t2d (Telemac2d) instance of Telemac2d
+        @param x_val (list) inputs
         """
         pass
 
@@ -56,14 +58,14 @@ class Telemac2DStudy(object):
     def __init__(self, points, test_case, results_file, work_dir=".", stdout=6,
                  nproc=1, mesh_state=False):
         """ Constructor
-        :param list points: points of interest [[x1, y1], ..., [xN, yN]]
-        :param Telemac2DTestCase test_case: test case for the study
-        :param str results_file: result file (SELAFIN)
-        :param str work_dir: working directory with files specified by test_case
-        :param int stdout: standard output (defaut = 6 [console];
+        @param points (list) points of interest [[x1, y1], ..., [xN, yN]]
+        @param test_case (Telemac2DTestCase) test case for the study
+        @param results_file (str) result file (SELAFIN)
+        @param work_dir (str) working directory with files specified by test_case
+        @param stdout (int) standard output (defaut = 6 [console];
                            if 666 => file 'fort.666')
-        :param int nproc: number of processors
-        :param bool mesh_state: store the final hydraulic state at each node
+        @param nproc (int) number of processors
+        @param mesh_state (bool) store the final hydraulic state at each node
         """
         # Working directory
         self.work_dir = os.path.realpath(work_dir)
@@ -93,9 +95,9 @@ class Telemac2DStudy(object):
     def __call__(self, x_val=None, finalize=False, out_dir="."):
         """ Run Telemac2D
 
-        :param list x_val: inputs [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
-        :param bool finalize: delete the Telemac 2D instance after execution
-        :param str out_dir: relative path of the directory of results
+        @param x_val (list) inputs [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
+        @param finalize (bool) delete the Telemac 2D instance after execution
+        @param out_dir (str) relative path of the directory of results
         """
 
         # Enter working directory
@@ -125,8 +127,8 @@ class Telemac2DStudy(object):
     def run_simulation(self, x_val, filename="run_launcher.py"):
         """ Run Telemac2D Simulation
 
-        :param list x_val: inputs [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
-        :param str filename: Python file for the simulation
+        @param x_val (list) inputs [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
+        @param filename (str) Python file for the simulation
         """
         t_0 = time.time()
         self.create_launcher_file(x_val, filename)
@@ -149,8 +151,8 @@ class Telemac2DStudy(object):
     def create_launcher_file(self, x_val, filename):
         """ Create the Python file for the execution
 
-        :param list x_val: inputs [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
-        :param str filename: Python file for the MPI execution
+        @param x_val (list) inputs [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
+        @param filename (str) Python file for the MPI execution
         """
         with io.FileIO(filename, "w") as file:
             file.write(self.cmd2str("header"))
@@ -187,8 +189,8 @@ class Telemac2DStudy(object):
     def reset(self, l_t=0., a_t=0.):
         """ Reset the provider
 
-        :param float l_t: current time step
-        :param float a_t: current time
+        @param l_t (float) current time step
+        @param a_t (float) current time
         """
         self.provider.set_state(self.initial_state[0][:],
                                 self.initial_state[1][:],
@@ -230,7 +232,7 @@ class Telemac2DStudy(object):
     def mpirun(self, filename):
         """ Launch the Python script 'filename' in parallel
 
-        :param str filename: Python file for the MPI execution
+        @param filename (str) Python file for the MPI execution
         """
         cmd = mpirun_cmd()
 
@@ -248,8 +250,8 @@ class Telemac2DStudy(object):
         """ Convert a keyword into Python lines for writing the Python script
         used by the function 'self.mpirun(filename)'
 
-        :param str command: keyword to convert into Python lines
-        :param list x_val: in@uts [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
+        @param keyword (str) keyword to convert into Python lines
+        @param x_val (list) inputs [Ks1, Ks2, Ks3, Ks4, CDZ, Q2, Q3]
         """
         if keyword == "header":
             string = ("#!/usr/bin/env python3\n"
@@ -329,7 +331,9 @@ class Telemac2DStudy(object):
         Plot the hydraulic state at final time from the .slf output file into
         an output PDF file.
 
-        :param str filename: output PDF file
+        @param out_dir (str) Output directory
+        @param filename (str) output PDF file
+        @param plot_mesh (boolean) Display the mesh
         """
         # Enter working directory
         caller_path = os.getcwd()
@@ -374,9 +378,10 @@ class Telemac2DStudy(object):
     def film_state(self, fps=15, out_dir=".", filename="water_level.mp4", plot_mesh=False):
         """
         film_state function
-        :param fps:
-        :param filename:
-        :return:
+        @param fps (int) frame per second
+        @param out_dir (str) Output directory
+        @param filename (str) output file name
+        @param plot_mesh (boolean) Display the mesh
         """
         matplotlib.use("Agg")
         ffmpeg_writer = manimation.writers['ffmpeg']

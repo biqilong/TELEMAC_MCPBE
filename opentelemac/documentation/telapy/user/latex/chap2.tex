@@ -39,7 +39,7 @@ The API’s main goal is to have control on a simulation while running a case.
 For example, it must allow the user to stop the simulation at any time step,
 retrieve some variables values and change them. In order to make this possible,
 a \fortran structure called instance is used in the API\@. This informatic
-struture is described in the paragraph~\ref{subsec:instan}. The instance
+structure is described in the paragraph~\ref{subsec:instan}. The instance
 structure gives direct access to the physical memory of variables, and allows
 therefore the variable control (see paragraph~\ref{subsec:var}). Furthermore,
 based on modifications in \telemacsystem main subroutines, it is possible to
@@ -394,7 +394,7 @@ where copied and renamed inside that folder) which means that the name and path
 given in the steering file will be used.
 \end{WarningBlock}
 
-\item Memory allocation. This function run the allocation of all the data
+\item Memory allocation. This function runs the allocation of all the data
   needed in \telemac{2D}. Any modifications to quantities of \telemac{2D}
   should be done before the call to that function.
 
@@ -413,7 +413,7 @@ end subroutine run_allocation_t2d
 \end{itemize}
 
 \item Initialization. This function will do the setting of the initial
-  conditions of \telemac{2D} It corresponds to the time-step 0 of a
+  conditions of \telemac{2D}. It corresponds to the time-step 0 of a
   \telemac{2D} run.
 
 \begin{lstlisting}

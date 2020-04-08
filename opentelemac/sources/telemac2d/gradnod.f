@@ -72,6 +72,7 @@
 !
       INTEGER IS,JT,NUBO1,NUBO2,NUBO3,IVAR
       DOUBLE PRECISION AIRJ,UA1,UA2,UA3,AIS,HTT,AUX,TIERS,TEMPOR
+      DOUBLE PRECISION, ALLOCATABLE :: TMP1(:), TMP2(:), TMP3(:)
 !
       TIERS = 1.0D0/3.0D0
 !
@@ -143,8 +144,26 @@
 
 !     FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN                 ! NPON,NPLAN,ICOM,IAN
-        CALL PARCOM2(DX(1,:),DX(2,:),DX(3,:),NS,1,2,3,MESH )
-        CALL PARCOM2(DY(1,:),DY(2,:),DY(3,:),NS,1,2,3,MESH )
+        ALLOCATE(TMP1(NS))
+        ALLOCATE(TMP2(NS))
+        ALLOCATE(TMP3(NS))
+        TMP1 = DX(1,:)
+        TMP2 = DX(2,:)
+        TMP3 = DX(3,:)
+        CALL PARCOM2(TMP1,TMP2,TMP3,NS,1,2,3,MESH )
+        DX(1,:) = TMP1
+        DX(2,:) = TMP2
+        DX(3,:) = TMP3
+        TMP1 = DY(1,:)
+        TMP2 = DY(2,:)
+        TMP3 = DY(3,:)
+        CALL PARCOM2(TMP1,TMP2,TMP3,NS,1,2,3,MESH )
+        DY(1,:) = TMP1
+        DY(2,:) = TMP2
+        DY(3,:) = TMP3
+        DEALLOCATE(TMP1)
+        DEALLOCATE(TMP2)
+        DEALLOCATE(TMP3)
       ENDIF
 !
       IF(IVIS.EQ.0.OR.CVIS.EQ.0.) GOTO 10 ! IF THERE IS NO VISCOSITY OR NO VELOCITY DIFFUSISION

@@ -277,6 +277,7 @@ def clean_instruction(istr, list_tag):
     Remove FORTRAN instructions.
 
     @param istr (string) line to be processed
+    @param list_tag (list) List of tag not to clean
 
     @return a modified (string) line processed
     """
@@ -818,11 +819,11 @@ def parse_principal_main(lines, who, typ, name, args, resu):
     """
     Parse the main core of a Fortran file, sorting out its high level structure
     @param lines (string) of Fortran code to be processed
-    @who (string) of Fortran code to be processed
-    @typ (string) of Fortran code to be processed
-    @name (string) of Fortran code to be processed
-    @args (string) of Fortran code to be processed
-    @resu (string) of Fortran code to be processed
+    @param who (string) of Fortran code to be processed
+    @param typ (string) of Fortran code to be processed
+    @param name (string) of Fortran code to be processed
+    @param args (string) of Fortran code to be processed
+    @param resu (string) of Fortran code to be processed
     @return (list of string) as a split between the top part of the Fortran
         file (including decalrations), the main name, its arguments and return,
         the interfaces if present na dthe main care
@@ -912,8 +913,10 @@ def del_continueds_f77(lines):
         continuation -- assumes that in between comments have been
         removed already
         Return the set of lines without continuation
-        @param lines(string) lines
-        @return cmds(list) the set of lines without continuation
+
+        @param lines (string) lines
+
+        @return cmds (list) the set of lines without continuation
     """
     # ~~ Assumes code without comments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     cmds = []
@@ -942,8 +945,10 @@ def del_continueds_f90(lines):
     continuation -- assumes that in between comments have been
     removed already
     Return the set of lines without continuation
-    @param lines(string) lines
-    @return cmds(list) the set of lines without continuation
+
+    @param lines (string) lines
+
+    @return cmds (list) the set of lines without continuation
     """
     # ~~ Assumes code without comments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     cmds = []
@@ -989,8 +994,10 @@ def del_comments(lines):
     In order for multiple lines of code to be interpreted, remove all
     comments form these, whether they include f77 or f90 comments --
     Return the command lines (without empty lines)
-    @param lines(string) lines
-    @return cmds(list)the command lines (without empty lines)
+
+    @param lines (string) lines
+
+    @return cmds (list) the command lines (without empty lines)
     """
     # ~~ Also removes end lines and sets to UPPERCASE ~~~~~~~~~~~~~~~
     cmds = []
@@ -1017,11 +1024,11 @@ def del_comments(lines):
 
 def put_scan_content(cfg, file_name, wcw):
     """
-        Print to file the the scanning processes as an XML tree.
-        @param cfg(dictionary) configuration dictionary
-        @param file_name(string) file name
-        @param wcw(dictionary) ?????
-        @return nothing
+    Print to file the the scanning processes as an XML tree.
+
+    @param cfg (dict) configuration dictionary
+    @param file_name (string) file name
+    @param wcw (dictionary) ?????
     """
 
     # ~~ High level root ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1123,10 +1130,10 @@ def put_scan_content(cfg, file_name, wcw):
 def refactor_sources(subset, cmdf, bypass):
     """
     Refactor Sources
-    @param subset(list) ???? todo
-    @param cmdf(dictionary) modules dictionary
-    @param bypass(boolean) continue with raise exception
-    @return nothing
+
+    @param subset (list) ???? todo
+    @param cmdf (dict) modules dictionary
+    @param bypass (boolean) continue with raise exception
     """
     genmod = cmdf['general']['module']
     name = cmdf['general']['name'].split('.')[0]
@@ -1176,18 +1183,19 @@ def scan_sources(cfgdir, cfg, bypass, verbose):
     """
     Scan sources
 
-    @param cfgdir(string) configuration path
-    @param cfg(dictionary)  configuration dictionary
-    @param bypass(boolean) continue with raise exception
+    @param cfgdir (string) configuration path
+    @param cfg (dict)  configuration dictionary
+    @param bypass (boolean) continue with raise exception
+    @param verbose (boolean) If true display what file is scanned
 
-    @return fic(dictionary) file dictionary
-    @return mdl(dictionary) ???todo
-    @return sbt(dictionary) ???todo
-    @return fct(dictionary) function dictionary
-    @return prg(dictionary) program dictionary
-    @return top(dictionary) ???todo
-    @return odd(dictionary) ??? todo
-    @return wcw(dictionary) ???todo
+    @return fic (dict) file dictionary
+    @return mdl (dict) ???todo
+    @return sbt (dict) ???todo
+    @return fct (dict) function dictionary
+    @return prg (dict) program dictionary
+    @return top (dict) ???todo
+    @return odd (dict) ??? todo
+    @return wcw (dict) ???todo
     """
     fic = {}
     mdl = {}
@@ -1469,13 +1477,15 @@ def scan_sources(cfgdir, cfg, bypass, verbose):
 def sort_functions(ifcts, iuses, llist, mods, xuses):
     """
     Change order function list
-    @param ifcts(dictionary)
-    @param iuses(dictionary)
-    @param llist(???) ??? todo
-    @param mods(list) ???todo
-    @param xuses(???) ???todo
-    @return ifcts(dictionary)
-    @return iuses(dictionary)
+
+    @param ifcts (dict) todo
+    @param iuses (dict) todo
+    @param llist (dict) ??? todo
+    @param mods (list) ???todo
+    @param xuses (list) ???todo
+
+    @return ifcts (dictionary)
+    @return iuses (dictionary)
     """
     ofcts = []
     ofcts.extend(ifcts)
@@ -1505,10 +1515,11 @@ def sort_functions(ifcts, iuses, llist, mods, xuses):
 #
 def scan_enunciation(name):
     """
-    Display differenciating between name and name.mdf
+    Display differenciating between name and name.cmdf
 
-    @param name(string) name file
-    @return name(string) name file
+    @param name (string) name file
+
+    @return name (string) name file
     """
     # ~~ get file content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     lines = get_file_content(name)
@@ -1558,11 +1569,13 @@ def get_next_doxy_tag(core):
         Parse a list of entry lines, removing the lines that are
         understood to be part of a tag -- the lines are removed
         from the 'core' iteratively -- Return one complete tag
-        @param core(list) list of entry lines
-        @return tag(string) tag
-        @return name(string) name
-        @return ltag(list) tag list
-        @return core(list) lines list
+
+        @param core (list) list of entry lines
+
+        @return tag (string) tag
+        @return name (string) name
+        @return ltag (list) tag list
+        @return core (list) lines list
     """
     ltag = []
     tag = ''
@@ -1588,11 +1601,13 @@ def get_next_doxy_tag(core):
 
 def parse_doxy_tags(core):
     """
-        Parse a list of entry lines, removing the doxygen blocks
-        listing them out by tag names -- the doxygen blocks are removed
-        from the 'core' iteratively -- Return the list of tags by blocks
-        @param core(list)list of entry lines
-        @return tags(list)list of tags by blocks
+    Parse a list of entry lines, removing the doxygen blocks
+    listing them out by tag names -- the doxygen blocks are removed
+    from the 'core' iteratively -- Return the list of tags by blocks
+
+    @param core (list) list of entry lines
+
+    @return tags (list) list of tags by blocks
     """
     tags = []
     while 1:
@@ -1612,11 +1627,13 @@ VAR_COMMENT = re.compile(r'[C!#*]\s*?[|!]\s*?(?P<vars>[\s\w,()]*)(?P<inout>(|[|!
 
 def parse_fort_header(core):
     """
-    Pars for th header
-    @param core(list)list of entry lines
-    @return docs(list) docs information
-    @return vrs(dictionary) ??? todo
-    @return core(list)lines list
+    Parse fortran header
+
+    @param core (list) list of entry lines
+
+    @return docs (list) docs information
+    @return vrs (dict) ??? todo
+    @return core (list)lines list
     """
     docs = []
     vrs = {}
@@ -1667,9 +1684,11 @@ def parse_fort_header(core):
 
 def get_principal_wrap_names(dif_file):
     """
-    ????? TODO
-    @param dif_file(string) name file
-    @return pFiles(list) ??? todo
+    Get name of subroutine/functions defined in file
+
+    @param dif_file (string) name file
+
+    @return pFiles (list) list of [file_name , function_name]
     """
     # Filter most unuseful
     src_file = open(dif_file, 'r', encoding='utf-8')
@@ -1690,10 +1709,12 @@ def get_principal_wrap_names(dif_file):
 
 def filter_principal_wrap_names(u_names, s_files):
     """
-    ????? TODO
-    @param u_names(list) list to check ???? todo
-    @param s_files(list) file names list
-    @return o_files(dictionary)   ???? todo
+    Idenfy the name of function associated with files
+
+    @param u_names (list) list to check ???? todo
+    @param s_files (list) file names list
+
+    @return o_files (dictionary)   ???? todo
     """
     o_files = {}
     for s_file in s_files:
@@ -1718,9 +1739,11 @@ DOXY_COMMENT_ADD = re.compile(r"\s*!\+(?P<after>.*?)\s*\Z")
 def parse_doxy_header(body):
     """
     Format text for Doxygen header
-    @param body(string) text line
-    @return name(string) name
-    @return tags(list) ??? todo
+
+    @param body (string) text line
+
+    @return name (string) name
+    @return tags (list) ??? todo
     """
     # It is now assumed that DOXY_TAGS could be part of the main
     # core of the Fortran.
@@ -1779,7 +1802,9 @@ def parse_doxy_wrap(lines):
         - lines contains the content of the file
         - icount is the number of entities included (functions, subroutines,
         etc.)
-        @param lines(string) lines content of a file
+
+        @param lines (string) lines content of a file
+
         @return doxy(list) Doxygen header
     """
     core = []
@@ -1840,6 +1865,7 @@ def trim_tree(name, lname, lst, rebuild, maksystel):
         "add" include the list of file to be compiled
         "tag" include the list of files to be ignored (already compiled)
         "deps" include the list of files not part of the TELEMAC system
+    @param rebuild (integer) Level of reconstruction ?
 
     @return lst (dict) the tree of dependencies up to that point.
     """
@@ -1901,6 +1927,7 @@ def get_tree(name, lname, lst, level, lrank, rebuild, maksystel):
         "add" include the list of file to be compiled
         "tag" include the list of files to be ignored (already compiled)
         "deps" include the list of files not part of the TELEMAC system
+    @param rebuild (int) TODO
 
     @return lst (dict) the tree of dependencies up to that point.
     """

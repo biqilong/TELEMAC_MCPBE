@@ -7,6 +7,7 @@ from postel.plot2d import set_extrema, custom_cbar
 from postel.deco_cbar import deco_cbar
 import numpy as np
 import matplotlib.cm as cm
+# Keep import enven if not used
 from mpl_toolkits.mplot3d import Axes3D
 
 def plot3d_scalar_map(fig, axe, mesh, data,\
@@ -17,7 +18,7 @@ def plot3d_scalar_map(fig, axe, mesh, data,\
         cmap_name='jet', **kwargs):
     """
     Plot a 3d representation of a triangle mesh with a data as z coordinates
-    with default title (2D mesh (%d triangles, %d nodes) with <data_name> (%s))
+    with default title (2D mesh (%d triangles, %d nodes) with "data_name" (%s))
     and xlabel and ylabel (X/Y-coordinates (m))
 
     @param fig (matplotlib.figure) matplotlib figure structure
@@ -25,10 +26,12 @@ def plot3d_scalar_map(fig, axe, mesh, data,\
     @param mesh (matplotlib.tri.Triangulation or tuple)
     triangular mesh or regular x,y grid
     @param data (numpy.array) Value to plot
+    @param x_label (string) Label on x axe
+    @param y_label (string) Label on y axe
     @param data_name (string) Name of the data to display
     @param colorbar (bool) show colorbar (default: True)
     @param cbar_ticks (list) list of values where to show color bar ticks
-    @param cbar_ax (Axes) Parent axes from which space for a new colorbar 
+    @param cbar_ax (Axes) Parent axes from which space for a new colorbar
     axes will be stolen. If a list of axes is given they will all be resized
     to make room for the colorbar axes.
     @param cbar_cax (Axes) Axes into which the colorbar will be drawn.
@@ -36,7 +39,7 @@ def plot3d_scalar_map(fig, axe, mesh, data,\
     @param vmin (float) Minimal value of data to plot
     @param vmax (float) Maximal value of data to plot
     @param nv (integer) Number of sample for colorbar range (default 10)
-    @param linewidth (float) thickness of the plots line (default 0.)
+    @param levels (list) Discretisation of colorbar
     @param cmap_name (string) Name of the coloring map to use for the data
     @param kwargs (dict) rest of optional arguments given to trisurf
     """

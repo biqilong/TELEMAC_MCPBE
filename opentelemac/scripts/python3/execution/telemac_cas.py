@@ -2,14 +2,15 @@
 Class for Telemac steering file manipulation
 """
 
+import re
+from os import path
+import shutil
+
 from execution.tools import KEY_COMMENT, EMPTY_LINE, KEY_EQUALS, VAL_EQUALS, \
                             KEY_NONE, convert_to_type, check_type, format72
 from execution.telemac_dico import TelemacDico, DICOS
 from utils.exceptions import TelemacException
 from utils.files import is_newer
-import re
-from os import path
-import shutil
 
 
 SPECIAL = ['VARIABLES FOR GRAPHIC PRINTOUTS',
@@ -30,10 +31,10 @@ def get_dico(module):
     from config import CFGS
     if CFGS is None:
         raise TelemacException(\
-                "This function only wors if a configuration is set")
+                "This function only works if a configuration is set")
     return path.join(CFGS.get_root(), 'sources', module, module+'.dico')
 
-class TelemacCas(object):
+class TelemacCas():
     """
     Class to hanlde a Telemac-mascaret steering file
     """
@@ -44,7 +45,7 @@ class TelemacCas(object):
 
         @param file_name (string) Name of the steering file
         @param dico_file (string) Name of the dictionary to use
-        @param acces (string) r (read) or w (write)
+        @param access (string) r (read) or w (write)
         @param check_files (bool) If true checking that input files exist
         """
         self.file_name = file_name
@@ -90,8 +91,7 @@ class TelemacCas(object):
                     # Skipping &key (&ETA, &FIN...)
                     if line[0] == '&':
                         continue
-                    else:
-                        lines.append(line)
+                    lines.append(line)
 
         # ~~ clean comments
         core = []
@@ -172,7 +172,7 @@ class TelemacCas(object):
         """
         for key, value in self.values.items():
             # If empty value doing nothing
-            if value == '' or value == []:
+            if value in ['', []]:
                 continue
             # Check if we have a keyword with choices
             choix = 'CHOIX1' if self.lang == 'en' else 'CHOIX'
@@ -218,11 +218,6 @@ class TelemacCas(object):
     def _convert_values(self):
         """
         Convert string value to its Python type and replace key by english key
-
-        @param keyword (string) Name of the dico keyword
-        @param value (string) Value given in the case file
-
-        @return Value in its proper type (int/float/boolean/string)
         """
 
 
@@ -273,30 +268,61 @@ class TelemacCas(object):
         Write content of class in ascii for into a file
         """
         # TODO: fancier write using rubrique
+        # Name of current rubriques
+        rubs = ['', '', '']
+        # Numerotation of current rubrique
+        irubs = [0, 0, 0]
+
         with open(cas_file, 'w') as f:
-            for key in sorted(self.values.keys()):
-                val = self.values[key]
-                if self.lang == 'fr':
-                    real_key = self.dico.gb2fr[key]
-                else:
-                    real_key = key
-                if isinstance(val, list):
-                    s_val = [repr(item) for item in val]
-                    string = "{} = {}\n".format(real_key, ";".join(s_val))
-                    if len(string) < 73:
-                        f.write(string)
+            # Following dictionary order (for nicer output)
+            for key in self.dico.data:
+                if key in self.values:
+                    # keyword adaptaion to language
+                    if self.lang == 'fr':
+                        real_key = self.dico.gb2fr[key]
+                        rubrique = 'RUBRIQUE'
                     else:
-                        string = "{} = \n{}\n".format(real_key,
-                                                      ";\n".join(s_val))
-                        f.write(string)
-                else:
-                    string = "{} = {}\n".format(real_key, repr(val))
-                    if len(string) < 73:
-                        f.write(string)
+                        real_key = key
+                        rubrique = 'RUBRIQUE1'
+
+                    val = self.values[key]
+                    # Printing rubrique information
+                    string = ''
+                    for irub in range(3):
+                        # Empty rubrique displaying keyword
+                        rub = self.dico.data[key][rubrique][irub]
+                        if rub == '':
+                            break
+                        if rub != rubs[irub]:
+                            irubs[irub] += 1
+                            for i in range(irub+1, 3):
+                                irubs[i] = 0
+                            if irub == 0:
+                                string += "/"*72+"\n"
+                            string += \
+                               "/// {num}-{rub}\n"\
+                               .format(sep="/"*(72),
+                                       num=".".join([str(i) for i in irubs[:(irub+1)]]),
+                                       rub=rub.lower())
+                            rubs[irub] = rub
+                    f.write(string)
+                    if isinstance(val, list):
+                        s_val = [repr(item) for item in val]
+                        string = "{} = {}\n".format(real_key, ";".join(s_val))
+                        if len(string) < 73:
+                            f.write(string)
+                        else:
+                            string = "{} = \n{}\n".format(real_key,
+                                                          ";\n".join(s_val))
+                            f.write(string)
                     else:
-                        string = "{} =\n{}\n".format(real_key,
-                                                     format72(repr(val)))
-                        f.write(string)
+                        string = "{} = {}\n".format(real_key, repr(val))
+                        if len(string) < 73:
+                            f.write(string)
+                        else:
+                            string = "{} =\n{}\n".format(real_key,
+                                                         format72(repr(val)))
+                            f.write(string)
 
     def write_fr_gb(self, output_dir=''):
         """
@@ -406,11 +432,10 @@ class TelemacCas(object):
         """
         # Get english version of the keyword
         if key not in self.dico.fr2gb and key not in self.dico.gb2fr:
-            if default != None:
+            if default is not None:
                 return default
-            else:
-                raise TelemacException(\
-                        "keyword: {} not in dictionary".format(key))
+            raise TelemacException(\
+                    "keyword: {} not in dictionary".format(key))
         # Getting english keyword
         gb_key = self.dico.fr2gb.get(key, key)
 
@@ -531,8 +556,8 @@ class TelemacCas(object):
                 ffile = "{}{:05d}-{:05d}{}".format(root, ncsize-1, ipid, ext)
                 file_names.append(ffile)
             return file_names
-        else:
-            return self.get(file_key)
+
+        return self.get(file_key)
 
     def copy_cas_files(self, dir_path, verbose=False, copy_cas_file=True):
         """

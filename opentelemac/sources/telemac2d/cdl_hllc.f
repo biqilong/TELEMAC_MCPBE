@@ -87,6 +87,7 @@
 !     TO CORRECT WHEN CONSIDERING TRACERS
       DOUBLE PRECISION,PARAMETER ::PSI1=0.0D0,PSI2=0.0D0
       LOGICAL                    ::ROT,DEJA
+      DOUBLE PRECISION :: TMP_FLX(4)
 !
       DEJA =.FALSE.
       ROT = .TRUE.
@@ -165,8 +166,11 @@
 !           U2 = U1 - U10*XNN
 !           V2 = V1 - U10*YNN
 !
+          ! memory optimisation (from intel debug)
+          TMP_FLX = FLX(K,:)
           CALL FLUX_HLLC(XI,H1,H2,U1,U2,V1,V2,PSI1,PSI2,
-     &                   XNN,YNN,ROT,FLX(K,:))
+     &                   XNN,YNN,ROT,TMP_FLX)
+          FLX(K,:) = TMP_FLX
 !          GOTO 100
 !
 !**************************************************
@@ -276,8 +280,11 @@
 !         COMPUTE THE FLUX
           IF(IDRY.LT.2)THEN
 !         AT LEAST ONE WET CELL
+            ! memory optimisation (from intel debug)
+            TMP_FLX = FLX(K,:)
             CALL FLUX_HLLC(XI,H1,HG,U1,UG,V1,VG,PSI1,PSI2,
-     &                     XNN,YNN,ROT,FLX(K,:))
+     &                     XNN,YNN,ROT,TMP_FLX)
+            FLX(K,:) = TMP_FLX
           ENDIF
 !
         ENDIF

@@ -5,14 +5,14 @@ Contains the class for configuration
 import re
 from os import environ, walk, path, remove
 from socket import gethostname
+import configparser
 from utils.files import remove_directories
 from utils.exceptions import TelemacException
 from configuration.config_tools import get_folders_modules_telemac, \
     get_tags, add_externals, get_externals, parse_user_modules, \
     get_files_validation_telemac
-import configparser
 
-class Config(object):
+class Config():
     """
     Class containing all information on a configuration
     """
@@ -90,7 +90,8 @@ class Config(object):
 
         @param cfg_file (string) the name of the configuration file
         @param name (string) configuration name
-        @param bypass (Boolean) continue with a raise exception
+        @param root_dir (string) Path to root of sources
+        @param python_dir (string) Path to root of Python scripts
 
         @return config_dict (dictionary) information for the configuration
         """
@@ -153,9 +154,9 @@ class Config(object):
         Get the value of a key from the config cfg. Further, test if
         the key is there and if it is empty -- Return the value
 
-        @param key(string) key of cfg dict.
-        @param there(boolean) test if the key is there
-        @param empty(boolean) test if it is empty
+        @param key (string) key of cfg dict.
+        @param there (boolean) test if the key is there
+        @param empty (boolean) test if it is empty
 
         @return value of a key from the config cfg
         """
@@ -196,7 +197,8 @@ class Config(object):
         str_mod = ' / '.join(modules[0:n_mod_per_line]) + "\n"
         intent = '               '
         for i in range(1, n_mod//n_mod_per_line):
-            str_mod += intent+'  / '.join(modules[i*n_mod_per_line:(i+1)*n_mod_per_line]) + "\n"
+            tmp_mod = modules[i*n_mod_per_line:(i+1)*n_mod_per_line]
+            str_mod += intent+'  / '.join(tmp_mod) + "\n"
             last = i
         str_mod += intent+' / '.join(modules[(last+1)*n_mod_per_line:])
 
@@ -205,8 +207,6 @@ class Config(object):
     def compute_zip_info(self):
         """
         Extract information for zipping files
-
-        @param cfgname (string) Name of the configuration
         """
         self.configs[self.cfgname]['ZIPPER'] = \
                 self.get_config_key('sfx_zip', there=True)[1:]
@@ -219,9 +219,8 @@ class Config(object):
         teldir\\module_name\\
         Filling the 'MODULES' key in the configuration
 
-        @param cfgname (string) Name of the configuration
-        @param rescan(boolean) check if it must rescan
-        @param bypass(boolean) continue with a raise exception
+        @param rescan (boolean) check if it must rescan
+        @param bypass (boolean) continue with a raise exception
         @param add_odd (boolean) If true computing ADDONES and ODDONES as well
         """
         # ~~ List all files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -380,8 +379,7 @@ class Config(object):
 
     def compute_mpi_info(self):
         """
-        Get mpi_cpulist and mpi_cmdexec: for mpi option
-        .. in theory, mpi could be replaced by something else (?)
+        Get mpi options for systel
         """
 
         cfg = self.configs[self.cfgname]
@@ -400,8 +398,7 @@ class Config(object):
 
     def compute_hpc_info(self):
         """
-        Get hpc_cmdexec and hpc_infile for hpc option
-        .. in theory, bsub could be replaced by another queueing system
+        Get hpc options from systel
         """
         cfg = self.configs[self.cfgname]
         cfg['HPC'] = {}
@@ -443,7 +440,7 @@ class Config(object):
         """
         Clean configuration install folder (deletes it)
 
-        @param cfgname(string) Name of the configuration
+        @param cfgname (string) Name of the configuration
         """
         cfg_dir = path.join(self.configs[cfgname]['root'], 'builds', cfgname)
         if path.exists(cfg_dir):

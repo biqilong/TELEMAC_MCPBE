@@ -62,7 +62,7 @@ def compute_diff(data1, data2, relative=False):
     Compute difference of two vectors
 
     @param data1 (array) usually the model or computation
-    @param data1 (array) usually the reference data
+    @param data2 (array) usually the reference data
     @param relative (bool) use relative difference
     """
     if relative:
@@ -85,7 +85,7 @@ def check_compatibility(res1, res2, record, check_name=True):
     @param res1 (TelemacFile) first telemac-mascaret result file
     @param res2 (TelemacFile) second telemac-mascaret result file
     @param record (int) Record to check
-    @parma check_name (bool) If False only check that we have the same number
+    @param check_name (bool) If False only check that we have the same number
     of variable but not necessaraly the same name
     """
     # Checking that we have the same variables

@@ -69,10 +69,12 @@ def get_value_history(slf, times, support, vrs):
     (a) A point could be a node 2D associated with one or more plan number
     (b) A pair (x,y) associated with one or more plan number
     Warning: Vertical interpolation has not been implemented yet.
+
+    @param slf (TelemacFile) Serafin file structure
     @param times (list) the discrete list of time frame to extract from the time
                        history
     @param support (list) the list of points
-    @param vars_indexes (list) the index in the nvar-list to the variable to
+    @param vrs (list) the index in the nvar-list to the variable to
                                extract
     """
     (vars_indexes, var_names) = vrs
@@ -220,7 +222,6 @@ def get_neighbours_slf(ikle, meshx, meshy, showbar=True):
     @param showbar (boolean) If True display a progress bar
 
     @returns (list) The list of neighbours
-    @param
     """
 
     try:
@@ -276,10 +277,11 @@ def get_value_polyline(slf, times, support, vrs):
     A point is a pair (x,y) associated with one or more plan number
     Warning: Vertical interpolation has not been implemented yet.
 
+    @param slf (TelemacFile) Telemac file class
     @param times (list) the discrete list of time frame to extract from the time
     history
     @param support (list): the list of points intersecting th mesh
-    @param (vars_indexes, varnames) (tuple of list): the index, names in the
+    @param vrs (tuple of list): the index, names in the
     nvar-list to the variable to extract
     """
     (vars_indexes, var_names) = vrs

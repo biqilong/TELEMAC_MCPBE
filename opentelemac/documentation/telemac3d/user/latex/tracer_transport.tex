@@ -26,8 +26,9 @@ OF TRACERS}. A tracer name should be written with 32 characters
 (16 for the name and 16 for the unit).
 
 \begin{lstlisting}[language=TelemacCas]
-NUMBER OF TRACERS: 2
-NAMES OF TRACERS: 'TEMPERATURE      C             '; 'SALINITY                     G/L'
+NUMBER OF TRACERS : 2
+NAMES OF TRACERS :
+'TEMPERATURE     C              ';'SALINITY        G/L             '
 \end{lstlisting}
 
 
@@ -37,7 +38,8 @@ If the initial values of tracers are constant all over the domain, just insert,
 into the steering file, the keyword \telkey{INITIAL VALUES OF TRACERS} with the
 desired value(s) separated with ; if more than one.
 
-In more complex cases, an action shall be taken directly at the \telfile{CONDIM}
+In more complex cases, an action shall be taken directly at the
+\telfile{USER\_CONDI3D\_TRAC}
 subroutine, in the same fashion as described in subsection \ref{sec:prescr_IC}
 dealing with the initial hydrodynamic conditions.
 
@@ -76,8 +78,9 @@ be set directly by the \telfile{TBOR} variable in the
 
 \item  If the value is constant along the boundary but varies in time, the user
 may either use the \telkey{LIQUID BOUNDARIES FILE} or take action at the
-function \telfile{TR3}. The latter will be programmed somewhat like the functions
-\telfile{VIT3, Q3} and \telfile{SL3}.
+\telfile{USER\_TR3} subroutine.
+The latter will be programmed somewhat like the
+\telfile{USER\_VIT3, USER\_Q3} and \telfile{USER\_SL3} subroutines.
 Note that the liquid boundaries file will not be taken into account
 if the keywords \telkey{PRESCRIBED ELEVATIONS} and \telkey{PRESCRIBED
 FLOWRATES} do not appear in the steering file.
@@ -96,7 +99,7 @@ number of the tracer.
 
 \begin{itemize}
 \item  If the value varies in both time and space, the user should then modify
-the \telfile{BORD3D} subroutine, at the part regarding the tracer.
+the \telfile{USER\_BORD3D} subroutine, at the part regarding the tracer.
 \end{itemize}
 
 The keyword \telkey{TREATMENT OF FLUXES AT THE BOUNDARIES} enables, during the
@@ -112,7 +115,7 @@ concentration profile in the vertical using the keyword \telkey{TRACERS
 VERTICAL PROFILES}. The options are:
 
 \begin{itemize}
-\item  0: user programming (in \telfile{BORD3D}),
+\item  0: user programming (in \telfile{USER\_BORD3D}),
 
 \item  1: constant profile (default),
 
@@ -195,7 +198,7 @@ writing convention is as follows: source value 1~of tracer 1; source value 1~of
 tracer 2;~\dots , source value 1~of tracer~$n$; source value 2~of tracer
 1; \dots ,~source value 2~of tracer $n$ etc. In case of time dependent
 value, it is necessary to use the source file or a specific FORTRAN programming
-(function \telfile{T3D\_TRSCE}).
+(\telfile{USER\_T3D\_TRSCE} subroutine).
 
 
 \subsection{General source terms}

@@ -117,7 +117,7 @@ def main():
         plot_spe(res, options.point, options.record, options.time,
                  options.fig_name)
         res.close()
-    elif command in 'spec-freq':
+    elif command == 'spec-freq':
         res = TelemacFile(options.input_file)
         plot_spe_freq(res, options.points, options.record, options.time,
                       options.fig_name)

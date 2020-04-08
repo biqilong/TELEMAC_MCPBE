@@ -38,9 +38,9 @@ from multiprocessing.sharedctypes import Value, Array
 def filter_message(dic, excpt=None, bypass=True):
     """
     Add error in message dict.
-    @param dic(dictionary) information to filter
-    @param excpt(object) exception object
-    @param bypass(boolean) continue with raise exception
+    @param dic (dictionary) information to filter
+    @param excpt (object) exception object
+    @param bypass (boolean) continue with raise exception
     @return (dictionary) information for display
     """
     # ~~> case with an exception
@@ -93,7 +93,7 @@ def filter_message(dic, excpt=None, bypass=True):
 def repr_message(items):
     """
     Dict to string for message
-    @param items(dictionary) items dict to add to the message
+    @param items (dictionary) items dict to add to the message
     @return (string) message to display
     """
     message = []
@@ -123,8 +123,8 @@ class Messages(object):
     def __init__(self, size=0, ncsize=0):
         """
         Initialization of messages class
-        @param size(integer) size
-        @param ncsize(integer) cpu number
+        @param size (integer) size
+        @param ncsize (integer) cpu number
         """
         self.messages = []
         self.tail = ''
@@ -136,7 +136,7 @@ class Messages(object):
     def add_messages(self, m_s):
         """
         Add item in message
-        @param m_s(dictionary) item
+        @param m_s (dictionary) item
         @return None
         """
         for item in m_s:
@@ -160,9 +160,9 @@ class Messages(object):
         """
         Start task
         @param tasks (list) task list
-        @param args(tuple)  task arguments
-        @param memo(string) ?????todo
-        @return task(Thread Objects)
+        @param args (tuple)  task arguments
+        @param memo (string) ?????todo
+        @return task (Thread Objects)
         """
         # ~~> prevents from overloading your system
         while len(active_children()) >= self.ncsize:
@@ -179,8 +179,8 @@ class Messages(object):
     def flush_cmd(self, tasks):
         """
         TODO ???????
-        @param tasks(list) task list
-        @return messages(list)  ????todo
+        @param tasks (list) task list
+        @return messages (list)  ????todo
         """
         messages = []
         while tasks != []:
@@ -195,8 +195,8 @@ class Messages(object):
     def clean_cmd(self, tasks):
         """
         Clean the tasks
-        @param tasks(list) task list
-        @return messages(list)
+        @param tasks (list) task list
+        @return messages (list)
         """
         i = len(tasks)
         messages = []
@@ -219,8 +219,7 @@ class Messages(object):
     def clear_cmd(self, tasks):
         """
         Terminate all task
-        @param tasks(list)
-        @return nothing
+        @param tasks (list)
         """
         while tasks != []:
             task, _, _ = tasks.pop()
@@ -230,12 +229,12 @@ class Messages(object):
                 tail=Array('c', b' '*10000), code=Value('i', 0)):
         """
         Run executable
-        @param exe(string) executable
-        @param bypass(boolean) continue with raise exception
-        @param tail(c_char) intial message
-        @param code(c_int) initial status process
-        @return tail(c_char) output message
-        @return code.value(interger) status process
+        @param exe (string) executable
+        @param bypass (boolean) continue with raise exception
+        @param tail (c_char) intial message
+        @param code (c_int) initial status process
+        @return tail (c_char) output message
+        @return code.value (integer) status process
         """
         if bypass:
             proc = sp.Popen(exe, bufsize=1024, stdout=sp.PIPE,
@@ -297,9 +296,8 @@ class ParaProcess(Process):
     def __init__(self, fct, args):
         """
         Initialization ParaProcess Class
-        @param fct(string) function
-        @param args(tuple) arguments function
-        @return nothing
+        @param fct (string) function
+        @param args (tuple) arguments function
         """
         Process.__init__(self)
         self.fct = fct
@@ -308,8 +306,6 @@ class ParaProcess(Process):
     def run(self):
         """
         Run function
-        @param nothing
-        @return nothing
         """
         self.fct(*self.args)
 
@@ -322,7 +318,7 @@ def banner(text, size=1):
     """
     Use Letters class
     @param text (string)
-    @param size(integer) one size supported for now
+    @param size (integer) one size supported for now
     @return (list) list of characters set inspired from Glenn Chappell
     """
 
@@ -335,7 +331,7 @@ def svn_banner(root_dir, version='trunk'):
     Print a banner with the svn revision number
 
     @param root_dir (str) Path to the root of Telemac-Mascaret
-    @parma version (str) If revision can not be found displaying version
+    @param version (str) If revision can not be found displaying version
     instead
     """
     mes = Messages()  # runcode takes its version number from the CAS file
@@ -370,7 +366,7 @@ class Letters(object):
     def __init__(self, size=1):
         """
         Initialization function fo Letters Class
-        @param size(integer) one size supported for now
+        @param size (integer) one size supported for now
         """
 
         self.size = size         # only one size supported for now
@@ -1145,8 +1141,8 @@ class Letters(object):
         """
         Translate text to characters set inspired from Glenn Chappell
 
-        @param text(string) text to translate with the letters
-        @return lines(list) list of characters set inspired from Glenn Chappell
+        @param text (string) text to translate with the letters
+        @return lines (list) list of characters set inspired from Glenn Chappell
         """
         lines = [' ' for i in self.ascii[32][self.size]]
         for char in range(len(text)):

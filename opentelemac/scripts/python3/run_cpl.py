@@ -12,7 +12,7 @@ from telapy.coupling.long_cpl_driver import LongCplDriver
 def check_json(fichier):
     """
     Read json file
-    @param fichier(str) path json file of mascaret
+    @param fichier (str) path json file of mascaret
     @return dico (dict) paramater of json file
     """
     dico = {}
@@ -28,8 +28,9 @@ def check_json(fichier):
 def long_cpl_run(model_dir, keep_exec):
     """
     Entry point for the longitudinal coupling standalone launcher
-    @param model_dir(str) path of the coupling case root
-    @param keep_exec(bool) toggle exec dir cleaning. Default False = erase it
+
+    @param model_dir (str) path of the coupling case root
+    @param keep_exec (bool) toggle exec dir cleaning. Default False = erase it
     """
     test_path = os.path.realpath(model_dir)
     list_dico = {}
@@ -98,7 +99,7 @@ def long_cpl_run(model_dir, keep_exec):
 def launch_coupling(nb1d):
     """
     Wrapper of the coupled models
-    @param nb1d(int) number of 1d model instances
+    @param nb1d (int) number of 1d model instances
     """
     from telapy.coupling.mascaret_cpl import mascaret_cpl
     from telapy.coupling.telemac2d_cpl import telemac2d_cpl
@@ -110,7 +111,7 @@ def launch_coupling(nb1d):
         mascaret_cpl()
     else:
         telemac2d_cpl()
-        
+
 def main():
     """
     Main function for 1d/2d cpl
@@ -142,14 +143,14 @@ def main():
     # Adding options for the code launcher
     launch_parser = subparser.add_parser('launcher', \
                                          help='Launching the coupled components')
-    
+
     launch_parser.add_argument(\
                                '--n1d',
                                dest="ncsize1d",
                                help="Number of 1d models to start",
                                type=int,
                                default=1)
-   
+
     args = parser.parse_args()
 
     if args.command == 'long':

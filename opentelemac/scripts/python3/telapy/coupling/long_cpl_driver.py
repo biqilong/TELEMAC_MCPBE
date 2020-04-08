@@ -24,8 +24,10 @@ from telapy.tools.driven_utils import shell_cmd, mpirun_cmd
 def replace_all(txt, dico):
     """
     Replace several items
+
     @param txt (str) orginal text
     @param dico (dict) dictionary of expressions to replace
+
     @return (str) changed text
         """
     for i in dico:
@@ -52,7 +54,7 @@ def file_path(ligne):
 def checkfile(cas_file, txt=None):
     """
     Check if file existes
-    @param cas_file(str) name file
+    @param cas_file (str) name file
     @param txt (str)  text to print
     """
     if not os.path.exists(cas_file):
@@ -65,7 +67,7 @@ def checkfile(cas_file, txt=None):
 def file_mv(ori, dest, verbose=True):
     """
     Move file
-    @param ori(str) path source
+    @param ori (str) path source
     @param dest (str) path target
     @param verbose (bool) display text
     """
@@ -88,7 +90,6 @@ class LongCplDriver:
         Constructor
         @param case_path (str) path of model
         @param coupling_def (dict) coupling parameter
-        @param config_run (dict) run parameter
         @param models_configs (dict) dictionnary of submodel parameter
         @param keep_exec (bool) preserve the EXEC directory after execution
         """
@@ -133,6 +134,8 @@ class LongCplDriver:
     def lec_telfile(self, dico):
         """
         Import data from the 2D model description dict
+
+        @param dico (dict) Contains model information
         @return  (dict) , (dict):
             parameters dictionary of "cas" file  and "config" file
         """
@@ -545,13 +548,13 @@ class LongCplDriver:
 
             cmd = mpirun_cmd()
             cmd = cmd.replace('<ncsize>', str(int(self.param['nb_mod_1d'] + self.param['nb_proc_2D'])))
-            
+
             launch_py =  os.path.join(os.environ['HOMETEL'], 'scripts', 'python3', 'run_cpl.py')
             launch_exe = "{0} launcher --n1d {1} > {2}".format(launch_py,
                                                                self.param['nb_mod_1d'], listing_file)
 
             cmd = cmd.replace('<exename>', launch_exe)
-           
+
             _, return_code = shell_cmd(cmd)
 
             if return_code != 0:

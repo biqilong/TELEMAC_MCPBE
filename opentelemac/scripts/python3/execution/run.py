@@ -25,10 +25,7 @@ def run_partition(partel, cas, geom, fmtgeom, conlim, ncsize,
     @param geom (string): name of the geometry file
     @param fmtgeom (string): format of the geometry file
     @param conlim (string): the name of the *.cli file
-    @param i_files (list): list of input files for the CAS
     @param ncsize (int): number of processors
-    @param bypass (boolean): continue execution after exception was
-      raised if True, kill the execution otherwise
     @param section_name (string): path to the section ascii input file. This
         file has to be split by partel at the same time as the geometry file.
         To do so, partel needs to know its name, which is why it is returned
@@ -82,6 +79,8 @@ def run_partition(partel, cas, geom, fmtgeom, conlim, ncsize,
                                  file_name+('00000'+str(ncsize-1))[-5:]+\
                                  '-'+('00000'+str(n))[-5:])
 
+    return True
+
 
 def run_partel(partel, par_file, file_format, conlim, ncsize, bypass,
                section_name, zone_name, weir_name, geom, fmtgeom, i_part,
@@ -105,12 +104,11 @@ def run_partel(partel, par_file, file_format, conlim, ncsize, bypass,
         has the same treatment as the one above.
     @param weir_name (string): path to the weir ascii input file. This file
         has the same treatment as the one above.
+    @param geom (string): path to the geometry file
     @param fmtgeom (string): format of the geometry file (serafin, serafind,
         med)
     @param i_part (int): type of partitionner, 1:metis; 2: scotch
     @param concat (boolean): If output is concatenate
-
-    @return void
     """
     partel_input = 'partel_'+par_file+'.par'
     partel_log = 'partel_'+par_file+'.log'
@@ -152,7 +150,7 @@ def run_code(exe, sortiefile):
     lasterr = []
     lastout = []
     # If sortiefile is required, open it
-    if sortiefile != None:
+    if sortiefile is not None:
         ofile = open(sortiefile, "w")
     # Start process with command 'exe', and direct standard output and
     # standard error into PIPE (part of the Popen object called proc)
@@ -193,10 +191,7 @@ def run_recollection(gretel, cas, glogeo, fmtgeo, globnd,
     @param fmtgeo (string): format of the global geometry file
         (serafin, serafind, med)
     @param globnd (string): global boundary file (.cli)
-    @param o_files (list): list of the output files
     @param ncsize (int): the number of processors
-    @param bypass (boolean): continue execution after exception was
-        raised if True, kill the execution otherwise
 
     @return True if there is only one processor or no exception was
         raised or bypass is True
@@ -262,7 +257,6 @@ def run_gretel(gretel, gre_file, file_format, geom, geo_format, bnd,
                  'Could not split your file '+gre_file\
                  +' (runcode='+str(code)+') with the error as follows:'\
                  +'\n        '+tail+'\n\n'+log)
-    return
 
 def run_gredel(gredel, gredel_file, geom, gredel_type, ncsize, bypass):
 
@@ -298,4 +292,3 @@ def run_gredel(gredel, gredel_file, geom, gredel_type, ncsize, bypass):
         raise TelemacException(\
            'Could not split your file (runcode='+str(code)+\
            ').\n      '+gredel_file+'\n        '+tail)
-    return

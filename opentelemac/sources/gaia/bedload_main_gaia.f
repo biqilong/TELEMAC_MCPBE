@@ -200,6 +200,7 @@
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER I,K,IPOIN,ICLA,IMUD,ISAND
+      DOUBLE PRECISION, ALLOCATABLE :: TMP_RATIO(:)
 !
 !======================================================================!
 !======================================================================!
@@ -232,6 +233,8 @@
      &         MESH%IKLBOR%I,MESH%NELEB,MESH%NELEBX)
       IF (DEBUG > 0) WRITE(LU,*) 'END_BEDLOAD_DIFFIN'
 !
+      ! Memory optimisation (from intel debug)
+      ALLOCATE(TMP_RATIO(NPOIN))
       DO I = 1, NSICLA
         K=NUM_ICLA_ISAND(I)
 !
@@ -239,10 +242,11 @@
         IF(.NOT.SEDCO(I)) THEN
           IF (DEBUG > 0) WRITE(LU,*)
      &      'BEDLOAD_SOLIDISCHARGE_GAIA : ',I,'/',NSICLA
+          TMP_RATIO = RATIO_SAND(K,1,1:NPOIN)
           CALL BEDLOAD_SOLIDISCHARGE_GAIA
      &       (MESH, U2D, V2D, UNORM,HN, TW, UW, MU,TOB,CF,
      &         TOBW,FW,THETAW,
-     &         RATIO_SAND(K,1,1:NPOIN),
+     &         TMP_RATIO,
      &         MASKPT, MASKEL, ACLADM,
      &         UNLADM,KSP,KSR, LIQBOR, DEBUG, NPOIN,
      &         NPTFR, IELMT, ICF, KENT, OPTBAN, HIDFAC, GRAV,
@@ -302,6 +306,7 @@
           ENDDO
 !
           IF (DEBUG>0) WRITE(LU,*) 'BEDLOAD_EVOL_GAIA : ',I,'/',NSICLA
+          TMP_RATIO = RATIO_SAND(K,1,1:NPOIN)
           CALL BEDLOAD_EVOL_GAIA(S,COEFPN,CALFA_CL%ADR(I)%P,
      &                      SALFA_CL%ADR(I)%P, LIMTEC,
      &                      EBOR%ADR(K)%P,MASKEL,MASK,
@@ -314,7 +319,7 @@
      &                      QSCLYC%ADR(I)%P,SLOPEFF,
      &                      I,FLBCLA,LIQBOR,QBOR%ADR(I)%P,MAXADV,
      &                      MASS_SAND_ACTIVE_LAYER,
-     &                      RATIO_SAND(K,1,1:NPOIN),EVCL_MB%ADR(I)%P)
+     &                      TMP_RATIO,EVCL_MB%ADR(I)%P)
           IF(DEBUG.GT.0) WRITE(LU,*) 'END_BEDLOAD_EVOL'
 !
           DO IPOIN=1,NPOIN
@@ -329,6 +334,7 @@
 !
         ENDIF
       ENDDO
+      DEALLOCATE(TMP_RATIO)
 !
 !============  run Nestor ==============================================!
 !

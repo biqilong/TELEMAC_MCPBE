@@ -69,7 +69,7 @@ The Pierson-Moskowitz frequency is defined as $\frac{g}{2\pi 28 u^*}$ where $ u^
 
  \tomawac can also take into account a current provided in a binary or formatted file. The keyword \textit{BINARY CURRENTS FILE }or\textit{ FORMATTED CURRENTS FILE} should then be given a value (the name of the file). Three different formats are available to read this data. The value corresponds to the keyword \textit{CURRENTS FILE FORMAT} (see \ref{se:currentfile}). When the currents file is taken from TELEMACTELEMAC-2D, then an additional keyword should be specified, namely the \textit{TIME INCREMENT NUMBER IN TELEMAC FILE.} This locates the desired record.
 
- If the predefined formats cannot be used, the COUUTI.f subroutine can be included in the FORTRAN and modified accordingly, specifying the format 4 for the INDIC FORTRAN variable in the CAS file. The current data are read from the file and are interpolated onto the nodes of the computation mesh.
+ If the predefined formats cannot be used, the USER\_CURRENT.f subroutine can be included in the FORTRAN and modified accordingly, specifying the format 4 for the INDIC FORTRAN variable in the CAS file. The current data are read from the file and are interpolated onto the nodes of the computation mesh.
 
 
 \subsection{ Taking a wind into account}
@@ -78,11 +78,11 @@ Consideration of a wind is specified by the logical keyword \textit{CONSIDERATIO
 
 To Specify a constant wind in space, one can use keyword \textit{WIND VELOCITY ALONG X} and \textit{WIND VELOCITY ALONG Y}
 
- When the wind can be described analytically, the user subroutine ANAVEN.f can be used. The wind is fully specified when the keywords \textit{FORMATTED WINDS FILE} and \textit{BINARY WINDS FILE} do not have any value, whereas the keyword \textit{CONSIDERATION OF A WIND }is "TRUE".
+ When the wind can be described analytically, the user subroutine USER\_ANAVEN.f can be used. The wind is fully specified when the keywords \textit{FORMATTED WINDS FILE} and \textit{BINARY WINDS FILE} do not have any value, whereas the keyword \textit{CONSIDERATION OF A WIND }is "TRUE".
 
  \tomawac can also take into account a wind given in a binary or formatted file. In this case a value (the name of the file) should be assigned to the keyword \textit{FORMATTED WINDS FILE }or \textit{BINARY WINDS FILE}. The available formats for reading out these data correspond to the keyword \textit{WINDS FILE FORMAT} (see in section \ref{se:windfile} and \ref{se:desformat}).
 
- When these predefined formats cannot be used, the subroutine VENUTI.f can be included in the FORTRAN file and modified accordingly, specifying the format 4 for the INDIV FORTRAN variable. On completion of reading the winds file, the wind components are used as such if provided on the computational mesh, or interpolated over that mesh in provided on a different grid.
+ When these predefined formats cannot be used, the subroutine USER\_WIND.f can be included in the FORTRAN file and modified accordingly, specifying the format 4 for the INDIV FORTRAN variable. On completion of reading the winds file, the wind components are used as such if provided on the computational mesh, or interpolated over that mesh in provided on a different grid.
 
  NOTE: an interpolation between two different meshes of equivalent sizes is usually computationally very expensive. Although possible, it is highly inadvisable, particularly as regards to the wind, since this is a time-varying data item. In such cases a pre-interpolation over the computation mesh, e.g using STBTEL is recommended, followed by the reading of the wind data in format 3. Alternatively this pre-interpolation can be performed by means of the FASP subroutine from the utils library.
 
@@ -101,11 +101,11 @@ To Specify a constant wind in space, one can use keyword \textit{WIND VELOCITY A
 
  In order to take tide into account, a current and a tide water depth that is referenced in relation to the "INITIAL STILL WATER LEVEL" must be specified. These data can be initialized in various ways:
 
- Should the tide be easy to describe analytically, the ANAMAR.f subroutine, can be included in the FORTRAN file and modified accordingly. In the subroutine the terms UC and VC, ZM and DZHDT are NPOIN2-sized (number of points in the horizontal mesh) vectors and correspond to the current components along the X and Y axes, the tidal water level in relation to the "INITIAL STILL WATER LEVEL" and the water depth variation in time, respectively. An analytical expression must be assigned to all of these vectors.
+ Should the tide be easy to describe analytically, the USER\_ANAMAR.f subroutine, can be included in the FORTRAN file and modified accordingly. In the subroutine the terms UC and VC, ZM and DZHDT are NPOIN2-sized (number of points in the horizontal mesh) vectors and correspond to the current components along the X and Y axes, the tidal water level in relation to the "INITIAL STILL WATER LEVEL" and the water depth variation in time, respectively. An analytical expression must be assigned to all of these vectors.
 
- \tomawac can also take into account a current that is given in a binary or formatted file. A value (the name of the currents file) should be assigned to the keyword \textit{BINARY CURRENTS FILE} or\textit{ FORMATTED CURRENTS FILE}. Two different formats are available for reading these data. This format is specified using the keyword \textit{CURRENTS FILE FORMAT} (see \ref{se:currentfile}). When these predefined formats cannot be used, the user subroutine COUUTI.f can be included in the FORTRAN file and modified accordingly. In such cases the \textit{CURRENTS FILE FORMAT} (FORTRAN variable INDIC) must be set to 4 in the CAS file. Once the data of the currents file are read, the current components are interpolated over the computation mesh.
+ \tomawac can also take into account a current that is given in a binary or formatted file. A value (the name of the currents file) should be assigned to the keyword \textit{BINARY CURRENTS FILE} or\textit{ FORMATTED CURRENTS FILE}. Two different formats are available for reading these data. This format is specified using the keyword \textit{CURRENTS FILE FORMAT} (see \ref{se:currentfile}). When these predefined formats cannot be used, the user subroutine USER\_CURRENT.f can be included in the FORTRAN file and modified accordingly. In such cases the \textit{CURRENTS FILE FORMAT} (FORTRAN variable INDIC) must be set to 4 in the CAS file. Once the data of the currents file are read, the current components are interpolated over the computation mesh.
 
- The tidal water level can be also provided in a binary or formatted file. A value (the name of the water level file) should be assigned to the keyword \textit{BINARY TIDAL WATER LEVEL FILE} or\textit{ FORMATTED TIDAL WATER LEVEL FILE}. Two different predefined formats are available for reading this data. The format type is specified using the keyword \textit{TIDAL WATER LEVEL FILE FORMAT} (refer to \ref{se:tidalfile}). If the user chooses the Serafin format (i.e. TELEMAC-2D format), then the \textit{RANK OF THE WATER LEVEL DATA IN THE TELEMAC FILE} must also be specified. When the predefined formats cannot be used, the user subroutine MARUTI.f file can be included in the FORTRAN file and modified accordingly. In such cases the \textit{TIDAL WATER LEVEL FILE FORMAT} (the INDIM FORTRAN variable) must be set to 4 in the CAS file.
+ The tidal water level can be also provided in a binary or formatted file. A value (the name of the water level file) should be assigned to the keyword \textit{BINARY TIDAL WATER LEVEL FILE} or\textit{ FORMATTED TIDAL WATER LEVEL FILE}. Two different predefined formats are available for reading this data. The format type is specified using the keyword \textit{TIDAL WATER LEVEL FILE FORMAT} (refer to \ref{se:tidalfile}). If the user chooses the Serafin format (i.e. TELEMAC-2D format), then the \textit{RANK OF THE WATER LEVEL DATA IN THE TELEMAC FILE} must also be specified. When the predefined formats cannot be used, the user subroutine USER\_TIDE.f file can be included in the FORTRAN file and modified accordingly. In such cases the \textit{TIDAL WATER LEVEL FILE FORMAT} (the INDIM FORTRAN variable) must be set to 4 in the CAS file.
 
  Both currents and tidal water levels will be updated upon each \textit{TIDE REFRESHING PERIOD}. This keyword corresponds to an integer multiple of the propagation \textit{TIME STEP}, i.e. the currents and tidal levels cannot be specified at time steps less than the model TIME STEPS\textit{.}
 
@@ -710,20 +710,20 @@ evolution of the boundary if the imposed values are too far appart.
 \section{ Some useful subroutines}
 
 
-\subsection{ Modification of bottom topography: CORFON subroutine}
+\subsection{ Modification of bottom topography: USER\_TOM\_CORFON subroutine}
 \label{se:corfon}
  The seabed levels can be modified in two different ways, as already stated in section \ref{se:bathydata}
 
- The seabed levels can be modifed at the beginning of the computation using the CORFON subroutine, which is called once at the beginning of the computation. This subroutine allows the value of the ZF variable to be modified at each mesh point. For this purpose, a number of variables such as, for instance, the point coordinates, the element area values, the connectivity table, etc., are provided.
+ The seabed levels can be modifed at the beginning of the computation using the USER\_TOM\_CORFON subroutine, which is called once at the beginning of the computation. This subroutine allows the value of the ZF variable to be modified at each mesh point. For this purpose, a number of variables such as, for instance, the point coordinates, the element area values, the connectivity table, etc., are provided.
 
- By default, the CORFON subroutine performs the same number of bottom smoothing iterations as LISFON, i.e. the same value as specified by the integer keyword \textit{BOTTOM SMOOTHINGS.}
+ By default, the USER\_TOM\_CORFON subroutine performs the same number of bottom smoothing iterations as LISFON, i.e. the same value as specified by the integer keyword \textit{BOTTOM SMOOTHINGS.}
 
- Note that the CORFON subroutine is not called in case the computation is initialized with the result of a former \tomawac run (``hot start'').
+ Note that the USER\_TOM\_CORFON subroutine is not called in case the computation is initialized with the result of a former \tomawac run (``hot start'').
 
- This subroutine is part of theTELEMAC-2D library and is listed in \ref{se:usefulsub}
+ This subroutine is listed in \ref{se:usefulsub}
 
 
-\subsection{ Modifying the co-ordinates: CORRXY subroutine }
+\subsection{ Modifying the co-ordinates: USER\_CORRXY subroutine }
 
  \tomawac allows the mesh point co-ordinates to be modified at the beginning of the computation, so that an up-scaling (switching from a small scale model to a full-size model), a rotation or a translation can be performed.
 

@@ -58,8 +58,8 @@ class Reach:
     def get_section_idx(self, section_id):
         """
         Get section index
-        @param section_id(int) section identifier
-        @return: (int) request section index
+        @param section_id (int) section identifier
+        @return (int) request section index
         """
         section_ids = list(self.sections.keys())
         try:
@@ -244,6 +244,7 @@ class MascaretFileParent:
         @param file_name (str) Name of the file
         @param access (str) Access to the file ('r' for read 'w' for write, add
         'b' for binary file)
+        @param log_lvl (str) logger level
 
         Attributs:
         - file_name: file name
@@ -368,8 +369,11 @@ class MascaretFileParent:
     def get_position_var(self, var_name, type='names'):
         """
         Get position variable
+
         @param var_name (string) variable name
-        @return: variable name index
+        @param type (string) 'names' for full name or 'abbr' for abreviation
+
+        @return variable name index
         """
         try:
             if type == 'abbr':
@@ -396,9 +400,12 @@ class MascaretFileParent:
     def get_values_at_sections(self, record, section_id, reach_id=1, section_vars_indexes=None):
         """
         Get values for section variables for a single reach
+
         @param record (int) time index
+        @param section_id (int) id of the section
         @param reach_id (int) reach index
-        @param vars_indexes (list) List of variable names
+        @param section_vars_indexes (list) List of variable names
+
         @return (numpy.array)
         """
 
@@ -422,8 +429,10 @@ class MascaretFileParent:
     def get_position_var_abbr(self, var_abbr):
         """
         Get position  of the abbreviation variable
-        @param var_abbr(string) variable name
-        @return: variable name index
+
+        @param var_abbr (string) variable name
+
+        @return variable name index
         """
         return self.varnames_dict['abbr'].index(var_abbr)
 
@@ -442,7 +451,10 @@ class MascaretFileParent:
     def write_optfile_header(self, outfile, vars_indexes=None):
         """
         write header file
-        @param outfile: file open object
+
+        @param outfile (File) file open object
+        @param vars_indexes (list) List of var index to write If none given
+        writes them all
         """
         if vars_indexes is None:
             vars_indexes = self.varnames_dict['id']
@@ -458,10 +470,12 @@ class MascaretFileParent:
 # TODO: add section variables (mean value for each section?)
     def write_optfile_frame(self, outfile, res, time):
         """
-           Write a one frame in opthyca file
-           @param res (OrderedDict) results data
-           @param time (float) time value
-           @return
+        Write a one frame in opthyca file
+
+        @param outfile (string) Name of output file
+        @param res (OrderedDict) results data
+        @param time (float) time value
+        @return
         """
         for key in res.keys():
             id = self.reaches[key].get_section_id_list()
@@ -479,7 +493,7 @@ class MascaretFileParent:
         @param outfile_name (string) output file name
         @param times_indexes (list) List of time step index
         @param vars_indexes (list) List of variable names
-        @return
+        @param timecheck (boolean) Tf True more verbose
         """
         if vars_indexes is None:
             vars_indexes = self.varnames_dict['id']
@@ -602,8 +616,9 @@ class Opthyca(MascaretFileParent):
         Warning: Only suited for results at cross-sections (not adapted to
         Casier or Traceur outputs)
 
-        @param file_name Name of the file
-        @param access Access to the file ('r' for read 'w' for write)
+        @param file_name (string) Name of the file
+        @param access (string) Access to the file ('r' for read 'w' for write)
+        @param log_lvl (string) Logger level
 
         Attributs specified to Opthyca:
         - fformat
@@ -759,8 +774,9 @@ class Rubens(MascaretFileParent):
         """
         Constructor for Rubens file
 
-        @param file_name Name of the file
-        @param access Access to the file ('r' for read 'w' for write)
+        @param file_name (string) Name of the file
+        @param access (string) Access to the file ('r' for read 'w' for write)
+        @param log_lvl (string) Logger level
 
         Attributs specific to Rubens:
         - fformat
@@ -1040,8 +1056,9 @@ class ListingCourlis(MascaretFileParent):
         """
         Constructor for ListingCourlis file
 
-        @param file_name Name of the file
-        @param access Access to the file ('r' for read 'w' for write)
+        @param file_name (string) Name of the file
+        @param access (string) Access to the file ('r' for read 'w' for write)
+        @param log_lvl (string) Logger level
 
         Attributs specific to ListingCourlis:
         - fformat
@@ -1078,6 +1095,9 @@ class ListingCourlis(MascaretFileParent):
         return names, abbrs, units
 
     def _read_first_time_step(self):
+        """
+        Reading first time step
+        """
         #first timestep pos (first timestep has a different format)
         self._times_pos.append(self._file.tell())
 
@@ -1536,8 +1556,9 @@ class ptravers(MascaretFileParent):
         """
         Constructor for ptravers Courlis result file
 
-        @param file_name Name of the file
-        @param access Access to the file ('r' for read 'w' for write)
+        @param file_name (string) Name of the file
+        @param access (string) Access to the file ('r' for read 'w' for write)
+        @param log_lvl (string) Logger level
 
         Attributs specified to ptravers:
         - fformat
@@ -1641,10 +1662,12 @@ class ptravers(MascaretFileParent):
                    section_vars_indexes=None):
         """
         Get values for all variables for a give time index
-        and also, for all section variable for
+        and also, for all section variable for a give list of indexes
 
         @param record (int) time index
         @param vars_indexes (list) List of variable names
+        @param get_section_values (boolean) If True get section values as well
+        @param section_vars_indexes (list) List of section var index to extract
         @return (dict) dict of 2D array with reach.id as key
         """
         if vars_indexes is None:
@@ -1780,26 +1803,36 @@ class ptravers(MascaretFileParent):
 
 def MascaretFile(file_name, fformat=None, access='r', log_lvl='INFO'):
     """
-    @param fformat File format ('opt' or 'rub'), optional (detection from extension)
-    @param access Access to the file ('r' for read 'w' for write)
+    Generic wrapper of mascaret classes will return the class assocaited with
+    fformat
+
+    @param file_name (string) Path of the file
+    @param fformat (string) File format ('opt', 'listingcourlis', 'ptravers',
+    'rub'), optional (detection from extension)
+    @param access (string) Access to the file ('r' for read 'w' for write)
+    @param log_lvl (string) Logger level
+
+    @returns Class structrure
     """
     # Determine file format from file extension
-    if fformat == None:
+    if fformat is None:
         fformat = file_name.split(".")[-1]
 
     if access != 'r':
         raise NotImplementedError('Write access is not supported yet!')
     if fformat == 'opt':
         return Opthyca(file_name, access=access, log_lvl=log_lvl)
-    elif fformat == 'rub':
+    if fformat == 'rub':
         return Rubens(file_name, access=access, log_lvl=log_lvl)
-    elif fformat == 'listingcourlis':
+    if fformat == 'listingcourlis':
         return ListingCourlis(file_name, access=access, log_lvl=log_lvl)
-    elif fformat == 'ptravers':
+    if fformat == 'ptravers':
         return ptravers(file_name, access=access, log_lvl=log_lvl)
-    else:
-        raise FileNotFoundError('The format of the file is not recognized, '
-                                'please use "fformat" argument to indicate your file format')
+
+    raise FileNotFoundError(\
+            'The format of the file "{}" is not recognized, '
+            'please use "fformat" argument to indicate your file format'\
+            .format(fformat))
 
 
 if __name__ == '__main__':

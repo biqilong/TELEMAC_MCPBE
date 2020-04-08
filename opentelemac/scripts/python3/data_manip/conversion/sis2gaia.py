@@ -11,7 +11,7 @@ def sis2gaia_parser(subparser):
     """
     Defines the arguments for argparse
 
-    @param parser (ArgumentParser) The parser
+    @param subparser (ArgumentParser) The parser
 
     @returns (ArgumentParser)  The updated parser
     """
@@ -26,8 +26,8 @@ def sis2gaia(sis_cas_file, gaia_cas_file):
     """
     Convert a sisyphe steering file into a gaia steering file
 
-    @param sis_cas (string) Sisyphe cas file
-    @param gaia_cas (string) Gaia cas file
+    @param sis_cas_file (string) Sisyphe cas file
+    @param gaia_cas_file (string) Gaia cas file
     """
     trans_key = {\
       'NUMBER OF BED MODEL LAYERS':'NUMBER OF LAYERS FOR INITIAL STRATIFICATION',

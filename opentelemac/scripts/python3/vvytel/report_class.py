@@ -94,7 +94,6 @@ class Report(object):
         there)
         @param type_valid (str) Type of validation (examples, notebooks..)
         name
-        @param file_name (str)
         """
 
         if type_valid not in ['examples', 'notebooks']:
@@ -129,6 +128,7 @@ class Report(object):
         Add a new action to the report
 
         @param file_name (str) Name of the file for which the action
+        @param rank (int) Rank of the action
         @param action (str) Name of the action
         @param time (float) Time to run the action
         @param passed (bool) If the action worked

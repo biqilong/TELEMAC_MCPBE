@@ -1,11 +1,15 @@
 Trunk
 ===========================
 
+Doc: Adding html version of notebooks in documentation/notebooks. In trunk run
+doc_telemac.py -M notebooks to generate it. In release it will be there.
+Run firefox $HOMETEL/documentation/notebooks/index.html to see it.
+
 KHIONE: fix a wrong call of VECTOR in border_icover
 
 WAQTEL: fix an unexpected division by 0 in calcs2d_micropol (OVD)
 
-MASCARET: Make editable the laws of singularity and add variables in api: 
+MASCARET: Make editable the laws of singularity and add variables in api:
 ControlSection and MaxcontrolZ
 
 TELAPY: Add python files and examples for mascaret/telemac-2d coupling

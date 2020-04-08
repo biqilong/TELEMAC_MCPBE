@@ -6,8 +6,8 @@ r"""@author TELEMAC-MASCARET Consortium
 """
 
 from os import path, remove
-from utils.exceptions import TelemacException
 import numpy as np
+from utils.exceptions import TelemacException
 
 
 def write_one_step_in_time(file_name,
@@ -111,7 +111,8 @@ def convert_drogues_file_to_vtu(file_name_path,
     """
     Convert drogues TELEMAC file into .vtu format (readable by ParaView)
 
-    @param file_name_path Name of the dogues file of TELEMAC (.dat)
+    @param file_name_path (string) Name of the dogues file of TELEMAC (.dat)
+    @param output_file_name_path (string) Path of output file
     """
     if not path.exists(file_name_path):
         raise TelemacException(\
@@ -163,10 +164,10 @@ def convert_drogues_file_to_vtu(file_name_path,
             # Seeking for a new time step
             if line != '' and line[0].find("ZONE") != -1:
                 time = (float)(line[3].split('=')[1])
-                _number_of_particules = (int)(line[2].split('=')[1])
+                tmp_number_of_particules = (int)(line[2].split('=')[1])
                 # not sure that resize if usefull...
-                if _number_of_particules != number_of_particules:
-                    number_of_particules = _number_of_particules
+                if tmp_number_of_particules != number_of_particules:
+                    number_of_particules = tmp_number_of_particules
                     position_xyz = np.resize(position_xyz,
                                              [3*number_of_particules])
                     p_id = np.resize(p_id, [number_of_particules])
@@ -179,7 +180,7 @@ def dat2vtu_parser(subparser):
     """
     Defines the arguments for argparse
 
-    @param parser (ArgumentParser) The parser
+    @param subparser (ArgumentParser) The parser
 
     @returns (ArgumentParser)  The updated parser
     """

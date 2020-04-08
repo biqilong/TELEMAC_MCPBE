@@ -330,7 +330,7 @@ class ClassMod2D:
                                   self.fct_cpl.interp_conlim_co[(self.l_t + 1 -
                                                                  self.stp * self.nit), :])
 
-        self.t2d.compute_one_time_step()
+        self.t2d.run_one_time_step_compute()
         self.l_t = self.t2d.get('MODEL.LT')
         self.conlim_2d[:, self.l_t - self.stp * self.nit] = \
             self.fct_cpl.comput_conlim(self.pos_model_1d,
@@ -370,7 +370,7 @@ class ClassMod2D:
             if self.rank == 0:
                 print("*********** WRITE OUTPUT FOR {} S ***********"
                       .format(self.t2d.get('MODEL.AT')))
-            self.t2d.write_one_time_step()
+            self.t2d.run_one_time_step_res()
 
     def finalize(self):
         """
@@ -380,7 +380,7 @@ class ClassMod2D:
         if self.rank == 0:
             print('\n', file=sys.stderr)
             print("*********** WRITE FINAL OUTPUT ***********")
-        self.t2d.write_one_time_step()
+        self.t2d.run_one_time_step_res()
         # write val cl_pc pour reprise add
         self.write_cl_restart()
         self.conv.finalize()

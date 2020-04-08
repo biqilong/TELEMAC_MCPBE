@@ -118,12 +118,12 @@ def run(module, steering_file, stdout, log):
 
 def dump_script(module, steering_file, fortran_file, script_file):
     """
-    Running a full study
+    dump a api run into a file
 
-    @param module Name of the module
-    @param steering_file Name of the steering file
-    @param fortran_file Name of the fortran file
-    @param double_run If true running main computation twice
+    @param module (string) Name of the module
+    @param steering_file (string) Name of the steering file
+    @param fortran_file (string) Name of the fortran file
+    @param script_file (string) Name of file in which we write the script
     """
 
     script = SCRIPT_TEMPLATE.format(\

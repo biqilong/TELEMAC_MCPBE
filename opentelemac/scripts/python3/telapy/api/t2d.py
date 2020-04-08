@@ -36,13 +36,14 @@ class Telemac2d(ApiModule):
         """
         Constructor for Telemac2d
 
-        @param casFile Name of the steering file
-        @param user_fortran Name of the user Fortran (default=None)
-        @param dicofile Path to the dictionary (default=None)
-        @param lang Language for ouput (1: French, 2:English) (default=2)
-        @param stdout Where to put the listing (default on terminal)
-        @param comm MPI communicator (default=None)
-        @param recompile If true recompiling the API (default=True)
+        @param casfile (string) Name of the steering file
+        @param user_fortran (string) Name of the user Fortran
+        @param dicofile (string) Path to the dictionary
+        @param lang (int) Language for ouput (1: French, 2:English)
+        @param stdout (int) Where to put the listing
+        @param comm (MPI.Comm) MPI communicator
+        @param recompile (boolean) If true recompiling the API
+        @param log_lvl (string) Logger level
         """
         if dicofile is None:
             hometel = os.getenv("HOMETEL")
@@ -109,7 +110,7 @@ class Telemac2d(ApiModule):
         """
         Get the hydraulic state
 
-        @retuns the hydraulic state: depth (m) .. u_vel (m/s) .. v_vel (m/s)
+        @returns the hydraulic state: depth (m) .. u_vel (m/s) .. v_vel (m/s)
         """
         self.depth = self.get_array('MODEL.WATERDEPTH')
         self.u_vel = self.get_array('MODEL.VELOCITYU')
@@ -134,7 +135,7 @@ class Telemac2d(ApiModule):
 
         @param show Display the graph (Default True)
 
-        @retuns the figure object
+        @returns the figure object
         """
         import matplotlib.pyplot as plt
         if self.coordx is not None:
@@ -178,22 +179,6 @@ class Telemac2d(ApiModule):
                              value, i=i)
 
         return
-
-    def write_one_time_step(self):
-        """
-        Write only output
-        """
-        self._error = self.run_timestep_res(self.my_id)
-
-    def compute_one_time_step(self):
-        """
-        Run one time step, no write output
-        """
-        if self._initstate != 2:
-            raise TelemacException('Error: the initial conditions are not set\n\
-                       Use init_state_default first')
-        else:
-            self._error = self.run_timestep_compute(self.my_id)
 
     def __del__(self):
         """

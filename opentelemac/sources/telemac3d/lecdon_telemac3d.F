@@ -98,7 +98,7 @@
 !+        V7P2
 !+  Scheme for advection of tracers (SCHCTA) completed when there are
 !+  several tracers and not the corresponding number of values given.
-!+  Previously the default value 5 was given. Exit of S3D_PVSCOand S3D_PVSNCO
+!+  Previously the default value 5 was given. Exit of S3D_PVSCO and S3D_PVSNCO
 !+  precluded when no sediment. A section reading sediment parameters
 !+  is now executed also IF(S3D_MIXTE)...
 !
@@ -1424,7 +1424,7 @@
       S3D_FLOC=  MOTLOG( ADRESS(3,91))
 !     MIXED SEDIMENT
       S3D_MIXTE=  MOTLOG( ADRESS(3,92))
-!     LOGICAL S3D_SEDNCOIS DEDUCED FROM S3D_MIXTEAND S3D_SEDCO
+!     LOGICAL S3D_SEDNCO IS DEDUCED FROM S3D_MIXTE AND S3D_SEDCO
       S3D_SEDNCO=S3D_MIXTE.EQV.S3D_SEDCO
 !     CONTINUITY CORRECTION ON OPEN BOUNDARIES
       CONCOR=  MOTLOG( ADRESS(3,93))
@@ -1673,7 +1673,7 @@
         ENDIF
       ENDIF
 !
-! S3D_CFDEPno longer used, replaced by S3D_CONC(1)
+! S3D_CFDEP no longer used, replaced by S3D_CONC(1)
 !
 !        IF(S3D_SEDCO) THEN
 !          S3D_CFDEP=S3D_CONC_LAYER(S3D_NCOUCH)

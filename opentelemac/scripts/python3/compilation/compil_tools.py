@@ -43,9 +43,9 @@ LIST_LIBS = ['api', \
     'utils|parallel', \
     'utils|hermes', \
     'utils|damocles', \
-    'utils|special',
+    'utils|special', \
     'mascaret', \
-    ]
+            ]
 
 
 
@@ -110,7 +110,7 @@ def create_obj_files(oname, oprog, odict, mes, tasks, bypass, homeres, verbose):
 
     @param oname (string) Name of the file to compile
     @param oprog (string) Name of the main program
-    @param odcit (dict) Information on file (path, type, libname)
+    @param odict (dict) Information on file (path, type, libname)
     @param mes (Messages) Structure for execution
     @param tasks (list) Pool of process to run
     @param bypass (boolean) If True bypass errors
@@ -239,7 +239,7 @@ def create_lib_files(lname, lmdul, lprog, mprog, mes, tasks,
 
         lib_files = ' -L'+lib_dir+' '
         for lib in homeres[lprog]['deps'][:homeres[lprog]['deps'].index(lname)]:
-            l= lib+'4'+mprog
+            l = lib+'4'+mprog
             if not path.exists(path.join(lib_dir, 'lib'+l+lib_ext)):
                 raise TelemacException('\nLibrary missing:\n        '+l)
             lib_files += '-l' + l + ' '
@@ -367,7 +367,7 @@ def create_exe_files(ename, emdul, eprog, mes, bypass, homeres, verbose):
 
         lib_files = ' -L'+lib_dir+' '
         for lib in homeres[ename]['deps'][:-1]:
-            l= lib+'4'+eprog
+            l = lib+'4'+eprog
             if not path.exists(path.join(lib_dir, 'lib'+l+lib_ext)):
                 raise TelemacException('\nLibrary missing:\n        '+l)
             lib_files += '-l' + l + ' '
@@ -672,9 +672,6 @@ def get_api_incs_flags():
     """
     Retuns the string for incs_flags for api
 
-    @param cfgs Configuration structure
-    @param cfgname Name of the configuration
-
     @returns the string
     """
     cfgname = CFGS.cfgname
@@ -692,8 +689,6 @@ def get_api_ld_flags(static):
     """
     Retuns the string for ld_flags for api
 
-    @param cfgs Configuration structure
-    @param cfgname Name of the configuration
     @param static If true libraries are considered static
 
     @returns the string
@@ -718,7 +713,7 @@ def get_api_ld_flags(static):
             if not path.exists(path.join(lib_dir, 'libmascaret'+lib_ext)):
                 continue
 
-        if lib_name == 'mascaret' or lib_name == 'api':
+        if lib_name in ['mascaret', 'api']:
             # Not adding 4api
             lib = lib_name.split('|')[-1]
         else:
@@ -739,9 +734,7 @@ def compile_princi_lib(princi_file, incs_flags, ld_flags):
     """
     Compiling user fortran as a library
 
-    @param user_fortran Name of the user_fortran
-    @param cfgname Name of the configuration
-    @param cfgs Configuration structure
+    @param princi_file (string) Path of user fortran
     @param incs_flags Include flags for compilation
     @param ld_flags Linking flags for compilation
     """
@@ -827,16 +820,12 @@ def generate_api():
     """
     Builds the structure for an Python API
 
-    @param cfgs List of configurations info
-    @param cfgname Name of the configuration for which we compile the API
-
     @returns source list for api and for hermes
     """
     cfgname = CFGS.cfgname
     cfg = CFGS.configs[cfgname]
 
     api_dir = path.join(cfg['root'], 'builds', cfgname, 'wrap_api')
-    lib_dir = path.join(cfg['root'], 'builds', cfgname, 'lib')
     obj_dir = path.join(cfg['root'], 'builds', cfgname, 'obj')
     if not path.exists(api_dir):
         mkdir(api_dir)
@@ -915,7 +904,8 @@ def compile_api_f2py(name, api_dir, source_list, skip_source, \
     @param f2py_name Name of the f2py executable (f2py by default)
     @param fcompiler Name of the fortran compiler
     @param compiler Name of the c compiler
-    @param silent If True f2py is run in silent mode and commad are not displayed
+    @param silent If True f2py is run in silent mode and commad are not
+    displayed
     @param f2py_opt Addtional options passed to f2py (option --opt)
     """
 
@@ -984,8 +974,7 @@ def compile_api_files(silent, static=False, hermes_only=False):
     """
     Compiling the APIs for Telemac-Mascaret
 
-    @param cfgs List of configurations info
-    @param cfgname Name of the configuration for which we compile the API
+    @param silent (boolean) If True does display commands
     @param static If true libraries are considered static
     @param hermes_only If true only the hermes api will be compiled
     """
@@ -1041,7 +1030,8 @@ def update_cmdf(bypass, cleanup, verbose):
     cfg = CFGS.configs[cfgname]
     # ~~ Scans all source files to build a relation database ~~~~~~~~~~
     # TODO: parallelistaion of the scan_sources
-    fic, _, _, _, _, top, _, whocallswho = scan_sources(cfgname, cfg, bypass, verbose)
+    fic, _, _, _, _, top, _, whocallswho = \
+            scan_sources(cfgname, cfg, bypass, verbose)
 
     # ~~ Builds the Call Tree for each tree top ~~~~~~~~~~~~~~~~~~~~~~~
     homeres = {}
@@ -1171,8 +1161,9 @@ def compile_cmdf(ncsize, modules, verbose):
     @param ncsize (integer) Number of processor for parallel compilation
     @param modules (list) If modules is not empty compiling only
                           the modules given in the list
+    @param verbose (boolean) If True display compilation command
     """
-    # TODO: remove bypass
+    # TODO: remove bypass ?
     bypass = False
     cfgname = CFGS.cfgname
     cfg = CFGS.configs[cfgname]

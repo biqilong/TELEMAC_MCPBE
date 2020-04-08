@@ -66,7 +66,7 @@ turbulent viscosities are then constant throughout the domain. The global
 (molecular + turbulent) viscosity coefficients are provided by the user by
 means of the keywords \telkey{COEFFICIENT FOR HORIZONTAL DIFFUSION OF
 VELOCITIES} and \telkey{COEFFICIENT FOR VERTICAL DIFFUSION OF VELOCITIES}, set
-by default to $10^{-6}$.
+by default to $10^{-6}$~m$^2$/s.
 
 The value of that coefficient has a definite effect on both size and shape of
 the recirculations and eddies. A low value will tend to only dissipate the
@@ -149,7 +149,7 @@ Richardson number. The user can set the damping function through the keyword
 \begin{itemize}
 \item  0: nothing (default value),
 
-\item  1: user-performed; Law programming in the \telfile{DRIUTI} subroutine,
+\item  1: user-performed: Law programming in the \telfile{USER\_DRIUTI} subroutine,
 
 \item  2: Viollet,
 
@@ -387,11 +387,11 @@ rate is given (in m${}^{3}$/s) using the keyword \telkey{WATER DISCHARGE OF
 SOURCES}.
 
 In case of sources with variable characteristics, the user can then either use
-specific programming in the \telfile{T3D\_DEBSCE} subroutine (and
-\telfile{T3D\_TRSCE} in the presence of tracer), or use the source file whose
-name is given by the keyword \telkey{SOURCES FILE}.
+specific programming in the \telfile{USER\_T3D\_DEBSCE} subroutine (and
+\telfile{USER\_T3D\_TRSCE} in the presence of tracer), or use the source file
+whose name is given by the keyword \telkey{SOURCES FILE}.
 This file has exactly the same structure as the liquid
-boundary file. An example is shown below with two sources and two tracers.
+boundaries file. An example is shown below with two sources and two tracers.
 Between two specified times, the information used by \telemac{3D} at sources is
 obtained by linear interpolation.
 
@@ -424,8 +424,8 @@ velocity. If the latter is constant throughout the simulation, then its value
 can be given using the keywords \telkey{VELOCITIES OF THE SOURCES ALONG X},
 \telkey{VELOCITIES OF THE SOURCES ALONG Y} and
 \telkey{VELOCITIES OF THE SOURCES ALONG Z} (default values = 0.).
-Otherwise, the user
-should program the SOURCE subroutine in order to amend \telfile{USCE} (for the
+Otherwise, the user should program the \telfile{USER\_SOURCE} subroutine
+in order to amend \telfile{USCE} (for the
 velocity at sources along $X$) and \telfile{VSCE} (for the velocity at sources
 along $Y$). The user can use the time and all the parameters of the sources
 within that subroutine.
@@ -473,7 +473,7 @@ Default values for these three coefficients are 0.,
 the formatted file \telkey{ASCII ATMOSPHERIC DATA FILE},
 
 \item 3: wind is variable in time and space,
-this option is not implemented while there are multiple choices of implementation.
+this option is not implemented as there are multiple choices of implementation.
 In this case, the user has to program him/herself the \telfile{METEO} subroutine.
 An example of implementation is given in the \telemac{2d} validation test case
 ``wind\_txy'' (in folder examples/telemac2d/wind\_txy).
@@ -488,10 +488,10 @@ This is the formula used by the Institute of Oceanographic Sciences (United
 Kingdom):
 
 \begin{tabular}{ll}
-if $\| \overrightarrow{U}_{vent} \| < 5$ m/s & $a_{vent}  = 0.565 \times 10^{-3}$ \\
-if $5 < \| \overrightarrow{U}_{vent} \| < 19.22$ m/s &
- $a_{vent} = (- 0.12 + 0.137 \| \overrightarrow{U}_{vent} \| ) 10^{-3}$ \\
-if $\| \overrightarrow{U}_{vent} \| > 19.22$ m/s & $a_{vent} = 2.513 \times 10^{-3}$ \\
+if $\| \vec{U}_{wind} \| < 5$ m/s & $a_{wind}  = 0.565 \times 10^{-3}$ \\
+if $5 < \| \vec{U}_{wind} \| < 19.22$ m/s &
+ $a_{wind} = (- 0.12 + 0.137 \| \vec{U}_{wind} \| ) 10^{-3}$ \\
+if $\| \vec{U}_{wind} \| > 19.22$ m/s & $a_{wind} = 2.513 \times 10^{-3}$ \\
 \end{tabular}
 
 This formula can be activated by setting the keyword
@@ -499,10 +499,10 @@ This formula can be activated by setting the keyword
 (default value is NO).
 
 The parameter \telkey{COEFFICIENT OF WIND INFLUENCE} asked for by \telemac{3D}
-is: $a_{vent} (\rho_{air} / \rho)$ and not only $a_{vent}$.
+is: $a_{wind} (\rho_{air} / \rho)$ and not only $a_{wind}$.
 $\rho_{air}$ is approximately 1.2 kg/m$^3$ and $\rho$
 is approximately 1,000 kg/m$^3$. Thus it is necessary to divide the value of
-$a_{vent}$ by 1,000 to obtain the value of the \telemac{3D} keyword.
+$a_{wind}$ by 1,000 to obtain the value of the \telemac{3D} keyword.
 The default value of \telkey{COEFFICIENT OF WIND INFLUENCE} has been set to
 $1.55 \times 10^{-6}$ since version 8.0.
 
@@ -536,11 +536,11 @@ it is constant in time and space.
 
 \subsection{The pressure}
 
-The influence of air pressure is taken into account from the moment when the
-keyword \telkey{AIR PRESSURE} is set to YES (the default value is
-NO). The value of that pressure is set in the \telfile{METEO} subroutine
-with the value of \telkey{VALUE OF ATMOSPHERIC PRESSURE}.
-By default, the latter initializes a pressure of $10^5$ Pa ($\approx$ 1 atm) over
+Atmospheric pressure is taken into account by setting the keyword
+\telkey{AIR PRESSURE} to YES (the default value is NO).
+The pressure value is set in the \telfile{METEO} subroutine
+with the keyword of \telkey{VALUE OF ATMOSPHERIC PRESSURE}.
+By default, the latter initializes a pressure of $10^5$~Pa ($\approx$ 1~atm) over
 the whole domain.
 
 
@@ -564,7 +564,7 @@ incorrect if the tracer is the temperature.
 Before version 7.0, heat exchange between water and atmosphere could have been
 done with a linearised formula of the balance of heat exchange fluxes at the
 free surface. An example of an exchange with a constant atmosphere temperature
-and a constant sea salinity was given as standard (as comments) through a
+and a constant sea salinity used to be given as standard (as comments) through a
 direct programming in the \telfile{BORD3D} subroutine.
 
 A much more elaborated model has been introduced in \telemac{3D}.
@@ -663,7 +663,7 @@ First of all, the logical keyword \telkey{TIDE GENERATING FORCE} (default value
 NO) allows these phenomena to be taken into account.
 
 The keyword \telkey{LONGITUDE OF ORIGIN POINT} must be positioned at the right
-value.
+value (default = 0 degrees).
 
 Lastly, the two keywords \telkey{ORIGINAL DATE OF TIME} (format YYYY;MM;DD) and
 \telkey{ORIGINAL HOUR OF TIME} (format HH;MM;SS) must be used to give the
@@ -692,7 +692,7 @@ case of \tomawac, the variables \telfile{FX} and \telfile{FY},
 corresponds to the iteration number stored in the wave file which must be taken
 into account by \telemac{3D}. Usually, this is the last iteration stored, by
 default this number is set to 1. The name of the variables to read is "FORCE
-FX" and "FORCE FY", but this can be changed within the TRISOU subroutine.
+FX" and "FORCE FY", but this can be changed within the \telfile{TRISOU} subroutine.
 \end{itemize}
 
 In the current version of \telemac{3D}, this driving force is considered as being
@@ -709,11 +709,11 @@ has to be taken into account. This is done by activating the logical keyword
 \telkey{CORIOLIS} (which is set to NO by default). In such a case, the value of
 the Coriolis coefficient (refer to the Theoretical Note) is defined by the
 keyword \telkey{CORIOLIS COEFFICENT} (default value is 0.). The latter should
-be computed according to latitude l through the formula:
+be computed according to latitude $\lambda$ through the formula:
 
 \begin{itemize}
 \item  $2\, \omega \, \sin \, \left(\lambda \right)$ where $\omega$ is the
-Earth's rotational velocity of $7.27 \times {10}^{-5}$ rad/s and $\lambda$ is the
+Earth's rotational velocity of $7.2921 \times {10}^{-5}$ rad/s and $\lambda$ is the
 average latitude of the model.
 \end{itemize}
 

@@ -10,8 +10,7 @@
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 # ~~> dependencies towards other pytel/modules
-from utils.messages import Messages, banner, svn_banner
-from utils.exceptions import TelemacException
+from utils.messages import banner, svn_banner
 from compilation.compil_tools import compile_api_files, \
     update_cmdf, compile_cmdf
 from config import add_config_argument, update_config, CFGS
@@ -33,8 +32,8 @@ def compute_config(rescan, bypass):
     """
     Update the configuration with the information needed by compileTELEMAC
 
-    @param cfgname (string) Name of the configuration
-    @param options (ArgumentParser) Options of the script
+    @param rescan (boolean) If true run rescan
+    @param bypass (boolean) If True bypass error
     """
     CFGS.compute_compilation_info(\
                     rescan=rescan,

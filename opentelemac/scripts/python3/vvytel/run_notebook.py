@@ -13,6 +13,8 @@ def run_notebook(filename, timeout, update_nb=False):
     Run a notebook
 
     @param filename (string) Name of the notebook to run
+    @param timeout (float) Time after which a notebook is killed
+    @param update_nb (boolean) Overwrite file with results notebook
     """
     try:
         import nbformat

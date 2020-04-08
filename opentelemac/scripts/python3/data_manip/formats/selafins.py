@@ -94,6 +94,7 @@ class Selafins(object):
         single file
 
         @param file_name (string) Name of the output file
+        @param showbar (boolean) Display progression bar
         """
         if self.suite and self.merge:
             if len(self.slfs) == 2:  # /!\ difference only between two files

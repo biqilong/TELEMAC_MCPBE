@@ -72,7 +72,7 @@ def convert_courlis_parser(subparser):
     """
     Building parser
 
-    @param (ArgumentParser) The parser
+    @param subparser (ArgumentParser) The parser
 
     @returns (ArgumentaParser) The udpated parser
     """

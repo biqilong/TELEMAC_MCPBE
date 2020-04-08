@@ -37,7 +37,10 @@
       USE DECLARATIONS_GAIA, ONLY : DEBU_MASS,NSAND,NMUD,NVAR_LAYTHI,
      & NVAR_LAYTHI,NVAR_MASS_M,NVAR_MASS_S,NVAR_RATIOM,NVAR_RATIOS,
      & NVAR_LAYCONC,NVAR_MTRANS,NVAR_TOCEMUD,NVAR_PARTHE,BED_MODEL,
-     & CONC_MUD_FOUND,TOCE_MUD_FOUND,PARTHENIADES_FOUND,MTRANS_FOUND
+     & CONC_MUD_FOUND,TOCE_MUD_FOUND,PARTHENIADES_FOUND,MTRANS_FOUND,
+     & MASS_S, MASS_M, RATIOS, RATIOM, MASS_SAND, MASS_MUD, RATIO_SAND,
+     & RATIO_MUD, TOCE_MUD, TOCEMUD, PARTHE, PARTHENIADES, MTRANSFER,
+     & TRANS_MASS, LAYCONC, CONC_MUD
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
@@ -200,6 +203,8 @@
       DO I = 1,NSAND
         DO J=1,NOMBLAY
           IF(TROUVE(NVAR_MASS_S+(I-1)*NOMBLAY+J).EQ.1) THEN
+            ! Updating mass_sand with what was read in file
+            MASS_SAND(I,J,1:NPOIN) = MASS_S%ADR(J+(I-1)*NOMBLAY)%P%R
             CHECK_NSNL=CHECK_NSNL+1
           ENDIF
         ENDDO
@@ -208,6 +213,8 @@
       DO I = 1,NMUD
         DO J=1,NOMBLAY
           IF(TROUVE(NVAR_MASS_M+(I-1)*NOMBLAY+J).EQ.1) THEN
+            ! Updating mass_mud with what was read in file
+            MASS_MUD(I,J,1:NPOIN) = MASS_M%ADR(J+(I-1)*NOMBLAY)%P%R
             CHECK_NMNL=CHECK_NMNL+1
           ENDIF
         ENDDO
@@ -222,6 +229,8 @@
         DO I = 1,NSAND
           DO J=1,NOMBLAY
             IF(TROUVE(NVAR_RATIOS+(I-1)*NOMBLAY+J).EQ.1) THEN
+              ! Updating ratio_sand with what was read in file
+              RATIO_SAND(I,J,1:NPOIN) = RATIOS%ADR(J+(I-1)*NOMBLAY)%P%R
               CHECK_RSNL=CHECK_RSNL+1
             ENDIF
           ENDDO
@@ -230,6 +239,8 @@
         DO I = 1,NMUD
           DO J=1,NOMBLAY
             IF(TROUVE(NVAR_RATIOM+(I-1)*NOMBLAY+J).EQ.1) THEN
+              ! Updating ratio_mud with what was read in file
+              RATIO_MUD(I,J,1:NPOIN) = RATIOM%ADR(J+(I-1)*NOMBLAY)%P%R
               CHECK_RMNL=CHECK_RMNL+1
             ENDIF
           ENDDO
@@ -246,8 +257,8 @@
 !         RATIO_S,RATIO_M,ES
 !         XKV READ IN THE STEERING FILE
           DEBU_MASS=.FALSE.
-          WRITE(LU,*)'MASSES COMPUTED USING RATIOS,POROSITY AND
-     &     THICKNESS RETREIVED IN THE PREVIOUS FILE'
+          WRITE(LU,*)'MASSES COMPUTED USING RATIOS,POROSITY AND '//
+     &     'THICKNESS RETREIVED IN THE PREVIOUS FILE'
         ELSE
 !         NOT ENOUGH DATA TO RESTART COMPUTATION
           WRITE(LU,1111)
@@ -269,12 +280,18 @@
         CHECK_PARTHENIADES=0
         DO I=1,NOMBLAY
           IF(TROUVE(NVAR_LAYCONC+I).EQ.1) THEN
+            ! Updating conc_mud with what was read in file
+            CONC_MUD(I,1:NPOIN)=LAYCONC%ADR(I)%P%R
             CHECK_CONC=CHECK_CONC+1
           ENDIF
           IF(TROUVE(NVAR_TOCEMUD+I).EQ.1) THEN
+            ! Updating toce_mud with what was read in file
+            TOCE_MUD(I,1:NPOIN) = TOCEMUD%ADR(I)%P%R
             CHECK_TOCEMUD=CHECK_TOCEMUD+1
           ENDIF
           IF(TROUVE(NVAR_PARTHE+I).EQ.1) THEN
+            ! Updating partheniades with what was read in file
+            PARTHENIADES(I,1:NPOIN) = PARTHE%ADR(I)%P%R
             CHECK_PARTHENIADES=CHECK_PARTHENIADES+1
           ENDIF
         ENDDO
@@ -294,6 +311,8 @@
           CHECK_MTRANS=0
           DO I=1,NOMBLAY
             IF(TROUVE(NVAR_MTRANS+1).EQ.1) THEN
+              ! Updating mtransfer with what was read in file
+              MTRANSFER%ADR(I)%P%R=TRANS_MASS(I,1:NPOIN)
               CHECK_MTRANS=CHECK_MTRANS+1
               WRITE(LU,*)'MASS TRANSFER READ FROM PREVIOUS FILE'
             ENDIF

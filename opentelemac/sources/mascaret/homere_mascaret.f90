@@ -564,6 +564,7 @@ program HOMERE_MASCARET
    real(DOUBLE)        :: tc1, tc2, tcal1, tcal2
    real(DOUBLE)        :: Tlim = 0.
 
+   NbPts = 0
 !--TAPENADE
 
    !======================== Instructions ========================
@@ -796,7 +797,7 @@ program HOMERE_MASCARET
    call print_stat_masc(TitreCas,size(Connect%ORIGINEBIEF),size(Profil),size(Connect%NUMSECTIONEXTLIBRE),  &
                         size(Connect%NBBIEFCONFLUENCE),size(Apport),size(Deversoir),size(Casier),size(Liaison),  &
                         size(Singularite),size(X),Noyau,DT,CourantObj,TempsMaximum,NbPasTemps,CritereArret,  &
-                        PastempsVariable,associated(Singularite),OptionCasier)
+                        PastempsVariable,associated(Singularite),OptionCasier,Impli_Trans,Boussinesq,NoConvection)
 !TAPENADE--
    !
    !  Tracer

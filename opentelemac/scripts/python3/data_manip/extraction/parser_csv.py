@@ -51,6 +51,8 @@ class CSV(object):
         Initialise the CSV class
 
         @param file_name (string) If given data is read from it
+        @param delimiter (string) csv delimiter character
+        @param comments (string) Comments character
         """
         self.rowheader = []
         self.rowvars = []

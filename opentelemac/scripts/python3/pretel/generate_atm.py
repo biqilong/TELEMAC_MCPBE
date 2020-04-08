@@ -43,7 +43,7 @@ def generate_atm_parser(subparser):
     """
     Adding options for genreate_atm ot parser
 
-    @param (ArgumentParser) A parser
+    @param subparser (ArgumentParser) A parser
 
     @return (ArgumentParser) The updated parser
     """

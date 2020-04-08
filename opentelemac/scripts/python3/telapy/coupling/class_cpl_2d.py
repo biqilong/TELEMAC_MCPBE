@@ -15,10 +15,16 @@ class ClassCpl2D:
 
     def __init__(self, t2d, coupler, nb_model_1d, nb_criteria, id_fr_co_2d):
         """
-                Constructor:
-                Initialization of Telemac instance
-                Initialization of coupler variables
-                Initialization of coupling model variables
+        Constructor:
+        Initialization of Telemac instance
+        Initialization of coupler variables
+        Initialization of coupling model variables
+
+        @param t2d (Telemac2d) Telemac2d instance
+        @param coupler (???) Coupler structure
+        @param nb_model_1d (int) Number of 1d models
+        @param nb_criteria (int) Number of criteria
+        @param id_fr_co_2d (np.array) border point index
         """
         self.nb_model_1d = nb_model_1d
         self.nb_criteria = nb_criteria
@@ -45,8 +51,7 @@ class ClassCpl2D:
     def node_frliq(self, id_fr_co_2d):
         """
         Search frontiere  liquide
-        @param id_fr_co_2d (np.array): border point index
-        @return nothing
+        @param id_fr_co_2d (np.array) border point index
         """
         self.id_fr_co_2d = id_fr_co_2d.astype(int)
         self.nb_fr_co = len(self.id_fr_co_2d)
@@ -92,8 +97,8 @@ class ClassCpl2D:
     def del_duplic_halo_pt(self, idx, nachb):
         """
         Detect duplicated halo points and delete that
-        @param idx (int): iteration step
-        @param nachb (dict) : Mesh internal boundaries processor association
+        @param idx (int) iteration step
+        @param nachb (dict) Mesh internal boundaries processor association
         """
         # detect duplicated halo points
         if self.coupler.ncsize > 1:
@@ -105,11 +110,10 @@ class ClassCpl2D:
     def get_node_frco(self, idx, nptfr, numliq, nbor_numliq):
         """
         Get nodes of coupling liquid border (self.tab_frliq)
-        @param idx (int): iteration step
-        @param nptfr (int) : liquid border number
-        @param numliq (list) : list of liquid border number
-        @param nbor_numliq (list) : list of liquid border node
-        @return
+        @param idx (int) iteration step
+        @param nptfr (int) liquid border number
+        @param numliq (list) list of liquid border number
+        @param nbor_numliq (list) list of liquid border node
         """
         compteur_g = 0
         tab_node_frliq_tmp = []
@@ -136,9 +140,9 @@ class ClassCpl2D:
     def compt_type_cl(type_cl_in_1d):
         """
         Compute the number of boundary conditions type
-        @param type_cl_in_1d (list): type of boundary condition
-        @return: ncote(int): nb of  level water condition
-        @return: ndeb(int): nb of flow rate condition
+        @param type_cl_in_1d (list) type of boundary condition
+        @return ncote (int) nb of  level water condition
+        @return ndeb (int) nb of flow rate condition
         """
         unique, counts = np.unique(type_cl_in_1d, return_counts=True)
         tmp = {x: y for x, y in zip(unique, counts)}
@@ -152,11 +156,10 @@ class ClassCpl2D:
     def interp_conlim(self, nit, d_t, dt_1d, conlim_co):
         """
         Temporal interpolation of boundary condition
-        @param nit (int): iteration number of 2D model
-        @param d_t (float) : Time step of 2D model
-        @param dt_1d (float) : Time step of 1D model
-        @param conlim_co (np.array):boundary condition table
-        @return: nothing
+        @param nit (int) iteration number of 2D model
+        @param d_t (float) Time step of 2D model
+        @param dt_1d (float) Time step of 1D model
+        @param conlim_co (np.array) boundary condition table
         """
         if self.has_fr_co:
             self.interp_conlim_co = np.zeros([nit + 1, self.nb_model_1d])
@@ -169,9 +172,9 @@ class ClassCpl2D:
     def comput_conlim(self, pos_model_1d, type_cl_in_1d):
         """
         Compute boudaries conditions
-        @param type_cl_in_1d (list): type of boundary conditions
-        @param pos_model_1d(list): models 1D position
-        @return conlim(np.array): boundary condition values
+        @param type_cl_in_1d (list) type of boundary conditions
+        @param pos_model_1d (list) models 1D position
+        @return conlim (np.array) boundary condition values
         """
         if 2 in type_cl_in_1d:
             self.glo_h = self.gather_fr_co('MODEL.WATERDEPTH')
@@ -197,9 +200,9 @@ class ClassCpl2D:
     def calc_sl_moy(self, glo_h, i=0):
         """
         Compute mean free surface
-        @param glo_h(np.array):  height values of global mesh
-        @param i(int) : numero of 1D model
-        @return: Mean free surface
+        @param glo_h (np.array) height values of global mesh
+        @param i (int) numero of 1D model
+        @return (float) Mean free surface
         """
         moy = []
         for k in range(1, self.nb_node_glo[i] - 1):
@@ -210,9 +213,8 @@ class ClassCpl2D:
     def cl_modif(self, type_cl_in_1d, condlim):
         """
         update boundaries conditions
-        @param type_cl_in_1d(list): type of boundary condition
-        @param condlim (np.array):
-        @return: nothing
+        @param type_cl_in_1d (list) type of boundary condition
+        @param condlim (np.array) boundary conditions
         """
         if self.has_fr_co:
             cote = self.t2d.get_array('MODEL.COTE')
@@ -230,11 +232,13 @@ class ClassCpl2D:
     def calc_area(self, x_a, x_b, z_m, epsi=0.001):
         """
         Compute area of one mesh
-        @param x_a (list): [ x,y position for A point, bottom for A point]
-        @param x_b(list):  [ x,y position for B point, bottom for B point]
-        @param z_m(float):  Mean height
-        @param epsi(float): tolerance by default it's equal 0.001
-        @return: air(float): return air
+
+        @param x_a (list) [ x,y position for A point, bottom for A point]
+        @param x_b (list)  [ x,y position for B point, bottom for B point]
+        @param z_m (float)  Mean height
+        @param epsi (float) tolerance by default it's equal 0.001
+
+        @return air (float) return air
         """
         air = 0
         if z_m - x_a[1] >= epsi and z_m - x_b[1] >= epsi:
@@ -251,18 +255,21 @@ class ClassCpl2D:
     def dist(x_a, x_b):
         """
         Compute distance
-        @param x_a(list): a point coord.
-        @param x_b(list): b point coord.
-        @return (float): the distance between a point and b point
+
+        @param x_a (list) a point coord.
+        @param x_b (list) b point coord.
+
+        @return (float) the distance between a point and b point
         """
         return sqrt((x_a[0] - x_b[0]) ** 2 + (x_a[1] - x_b[1]) ** 2)
 
     def var_interface(self, pos_model_1d, type_cl_in_1d, vars_2d):
         """
         Creating the table to calculate the convergence variable
-        @param pos_model_1d(list): models 1D position
-        @param type_cl_in_1d (list) : boundary condition type
-        @param vars_2d(np.array): table to calculate the convergence variable
+
+        @param pos_model_1d (list) models 1D position
+        @param type_cl_in_1d (list) boundary condition type
+        @param vars_2d (np.array) table to calculate the convergence variable
         """
 
         if 2 not in type_cl_in_1d:
@@ -317,6 +324,7 @@ class ClassCpl2D:
     def gather_fr_co(self, vars_n):
         """
         Gather boundary conditions
+
         @param vars_n (str)  Variable name
         """
 

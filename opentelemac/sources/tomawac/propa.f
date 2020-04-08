@@ -93,6 +93,7 @@
 !
       INTEGER IFF,I,I3,IPLAN
       INTEGER :: SIZ_ISUB, SIZ_FRE, JF_ISUB, JF_FRE
+      INTEGER, ALLOCATABLE :: TMP_ISUB(:)
 !
 !----------------------------------------------------------------------
 !
@@ -139,12 +140,15 @@
           SIZ_FRE = 1
           JF_FRE = 1
         ENDIF
+        ! Memory optimisation (intel debug)
+        ALLOCATE(TMP_ISUB(SIZ_ISUB))
+        TMP_ISUB = ISUB((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB)
         CALL POST_INTERP(STSTOT,T3_02,SSHP1%ADR(IFF)%P%R,
      &                   SSHZ%ADR(IFF)%P%R,SSHF%ADR(IFF)%P%R,
      &                   IKLE_EXT%I,IKLE_EXT%DIM1,1,
      &                   NPOIN2,ELT(1,IFF),ETA(1,IFF),
      &                   FRE((JF_FRE-1)*SIZ_FRE+1:JF_FRE*SIZ_FRE),
-     &                   ISUB((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB),
+     &                   TMP_ISUB,
      &                   3,NPLAN,41,NPOIN3,
      &                   NPOIN2,TRA01,TRA01(1,4),
      &                   T3_01%R,ITR01(1:NPOIN3),
@@ -155,6 +159,7 @@
 !                      PERIODICITY
      &                   COURAN)
 !                        4D
+        DEALLOCATE(TMP_ISUB)
 !
         IF(NCSIZE.GT.1) CALL PARCOM(T3_02,1,MESH3D)
 !

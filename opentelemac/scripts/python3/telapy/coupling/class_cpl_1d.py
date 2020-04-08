@@ -300,10 +300,10 @@ class HydLaw:
         Constructor
             1. Initialize empty values
             2. Recover the initial time and values as from the prescribed chronicles
-        @param class_mod_1d model: pointer to 1D model instance
-        @param int pos: position in the BC list
-        @param str name: name of the associated hydraulic law
-        @param int idxhyd: number of the associated hydraulic law
+        @param model (class_mod_1d) pointer to 1D model instance
+        @param pos (int) position in the BC list
+        @param name (str) name of the associated hydraulic law
+        @param idxhyd (int) number of the associated hydraulic law
         """
 
         self.pos = pos
@@ -328,7 +328,7 @@ class HydLaw:
         """
         Provides the values of the law at the prescribed coupling times
             1. Uses the numpy interpolator
-        @param ndarray times: numpy array of prescribed times
+        @param times (ndarray) numpy array of prescribed times
         @return (np.array) new law
         """
 

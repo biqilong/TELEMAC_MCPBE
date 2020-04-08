@@ -137,6 +137,7 @@
 !
       INTEGER I,J,K
       DOUBLE PRECISION U3DNORM
+      DOUBLE PRECISION, ALLOCATABLE :: TMP_RATIO(:)
 !
 !======================================================================!
 !======================================================================!
@@ -201,6 +202,7 @@
 !
         CALL OS('X=C     ',X=HIDING,C=1.D0)
 !
+        ALLOCATE(TMP_RATIO(NPOIN))
         DO I = 1, NSICLA
 !
           IF(SEDCO(I)) THEN
@@ -208,10 +210,11 @@
             CALL OS('X=0     ', X=QSCL_C%ADR(I)%P)
           ELSE
 !           IF NON COHESIVE
+            TMP_RATIO = RATIO_SAND(NUM_ICLA_ISAND(I),1,1:NPOIN)
             CALL BEDLOAD_FORMULA_GAIA
      &        (U2D,V2D,UNORM,HN,CF,MU,TOB,TOBW,UW,TW,THETAW,FW,
      &        ACLADM, UNLADM,KSP,KSR,
-     &        RATIO_SAND(NUM_ICLA_ISAND(I),1,1:NPOIN),
+     &        TMP_RATIO,
      &        NPOIN,ICF,HIDFAC,XMVS0(I),XMVE,
      &        DCLA(I),GRAV,VCE,HMIN,XWC(I),KARMAN,ZERO,
      &        PI,SUSP,AC(I),HIDING,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,
@@ -235,6 +238,7 @@
           ENDDO
 !
         ENDDO
+        DEALLOCATE(TMP_RATIO)
 !
 !
       ENDIF

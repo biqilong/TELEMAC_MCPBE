@@ -8,6 +8,7 @@ def read_shape_data(shape_file, get_names=False):
     Extract a polygon from a shape file
 
     @param shape_file (string) Name of the shape file
+    @param get_names (boolean) If True returns the name of each shape
 
     @return (list) The list representing the polygon (list of 2-uple)
     """

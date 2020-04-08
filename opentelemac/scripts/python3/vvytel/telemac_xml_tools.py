@@ -124,8 +124,6 @@ def find_targets(dido, src):
 
     @param dido (dict) Contains xml actions informations
     @param src (string) The file to find
-
-    @param layer (list) List of tuple ([name of the file], type, submit[5])
     """
     layer = []
 

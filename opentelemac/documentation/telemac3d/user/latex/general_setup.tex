@@ -32,7 +32,8 @@ The three-dimensional mesh, consisting of prisms possibly cut into
 tetrahedrons, is automatically constructed by \telemac{3D} from the
 two-dimensional mesh. This construction is done in the subroutine
 \telfile{CALCOT} from the information given by the subroutine defining the
-initial conditions \telfile{CONDIM}.
+mesh transformation \telfile{USER\_MESH\_TRANSF} or, by default if using a
+classical sigma transformation, in the \telfile{CONDIM} subroutine.
 
 The number of prisms is specified in the data file by means of the keyword
 \telkey{NUMBER OF HORIZONTAL LEVELS} (default value = 2). That number of levels
@@ -44,7 +45,8 @@ step (without such a change, the mesh dimensions $z$ would vary in
 accordance with the free surface evolution). The frequently adopted change of
 variables is the sigma transform which consists in shifting from the $z(x,y,t)$
 co-ordinate to the $z^{*} (x,y)$ co-ordinate.
-The user should enter the $z^{*}$ co-ordinates in the \telfile{CONDIM} subroutine.
+The user should enter the $z^{*}$ co-ordinates in the \telfile{USER\_MESH\_TRANSF}
+subroutine.
 The normalized co-ordinates will then range from 0 (the bottom) to 1 (the surface).
 
 The numbering of levels is made according to upward vertical. Level 1 follows
@@ -75,13 +77,14 @@ The default value is 1 (Figure \ref{fig:mesh_transf}) and results in a
 homogeneous distribution of levels in the vertical direction (classical sigma
 transformation). The height of the levels varies depending on the water depth,
 all planes can move (except for the bottom). In this case, no programming in
-the \telfile{CONDIM} subroutine is required.
+the \telfile{USER\_MESH\_TRANSF} subroutine is required.
 
 A value of 2 (Figure \ref{fig:mesh_transf2}) will allow the user to define the
 distribution of levels (e.g. refinement near surface) while maintaining the
 levels mobility (sigma transformation with given proportions). The latter
 choice implies that the user will program his/her distribution in the
-\telfile{CONDIM} subroutine to define the array \telfile{ZSTAR} that describes
+\telfile{USER\_MESH\_TRANSF} subroutine to define the array \telfile{ZSTAR}
+that describes
 the distribution of levels along the vertical as a percentage of the water depth.
 Changes to make are:
 
@@ -142,8 +145,8 @@ the distribution is specified by the \telfile{ZSTAR} variable),
 to value 1 of the \telfile{TRANSF\_PLANE} variable).
 \end{itemize}
 
-This latter choice requires the user to make changes in the \telfile{CONDIM}
-subroutine:
+This latter choice requires the user to make changes in the
+\telfile{USER\_MESH\_TRANSF} subroutine:
 
 \begin{itemize}
 \item Specifying the variable \telfile{TRANSF\_PLANE} at value 1, 2 or 3
@@ -187,8 +190,8 @@ ZPLANE%R(6)=0.D0
 \label{fig:mesh_transf3}
 \end{figure}
 
-Various programming examples are provided as comments in the \telfile{CONDIM}
-subroutine.
+Various programming examples are provided as comments in the
+\telfile{USER\_MESH\_TRANSF} subroutine.
 
 The triangular based prismatic elements can optionally be split into
 tetrahedrons. This option is enabled using the \telkey{ELEMENT} keyword can
@@ -231,13 +234,14 @@ values:
 \begin{itemize}
 \item 'ZERO ELEVATION': Initializes the free surface elevation
 to 0 (default value). The initial water depths are then computed from the
-bottom depth,
+bottom elevation,
 
 \item 'CONSTANT ELEVATION': Initializes the free surface elevation to the
 values as provided by the keyword \telkey{INITIAL ELEVATION}
 (default value = 0.). The initial water
 depths are then computed by getting the difference between the free surface
-elevation and the bottom depth.  In those areas where the bottom depth exceeds
+elevation and the bottom elevation.
+In those areas where the bottom elevation exceeds
 the initial elevation, the initial water depth is zero,
 
 \item 'ZERO DEPTH': All the water depths are initialized with a zero value
@@ -252,23 +256,27 @@ information provided by the OSU harmonic constants database (TPXO for instance)
 in the case of the use of this database for the imposition of maritime boundary
 conditions (see subsection \ref{sec:tide}),
 
-\item 'PARTICULAR' or 'SPECIAL': The initial conditions are defined as
-programmed by the user in the \telfile{CONDIM} subroutine (refer to the next
+\item 'PARTICULAR' or 'SPECIAL': The initial conditions for water depth/
+free surface are defined as programmed by the user
+in the \telfile{USER\_CONDI3D\_H} subroutine (refer to the next
 subsection).
 That procedure should be used whenever the initial conditions of the model do 
-not correspond to one of above four cases.
+not correspond to one of above five cases.
 \end{itemize}
 
 
-\subsection{Prescribing particular initial conditions (Programming the \telfile{CONDIM} subroutine)}
+\subsection{Prescribing particular initial conditions with user subroutines}
+% (Programming the \telfile{USER\_CONDIM\_}... subroutines)
 \label{sec:prescr_IC}
 
-The \telfile{CONDIM} subroutine should be programmed whenever the initial
+The \telfile{USER\_CONDI3D\_H}, \telfile{USER\_CONDI3D\_UVW},
+\telfile{USER\_CONDI3D\_TRAC}\ldots
+subroutines should be programmed whenever the initial
 conditions programmed by default are to be modified.
 
-By default, the standard version of the \telfile{CONDIM} subroutine interrupts
-the computation if the keyword \telkey{INITIAL CONDITIONS} is set to 'PARTICULAR'
-without any actual amendment of the subroutine.
+By default, the standard version of the \telfile{USER\_CONDI3D\_H} subroutine
+stops the computation if the keyword \telkey{INITIAL CONDITIONS} is set to
+'PARTICULAR' or 'SPECIAL' without any actual amendment of the subroutine.
 
 The \telfile{CONDIM} subroutine successively initializes the two-dimensional
 variables, then the three-dimensional variables:
@@ -288,8 +296,8 @@ keywords.
 
 \subsection{Resuming the computation}
 
-telemac{3D} enables the user to resume a computation by taking as the initial
-condition the last time step of a computation which was previously computed on
+\telemac{3D} enables the user to resume a computation by taking as the initial
+condition one time step of a computation which was previously computed on
 the same mesh, or possibly with a different number of levels. Thus, some
 computational parameters such as the time step, some boundary conditions, the
 turbulence model can be modified, or else a computation can be initiated once a
@@ -309,10 +317,11 @@ FILE} does not include any result for the tracer.
 To resume a computation, it is required to use two keywords into the steering
 file.
 
-The keyword \telkey{COMPUTATION CONTINUED} should be set to the YES value.
+The keyword \telkey{COMPUTATION CONTINUED} should be set to the YES value
+(default value = NO).
 
 The keyword \telkey{PREVIOUS COMPUTATION FILE} should provide the name of the
-file which will provide the initial conditions (default value = 0).
+file which will provide the initial conditions.
 
 Optionally, the keyword \telkey{RECORD NUMBER FOR RESTART} can be used to
 define the record number to read if it is not the last one (defined by a
@@ -458,7 +467,7 @@ subsections describe the way the boundary nodes are handled.
 
 The boundary condition type for $H$, $U$, $V$ and $T$ of the edge points is
 read in the boundary conditions file. It can be either modified or directly
-defined by the user in the \telfile{LIMI3D} subroutine.
+defined by the user in the \telfile{USER\_LIMI3D} subroutine.
 
 The various types of boundary conditions can be combined in order to prescribe
 the conditions of different physical kinds (liquid inflow or outflow in
@@ -472,7 +481,7 @@ convention is then observed in order to determine the nature of a segment lying
 between two different kinds of points: a liquid segment is a segment linking
 two liquid-types points. Thus, under that convention, the connecting point
 between the shore and the marine boundary (or between the river and the bank)
-is preferably of the liquid type. Therefore, liquid + solid = solid
+is preferably of the liquid type. Therefore, liquid + solid = solid.
 
 Any sequential arrangement of the boundary types may exist along an outline
 (for instance, one may have a liquid boundary with a prescribed depth followed
@@ -496,42 +505,42 @@ The available options are as follows:
 \item Depth condition:
 
 \begin{itemize}
-\item Prescribed depth liquid boundary: \telfile{LIHBOR}=5,
+\item Prescribed depth liquid boundary: \telfile{LIHBOR} = 5,
 
-\item Free depth liquid boundary: \telfile{LIHBOR}=4,
+\item Free depth liquid boundary: \telfile{LIHBOR} = 4,
 
-\item Solid boundary (wall): \telfile{LIHBOR}=2.
+\item Solid boundary (wall): \telfile{LIHBOR} = 2.
 \end{itemize}
 \end{itemize}
 
 It is noteworthy that a depth/rate law is considered as a prescribed depth
 condition. The flow rate value should then explicitly be computed, according to
-the water depth, by programming the Q3 subroutine.
+the water depth, by programming the \telfile{USER\_Q3} subroutine.
 
 \begin{itemize}
 \item Rate or velocity condition:
 
 \begin{itemize}
-\item Prescribed flow rate liquid boundary: \telfile{LIUBOR/LIVBOR}=5,
+\item Prescribed flow rate liquid boundary: \telfile{LIUBOR/LIVBOR} = 5,
 
-\item Prescribed velocity liquid boundary: \telfile{LIUBOR/LIVBOR}=6,
+\item Prescribed velocity liquid boundary: \telfile{LIUBOR/LIVBOR} = 6,
 
-\item Free velocity liquid boundary: \telfile{LIUBOR/LIVBOR}=4,
+\item Free velocity liquid boundary: \telfile{LIUBOR/LIVBOR} = 4,
 
-\item Solid boundary with sliding or friction: \telfile{LIUBOR/LIVBOR}=2,
+\item Solid boundary with sliding or friction: \telfile{LIUBOR/LIVBOR} = 2,
 
 \item Solid boundary with one or two zero velocity components: \telfile{LIUBOR} and/or
-\telfile{LIVBOR}=0.
+\telfile{LIVBOR} = 0.
 \end{itemize}
 
 \item Tracer condition:
 
 \begin{itemize}
-\item Prescribed tracer liquid boundary: \telfile{LITBOR}=5,
+\item Prescribed tracer liquid boundary: \telfile{LITBOR} = 5,
 
-\item Free tracer liquid boundary: \telfile{LITBOR}=4,
+\item Free tracer liquid boundary: \telfile{LITBOR} = 4,
 
-\item Solid boundary (wall): \telfile{LITBOR}=2.
+\item Solid boundary (wall): \telfile{LITBOR} = 2.
 \end{itemize}
 \end{itemize}
 
@@ -598,7 +607,7 @@ the \telfile{LIUBOR} or \telfile{LIVBOR} value is set to 2.
 The friction law is then written as:
 %TODO: Space between equations
 \begin{align}
-\upsilon_{T} \frac{dU}{dn} = AUBOR \times U {\rm and/or }
+\upsilon_{T} \frac{dU}{dn} = AUBOR \times U {\rm ~~~~and/or~~~~ }
 \upsilon_{T} \frac{dV}{dn} = AUBOR \times V
 \end{align}
 \end{itemize}
@@ -615,7 +624,7 @@ then be ignored.
 \item \telfile{TBOR} (real) denotes the prescribed tracer value when the
 \telfile{LITBOR} value is set to 5,
 
-\item \telfile{ATBOR} et \telfile{BTBOR} denote the coefficient values of the
+\item \telfile{ATBOR} and \telfile{BTBOR} denote the coefficient values of the
 flux law which is written as:
 \begin{align}
 \upsilon _{T} \frac{dT}{dn} = ATBOR \times T + BTBOR
@@ -653,7 +662,7 @@ subterranean stream) may, indeed, induce severe inconsistencies with the
 hydrostaticity hypothesis and generate, for instance, unrealistic vertical
 velocities. It is then advisable that the user will follow that principle.
 Nonetheless, the boundary condition type in the vertical direction can be
-altered through direct programming in the \telfile{LIMI3D} subroutine.
+altered through direct programming in the \telfile{USER\_LIMI3D} subroutine.
 
 The so-called \telfile{LIHBOR}, \telfile{LIUBOR} and \telfile{LIVBOR} integers
 (which define the boundary type) can assume a value ranging from 0 to 6.
@@ -663,22 +672,22 @@ The available options are as follows:
 \item Depth-related condition:
 
 \begin{itemize}
-\item Prescribed depth liquid boundary: \telfile{LIHBOR=5},
+\item Prescribed depth liquid boundary: \telfile{LIHBOR} = 5,
 
-\item Free depth liquid boundary: \telfile{LIHBOR=4},
+\item Free depth liquid boundary: \telfile{LIHBOR} = 4,
 
-\item Solid boundary (wall): \telfile{LIHBOR=2},
+\item Solid boundary (wall): \telfile{LIHBOR} = 2,
 \end{itemize}
 
 \item Velocity-related condition:
 
-\item Prescribed velocity liquid boundary: \telfile{LIUBOR/LIVBOR=6},
+\item Prescribed velocity liquid boundary: \telfile{LIUBOR/LIVBOR} = 6,
 
-\item Prescribed rate liquid boundary: \telfile{LIUBOR/LIVBOR=5},
+\item Prescribed rate liquid boundary: \telfile{LIUBOR/LIVBOR} = 5,
 
-\item Free velocity liquid boundary: \telfile{LIUBOR/LIVBOR=4},
+\item Free velocity liquid boundary: \telfile{LIUBOR/LIVBOR} = 4,
 
-\item Solid boundary with sliding or friction: \telfile{LIUBOR/LIVBOR=2},
+\item Solid boundary with sliding or friction: \telfile{LIUBOR/LIVBOR} = 2,
 
 \item Solid boundary with one or two zero velocity components: \telfile{LIUBOR} and/or
 \telfile{LIVBOR=0}.
@@ -714,7 +723,7 @@ LIHBOR & LIUBOR & LIVBOR & LITBOR &  \\ \hline
 
 \subsection{Programming the boundary conditions type}
 
-The \telfile{LIMI3D} subroutine can be programmed to handle specific boundary
+The \telfile{USER\_LIMI3D} subroutine can be programmed to handle specific boundary
 conditions, for the edge points as well as the surface and bottom points.
 
 That subroutine is called upon each time step. Therefore, it can be used to
@@ -733,7 +742,8 @@ The appropriate keywords to prescribe the boundary values are as follows:
 \begin{itemize}
 \item \telkey{PRESCRIBED ELEVATIONS}: provided to set the
 elevation value of a prescribed height liquid boundary. It is an array which
-can contain up to 100 reals, and therefore up to 100 boundaries of that kind
+can contain up to \telfile{MAXFRO} reals,
+and therefore up to \telfile{MAXFRO} boundaries of that kind
 can be handled. The values defined by that keyword overwrite the depth values
 read from the boundary conditions file,
 
@@ -744,14 +754,16 @@ in the boundary conditions file.
 
 \item \telkey{PRESCRIBED FLOWRATES}: provided to set the flow rate value of a
 prescribed flow at a liquid boundary. It is an array which can contain up to
-100 reals, and therefore up 100 boundaries of that kind can be handled. A
+\telfile{MAXFRO} reals, and therefore up \telfile{MAXFRO}
+boundaries of that kind can be handled. A
 positive value corresponds to a domain inflow rate. The values defined by that
 keyword overwrite the velocity values read from the boundary conditions file,
 
 \item \telkey{PRESCRIBED VELOCITIES}: provided to set the velocity value of a
 prescribed velocity liquid boundary. The scalar value is the wall normal
 velocity. A positive value corresponds to a domain inflow. It is an array which
-can contain up to 100 reals, and therefore up 100 boundaries of that kind can
+can contain up to \telfile{MAXFRO} reals,
+and therefore up \telfile{MAXFRO} boundaries of that kind can
 be handled. The values defined by that keyword overwrite the values read from
 the boundary conditions file.
 \end{itemize}
@@ -803,7 +815,8 @@ but it can be changed by the user with the keyword \telkey{MAXIMUM NUMBER OF
 BOUNDARIES ON THE BED}.
 At the moment, the \telkey{BOUNDARY CONDITIONS FILE} only deals with horizontal
 boundaries, therefore the user has to define the liquid boundary on the bed by hand.
-This can be done by modifying the subroutine LIMI3D in the \telkey{FORTRAN FILE}.
+This can be done by modifying the subroutine \telfile{USER\_LIMI3D}
+in the \telkey{FORTRAN FILE}.
 For example to add a circular boundary of radius 5~m centred around coordinate
 (2~000, 2~000)~m, the following modifications can be done:
 \begin{lstlisting}[language=TelFortran]
@@ -910,23 +923,23 @@ surface is prescribed at the second boundary.
 
 Still in the case of time variable values that are constant in time along the
 liquid boundary processed, the prescription can be made simply by programming
-particular functions:
+particular subroutines:
 
 \begin{itemize}
-\item \telfile{VIT3} function for prescribing a velocity,
+\item \telfile{USER\_VIT3} subroutine for prescribing a velocity,
 
-\item \telfile{Q3} function for prescribing a flow rate,
+\item \telfile{USER\_Q3} subroutine for prescribing a flow rate,
 
-\item \telfile{SL3} function for prescribing an elevation.
+\item \telfile{USER\_SL3} subroutine for prescribing an elevation.
 \end{itemize}
 
-Functions \telfile{Q3, VIT3} and \telfile{SL3} are similarly programmed.
+\telfile{USER\_Q3, USER\_VIT3} and \telfile{USER\_SL3} subroutines are similarly programmed.
 In each case, the user knows the time, the boundary rank (e.g. to determine
 whether the first or the second prescribed flow rate boundary is processed).
-By default, the functions prescribe values that are read from the boundary
+By default, the subroutines prescribe values that are read from the boundary
 conditions file or provided by the keywords.
 
-For instance, the body of function \telfile{Q3} used to prescribe a flow rate
+For instance, the body of subroutine \telfile{USER\_Q3} used to prescribe a flow rate
 ramp for the first 1,000 seconds from 0 to 400~m${}^{3}$/s can take such a form as:
 
 \begin{lstlisting}[language=TelFortran]
@@ -1000,21 +1013,22 @@ rates below 61~m${}^{3}$/s generate a water elevation of 0~m above the flow of
 \subsection{Prescribing complex values}
 
 If the values to be prescribed vary in both space and time, then a programming
-in the \telfile{BORD3D} subroutine becomes necessary, since that subroutine can
-be used to prescribe the values in a node wise way.
+in the \telfile{USER\_BORD3D} subroutine becomes necessary,
+since that subroutine can be used to prescribe the values in a node wise way.
 
-That subroutine describes all the liquid boundaries (loop on \telfile{NPTFR2}).
+Its calling subroutine \telfile{BORD3D} describes all the liquid boundaries
+(loop on \telfile{NPTFR2}).
 For each boundary point, it determines the boundary type in order to prescribe
 the adequate value (velocity, elevation or flow rate).
-\telfile{BORD3D} programming to prescribe a flow rate, however, hardly makes
-any sense, since the flow rate value is generally known for the whole boundary
-rather than on each boundary segment.
+\telfile{USER\_BORD3D} or \telfile{BORD3D} programming to prescribe a flow rate,
+however, hardly makes any sense, since the flow rate value is generally known
+for the whole boundary rather than on each boundary segment.
 
 If a prescribed flow rate inlet is surrounded by walls with an adherence, then
 the corner velocities are cancelled.
 
-Note that, the \telfile{BORD3D} subroutine also makes it possible to prescribe
-the complex boundary values of the tracers.
+Note that, the \telfile{USER\_BORD3D} subroutine also makes it possible
+to prescribe the complex boundary values of the tracers.
 
 \subsection{Prescribing a profile}
 
@@ -1063,7 +1077,7 @@ that keyword are:
 \item 2: logarithmic.
 \end{itemize}
 
-The user programming is done within the \telfile{VEL\_PROF\_Z} subroutine.
+The user programming is done within the \telfile{USER\_VEL\_PROF\_Z} subroutine.
 
 Activating the keyword \telkey{DYNAMIC BOUNDARY CONDITION} (default value =
 FALSE) also enables to prescribe a velocity at the free surface coherent with
@@ -1321,5 +1335,5 @@ specified by the keyword \telkey{COEFFICIENT TO CALIBRATE TIDAL RANGE} tidal is
 used.
 \end{itemize}
 
-For more information, the reader may refer to methodological guide for tide
+For more information, the reader may refer to the methodological guide for tide
 simulation with version 6.2 \cite{Pham2012}.

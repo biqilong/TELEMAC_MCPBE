@@ -105,7 +105,7 @@ def build_data_request(modelbox, period, dataset, stream, res_name):
     @param period (List) Time period to extract
     @param dataset (string) Type of dataset to use
     @param stream (string) Type of stream
-    @param root_name (string) Name of the result file
+    @param res_name (string) Name of the result file
 
     @return The dictionary containing the request information and the filetype
     """
@@ -278,7 +278,7 @@ def ecmwf2srf_parser(subparser):
     """
     Add arguments for a cemwf2srf conversion
 
-    @param parser (argumentParser) argument parser
+    @param subparser (argumentParser) argument parser
 
     @return (argumentParser) the updated argument parser
     """

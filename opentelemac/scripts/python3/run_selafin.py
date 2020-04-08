@@ -43,8 +43,8 @@ def add_arg(parser, name):
     """
     Add the argument name to parser
 
-    @param (argparse.ArgumentParser) The parser
-    @param name of the argument to add
+    @param parser (argparse.ArgumentParser) The parser
+    @param name (str) name of the argument to add
     """
     if name == 'xvars':
         parser.add_argument(\

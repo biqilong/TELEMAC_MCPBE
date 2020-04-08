@@ -233,11 +233,13 @@ class OutputFileData(object):
 
     def get_user_defined_output(self, user_form, line_num=False):
         """
-        @brief : Read user defined values from the TELEMAC-* output file
+        Read user defined values from the TELEMAC-* output file
+
         @param user_form (string) user gives a regular expression
                                   to find in the file.
-        @param line_num(boolean) return or not the line number
-        :return: file line and line number
+        @param line_num (boolean) return or not the line number
+
+        @return file line and line number
         """
         iline = 0
         user_value = []
