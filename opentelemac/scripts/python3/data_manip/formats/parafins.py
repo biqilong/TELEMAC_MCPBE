@@ -17,6 +17,7 @@ from utils.exceptions import TelemacException
 
 import numpy as np
 
+
 class Parafins(Selafins):
     """
     Class to handle partitionned serafin files
@@ -35,7 +36,7 @@ class Parafins(Selafins):
         self.slf = Selafin(file_name)
         self.file = self.slf.file
         self.fole = self.slf.fole
-        if root != None:
+        if root is not None:
             # ~~> Loading the individual headers
             self.add_root(root)
             # ~~> Making sure there are all inter-compatible
@@ -50,7 +51,7 @@ class Parafins(Selafins):
                 self.slf.nvar = self.slf.nbv1 + self.slf.nbv2
                 self.slf.varindex = range(self.slf.nvar)
             else:
-                raise TelemacException(\
+                raise TelemacException(
                         "... Incompatibilities between files "
                         "for {}".format(path.basename(root)))
 
@@ -90,8 +91,8 @@ class Parafins(Selafins):
         npsize = len(slfnames)
         for nptime in range(npsize):
             fle = root+'{0:05d}-{1:05d}'.format(npsize-1, nptime)
-            if not fle in slfnames:
-                print("... Could not find the following sub-file in "\
+            if fle not in slfnames:
+                print("... Could not find the following sub-file in "
                       "the list: "+fle)
                 return []
         print('      +> Reading the header from the following partitions:')
@@ -149,10 +150,10 @@ class Parafins(Selafins):
                               len(self.slf.tags['cores'])),
                              dtype=np.float64)
             mproc = self.map_poin[nodes]
-            print('      +> Extracting time series from the following'\
+            print('      +> Extracting time series from the following'
                   ' partitions:')
             for islf, slf in zip(range(len(self.slfs)), self.slfs):
-                if not islf in mproc:
+                if islf not in mproc:
                     continue
                 # ~~> Filter the list of nodes according to sub ipobo
                 sub_g_nodes = np.compress(mproc == islf,
@@ -163,8 +164,8 @@ class Parafins(Selafins):
                 # /!\ why does this work in a sorted way ?
                 sub_l_nodes = np.searchsorted(np.sort(slf.ipob2),
                                               sub_g_nodes['n']) + 1
-                print('         ~> '+str(len(sub_l_nodes))+\
-                        ' nodes from partition '+str(islf))
+                print('         ~> '+str(len(sub_l_nodes)) +
+                      ' nodes from partition '+str(islf))
                 # ~~> Get the series from individual sub-files
                 subz = slf.get_series(sub_l_nodes, vars_indexes)
                 # ~~> Reorder according to original list of nodes
@@ -182,7 +183,7 @@ class Parafins(Selafins):
         @param file_name (string) Name of the output file
         @param showbar (boolean) display a showbar (default=True)
         """
-        self.slf.fole.update({'hook':open(file_name, 'wb')})
+        self.slf.fole.update({'hook': open(file_name, 'wb')})
         ibar = 0
         if showbar:
             pbar = ProgressBar(maxval=len(self.slf.tags['times'])).start()
@@ -190,7 +191,7 @@ class Parafins(Selafins):
         # ~~> Time stepping
         for itime in range(len(self.slf.tags['times'])):
             ibar += 1
-            self.slf.append_core_time_slf(itime) # Time stamps
+            self.slf.append_core_time_slf(itime)  # Time stamps
             self.slf.append_core_vars_slf(self.get_palues(itime))
             if showbar:
                 pbar.update(ibar)
@@ -206,12 +207,12 @@ class Parafins(Selafins):
         """
         islf = Selafin(root)
         print('      +> Writing the core of the following partitions:')
-        #TODO: do this loop in python parallel with a
+        # TODO: do this loop in python parallel with a
         # bottle neck at islf.get_values(t)
         for slf in self.slfs:
             sub = deepcopy(slf)
-            sub.fole.update({'endian':islf.fole['endian']})
-            sub.fole.update({'float':islf.fole['float']})
+            sub.fole.update({'endian': islf.fole['endian']})
+            sub.fole.update({'float': islf.fole['float']})
             _, fsize = islf.fole['float']
             # ~~ Conversion to local islf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             # you know the geom is 2D
@@ -228,8 +229,8 @@ class Parafins(Selafins):
                     sub.nelem3 = sub.nelem2*(islf.nplan-1)
                     tmp = np.repeat(sub.ipob2, islf.nplan)\
                             .reshape((sub.npoin2, islf.nplan))
-                    sub.ipob3 = np.ravel(np.add(tmp, \
-                            sub.npoin2*np.arange(islf.nplan)).t)
+                    sub.ipob3 = np.ravel(np.add(tmp,
+                                         sub.npoin2*np.arange(islf.nplan)).t)
                     sub.ikle3 = \
                         np.repeat(sub.npoin2*np.arange(islf.nplan-1),
                                   sub.nelem2*islf.ndp3)\
@@ -258,8 +259,8 @@ class Parafins(Selafins):
                 # with at least two nodes in the subdomain
                 ikles2_1d = np.in1d(islf.ikle2, np.sort(indices))\
                               .reshape(islf.nelem2, islf.ndp2)
-                gkle2 = islf.ikle2[np.where(np.sum(ikles2_1d, axis=1) == \
-                                              islf.ndp2)]
+                gkle2 = islf.ikle2[np.where(np.sum(ikles2_1d, axis=1) ==
+                                            islf.ndp2)]
                 # re-numbering ikle2 as a local connectivity matrix
                 knolg = np.unique(np.ravel(gkle2))
                 knogl = dict(zip(knolg, range(len(knolg))))
@@ -279,8 +280,8 @@ class Parafins(Selafins):
                     sub.nelem3 = sub.nelem2*(islf.nplan-1)
                     tmp = np.repeat(sub.ipob2, islf.nplan)\
                             .reshape((sub.npoin2, islf.nplan))
-                    sub.ipob3 = np.ravel(np.add(tmp,\
-                                   sub.npoin2*np.arange(islf.nplan)).T)
+                    sub.ipob3 = np.ravel(np.add(tmp,
+                                         sub.npoin2*np.arange(islf.nplan)).T)
                     sub.ikle3 = \
                         np.repeat(sub.npoin2*np.arange(islf.nplan-1),
                                   sub.nelem2*islf.ndp3)\
@@ -309,8 +310,8 @@ class Parafins(Selafins):
             sub.nvar = sub.nbv1+sub.nbv2
             # ~~ put_content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             file_name = path.basename(sub.file['name'])\
-                           .replace(self.slf.file['name'], root)
-            sub.fole.update({'hook':open(file_name, 'wb')})
+                .replace(self.slf.file['name'], root)
+            sub.fole.update({'hook': open(file_name, 'wb')})
             sub.append_header_slf()
             print('         ~> '+path.basename(file_name))
             # ~~> Time stepping
@@ -320,11 +321,10 @@ class Parafins(Selafins):
             else:
                 varsors = np.zeros((sub.nvar, sub.npoin3), dtype=np.float64)
             for itime in range(len(islf.tags['times'])):
-                sub.append_core_time_slf(itime) # Time stamps
+                sub.append_core_time_slf(itime)  # Time stamps
                 for ivar, var in zip(range(sub.nvar), islf.get_values(itime)):
                     for n in range(sub.nplan):
                         varsors[ivar][n*sub.npoin2:(n+1)*sub.npoin2] = \
                               var[n*islf.npoin2:(n+1)*islf.npoin2][indices]
                 sub.append_core_vars_slf(varsors)
             sub.fole['hook'].close()
-

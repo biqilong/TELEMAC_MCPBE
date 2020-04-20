@@ -22,6 +22,7 @@ from mpl_toolkits.mplot3d import Axes3D
 # ____/ MAIN CALL  /_______________________________________________/
 #
 
+
 def add_options_fig(parser):
     """
     Add options for a figure (x_label, y_label, title, fig_name...)
@@ -31,13 +32,14 @@ def add_options_fig(parser):
     @returns the updated parser
     """
     # Options to save the file instead of displaying it
-    parser.add_argument(\
+    parser.add_argument(
         "-f", "--figure-name",
         dest="fig_name", default="",
-        help="If given the figure will be saved in fig_name instead "\
+        help="If given the figure will be saved in fig_name instead "
              "of beeing displayed")
 
     return parser
+
 
 def add_options_var(subparser):
     """
@@ -47,10 +49,11 @@ def add_options_var(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('var',\
-            help='Plot a scalar map for a given variable and time/record')
+    parser = subparser.add_parser(
+        'var', help='Plot a scalar map for a given variable and time/record')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
     parser.add_argument(
         "-v", "--var",
@@ -72,6 +75,7 @@ def add_options_var(subparser):
 
     return subparser
 
+
 def arg_points(string):
     """
     Definition of a point for argparse
@@ -82,16 +86,17 @@ def arg_points(string):
         try:
             x, y = map(float, string.split(','))
             return x, y
-        except:
+        except Exception as e:
             raise argparse.ArgumentTypeError("Points must be x,y")
     elif n_coords == 3:
         try:
             x, y, z = map(float, string.split(','))
             return x, y, z
-        except:
+        except Exception as e:
             raise argparse.ArgumentTypeError("Points must be x,y,z")
     else:
         raise argparse.ArgumentTypeError("Points must be either x,y or x,y,z")
+
 
 def add_options_timeseries_on_polyline(subparser):
     """
@@ -101,10 +106,11 @@ def add_options_timeseries_on_polyline(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('time_poly',\
-            help='Plot a timeseries on a polyline')
+    parser = subparser.add_parser('time_poly',
+                                  help='Plot a timeseries on a polyline')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
     parser.add_argument(
         "-v", "--var",
@@ -119,6 +125,7 @@ def add_options_timeseries_on_polyline(subparser):
 
     return subparser
 
+
 def add_options_history(subparser):
     """
     Defines options for history action
@@ -127,10 +134,11 @@ def add_options_history(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('history',\
-            help='Plot history for a list of points')
+    parser = subparser.add_parser('history',
+                                  help='Plot history for a list of points')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
     parser.add_argument(
         "-v", "--var",
@@ -145,6 +153,7 @@ def add_options_history(subparser):
 
     return subparser
 
+
 def add_options_mesh2d(subparser):
     """
     Defines options for mesh2 action
@@ -153,10 +162,12 @@ def add_options_mesh2d(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('mesh2d', \
-            help='Plot a 2d mesh can add boundary or liquid boundary info')
+    parser = subparser.add_parser(
+        'mesh2d',
+        help='Plot a 2d mesh can add boundary or liquid boundary info')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
     # the boundary file option
     parser.add_argument(
@@ -178,6 +189,7 @@ def add_options_mesh2d(subparser):
 
     return subparser
 
+
 def add_options_3d_scalar_map(subparser):
     """
     Defines options for 3d_scalar_map action
@@ -186,11 +198,13 @@ def add_options_3d_scalar_map(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('3d_scalar_map', \
-            help='Plot a 3d representation of a 2D variable '\
-                 'using variable values as Z coordinates')
+    parser = subparser.add_parser(
+        '3d_scalar_map',
+        help='Plot a 3d representation of a 2D variable '
+        'using variable values as Z coordinates')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
 
     parser.add_argument(
@@ -213,6 +227,7 @@ def add_options_3d_scalar_map(subparser):
 
     return subparser
 
+
 def list_of_points(arg):
     """
     Change the string argument in a 2 dimension array.
@@ -221,9 +236,10 @@ def list_of_points(arg):
 
     @returns a list of list
     """
-    res = [[float(v) for v in r.lstrip('(').rstrip(')').split(',')]\
+    res = [[float(v) for v in r.lstrip('(').rstrip(')').split(',')]
            for r in arg.replace(' ', '').split(';')]
     return res
+
 
 def add_options_vertical_slice(subparser):
     """
@@ -233,10 +249,12 @@ def add_options_vertical_slice(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('v_slice', \
-            help='Plot a vertical slice of a 3d mesh along a polyline')
+    parser = subparser.add_parser(
+        'v_slice',
+        help='Plot a vertical slice of a 3d mesh along a polyline')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
 
     parser.add_argument(
@@ -265,6 +283,7 @@ def add_options_vertical_slice(subparser):
     parser = add_options_fig(parser)
     return subparser
 
+
 def add_options_horizontal_slice(subparser):
     """
     Defines options for h_slice action
@@ -273,10 +292,12 @@ def add_options_horizontal_slice(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('h_slice', \
-            help='Plot a horizontal slice of a 3d mesh along a plane number')
+    parser = subparser.add_parser(
+        'h_slice',
+        help='Plot a horizontal slice of a 3d mesh along a plane number')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
 
     parser.add_argument(
@@ -303,6 +324,7 @@ def add_options_horizontal_slice(subparser):
     parser = add_options_fig(parser)
     return subparser
 
+
 def add_options_spe(subparser):
     """
     Defines options for spec action
@@ -311,10 +333,12 @@ def add_options_spe(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('spec',\
-            help='Plot the spectrum of a given point over quandrangle mesh')
+    parser = subparser.add_parser(
+        'spec',
+        help='Plot the spectrum of a given point over quandrangle mesh')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
     parser.add_argument(
         "-p", "--point",
@@ -333,6 +357,7 @@ def add_options_spe(subparser):
 
     return subparser
 
+
 def add_options_spe_freq(subparser):
     """
     Defines options for spec-freq action
@@ -341,10 +366,12 @@ def add_options_spe_freq(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('spec-freq',\
-            help='Plot the frequency of the spectrum of given points')
+    parser = subparser.add_parser(
+        'spec-freq',
+        help='Plot the frequency of the spectrum of given points')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
     parser.add_argument(
         "-p", "--points",
@@ -362,6 +389,7 @@ def add_options_spe_freq(subparser):
     parser = add_options_fig(parser)
 
     return subparser
+
 
 def add_options_spe_ang(subparser):
     """
@@ -371,10 +399,12 @@ def add_options_spe_ang(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('spec-ang',\
-            help='Plot the angular dispersion of the spectrum of given points')
+    parser = subparser.add_parser(
+        'spec-ang',
+        help='Plot the angular dispersion of the spectrum of given points')
 
-    parser.add_argument("input_file", default=None, \
+    parser.add_argument(
+        "input_file", default=None,
         help="Name of the input file extension also defines the input format")
     parser.add_argument(
         "-p", "--points",
@@ -392,6 +422,7 @@ def add_options_spe_ang(subparser):
     parser = add_options_fig(parser)
 
     return subparser
+
 
 def plot_var(res, var, record=-1, time=None, add_mesh=False,
              fig_name=''):
@@ -422,6 +453,7 @@ def plot_var(res, var, record=-1, time=None, add_mesh=False,
                aspect_ratio="equal",
                fig_name=fig_name)
 
+
 def plot_mesh2d(res, display_bnd=False,
                 display_liq_bnd=False, fig_name=''):
     """
@@ -437,9 +469,8 @@ def plot_mesh2d(res, display_bnd=False,
     showing it
     """
     if (display_bnd or display_liq_bnd) and res.boundary_file == '':
-        raise TelemacException(\
+        raise TelemacException(
                 "bnd_file is mandatory if using --bnd or --liq-bnd")
-
 
     vnv_plot2d(res.varnames[0], res,
                plot_mesh=True,
@@ -448,8 +479,9 @@ def plot_mesh2d(res, display_bnd=False,
                aspect_ratio="equal",
                fig_name=fig_name)
 
-def plot_timeseries_on_polyline(\
-        res, var_name, poly, records=None, fig_name=''):
+
+def plot_timeseries_on_polyline(res, var_name, poly, records=None,
+                                fig_name=''):
     """
     Plot a value over a polyline for a range of time
 
@@ -466,8 +498,8 @@ def plot_timeseries_on_polyline(\
     vnv_plot1d_polylines(var_name, res, poly, record=records,
                          fig_name=fig_name)
 
-def plot_history(\
-        res, var_name, points, fig_name=''):
+
+def plot_history(res, var_name, points, fig_name=''):
     """
     Plot values of points over a range of records
 
@@ -477,6 +509,7 @@ def plot_history(\
     @param fig_name (str) If not empty saving in that file
     """
     vnv_plot1d_history(var_name, res, points=points, fig_name=fig_name)
+
 
 def plot_vertical_slice(res, varname, poly,
                         record=-1, time=None, add_mesh=False,
@@ -502,7 +535,7 @@ def plot_vertical_slice(res, varname, poly,
         rrecord = record
         ttime = res.times[record]
 
-    vnv_plot2d(\
+    vnv_plot2d(
             varname,
             res,
             poly=poly,
@@ -544,6 +577,7 @@ def plot_horizontal_slice(res, varname, plane, record=-1, time=None,
                aspect_ratio="equal",
                record=rrecord, fig_name=fig_name)
 
+
 def plot_spe(res, point, record=-1, time=None, fig_name=''):
     """
     Plotting a specter for a given point
@@ -575,6 +609,7 @@ def plot_spe(res, point, record=-1, time=None, fig_name=''):
         plt.show()
 
     plt.close(fig)
+
 
 def plot_spe_freq(res, points=None, record=-1, time=None, fig_name=''):
     """
@@ -611,6 +646,7 @@ def plot_spe_freq(res, points=None, record=-1, time=None, fig_name=''):
 
     plt.close(fig)
 
+
 def plot_spe_ang(res, points=None, record=-1, time=None, fig_name=''):
     """
     Plotting the angular dispersion for the spectrum on points
@@ -625,7 +661,7 @@ def plot_spe_ang(res, points=None, record=-1, time=None, fig_name=''):
     if points is None:
         points = res.get_list_spectrum_points()
 
-    fig, axe = plt.subplots(subplot_kw={'projection':'polar'})
+    fig, axe = plt.subplots(subplot_kw={'projection': 'polar'})
 
     for point in points:
         # Getting list of frequencies and spectrum value

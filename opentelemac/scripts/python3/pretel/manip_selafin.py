@@ -1,10 +1,12 @@
 r"""@author Sebastien E. Bourban
 
 """
-from __future__ import print_function
 # _____          ___________________________________________________
 # ____/ Imports /__________________________________________________/
 #
+# ~~> dependencies towards standard python
+from os import path
+import numpy as np
 # ~~> dependencies towards other modules
 
 from compilation.parser_fortran import clean_quotes
@@ -25,9 +27,6 @@ from pretel.scan_spectral import ScanSpectral
 from pretel.sub_selafin import SubSelafin
 from pretel.calcs_selafin import CalcsSelafin
 from pretel.transf_selafin import TransfSelafin
-# ~~> dependencies towards standard python
-from os import path
-import numpy as np
 
 def scan(options):
     """
@@ -42,7 +41,7 @@ def scan(options):
         print('\n\nScanning ' + path.basename(slf_file) + ' within ' + \
                 path.dirname(slf_file) + '\n'+'~'*72+'\n')
         vrs = options.xvars
-        if options.xvars != None:
+        if options.xvars is not None:
             vrs = clean_quotes(options.xvars.replace('_', ' '))
         times = (int(options.tfrom), int(options.tstep), int(options.tstop))
         slf = ScanSelafin(slf_file, times=times, vrs=vrs)
@@ -67,7 +66,7 @@ def spec(options):
         print('\n\nScanning ' + path.basename(slf_file) + ' within ' + \
                 path.dirname(slf_file) + '\n'+'~'*72+'\n')
         vrs = options.xvars
-        if options.xvars != None:
+        if options.xvars is not None:
             vrs = clean_quotes(options.xvars.replace('_', ' '))
         times = (int(options.tfrom), int(options.tstep), int(options.tstop))
         slf = ScanSpectral(slf_file, times=times, vrs=vrs)
@@ -113,7 +112,7 @@ def chop(options):
         print('\n\nChoping ' + path.basename(slf_file) + ' within ' + \
                 path.dirname(slf_file) + '\n'+'~'*72+'\n')
         vrs = options.xvars
-        if options.xvars != None:
+        if options.xvars is not None:
             vrs = clean_quotes(options.xvars.replace('_', ' '))
         times = (int(options.tfrom), int(options.tstep), int(options.tstop))
         slf = ChopSelafin(slf_file, times=times, vrs=vrs, root=root_file)
@@ -162,17 +161,17 @@ def alter(options):
         print('\n\nAltering ' + path.basename(slf_file) + ' within ' + \
                 path.dirname(slf_file) + '\n'+'~'*72+'\n')
         vrs = options.xvars
-        if options.xvars != None:
+        if options.xvars is not None:
             vrs = clean_quotes(options.xvars.replace('_', ' '))
         times = (int(options.tfrom), int(options.tstep), int(options.tstop))
         slf = AlterSelafin(slf_file, times=times, vrs=vrs, root=root_file)
-        if options.atitle != None:
+        if options.atitle is not None:
             slf.alter_title(options.atitle)
         if options.areset:
             slf.alter_times(p_t=-slf.slf.tags['times'][0])
-        if options.adate != None:
+        if options.adate is not None:
             slf.alter_datetime(date=options.adate.split('-'))
-        if options.atime != None:
+        if options.atime is not None:
             slf.alter_datetime(time=options.atime.split(':'))
         if options.aswitch:
             slf.switch_vars()
@@ -180,15 +179,15 @@ def alter(options):
             slf.alter_endian()
         if options.fswitch:
             slf.alter_float()
-        if options.aname != None:
+        if options.aname is not None:
             slf.alter_vars(options.aname)
         slf.alter_times(m_t=float(options.atm), p_t=float(options.atp))
         slf.alter_mesh(m_x=float(options.axm), p_x=float(options.axp),
                        m_y=float(options.aym), p_y=float(options.ayp))
-        if options.azname != None:
+        if options.azname is not None:
             slf.alter_values(options.azname,
                              m_z=float(options.azm), p_z=float(options.azp))
-        if options.sph2ll != None:
+        if options.sph2ll is not None:
             radius = 6371000.
             long0, lat0 = options.sph2ll.split(":")
             long0 = np.deg2rad(float(long0))
@@ -197,7 +196,7 @@ def alter(options):
             slf.slf.meshx = np.rad2deg(slf.slf.meshx/radius + long0)
             expo = np.exp(slf.slf.meshy/radius)
             slf.slf.meshy = np.rad2deg(2.*np.arctan(const*expo) - np.pi/2.)
-        if options.ll2sph != None:
+        if options.ll2sph is not None:
             radius = 6371000.
             long0, lat0 = options.ll2sph.split(":")
             long0 = np.deg2rad(float(long0))
@@ -206,14 +205,24 @@ def alter(options):
             slf.slf.meshy = radius * \
                       (np.log(np.tan(np.deg2rad(slf.slf.meshy)/2. + np.pi/4.)) \
                               - np.log(np.tan(lat0/2. + np.pi/4.)))
-        if options.ll2utm != None:
-            zone = int(options.ll2utm)
-            slf.slf.meshx, slf.slf.meshy, zone = \
-                      utm.from_lat_long(slf.slf.meshx, slf.slf.meshy, zone)
-        if options.utm2ll != None:
-            zone = int(options.utm2ll)
+        if options.ll2utm is not None:
+            if options.ll2utm != 'XXX':
+                zone = int(options.ll2utm[:-1])
+                zone_letter = options.ll2utm[-1]
+            else:
+                zone = None
+                zone_letter = None
+            slf.slf.meshx, slf.slf.meshy, zone, zone_letter = \
+                      utm.from_latlon(slf.slf.meshx, slf.slf.meshy,
+                                      force_zone_number=zone,
+                                      force_zone_letter=zone_letter)
+            print(' ~> Converterted to UTM ZONE {}{}'.format(zone, zone_letter))
+        if options.utm2ll is not None:
+            zone = int(options.utm2ll[:-1])
+            zone_letter = options.utm2ll[-1]
             slf.slf.meshx, slf.slf.meshy = \
-                      utm.to_lat_long(slf.slf.meshx, slf.slf.meshy, zone)
+                      utm.to_latlon(slf.slf.meshx, slf.slf.meshy,
+                                    zone, zone_letter)
 
         slf.put_content(out_file)
 
@@ -267,17 +276,17 @@ def merge(options):
                     'the file named: {}'.format(slf_file))
 
         vrs = options.xvars
-        if options.xvars != None:
+        if options.xvars is not None:
             vrs = clean_quotes(options.xvars.replace('_', ' '))
         times = (int(options.tfrom), int(options.tstep), int(options.tstop))
         slf = AlterSelafin(slf_file, times=times, vrs=vrs, root=root_file)
-        if options.atitle != None:
+        if options.atitle is not None:
             slf.alter_title(options.atitle)
         if options.areset:
             slf.alter_times(p_t=-slf.slf.tags['times'][0])
-        if options.adate != None:
+        if options.adate is not None:
             slf.alter_datetime(date=options.adate.split('-'))
-        if options.atime != None:
+        if options.atime is not None:
             slf.alter_datetime(time=options.atime.split(':'))
         if options.aswitch:
             slf.switch_vars()
@@ -285,12 +294,12 @@ def merge(options):
             slf.alter_endian()
         if options.fswitch:
             slf.alter_float()
-        if options.aname != None:
+        if options.aname is not None:
             slf.alter_vars(options.aname)
         slf.alter_times(m_t=float(options.atm), p_t=float(options.atp))
         slf.alter_mesh(m_x=float(options.axm), p_x=float(options.axp),
                        m_y=float(options.aym), p_y=float(options.ayp))
-        if options.azname != None:
+        if options.azname is not None:
             slf.alter_values(options.azname,
                              m_z=float(options.azm), p_z=float(options.azp))
 
@@ -358,7 +367,7 @@ def sample(options):
     print('\n\nSample ' + path.basename(slf_file) + ' within ' + \
             path.dirname(slf_file) + '\n'+'~'*72+'\n')
     vrs = options.xvars
-    if options.xvars != None:
+    if options.xvars is not None:
         vrs = clean_quotes(options.xvars.replace('_', ' '))
     times = (int(options.tfrom), int(options.tstep), int(options.tstop))
     slf = ChopSelafin(slf_file, times=times, vrs=vrs, root=root_file)
@@ -460,7 +469,7 @@ def tesselate(options):
     slf.fole = {'hook':open(out_file, 'wb'), 'endian':">",
                 'float':('f', 4), 'name':out_file}
     slf.tags['times'] = [1]
-    if options.sph2ll != None:
+    if options.sph2ll is not None:
         radius = 6371000.
         long0, lat0 = options.sph2ll.split(":")
         long0 = np.deg2rad(float(long0))
@@ -469,7 +478,7 @@ def tesselate(options):
         slf.meshx = np.rad2deg(slf.meshx/radius + long0)
         slf.meshy = np.rad2deg(2.*np.arctan(const*np.exp(slf.meshy/radius)) \
                                       - np.pi/2.)
-    if options.ll2sph != None:
+    if options.ll2sph is not None:
         radius = 6371000.
         long0, lat0 = options.ll2sph.split(":")
         long0 = np.deg2rad(float(long0))
@@ -478,13 +487,24 @@ def tesselate(options):
         slf.meshy = radius * \
                   (np.log(np.tan(np.deg2rad(slf.meshy)/2. + np.pi/4.)) \
                                       - np.log(np.tan(lat0/2. + np.pi/4.)))
-    if options.ll2utm != None:
-        zone = int(options.ll2utm)
-        slf.meshx, slf.meshy, zone = utm.from_lat_long(slf.meshx, slf.meshy,
-                                                       zone)
-    if options.utm2ll != None:
-        zone = int(options.utm2ll)
-        slf.meshx, slf.meshy = utm.to_lat_long(slf.meshx, slf.meshy, zone)
+    if options.ll2utm is not None:
+        if options.ll2utm != 'XXX':
+            zone = int(options.ll2utm[:-1])
+            zone_letter = options.ll2utm[-1]
+        else:
+            zone = None
+            zone_letter = None
+        slf.meshx, slf.meshy, zone, zone_letter = \
+                  utm.from_latlon(slf.meshx, slf.meshy,
+                                  force_zone_number=zone,
+                                  force_zone_letter=zone_letter)
+        print(' ~> Converterted to UTM ZONE {}{}'.format(zone, zone_letter))
+    if options.utm2ll is not None:
+        zone = int(options.utm2ll[:-1])
+        zone_letter = options.utm2ll[-1]
+        slf.meshx, slf.meshy = \
+                  utm.to_latlon(slf.meshx, slf.meshy,
+                                zone, zone_letter)
     slf.append_header_slf()
     slf.append_core_time_slf(0)
     slf.append_core_vars_slf([np.zeros(slf.npoin2)])
@@ -519,7 +539,7 @@ def calcs(options, code_name):
             path.dirname(slf_file) + '\n'+'~'*72+'\n')
     vrs = options.xvars
     calc_list = []
-    if options.xvars != None:
+    if options.xvars is not None:
         vrs = clean_quotes(options.xvars.replace('_', ' '))
         calc_list = vrs.split(':')
     if code_name == 'calcs':
@@ -564,7 +584,7 @@ def calcs(options, code_name):
     slf.alter_times(m_t=float(options.atm), p_t=float(options.atp))
     slf.alter_mesh(m_x=float(options.axm), p_x=float(options.axp),
                    m_y=float(options.aym), p_y=float(options.ayp))
-    if options.azname != None:
+    if options.azname is not None:
         slf.alter_values(options.azname,
                          m_z=float(options.azm), p_z=float(options.azp))
     if options.eswitch:

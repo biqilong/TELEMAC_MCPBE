@@ -4,6 +4,7 @@ r""" @brief collection of get methods for runcode.py
 from __future__ import print_function
 from os import path
 
+
 def get_gretel_cmd(pbin, cfg):
     """
     @brief Returns the command to execute GRETEL and its arguments
@@ -11,7 +12,8 @@ def get_gretel_cmd(pbin, cfg):
     @param pbin (string): path to partel executable from root
     @param cfg (string):  configuration file information
 
-    @return execmd (string): the text string that will be executed on the system
+    @return execmd (string): the text string that will be executed
+     on the system
     """
     # ~~> Temporary variable to keep pbin unchanged
     par_dir = pbin
@@ -43,8 +45,8 @@ def get_partel_cmd(pbin, cfg, mpi_cmd):
             par_dir = cfg['PARTEL']['PATH'].replace('<root>', cfg['root'])\
                                                     .replace('<config>', pbin)
     # ~~> Default call to PARTEL
-    execmd = path.join(pbin, 'partel'+cfg['SYSTEM']['sfx_exe']+\
-                                     ' < <partel.par> >> <partel.log>')
+    execmd = path.join(pbin, 'partel'+cfg['SYSTEM']['sfx_exe'] +
+                             ' < <partel.par> >> <partel.log>')
     # ~~> User defined call to PARTEL
     if cfg['PARTEL'] != {}:
         if 'EXEC' in cfg['PARTEL']:
@@ -74,6 +76,7 @@ def get_ncsize(cas):
 
     return ncsize
 
+
 def get_mpi_cmd(cfg_mpi):
     """
     @brief Gets the MPI command to be executed from the config file
@@ -97,6 +100,7 @@ def get_mpi_cmd(cfg_mpi):
 
     return mpi_cmd
 
+
 def get_hpc_cmd(cfg_hpc):
     """
     @brief Gets the HPC command to be executed from the config file
@@ -118,6 +122,7 @@ def get_hpc_cmd(cfg_hpc):
 
     return hpc_cmd
 
+
 def get_hpc_depend(cfg_hpc):
     """
     @brief Gets the HPC jobs dependency (for example, only launch a job
@@ -135,6 +140,7 @@ def get_hpc_depend(cfg_hpc):
 
     return ''
 
+
 def get_conlim(cas):
     """
     @brief Gets the name of file for boundary conditions in the working
@@ -145,7 +151,7 @@ def get_conlim(cas):
 
     @return conlim: name of the conlim file (.cli)
     """
-    #@TODO: Include in TelemacCas ?
+    # @TODO: Include in TelemacCas ?
 
     # ~~ look for conlim ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     conlim = ''
@@ -153,6 +159,7 @@ def get_conlim(cas):
         if cas.in_files[k].split(';')[5] == 'CONLIM':
             conlim = cas.in_files[k].split(';')[1]
     return conlim
+
 
 def get_glogeo(cas):
     """
@@ -182,6 +189,7 @@ def get_glogeo(cas):
 
     return glogeo, fmtgeo, globnd
 
+
 def get_file_format(cas, keyword):
     """
     Search in a cas object for the format key word
@@ -196,6 +204,7 @@ def get_file_format(cas, keyword):
     # By default if there is no format keyword the file is SERAFIN
     return 'SERAFIN'
 
+
 def get_partitionner(partitionner):
     """
     Return the partionner to use in partel
@@ -204,8 +213,8 @@ def get_partitionner(partitionner):
 
     @return (int) Integer value associated to the partitionner
     """
-    part2int = {"METIS":1, "SCOTCH":2, "PARMETIS":3,
-                "PTSCOTCH":4}
+    part2int = {"METIS": 1, "SCOTCH": 2, "PARMETIS": 3,
+                "PTSCOTCH": 4}
     # If the key in not in the steering file we use metis
     i_part = 1 if partitionner == '' else part2int[partitionner]
 

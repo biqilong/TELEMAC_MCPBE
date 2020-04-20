@@ -13,6 +13,7 @@ from struct import unpack
 from utils.exceptions import TelemacException
 import numpy as np
 
+
 def lit_header_opt(resultfile):
     """
     @brief : read the header of an opthyca result file
@@ -35,7 +36,6 @@ def lit_header_opt(resultfile):
     while '[resultats]' not in line:
         var_liste.append(line.split(';', -1))
         line = resultfile.readline()
-
 
     return var_liste
 
@@ -76,15 +76,15 @@ def get_endian_from_char(input_file, nchar):
     :return: endianess
     """
     pointer = input_file.tell()
-    endian = ">" # "<" means little-endian, ">" means big-endian
-    l, _, chk = unpack(endian+'i'+str(nchar)+'si', input_file.read(4+nchar+4))
+    endian = ">"  # "<" means little-endian, ">" means big-endian
+    ll, _, chk = unpack(endian+'i'+str(nchar)+'si', input_file.read(4+nchar+4))
     if chk != nchar:
         endian = "<"
         input_file.seek(pointer)
-        l, _, chk = \
-        unpack(endian+'i'+str(nchar)+'si', input_file.read(4+nchar+4))
-    if l != chk:
-        raise TelemacException(\
+        ll, _, chk = \
+            unpack(endian+'i'+str(nchar)+'si', input_file.read(4+nchar+4))
+    if ll != chk:
+        raise TelemacException(
            '... Cannot read characters from your binary file'
            '     +> Maybe it is the wrong file format ? {}'.format(str(nchar)))
     input_file.seek(pointer)
@@ -128,7 +128,8 @@ def lit_res_rub(fle):
     valvar_indep = []
     for _ in enumerate(nomvar_indep):
         res_file.seek(4, 1)
-        varlu = np.array(unpack(ftype+str(nsto1)+'f', res_file.read(nsto1 * 4)))
+        varlu = np.array(unpack(ftype+str(nsto1)+'f',
+                         res_file.read(nsto1 * 4)))
         res_file.seek(4, 1)
         valvar_indep.append(varlu)
 
@@ -144,7 +145,7 @@ def lit_res_rub(fle):
     while True:
         try:
             _, ilu, ilu, _ = \
-            unpack(ftype + 'iiii', res_file.read(4 + 4 + 4 + 4))
+                unpack(ftype + 'iiii', res_file.read(4 + 4 + 4 + 4))
             itemps.append(ilu)
             res_file.seek(4, 1)
             flu, flu = unpack(ftype+'ff', res_file.read(4 + 4))
@@ -165,6 +166,7 @@ def lit_res_rub(fle):
 
     return
 
+
 def main():
     """
     @brief : Main function of post_mascaret
@@ -178,6 +180,7 @@ def main():
 #    print(section_pk)
 # ~~~~ Jenkins' success message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print('\n\nMy work is done\n\n')
+
 
 if __name__ == "__main__":
     main()

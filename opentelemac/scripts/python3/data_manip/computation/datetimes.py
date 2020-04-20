@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 import numpy as np
 
+
 def compute_datetimes(times,
                       initial_date='2019/01/01 00:00:00',
                       time_format='%Y/%m/%d %H:%M:%S'):
@@ -17,7 +18,7 @@ def compute_datetimes(times,
     if isinstance(initial_date, str):
         ini_datetime_obj = datetime.strptime(initial_date, time_format)
     elif isinstance(initial_date, np.ndarray):
-        datetime_string = '%i/%i/%i %i:%i:%i'%(
+        datetime_string = '%i/%i/%i %i:%i:%i' % (
             initial_date[0], initial_date[1], initial_date[2],
             initial_date[3], initial_date[4], initial_date[5])
         ini_datetime_obj = datetime.strptime(datetime_string, time_format)

@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief GETTER/SETTER OF SISYPHE VARIABLES
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history R-S MOURADI (EDF R&D, LNHE)
-!+       17/03/2016
-!+       V7P1
-!+       Creation of the file
+!>@brief Getter/setter of sisyphe variables
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_HANDLE_VAR_SIS
@@ -13,21 +7,23 @@
         USE API_HANDLE_ERROR
         USE API_INSTANCE_SIS
         IMPLICIT NONE
-        ! Size of the string containing the name of a variable
+        !> Size of the string containing the name of a variable
         INTEGER, PARAMETER :: SIS_VAR_LEN=40
-        ! Size of the string containing the type of a variable
+        !> Size of the string containing the type of a variable
         INTEGER, PARAMETER :: SIS_TYPE_LEN=12
-        ! Size of the string containing the information about a variable
+        !> Size of the string containing the information about a variable
         INTEGER, PARAMETER :: SIS_INFO_LEN=200
-        ! The maximum number of variable
+        !> The maximum number of variable
         INTEGER, PARAMETER :: NB_VAR_SIS=42
+        !> List of variable names
         CHARACTER(LEN=SIS_VAR_LEN),ALLOCATABLE :: VNAME_SIS(:)
+        !> List of variable info
         CHARACTER(LEN=SIS_INFO_LEN),ALLOCATABLE :: VINFO_SIS(:)
 !
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE ARRAY
+      !>@brief Get a double array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_ARRAY_SIS_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR , BLOCK_INDEX)
@@ -116,7 +112,7 @@
 
       !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE ARRAY
+      !>@brief Defines the value of a double array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_ARRAY_SIS_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
@@ -205,7 +201,7 @@
       END SUBROUTINE SET_DOUBLE_ARRAY_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER VARIABLE FROM SISYPHE
+      !>@brief Get an integer variable from sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_ARRAY_SIS_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -252,7 +248,7 @@
 
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE OF SISYPHE
+      !>@brief Defines the value of an integer variable of sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_ARRAY_SIS_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -291,23 +287,16 @@
       END SUBROUTINE SET_INTEGER_ARRAY_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE VARIABLE FROM SISYPHE
+      !>@brief Get a double variable from sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Contains the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_SIS_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -391,23 +380,16 @@
 
       !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE VARIABLE OF SISYPHE
+      !>@brief Defines the value of a double variable of sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_SIS_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -492,23 +474,16 @@
       END SUBROUTINE SET_DOUBLE_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER VARIABLE FROM SISYPHE
+      !>@brief Get an integer variable from sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_SIS_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -569,23 +544,16 @@
 
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE OF SISYPHE
+      !>@brief Defines the value of an integer variable of sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_SIS_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -624,23 +592,16 @@
       END SUBROUTINE SET_INTEGER_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A STRING VARIABLE FROM SISYPHE
+      !>@brief Get a string variable from sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] VALUELEN Length of VALEUR
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_STRING_SIS_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -681,23 +642,16 @@
       END SUBROUTINE GET_STRING_SIS_D
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A STRING VARIABLE OF SISYPHE
+      !>@brief Defines the value of a string variable of sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] VALUELEN Length of VALEUR
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_STRING_SIS_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -728,23 +682,16 @@
 
       !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A BOOLEAN VARIABLE FROM SISYPHE
+      !>@brief Get a boolean variable from sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_BOOLEAN_SIS_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -770,23 +717,16 @@
       END SUBROUTINE GET_BOOLEAN_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A BOOLEAN VARIABLE OF SISYPHE
+      !>@brief Defines the value of a boolean variable of sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_BOOLEAN_SIS_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -813,25 +753,15 @@
       END SUBROUTINE SET_BOOLEAN_SIS_D
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET INFORMATIONS ON A VARIABLE OF SISYPHE
+      !>@brief Get size informations on a variable of sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE
-      !PARAM VARTYPE   [OUT]    TYPE OF THE VARIABLE
-      !+                        (INTEGER, DOUBLE, STRING, BOOLEAN)
-      !PARAM READONLY  [OUT]    0 IF THE VARIABLE IS READ ONLY
-      !+                        1 IF IT IS WRITTABLE
-      !PARAM DIM1      [OUT]    SIZE OF THE FIRST DIMENSION
-      !PARAM DIM2      [OUT]    SIZE OF THE SECOND DIMENSION
-      !PARAM DIM3      [OUT]    SIZE OF THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] INST Instance
+      !>@param[in] VARNAME Name of the variable
+      !>@param[out] DIM1 Size of the first dimension
+      !>@param[out] DIM2 Size of the second dimension
+      !>@param[out] DIM3 Size of the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_SIZE_SIS_D
      &         (INST, VARNAME, DIM1, DIM2, DIM3, IERR)
@@ -925,26 +855,22 @@
       END SUBROUTINE GET_VAR_SIZE_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE SIZE OF EACH DIMENSION OF A VARAIBLE
+      !>@brief Get the information on the type of variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARAIBLE
-      !PARAM IENT      [OUT]    1 if the numbering is on point
-      !PARAM JENT      [OUT]    1 if the numbering is on point
-      !PARAM KENT      [OUT]    1 if the numbering is on point
-      !PARAM GETPOS    [OUT]    Postion after which the get is posible
-      !+                        on the variable
-      !PARAM SETPOS    [OUT]    Postion after which the Set is posible
-      !+                        on the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] VARNAME Name of the varaible
+      !>@param[out] VARTYPE Type of the varaible (INTEGER, DOUBLE,
+      !                     BOOLEAN, STRING)
+      !>@param[out] READONLY True if the varaible cannot be modified
+      !>@param[out] NDIM Name of the varaible
+      !>@param[out] IENT 1 if the numbering is on point
+      !>@param[out] JENT 1 if the numbering is on point
+      !>@param[out] KENT 1 if the numbering is on point
+      !>@param[out] GETPOS Postion after which the get is posible
+      !!                        on the variable
+      !>@param[out] SETPOS Postion after which the set is posible
+      !!                        on the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_TYPE_SIS_D
      &        (VARNAME, VARTYPE, READONLY, NDIM, IENT, JENT, KENT,
@@ -1127,22 +1053,15 @@
       END SUBROUTINE GET_VAR_TYPE_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE DESCRIPTION OF THE ITH VARIABLE
+      !>@brief Get the description of the ith variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [IN]     Integer
-      !PARAM VAR_LEN   [IN]     Size of varname
-      !PARAM INFO_LEN  [IN]     Size of varinfo
-      !PARAM VARNAME   [OUT]    Name of the variable
-      !PARAM VARINFO   [OUT]    Description of the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] I Number of the variable
+      !>@param[in] VAR_LEN Size of varname
+      !>@param[in] INFO_LEN Size of varinfo
+      !>@param[out] VARNAME Name of the variable
+      !>@param[out] VARINFO Description of the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_INFO_SIS_D(I, VAR_LEN, INFO_LEN,
      &                              VARNAME, VARINFO, IERR)
@@ -1169,17 +1088,10 @@
       END SUBROUTINE GET_VAR_INFO_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DESCRIPTION OF EACH VARIABLE
+      !>@brief Build a description of each variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_LIST_SIS_D(IERR)
 !

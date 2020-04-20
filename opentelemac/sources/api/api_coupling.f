@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief module handling the exchange between telemac2d et sisyphe api
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history R-S MOURADI (EDF R&D, LNHE)
-!+       11/04/2016
-!+       V7P1
-!+       Creation of the file
+!>@brief Module handling the exchange between telemac2d et sisyphe api
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
 !
@@ -28,18 +22,12 @@
 
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief saves original charr and susp values after first sisyphe call
+      !>@brief Saves original charr and susp values after first sisyphe call
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param INST_SIS        [IN]    SISYPHE INSTANCE
-      !param INST_T2D    [IN,OUT]    TELEMAC INSTANCE
-      !PARAM IERR           [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                             ERROR ID OTHERWISE
+      !>@param[in] INST_SIS Sisyphe instance
+      !>@param[in,out] INST_T2D Telemac instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                             error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       SUBROUTINE SAVE_CHARR_SUSP_CPL(INST_SIS, INST_T2D, IERR)
@@ -56,22 +44,16 @@
 
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief deals with cases : BEDLOAD OF SUSPENSION
+      !>@brief Deals with cases : bedload of suspension
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param INST_SIS        [IN]    SISYPHE INSTANCE
-      !param INST_T2D    [IN,OUT]    TELEMAC INSTANCE
-      !param CHARR_SUSP     [OUT]    DEFINES WHICH SISYPHE CALL
-      !                              = 1 Means Bedload
-      !                              = 2 Means Suspension
-      !                              = 3 Means Both
-      !PARAM IERR           [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                             ERROR ID OTHERWISE
+      !>@param[in] INST_SIS Sisyphe instance
+      !>@param[in,out] INST_T2D Telemac instance
+      !>@param[out] CHARR_SUSP Defines which sisyphe call
+      !!                             = 1 Means Bedload
+      !!                             = 2 Means Suspension
+      !!                             = 3 Means Both
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                             error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       SUBROUTINE CHARR_OR_SUSP_CPL(INST_SIS, INST_T2D, CHARR_SUSP, IERR)
@@ -112,22 +94,16 @@
 
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief sets loop variables for sisyphe in case of coupling
+      !>@brief Sets loop variables for sisyphe in case of coupling
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param INST_SIS    [IN,OUT]    TELEMAC2D INSTANCE
-      !param INST_T2D        [IN]    SISYPHE INSTANCE
-      !param CALL_TYPE       [IN]    DEFINES WHICH SISYPHE CALL
-      !                              = 0 Means Initializing
-      !                              = 1 Means Bedload CALL
-      !                              = 2 Means Suspension CALL
-      !PARAM IERR           [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                             ERROR ID OTHERWISE
+      !>@param[in,out] INST_SIS Telemac2d instance
+      !>@param[in] INST_T2D Sisyphe instance
+      !>@param[in] CALL_TYPE Defines which sisyphe call
+      !!                             = 0 Means Initializing
+      !!                             = 1 Means Bedload CALL
+      !!                             = 2 Means Suspension CALL
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                             error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_SIS_CPL(INST_T2D, CALL_TYPE, INST_SIS,IERR)
         TYPE(INSTANCE_T2D),  INTENT(IN) :: INST_T2D
@@ -221,18 +197,12 @@
 
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief sends variables to telemac2d after sisyphe call
+      !>@brief Sends variables to telemac2d after sisyphe call
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param INST_T2D    [IN,OUT]    TELEMAC2D INSTANCE
-      !param INST_SIS        [IN]    SISYPHE INSTANCE
-      !PARAM IERR           [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                             ERROR ID OTHERWISE
+      !>@param[in,out] INST_T2D Telemac2d instance
+      !>@param[in] INST_SIS Sisyphe instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                             error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_T2D_CPL(INST_SIS, INST_T2D,IERR)
         TYPE(INSTANCE_SIS),  INTENT(IN) :: INST_SIS

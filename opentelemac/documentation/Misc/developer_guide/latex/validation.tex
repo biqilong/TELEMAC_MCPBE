@@ -187,19 +187,23 @@ cp HPC_STDIN ../;
 cd ../;
 ret=`sbatch --wckey="P119C:TELEMAC_SYSTEM" < HPC_STDIN`;
 id=`echo $ret|tr ' ' '\n'|tail -n 1`;
-dir=`pwd`;
-echo "$id;$dir" >> $HOME/valid_run_$USETELCFG.log;
+dir=`readlink -f .`;
+echo "$id;$dir" >> <id_log>;
 echo $ret
 \end{lstlisting}
 
-Here is an extract of what the file containing the id looks like:
+\verb!<id_log>! will be replace by the options in \verb!validate_telemac.py! if
+given otherwise it we be replace by 'id.log'.
+
+Here is an extract of what the file containing the id looks like (the paths
+have been shortened to find in the documentation):
 \begin{verbatim}
-30346528;trunk/examples/artemis/G8M/vnv_g8m/vnv_1/eole.intel.dyn
-30346529;trunk/examples/artemis/beach/vnv_beach/vnv_1/eole.intel.dyn
-30346531;trunk/examples/artemis/beach/vnv_beach/vnv_2/eole.intel.dyn
-30346534;trunk/examples/artemis/bj78/vnv_bj78/vnv_1/eole.intel.dyn
-30346535;trunk/examples/artemis/bj78/vnv_bj78/vnv_2/eole.intel.dyn
-30346537;trunk/examples/artemis/bosse/vnv_bosse/vnv_1/eole.intel.dyn
+30346528;.../trunk/examples/artemis/G8M/vnv_g8m/vnv_1/eole.intel.dyn
+30346529;.../trunk/examples/artemis/beach/vnv_beach/vnv_1/eole.intel.dyn
+30346531;.../trunk/examples/artemis/beach/vnv_beach/vnv_2/eole.intel.dyn
+30346534;.../trunk/examples/artemis/bj78/vnv_bj78/vnv_1/eole.intel.dyn
+30346535;.../trunk/examples/artemis/bj78/vnv_bj78/vnv_2/eole.intel.dyn
+30346537;.../trunk/examples/artemis/bosse/vnv_bosse/vnv_1/eole.intel.dyn
 \end{verbatim}
 
 %----------------------------------------------------------------------------------------------------

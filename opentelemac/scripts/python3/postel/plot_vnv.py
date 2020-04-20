@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 # ____/ BAR PLOTS  /_______________________________________________/
 #
 
+
 def get_data(res, var_name, record,
              zslice=None, poly=None, poly_number=None, plane=0):
     """
@@ -50,10 +51,10 @@ def get_data(res, var_name, record,
         if poly_number is None:
             poly_number = res.discretize_polyline(poly)
         _, abs_curv, values_z = \
-            res.get_data_on_vertical_plane(\
+            res.get_data_on_vertical_plane(
                            namez, record, poly, poly_number)
         _, _, scalar = \
-            res.get_data_on_vertical_plane(\
+            res.get_data_on_vertical_plane(
                            var_name, record, poly, poly_number)
         mesh = triangulation_from_data(abs_curv, values_z)
         return mesh, scalar.flatten()
@@ -69,10 +70,11 @@ def get_data(res, var_name, record,
         return res.tri, scalar
 
     else:
-        raise TelemacException("Cannot extract from both horizontal and " + \
+        raise TelemacException("Cannot extract from both horizontal and " +
                                "vertical slice planes")
 
-def vnv_plotbar(\
+
+def vnv_plotbar(
          data, fig_size=None,
          fig_name='', fig_title=None,
          x_labels='', y_label='', ylim=None,
@@ -123,7 +125,7 @@ def vnv_plotbar(\
         # split bars on position
         if split_bars:
             d_x = bar_width/nbar
-            if nbar%2 == 0:
+            if nbar % 2 == 0:
                 posn = pos + float(n - nbar//2)*d_x + d_x/2
             else:
                 posn = pos + float(n - nbar//2)*d_x
@@ -148,11 +150,11 @@ def vnv_plotbar(\
                     label = "{:.0f}".format(y)
                 if annotate_threshold is not None:
                     if y <= annotate_threshold:
-                        plt.annotate(\
+                        plt.annotate(
                             label, (x, y), textcoords="offset points",
                             fontsize=10, xytext=(0, 5), ha='center')
                 else:
-                    plt.annotate(\
+                    plt.annotate(
                         label, (x, y), textcoords="offset points",
                         fontsize=10, xytext=(0, 5), ha='center')
 
@@ -189,7 +191,7 @@ def vnv_plotbar(\
     plt.close()
 
 
-def vnv_plotbar_cpu_times(\
+def vnv_plotbar_cpu_times(
          action_time, fig_size=None,
          fig_name='',
          **kwargs):
@@ -229,7 +231,7 @@ def vnv_plotbar_cpu_times(\
                 idx = par_cases.index(name)
                 par_times[idx] = item[1]
 
-    if len(seq_cases) == 0 or len(par_cases) ==0:
+    if len(seq_cases) == 0 or len(par_cases) == 0:
         print("Doing nothing did not found any times")
         return
 
@@ -258,7 +260,8 @@ def vnv_plotbar_cpu_times(\
 # ____/ 1D PLOTS  /________________________________________________/
 #
 
-def vnv_plot1d(\
+
+def vnv_plot1d(
         times, data, legend_labels, fig_size=(10, 4),
         fig_name='', fig_title=None,
         ref=None, ref_label=None,
@@ -354,7 +357,8 @@ def vnv_plot1d(\
     fig.clf()
     plt.close()
 
-def vnv_plot1d_history(\
+
+def vnv_plot1d_history(
         var_name, res,
         legend_labels='', fig_size=None, fig_title=None,
         points=None, nodes=None,
@@ -494,7 +498,8 @@ def vnv_plot1d_history(\
     fig.clf()
     plt.close()
 
-def vnv_plot1d_polylines(\
+
+def vnv_plot1d_polylines(
         var_name, res,
         legend_labels='', fig_size=None, fig_title=None,
         ref_name=None, ref_file=None, ref_data=None,
@@ -566,7 +571,8 @@ def vnv_plot1d_polylines(\
     # Set record/time
     if time is not None:
         if isinstance(time, list):
-            record = [res0.get_closest_record(time[i]) for i in range(len(time))]
+            record = [res0.get_closest_record(time[i])
+                      for i in range(len(time))]
         else:
             record = res0.get_closest_record(time)
     else:
@@ -578,7 +584,7 @@ def vnv_plot1d_polylines(\
     # check record
     if isinstance(record, list):
         if isinstance(res, list):
-            raise TelemacException("select only one result file" \
+            raise TelemacException("select only one result file"
                                    + "to plot multiple records")
 
     # plot initialization
@@ -636,14 +642,14 @@ def vnv_plot1d_polylines(\
         for idx, res_item in enumerate(res):
             if isinstance(var_name, list):
                 _, abs_curv, char_polylines = \
-                        res_item.get_timeseries_on_polyline(\
-                    var_name[idx], poly, poly_number)
+                        res_item.get_timeseries_on_polyline(var_name[idx],
+                                                            poly, poly_number)
                 ax.plot(abs_curv*x_factor, char_polylines[:, record]*y_factor,
                         label=legend_labels[idx], **kwargs)
             else:
                 _, abs_curv, char_polylines = \
-                        res_item.get_timeseries_on_polyline(\
-                    var_name, poly, poly_number)
+                        res_item.get_timeseries_on_polyline(var_name, poly,
+                                                            poly_number)
                 ax.plot(abs_curv*x_factor, char_polylines[:, record]*y_factor,
                         label=legend_labels[idx], **kwargs)
 
@@ -656,8 +662,7 @@ def vnv_plot1d_polylines(\
                     label=legend_label, **kwargs)
     else:
         _, abs_curv, char_polylines = \
-                res.get_timeseries_on_polyline(\
-            var_name, poly, poly_number)
+                res.get_timeseries_on_polyline(var_name, poly, poly_number)
         ax.plot(abs_curv*x_factor, char_polylines[:, record]*y_factor,
                 label=legend_labels, **kwargs)
 
@@ -686,7 +691,8 @@ def vnv_plot1d_polylines(\
     fig.clf()
     plt.close()
 
-def vnv_plot1d_convergence(\
+
+def vnv_plot1d_convergence(
          abscissa, data, fig_size=None,
          fig_name='', fig_title=None, legend_labels=None,
          x_label='', y_label='',
@@ -751,7 +757,7 @@ def vnv_plot1d_convergence(\
         if isinstance(reference_data, list):
             for idx, values in enumerate(reference_data):
                 if y_relative:
-                    values = [values[i]/values[0]\
+                    values = [values[i]/values[0]
                               for i in range(nvs)]
                 ax.plot(abscissa, values,
                         label=reference_labels[idx],
@@ -759,7 +765,7 @@ def vnv_plot1d_convergence(\
                         ls='--', lw=0.5, marker='')
         else:
             if y_relative:
-                reference_data = [reference_data[i]/reference_data[0]\
+                reference_data = [reference_data[i]/reference_data[0]
                                   for i in range(nvs)]
             ax.plot(abscissa, reference_data,
                     label=reference_labels,
@@ -813,7 +819,8 @@ def vnv_plot1d_convergence(\
 # ____/ 2D PLOTS  /________________________________________________/
 #
 
-def vnv_plot2d(\
+
+def vnv_plot2d(
         var_name, res, record=0, time=None, adim_factor=1.0,
         fig_name='', fig_size=None, fig_title=None,
         poly=None, poly_number=None, zslice=None, plane=0,
@@ -917,7 +924,7 @@ def vnv_plot2d(\
     @param bathy_contours (bool) plot bathymetry contours
     @param kwargs (dict) Argument passed to the plotting function
     """
-    #TODO: add grid compatibility
+    # TODO: add grid compatibility
 
     # Set default var type if var_name is VELOCITY:
     if (var_name == 'VELOCITY' or var_name == 'VITESSE') \
@@ -945,11 +952,11 @@ def vnv_plot2d(\
                 vectx_name = var_name+' U'
                 vecty_name = var_name+' V'
             elif var_name+' X' in res.varnames and \
-                 var_name+' Y' in res.varnames:
+                    var_name+' Y' in res.varnames:
                 vectx_name = var_name+' X'
                 vecty_name = var_name+' Y'
             else:
-                raise TelemacException(\
+                raise TelemacException(
                         "Vector components not found in result file")
 
             mesh, vectx = get_data(res, vectx_name, record, zslice,
@@ -961,19 +968,19 @@ def vnv_plot2d(\
 
         elif var_type == 'vector_3d':
             assert ndim == 3
-            if var_name+' U' in res.varnames and var_name+' V' in res.varnames \
+            if var_name+' U' in res.varnames and var_name+' V' in res.varnames\
                     and var_name+' W' in res.varnames:
                 vectx_name = var_name+' U'
                 vecty_name = var_name+' V'
                 vectz_name = var_name+' W'
             elif var_name+' X' in res.varnames and \
-                 var_name+' Y' in res.varnames and \
-                 var_name+' Z' in res.varnames:
+                    var_name+' Y' in res.varnames and \
+                    var_name+' Z' in res.varnames:
                 vectx_name = var_name+' X'
                 vecty_name = var_name+' Y'
                 vectz_name = var_name+' Z'
             else:
-                raise TelemacException(\
+                raise TelemacException(
                         "Vector components not found in result file")
 
             mesh, vectx = get_data(res, vectx_name, record, zslice,
@@ -1077,7 +1084,8 @@ def vnv_plot2d(\
     # annotate boundaries
     if annotate_liq_bnd:
         liq_bnd_info = res.get_liq_bnd_info()
-        plot2d_annotate_liq_bnd(ax, mesh, liq_bnd_info, markersize=1.5, marker='o')
+        plot2d_annotate_liq_bnd(ax, mesh, liq_bnd_info, markersize=1.5,
+                                marker='o')
 
     # colorbar settings
     if cbar_priority == 'scalar':
@@ -1131,7 +1139,7 @@ def vnv_plot2d(\
     # filled contours layer
     if filled_contours:
         if nv is None:
-            nv=11
+            nv = 11
         assert scalar_map is False
         plot2d_scalar_filled_contour(
             fig, ax, mesh, scalar, data_name=cbar_label,
@@ -1143,7 +1151,7 @@ def vnv_plot2d(\
     # contours layer
     if contours:
         if nv is None:
-            nv=11
+            nv = 11
         assert colored_contours is False
         plot2d_scalar_contour(
             fig, ax, mesh, scalar, vmin=vmin, vmax=vmax, nv=nv,
@@ -1154,7 +1162,7 @@ def vnv_plot2d(\
     # colored contours layer
     if colored_contours:
         if nv is None:
-            nv=11
+            nv = 11
         assert contours is False
         plot2d_scalar_contour(
             fig, ax, mesh, scalar, vmin=vmin, vmax=vmax, nv=nv,
@@ -1169,7 +1177,7 @@ def vnv_plot2d(\
     # streamlines layer
     if streamlines:
         assert colored_streamlines is False
-        plot2d_streamlines(\
+        plot2d_streamlines(
             fig, ax, mesh, velx, vely,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
             color='k', colorbar=vector_colorbar, data_name=cbar_label,
@@ -1180,7 +1188,7 @@ def vnv_plot2d(\
     # colored streamlines layer
     if colored_streamlines:
         assert streamlines is False
-        plot2d_streamlines(\
+        plot2d_streamlines(
             fig, ax, mesh, velx, vely,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
             cmap_name='jet', colorbar=vector_colorbar, data_name=cbar_label,
@@ -1191,7 +1199,7 @@ def vnv_plot2d(\
     # vectors layer
     if vectors:
         assert colored_vectors is False
-        plot2d_vectors(\
+        plot2d_vectors(
             fig, ax, mesh, velx, vely, normalize=vectors_normalize,
             scale=vectors_scale, headwidth=3, headlength=5,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
@@ -1203,7 +1211,7 @@ def vnv_plot2d(\
     # colored vectors layer
     if colored_vectors:
         assert vectors is False
-        plot2d_vectors(\
+        plot2d_vectors(
             fig, ax, mesh, velx, vely, normalize=vectors_normalize,
             scale=vectors_scale, headwidth=3, headlength=5,
             grid_resolution=grid_resolution, grid_xlim=xlim, grid_ylim=ylim,
@@ -1222,9 +1230,10 @@ def vnv_plot2d(\
         else:
             raise TelemacException("Need BOTTOM to plot bottom contours")
         mesh.set_mask(mask_wet)
-        plot2d_scalar_contour(\
+        plot2d_scalar_contour(
             fig, ax, mesh, bottom,
-            data_name='bottom (m)', colors='k', linewidths=0.25, colorbar=False)
+            data_name='bottom (m)', colors='k', linewidths=0.25,
+            colorbar=False)
 
     # plot options
     if xlim is not None:
@@ -1263,6 +1272,7 @@ def vnv_plot2d(\
 # _____            _________________________________________________
 # ____/ 3D PLOTS  /________________________________________________/
 #
+
 
 def vnv_plot3d(varname, res, record=-1, time=None,
                fig_size=None, fig_name='', fig_title=None,
@@ -1322,7 +1332,7 @@ def vnv_plot3d(varname, res, record=-1, time=None,
     fig = plt.figure(figsize=fig_size)
     ax = fig.add_subplot(111, projection='3d')
 
-    #Plotting mesh
+    # Plotting mesh
     plot3d_scalar_map(fig, ax, res.tri, data,
                       x_label=x_label, y_label=y_label,
                       vmin=vmin, vmax=vmax, nv=nv,

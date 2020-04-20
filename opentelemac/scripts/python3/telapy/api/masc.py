@@ -49,8 +49,9 @@ class Mascaret():
         @return (str) Error message
         """
         err_mess_c = ctypes.POINTER(ctypes.c_char_p)()
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         error = \
-            self.libmascaret.C_GET_ERREUR_MASCARET(self.id_masc,
+            self.libmascaret.C_GET_ERREUR_MASCARET(id_masc_c,
                                                    ctypes.byref(err_mess_c))
         if error != 0:
             return 'Error could not be retrieved from MASCARET...'
@@ -131,7 +132,7 @@ class Mascaret():
         file_name_c = (ctypes.c_char_p * len_file)(*file_name)
         file_type_c = (ctypes.c_char_p * len_file)(*file_type)
         self.logger.debug('Importing a model...')
-        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(\
+        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(
                 self.id_masc, file_name_c,
                 file_type_c, len_file, self.iprint)
         self.logger.info("Model imported with:\n"
@@ -149,7 +150,7 @@ class Mascaret():
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         iprint_c = (ctypes.c_int * 1)(self.iprint)
         self.logger.debug('Importing a model...')
-        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET_ONEFILE(\
+        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET_ONEFILE(
                 id_masc_c, iprint_c, masc_file_c)
         self.logger.info("Model imported with:\n"
                          + "-> masc_file: {}\n"
@@ -456,7 +457,7 @@ class Mascaret():
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
         self.logger.debug('Setting {}...'.format(var_name))
-        self.error = self.libmascaret.C_SET_BOOL_MASCARET(\
+        self.error = self.libmascaret.C_SET_BOOL_MASCARET(
             id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
             ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
@@ -523,7 +524,7 @@ class Mascaret():
         var_dim_c = ctypes.c_int()
 
         self.logger.debug('Getting the type of {}...'.format(var_name))
-        self.error = self.libmascaret.C_GET_TYPE_VAR_MASCARET(\
+        self.error = self.libmascaret.C_GET_TYPE_VAR_MASCARET(
                 id_masc_c, var_name_c, ctypes.byref(var_type_c),
                 ctypes.byref(category_c), ctypes.byref(acces_c),
                 ctypes.byref(var_dim_c))
@@ -651,7 +652,8 @@ class Mascaret():
 
         Use Mascaret Api :meth:`C_GET_DESC_VAR_MASCARET`
 
-        @return (str, str, int) information on all the Mascaret variables ('Model' or 'State')
+        @return (str, str, int) information on all the Mascaret variables
+         ('Model' or 'State')
         """
         tab_name_c = ctypes.POINTER(ctypes.c_char_p)()
         tab_desc_c = ctypes.POINTER(ctypes.c_char_p)()

@@ -124,8 +124,9 @@
       CHARACTER(LEN=72) C
       CHARACTER(LEN=32) TEXTE(NLEO)
       CHARACTER(LEN=6)  NUM
-      CHARACTER(LEN=2)  CC
+      CHARACTER(LEN=5)  CC
       CHARACTER(LEN=1)  C1,C2,C3,C4,C5,C6
+      INTEGER NUM1, NUM2, NUM3, NUM4, NUM5
       TYPE(BIEF_MESH) MESHF
       LOGICAL         SORLEO(NLEO)
       DOUBLE PRECISION DTETAR
@@ -153,7 +154,6 @@
         KAMP4=MOD(KAMP3,1000)
         KAMP5=MOD(KAMP4,100)
         KAMP6=MOD(KAMP5,10)
-        CC=CHAR(48+ILEO/10)//CHAR(48+MOD(ILEO,10))
         C1=CHAR(48+KAMP1/100000)
         C2=CHAR(48+KAMP2/10000)
         C3=CHAR(48+KAMP3/1000)
@@ -161,7 +161,19 @@
         C5=CHAR(48+KAMP5/10)
         C6=CHAR(48+KAMP6)
         NUM=C1//C2//C3//C4//C5//C6
-        TEXTE(ILEO)='F'//CC//' PT2D'//NUM//'  UNITE SI       '
+        ! Number of frequence
+        NUM1=ILEO
+        NUM2=MOD(NUM1,10000)
+        NUM3=MOD(NUM2,1000)
+        NUM4=MOD(NUM3,100)
+        NUM5=MOD(NUM4,10)
+        C1=CHAR(48+NUM1/10000)
+        C2=CHAR(48+NUM2/1000)
+        C3=CHAR(48+NUM3/100)
+        C4=CHAR(48+NUM4/10)
+        C5=CHAR(48+NUM5)
+        CC=C1//C2//C3//C4//C5
+        TEXTE(ILEO)='F'//CC//'PT2D'//NUM//'UNITE SI       '
         SORLEO(ILEO) = .TRUE.
       ENDDO
 !

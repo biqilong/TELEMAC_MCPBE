@@ -27,11 +27,12 @@ from os import path
 import numpy as np
 # ~~> dependencies towards other pytel scripts
 from utils.progressbar import ProgressBar
-from data_manip.conversion.convert_utm import to_lat_long
-from data_manip.formats.selafin import Selafin
-from data_manip.extraction.parser_selafin import subset_variables_slf, get_value_history_slf
-from pretel.meshes import xys_locate_mesh
 from utils.exceptions import TelemacException
+from data_manip.conversion.convert_utm import to_latlon
+from data_manip.formats.selafin import Selafin
+from data_manip.extraction.parser_selafin import \
+                  subset_variables_slf, get_value_history_slf
+from pretel.meshes import xys_locate_mesh
 
 # _____             ________________________________________________
 # ____/ MAIN CALL  /_______________________________________________/
@@ -79,9 +80,10 @@ def generate_atm(geo_file, slf_file, atm_file, ll2utm):
 # Find corresponding (x,y) in corresponding new mesh
     print('   +> getting hold of the GEO file')
     geo = Selafin(geo_file)
-    if ll2utm != None:
-        zone = int(ll2utm)
-        x, y = to_lat_long(geo.meshx, geo.meshy, zone)
+    if ll2utm is not None:
+        zone = int(ll2utm[:-1])
+        zone_letter = ll2utm[-1]
+        x, y = to_latlon(geo.meshx, geo.meshy, zone, zone_letter)
     else:
         x = geo.meshx
         y = geo.meshy
@@ -138,8 +140,8 @@ def generate_atm(geo_file, slf_file, atm_file, ll2utm):
         atm.varnames.append('AIR TEMPERATURE ')
         atm.varunits.append('DEGREES         ')
     if not atm.varnames:
-        print('There are no meteorological variables to convert!')
-        raise
+        raise TelemacException(
+            'There are no meteorological variables to convert!')
     atm.nbv1 = len(atm.varnames)
     atm.nvar = atm.nbv1
     atm.varindex = range(atm.nvar)

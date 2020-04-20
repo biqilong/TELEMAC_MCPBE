@@ -4,6 +4,7 @@
 from utils.geometry import get_triangle_area
 import numpy as np
 
+
 def volume_calculation(ikle, variable, coord_x, coord_y, x_ref=0):
     """
     Compute bathymetry volume relatively to zref
@@ -65,4 +66,3 @@ def compute_fv_cell_area(tri):
         area[elem[2]] += surface / 3.0
 
     return area
-

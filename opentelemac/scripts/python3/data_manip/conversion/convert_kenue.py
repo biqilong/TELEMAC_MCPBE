@@ -19,6 +19,7 @@ from os import path
 # ____/ Primary Classes /__________________________________________/
 #
 
+
 class Ins2shp(InS):
 
     def __init__(self, file_name):
@@ -45,19 +46,23 @@ class Ins2shp(InS):
 # ____/ MAIN CALL  /_______________________________________________/
 #
 
+
 __author__ = "Sebastien E. Bourban"
 __date__ = "$13-Jan-2012 08:51:29$"
+
+
 def kenue2shp(ins_files):
     """
     """
     for ins_file in ins_files:
 
         ins_file = path.realpath(ins_file)
-        print('\n\nSmoothing ' + path.basename(ins_file) + ' within ' + \
-                path.dirname(ins_file) + '\n'+'~'*72+'\n')
+        print('\n\nSmoothing ' + path.basename(ins_file) + ' within ' +
+              path.dirname(ins_file) + '\n'+'~'*72+'\n')
         ins = Ins2shp(ins_file)
 
         ins.put_content(ins_file)
+
 
 def kenue2shp_parser(subparser):
     """
@@ -68,8 +73,8 @@ def kenue2shp_parser(subparser):
     @return (ArgumentParser) the updated argument parser
     """
 
-    parser = subparser.add_parser('kenue2shp',\
-            help='Convert a Kenue file into a shapefile')
+    parser = subparser.add_parser('kenue2shp',
+                                  help='Convert a Kenue file into a shapefile')
     parser.add_argument("args", nargs="+")
 
     return subparser

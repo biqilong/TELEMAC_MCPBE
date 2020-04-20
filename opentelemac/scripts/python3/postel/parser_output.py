@@ -9,6 +9,7 @@ from fnmatch import fnmatch
 from utils.files import get_file_content
 from utils.exceptions import TelemacException
 
+
 def get_latest_output_files(input_file):
     """
     Inspired from matchSafe in utils.py
@@ -18,7 +19,7 @@ def get_latest_output_files(input_file):
     # ~~> list all entries
     dir_path, _, filenames = next(walk(path.dirname(input_file)))
     # ~~> match expression
-    exnames = [] # [ path.basename(input_file) ]
+    exnames = []  # [ path.basename(input_file) ]
     for fout in filenames:
         if fnmatch(fout, path.basename(input_file)+'_*??h??min??s.sortie'):
             exnames.append(fout)
@@ -33,7 +34,7 @@ def get_latest_output_files(input_file):
     return exnames
 
 
-class OutputFileData(object):
+class OutputFileData():
     """
     @brief : Read and store data result file
     :return:
@@ -41,19 +42,18 @@ class OutputFileData(object):
     def __init__(self, file_name=''):
         self.output = []
         if file_name != '':
-            self.output = self._get_file_content(file_name)
+            self._get_file_content(file_name)
 
     def _get_file_content(self, file_name):
         """
-        @brief : Get the content of the file
+        @brief Get the content of the file
                  if file does not exist then system exit
-        :return:
         """
         if not path.exists(file_name):
-            raise TelemacException(\
+            raise TelemacException(
                     '... could not find your .sortie file: '
                     '{}'.format(file_name))
-        return get_file_content(file_name)
+        self.output = get_file_content(file_name)
 
     def get_time_profile(self):
         """
@@ -61,13 +61,14 @@ class OutputFileData(object):
                          read from the TELEMAC-* output file
                          Also sets the xLabel to either 'Time (s)'
                          or 'Iteration #'
-        :return: Iteration and Time
+        @returns (str, list), (str, list): Iteration name, list and same of the
+        times
         """
-        form = re.compile(r'\s*ITERATION\s+(?P<iteration>\d+)'\
-                + r'\s+(TIME)[\s:]*(?P<others>.*?)'\
-                + r'(?P<number>\b((?:(\d+)\b)|(?:(\d+(|\.)'\
-                + r'\d*[dDeE](\+|\-)?\d+'\
-                + r'|\d+\.\d+))))\s+S\s*(|\))\s*\Z', re.I)
+        form = re.compile(r'\s*ITERATION\s+(?P<iteration>\d+)'
+                          + r'\s+(TIME)[\s:]*(?P<others>.*?)'
+                          + r'(?P<number>\b((?:(\d+)\b)|(?:(\d+(|\.)'
+                          + r'\d*[dDeE](\+|\-)?\d+'
+                          + r'|\d+\.\d+))))\s+S\s*(|\))\s*\Z', re.I)
         itr = []
         time = []
         for line in self.output:
@@ -77,18 +78,49 @@ class OutputFileData(object):
                 time.append(float(proc.group('number')))
         return ('Iteration #', itr), ('Time (s)', time)
 
+    def get_exec_time(self):
+        """
+        Returns the execution time (in seconds)
+
+        @returns (float) The time
+        """
+        form = re.compile(r'\A\s*('\
+                          r'((?P<days>[0-9]+)\s*DAYS)'\
+                          r'|((?P<hours>[0-9]+)\s*HOURS)'\
+                          r'|((?P<minutes>[0-9]+)\s*MINUTES)'\
+                          r'|((?P<seconds>[0-9]+)\s*SECONDS)'\
+                          r')\s*\Z'\
+                          )
+
+        exec_time = 0.0
+        for line in self.output:
+            proc = re.match(form, line)
+            if proc:
+                if proc.group('days') is not None:
+                    exec_time += 24*60*60*int(proc.group('days'))
+                if proc.group('hours') is not None:
+                    exec_time += 60*60*int(proc.group('hours'))
+                if proc.group('minutes') is not None:
+                    exec_time += 60*int(proc.group('minutes'))
+                if proc.group('seconds') is not None:
+                    exec_time += int(proc.group('seconds'))
+
+        return exec_time
+
     # ~~ Name of the study ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Returns the name of the study, read from the TELEMAC output file
     #   +> If no name, returns NO NAME
     #   +> If not found, returns NAME NO FOUND
     def get_name_of_study(self):
         """
-        @brief : the name of the study, read from the TELEMAC output file
-        :return: returns NO NAME if no name and NAME NO FOUND if not found
+        the name of the study, read from the TELEMAC output file
+
+        @returns (string) returns NO NAME OF STUDY if no name and NAME OF STUDY
+        NO FOUND if not found
         """
-        form = re.compile(r'\s*(?P<before>.*?)(NAME OF THE STUDY'\
-                          +r')[\s:]*(?P<after>.'\
-                          +r'*?)\s*\Z', re.I)
+        form = re.compile(r'\s*(?P<before>.*?)(NAME OF THE STUDY'
+                          + r')[\s:]*(?P<after>.'
+                          + r'*?)\s*\Z', re.I)
         for line in range(len(self.output)):
             proc = re.match(form, self.output[line])
             if proc:
@@ -99,44 +131,49 @@ class OutputFileData(object):
 
     def get_volume_profile(self):
         """
-        @brief : Returns the time series of Values, read from
-                 the TELEMAC-2D output file
-                 volumes, fluxes, errors, etc.
-                 Assumptions:
-                 - if VOLUME ... is not found, will not try
-                 to read FLUX and ERROR
-                 - for every VOLUME instance, it will advance
-                  to find FLUX and ERROR
-                 Also sets the yLabel to either 'Volume (m3/s)'
-                 or 'Fluxes (-)' or 'Error(-)'
-        :return:
+        Returns the time series of Values, read from
+        the TELEMAC-2D output file
+        volumes, fluxes, errors, etc.
+        Assumptions:
+        - if VOLUME ... is not found, will not try
+        to read FLUX and ERROR
+        - for every VOLUME instance, it will advance
+         to find FLUX and ERROR
+        Also sets the yLabel to either 'Volume (m3/s)'
+        or 'Fluxes (-)' or 'Error(-)'
         """
-        form_liqnumbers = re.compile(r'\s*(THERE IS)\s+(?P<number>\d+)'\
-                             + r'\s+(LIQUID BOUNDARIES:)\s*\Z', re.I)
-        form_liqnumberp = re.compile(r'\s*(NUMBER OF LIQUID BOUNDARIES)'\
-                             + r'\s+(?P<number>\d+)\s*\Z', re.I)
-        form_volinitial = re.compile(r'\s*(INITIAL VOLUME )'\
-                             + r'[\s:]*\s+(?P<value>\b([-+]|)((?:(\d+)\b)|'\
-                             + r'(?:(\d+(|\.)'\
-                             + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))\s+'\
-                             + r'(?P<after>.*?)\s*\Z', re.I)
-        form_voltotal = re.compile(r'\s*(VOLUME IN THE DOMAIN)[\s:]*'\
-                             + r'\s+(?P<value>\b([-+]|)((?:(\d+)\b)|'\
-                             + r'(?:(\d+(|\.)'\
-                             + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))\s+'\
-                             + r'(?P<after>.*?)\s*\Z', re.I)
-        form_volfluxes = re.compile(r'\s*(FLUX BOUNDARY)\s+'\
-                             + r'(?P<number>\d+)\s*:\s*'\
-                             + r'(?P<value>[+-]*\b((?:(\d+)\b)|(?:(\d+(|\.)'\
-                             + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))(.\s|\s)+'\
-                             + r'(?P<after>.*?)\s*\Z', re.I)
-        form_volerror = re.compile(r'\s*(RELATIVE ERROR IN VOLUME AT T '\
-                             + r'=)\s+'\
-                             + r'(?P<at>[+-]*\b((?:(\d+)\b)|(?:(\d+(|\.)'\
-                             + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))\s+S :\s+'\
-                             + r'(?P<value>[+-]*\b((?:(\d+)\b)|(?:(\d+(|\.)'\
-                             + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))'\
-                             + r'\s*\Z', re.I)
+        form_liqnumbers = re.compile(
+            r'\s*(THERE IS)\s+(?P<number>\d+)'
+            + r'\s+(LIQUID BOUNDARIES:)\s*\Z', re.I)
+        form_liqnumberp = re.compile(
+            r'\s*(NUMBER OF LIQUID BOUNDARIES)'
+            + r'\s+(?P<number>\d+)\s*\Z', re.I)
+        form_volinitial = re.compile(
+            r'\s*(INITIAL VOLUME )'
+            + r'[\s:]*\s+(?P<value>\b([-+]|)((?:(\d+)\b)|'
+            + r'(?:(\d+(|\.)'
+            + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))\s+'
+            + r'(?P<after>.*?)\s*\Z', re.I)
+        form_voltotal = re.compile(
+            r'\s*(VOLUME IN THE DOMAIN)[\s:]*'
+            + r'\s+(?P<value>\b([-+]|)((?:(\d+)\b)|'
+            + r'(?:(\d+(|\.)'
+            + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))\s+'
+            + r'(?P<after>.*?)\s*\Z', re.I)
+        form_volfluxes = re.compile(
+            r'\s*(FLUX BOUNDARY)\s+'
+            + r'(?P<number>\d+)\s*:\s*'
+            + r'(?P<value>[+-]*\b((?:(\d+)\b)|(?:(\d+(|\.)'
+            + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))(.\s|\s)+'
+            + r'(?P<after>.*?)\s*\Z', re.I)
+        form_volerror = re.compile(
+            r'\s*(RELATIVE ERROR IN VOLUME AT T '
+            + r'=)\s+'
+            + r'(?P<at>[+-]*\b((?:(\d+)\b)|(?:(\d+(|\.)'
+            + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))\s+S :\s+'
+            + r'(?P<value>[+-]*\b((?:(\d+)\b)|(?:(\d+(|\.)'
+            + r'\d*[dDeE](\+|\-)?\d+|\d+\.\d+))))'
+            + r'\s*\Z', re.I)
         iline = 0
         # ~~ Searches for number of liquid boundaries ~~~~~~~~~~~~~~~~~~~
         fluxes_prof = []
@@ -172,7 +209,7 @@ class OutputFileData(object):
                     while not proc:
                         iline = iline + 1
                         if iline >= len(self.output):
-                            raise TelemacException(\
+                            raise TelemacException(
                                     '... Could not parse FLUXES'
                                     'FOR BOUNDARY {}'.format(str(i+1)))
                         proc = re.match(form_volfluxes, self.output[iline])
@@ -182,8 +219,8 @@ class OutputFileData(object):
                 while not proc:
                     iline = iline + 1
                     if iline >= len(self.output):
-                        raise TelemacException(\
-                                '... Could not parse RELATIVE ERROR IN VOLUME ')
+                        raise TelemacException(
+                            '... Could not parse RELATIVE ERROR IN VOLUME ')
                 errors_prof.append(float(proc.group('value')))
 
             iline = iline + 1
@@ -196,7 +233,7 @@ class OutputFileData(object):
                 break
             iline = iline + 1
         # ~~ Adds initial error ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        errors_prof.insert(0, 0.0) # assumed
+        errors_prof.insert(0, 0.0)  # assumed
         # ~~ Adds initial fluxes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         for i in range(liqnumber):      # 0.0 may not be the correct value
             fluxes_prof[i].insert(0, 0.0)
@@ -207,11 +244,11 @@ class OutputFileData(object):
 
     def get_value_history_output(self, vrs):
         """
-        @brief : Read values from the TELEMAC-2D output file
+        @brief Read values from the TELEMAC-2D output file
         @param vrs (string) voltotal: extract total volume
                             volfluxes: extract boundary fluxes
                             volerror: extract error in volume
-        :return: x,y arrays for plotting
+        @return (list, list) x,y arrays for plotting
         """
         # ~~ Extract data
         _, time = self.get_time_profile()
@@ -226,7 +263,7 @@ class OutputFileData(object):
             elif varname == "volerror":
                 volinfo.append(volerr)
             else:
-                raise TelemacException(\
+                raise TelemacException(
                        '... do not know how to extract: '
                        '{} '.format(varname))
         return time, volinfo
@@ -239,7 +276,8 @@ class OutputFileData(object):
                                   to find in the file.
         @param line_num (boolean) return or not the line number
 
-        @return file line and line number
+        @return (list, list) or (list) file line (and line number if
+        line_num==True)
         """
         iline = 0
         user_value = []
@@ -252,5 +290,5 @@ class OutputFileData(object):
             iline += 1
         if line_num:
             return user_value, num_line
-        else:
-            return user_value
+
+        return user_value

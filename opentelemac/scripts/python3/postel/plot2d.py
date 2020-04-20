@@ -11,6 +11,7 @@ import matplotlib.tri as mtri
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+
 def set_frame_limits(mesh, margin=0.02):
     """
     Computes frame limits based on mesh x,y coordonates
@@ -33,6 +34,7 @@ def set_frame_limits(mesh, margin=0.02):
 
     return xlim, ylim
 
+
 def set_extrema(data, vmin, vmax, eps=0.):
     """
     Set default min and max values for display range
@@ -47,6 +49,7 @@ def set_extrema(data, vmin, vmax, eps=0.):
     if vmax is None:
         vmax = np.max(data) + eps
     return vmin, vmax
+
 
 def mask_triangles(tri, data, relation='leq', threshold=0.001):
     """
@@ -87,6 +90,7 @@ def mask_triangles(tri, data, relation='leq', threshold=0.001):
             raise ValueError("Unknown relation, try 'leq', 'geq' or other")
     return out
 
+
 def rotate(x, y, angle=0., center=[0., 0.]):
     """
     Clockwise rotation of a field (x,y)
@@ -101,6 +105,7 @@ def rotate(x, y, angle=0., center=[0., 0.]):
     xnew = rot00*(x - center[0]) + rot01*(y - center[1])
     ynew = -rot01*(x - center[0]) + rot00*(y - center[1])
     return xnew + center[0], ynew + center[1]
+
 
 def plot2d_annotate_bnd(axe, tri, bnd_info,
                         colors=None, **kwargs):
@@ -147,18 +152,20 @@ def plot2d_annotate_bnd(axe, tri, bnd_info,
                 if not label_bool[idx]:
                     label_bool[idx] = True
                     labels.append(key)
-                    handles.append(mpl.lines.Line2D([0], [0],\
-                        lw=0., marker='o', color=colori))
+                    handles.append(mpl.lines.Line2D([0], [0],
+                                   lw=0., marker='o', color=colori))
                 found = True
                 break
             idx += 1
         if not found:
-            print(" ~> Could not find name for boundary type {}".format(bc_type))
+            print(" ~> Could not find name for boundary type {}"
+                  .format(bc_type))
 
         xi, yi = x[nbor[i]], y[nbor[i]]
         axe.plot(xi, yi, color=colori, **kwargs)
 
     axe.legend(handles, labels)
+
 
 def plot2d_annotate_liq_bnd(axe, tri, liq_bnd_info, colors=None, **kwargs):
     """
@@ -182,10 +189,10 @@ def plot2d_annotate_liq_bnd(axe, tri, liq_bnd_info, colors=None, **kwargs):
 
     # If we have at least one solid boundary
     if np.min(numliq) == 0:
-    # Initialise labels with the solid boundary
+        # Initialise labels with the solid boundary
         labels = ['Solid Boundary']
-        handles = [mpl.lines.Line2D([0], [0], lw=0.,\
-                        marker='o', color=colors[0])]
+        handles = [mpl.lines.Line2D([0], [0], lw=0.,
+                   marker='o', color=colors[0])]
     else:
         labels = []
         handles = []
@@ -193,7 +200,7 @@ def plot2d_annotate_liq_bnd(axe, tri, liq_bnd_info, colors=None, **kwargs):
     # Creating labels/handles for each liquid boundary (They are number from 1)
     for i in range(1, nliq_bnd+1):
         labels.append('Liquid boundary {}'.format(i))
-        handles.append(mpl.lines.Line2D([0], [0],\
+        handles.append(mpl.lines.Line2D([0], [0],
                        lw=0., marker='o', color=colors[i]))
 
     # Plotting each boundary mapping it with its
@@ -202,6 +209,7 @@ def plot2d_annotate_liq_bnd(axe, tri, liq_bnd_info, colors=None, **kwargs):
         axe.plot(x_i, y_i, color=colors[numliq[i]], **kwargs)
 
     axe.legend(handles, labels)
+
 
 def plot2d_triangle_mesh(axe, tri, x_label='', y_label='',
                          color='k', linewidth=0.1,
@@ -224,6 +232,7 @@ def plot2d_triangle_mesh(axe, tri, x_label='', y_label='',
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
 
+
 def plot2d_image(axe, x_label='', y_label='',
                  image=None, image_file=None, **kwargs):
     """
@@ -245,12 +254,13 @@ def plot2d_image(axe, x_label='', y_label='',
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
 
-def plot2d_scalar_map(fig, axe, mesh, data,\
-        x_label='', y_label='', data_name='data',\
-        vmin=None, vmax=None, nv=None,\
-        colorbar=True, cbar_properties=None, cbar_ticks=None,\
-        cbar_ax=None, cbar_cax=None,\
-        shading='gouraud', cmap_name='jet', **kwargs):
+
+def plot2d_scalar_map(fig, axe, mesh, data,
+                      x_label='', y_label='', data_name='data',
+                      vmin=None, vmax=None, nv=None,
+                      colorbar=True, cbar_properties=None, cbar_ticks=None,
+                      cbar_ax=None, cbar_cax=None,
+                      shading='gouraud', cmap_name='jet', **kwargs):
     """
     Plot the 2d map of scalar data on triangulation
     (matplotlib tripcolor)
@@ -320,12 +330,14 @@ def plot2d_scalar_map(fig, axe, mesh, data,\
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
 
-def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
-         x_label='', y_label='', data_name='data',\
-         vmin=None, vmax=None, nv=11, levels=None, \
-         colorbar=True, cbar_properties=None, cbar_ticks=None, \
-         cbar_ax=None, cbar_cax=None,\
-         cmap_name='jet', **kwargs):
+
+def plot2d_scalar_filled_contour(fig, axe, mesh, data,
+                                 x_label='', y_label='', data_name='data',
+                                 vmin=None, vmax=None, nv=11, levels=None,
+                                 colorbar=True, cbar_properties=None,
+                                 cbar_ticks=None,
+                                 cbar_ax=None, cbar_cax=None,
+                                 cmap_name='jet', **kwargs):
     """
     Plot a 2d filled contour of scalar data on triangulation
     (matplotlib tricontourf)
@@ -404,12 +416,13 @@ def plot2d_scalar_filled_contour(fig, axe, mesh, data,\
 
     return img
 
-def plot2d_scalar_contour(fig, axe, mesh, data,\
-        x_label='', y_label='', data_name='data',\
-        vmin=None, vmax=None, nv=11, levels=None,\
-        colorbar=True, cbar_properties=None, cbar_ticks=None,\
-        cbar_ax=None, cbar_cax=None,\
-        colors=None, cmap_name='jet', **kwargs):
+
+def plot2d_scalar_contour(fig, axe, mesh, data,
+                          x_label='', y_label='', data_name='data',
+                          vmin=None, vmax=None, nv=11, levels=None,
+                          colorbar=True, cbar_properties=None, cbar_ticks=None,
+                          cbar_ax=None, cbar_cax=None,
+                          colors=None, cmap_name='jet', **kwargs):
     """
     Plot a 2d contour of scalar data on triangulation
     (matplotlib tricontour)
@@ -441,7 +454,7 @@ def plot2d_scalar_contour(fig, axe, mesh, data,\
     cmap = cm.get_cmap(name=cmap_name, lut=None)
 
     # Setting levels with min, max and nv values if levels is not prescribed
-    if vmax is not None or vmin is not None or nv!=11:
+    if vmax is not None or vmin is not None or nv != 11:
         assert levels is None
         vmin, vmax = set_extrema(data, vmin, vmax)
         levels = np.linspace(vmin, vmax, nv)
@@ -500,13 +513,14 @@ def plot2d_scalar_contour(fig, axe, mesh, data,\
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
 
+
 def plot2d_vectors(fig, axe, mesh, data_x, data_y,
-                   x_label='', y_label='', data_name='data',\
-                   normalize=True, scale=50, \
-                   vmin=None, vmax=None, nv=None,\
-                   colorbar=True, cbar_properties=None, cbar_ticks=None,\
-                   cbar_ax=None, cbar_cax=None,\
-                   grid_xlim=None, grid_ylim=None, grid_resolution=None,\
+                   x_label='', y_label='', data_name='data',
+                   normalize=True, scale=50,
+                   vmin=None, vmax=None, nv=None,
+                   colorbar=True, cbar_properties=None, cbar_ticks=None,
+                   cbar_ax=None, cbar_cax=None,
+                   grid_xlim=None, grid_ylim=None, grid_resolution=None,
                    color=None, cmap_name='jet', **kwargs):
     """
     Plot 2d vectors (data_x, data_y) on triangulation
@@ -613,14 +627,16 @@ def plot2d_vectors(fig, axe, mesh, data_x, data_y,
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
 
-def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
-               x_label='', y_label='', data_name='data',\
-               density=1.5, arrowsize=1.5,\
-               vmin=None, vmax=None, nv=None,\
-               colorbar=True, cbar_properties=None, cbar_ticks=None,\
-               cbar_ax=None, cbar_cax=None,\
-               grid_xlim=None, grid_ylim=None, grid_resolution=[500, 500],\
-               color=None, cmap_name='jet', linewidth=0.5, **kwargs):
+
+def plot2d_streamlines(fig, axe, mesh, data_x, data_y,
+                       x_label='', y_label='', data_name='data',
+                       density=1.5, arrowsize=1.5,
+                       vmin=None, vmax=None, nv=None,
+                       colorbar=True, cbar_properties=None, cbar_ticks=None,
+                       cbar_ax=None, cbar_cax=None,
+                       grid_xlim=None, grid_ylim=None,
+                       grid_resolution=[500, 500],
+                       color=None, cmap_name='jet', linewidth=0.5, **kwargs):
     """
     Plot 2d streamlines based on vectorial data (data_x, data_y)
     (matplotlib streamplot on cartesian subgrid)
@@ -697,7 +713,8 @@ def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
 
             if cbar_properties is not None:
                 cbar = custom_cbar(
-                    fig, img.lines, cbar_ax, cbar_cax, cbar_ticks, cbar_properties)
+                    fig, img.lines, cbar_ax, cbar_cax, cbar_ticks,
+                    cbar_properties)
             else:
                 cbar = fig.colorbar(
                     img.lines, ax=cbar_ax, cax=cbar_cax, ticks=cbar_ticks)
@@ -723,8 +740,9 @@ def plot2d_streamlines(fig, axe, mesh, data_x, data_y,\
     axe.set_xlabel(x_label)
     axe.set_ylabel(y_label)
 
+
 def custom_cbar(fig, img, cbar_ax,
-        cbar_cax, cbar_ticks, cbar_properties):
+                cbar_cax, cbar_ticks, cbar_properties):
     """
     Adding custom cbar to a figure
 
@@ -767,6 +785,7 @@ def custom_cbar(fig, img, cbar_ax,
         format=deco_cbar['format'],
         drawedges=deco_cbar['drawedges'])
 
+
 def plot2d_quadrangle_mesh(fig, axe, x, y, ikle, **kwargs):
     """
     Plotting a 2d spectrum data
@@ -788,6 +807,7 @@ def plot2d_quadrangle_mesh(fig, axe, x, y, ikle, **kwargs):
     # Adding that to the axe
     axe.add_collection(p_c)
 
+
 def plot2d_spectrum(fig, axe, x, y, ikle, data, **kwargs):
     """
     Plotting a 2d spectrum data
@@ -801,7 +821,7 @@ def plot2d_spectrum(fig, axe, x, y, ikle, data, **kwargs):
     @param kwargs (dict) rest of optional arguments given to scalar_map
     """
 
-    #@todo add plot2d_scalar_map arguments
+    # @todo add plot2d_scalar_map arguments
     # Building bogus triangulation by splitting quadrangles in two
     nelem, _ = ikle.shape
     triangles = np.zeros((nelem*2, 3))

@@ -34,6 +34,7 @@ LQD_HEADER = re.compile(r'#')
 # ____/ Toolbox for LDQ /__________________________________________/
 #
 
+
 def get_lqd(file_name):
     # ~~ Get all ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     core = get_file_content(file_name)
@@ -59,11 +60,11 @@ def get_lqd(file_name):
         core[jcore].replace(',', ' ')
         # ~~> Variable header
         if core[icore].split()[0].upper() != 'T':
-            raise TelemacException(\
+            raise TelemacException(
                     '\nThought I would find T for this LQD file on '
                     'this line: {}'.format(core[icore]))
         if len(core[icore].split()) != len(core[jcore].split()):
-            raise TelemacException(\
+            raise TelemacException(
                 '\nThought I to corresponding units for this LQD file on '
                 'this line: {}'.format(core[jcore]))
         vrs = zip(core[icore].upper().split(), core[jcore].upper().split())
@@ -88,6 +89,7 @@ def get_lqd(file_name):
             z[itime][ivar] = float(values[ivar])
 
     return head, vrs[1:], time, z
+
 
 def put_lqd(fle, head, vrs, date0, time, xyz):
 
@@ -129,13 +131,14 @@ def put_lqd(fle, head, vrs, date0, time, xyz):
 
     return
 
+
 class LQD(object):
     file_name = ''
     head = []
 
     def __init__(self, file_name='', vrs=None, date=None,
                  times=None, series=None):
-        if file_name != '': # read from file
+        if file_name != '':  # read from file
             self.head, self.vrs, self.times, self.series = \
                     get_lqd(self.file_name)
         else:              # set content values
@@ -150,4 +153,3 @@ class LQD(object):
     def put_content(self, file_name):
         put_lqd(file_name, self.head, self.vrs, self.date,
                 self.times, self.series)
-

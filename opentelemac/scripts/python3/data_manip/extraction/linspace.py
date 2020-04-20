@@ -5,6 +5,7 @@ import numpy as np
 import scipy as sc
 import scipy.spatial.distance as sc
 
+
 def linspace_seg(point1, point2, length, end=False):
     """
     Discretize segment into length points
@@ -23,6 +24,7 @@ def linspace_seg(point1, point2, length, end=False):
     line[:, 1] = v_2
     return line
 
+
 def linspace_poly(poly_points, poly_number):
     """
     Discretize polyline
@@ -35,7 +37,7 @@ def linspace_poly(poly_points, poly_number):
     """
     list_seg = []
     for i in range(len(poly_points)-1):
-        lin = linspace_seg(poly_points[i], poly_points[i+1], poly_number[i],\
+        lin = linspace_seg(poly_points[i], poly_points[i+1], poly_number[i],
                            end=False)
         list_seg.append(lin)
     length = sum(poly_number)+1
@@ -47,6 +49,7 @@ def linspace_poly(poly_points, poly_number):
         poly[deb:(poly_number[i+1]+deb), :] = list_seg[i+1][:]
     poly[-1, :] = poly_points[-1]
     return poly
+
 
 def curvilinear_abscissa(coord_poly):
     """

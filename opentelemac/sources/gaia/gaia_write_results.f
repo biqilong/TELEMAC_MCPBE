@@ -1,7 +1,7 @@
 !                    *****************************
                      SUBROUTINE GAIA_WRITE_RESULTS
 !                    *****************************
-     &(CODE,GRAFCOUNT,GRCOMP,COMP,LISTCOUNT,YAGOUT)
+     &(CODE,GRAFCOUNT,GRCOMP,COMP,LISTCOUNT,YAGOUT,T_TEL)
 !
 !***********************************************************************
 ! GAIA   V7P3
@@ -14,6 +14,7 @@
 !>@param  [in]      GRAFCOUNT  PERIOD OF GRAPHICAL OUTPUTS
 !>@param  [in]      GRCOMP     COUNTER FOR GRAPHICAL OUTPUTS
 !>@param  [in]      LISTCOUNT  PERIODE DE SORTIE LISTING
+!>@param  [in]      T_TEL      CURRENT TIME IN CALLING PROGRAM
 !>@param  [in]      YAGOUT     LOGICAL: IF YES GRAPHIC OUTPUT (STEERED BY T2D)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -34,32 +35,31 @@
       LOGICAL,           INTENT(IN) :: YAGOUT
       INTEGER,           INTENT(IN) :: GRCOMP
       LOGICAL,           INTENT(IN) :: COMP
+      DOUBLE PRECISION,  INTENT(IN) :: T_TEL
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
 !
 !-----------------------------------------------------------------------
 !
-      IF(GRAFCOUNT*(LT/GRAFCOUNT).EQ.LT) THEN
-        IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE PREDES_GAIA'
-        CALL PREDES_GAIA(LT,AT0,YAGOUT,CODE,LISTCOUNT)
-        IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PREDES_GAIA'
-        IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE BIEF_DESIMP'
-        IF(COMP)THEN
-          CALL BIEF_DESIMP(GAI_FILES(GAIRES)%FMT,VARSOR,
-     &                     NPOIN,GAI_FILES(GAIRES)%LU,
-     &                     AT0,LT,LISTCOUNT,GRAFCOUNT,
-     &                     SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,
-     &                     ILEO=YAGOUT,COMPGRAPH=GRCOMP+1)
-        ELSE
-          CALL BIEF_DESIMP(GAI_FILES(GAIRES)%FMT,VARSOR,
-     &                     NPOIN,GAI_FILES(GAIRES)%LU,
-     &                     AT0,LT,LISTCOUNT,GRAFCOUNT,
-     &                     SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,
-     &                     ILEO=YAGOUT)
-        ENDIF
-        IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE BIEF_DESIMP'
+      IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE PREDES_GAIA'
+      CALL PREDES_GAIA(LT,T_TEL,YAGOUT,CODE,LISTCOUNT)
+      IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PREDES_GAIA'
+      IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE BIEF_DESIMP'
+      IF(COMP)THEN
+        CALL BIEF_DESIMP(GAI_FILES(GAIRES)%FMT,VARSOR,
+     &                   NPOIN,GAI_FILES(GAIRES)%LU,
+     &                   T_TEL,LT,LISTCOUNT,GRAFCOUNT,
+     &                   SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,
+     &                   ILEO=YAGOUT,COMPGRAPH=GRCOMP+1)
+      ELSE
+        CALL BIEF_DESIMP(GAI_FILES(GAIRES)%FMT,VARSOR,
+     &                   NPOIN,GAI_FILES(GAIRES)%LU,
+     &                   T_TEL,LT,LISTCOUNT,GRAFCOUNT,
+     &                   SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,
+     &                   ILEO=YAGOUT)
       ENDIF
+      IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE BIEF_DESIMP'
 !
 !-----------------------------------------------------------------------
 !

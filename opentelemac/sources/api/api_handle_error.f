@@ -1,17 +1,12 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief ERROR HANDLING FUNCTIONS
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief error handling functions for the api
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       MODULE API_HANDLE_ERROR
 
       IMPLICIT NONE
-      ! STRING SIZE
+      !> name of error string length
       INTEGER, PARAMETER :: ERROR_LEN = 50
+      !> error message string length
       INTEGER, PARAMETER :: ERROR_MESS_LEN = 250
       ! ERROR HANDLING FLAGS
       INTEGER, PARAMETER :: NO_ERROR=0
@@ -30,7 +25,6 @@
       INTEGER, PARAMETER :: INCREASE_NB_VAR_SIS_ERROR=13
       INTEGER, PARAMETER :: INDEX_BLOCK_MISSING=14
       INTEGER, PARAMETER :: UNKNOWN_MODULE=15
-!     INTEGER, PARAMETER :: UNALLOCATED_ARRAY=5
 !
       ! POSITION FOR A CALL FUNCTION
       INTEGER, PARAMETER :: NO_POSITION=-1
@@ -40,7 +34,7 @@
       INTEGER, PARAMETER :: RUN_INIT_POS=3
       INTEGER, PARAMETER :: RUN_TIMESTEP_POS=4
       INTEGER, PARAMETER :: RUN_FINALIZE_POS=5
-!
+      !> List of positions names
       CHARACTER(LEN=32) :: POS_NAME(6)
       PARAMETER ( POS_NAME = (/
      &            'RUN_SET_CONFIG                  ',
@@ -49,29 +43,23 @@
      &            'RUN_INIT                        ',
      &            'RUN_TIMESTEP                    ',
      &            'RUN_FINALIZE                    ' /) )
+      !> Error message
       CHARACTER(LEN=ERROR_MESS_LEN) :: ERR_MESS
 !
       CONTAINS
         !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF CHECK THAT THE FLAG FOR POSTION CALL_POSITION
-      !+     IS BETWEEN 'BEFORE' AND 'AFTER'
+      !>@brief Check that the flag for postion call_position
+      !!     is between 'before' and 'after'
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM CALL_POSITION [IN]  ID OF THE CURRENT POSITION
-      !PARAM FNAME         [IN]  NAME OF THE FUNCTION
-      !PARAM PREV_POS      [IN]  ID OF THE POSTION THE FUNCTION
-      !+                         MUST BE CALLED AFTER
-      !PARAM NEXT_POS      [IN]  ID OF THE POSTION THE FUNCTION
-      !+                         MUST BE CALLED BEFORE
-      !PARAM IERR         [OUT]  0 IF SUBROUTINE SUCCESSFULL,
-      !+                         ERROR ID OTHERWISE
+      !>@param[in] CALL_POSITION Id of the current position
+      !>@param[in] FNAME Name of the function
+      !>@param[in] PREV_POS Id of the postion the function
+      !!                         must be called after
+      !>@param[in] NEXT_POS Id of the postion the function
+      !!                         must be called before
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                         error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CHECK_CALL_POSITION
      &     (CALL_POSITION,FNAME,PREV_POS,NEXT_POS,IERR)
@@ -97,17 +85,10 @@
       END SUBROUTINE CHECK_CALL_POSITION
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RETURN THE ERROR MESSAGE OF THE LAST ERROR
+      !>@brief Return the error message of the last error
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR       [IN]    ID OF THE ERROR
-      !PARAM MESSAGE   [OUT]    THE ERROR MESSAGE
+      !>@param[in] ierr id of the error
+      !>@param[out] message the error message
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_ERROR_TYPE(IERR,MESSAGE)
         INTEGER, INTENT(IN) :: IERR

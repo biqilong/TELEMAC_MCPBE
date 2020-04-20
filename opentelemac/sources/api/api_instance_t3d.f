@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief module handling all the instance function
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief module handling all the instance function
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_INSTANCE_T3D
@@ -19,9 +13,9 @@
       USE DECLARATIONS_TOMAWAC, ONLY : WAC_FILES,MAXLU_WAC
       USE DECLARATIONS_WAQTEL,  ONLY : WAQ_FILES,MAXLU_WAQ,
      &                                 TAIR,CP_EAU,C_ATMOS
-      USE DECLARATIONS_GAIA, ONLY : GAI_FILES,MAXLU_GAI,E,q,dcla,ac,
-     &             xwc,qbor,ebor,tob,clu,clv,liqbor,cs,
-     &             nsicla,nomblay,partheniades,liebor
+      USE DECLARATIONS_GAIA, ONLY : GAI_FILES,MAXLU_GAI,E,Q,DCLA,AC,
+     &             XWC,QBOR,EBOR,TOB,CLU,CLV,LIQBOR,CS,
+     &             NSICLA,NOMBLAY,PARTHENIADES,LIEBOR
       IMPLICIT NONE
 
       PRIVATE
@@ -188,18 +182,11 @@
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief creates a TELEMAC3D instance
+      !>@brief Creates a TELEMAC3D instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id   [out]    id of the new instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[out] ID Id of the new instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CREATE_INSTANCE_T3D(ID,IERR)
       ! initialise instance for TELEMAC3D
@@ -246,18 +233,11 @@
       END SUBROUTINE CREATE_INSTANCE_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief updates a TELEMAC3D instance
+      !>@brief Updates a TELEMAC3D instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history c goeury & y audouin (edf r&d, lnhe)
-      !+       17/06/2016
-      !+       V7P1
-      !+       update the api instance
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id   [out]    id of the new instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[out] ID Id of the new instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE UPDATE_INSTANCE_T3D(ID,IERR)
       ! initialise instance for TELEMAC3D
@@ -422,18 +402,11 @@
 !
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief deletes a TELEMAC3D instance
+      !>@brief Deletes a TELEMAC3D instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE DELETE_INSTANCE_T3D(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -447,18 +420,11 @@
       END SUBROUTINE DELETE_INSTANCE_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief check if the id is following convention
+      !>@brief Check if the id is following convention
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CHECK_INSTANCE_T3D(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -479,17 +445,10 @@
       END SUBROUTINE CHECK_INSTANCE_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief Returns the error message of the instance
+      !>@brief Returns the error message of the instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param mess  [out]   The erro message
+      !>@param[in] ID Id of the instance
+      !>@param[out] MESS The error message
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INSTANCE_ERROR_T3D(ID,MESS)
         INTEGER, INTENT(IN) :: ID

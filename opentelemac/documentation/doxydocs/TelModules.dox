@@ -5,7 +5,7 @@
 <table>
  <tr>
    <td>
-     \image html hrw-logo.jpg
+     \image html telemac_logo.png
      \par Introduction
             Welcome to the Telemac System
 
@@ -41,10 +41,7 @@
             \li KHIONE: frasil module
 
      \par Building
-            How to build telemac from sources....
-
-     \par Running
-            How to set up and run telemac....
+            Go to <a href="installation notes">http://wiki.opentelemac.org/doku.php?id=installation_notes_2_beta>installation_note</a>
 
      \n \n
 

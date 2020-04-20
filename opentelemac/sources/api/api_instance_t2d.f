@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief module handling all the instance function
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief Module handling all the instance function
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_INSTANCE_T2D
@@ -166,18 +160,11 @@
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief creates a telemac2d instance
+      !>@brief Creates a telemac2d instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id   [out]    id of the new instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[out] ID Id of the new instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CREATE_INSTANCE_T2D(ID,IERR)
       ! initialise instance for telemac2d
@@ -224,18 +211,11 @@
       END SUBROUTINE CREATE_INSTANCE_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief updates a telemac2d instance
+      !>@brief Updates a telemac2d instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history c goeury & y audouin (edf r&d, lnhe)
-      !+       17/06/2016
-      !+       V7P1
-      !+       update the api instance
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id   [out]    id of the new instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[out] ID Id of the new instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE UPDATE_INSTANCE_T2D(ID,IERR)
       ! initialise instance for telemac2d
@@ -384,17 +364,11 @@
 !
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief initializes variables for TELEMAC2D in case of coupling
+      !>@brief Initializes variables for TELEMAC2D in case of coupling
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param ID             [IN]     ID FOR TELEMAC2D INSTANCE
-      !PARAM IERR           [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                             ERROR ID OTHERWISE
+      !>@param[in] ID Id for telemac2d instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                             ERROR ID OTHERWISE
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CPL_INIT_T2D(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -411,18 +385,11 @@
       END SUBROUTINE CPL_INIT_T2D
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief deletes a telemac2d instance
+      !>@brief Deletes a telemac2d instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE DELETE_INSTANCE_T2D(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -436,18 +403,11 @@
       END SUBROUTINE DELETE_INSTANCE_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief check if the id is following convention
+      !>@brief Check if the id is following convention
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CHECK_INSTANCE_T2D(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -468,17 +428,10 @@
       END SUBROUTINE CHECK_INSTANCE_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief Returns the error message of the instance
+      !>@brief Returns the error message of the instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param mess  [out]   The erro message
+      !>@param[in] ID Id of the instance
+      !>@param[out] MESS The error message
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INSTANCE_ERROR_T2D(ID,MESS)
         INTEGER, INTENT(IN) :: ID

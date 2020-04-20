@@ -121,8 +121,8 @@ class Genop(object):
         fmin = np.ndarray.min(self._fvalpop)
         fmax = np.ndarray.max(self._fvalpop)
         efficiency = (1. - self.pressure) * (fmax - self._fvalpop) / \
-            np.ndarray.max(np.array([fmax - fmin, np.spacing(1)]), axis=None)+\
-            self.pressure
+            np.ndarray.max(np.array([fmax - fmin, np.spacing(1)]),
+                           axis=None) + self.pressure
         # Evolution
         for i in range(0, nbgen):
             # Selection

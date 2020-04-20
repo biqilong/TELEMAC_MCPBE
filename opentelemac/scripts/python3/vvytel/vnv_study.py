@@ -2,7 +2,7 @@
 File containing the VnvStudy class that is used to run validation
 """
 from config import CFGS
-from os import path, chdir, makedirs, remove
+from os import path, chdir, makedirs, remove, environ
 from collections import OrderedDict
 from execution.run_cas import run_local_cas, run_hpc_cas
 from execution.study import Study
@@ -585,7 +585,9 @@ class AbstractVnvStudy(ABC):
             self.action_time[name] = [False, 0.0]
             start_time = time.time()
             print("\n   ~> Running {}: \n{}\n".format(name, command))
-            ret = subprocess.check_call(command, shell=True)
+
+            ret = subprocess.check_call(command, shell=True,
+                                        executable=environ.get('SHELL', None))
 
             if ret != 0:
                 raise TelemacException(\

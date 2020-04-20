@@ -73,6 +73,8 @@ VAR_1STR = re.compile(r'(?P<string>)(".*?")[\s,;]*(?P<after>.*?)\Z')
 # _____                              _______________________________
 # ____/ Principal Class for I2S/I3S /______________________________/
 #
+
+
 class InS(object):
 
     def __init__(self, file_name):
@@ -93,15 +95,13 @@ class InS(object):
         if tail in ['.i2s', '.i3s']:
             self.parser_content(file_name)
         else:
-            raise TelemacException(\
+            raise TelemacException(
                     '\nThe polygon file extension is required to be '
                     'either i2s or i3s')
-
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # ~~~~ Parse Content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #
-
     def parser_content(self, file_name):
         # TODO: Read the whole header
 
@@ -124,9 +124,9 @@ class InS(object):
                 self.natrbut += 1
                 if self.natrbut == int(proc.group('number')):
                     self.oatrbut.append(proc.group('after').strip())
-                    self.atrbut.update({self.oatrbut[-1]:[]})
+                    self.atrbut.update({self.oatrbut[-1]: []})
                 else:
-                    raise TelemacException(\
+                    raise TelemacException(
                             '... Could not read the order of your Attributes: '
                             '{}'.format(core[icore]))
             # ... more instruction coming ...
@@ -147,14 +147,14 @@ class InS(object):
             # ~~> polygon head
             proc = re.match(VAR_1INT, core[icore].strip())
             if not proc:
-                raise TelemacException(\
+                raise TelemacException(
                         '\nCould not parse the following polyline header: '
                         '{}'.format(core[icore].strip()))
             nrec = int(proc.group('number'))
             after = proc.group('after').strip().split()
             if len(after) != self.natrbut:
                 if self.natrbut != 0:
-                    raise TelemacException(\
+                    raise TelemacException(
                         '... Could not find the correct number of attribute:'
                         '{}, {} expected'.format(core[icore].strip(),
                                                  self.natrbut))
@@ -175,7 +175,7 @@ class InS(object):
                 if not proc:
                     proc = re.match(VAR_1INT, nbres[0])
                     if not proc:
-                        raise TelemacException(\
+                        raise TelemacException(
                             '\nCould not parse the following polyline record: '
                             '{}'.format(core[icore+irec].strip()))
                 nbres[0] = float(proc.group('number'))
@@ -201,7 +201,6 @@ class InS(object):
 
         self.npoly = len(self.poly)
 
-
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # ~~~~ Write-up Content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #
@@ -213,7 +212,7 @@ class InS(object):
         # ~~> file extension processing
         _, tail = path.splitext(file_name)
         if tail[1:] != self.file_type:
-            if head != None:
+            if head is not None:
                 head = ['\n'.join(head).replace(':FileType '+self.file_type,
                                                 ':FileType '+tail[1:])]
             self.file_type = tail[1:]
@@ -228,9 +227,9 @@ class InS(object):
                     ':WrittenBy sebourban',
                     ':CreationDate Thu, Dec 08, 2011 02:47 PM',
                     ':Name ' + path.basename(file_name),
-                    #':AttributeName 1 level',
-                    #':AttributeType 1 float',
-                    #':AttributeUnits 1 m',
+                    # ':AttributeName 1 level',
+                    # ':AttributeType 1 float',
+                    # ':AttributeUnits 1 m',
                     ':EndHeader']
 
         # ~~> look for closed lines
@@ -243,7 +242,7 @@ class InS(object):
 
         # ~~> fill-up empty attributes
         if self.atrbut == {}:
-            self.atrbut = {1:['ArbitraryName1']}
+            self.atrbut = {1: ['ArbitraryName1']}
             for _ in self.poly:
                 self.atrbut[1].append(0)
             self.oatrbut = [1]
@@ -275,14 +274,14 @@ class InS(object):
                     for xyi in ipoly:
                         core.append(repr(xyi[0])+' '+repr(xyi[1])+' 0.0')
                     if i_l != len(ipoly):
-                        core.append(repr(ipoly[0][0])+' '+\
+                        core.append(repr(ipoly[0][0])+' ' +
                                     repr(ipoly[0][1])+' 0.0')
                 else:
                     for xyi, val in zip(ipoly, ival):
-                        core.append(repr(xyi[0])+' '+repr(xyi[1])+' '+\
-                                        ' '.join([repr(v) for v in val]))
+                        core.append(repr(xyi[0])+' '+repr(xyi[1])+' ' +
+                                    ' '.join([repr(v) for v in val]))
                     if i_l != len(ipoly):
-                        core.append(repr(ipoly[0][0])+' '+repr(ipoly[0][1])+\
+                        core.append(repr(ipoly[0][0])+' '+repr(ipoly[0][1]) +
                                     ' '+' '.join([repr(v) for v in ival[0]]))
 
         # ~~ Put all ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -291,6 +290,7 @@ class InS(object):
 # _____                  ___________________________________________
 # ____/ Toolbox for XYZ /__________________________________________/
 #
+
 
 def get_xyn(file_name):
     # TODO: Read the whole header, for the time being head is copied
@@ -311,12 +311,12 @@ def get_xyn(file_name):
         # ... more instruction coming ...
         icore += 1
     head = core[0:icore]
-    if file_type == None:
+    if file_type is None:
         proc = re.match(VAR_3DBL, core[icore]+' ')
         if not proc:
             proc = re.match(VAR_2DBL, core[icore]+' ')
             if not proc:
-                raise TelemacException(\
+                raise TelemacException(
                         '\nCould not parse the first record: '
                         '{}'.format(core[icore]))
             else:
@@ -328,12 +328,12 @@ def get_xyn(file_name):
 
     # ~~ Parse body ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # This is also fairly fast, so you might not need a progress bar
-    xyz = [] #; pbar = ProgressBar(maxval=len(core)).start()
+    xyz = []  # ; pbar = ProgressBar(maxval=len(core)).start()
     while icore < len(core):
         if file_type == 'xy':
             proc = re.match(VAR_2DBL, core[icore]+' ')
             if not proc:
-                raise TelemacException(\
+                raise TelemacException(
                         '\nCould not parse the following xyz record: '
                         '{}'.format(core[icore]))
             xyz.append([float(proc.group('number1')),
@@ -341,23 +341,24 @@ def get_xyn(file_name):
         elif file_type == 'xyz':
             proc = re.match(VAR_3DBL, core[icore]+' ')
             if not proc:
-                raise TelemacException(\
+                raise TelemacException(
                         '\nCould not parse the following xyz record: '
                         '{}'.format(core[icore]))
             xyz.append([float(proc.group('number1')),
                         float(proc.group('number2')),
                         float(proc.group('number3'))])
         icore += 1
-    #pbar.finish()
+    # pbar.finish()
 
     return head, file_type, xyz
+
 
 def put_xyn(fle, head, file_type, xyz):
 
     # ~~ Write head ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     core = head
-    #if head != []: core = head
-    #<else: core = [':FileType '+file_type+' ASCII EnSim 1.0',
+    # if head != []: core = head
+    # <else: core = [':FileType '+file_type+' ASCII EnSim 1.0',
     #   ':Application BlueKenue', ':Version 3.2.24',
     #   ':WrittenBy sebourban', ':CreationDate Thu, Dec 08, 2011 02:47 PM',
     #   ':Name ' + path.basename(file_name),

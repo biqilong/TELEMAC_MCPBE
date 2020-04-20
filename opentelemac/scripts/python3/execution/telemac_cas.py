@@ -18,7 +18,8 @@ SPECIAL = ['VARIABLES FOR GRAPHIC PRINTOUTS',
            'VARIABLES FOR 2D GRAPHIC PRINTOUTS',
            'VARIABLES TO BE PRINTED',
            'COUPLING WITH',
-          ]
+           ]
+
 
 def get_dico(module):
     """
@@ -30,9 +31,10 @@ def get_dico(module):
     """
     from config import CFGS
     if CFGS is None:
-        raise TelemacException(\
+        raise TelemacException(
                 "This function only works if a configuration is set")
     return path.join(CFGS.get_root(), 'sources', module, module+'.dico')
+
 
 class TelemacCas():
     """
@@ -49,7 +51,11 @@ class TelemacCas():
         @param check_files (bool) If true checking that input files exist
         """
         self.file_name = file_name
-        #TODO: Add identification of the module
+        if access == 'r':
+            if not path.exists(file_name):
+                raise TelemacException(
+                "File does not exists:\n{}".format(file_name))
+        # TODO: Add identification of the module
         self.values = {}
         self.lang = ''
         self.in_files = {}
@@ -112,9 +118,9 @@ class TelemacCas():
             # ~~ Matching keyword
             proc = re.match(KEY_EQUALS, cas_stream)
             if not proc:
-                raise TelemacException(\
+                raise TelemacException(
                    ' Error while parsing steering file {} '
-                   'incorrect line:\n{}'\
+                   'incorrect line:\n{}'
                    .format(self.file_name, cas_stream[:100]))
             keyword = proc.group('key').strip()
             cas_stream = proc.group('after')    # still hold the separator
@@ -162,8 +168,8 @@ class TelemacCas():
 
         for key in self.values:
             if key not in key_list:
-                raise TelemacException(\
-                    "Unknown keyword {} in steering file {}"\
+                raise TelemacException(
+                    "Unknown keyword {} in steering file {}"
                     .format(key, self.file_name))
 
     def _check_choix(self):
@@ -192,34 +198,35 @@ class TelemacCas():
                         # Handling case of Tracer lists such as T1, T* ...
                         # Special case for gaia where you have stuff like kSi
                         # and kES where k and i are number or *
-                        if not(str(val).strip(' ') in list_choix or \
-                           str(val).rstrip('123456789*') in list_choix or \
-                           new_val in list_choix or \
-                           new_val2 in list_choix or \
+                        if not(str(val).strip(' ') in list_choix or
+                           str(val).rstrip('123456789*') in list_choix or
+                           new_val in list_choix or
+                           new_val2 in list_choix or
                            new_val3 in list_choix):
-                            raise TelemacException(\
-                       "In {}: \n".format(self.file_name)+
-                       "The value for {} ({})is not among the choices: \n{}"\
-                       .format(key, val, list_choix))
+                            raise TelemacException(
+                                "In {}: \n".format(self.file_name) +
+                                "The value for {} ({})is not"
+                                " among the choices: \n{}"
+                                .format(key, val, list_choix))
                 elif isinstance(value, list):
                     for val in value:
                         if str(val).strip(' ') not in list_choix:
-                            raise TelemacException(\
-                         "In {}: \n".format(self.file_name)+
-                         "The value for {} ({})is not among the choices: \n{}"\
-                         .format(key, val, list_choix))
+                            raise TelemacException(
+                                "In {}: \n".format(self.file_name) +
+                                "The value for {} ({})is not among"
+                                " the choices: \n{}"
+                                .format(key, val, list_choix))
                 else:
                     if str(value).strip(' ') not in list_choix:
-                        raise TelemacException(\
-                         "In {}: \n".format(self.file_name)+
-                         "The value for {} ({})is not among the choices: \n{}"\
+                        raise TelemacException(
+                         "In {}: \n".format(self.file_name) +
+                         "The value for {} ({})is not among the choices: \n{}"
                          .format(key, value, list_choix))
 
     def _convert_values(self):
         """
         Convert string value to its Python type and replace key by english key
         """
-
 
         # Updating values dict
         # Converting value and translating key if necessary
@@ -256,8 +263,8 @@ class TelemacCas():
                     val = self.values[key].strip("'")
                     if self.check_files:
                         if not path.exists(val):
-                            raise TelemacException(\
-                                "In {} missing file for {}:\n {}"\
+                            raise TelemacException(
+                                "In {} missing file for {}:\n {}"
                                 .format(self.file_name, key, val))
                 # output file
                 if 'ECR' in key_data['SUBMIT']:
@@ -299,11 +306,12 @@ class TelemacCas():
                                 irubs[i] = 0
                             if irub == 0:
                                 string += "/"*72+"\n"
-                            string += \
-                               "/// {num}-{rub}\n"\
-                               .format(sep="/"*(72),
-                                       num=".".join([str(i) for i in irubs[:(irub+1)]]),
-                                       rub=rub.lower())
+                            string +=\
+                                "/// {num}-{rub}\n"\
+                                .format(
+                                    sep="/"*(72), num="."
+                                    .join([str(i) for i in irubs[:(irub+1)]]),
+                                    rub=rub.lower())
                             rubs[irub] = rub
                     f.write(string)
                     if isinstance(val, list):
@@ -366,30 +374,30 @@ class TelemacCas():
             while cas_stream != '':
                 proc = re.match(KEY_EQUALS, cas_stream)
                 if not proc:
-                    raise TelemacException(\
-                        'Unhandled error\n    '\
+                    raise TelemacException(
+                        'Unhandled error\n    '
                         'around there :'+cas_stream[:100])
                 keyword = proc.group('key').strip()
                 if keyword not in head:
                     break  # move on to next line
                 # If just a value skipping
                 if '=' not in head and ':' not in head:
-                    break # move on to next line
+                    break  # move on to next line
                 # If only part of a string value skipping
-                if (head.count("'") == 1 and ("L'" not in keyword and \
-                                              "D'" not in keyword)) or \
-                    head.count('"') == 1:
+                if (head.count("'") == 1 and (
+                    "L'" not in keyword and "D'" not in keyword)) or \
+                        head.count('"') == 1:
                     break
 
                 # ~~> translate the keyword
                 head = head.replace(keyword, '', 1)
                 if keyword.upper() in self.dico.gb2fr:
-                    frline = frline.replace(\
+                    frline = frline.replace(
                             keyword,
                             self.dico.gb2fr[keyword],
                             1)
                 if keyword.upper() in self.dico.fr2gb:
-                    gbline = gbline.replace(\
+                    gbline = gbline.replace(
                             keyword,
                             self.dico.fr2gb[keyword],
                             1)
@@ -434,7 +442,7 @@ class TelemacCas():
         if key not in self.dico.fr2gb and key not in self.dico.gb2fr:
             if default is not None:
                 return default
-            raise TelemacException(\
+            raise TelemacException(
                     "keyword: {} not in dictionary".format(key))
         # Getting english keyword
         gb_key = self.dico.fr2gb.get(key, key)
@@ -463,7 +471,7 @@ class TelemacCas():
         """
         # Get english version of the keyword
         if key not in self.dico.fr2gb and key not in self.dico.gb2fr:
-            raise TelemacException(\
+            raise TelemacException(
                     "keyword: {} not in dictionary".format(key))
         gb_key = self.dico.fr2gb.get(key, key)
 
@@ -478,8 +486,8 @@ class TelemacCas():
             new_val = val
 
         if not check_type(var_type, new_val):
-            raise TelemacException(\
-                    "Value to set on {} is not of type {} but of type {}"\
+            raise TelemacException(
+                    "Value to set on {} is not of type {} but of type {}"
                     .format(key, var_type, type(new_val)))
 
         self.values[gb_key] = new_val
@@ -490,8 +498,8 @@ class TelemacCas():
                 self.in_files[gb_key] = key_data['SUBMIT']
                 val = self.values[gb_key].strip("'")
                 if not path.exists(val):
-                    raise TelemacException(\
-                        "In {} missing file for {}:\n {}"\
+                    raise TelemacException(
+                        "In {} missing file for {}:\n {}"
                         .format(self.file_name, key, val))
             # output file
             if 'ECR' in key_data['SUBMIT']:
@@ -542,14 +550,13 @@ class TelemacCas():
                     break
 
         if file_key is None:
-            raise TelemacException(\
-                    "Could not find {} in files for {}"\
+            raise TelemacException(
+                    "Could not find {} in files for {}"
                     .format(submit, self.file_name))
 
         # In the the file a PARAL (i.e it will have one for each processor)
         ncsize = self.get('PARALLEL PROCESSORS')
-        if 'PARAL' in file_sub and file_key in self.out_files \
-            and ncsize > 1:
+        if 'PARAL' in file_sub and file_key in self.out_files and ncsize > 1:
             root, ext = path.splitext(self.get(file_key))
             file_names = []
             for ipid in range(ncsize):
@@ -568,7 +575,8 @@ class TelemacCas():
         @param copy_cas_file (boole) If True also copies the steering file
         """
         if not path.exists(dir_path):
-            raise TelemacException(self, "Copy dir does not exists:\n"+dir_path)
+            raise TelemacException(
+                self, "Copy dir does not exists:\n"+dir_path)
 
         # Copying input_files
         for key in self.in_files:

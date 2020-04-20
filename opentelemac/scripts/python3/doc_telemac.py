@@ -10,6 +10,7 @@
 import sys
 from os import chdir, remove, walk, path, linesep, sep, mkdir, stat
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from string import Template
 # ~~> dependencies towards other pytel/modules
 from utils.messages import Messages
 from utils.files import get_file_content
@@ -38,6 +39,72 @@ def clean_doc(doc_dir, fullclean):
         if fullclean and fle.endswith(".pdf"):
             remove(fle)
 
+def generate_list_variables(doc_dir):
+    """
+    Generates in latex format list of variables for each telapy module
+
+    @param doc_dir (str) Path of the documentation
+    """
+    try:
+        import _api
+        api = sys.modules['_api']
+        api_avail = True
+    except ImportError:
+        print("Api nor available generating empty list of variable")
+        api_avail = False
+
+    list_variable_template = Template(r"""
+\begin{longtable}{|p{.40\textwidth} | p{.60\textwidth}|}
+\hline
+Variable name & Definition \tabularnewline
+\hline
+\hline
+$content
+\hline
+\caption{Accessible variables through the API for $mod}
+\end{longtable}""")
+
+    for module in ['t2d', 't3d', 'sis', 'art', 'wac']:
+
+        content = ''
+        if api_avail:
+            print(" ~> Getting var for", module)
+            # Using direct acces to api (no need to instanciate)
+            mod_handle_var = getattr(api, "api_handle_var_"+module)
+            nb_var = getattr(mod_handle_var, "nb_var_"+module)
+            var_len = getattr(mod_handle_var, module+"_var_len")
+            info_len = getattr(mod_handle_var, module+"_info_len")
+            get_var_info = getattr(mod_handle_var,
+                                   "get_var_info_{}_d".format(module))
+            set_var_list = getattr(mod_handle_var,
+                                   "set_var_list_{}_d".format(module))
+
+            # Building array of variable info
+            error = set_var_list()
+            if error != 0:
+                raise TelemacException(
+                    "Error while setting var list: {}".format(error))
+
+            # Getting info for each variable
+            for i in range(nb_var):
+                tmp_varname, tmp_varinfo, error = \
+                        get_var_info(i+1, var_len, info_len)
+                if error != 0:
+                    raise TelemacException(
+                        "Error when getting info for var {}".format(i+1))
+                varname = b''.join(tmp_varname).decode('utf-8').strip()
+                varinfo = b''.join(tmp_varinfo).decode('utf-8').strip()
+
+                # Adding new line the array
+                content += '\n{} & {}\\tabularnewline'\
+                           .format(varname.replace('_', r'\_'),
+                                   varinfo.replace('_', r'\_'))
+
+        file_name = path.join(doc_dir, 'latex',
+                              'var_list_{}.tex'.format(module))
+        with open(file_name, 'w') as ffile:
+            ffile.write(list_variable_template.substitute(
+                mod=module, content=content))
 
 def compiletex(texfile, version, verbose):
     """
@@ -351,22 +418,18 @@ def generate_doxygen(doxydoc, verbose):
     @param verbose If True display doxygen listing
     """
 
-    if doxydoc == "doxydocs":
-        # Checking that the converter is compiled
-        converter_path = path.join(CFGS.get_root(),
-                                   'optionals',
-                                   'addons',
-                                   'to_f90')
-
-        if not path.exists(path.join(converter_path, 'f77_to_f90')):
-            raise TelemacException(
-                "You need to compile the converter in :\n"+converter_path)
-
     # Compiling sources doxygen
     doxy_dir = path.join(CFGS.get_root(),
                          'documentation',
                          doxydoc)
     doxy_file = path.join(doxy_dir, 'Doxyfile')
+
+    if doxydoc == "doxypydocs":
+        try:
+            import doxypypy
+        except ImportError:
+            raise TelemacException("doxypypy is mandatory to compile doxygen "
+                                   "for Telemac scripts")
 
     compile_doxygen(doxy_file, verbose)
 
@@ -540,6 +603,10 @@ use the options --validation/reference/user/release/theory to compile only one
             # Check if the file exist
             if path.exists(path.join(doc_dir,
                                      code_name + "_" + doc_type + ".tex")):
+                if code_name == 'telapy' and \
+                   not (options.cleanup or options.fullcleanup):
+                    # Running small script to generate list of variables for api
+                    generate_list_variables(doc_dir)
                 compile_doc(doc_dir, code_name+'_'+doc_type,
                             version,
                             options.cleanup, options.fullcleanup,
@@ -564,9 +631,11 @@ use the options --validation/reference/user/release/theory to compile only one
         if doc == 'notebooks':
             notebook_dir = path.join(root, 'notebooks')
             doc_dir = path.join(root, 'documentation', doc)
-            generate_notebook_html(doc_dir, notebook_dir, options.verbose)
+            if not (options.fullcleanup or options.cleanup):
+                generate_notebook_html(doc_dir, notebook_dir, options.verbose)
         elif doc in ['doxydocs', 'doxypydocs']:
-            generate_doxygen(doc, options.verbose)
+            if not (options.fullcleanup or options.cleanup):
+                generate_doxygen(doc, options.verbose)
         else:
             chdir(doc_dir)
             if path.exists(path.join(doc_dir, doc + ".tex")):

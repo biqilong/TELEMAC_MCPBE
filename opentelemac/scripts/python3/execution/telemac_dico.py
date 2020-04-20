@@ -12,6 +12,7 @@ from utils.exceptions import TelemacException
 # Global variable containing parsed dictionaries
 DICOS = {}
 
+
 class TelemacDico():
     """
     Class to manipulation a Telemac-Mascaret dictionary
@@ -44,24 +45,24 @@ class TelemacDico():
         while i < len(dico_lines) - 1:
             i = i + 1
             line = ''
-            l = dico_lines[i].strip()
+            ll = dico_lines[i].strip()
             # Empty line
-            proc = re.match(EMPTY_LINE, l)
+            proc = re.match(EMPTY_LINE, ll)
             if proc:
                 continue
             # Comment line or special keyword
-            if l[0] == '/' or l[0] == '&':
+            if ll[0] == '/' or ll[0] == '&':
                 continue
             # Beginning of a string if not 'after' will be empty
-            proc = re.match(ENTRY_QUOTE, l)
+            proc = re.match(ENTRY_QUOTE, ll)
             line = proc.group('before')
-            l = proc.group('after').strip()
+            ll = proc.group('after').strip()
             # Merging the whole string into one line
             # TODO: Do not merge AIDE* keep the linebreaks
-            while l != '':
+            while ll != '':
                 # Double quote string "....."
-                if l[0:1] == '"':
-                    proc = re.match(EXIT_DQUOTE, l+' ')
+                if ll[0:1] == '"':
+                    proc = re.match(EXIT_DQUOTE, ll+' ')
                     if proc:
                         # Replace single quote inside string by double one
                         line += "'" + proc.group('before').replace("'", '"') \
@@ -70,13 +71,13 @@ class TelemacDico():
                         proc = re.match(ENTRY_QUOTE,
                                         proc.group('after').strip())
                         line += proc.group('before')
-                        l = proc.group('after').strip()
+                        ll = proc.group('after').strip()
                     else:
                         i = i + 1
-                        l = l + ' ' + dico_lines[i].strip()
+                        ll = ll + ' ' + dico_lines[i].strip()
                 # Single quote string ('.....')
-                elif l[0:1] == "'":
-                    proc = re.match(EXIT_SQUOTE, l+' ')
+                elif ll[0:1] == "'":
+                    proc = re.match(EXIT_SQUOTE, ll+' ')
                     if proc:
                         # Replace single quote inside string by double one
                         line += "'" + proc.group('before').replace("'", '"') \
@@ -84,10 +85,10 @@ class TelemacDico():
                         proc = re.match(ENTRY_QUOTE,
                                         proc.group('after').strip())
                         line += proc.group('before')
-                        l = proc.group('after').strip()
+                        ll = proc.group('after').strip()
                     else:
                         i = i + 1
-                        l = l + ' ' + dico_lines[i].strip()
+                        ll = ll + ' ' + dico_lines[i].strip()
             # Adding new merged line
             core.append(line)
 
@@ -100,7 +101,7 @@ class TelemacDico():
             proc = re.match(KEY_EQUALS, dico_stream)
             keyword = proc.group('key').strip()
             if keyword not in DICO_KEYS:
-                raise TelemacException(\
+                raise TelemacException(
                  'unknown key {} for {} '.format(keyword, proc.group('after')))
 
             dico_stream = proc.group('after')    # still hold the separator
@@ -120,12 +121,11 @@ class TelemacDico():
                 proc = re.match(VAL_EQUALS, dico_stream)
             keylist.append([keyword, val])
 
-
         # ~~ Group pairs of keyword/val by each occurence of NOM
         while keylist != []:
             if keylist[0][0] != 'NOM' and keylist[1][0] != 'NOM1':
-                raise TelemacException('could not read NOM or NOM1 '\
-                                'from {}'.format(keylist[0][1]))
+                raise TelemacException('could not read NOM or NOM1 '
+                                       'from {}'.format(keylist[0][1]))
 
             fr_name = keylist[0][1][0].replace('"', "'")
             gb_name = keylist[1][1][0].replace('"', "'")
@@ -167,7 +167,7 @@ class TelemacDico():
                         for val in values:
                             str_index, comment = val.split('=', maxsplit=1)
                             key_info[key][str_index.strip(' ')] = \
-                                     comment.strip('"')
+                                comment.strip('"')
                     else:
                         # List of strings just removing quotes for each value
                         key_info[key] = \
@@ -177,7 +177,7 @@ class TelemacDico():
                     rub = key_info[key]
                     # Checking toat first rubique is not empty
                     if rub[0] == '':
-                        raise TelemacException(\
+                        raise TelemacException(
                            "First Rubrique for {} is empty".format(keyword))
 
                     # rubrique must have 3 levels filling with empty ones
@@ -189,17 +189,17 @@ class TelemacDico():
                 elif len(key_info[key]) == 1:
                     key_info[key] = key_info[key][0]
             if 'RUBRIQUE' not in key_info:
-                raise TelemacException(\
+                raise TelemacException(
                         "Missing RUBRIQUE for {}".format(keyword))
             if 'RUBRIQUE1' not in key_info:
-                raise TelemacException(\
+                raise TelemacException(
                         "Missing RUBRIQUE1 for {}".format(keyword))
 
     def __str__(self):
         """
         Ascii representation of a dictionnary
         """
-        #TODO: Make a fancy following section order
+        # TODO: Make a fancy following section order
         string = "Printing: " + self.file_name + "\n\n"
         # Name of current rubriques
         rubs = ['', '', '']
@@ -219,14 +219,15 @@ class TelemacDico():
                     irubs[irub] += 1
                     for i in range(irub+1, 3):
                         irubs[i] = 0
-                    string += \
-                       "{indent}{sep}\n{indent}~> {num}-{rub}\n{indent}{sep}\n"\
-                       .format(sep="~"*(72-(indent)),
-                               indent=" "*indent,
-                               num=".".join([str(i) for i in irubs[:(irub+1)]]),
-                               rub=rub)
+                    string += "{indent}{sep}\n{indent}~> {num}-{rub}\n"
+                    "{indent}{sep}\n".format(
+                        sep="~"*(72-(indent)),
+                        indent=" "*indent,
+                        num=".".join([str(i) for i in irubs[:(irub+1)]]),
+                        rub=rub)
                     rubs[irub] = rub
-            string += "  "*indent+"~> Key: {}\n   fr {}\n".format(key, self.gb2fr[key])
+            string += "  "*indent+"~> Key: {}\n   fr {}\n"\
+                .format(key, self.gb2fr[key])
             for keyword in DICO_KEYS:
                 if keyword in data:
                     # Specific display for CHOIX and CHOIX1
@@ -235,13 +236,12 @@ class TelemacDico():
                         # Integer choix
                         if isinstance(data[keyword], dict):
                             for idx, comment in data[keyword].items():
-                                string += "   -  {} : {}\n".format(idx, comment)
+                                string += "   -  {} : {}\n"\
+                                    .format(idx, comment)
                         # String choix
                         else:
                             for val in data[keyword]:
                                 string += "   -  {}\n".format(val)
-
-
                     else:
                         string += "   {} = {}\n"\
                                   .format(keyword, data[keyword])

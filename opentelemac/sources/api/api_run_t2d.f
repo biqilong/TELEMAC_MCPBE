@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief $function to control telemac2d execution
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief $function to control telemac2d execution
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_RUN_T2D
@@ -53,21 +47,15 @@
       !
       ! SET THE LU AND LNG VALUES
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE INSTANCE AND SET THE OUTPUT
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
+      !>@brief Initialise the instance and set the output
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST [IN,OUT]    THE INSTANCE
-      !PARAM LU       [IN]    OUTPUT STREAM ID
-      !PARAM LNG      [IN]    OUTPUT KANGUAGE 2 ENGLISH 1 FRENCH
-      !PARAM COMM     [IN]    THE MPI COMMUNICATOR (-1 IF NONE)
-      !PARAM STD_OUTPUT[IN]    IF false listing in file
-      !PARAM IERR    [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                      ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] U_LU Output stream id
+      !>@param[in] U_LNG Output kanguage 2 english 1 french
+      !>@param[in] U_COMM The mpi communicator (-1 if none)
+      !>@param[in] U_STD_OUTPUT If false listing in file
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                      error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_SET_CONFIG_T2D_D(INST, U_LU, U_LNG, U_COMM,
      &                                U_STD_OUTPUT, IERR)
@@ -88,22 +76,16 @@
 !!!!!!! FUNCTION HANDLING THE EXECUTION OF THE SIMULATION
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF READS THE CASE FILE
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
+      !>@brief Reads the case file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM CAS_FILE   [IN]    PATH TO THE CASE FILE
-      !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
-      !PARAM GAIA_CAS   [IN]    PATH TO THE GAIA CASE FILE
-      !PARAM GAIA_DICO  [IN]    PATH TO THE GAIA DICTIONARY FILE
+      !>@param[in,out] INST The instance
+      !>@param[in] CAS_FILE Path to the case file
+      !>@param[in] DICO_FILE Path to the dictionary file
+      !>@param[in] INIT If true p_init is called
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
+      !>@param[in] GAIA_CAS Path to the gaia case file
+      !>@param[in] GAIA_DICO Path to the gaia dictionary file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_T2D_D(INST,CAS_FILE, DICO_FILE,INIT,
      &                               IERR,GAIA_CAS,GAIA_DICO)
@@ -153,18 +135,11 @@
       END SUBROUTINE RUN_READ_CASE_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF ALLOCATE ALL OF TELEMAC2D VARIABLES
+      !>@brief Allocate all of telemac2d variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_ALLOCATION_T2D_D(INST,IERR)
         TYPE(INSTANCE_T2D), INTENT(INOUT) :: INST
@@ -204,18 +179,11 @@
       END SUBROUTINE RUN_ALLOCATION_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE TELEMAC2D VARIABLES
+      !>@brief Initialise the telemac2d variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_INIT_T2D_D(INST,IERR)
 !
@@ -233,18 +201,11 @@
       END SUBROUTINE RUN_INIT_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN TELEMAC2D no writting results
+      !>@brief Run a timestep in telemac2d no writting results
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_COMPUTE_T2D_D(INST,IERR)
 !
@@ -258,18 +219,11 @@
      &                 CODE='       ',NITERORI=NIT_ORI)
       END SUBROUTINE RUN_TIMESTEP_COMPUTE_T2D_D
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN TELEMAC2D only writting results
+      !>@brief Run a timestep in telemac2d only writting results
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_RES_T2D_D(INST,IERR)
 !
@@ -283,18 +237,11 @@
       END SUBROUTINE RUN_TIMESTEP_RES_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF WRITE OUTPUT IN TELEMAC2D
+      !>@brief Write output in telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (ARTELIA)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_WRITE_T2D_D(INST,IERR)
 !
@@ -309,18 +256,11 @@
       END SUBROUTINE RUN_WRITE_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF FINALIZE A TELEMAC2D RUN
+      !>@brief Finalize a telemac2d run
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       SUBROUTINE RUN_FINALIZE_T2D_D(INST,IERR)

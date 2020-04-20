@@ -53,7 +53,8 @@ from utils.exceptions import TelemacException
 # Current Experiments
 #    => url = 'http://apdrc.soest.hawaii.edu/dods/public_data/FRA-JCOPE2'
 # Other Experiments
-#    => url = 'http://apdrc.soest.hawaii.edu/dapper/public_data/topography/io_bathy/modified_etopo2.nc'
+#    => url = 'http://apdrc.soest.hawaii.edu/dapper/public_data/
+# topography/io_bathy/modified_etopo2.nc'
 
 class Jcope2(object):
 
@@ -63,14 +64,16 @@ class Jcope2(object):
             from pydap.client import open_url
         except Exception as excpt:
             raise TelemacException('... you are in bad luck !\n'
-                            '  ~>  you need the pydap library unzipped locally\n'
-                            '{}'.format(excpt))
+                                   '  ~>  you need the pydap library\
+                                    unzipped locally\n'
+                                   '{}'.format(excpt))
         # ~~~~ Initialisation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         self.moddates = [datetime(*dates[0]), datetime(*dates[1])]
         jcope2vars = ['el', 'itime', 's', 'u', 'v']
         # /!\ unknown convertion of time records into dates
         jcope2date = [1993, 1, 1]
-        jcope2root = 'http://apdrc.soest.hawaii.edu/dods/public_data/FRA-JCOPE2'
+        jcope2root = \
+            'http://apdrc.soest.hawaii.edu/dods/public_data/FRA-JCOPE2'
         self.slf2d = None
         self.slf3d = None
         self.jcope2ilon = None
@@ -82,7 +85,7 @@ class Jcope2(object):
         # ~~~~ Time records ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         print('     +> Extract JCOPE2 time records\n')
         self.experiments = []
-        experiment = {} # /!\ only one time period covered at this stage
+        experiment = {}  # /!\ only one time period covered at this stage
         for jvar in jcope2vars:
             jcope2url = jcope2root+'/'+jvar
             jcope2data = open_url(jcope2url)
@@ -92,7 +95,7 @@ class Jcope2(object):
             its = []
             ats = []
             for itime in range(nit):
-                date = datetime(jcope2date[0], jcope2date[1], jcope2date[2])+\
+                date = datetime(jcope2date[0], jcope2date[1], jcope2date[2]) +\
                      timedelta(itime)
                 if itime == 0:
                     print(' from: ' + str(date), end='')
@@ -104,14 +107,13 @@ class Jcope2(object):
             if its != []:
                 for ivar in list(jcope2data.keys()):
                     if ivar not in ['time', 'lev', 'lat', 'lon']:
-                        experiment.update({ivar:jcope2data[ivar]})
+                        experiment.update({ivar: jcope2data[ivar]})
             else:
-                raise TelemacException(\
+                raise TelemacException(
                     '... I could not find the time to do your work\n'
                     '  ~>  you may need to select a different time period\n')
         self.experiments.append((experiment, nit, its, ats))
         print('\n')
-
 
     def get_header_jcope2(self, bounds):
 
@@ -124,12 +126,14 @@ class Jcope2(object):
         self.slf3d.nbv1 = 6
         self.slf3d.nvar = 6
         self.slf3d.varindex = list(range(self.slf3d.nvar))
-        self.slf3d.varnames = ['ELEVATION Z     ', \
-            'SALINITY        ', 'TEMPERATURE     ', \
-            'VELOCITY U      ', 'VELOCITY V      ', 'VELOCITY W      ']
-        self.slf3d.varunits = ['M               ', \
-            '                ', '                ', \
-            'M/S             ', 'M/S             ', 'M/S             ']
+        self.slf3d.varnames = ['ELEVATION Z     ',
+                               'SALINITY        ', 'TEMPERATURE     ',
+                               'VELOCITY U      ', 'VELOCITY V      ',
+                               'VELOCITY W      ']
+        self.slf3d.varunits = ['M               ',
+                               '                ', '                ',
+                               'M/S             ', 'M/S             ',
+                               'M/S             ']
         self.slf2d.title = self.slf3d.title
         self.slf2d.nbv1 = self.slf3d.nbv1 - 1
         self.slf2d.nvar = self.slf2d.nbv1
@@ -152,9 +156,9 @@ class Jcope2(object):
         # ~~> subset for the Selafin
         print('     +> Set Selafin mesh')
         self.jcope2ilon = \
-                np.where((lon_x1d >= bounds[0][1])*(lon_x1d <= bounds[1][1]))[0]
+            np.where((lon_x1d >= bounds[0][1]) * (lon_x1d <= bounds[1][1]))[0]
         self.jcope2ilat = \
-                np.where((lat_y1d >= bounds[0][0])*(lat_y1d <= bounds[1][0]))[0]
+            np.where((lat_y1d >= bounds[0][0]) * (lat_y1d <= bounds[1][0]))[0]
         x = lon_x1d[self.jcope2ilon]
         y = lat_y1d[self.jcope2ilat]
         nx1d = len(x)
@@ -225,13 +229,13 @@ class Jcope2(object):
         for i in range(nx1d):
             ipoin = i*ny1d
             ipob2[ipoin] = i + 1
-            ipoin = i*ny1d -1
+            ipoin = i*ny1d - 1
             ipob2[ipoin] = 2*nx1d+(ny1d-2) - i
             pbar.update(i)
         # ~~> along the y-axis (alt)
         for i in range(1, ny1d):
             ipoin = i
-            ipob2[ipoin] = 2*nx1d + 2*(ny1d-2) -i + 1
+            ipob2[ipoin] = 2*nx1d + 2*(ny1d-2) - i + 1
             ipoin = ny1d*(nx1d-1) + i
             ipob2[ipoin] = nx1d + i
             pbar.update(i+nx1d)
@@ -242,14 +246,15 @@ class Jcope2(object):
         #       elements with -99 values
         print('     +> Mask the non-values from the Selafin ikle')
         jcope2data = self.experiments[0][0]['el']
-        var = np.swapaxes(jcope2data['el']\
+        var = np.swapaxes(jcope2data['el']
                           .data[0, 0, self.jcope2ilat[0]:self.jcope2ilat[-1]+1,
                                 self.jcope2ilon[0]:self.jcope2ilon[-1]+1][0],
                           1, 2).ravel()
         # ~> the elements you wish to keep
         array = np.compress(var > -99, np.arange(len(var)))
         array_1d = np.in1d(self.slf2d.ikle3, array)
-        array_sum = np.sum(array_1d.reshape(self.slf2d.nelem2, self.slf2d.ndp2),
+        array_sum = np.sum(array_1d.reshape(self.slf2d.nelem2,
+                                            self.slf2d.ndp2),
                            axis=1)
         mask2 = self.slf2d.ikle3[np.where(array_sum == 3)]
 
@@ -281,26 +286,27 @@ class Jcope2(object):
         init = self.slf2d.npoin2*np.arange(self.slf3d.nplan-1)
         size = self.slf2d.nelem2*self.slf3d.ndp3
         self.slf3d.ikle3 = \
-          np.repeat(init, size).reshape((self.slf2d.nelem2*(self.slf3d.nplan-1),
-                                         self.slf3d.ndp3)) + \
-          np.tile(np.add(np.tile(self.slf2d.ikle2, 2),
-                         np.repeat(self.slf2d.npoin2*np.arange(2),
-                                   self.slf3d.ndp2)),
-                  (self.slf3d.nplan-1, 1))
+            np.repeat(init, size).reshape((self.slf2d.nelem2 *
+                                          (self.slf3d.nplan-1),
+                                           self.slf3d.ndp3)) + \
+            np.tile(np.add(np.tile(self.slf2d.ikle2, 2),
+                           np.repeat(self.slf2d.npoin2*np.arange(2),
+                                     self.slf3d.ndp2)),
+                          (self.slf3d.nplan-1, 1))
 
         # ~~~~ Boundaries ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         self.slf2d.ipob2 = ipob2[self.mask2]
         self.slf2d.ipob3 = self.slf2d.ipob2
         self.slf3d.ipob2 = self.slf2d.ipob2
-        self.slf3d.ipob3 = np.ravel(np.add(\
-                  np.repeat(self.slf2d.ipob2, self.slf3d.nplan)\
-                     .reshape((self.slf2d.npoin2, self.slf3d.nplan)),
+        self.slf3d.ipob3 = np.ravel(np.add(
+                  np.repeat(self.slf2d.ipob2, self.slf3d.nplan)
+                    .reshape((self.slf2d.npoin2, self.slf3d.nplan)),
                   self.slf2d.npoin2*np.arange(self.slf3d.nplan)).T)
 
         # ~~~~ Mesh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         print('     +> Set Selafin mesh')
         self.slf3d.meshx = np.tile(x, ny1d).reshape(ny1d, nx1d)\
-                                    .T.ravel()[self.mask2] + 0.042
+            .T.ravel()[self.mask2] + 0.042
         self.slf3d.meshy = np.tile(y, nx1d)[self.mask2] + 0.042
         self.slf2d.meshx = self.slf3d.meshx
         self.slf2d.meshy = self.slf3d.meshy
@@ -315,10 +321,10 @@ class Jcope2(object):
 
         # ~~~~ Time records ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         print('     +> Extract JCOPE2 time records')
-        self.slf3d.tags = {'times':[]}
+        self.slf3d.tags = {'times': []}
         # ~~~~ Start Date and Time ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         self.slf3d.tags['times'] = 86400.0 * np.arange(nbar)
-        self.slf2d.tags = {'times':self.slf3d.tags['times']}
+        self.slf2d.tags = {'times': self.slf3d.tags['times']}
         self.slf3d.datetime = self.experiments[-1][3][0].timetuple()[0:6]
         self.slf2d.datetime = self.slf3d.datetime
         self.slf3d.iparam[9] = 1
@@ -327,16 +333,16 @@ class Jcope2(object):
         print('     +> Write Selafin headers')
         if not only_2d:
             self.slf3d.fole = {}
-            self.slf3d.fole.update({'hook':open('t3d_'+root_name, 'wb')})
-            self.slf3d.fole.update({'name':'t3d_'+root_name})
-            self.slf3d.fole.update({'endian':">"})     # big endian
-            self.slf3d.fole.update({'float':('f', 4)})  # single precision
+            self.slf3d.fole.update({'hook': open('t3d_'+root_name, 'wb')})
+            self.slf3d.fole.update({'name': 't3d_'+root_name})
+            self.slf3d.fole.update({'endian': ">"})     # big endian
+            self.slf3d.fole.update({'float': ('f', 4)})  # single precision
             self.slf3d.append_header_slf()
         self.slf2d.fole = {}
-        self.slf2d.fole.update({'hook':open('t2d_'+root_name, 'wb')})
-        self.slf2d.fole.update({'name':'t2d_'+root_name})
-        self.slf2d.fole.update({'endian':">"})     # big endian
-        self.slf2d.fole.update({'float':('f', 4)})  # single precision
+        self.slf2d.fole.update({'hook': open('t2d_'+root_name, 'wb')})
+        self.slf2d.fole.update({'name': 't2d_'+root_name})
+        self.slf2d.fole.update({'endian': ">"})     # big endian
+        self.slf2d.fole.update({'float': ('f', 4)})  # single precision
         self.slf2d.append_header_slf()
         # ~~~~ Time loop(s) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         print('     +> Write Selafin cores')
@@ -385,7 +391,8 @@ class Jcope2(object):
                     var3d = var[::-1].ravel()[self.mask3]
                     for ipoin in range(self.slf3d.npoin2):
                         for iplan in range(self.slf3d.nplan-1, 0, -1):
-                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] < -99.0:
+                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] \
+                                    < -99.0:
                                 var3d[ipoin+(iplan-1)*self.slf3d.npoin2] = \
                                           var3d[ipoin+iplan*self.slf3d.npoin2]
                     self.slf3d.append_core_vars_slf([var3d])
@@ -407,7 +414,8 @@ class Jcope2(object):
                     var3d = var[::-1].ravel()[self.mask3]
                     for ipoin in range(self.slf3d.npoin2):
                         for iplan in range(self.slf3d.nplan-1, 0, -1):
-                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] < -99.0:
+                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] \
+                                    < -99.0:
                                 var3d[ipoin+(iplan-1)*self.slf3d.npoin2] = \
                                           var3d[ipoin+iplan*self.slf3d.npoin2]
                     self.slf3d.append_core_vars_slf([var3d])
@@ -429,7 +437,8 @@ class Jcope2(object):
                     var3d = var[::-1].ravel()[self.mask3]
                     for ipoin in range(self.slf3d.npoin2):
                         for iplan in range(self.slf3d.nplan-1, 0, -1):
-                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] < -99.0:
+                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] \
+                                    < -99.0:
                                 var3d[ipoin+(iplan-1)*self.slf3d.npoin2] = \
                                           var3d[ipoin+iplan*self.slf3d.npoin2]
                     self.slf3d.append_core_vars_slf([var3d])
@@ -451,7 +460,8 @@ class Jcope2(object):
                     var3d = var[::-1].ravel()[self.mask3]
                     for ipoin in range(self.slf3d.npoin2):
                         for iplan in range(self.slf3d.nplan-1, 0, -1):
-                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] < -99.0:
+                            if var3d[ipoin+(iplan-1)*self.slf3d.npoin2] \
+                                    < -99.0:
                                 var3d[ipoin+(iplan-1)*self.slf3d.npoin2] = \
                                           var3d[ipoin+iplan*self.slf3d.npoin2]
                     self.slf3d.append_core_vars_slf([var3d])
@@ -481,79 +491,83 @@ class Jcope2(object):
 __author__ = "Sebastien E. Bourban"
 __date__ = "$13-July-2014 08:51:29$"
 
+
 def main():
     """ Main function of convertJCOPE2 """
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Reads config file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print('\n\nInterpreting command line options\n'+72*'~'+'\n')
-    parser = ArgumentParser(\
+    parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
         description=('''\n
 Download JCOPE2 data into a Selafin file
         '''),
-        usage=' (--help for help)\n---------\n       =>  '\
-                '%(prog)s [options]\n---------',
+        usage=' (--help for help)\n---------\n       =>  '
+              '%(prog)s [options]\n---------',
         epilog=('''\nexamples:\n---------
 1: Extract about 80 days of 2D results only from January 2, 1993.
-        => convertJCOPE2.py --from 1993-01-02 --stop 1993-03-25 --bl 34,140 --tr 41,147 -r jcope2-80d.slf --2d
+        => convertJCOPE2.py --from 1993-01-02 --stop 1993-03-25 --bl 34,140
+         --tr 41,147 -r jcope2-80d.slf --2d
 2: Extract 4 months from both 2D and 3D dataset
-        => convertJCOPE2.py --from 1993-01-02 --stop 1993-05-02 --bl 34,140 --tr 41,147 -r jcope2-4m1993.slf
-        => convertJCOPE2.py --from 1993-01-02 --stop 1993-05-02 --bl 10,108 --tr 62,180 -r visu-jcope2-4m1993.slf
+        => convertJCOPE2.py --from 1993-01-02 --stop 1993-05-02 --bl 34,140
+         --tr 41,147 -r jcope2-4m1993.slf
+        => convertJCOPE2.py --from 1993-01-02 --stop 1993-05-02 --bl 10,108
+         --tr 62,180 -r visu-jcope2-4m1993.slf
 ---------'''))
-    parser.add_argument(\
+    parser.add_argument(
         "-r", "--root", dest="root_name", default='jcope2.slf', required=True,
         help="root name used for the output")
-    parser.add_argument(\
+    parser.add_argument(
         "-f", "--from", dest="tfrom", default=None, required=True,
         help="specify the first date included (1972-13-07)")
-    parser.add_argument(\
+    parser.add_argument(
         "-s", "--stop", dest="tstop", default=None, required=True,
         help="specify the last date included (1980-12-31)")
-    parser.add_argument(\
+    parser.add_argument(
         "--bl", dest="blcorner", default=None, required=True,
         help="specify the bottom left corner (30,130)")
-    parser.add_argument(\
+    parser.add_argument(
         "--tr", dest="trcorner", default=None, required=True,
         help="specify the top right corner (64,170)")
-    parser.add_argument(\
+    parser.add_argument(
         "--2d", action="store_true", dest="t2d", default=False,
         help="if there, produces on the 2D file")
     options = parser.parse_args()
 
     # Arbitrary 6-day period
     period = [[], []]
-    if options.tfrom != None:
+    if options.tfrom is not None:
         for i in options.tfrom.split('-'):
             period[0].append(int(i))
     else:
         raise TelemacException('... could not find your from date. '
-                        'Please use --from option '
-                        '(- delimited, no spaces).\n\n')
-    if options.tstop != None:
+                               'Please use --from option '
+                               '(- delimited, no spaces).\n\n')
+    if options.tstop is not None:
         for i in options.tstop.split('-'):
             period[1].append(int(i))
     else:
         raise TelemacException('... could not find your stop date. '
-                        'Please use --stop option '
-                        '(- delimited, no spaces).\n\n')
+                               'Please use --stop option '
+                               '(- delimited, no spaces).\n\n')
 
     # arbitrary box (small pieve of the atlantic side of Mexico)
     modelbox = [[], []]
-    if options.blcorner != None:
+    if options.blcorner is not None:
         for i in options.blcorner.split(','):
             modelbox[0].append(int(i))
     else:
         raise TelemacException('... could not find your bounding box'
-                        ' bottom left corner. Please use --bl option'
-                        ' (, delimited, no spaces).\n\n')
-    if options.trcorner != None:
+                               ' bottom left corner. Please use --bl option'
+                               ' (, delimited, no spaces).\n\n')
+    if options.trcorner is not None:
         for i in options.trcorner.split(','):
             modelbox[1].append(int(i))
     else:
         raise TelemacException('... could not find your bounding box'
-                        ' top right corner. Please use --tr option '
-                        '(, delimited, no spaces).\n\n')
+                               ' top right corner. Please use --tr option '
+                               '(, delimited, no spaces).\n\n')
     # root_name
     root_name = options.root_name
 
@@ -571,12 +585,12 @@ Download JCOPE2 data into a Selafin file
     print('\n\n'+'~'*72+'\n')
     print('\nProcessing core variables (time record, variables, etc.)\n')
     tic = time.time()
-    print('\nExtraction start time:   '+\
-            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(tic)))
+    print('\nExtraction start time:   ' +
+          time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(tic)))
     jc2slf.put_content(root_name, only_2d)
     toc = time.time()
-    print('\nExtraction end time:     '+\
-            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(toc)))
+    print('\nExtraction end time:     ' +
+          time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(toc)))
     print('___________\nDuration:     '+str(int(toc-tic))+' seconds\n')
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -1,8 +1,10 @@
 r"""@author Christopher J. Cawthorn and Sebastien E. Bourban
 
-    @brief Tools for handling SELAFIN files and TELEMAC binary related in python
+    @brief Tools for handling SELAFIN files and
+        TELEMAC binary related in python
 
-    @details Contains read/write functions for binary (big-endian) SELAFIN files
+    @details Contains read/write functions for
+        binary (big-endian) SELAFIN files
 
 """
 from __future__ import print_function
@@ -24,6 +26,7 @@ from utils.exceptions import TelemacException
 # _____                  ___________________________________________
 # ____/ General Toolbox /__________________________________________/
 #
+
 
 def subset_variables_slf(vrs, all_vars):
     """
@@ -54,7 +57,7 @@ def subset_variables_slf(vrs, all_vars):
                 ids.append(jvar)
                 names.append(all_vars[jvar].strip())
     if len(ids) < len(variable):
-        raise TelemacException(\
+        raise TelemacException(
                 "... Could not find {} in {}"
                 "   +> may be you forgot to switch name spaces into "
                 "underscores in your command ?"
@@ -71,8 +74,8 @@ def get_value_history(slf, times, support, vrs):
     Warning: Vertical interpolation has not been implemented yet.
 
     @param slf (TelemacFile) Serafin file structure
-    @param times (list) the discrete list of time frame to extract from the time
-                       history
+    @param times (list) the discrete list of time frame
+        to extract from the time history
     @param support (list) the list of points
     @param vrs (list) the index in the nvar-list to the variable to
                                extract
@@ -84,8 +87,8 @@ def get_value_history(slf, times, support, vrs):
         lens += len(zep)
     # ~~ Extract time profiles ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     z = np.zeros((len(vars_indexes), lens, len(times)), dtype=np.float64)
-    for itime, time in enumerate(times): # it is from 0 to len(time)-1
-        for jvar, var_name in enumerate(var_names): # ivar is from 0 to nvar-1
+    for itime, time in enumerate(times):  # it is from 0 to len(time)-1
+        for jvar, var_name in enumerate(var_names):  # ivar is from 0 to nvar-1
             varsor = slf.get_data_value(var_name, time)
             # ipt is from 0 to lens-1
             # (= all points extracted and all plans extracted)
@@ -100,15 +103,16 @@ def get_value_history(slf, times, support, vrs):
                         for inod in range(len(b_n)):
                             ipoin = l_n[inod]+plan*slf.npoin3//slf.nplan
                             z[jvar][ipt][itime] += b_n[inod]*varsor[ipoin]
-                        ipt += 1 # ipt advances to keep on track
+                        ipt += 1  # ipt advances to keep on track
                 else:
                     # /!\ only list of plans is allowed for now
                     for plan in zep:
                         z[jvar][ipt][itime] = \
                             varsor[x_y+plan*slf.npoin3//slf.nplan]
-                        ipt += 1 # ipt advances to keep on track
+                        ipt += 1  # ipt advances to keep on track
 
     return z
+
 
 def get_value_history_slf(hook, tags, time, support, nvar, npoin3, nplan,
                           t1):
@@ -119,7 +123,8 @@ def get_value_history_slf(hook, tags, time, support, nvar, npoin3, nplan,
         (b) A pair (x,y) associated with one or more plan number
 /!\   Vertical interpolation has not been implemented yet.
         Arguments:
-        - time: the discrete list of time frame to extract from the time history
+        - time: the discrete list of time frame to extract
+            from the time history
         - support: the list of points
         - vars_indexes: the index in the nvar-list to the variable to extract
     """
@@ -139,14 +144,14 @@ def get_value_history_slf(hook, tags, time, support, nvar, npoin3, nplan,
         z = np.zeros((len(vars_indexes), lens, len(time)), dtype=np.float32)
     else:
         z = np.zeros((len(vars_indexes), lens, len(time)), dtype=np.float64)
-    for itime in range(len(time)): # it is from 0 to len(time)-1
+    for itime in range(len(time)):  # it is from 0 to len(time)-1
         # time[itime] is the frame to be extracted
         f.seek(tags['cores'][time[itime]])
-        f.seek(4+fsize+4, 1) # the file pointer is initialised
-        for ivar in range(nvar): # ivar is from 0 to nvar-1
+        f.seek(4+fsize+4, 1)  # the file pointer is initialised
+        for ivar in range(nvar):  # ivar is from 0 to nvar-1
             # the file pointer advances through all records to keep on track
             f.seek(4, 1)
-            if ivar in vars_indexes: # extraction of a particular variable
+            if ivar in vars_indexes:  # extraction of a particular variable
                 varsor = unpack(endian+str(npoin3)+ftype, f.read(fsize*npoin3))
                 jvar = vars_indexes.index(ivar)
                 # ipt is from 0 to lens-1
@@ -154,26 +159,31 @@ def get_value_history_slf(hook, tags, time, support, nvar, npoin3, nplan,
                 ipt = 0
                 for x_y, zep in support:
                     # xp is a pair (x,y) and you need interpolation
-                    if type(x_y) == type(()):
+                    t2 = type(())
+                    if isinstance(x_y, t2):
                         # /!\ only list of plans is allowed for now
                         for plan in zep:
                             z[jvar][ipt][itime] = 0.
                             l_n, b_n = x_y
                             for inod in range(len(b_n)):
                                 z[jvar][ipt][itime] += \
-                                  b_n[inod]*varsor[l_n[inod]+plan*npoin3//nplan]
-                            ipt += 1 # ipt advances to keep on track
+                                  b_n[inod] *\
+                                  varsor[l_n[inod]+plan*npoin3//nplan]
+                            ipt += 1  # ipt advances to keep on track
                     else:
                         # /!\ only list of plans is allowed for now
                         for plan in zep:
-                            z[jvar][ipt][itime] = varsor[x_y+plan*npoin3//nplan]
-                            ipt += 1 # ipt advances to keep on track
+                            z[jvar][ipt][itime] = \
+                                varsor[x_y+plan*npoin3//nplan]
+                            ipt += 1  # ipt advances to keep on track
             else:
-                # the file pointer advances through all records to keep on track
+                # the file pointer advances through all
+                # records to keep on track
                 f.seek(fsize*npoin3, 1)
             f.seek(4, 1)
 
     return z
+
 
 def get_edges_slf(ikle, meshx, meshy, showbar=True):
     """
@@ -190,7 +200,7 @@ def get_edges_slf(ikle, meshx, meshy, showbar=True):
     try:
         from matplotlib.tri import Triangulation
         edges = Triangulation(meshx, meshy, ikle).get_cpp_triangulation()\
-                                                              .get_edges()
+            .get_edges()
     except ImportError:
         edges = []
         ibar = 0
@@ -210,6 +220,7 @@ def get_edges_slf(ikle, meshx, meshy, showbar=True):
             pbar.finish()
 
     return edges
+
 
 def get_neighbours_slf(ikle, meshx, meshy, showbar=True):
     """
@@ -240,12 +251,12 @@ def get_neighbours_slf(ikle, meshx, meshy, showbar=True):
                 ibar += 1
                 if showbar:
                     pbar.update(ibar)
-                if (elem[k], elem[(k+1)%3]) not in n_k:
-                    bounders.update({(elem[(k+1)%3], elem[k]):i})
+                if (elem[k], elem[(k+1) % 3]) not in n_k:
+                    bounders.update({(elem[(k+1) % 3], elem[k]): i})
                 else:
-                    j = bounders[(elem[k], elem[(k+1)%3])]
-                    insiders.update({(elem[k], elem[(k+1)%3]):[i, j]})
-                    del bounders[(elem[k], elem[(k+1)%3])]
+                    j = bounders[(elem[k], elem[(k+1) % 3])]
+                    insiders.update({(elem[k], elem[(k+1) % 3]): [i, j]})
+                    del bounders[(elem[k], elem[(k+1) % 3])]
         ibar = 0
         neighbours = - np.ones((len(ikle), 3), dtype=np.int)
         for elem, i in zip(ikle, range(len(ikle))):
@@ -253,14 +264,14 @@ def get_neighbours_slf(ikle, meshx, meshy, showbar=True):
                 ibar += 1
                 if showbar:
                     pbar.update(ibar)
-                if (elem[k], elem[(k+1)%3]) in insiders:
-                    elem_a, elem_b = insiders[(elem[k], elem[(k+1)%3])]
+                if (elem[k], elem[(k+1) % 3]) in insiders:
+                    elem_a, elem_b = insiders[(elem[k], elem[(k+1) % 3])]
                     if elem_a == i:
                         neighbours[i][k] = elem_b
                     if elem_b == i:
                         neighbours[i][k] = elem_a
-                if (elem[(k+1)%3], elem[k]) in insiders:
-                    elem_a, elem_b = insiders[(elem[(k+1)%3], elem[k])]
+                if (elem[(k+1) % 3], elem[k]) in insiders:
+                    elem_a, elem_b = insiders[(elem[(k+1) % 3], elem[k])]
                     if elem_a == i:
                         neighbours[i][k] = elem_b
                     if elem_b == i:
@@ -270,6 +281,7 @@ def get_neighbours_slf(ikle, meshx, meshy, showbar=True):
 
     return neighbours
 
+
 def get_value_polyline(slf, times, support, vrs):
     """
     Extraction of longitudinal profiles along lines.
@@ -278,7 +290,8 @@ def get_value_polyline(slf, times, support, vrs):
     Warning: Vertical interpolation has not been implemented yet.
 
     @param slf (TelemacFile) Telemac file class
-    @param times (list) the discrete list of time frame to extract from the time
+    @param times (list) the discrete list of time frame to extract
+        from the time
     history
     @param support (list): the list of points intersecting th mesh
     @param vrs (tuple of list): the index, names in the
@@ -292,9 +305,9 @@ def get_value_polyline(slf, times, support, vrs):
     z = np.zeros((len(vars_indexes), len(times), lens, len(support)),
                  dtype=np.float64)
     # ~~ Extract data along line ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    for itime, time in enumerate(times): # it is from 0 to len(time)-1
+    for itime, time in enumerate(times):  # it is from 0 to len(time)-1
         # time[itime] is the frame to be extracted
-        for jvar, var_name in enumerate(var_names): # ivar is from 0 to nvar-1
+        for jvar, var_name in enumerate(var_names):  # ivar is from 0 to nvar-1
             # the file pointer advances through all records to keep on track
             varsor = slf.get_data_value(var_name, time)
             # ipt is from 0 to lens-1
@@ -311,6 +324,7 @@ def get_value_polyline(slf, times, support, vrs):
 
     return z
 
+
 def get_value_polyline_slf(hook, tags, time, support, nvar, npoin3, nplan,
                            t1):
     r"""
@@ -319,7 +333,8 @@ def get_value_polyline_slf(hook, tags, time, support, nvar, npoin3, nplan,
         A point is a pair (x,y) associated with one or more plan number
 /!\   Vertical interpolation has not been implemented yet.
         Arguments:
-        - time: the discrete list of time frame to extract from the time history
+        - time: the discrete list of time frame to extract
+            from the time history
         - support: the list of points intersecting th mesh
         - vars_indexes: the index in the nvar-list to the variable to extract
     """
@@ -339,14 +354,14 @@ def get_value_polyline_slf(hook, tags, time, support, nvar, npoin3, nplan,
         z = np.zeros((len(vars_indexes), len(time), lens, len(support)),
                      dtype=np.float64)
     # ~~ Extract data along line ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    for itime in range(len(time)): # it is from 0 to len(time)-1
+    for itime in range(len(time)):  # it is from 0 to len(time)-1
         # time[itime] is the frame to be extracted
         f.seek(tags['cores'][time[itime]])
-        f.read(4+fsize+4) # the file pointer is initialised
-        for ivar in range(nvar): # ivar is from 0 to nvar-1
+        f.read(4+fsize+4)  # the file pointer is initialised
+        for ivar in range(nvar):  # ivar is from 0 to nvar-1
             # the file pointer advances through all records to keep on track
             f.read(4)
-            if ivar in vars_indexes: # extraction of a particular variable
+            if ivar in vars_indexes:  # extraction of a particular variable
                 varsor = unpack(endian+str(npoin3)+ftype, f.read(fsize*npoin3))
                 # ipt is from 0 to lens-1
                 # (= all points extracted and all plans extracted)
@@ -358,13 +373,16 @@ def get_value_polyline_slf(hook, tags, time, support, nvar, npoin3, nplan,
                         l_n, b_n = x_y
                         for inod in range(len(b_n)):
                             z[vars_indexes.index(ivar)][itime][ipl][ipt] += \
-                              b_n[inod]*varsor[l_n[inod]+zep[ipl]*npoin3//nplan]
+                              b_n[inod] *\
+                              varsor[l_n[inod]+zep[ipl]*npoin3//nplan]
             else:
-                # the file pointer advances through all records to keep on track
+                # the file pointer advances through
+                # all records to keep on track
                 f.read(fsize*npoin3)
             f.read(4)
 
     return z
+
 
 def get_value_polyplan(slf, times, support, vrs):
     """
@@ -382,19 +400,20 @@ def get_value_polyplan(slf, times, support, vrs):
                   slf.npoin3//slf.nplan),
                  dtype=np.float64)
     # ~~ Extract data along line ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    for itime, time in enumerate(times): # it is from 0 to len(time)-1
+    for itime, time in enumerate(times):  # it is from 0 to len(time)-1
         # time[itime] is the frame to be extracted
-        for jvar, var_name in enumerate(var_names): # ivar is from 0 to nvar-1
+        for jvar, var_name in enumerate(var_names):  # ivar is from 0 to nvar-1
             # the file pointer advances through all records to keep on track
             varsor = slf.get_data_value(var_name, time)
             # ipt is from 0 to lens-1
             # (= all points extracted and all plans extracted)
             for ipl in range(len(support)):
                 z[jvar][itime][ipl] = \
-                  varsor[support[ipl]*slf.npoin3//slf.nplan:\
+                  varsor[support[ipl]*slf.npoin3//slf.nplan:
                          (support[ipl]+1)*slf.npoin3//slf.nplan]
 
     return z
+
 
 def get_value_polyplan_slf(hook, tags, time, support, nvar, npoin3, nplan,
                            t1):
@@ -403,7 +422,8 @@ def get_value_polyplan_slf(hook, tags, time, support, nvar, npoin3, nplan,
         A plane is an integer
 /!\   Vertical interpolation has not been implemented yet.
         Arguments:
-        - time: the discrete list of time frame to extract from the time history
+        - time: the discrete list of time frame to extract
+            from the time history
         - support: the list of planes
         - vars_indexes: the index in the nvar-list to the variable to extract
     """
@@ -422,26 +442,28 @@ def get_value_polyplan_slf(hook, tags, time, support, nvar, npoin3, nplan,
                       len(support), npoin3//nplan),
                      dtype=np.float64)
     # ~~ Extract data on several planes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    for itime in range(len(time)): # it is from 0 to len(time)-1
+    for itime in range(len(time)):  # it is from 0 to len(time)-1
         # time[itime] is the frame to be extracted
         f.seek(tags['cores'][time[itime]])
-        f.read(4+fsize+4) # the file pointer is initialised
-        for ivar in range(nvar): # ivar is from 0 to nvar-1
+        f.read(4+fsize+4)  # the file pointer is initialised
+        for ivar in range(nvar):  # ivar is from 0 to nvar-1
             # the file pointer advances through all records to keep on track
             f.read(4)
-            if ivar in vars_indexes: # extraction of a particular variable
+            if ivar in vars_indexes:  # extraction of a particular variable
                 varsor = unpack(endian+str(npoin3)+ftype, f.read(fsize*npoin3))
                 # ipt is from 0 to len(support) (= all plans extracted)
                 for ipl in range(len(support)):
                     z[vars_indexes.index(ivar)][itime][ipl] = \
-                      varsor[support[ipl]*npoin3//nplan:\
+                      varsor[support[ipl]*npoin3//nplan:
                              (support[ipl]+1)*npoin3//nplan]
             else:
-                # the file pointer advances through all records to keep on track
+                # the file pointer advances through all
+                # records to keep on track
                 f.read(fsize*npoin3)
             f.read(4)
 
     return z
+
 
 def get_endian_from_char(f, nchar):
     """
@@ -454,19 +476,20 @@ def get_endian_from_char(f, nchar):
     @returns (string) String for endianess ("<" for little ">" for big)
     """
     pointer = f.tell()
-    endian = ">" # "<" means little-endian, ">" means big-endian
-    l, _, chk = unpack(endian+'i'+str(nchar)+'si', f.read(4+nchar+4))
+    endian = ">"  # "<" means little-endian, ">" means big-endian
+    ll, _, chk = unpack(endian+'i'+str(nchar)+'si', f.read(4+nchar+4))
     if chk != nchar:
         endian = "<"
         f.seek(pointer)
-        l, _, chk = unpack(endian+'i'+str(nchar)+'si', f.read(4+nchar+4))
-    if l != chk:
-        raise TelemacException(\
+        ll, _, chk = unpack(endian+'i'+str(nchar)+'si', f.read(4+nchar+4))
+    if ll != chk:
+        raise TelemacException(
                 '... Cannot read {} characters from your binary file'
                 '    +> Maybe it is the wrong file format ?'
                 ''.format(str(nchar)))
     f.seek(pointer)
     return endian
+
 
 def get_float_type_from_float(f, endian, nfloat):
     """
@@ -484,14 +507,14 @@ def get_float_type_from_float(f, endian, nfloat):
     pointer = f.tell()
     ifloat = 4
     cfloat = 'f'
-    l = unpack(endian+'i', f.read(4))
-    if l[0] != ifloat*nfloat:
+    ll = unpack(endian+'i', f.read(4))
+    if ll[0] != ifloat*nfloat:
         ifloat = 8
         cfloat = 'd'
     _ = unpack(endian+str(nfloat)+cfloat, f.read(ifloat*nfloat))
     chk = unpack(endian+'i', f.read(4))
-    if l != chk:
-        raise TelemacException(\
+    if ll != chk:
+        raise TelemacException(
                 '... Cannot read {} floats from your binary file'
                 '     +> Maybe it is the wrong file format ?'
                 ''.format(str(nfloat)))
@@ -502,6 +525,6 @@ def get_float_type_from_float(f, endian, nfloat):
 # ____/ MAIN CALL  /_______________________________________________/
 #
 
+
 __author__ = "Sebastien E. Bourban"
 __date__ = "$09-Sep-2011 08:51:29$"
-

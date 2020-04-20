@@ -3,6 +3,7 @@
 Contains functions to plot 1d graphics
 """
 
+
 def plot1d(axe, x, data, plot_label='',
            x_label='', y_label='', **kwargs):
     """

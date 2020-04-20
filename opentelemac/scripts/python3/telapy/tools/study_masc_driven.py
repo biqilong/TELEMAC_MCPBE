@@ -13,10 +13,10 @@ from datetime import datetime
 from xml.etree import ElementTree as ETree
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 from telapy.api.masc import Mascaret
+matplotlib.use('Agg')
 
 
 def import_study_settings_from_json(setting_file):
@@ -24,13 +24,15 @@ def import_study_settings_from_json(setting_file):
 
     settings_dict = {}
     with open(os.path.join(os.getcwd(),
-                           os.path.basename(setting_file)), 'r', encoding='utf-8') as file:
+                           os.path.basename(setting_file)), 'r',
+              encoding='utf-8') as file:
         settings = file.read()
         settings_dict = json.loads(
             settings, object_pairs_hook=OrderedDict)
 
     settings_dict['files']['json'] = os.path.join(os.getcwd(),
-                                                  os.path.basename(setting_file))
+                                                  os.path.basename(
+                                                  setting_file))
     return settings_dict
 
 
@@ -43,7 +45,8 @@ def import_study_settings_from_py(setting_file):
     imp = __import__(python_file)
     settings_dict = imp.settings_dict
     settings_dict['files']['python_settings'] = os.path.join(os.getcwd(),
-                                                             python_file + ".py")
+                                                             python_file +
+                                                             ".py")
     return settings_dict
 
 
@@ -104,8 +107,10 @@ class BoundaryCondition:
         return b_c
 
     def __repr__(self):
-        string = '{}: type {}, idxloi {}, size {}'.format(self.name, self.type_bc,
-                                                          self.idxloi, self.size_bc)
+        string = '{}: type {}, idxloi {}, size {}'.format(self.name,
+                                                          self.type_bc,
+                                                          self.idxloi,
+                                                          self.size_bc)
         return string
 
 
@@ -128,7 +133,8 @@ class MascaretStudy():
            with :meth:`MascaretStudy.import_model_from_dict`.
         4. Initializes the model with :meth:`MascaretStudy.initialize_model`.
 
-        :param dict or str settings_args: dictionary or file with settings (files, perturbations, output)
+        :param dict or str settings_args: dictionary or file with settings
+         (files, perturbations, output)
         :param dict xcas: dictionary of modification in the xcas file.
         :param str log_lvl: log level.
         :param int iprint: save log and results (=1) or not not (=0).
@@ -196,16 +202,18 @@ class MascaretStudy():
         if isinstance(settings_args, str):
             try:
                 settings = import_study_settings_from_py(settings_args)
-            except:
+            except IOError:
                 try:
                     settings = import_study_settings_from_json(settings_args)
-                except:
-                    raise Exception('settings_args', settings_args, 'is not valid config file')
+                except IOError:
+                    raise Exception('settings_args', settings_args,
+                                    'is not valid config file')
         elif isinstance(settings_args, dict):
             settings = settings_args
         else:
-            raise Exception('settings_args', settings_args, 'is not valid, should be dict or .py  or .json')
-    
+            raise Exception('settings_args', settings_args,
+                            'is not valid, should be dict or .py  or .json')
+
         # Move to the data directory
         os.chdir(self.paths['data'])
 
@@ -262,21 +270,28 @@ class MascaretStudy():
                 self.settings['files'][key_val[0]] = os.path.basename(value)
                 file_types.append(key_val[0])
                 if file_types[-1] not in ['res', 'listing']:
-                    os.symlink(os.path.join(self.paths['root'], file_names[-1]),
+                    os.symlink(os.path.join(self.paths['root'],
+                               file_names[-1]),
                                os.path.join(self.paths['data'],
                                             os.path.basename(file_names[-1])))
                     file_names[-1] = os.path.basename(file_names[-1])
                 else:
-                    self.settings['files'][key_val[0]] = os.path.join(self.paths['output'], value)
-                    file_names[-1] = os.path.join(self.paths['output'], file_names[-1])
+                    self.settings['files'][key_val[0]] = \
+                                os.path.join(self.paths['output'], value)
+                    file_names[-1] = os.path.join(self.paths['output'],
+                                                  file_names[-1])
 
                 if (file_types[-1] == 'xcas') and (xcas is not None):
                     ref_xcas = os.path.basename(key_val[1])
-                    #                    file_names[-1] = 'modified_'+key_val[1]
-                    file_names[-1] = 'modified_' + str(xcas['nbSectionZone']) + '_' + ref_xcas
+                    # file_names[-1] = 'modified_'+key_val[1]
+                    file_names[-1] = 'modified_' + \
+                                     str(xcas['nbSectionZone']) + \
+                                     '_' + ref_xcas
                     path_tmp = os.path.join(self.paths['data'],
-                                            'modified_' + self.settings['files']['xcas'])
-                    txt_tmp = self.settings['files']['xcas'] + ' --> ' + path_tmp
+                                            'modified_' +
+                                            self.settings['files']['xcas'])
+                    txt_tmp = self.settings['files']['xcas'] + ' --> ' + \
+                        path_tmp
 
                     self.settings['files']['xcas'] = txt_tmp
                     file_names[-1] = file_names[-1]
@@ -286,10 +301,13 @@ class MascaretStudy():
                 for i, sub in enumerate(key_val[1]):
                     sub_value = sub
                     file_names.append(sub_value)
-                    self.settings['files'][key_val[0]][i] = os.path.basename(sub_value)
+                    self.settings['files'][key_val[0]][i] = \
+                        os.path.basename(sub_value)
                     file_types.append(key_val[0])
-                    os.symlink(os.path.join(self.paths['root'], file_names[-1]),
-                               os.path.join(self.paths['data'], os.path.basename(file_names[-1])))
+                    os.symlink(os.path.join(self.paths['root'],
+                               file_names[-1]),
+                               os.path.join(self.paths['data'],
+                               os.path.basename(file_names[-1])))
                     file_names[-1] = os.path.basename(file_names[-1])
                     print('InExcept', file_names[-1])
 
@@ -302,9 +320,11 @@ class MascaretStudy():
                 content = file.readlines()
             line0 = content[0]
             line1 = content[1]
-            path_tmp = 'modified_' + str(xcas['nbSectionZone']) + '_' + ref_xcas
+            path_tmp = 'modified_' + str(xcas['nbSectionZone']) + '_' + \
+                       ref_xcas
             with open(os.path.join(self.paths['data'], path_tmp), 'wb') as out:
-                #  with open(os.path.join(self.paths['data'], 'modified_'+ref_xcas), 'wb')
+                #  with open(os.path.join(self.paths['data'],
+                # 'modified_'+ref_xcas), 'wb')
                 # as out:
                 out.write(line0)
                 out.write(line1)
@@ -337,7 +357,8 @@ class MascaretStudy():
                 else:
                     self.set_friction_minor(k_s)
         if 'friction_coefficients_major' in self.settings:
-            friction_coefficients_major = self.settings['friction_coefficients_major']
+            friction_coefficients_major = \
+                self.settings['friction_coefficients_major']
             for k_s in friction_coefficients_major:
                 if k_s['type'] == 'zone':
                     self.set_zone_friction_major(k_s)
@@ -381,12 +402,14 @@ class MascaretStudy():
         # Model.CrossSection.X y-coordinate on the cross sections
         # nb_secs: number of cross sections (scalar)
         # np_pts: number of points per cross sections (1D array, size nb_secs)
-        # bot_x: curvilinear abscissa for cross sections (1D array, size nb_secs)
+        # bot_x: curvilinear abscissa for cross sections
+        # (1D array, size nb_secs)
         # bot_z: bottom level for cross sections (1D array, size nb_secs)
         nb_secs, _, _ = self.masc.get_var_size('Model.CrossSection.RelAbs')
         nb_pts = []
         for sec in range(nb_secs):
-            _, idx_nb_pts, _ = self.masc.get_var_size('Model.CrossSection.X', sec)
+            _, idx_nb_pts, _ = self.masc.get_var_size('Model.CrossSection.X',
+                                                      sec)
             nb_pts.append(idx_nb_pts)
         bot_z = [self.masc.get('Model.CrossSection.Zbot', sec)
                  for sec in range(nb_secs)]
@@ -429,9 +452,12 @@ class MascaretStudy():
         if q_init is not None and z_init is not None:
             self.masc.init_hydro(z_init, q_init)
         elif 'initial_conditions' in self.settings:
-            # Initialize Mascaret Model from constant values (from settings dict)
-            q_val = [self.settings['initial_conditions']['Q_cst']] * self.model_size
-            z_val = [self.settings['initial_conditions']['Z_cst']] * self.model_size
+            # Initialize Mascaret Model from constant values
+            # (from settings dict)
+            q_val = [self.settings['initial_conditions']['Q_cst']] * \
+                self.model_size
+            z_val = [self.settings['initial_conditions']['Z_cst']] * \
+                self.model_size
             self.masc.init_hydro(z_val, q_val)
         elif lig is not None:
             lig = os.path.join(self.paths['root'], lig)
@@ -440,7 +466,8 @@ class MascaretStudy():
         else:
             # Initialize Mascaret Model from file
             self.masc.init_hydro_from_file(
-                os.path.join(self.paths['data'], self.settings['files']['lig']))
+                os.path.join(self.paths['data'],
+                             self.settings['files']['lig']))
 
     def __repr__(self):
         """Class informations based on settings."""
@@ -547,7 +574,8 @@ class MascaretStudy():
 
         if 'friction_coefficients_major' in self.settings:
             string += " -- Change the friction coefficient for major:\n"
-            friction_coefficients_major = self.settings['friction_coefficients_major']
+            friction_coefficients_major = \
+                self.settings['friction_coefficients_major']
             for k_s in friction_coefficients_major:
                 if k_s['type'] == 'node':
                     string += "       > Node index: {}\n"
@@ -603,7 +631,8 @@ class MascaretStudy():
 
         return string.format(*values)
 
-    def __call__(self, x_val=None, flag='all', dump_state=None, tstart=None, tend=None):
+    def __call__(self, x_val=None, flag='all', dump_state=None, tstart=None,
+                 tend=None):
         """Run the Mascaret study using the user configuration
         (:attr:`settings`) and possibly new values of some parameters such
         as the Strickler coefficient Ks, the boundary conditions Q, ...
@@ -631,7 +660,8 @@ class MascaretStudy():
                         self.set_friction_minor({'index': index,
                                                  'value': value})
             if 'friction_coefficients_major' in x_val:
-                for friction_coefficient_major in x_val['friction_coefficients_major']:
+                for friction_coefficient_major in \
+                        x_val['friction_coefficients_major']:
                     value = friction_coefficient_major['value']
                     if friction_coefficient_major['type'] == 'zone':
                         index = friction_coefficient_major['index']
@@ -659,7 +689,8 @@ class MascaretStudy():
             self.final_time = tend
         self.dump_index = []
         if dump_state is None:
-            self.masc.compute(self.initial_time, self.final_time, self.time_step)
+            self.masc.compute(self.initial_time, self.final_time,
+                              self.time_step)
             self.masc.error_message()
         else:
             t_0 = self.initial_time
@@ -669,7 +700,8 @@ class MascaretStudy():
                 self.dump_index.append(self.masc.save_state())
                 t_0 = ti
             if dump_state[-1] < self.final_time:
-                self.masc.compute(dump_state[-1], self.final_time, self.time_step)
+                self.masc.compute(dump_state[-1], self.final_time,
+                                  self.time_step)
 
         # Post-treatment: design the output (local or global hydraulic state)
         res = None
@@ -778,7 +810,8 @@ class MascaretStudy():
         if 'curv_abs' in self.settings['output']:
 
             def mean_value(x_val, y_1, y_2, x_1, x_2):
-                y_mean = (y_2 * (x_val - x_1) + y_1 * (x_2 - x_val)) / (x_2 - x_1)
+                y_mean = (y_2 * (x_val - x_1) + y_1 * (x_2 - x_val)) / \
+                 (x_2 - x_1)
                 return y_mean
 
             curv_abs = self.settings['output']['curv_abs']
@@ -922,14 +955,17 @@ class MascaretStudy():
             # self.masc.get('Model.Graph.Type', my_bc.idxloi)]
 
             _, my_bc.size_bc, _ = self.masc.get_var_size('Model.Graph.'
-                                                         + my_bc.var_bc, my_bc.idxloi)
+                                                         + my_bc.var_bc,
+                                                         my_bc.idxloi)
             my_bc.value = np.ones(my_bc.size_bc, float)
             if my_bc.typecode == 1 or my_bc.typecode == 2:
                 my_bc.taxis = np.ones(my_bc.size_bc, float)
             for t in range(my_bc.size_bc):
-                my_bc.value[t] = self.masc.get('Model.Graph.' + my_bc.var_bc, my_bc.idxloi, t)
+                my_bc.value[t] = self.masc.get('Model.Graph.' +
+                                               my_bc.var_bc, my_bc.idxloi, t)
                 if my_bc.typecode == 1 or my_bc.typecode == 2:
-                    my_bc.taxis[t] = self.masc.get('Model.Graph.Time', my_bc.idxloi, t)
+                    my_bc.taxis[t] = self.masc.get('Model.Graph.Time',
+                                                   my_bc.idxloi, t)
 
             self.bc[my_bc.name] = my_bc
             self.bc_keep = copy.deepcopy(self.bc)
@@ -947,9 +983,10 @@ class MascaretStudy():
         """Set boundary condition Q(t) or Z(t).
         Use :meth:`Mascaret.get_var_size` and :meth:`Mascaret.set`.
         :param dict b_c: Boundary Condition Q(t) or Z(t)
-         ``{'name','value' or 'multcoeff' or 'addperturb' or 'shift_chronicle'}``
-        :param bool keep: 'multcoeff', 'addperturb' and 'shift_chronicle' are applied
-         on bc_keep values (True) or bc values (False)
+         ``{'name','value' or 'multcoeff' or 'addperturb' or
+          'shift_chronicle'}``
+        :param bool keep: 'multcoeff', 'addperturb' and 'shift_chronicle'
+         are applied on bc_keep values (True) or bc values (False)
         """
         self.logger.debug('change_boundary_condition')
 
@@ -967,14 +1004,19 @@ class MascaretStudy():
                 # Imposed values perturbations take priority
                 if 'value' in b_c:
                     b_c['value'] = np.atleast_1d(b_c['value'])
-                    x_val.value[t] = b_c['value'][min(t, len(b_c['value']) - 1)]
+                    x_val.value[t] = b_c['value'][min(t,
+                                                      len(b_c['value']) - 1)]
                 # Followed by multiplicative coefficients
                 if 'multcoeff' in b_c:
                     b_c['multcoeff'] = np.atleast_1d(b_c['multcoeff'])
-                    x_val.value[t] *= b_c['multcoeff'][min(t, len(b_c['multcoeff']) - 1)]
+                    x_val.value[t] *= b_c['multcoeff'][min(t,
+                                                       len(b_c['multcoeff'])
+                                                           - 1)]
                 # And finally by additive perturbations
                 if 'addperturb' in b_c:
-                    x_val.value[t] += b_c['addperturb'][min(t, len(b_c['addperturb']) - 1)]
+                    x_val.value[t] += b_c['addperturb'][min(t,
+                                                        len(b_c['addperturb'])
+                                                            - 1)]
 
             if 'shift_chronicle' in b_c:
                 if x_val.typecode == 1 or x_val.typecode == 2:
@@ -984,35 +1026,44 @@ class MascaretStudy():
                         if b_c['shift_chronicle'] < 0.:
                             if t_shift < 0:
                                 continue
-                            ind = [k for k, bck in enumerate(x_val.taxis) if bck < t_shift][-1]
+                            ind = [k for k, bck in enumerate(x_val.taxis) if
+                                   bck < t_shift][-1]
                             if t == x_val.size_bc - 1:
                                 x_shift[ind + 1:] = x_val.value[-1]
                             slope = (x_val.value[t] - x_val.value[t - 1]) / \
-                                    (1. * x_val.taxis[ind + 1] - 1. * x_val.taxis[ind])
+                                    (1. * x_val.taxis[ind + 1] - 1. *
+                                     x_val.taxis[ind])
                             x_shift[ind] = \
-                                x_val.value[t - 1] + slope * (x_val.taxis[ind + 1] - t_shift)
+                                x_val.value[t - 1] + slope * \
+                                (x_val.taxis[ind + 1] - t_shift)
                         else:
                             if t_shift > x_val.taxis[-1]:
                                 break
-                            ind = [k for k, bck in enumerate(x_val.taxis) if bck < t_shift][-1]
+                            ind = [k for k, bck in enumerate(x_val.taxis)
+                                   if bck < t_shift][-1]
                             if t == 0:
                                 x_shift[:ind + 1] = x_val.value[0]
                             slope = (x_val.value[t + 1] - x_val.value[t]) / \
-                                    (1. * x_val.taxis[t + 1] - 1. * x_val.taxis[t])
+                                    (1. * x_val.taxis[t + 1] - 1. *
+                                     x_val.taxis[t])
                             x_shift[ind + 1] = \
-                                x_val.value[t] + slope * (x_val.taxis[ind + 1] - t_shift)
+                                x_val.value[t] + slope * (x_val.taxis[ind + 1]
+                                                          - t_shift)
                     x_val.value = x_shift
                 else:
-                    self.logger.warning('Shift chronicle only applies on Q(t) or Z(t)')
+                    self.logger.warning('Shift chronicle only\
+                     applies on Q(t) or Z(t)')
 
             for t in range(x_val.size_bc):
-                self.masc.set('Model.Graph.' + x_val.var_bc, x_val.value[t], x_val.idxloi, t)
+                self.masc.set('Model.Graph.' + x_val.var_bc, x_val.value[t],
+                              x_val.idxloi, t)
 
             self.logger.debug(' BC ' + x_val.name + ' ' + x_val.type_bc +
                               ' set to {}'.format(x_val.value))
 
         except Exception:
-            self.logger.exception(' change_boundary_condition: ' + b_c['name'] + ' went wrong')
+            self.logger.exception(' change_boundary_condition: ' + b_c['name']
+                                  + ' went wrong')
 
     def get_friction_zone(self, index):
         """Get indices of the beginning and end of a friction zone.
@@ -1024,7 +1075,8 @@ class MascaretStudy():
         :return: Indices of beginning and end of a friction zone
         :rtype: int, int
         """
-        # zone_start and zone_end start from 1, they are shifted here for python
+        # zone_start and zone_end start from 1,
+        # they are shifted here for python
         zone_start = self.masc.get('Model.FrictionZone.FirstNode', index) - 1
         zone_end = self.masc.get('Model.FrictionZone.LastNode', index) - 1
         return zone_start, zone_end
@@ -1126,7 +1178,8 @@ class MascaretStudy():
         """Change minor friction coefficient.
 
         Uses :meth:`Mascaret.set`.
-        Does not use get_friction minor because modif ks is not additive to old value
+        Does not use get_friction minor because modif ks
+         is not additive to old value
 
         :param dict k_s: Minor friction coefficient ``{'index','value'}``
         """
@@ -1138,7 +1191,8 @@ class MascaretStudy():
         """Change major friction coefficient.
 
         Uses :meth:`Mascaret.set`.
-        Does not use get_friction major because modif ks is not additive to old value
+        Does not use get_friction major because modif
+         ks is not additive to old value
         :param dict k_s: Major friction coefficient ``{'index','value'}``
         """
         self.logger.debug('Ks major new value= {}'.format(k_s['value']))
@@ -1168,7 +1222,8 @@ class MascaretStudy():
         nb_secs, _, _ = self.masc.get_var_size('Model.CrossSection.RelAbs')
         nb_pts = []
         for sec in range(nb_secs):
-            _, idx_nb_pts, _ = self.masc.get_var_size('Model.CrossSection.X', sec)
+            _, idx_nb_pts, _ = self.masc.get_var_size('Model.CrossSection.X',
+                                                      sec)
             nb_pts.append(idx_nb_pts)
         print('nb of section', nb_secs)
         print('nb of pts per section', nb_pts)
@@ -1193,7 +1248,9 @@ class MascaretStudy():
                 self.masc.set('Model.CrossSection.Y', new_z, sec, pt)
                 self.cross_sections['all']['level'][sec][pt] = new_z
                 self.logger.info("Modified Cross Section: {} {}"
-                                 .format(sec, self.cross_sections['all']['level'][sec][pt]))
+                                 .format(sec, self.cross_sections['all']
+                                                                 ['level'][sec]
+                                                                 [pt]))
         else:
             # Loop on number of section
             for sec in range(nb_secs):
@@ -1212,7 +1269,8 @@ class MascaretStudy():
     def plot_water(self, xlab='Curvilinear abscissa (km)',
                    ylab1='Water elevation (m)',
                    ylab2='Upstream discharge (m3/s)',
-                   title='Water evelation along the open-channel at final time',
+                   title='Water evelation along the \
+                   open-channel at final time',
                    output='WaterElevation'):
         """Plot the water elevation at final time
 
@@ -1253,7 +1311,8 @@ class MascaretStudy():
             ax1.axhline(y=z_val, color='b', linestyle='dashed', linewidth=0.5)
             ax2.axhline(y=q_val, color='r', linestyle='dashed', linewidth=0.5)
             plt.title(title + '\n s={}km, zb={}m, z={}m, q={}m3/s'
-                      .format(s_km, np.round(z_b, 2), np.round(z_val, 2), int(q_val)))
+                      .format(s_km, np.round(z_b, 2), np.round(z_val, 2),
+                              int(q_val)))
         else:
             plt.title(title)
         fig.tight_layout()
@@ -1263,30 +1322,38 @@ class MascaretStudy():
 
     def save(self, out_name=None, out_idx=0):
         np.savetxt(os.path.join(self.paths['output'],
-                                'abscissa_' + out_name + str(out_idx) + '.txt'),
+                                'abscissa_' + out_name + str(out_idx) +
+                                '.txt'),
                    self.curvilinear_abscissa)
         np.savetxt(os.path.join(self.paths['output'],
-                                'elevation_' + out_name + str(out_idx) + '.txt'),
+                                'elevation_' + out_name + str(out_idx) +
+                                '.txt'),
                    self.global_elevation)
         np.savetxt(os.path.join(self.paths['output'],
-                                'discharge_' + out_name + str(out_idx) + '.txt'),
+                                'discharge_' + out_name + str(out_idx) +
+                                '.txt'),
                    self.global_discharge)
         np.savetxt(os.path.join(self.paths['output'],
-                                'bathymetry_' + out_name + str(out_idx) + '.txt'),
+                                'bathymetry_' + out_name + str(out_idx) +
+                                '.txt'),
                    self.global_bathymetry)
         if 'output' in self.settings:
             hydraulic_state = self.local_hydraulic_state
             np.savetxt(os.path.join(self.paths['output'],
-                                    'local_abscissa_' + out_name + str(out_idx) + '.txt'),
+                                    'local_abscissa_' + out_name +
+                                    str(out_idx) + '.txt'),
                        [hydraulic_state['s']])
             np.savetxt(os.path.join(self.paths['output'],
-                                    'local_elevation_' + out_name + str(out_idx) + '.txt'),
+                                    'local_elevation_' + out_name +
+                                    str(out_idx) + '.txt'),
                        [hydraulic_state['z']])
             np.savetxt(os.path.join(self.paths['output'],
-                                    'local_discharge_' + out_name + str(out_idx) + '.txt'),
+                                    'local_discharge_' + out_name +
+                                    str(out_idx) + '.txt'),
                        [hydraulic_state['q']])
             np.savetxt(os.path.join(self.paths['output'],
-                                    'local_bathymetry_' + out_name + str(out_idx) + '.txt'),
+                                    'local_bathymetry_' + out_name +
+                                    str(out_idx) + '.txt'),
                        [hydraulic_state['zb']])
 
     def plot_bathymetry(self, xlab='Curvilinear abscissa (km)',
@@ -1393,7 +1460,8 @@ class MascaretStudy():
         z_val = [float(contents[i])
                  for i in range(contents.index("Z") + 1, contents.index("Q"))]
         q_val = [float(contents[i])
-                 for i in range(contents.index("Q") + 1, contents.index("FIN"))]
+                 for i in range(contents.index("Q") + 1,
+                                contents.index("FIN"))]
         return {'IMAX': imax,
                 'NBBIEF': nbbief,
                 'I1': i_1,
@@ -1430,7 +1498,8 @@ class MascaretStudy():
         endbf = [self.masc.get('Model.Connect.LastNdNum', i)
                  for i in range(nbbf)]
         # Assign the bief number to each section (piecewise constant list)
-        ibief = [ib + 0 * i for ib in range(nbbf) for i in range(oribf[ib], endbf[ib])]
+        ibief = [ib + 0 * i for ib in range(nbbf) for i in range(oribf[ib],
+                                                                 endbf[ib])]
 
         self.xcoord = []
         for i in range(imax):
@@ -1449,7 +1518,8 @@ class MascaretStudy():
         Save a lig restart files
 
         :param str out_file: name (and path) of the output restart file
-        :param str k_s:       OPTIONAL : Ks other than None activate CF1 and CF2 storage
+        :param str k_s:       OPTIONAL : Ks other than None activate
+            CF1 and CF2 storage
         """
         # Size informations
         imax = self.model_size
@@ -1466,7 +1536,8 @@ class MascaretStudy():
             lig.write('RESULTATS CALCUL, DATE :  '
                       '{}\n'.format(datetime.now().strftime('%d/%m/%Y %H:%M')))
             lig.write('FICHIER RESULTAT MASCARET\n')
-            lig.write('-----------------------------------------------------------------------\n')
+            lig.write('------------------------------------------------\
+                -----------------------\n')
             lig.write(' IMAX =%6i ' % imax)
             lig.write('NBBIEF=%5i\n' % nbbf)
             lig.write((nbent * ' ENTETE NON RELUE\n'))
@@ -1480,19 +1551,23 @@ class MascaretStudy():
                            fmt=(nbmod * '%13.2f'))
             #  Z
             np.savetxt(lig,
-                       np.asarray(self.global_elevation[0:nbfmt]).reshape(nblin, nbcol),
+                       np.asarray(self.global_elevation[0:nbfmt]).reshape(
+                            nblin, nbcol),
                        fmt=(nbcol * '%13.3f'), header='Z', comments=' ')
             if nbmod != 0:
                 np.savetxt(lig,
-                           np.asarray(self.global_elevation[nbfmt:]).reshape(1, nbmod),
+                           np.asarray(self.global_elevation[nbfmt:]).
+                           reshape(1, nbmod),
                            fmt=(nbmod * '%13.3f'))
             # Q
             np.savetxt(lig,
-                       np.asarray(self.global_discharge[0:nbfmt]).reshape(nblin, nbcol),
+                       np.asarray(self.global_discharge[0:nbfmt]).
+                       reshape(nblin, nbcol),
                        fmt=(nbcol * '%13.3f'), header='Q', comments=' ')
             if nbmod != 0:
                 np.savetxt(lig,
-                           np.asarray(self.global_discharge[nbfmt:]).reshape(1, nbmod),
+                           np.asarray(self.global_discharge[nbfmt:]).
+                           reshape(1, nbmod),
                            fmt=(nbmod * '%13.3f'))
 
             # Optional Friction coefficients

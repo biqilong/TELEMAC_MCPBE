@@ -19,6 +19,7 @@ try:
 except ImportError:
     IMPORT_GRIB = False
 
+
 class Grib(object):
 
     def __init__(self, dataset, request, stream):
@@ -49,18 +50,21 @@ class Grib(object):
         for data in dataset:
             grbs = pygrib.open(data)
             for grb in grbs:
-                if str(grb.indicatorOfParameter) in request['param'].split('/'):
+                if str(grb.indicatorOfParameter) in request['param']\
+                                                        .split('/'):
                     if data not in found_dataset:
                         found_dataset.append(data)
                     if grb.indicatorOfParameter not in self.variables:
                         self.variables.append(grb.indicatorOfParameter)
-                    else: break
+                    else:
+                        break
             grbs.close()
             ibar += 1
             pbar.update(ibar)
         pbar.finish()
         if self.variables == []:
-            raise TelemacException('... could not find the requested valiables.\n\n')
+            raise TelemacException('... could not find\
+                the requested valiables.\n\n')
 
         print('   +> sorting out timeline')
         # ~~>  checking consistency of origin of date and time
@@ -82,8 +86,8 @@ class Grib(object):
             for grb in grbs:
                 date = str(grb.validityDate)
                 ats.append(datetime(int(date[:4]), int(date[4:6]),
-                                    int(date[6:])) + \
-                              timedelta(seconds=int(grb.validityTime*36)))
+                                    int(date[6:])) +
+                           timedelta(seconds=int(grb.validityTime*36)))
                 dts.append((ats[-1]-at0).total_seconds())
                 break
             ibar += 1
@@ -92,14 +96,14 @@ class Grib(object):
         print('      - finish date and time', ats[-1])
         # ~~>  checking if the list is sorted
         if not all(ats[i] < ats[i+1] for i in range(len(ats)-1)):
-            raise TelemacException(\
+            raise TelemacException(
                     '... your dataset is not sorted. '
                     'Here is the time profile in seconds:\n'
                     '{}\n\n'.format(repr(dts)))
         # ~~> filter requested times
-        udates = [datetime(*[int(a) for a in d.split('-')]) \
-                      for d in request['date'].split('/to/')]
-        self.slf2d.tags = {'times':[]}
+        udates = [datetime(*[int(a) for a in d.split('-')])
+                  for d in request['date'].split('/to/')]
+        self.slf2d.tags = {'times': []}
         udates[1] = udates[1]+timedelta(hours=24.)
         for i in range(len(ats)):
             if udates[0] <= ats[i] and ats[i] <= udates[1]:
@@ -108,7 +112,8 @@ class Grib(object):
         times = self.slf2d.tags['times']
         print('   +> actual timeline')
         print('      - start date and time  ', at0+timedelta(seconds=times[0]))
-        print('      - finish date and time ', at0+timedelta(seconds=times[-1]))
+        print('      - finish date and time ',
+              at0+timedelta(seconds=times[-1]))
 
         # ~> Other initialisations
         self.typ = stream
@@ -123,13 +128,12 @@ class Grib(object):
             break
         grbs.close()
 
-
     def open_grib(self, file_name):
 
-        self.slf2d.fole.update({'hook':open(file_name, 'wb')})
-        self.slf2d.fole.update({'name':file_name})
-        self.slf2d.fole.update({'endian':">"})     # big endian
-        self.slf2d.fole.update({'float':('f', 4)})  # single precision
+        self.slf2d.fole.update({'hook': open(file_name, 'wb')})
+        self.slf2d.fole.update({'name': file_name})
+        self.slf2d.fole.update({'endian': ">"})     # big endian
+        self.slf2d.fole.update({'float': ('f', 4)})  # single precision
 
     def close_grib(self):
         self.slf2d.fole['hook'].close()
@@ -152,7 +156,7 @@ class Grib(object):
                                             x[0]-360. <= float(x_2))
                 l_x = x[0][self.maskx]-360.
             if not np.any(self.maskx):
-                raise TelemacException(\
+                raise TelemacException(
                     '... your spatial range seems out of bound:\n       '
                     'you asked for [ {} - {}], while x is:\n       '
                     '{}\n\n'.format(x_1, x_2, repr(x)))
@@ -161,20 +165,20 @@ class Grib(object):
                                         y.T[0] <= float(y_2))
             l_y = y.T[0][self.masky]
             if not np.any(self.masky):
-                raise TelemacException(\
+                raise TelemacException(
                     '... your spatial range seems out of bound:\n       '
                     'you asked for [ {} - {}], while x is:\n       '
                     '{}\n\n'.format(y_1, y_2, repr(y)))
             self.ny1d = len(l_y)
             if self.byrowdown:
-                self.slf2d.meshx = np.ravel(np.tile(l_x, self.ny1d)\
+                self.slf2d.meshx = np.ravel(np.tile(l_x, self.ny1d)
                                             .reshape(self.ny1d, self.nx1d))
-                self.slf2d.meshy = np.ravel(np.tile(l_y, self.nx1d)\
+                self.slf2d.meshy = np.ravel(np.tile(l_y, self.nx1d)
                                             .reshape(self.nx1d, self.ny1d).T)
             else:
-                self.slf2d.meshx = np.ravel(np.tile(l_x, self.ny1d)\
+                self.slf2d.meshx = np.ravel(np.tile(l_x, self.ny1d)
                                             .reshape(self.ny1d, self.nx1d).T)
-                self.slf2d.meshy = np.ravel(np.tile(l_y, self.nx1d)\
+                self.slf2d.meshy = np.ravel(np.tile(l_y, self.nx1d)
                                             .reshape(self.nx1d, self.ny1d))
             break
         grbs.close()
@@ -211,7 +215,7 @@ class Grib(object):
         else:
             for j in range(1, self.ny1d):
                 for i in range(1, self.nx1d):
-                    ipoin = j - 1 + (i- 1)*self.ny1d
+                    ipoin = j - 1 + (i - 1)*self.ny1d
                     # ~~> first triangle
                     self.slf2d.ikle3[ielem][0] = ipoin
                     self.slf2d.ikle3[ielem][1] = ipoin + 1
@@ -243,7 +247,7 @@ class Grib(object):
             for j in range(1, self.ny1d-1):
                 ipoin = self.ny1d + 2 * self.nx1d + j - 3
                 self.slf2d.ipob3[self.nx1d*self.ny1d-j*self.nx1d-self.nx1d] = \
-                        ipoin
+                    ipoin
         else:
             # ~~> around the box
             for j in range(self.ny1d):
@@ -258,7 +262,7 @@ class Grib(object):
             for i in range(1, self.nx1d-1):
                 ipoin = self.nx1d + 2 * self.ny1d + i - 3
                 self.slf2d.ipob3[self.ny1d*self.nx1d-i*self.ny1d-self.ny1d] = \
-                        ipoin
+                    ipoin
 
         # ~~> Boundary points
         self.slf2d.iparam = [0, 0, 0, 0, 0, 0, 0,
@@ -269,10 +273,10 @@ class Grib(object):
         print('   +> writing up the geometry file')
 
         self.slf2d.fole = {}
-        self.slf2d.fole.update({'hook':open(file_name, 'wb')})
-        self.slf2d.fole.update({'name':file_name})
-        self.slf2d.fole.update({'endian':">"})     # big endian
-        self.slf2d.fole.update({'float':('f', 4)})  # single precision
+        self.slf2d.fole.update({'hook': open(file_name, 'wb')})
+        self.slf2d.fole.update({'name': file_name})
+        self.slf2d.fole.update({'endian': ">"})     # big endian
+        self.slf2d.fole.update({'float': ('f', 4)})  # single precision
 
         self.slf2d.varnames = ['RANGE          ']
         self.slf2d.varunits = ['UI             ']
@@ -327,7 +331,6 @@ class Grib(object):
         pbar.finish()
         self.slf2d.fole['hook'].close()
 
-
     def set_spectral(self):
 
         print('   +> reseting the header of the spectral file')
@@ -338,10 +341,10 @@ class Grib(object):
             self.nb_direct = grb.numberOfDirections
             self.nb_freq = grb.nb_freq
             self.freq = np.asarray(grb.scaledFrequencies, dtype=np.float) / \
-                            grb.frequencyScalingFactor
+                grb.frequencyScalingFactor
             #  /!? only so that TOMAWAC works
             self.dirc = np.asarray(grb.scaledDirections, dtype=np.float) / \
-                            grb.directionScalingFactor - 7.5
+                grb.directionScalingFactor - 7.5
             break
         grbs.close()
 
@@ -356,7 +359,6 @@ class Grib(object):
         self.slf2d.nptfr = 2*self.nb_direct
         self.slf2d.iparam = [0, 0, 0, 0, 0, 0, 0, 2*self.nb_direct, 0, 1]
 
-
         # ~~> 2D grid (spectral grid) - TODO: use numpy here !
         self.slf2d.meshx = np.zeros(self.slf2d.npoin2, dtype=np.float)
         self.slf2d.meshy = np.zeros(self.slf2d.npoin2, dtype=np.float)
@@ -366,9 +368,9 @@ class Grib(object):
         for j_f in range(self.nb_freq):
             for i_i in range(self.nb_direct):
                 self.slf2d.meshx[i_i+self.nb_direct*j_f] = \
-                          self.freq[j_f]*math.sin(math.pi*self.dirc[i_i]/180.)
+                    self.freq[j_f]*math.sin(math.pi*self.dirc[i_i]/180.)
                 self.slf2d.meshy[i_i+self.nb_direct*j_f] = \
-                          self.freq[j_f]*math.cos(math.pi*self.dirc[i_i]/180.)
+                    self.freq[j_f]*math.cos(math.pi*self.dirc[i_i]/180.)
                 ipoin += 1
                 pbar.update(ipoin)
         pbar.finish()
@@ -388,7 +390,7 @@ class Grib(object):
             self.slf2d.ikle3[ielem][1] = ielem
             self.slf2d.ikle3[ielem][2] = ielem + self.nb_direct
             self.slf2d.ikle3[ielem][3] = self.slf2d.ikle3[ielem][0] + \
-                                                  self.nb_direct
+                self.nb_direct
             pbar.update(ielem)
         pbar.finish()
 
@@ -402,7 +404,6 @@ class Grib(object):
             self.slf2d.ipob3[i_i] = self.nb_direct * \
                                           (self.nb_freq+1) - i_i
         pbar.finish()
-
 
     def append_header_grib(self):
 
@@ -430,13 +431,13 @@ class Grib(object):
         elif self.typ == 'spec':
             if 251 in self.variables:
                 for i in range(self.nx1d * self.ny1d):
-                    self.slf2d.varnames.append\
-                              (('F PT '+str(i+1)+'                ')[:16])
+                    self.slf2d.varnames.append(
+                              ('F PT '+str(i+1)+'                ')[:16])
                     self.slf2d.varunits.append('UI              ')
             print('    - from ', self.slf2d.varnames[0], ' to ',
                   self.slf2d.varnames[-1])
         if self.slf2d.varnames == []:
-            raise TelemacException(\
+            raise TelemacException(
                '... could not match requested valiable with type of file.\n\n')
         self.slf2d.nbv1 = len(self.slf2d.varnames)
         self.slf2d.nvar = self.slf2d.nbv1
@@ -497,8 +498,8 @@ class Grib(object):
 
             for i_x in range(self.nx1d):
                 for i_y in range(self.ny1d):
-                    self.slf2d.append_core_vars_slf([np.ravel\
-                            (spec[:, :, i_x, i_y].T)])
+                    self.slf2d.append_core_vars_slf([np.ravel(
+                        spec[:, :, i_x, i_y].T)])
 
     def put_content(self, file_name, showbar=True):
 
@@ -514,8 +515,9 @@ class Grib(object):
             seconds = int(self.slf2d.tags['times'][itime])
             date = (datetime(*self.slf2d.datetime) +
                     timedelta(seconds=seconds)).timetuple()[0:6]
-            print("        - {}-{}-{} {}:{}:{}".format(date[2], date[1], \
-                               date[0], date[3], date[4], date[5]))
+            print("        - {}-{}-{} {}:{}:{}".format(date[2], date[1],
+                                                       date[0], date[3],
+                                                       date[4], date[5]))
             self.append_core_time_grib(itime)
             self.append_core_vars_grib(itime)
             if showbar:
@@ -524,4 +526,3 @@ class Grib(object):
             pbar.finish()
 
         self.close_grib()
-

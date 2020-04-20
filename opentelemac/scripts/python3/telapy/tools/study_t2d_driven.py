@@ -14,17 +14,18 @@ import numpy as np
 from telapy.api.t2d import Telemac2d
 from data_manip.extraction.telemac_file import TelemacFile
 from postel.plot2d import *
+from telapy.tools.driven_utils import shell_cmd, mpirun_cmd
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.animation as manimation
 import matplotlib.pyplot as plt
-from telapy.tools.driven_utils import shell_cmd, mpirun_cmd
+matplotlib.use('Agg')
 
 
 class Telemac2DTestCase(object):
     """ Class defining a test case for a study with Telemac2D. """
 
-    def __init__(self, steering_file, user_fortran, ks_area="ks_area.txt", path=".", name=None):
+    def __init__(self, steering_file, user_fortran, ks_area="ks_area.txt",
+                 path=".", name=None):
         """ Constructor
 
         @param steering_file (str) steering file
@@ -61,7 +62,8 @@ class Telemac2DStudy(object):
         @param points (list) points of interest [[x1, y1], ..., [xN, yN]]
         @param test_case (Telemac2DTestCase) test case for the study
         @param results_file (str) result file (SELAFIN)
-        @param work_dir (str) working directory with files specified by test_case
+        @param work_dir (str) working directory with files specified
+         by test_case
         @param stdout (int) standard output (defaut = 6 [console];
                            if 666 => file 'fort.666')
         @param nproc (int) number of processors
@@ -109,17 +111,18 @@ class Telemac2DStudy(object):
             os.makedirs(out_dir)
 
         if x_val is not None:
-            with open(os.path.join(out_dir,'inputs.txt'), 'w') as thefile:
+            with open(os.path.join(out_dir, 'inputs.txt'), 'w') as thefile:
                 thefile.write("%s" % x_val)
 
         self.run_simulation(x_val)
 
-        with open(os.path.join(out_dir,'outputs.txt'), 'w') as thefile:
+        with open(os.path.join(out_dir, 'outputs.txt'), 'w') as thefile:
             thefile.write("%s" % self.z_node)
 
-        shutil.move(self.results_file, os.path.join(out_dir,self.results_file))
+        shutil.move(self.results_file,
+                    os.path.join(out_dir, self.results_file))
         if self.stdout == 666:
-            shutil.move("fort.666", os.path.join(out_dir,"log"))
+            shutil.move("fort.666", os.path.join(out_dir, "log"))
 
         # Back to caller directory
         os.chdir(caller_path)
@@ -210,8 +213,11 @@ class Telemac2DStudy(object):
         if "WATER DEPTH" in results.varnames:
             varname = "WATER DEPTH"
         t_val = results.ntimestep - 1
-        self.output_node = [results.get_data_value(varname, t_val)[results.get_closest_node(point)] for point in self.points]
-        self.output_points = results.get_data_on_points(varname,t_val, self.points)
+        self.output_node = [results.get_data_value(varname, t_val)
+                            [results.get_closest_node(point)]
+                            for point in self.points]
+        self.output_points = results.get_data_on_points(varname, t_val,
+                                                        self.points)
         del results
 
     def get_mesh_water_depth(self):
@@ -226,7 +232,8 @@ class Telemac2DStudy(object):
 
         self.mesh_water_depth = {'x-coord': results.meshx,
                                  'y-coord': results.meshy,
-                                 'waterDepth': results.get_data_value(varname, t_val)}
+                                 'waterDepth':
+                                 results.get_data_value(varname, t_val)}
         del results
 
     def mpirun(self, filename):
@@ -256,11 +263,11 @@ class Telemac2DStudy(object):
         if keyword == "header":
             string = ("#!/usr/bin/env python3\n"
                       "# Class Telemac2d import\n"
-                          "import sys\n"
-                          "sys.path.append('"+self.test_case.path+"')\n"
-                          "from telapy.api.t2d import Telemac2d\n"
-                          "from testcases_t2d_driven import " +
-                          self.test_case.name + "\n")
+                      "import sys\n"
+                      "sys.path.append('"+self.test_case.path+"')\n"
+                      "from telapy.api.t2d import Telemac2d\n"
+                      "from testcases_t2d_driven import " +
+                      self.test_case.name + "\n")
         elif keyword == "commworld":
             string = ("try:\n" +
                       "    from mpi4py import MPI\n" +
@@ -275,7 +282,8 @@ class Telemac2DStudy(object):
                       "name='" + self.test_case.name + "', " +
                       "config=" + str(self.test_case.config) + ")\n")
         elif keyword == "create":
-            string = ("t2d = Telemac2d('" + self.test_case.steering_file + "', " +
+            string = ("t2d = Telemac2d('" + self.test_case.steering_file +
+                      "', " +
                       "user_fortran='" + self.test_case.user_fortran + "', " +
                       "comm=comm, " +
                       "stdout=" + str(self.stdout) + ")\n")
@@ -294,7 +302,8 @@ class Telemac2DStudy(object):
         elif keyword == "del":
             string = "del(t2d)\n"
         elif keyword == "resultsfile":
-            string = "t2d.set('MODEL.RESULTFILE', '" + self.results_file + "')\n"
+            string = "t2d.set('MODEL.RESULTFILE', '" + \
+                self.results_file + "')\n"
         elif keyword == "newline":
             string = "\n"
         return string.encode()
@@ -326,7 +335,8 @@ class Telemac2DStudy(object):
         """ Get the number of points of interest """
         return len(self.points)
 
-    def plot_final_state(self, out_dir=".", filename="water_level.pdf", plot_mesh=False):
+    def plot_final_state(self, out_dir=".", filename="water_level.pdf",
+                         plot_mesh=False):
         """
         Plot the hydraulic state at final time from the .slf output file into
         an output PDF file.
@@ -340,7 +350,7 @@ class Telemac2DStudy(object):
         os.chdir(self.work_dir)
 
         out_dir = os.path.realpath(out_dir)
-        results = TelemacFile(os.path.join(out_dir,self.results_file))
+        results = TelemacFile(os.path.join(out_dir, self.results_file))
         final_time = results.ntimestep - 1
         if "HAUTEUR D'EAU" in results.varnames:
             varname = "HAUTEUR D'EAU"
@@ -348,12 +358,14 @@ class Telemac2DStudy(object):
             varname = "WATER DEPTH"
         values = results.get_data_value(varname, final_time)
 
-        fig, ax = plt.subplots(1,1,figsize=(8,5.8),dpi=300)
+        fig, ax = plt.subplots(1, 1, figsize=(8, 5.8), dpi=300)
 
         if plot_mesh:
             # Define wet and dry zones mask
-            mask_wet = mask_triangles(results.tri, values, relation='geq', threshold=0.01)
-            mask_dry = mask_triangles(results.tri, values, relation='leq', threshold=0.01)
+            mask_wet = mask_triangles(results.tri, values, relation='geq',
+                                      threshold=0.01)
+            mask_dry = mask_triangles(results.tri, values, relation='leq',
+                                      threshold=0.01)
 
             # Plotting mesh only on dry zones
             results.tri.set_mask(mask_wet)
@@ -375,7 +387,8 @@ class Telemac2DStudy(object):
         # Back to caller directory
         os.chdir(caller_path)
 
-    def film_state(self, fps=15, out_dir=".", filename="water_level.mp4", plot_mesh=False):
+    def film_state(self, fps=15, out_dir=".", filename="water_level.mp4",
+                   plot_mesh=False):
         """
         film_state function
         @param fps (int) frame per second
@@ -389,25 +402,28 @@ class Telemac2DStudy(object):
                         comment='Movie support!')
         writer = ffmpeg_writer(fps=fps, metadata=metadata)
 
-        results = TelemacFile(os.path.join(out_dir,self.results_file))
+        results = TelemacFile(os.path.join(out_dir, self.results_file))
         ntimes = results.ntimestep
         if "HAUTEUR D'EAU" in results.varnames:
             varname = "HAUTEUR D'EAU"
         if "WATER DEPTH" in results.varnames:
             varname = "WATER DEPTH"
-        fig, ax = plt.subplots(1,1,figsize=(8,5.8),dpi=300)
+        fig, ax = plt.subplots(1, 1, figsize=(8, 5.8), dpi=300)
 
         with writer.saving(fig, filename, ntimes):
             for idt in range(ntimes):
                 values = results.get_data_value(varname, idt)
                 if plot_mesh:
                     # Define wet and dry zones mask
-                    mask_wet = mask_triangles(results.tri, values, relation='geq', threshold=0.01)
-                    mask_dry = mask_triangles(results.tri, values, relation='leq', threshold=0.01)
+                    mask_wet = mask_triangles(results.tri, values,
+                                              relation='geq', threshold=0.01)
+                    mask_dry = mask_triangles(results.tri, values,
+                                              relation='leq', threshold=0.01)
 
                     # Plotting mesh only on dry zones
                     results.tri.set_mask(mask_wet)
-                    plot2d_triangle_mesh(ax, results.tri, color='k', linewidth=0.01)
+                    plot2d_triangle_mesh(ax, results.tri, color='k',
+                                         linewidth=0.01)
                     # Plotting scalar map only on wet zones
                     results.tri.set_mask(mask_dry)
 

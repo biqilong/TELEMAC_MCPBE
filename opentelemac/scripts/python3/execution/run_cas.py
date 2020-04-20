@@ -5,6 +5,7 @@ from os import path, sep
 from execution.study import Study
 from utils.exceptions import TelemacException
 
+
 def run_local_cas(my_study, options):
     """
     Run a single steering file
@@ -12,9 +13,8 @@ def run_local_cas(my_study, options):
     @param my_study (Study) Structure of the study
     @param options (Values) Options of runcode
     """
-    full_run = not (options.split or options.merge or \
+    full_run = not (options.split or options.merge or
                     options.compileonly or options.run)
-
 
     print('\n... checking parallelisation')
     my_study.set_ncsize(options.ncsize, options.ncnode, options.nctile)
@@ -31,11 +31,10 @@ def run_local_cas(my_study, options):
         my_study.partionning(options.use_link)
         if options.split:
             print('\n\n'+'~'*72+'\n')
-            print('... Your simulation is almost ready for launch. '\
-                  'You need to compile your executable with the option '\
+            print('... Your simulation is almost ready for launch. '
+                  'You need to compile your executable with the option '
                   '-x (--compileonly)\n')
             return
-
 
     if options.compileonly or full_run:
         # compile part
@@ -43,16 +42,17 @@ def run_local_cas(my_study, options):
         my_study.compile_exe()
         if options.compileonly:
             print('\n\n'+'~'*72+'\n')
-            print('... Your simulation is ready for launch and you can now :\n')
-            print('     +> re-run without option -x (--compileonly) '\
-                    'or with option --run\n')
+            print(
+                '... Your simulation is ready for launch and you can now :\n')
+            print('     +> re-run without option -x (--compileonly) '
+                  'or with option --run\n')
             if my_study.cfg['MPI'] == {}:
-                print('     +> or run the following command within '\
-                        'each local subdirectory:')
+                print('     +> or run the following command within '
+                      'each local subdirectory:')
                 work_dir = my_study.working_dir
                 exe_name = path.basename(my_study.exe_name)
-                print('         -> in <{}> run with EXE:'\
-                      '\n                      {}'\
+                print('         -> in <{}> run with EXE:'
+                      '\n                      {}'
                       .format(work_dir+sep, exe_name))
             else:
                 print('     +> or run with MPI: ')
@@ -65,7 +65,7 @@ def run_local_cas(my_study, options):
         my_study.run(options)
         if options.run:
             print('\n\n'+'~'*72+'\n')
-            print('... Your simulation has been completed but you need to '\
+            print('... Your simulation has been completed but you need to '
                   're-collect files using the option --merge\n')
             return
 
@@ -81,6 +81,7 @@ def run_local_cas(my_study, options):
             my_study.delete_working_dir()
 
     del my_study
+
 
 def run_hpc_cas(my_study, options):
     """
@@ -103,7 +104,7 @@ def run_hpc_cas(my_study, options):
 
     # Just launch the execution of homere in job scheduler
     elif 'EXCODE' in my_study.cfg['HPC']:
-        full_run = not (options.split or options.merge or \
+        full_run = not (options.split or options.merge or
                         options.compileonly or options.run)
         print('\n... checking parallelisation')
         my_study.set_ncsize(options.ncsize, options.ncnode, options.nctile)
@@ -134,13 +135,12 @@ def run_hpc_cas(my_study, options):
                 my_study.delete_working_dir()
 
     else:
-        raise TelemacException(\
-             "HPC job with undefined configuration missing"+
+        raise TelemacException(
+             "HPC job with undefined configuration missing" +
              "hpc_runcode or hpc_pytel in your configuration file")
 
-
-
     del my_study
+
 
 def run_study(steering_file, code_name, options):
     """

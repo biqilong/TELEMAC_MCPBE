@@ -28,6 +28,8 @@ from utils.exceptions import TelemacException
 # _____                  ___________________________________________
 # ____/ Primary Classes /__________________________________________/
 #
+
+
 def big2little_bot(file_name, fole_name):
 
     # ~~ Openning files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,9 +38,9 @@ def big2little_bot(file_name, fole_name):
     print('           +> writing the surfaces-file: '+fole_name)
 
     # ~~ Read/Write dimensions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    l, n_1, n_2, n_3, n_4, n_5, n_6, chk = unpack('>i6ii', fle.read(4+24+4))
-    if l != chk:
-        raise TelemacException(\
+    ll, n_1, n_2, n_3, n_4, n_5, n_6, chk = unpack('>i6ii', fle.read(4+24+4))
+    if ll != chk:
+        raise TelemacException(
                 '... Cannot read the first 6 INTEGER '
                 'from your DELWAQ file')
     fole.write(pack('<i6ii', 4*6, n_1, n_2, n_3, n_4, n_5, n_6, 4*6))
@@ -54,62 +56,65 @@ def big2little_bot(file_name, fole_name):
     fle.close()
     fole.close()
 
+
 class DELWAQ(object):
     """
     Class to handle telemac DELWAQ output files
     """
 
-    simplekeys = {\
-        "task":'',
-        "geometry":'',
-        "horizontal-aggregation":'',
-        "minimum-vert-diffusion-used":'',
-        "vertical-diffusion":'',
-        "reference-time":'',
-        "hydrodynamic-start-time":'',
-        "hydrodynamic-stop-time":'',
-        "hydrodynamic-timestep":'',
-        "conversion-ref-time":'',
-        "conversion-start-time":'',
-        "conversion-stop-time":'',
-        "conversion-timestep":'',
-        "grid-cells-first-direction":'',
-        "grid-cells-second-direction":'',
-        "number-hydrodynamic-layers":'',
-        "number-water-quality-layers":'',
-        "hydrodynamic-file":'',
-        "aggregation-file":'',
-        "grid-indices-file":'',
-        "grid-coordinates-file":'',
-        "pointers-file":'',
-        "lengths-file":'',
-        "volumes-file":'',
-        "areas-file":'',
-        "flows-file":'',
-        "salinity-file":'',
-        "temperature-file":'',
-        "vert-diffusion-file":'',
-        "surfaces-file":'',
-        "total-grid-file":'',
-        "discharges-file":'',
-        "chezy-coefficients-file":'',
-        "shear-stresses-file":'',
-        "walking-discharges-file":''
+    simplekeys = {
+        "task": '',
+        "geometry": '',
+        "horizontal-aggregation": '',
+        "minimum-vert-diffusion-used": '',
+        "vertical-diffusion": '',
+        "reference-time": '',
+        "hydrodynamic-start-time": '',
+        "hydrodynamic-stop-time": '',
+        "hydrodynamic-timestep": '',
+        "conversion-ref-time": '',
+        "conversion-start-time": '',
+        "conversion-stop-time": '',
+        "conversion-timestep": '',
+        "grid-cells-first-direction": '',
+        "grid-cells-second-direction": '',
+        "number-hydrodynamic-layers": '',
+        "number-water-quality-layers": '',
+        "hydrodynamic-file": '',
+        "aggregation-file": '',
+        "grid-indices-file": '',
+        "grid-coordinates-file": '',
+        "pointers-file": '',
+        "lengths-file": '',
+        "volumes-file": '',
+        "areas-file": '',
+        "flows-file": '',
+        "salinity-file": '',
+        "temperature-file": '',
+        "vert-diffusion-file": '',
+        "surfaces-file": '',
+        "total-grid-file": '',
+        "discharges-file": '',
+        "chezy-coefficients-file": '',
+        "shear-stresses-file": '',
+        "walking-discharges-file": ''
                  }
 
-    complxkeys = {\
-         "description":[],
-         "constant-dispersion":[],
-         "hydrodynamic-layers":[],
-         "water-quality-layers":[],
-         "discharges":[]
+    complxkeys = {
+         "description": [],
+         "constant-dispersion": [],
+         "hydrodynamic-layers": [],
+         "water-quality-layers": [],
+         "discharges": []
                  }
 
     emptyline = re.compile(r'\s*\Z')
     comments = re.compile(r'[#]')
     var_dquot = re.compile(r'"(?P<dquot>[^"]*)"')
     var_squot = re.compile(r"'(?P<squot>[^']*)'")
-    key_word = re.compile(r'(?P<key>[^\s]+)\s*(?P<word>[^#]*)(?P<after>.*)\s*\Z', re.I)
+    key_word = \
+        re.compile(r'(?P<key>[^\s]+)\s*(?P<word>[^#]*)(?P<after>.*)\s*\Z',
+                   re.I)
     key_field = re.compile(r'(?P<key>[^\s]+)\s*(?P<after>.*)\s*\Z', re.I)
     grp_word = re.compile(r'(?P<key>[^\s]*)\s*\Z', re.I)
 
@@ -125,13 +130,13 @@ class DELWAQ(object):
         # ~~> Read the geometry file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         fle = self.dwq_list['grid-indices-file']
         if not path.exists(fle):
-            raise TelemacException(\
+            raise TelemacException(
                     '...Could not find the GEO file: '
                     '{}'.format(fle))
         self.geo = Selafin(fle)
         self.npoin3 = int(self.dwq_list['grid-cells-first-direction'])
         if self.npoin3 != self.geo.npoin3:
-            raise TelemacException(\
+            raise TelemacException(
                     '...In consistency in numbers with GEO file: '
                     '{} {}'.format(str(self.npoin3),
                                    str(self.geo.npoin3)))
@@ -140,7 +145,7 @@ class DELWAQ(object):
         # ~~> Read the Conlim file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         fle = self.dwq_list['grid-coordinates-file']
         if not path.exists(fle):
-            raise TelemacException(\
+            raise TelemacException(
                     '...Could not find the Conlim file: '
                     '{}'.format(fle))
         self.conlim = Conlim(fle)
@@ -202,27 +207,29 @@ class DELWAQ(object):
                         i += 1
                         sroc = re.match(self.key_word, lines[i].strip())
                     i += 1
-                    dwq_list.update({proc.group('key').lower():word})
+                    dwq_list.update({proc.group('key').lower(): word})
                     continue
                 else:
                     print('... Could not understand the following '
-                          'complex key: '+ proc.group('key'))
+                          'complex key: ' + proc.group('key'))
             proc = re.match(self.key_word, line)
             if proc:
                 i += 1
                 if proc.group('key').lower() in self.simplekeys:
-                    dval = re.match(self.var_dquot, proc.group('after').strip())
-                    sval = re.match(self.var_squot, proc.group('after').strip())
+                    dval = re.match(self.var_dquot,
+                                    proc.group('after').strip())
+                    sval = re.match(self.var_squot,
+                                    proc.group('after').strip())
                     key = proc.group('key').lower()
                     if dval:
-                        dwq_list.update({key:dval.group('dquot').strip('"')})
+                        dwq_list.update({key: dval.group('dquot').strip('"')})
                     elif sval:
-                        dwq_list.update({key:sval.group('squot').strip("'")})
+                        dwq_list.update({key: sval.group('squot').strip("'")})
                     else:
-                        dwq_list.update({key:proc.group('word').strip(" '")})
+                        dwq_list.update({key: proc.group('word').strip(" '")})
                 else:
                     print('... Could not understand the following simple '
-                          'key: '+ proc.group('key'))
+                          'key: ' + proc.group('key'))
 
         return dwq_list
 
@@ -252,7 +259,6 @@ class DELWAQ(object):
         fole = path.splitext(path.basename(fle))[0] + '.qwd'
         self.big2little_are(fle, fole)
 
-
     def big2little_nds(self, file_name, fole_name):
 
         # ~~ Openning files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -275,7 +281,7 @@ class DELWAQ(object):
         fole.write(pack('<i', 4*n_3))
 
         # ~~ 3D lengths ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        #if n_4 != 0:
+        # if n_4 != 0:
         #   fle.seek(4*n_4+8,1)
 
         fle.close()
@@ -399,33 +405,34 @@ class DELWAQ(object):
 __author__ = "Sebastien E. Bourban"
 __date__ = "$21-Jun-2013 17:51:29$"
 
+
 def main():
     """ Main function of parserDELWAQ """
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Reads config file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print('\n\nLoading Options and Configurations\n'+'~'*72+'\n')
-    parser = ArgumentParser(\
+    parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
         description=('''\n\
 Tools for handling DELWAQ files when created by TELEMAC
         '''),
-        usage=' (--help for help)\n---------\n       =>  '\
-                '%(prog)s [option] delwaq.cas \n---------')
+        usage=' (--help for help)\n---------\n       =>  '
+              '%(prog)s [option] delwaq.cas \n---------')
     parser = add_config_argument(parser)
-    parser.add_argument(\
+    parser.add_argument(
         "--reset", action="store_true",
         dest="areset", default=False,
         help="reset the start time to zero")
-    parser.add_argument(\
+    parser.add_argument(
         "--minvol",
         dest="minvol", default='0.001',
         help="make sure there is a minimum volume")
-    parser.add_argument(\
+    parser.add_argument(
         "--from",
         dest="tfrom", default="1",
         help="specify the first frame included")
-    parser.add_argument(\
+    parser.add_argument(
         "--stop",
         dest="tstop", default="-1",
         help="specify the last frame included (negative from the end)")
@@ -468,6 +475,7 @@ Tools for handling DELWAQ files when created by TELEMAC
     print('\n\nMy work is done\n\n')
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

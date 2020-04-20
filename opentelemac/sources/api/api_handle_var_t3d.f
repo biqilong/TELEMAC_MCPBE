@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief GETTER/SETTER OF TELEMAC3D VARIABLES
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief Getter/setter of telemac3d variables
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_HANDLE_VAR_T3D
@@ -13,22 +7,23 @@
         USE API_HANDLE_ERROR
         USE API_INSTANCE_T3D
         IMPLICIT NONE
-        ! Size of the string containing the name of a variable
+        !> Size of the string containing the name of a variable
         INTEGER, PARAMETER :: T3D_VAR_LEN=40
-        ! Size of the string containing the type of a variable
+        !> Size of the string containing the type of a variable
         INTEGER, PARAMETER :: T3D_TYPE_LEN=12
-        ! Size of the string containing the information about a variable
+        !> Size of the string containing the information about a variable
         INTEGER, PARAMETER :: T3D_INFO_LEN=200
-        ! The maximum number of variable
+        !> The maximum number of variable
         INTEGER, PARAMETER :: NB_VAR_T3D=107
-!
+        !> List of variable names
         CHARACTER(LEN=T3D_VAR_LEN),ALLOCATABLE :: VNAME_T3D(:)
+        !> List of variable info
         CHARACTER(LEN=T3D_INFO_LEN),ALLOCATABLE :: VINFO_T3D(:)
 !
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE ARRAY
+      !>@brief Get a double array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_ARRAY_T3D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
@@ -208,7 +203,7 @@
       END SUBROUTINE GET_DOUBLE_ARRAY_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE ARRAY
+      !>@brief Defines the value of a double array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_ARRAY_T3D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
@@ -375,7 +370,7 @@
       END SUBROUTINE SET_DOUBLE_ARRAY_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER ARRAY
+      !>@brief Get an integer array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_ARRAY_T3D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -445,7 +440,7 @@
       END SUBROUTINE GET_INTEGER_ARRAY_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER ARRAY
+      !>@brief Defines the value of an integer array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_ARRAY_T3D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -510,23 +505,16 @@
       END SUBROUTINE SET_INTEGER_ARRAY_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE VARIABLE FROM TELEMAC3D
+      !>@brief Get a double variable from telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Contains the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_T3D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -683,23 +671,16 @@
       END SUBROUTINE GET_DOUBLE_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE VARIABLE OF TELEMAC3D
+      !>@brief Defines the value of a double variable of telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_T3D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -844,23 +825,16 @@
       END SUBROUTINE SET_DOUBLE_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER VARIABLE FROM TELEMAC3D
+      !>@brief Get an integer variable from telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_T3D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -954,23 +928,16 @@
       END SUBROUTINE GET_INTEGER_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE OF TELEMAC3D
+      !>@brief Defines the value of an integer variable of telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_T3D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -1029,23 +996,16 @@
       END SUBROUTINE SET_INTEGER_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A STRING VARIABLE FROM TELEMAC3D
+      !>@brief Get a string variable from telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM VALUELEN   [IN]    Length of the string
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_STRING_T3D_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -1095,23 +1055,16 @@
       END SUBROUTINE GET_STRING_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A STRING VARIABLE OF TELEMAC3D
+      !>@brief Defines the value of a string variable of telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM VALUELEN   [IN]    LENGTH OF THE STRING
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_STRING_T3D_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -1146,23 +1099,16 @@
       END SUBROUTINE SET_STRING_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A BOOLEAN VARIABLE FROM TELEMAC3D
+      !>@brief Get a boolean variable from telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_BOOLEAN_T3D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -1188,23 +1134,16 @@
       END SUBROUTINE GET_BOOLEAN_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A BOOLEAN VARIABLE OF TELEMAC3D
+      !>@brief Defines the value of a boolean variable of telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_BOOLEAN_T3D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -1229,29 +1168,15 @@
       END SUBROUTINE SET_BOOLEAN_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET INFORMATIONS ON A VARIABLE OF TELEMAC3D
+      !>@brief Get size informations on a variable of telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !+HISTORY C. GOEURY (EDF R&D LNHE)
-      !+        04/09/2016
-      !+        V7P1
-      !++=
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE
-      !PARAM VARTYPE   [OUT]    TYPE OF THE VARIABLE
-      !+                        (INTEGER, DOUBLE, STRING, BOOLEAN)
-      !PARAM READONLY  [OUT]    0 IF THE VARIABLE IS READ ONLY
-      !+                        1 IF IT IS WRITTABLE
-      !PARAM NDIM      [OUT]    NUMBER OF DIMENSION
-      !+                        (0 IF IT IS NOT AN ARRAY)
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] INST Instance
+      !>@param[in] VARNAME Name of the variable
+      !>@param[out] DIM1 Size of the first dimension
+      !>@param[out] DIM2 Size of the second dimension
+      !>@param[out] DIM3 Size of the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_SIZE_T3D_D
      &         (INST, VARNAME, DIM1, DIM2, DIM3, IERR)
@@ -1449,34 +1374,22 @@
       END SUBROUTINE GET_VAR_SIZE_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE SIZE OF EACH DIMENSION OF A VARAIBLE
+      !>@brief Get the information on the type of variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !HISTORY C GOEURY (EDF R&D, LNHE)
-      !+       01/09/2016
-      !+       V7P1
-      !+       IENT,JENT AND KENT ADDED FOR MPI CONTROL IN GET AND SET
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARAIBLE
-      !PARAM DIM1      [OUT]    SIZE OF THE FIRST DIMENSION
-      !PARAM DIM2      [OUT]    SIZE OF THE SECOND DIMENSION
-      !PARAM DIM3      [OUT]    SIZE OF THE THIRD DIMENSION
-      !PARAM IENT      [OUT]    1 if the numbering is on point
-      !PARAM JENT      [OUT]    1 if the numbering is on point
-      !PARAM KENT      [OUT]    1 if the numbering is on point
-      !PARAM GETPOS    [OUT]    Postion after which the get is posible
-      !+                        on the variable
-      !PARAM SETPOS    [OUT]    Postion after which the Set is posible
-      !+                        on the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] VARNAME Name of the varaible
+      !>@param[out] VARTYPE Type of the varaible (INTEGER, DOUBLE,
+      !                     BOOLEAN, STRING)
+      !>@param[out] READONLY True if the varaible cannot be modified
+      !>@param[out] NDIM Name of the varaible
+      !>@param[out] IENT 1 if the numbering is on point
+      !>@param[out] JENT 1 if the numbering is on point
+      !>@param[out] KENT 1 if the numbering is on point
+      !>@param[out] GETPOS Postion after which the get is posible
+      !!                        on the variable
+      !>@param[out] SETPOS Postion after which the set is posible
+      !!                        on the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_TYPE_T3D_D
      &        (VARNAME, VARTYPE, READONLY, NDIM,IENT,JENT,KENT,
@@ -2233,22 +2146,15 @@
       END SUBROUTINE GET_VAR_TYPE_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE DESCRIPTION OF THE ITH VARIABLE
+      !>@brief Get the description of the ith variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [IN]     Integer
-      !PARAM VAR_LEN   [IN]     Size of varname
-      !PARAM INFO_LEN  [IN]     Size of varinfo
-      !PARAM VARNAME   [OUT]    Name of the variable
-      !PARAM VARINFO   [OUT]    Description of the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] I Number of the variable
+      !>@param[in] VAR_LEN Size of varname
+      !>@param[in] INFO_LEN Size of varinfo
+      !>@param[out] VARNAME Name of the variable
+      !>@param[out] VARINFO Description of the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_INFO_T3D_D(I, VAR_LEN, INFO_LEN,
      &                              VARNAME, VARINFO, IERR)
@@ -2275,17 +2181,10 @@
       END SUBROUTINE GET_VAR_INFO_T3D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DESCRIPTION OF EACH VARIABLE
+      !>@brief Buils the description of each variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_LIST_T3D_D(IERR)
 !
@@ -2573,7 +2472,59 @@
           I = I + 1
           VNAME_T3D(I) = 'MODEL.EQUATION'
           VINFO_T3D(I) = 'NAME OF THE EQUATION USED'
-          ! <get_var_list>
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.BOTTOMELEVATION'
+          VINFO_T3D(I) = 'BOTTOM ELEVATION'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.QBOR'
+          VINFO_T3D(I) = 'BOUNDARY VALUE ON Q FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.EBOR'
+          VINFO_T3D(I) = 'BOUNDARY VALUE ON E FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.FLBOR'
+          VINFO_T3D(I) = 'BOUNDARY VALUE ON ZF FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.TOB'
+          VINFO_T3D(I) = 'SHEAR STRESS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.CLU'
+          VINFO_T3D(I) = 'BOUNDARY TYPE ON U FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.CLV'
+          VINFO_T3D(I) = 'BOUNDARY TYPE ON V FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIQBOR'
+          VINFO_T3D(I) = 'BOUNDARY TYPE ON Q FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.LIEBOR'
+          VINFO_T3D(I) = 'BOUNDARY TYPE ON E FOR EACH BOUNDARY POINT'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NSICLA'
+          VINFO_T3D(I) = 'NUMBER OF SIZE-CLASSES OF BED MATERIAL'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.NOMBLAY'
+          VINFO_T3D(I) = 'NUMBER OF LAYER IN THE BED'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.CONCENTRATION'
+          VINFO_T3D(I) = 'CONCENTRATION AT TIME N'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.EVOLUTION'
+          VINFO_T3D(I) = 'EVOLUTION OF BED'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.PARTHENIADES'
+          VINFO_T3D(I) = 'PARTHENIADES EROSION COEFICIANT FOR EACH '//
+     &                   'BED LAYER FOR EADCH CLASS'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.DCLA'
+          VINFO_T3D(I) = 'MEDIAN GRAIN SIZE'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.SHIELDS'
+          VINFO_T3D(I) = 'CRITICAL SHIELDS PARAMETER'
+          I = I + 1
+          VNAME_T3D(I) = 'MODEL.XWC'
+          VINFO_T3D(I) = 'SETTLING VELOCITY'
+          ! <set_var_list>
           IF(I.NE.NB_VAR_T3D) THEN
             IERR = INCREASE_NB_VAR_T3D_ERROR
             RETURN

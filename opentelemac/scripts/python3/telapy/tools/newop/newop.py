@@ -95,7 +95,7 @@ class Newop(object):
                        options={'maxiter': niter,
                                 'maxfun': self.maxfun,
                                 'disp': self.verbose}
-                      )
+                       )
         if res.success is True:
             return res.fun, res.x
         else:

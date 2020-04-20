@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief $function to control sisyphe execution
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history R-S MOURADI (EDF R&D, LNHE)
-!+       17/03/2016
-!+       V7P1
-!+       Creation of the file
+!>@brief $function to control sisyphe execution
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_RUN_SIS
@@ -46,22 +40,15 @@
       CONTAINS
       ! SET THE LU AND LNG VALUES
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE INSTANCE AND SET THE OUTPUT
+      !>@brief Initialise the instance and set the output
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST [IN,OUT]    THE INSTANCE
-      !PARAM LU       [IN]    OUTPUT STREAM ID
-      !PARAM LNG      [IN]    OUTPUT KANGUAGE 2 ENGLISH 1 FRENCH
-      !PARAM COMM     [IN]    THE MPI COMMUNICATOR (-1 IF NONE)
-      !PARAM STD_OUTPUT[IN]    IF false listing in file
-      !PARAM IERR    [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                      ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] U_LU Output stream id
+      !>@param[in] U_LNG Output kanguage 2 english 1 french
+      !>@param[in] U_COMM The mpi communicator (-1 if none)
+      !>@param[in] U_STD_OUTPUT If false listing in file
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                      error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_SET_CONFIG_SIS_D(INST, U_LU, U_LNG, U_COMM,
      &                                U_STD_OUTPUT, IERR)
@@ -82,21 +69,16 @@
 !!!!!!! FUNCTION HANDLING THE EXECUTION OF THE SIMULATION
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF READS THE CASE FILE
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
+      !>@brief Reads the case file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM CAS_FILE   [IN]    PATH TO THE CASE FILE
-      !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
-      !PARAM INIT       [IN]    IF TRUE P_INIT IS CALLED
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] CODE1 Name of the code calling the function
+      !!                 (TELEMAC2D when coupling)
+      !>@param[in] CAS_FILE Path to the case file
+      !>@param[in] DICO_FILE Path to the dictionary file
+      !>@param[in] INIT If true p_init is called
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_SIS_D(INST,CODE1,CAS_FILE,DICO_FILE,
      &                               INIT,IERR)
@@ -129,18 +111,11 @@
       END SUBROUTINE RUN_READ_CASE_SIS_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF ALLOCATE ALL OF SISYPHE VARIABLES
+      !>@brief Allocate all of sisyphe variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_ALLOCATION_SIS_D(INST,IERR)
         TYPE(INSTANCE_SIS), INTENT(INOUT) :: INST
@@ -160,18 +135,11 @@
 
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE SISYPHE VARIABLES
+      !>@brief Initialise the sisyphe variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_INIT_SIS_D(INST,IERR)
 !
@@ -200,18 +168,11 @@
 
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN SISYPHE
+      !>@brief Run a timestep in sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_SIS_D(INST,IERR)
 !
@@ -246,18 +207,11 @@
 
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF FINALIZE A SISYPHE RUN
+      !>@brief Finalize a sisyphe run
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       SUBROUTINE RUN_FINALIZE_SIS_D(INST,IERR)

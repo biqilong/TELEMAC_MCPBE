@@ -4,17 +4,21 @@ Tools for parsing keywords
 import re
 from utils.exceptions import TelemacException
 
-KEY_COMMENT = re.compile(r"(?P<before>([^'/]*'[^']*'[^'/]*|[^/]*)*){1}(?P<after>.*)", re.I)
+KEY_COMMENT =\
+ re.compile(r"(?P<before>([^'/]*'[^']*'[^'/]*|[^/]*)*){1}(?P<after>.*)", re.I)
 CONTINUED = re.compile(r"(?P<before>[^']*)(?P<after>'[^']*)\s*\Z", re.I)
 EMPTY_LINE = re.compile(r'\s*\Z', re.I)
 
 ENTRY_QUOTE = re.compile(r'(?P<before>[^\'"]*)(?P<after>.*)\s*\Z', re.I)
-EXIT_SQUOTE = re.compile(r"'(?P<before>(.*?[^']+|))'(?P<after>[^']+.*)\s*\Z", re.I)
-EXIT_DQUOTE = re.compile(r'"(?P<before>(.*?[^"]+|))"(?P<after>[^"]+.*)\s*\Z', re.I)
+EXIT_SQUOTE =\
+ re.compile(r"'(?P<before>(.*?[^']+|))'(?P<after>[^']+.*)\s*\Z", re.I)
+EXIT_DQUOTE =\
+ re.compile(r'"(?P<before>(.*?[^"]+|))"(?P<after>[^"]+.*)\s*\Z', re.I)
 
 KEY_NONE = re.compile(r'\s*(?P<key>&\w*)\s+(?P<after>.*)', re.I)
 KEY_EQUALS = re.compile(r'(?P<key>[^=:]*)(?P<after>.*)', re.I)
-VAL_EQUALS = re.compile(r"[=:;]\s*(?P<val>('.*?'|[^\s;']*))\s*(?P<after>.*)", re.I)
+VAL_EQUALS =\
+ re.compile(r"[=:;]\s*(?P<val>('.*?'|[^\s;']*))\s*(?P<after>.*)", re.I)
 
 KEY_WORD = r'\s*(?P<this>(%s))\s*(?P<after>.*)\s*\Z'
 VAL_WORD = r"\s*[=:;]\s*(?P<this>('.*?'|%s))\s*(?P<after>.*)\s*\Z"
@@ -40,6 +44,7 @@ DICO_KEYS = ['NOM',
              'AIDE',
              'AIDE1']
 
+
 def format72(value):
     """
     Adapt string to fit on a 72 line
@@ -54,6 +59,7 @@ def format72(value):
         val72 = val72 + (value+71*' ')[71*i:71*i+71] + '\n'
 
     return val72.rstrip()
+
 
 def convert_to_type(var_type, value):
     """
@@ -81,8 +87,8 @@ def convert_to_type(var_type, value):
             elif val.upper() in false_val:
                 vals.append(False)
             else:
-                raise TelemacException(\
-                   'Key value should be a LOGICAL but found an '\
+                raise TelemacException(
+                   'Key value should be a LOGICAL but found an '
                    'inapropriate value: '+val)
     elif var_type in ['ENTIER', 'INTEGER']:
         vals = []
@@ -92,7 +98,7 @@ def convert_to_type(var_type, value):
             if re.match(vint, val.strip("'")):
                 vals.append(int(val.strip("'")))
             else:
-                raise TelemacException(\
+                raise TelemacException(
                    'Key value should be an INTEGER but found '
                    'an inapropriate value: '+val)
     elif var_type in ['REEL', 'REAL']:
@@ -101,8 +107,8 @@ def convert_to_type(var_type, value):
             if re.match(vflt, val.lower().replace('d', 'e')):
                 vals.append(float(val.lower().replace('d', 'e').strip("'")))
             else:
-                raise TelemacException(\
-                    'Key value should be a FLOAT but found an '\
+                raise TelemacException(
+                    'Key value should be a FLOAT but found an '
                     'inapropriate value: '+val)
     else:
         if isinstance(value, str):
@@ -117,6 +123,7 @@ def convert_to_type(var_type, value):
         return vals[0]
     else:
         return vals
+
 
 def check_type(var_type, value):
     """

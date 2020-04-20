@@ -138,11 +138,14 @@ def add_arg(parser, name):
         parser.add_argument(\
             "--ll2utm",
             dest="ll2utm", default=None,
-            help="convert from longitude-latitude to UTM")
+            help="zone info convert from longitude-latitude to UTM (giving XXX "
+            "will let the script pick the zone otherwise specify zone with "
+            "number + letter (for example 24S))")
         parser.add_argument(\
             "--utm2ll",
             dest="utm2ll", default=None,
-            help="convert from UTM to longitude-latitude")
+            help="zone info to convert from UTM to longitude-latitude (for "
+            "example 24S)")
     elif name == 'modif_coord':
         parser.add_argument(\
             "--X+?",

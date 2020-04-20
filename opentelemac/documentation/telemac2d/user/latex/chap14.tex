@@ -20,7 +20,7 @@ i.e. equal to the number specified by the keyword \telkey{BOTTOM SMOOTHINGS}
 for which the default value is 0 (no smoothing).
 
 The \telfile{CORFON} subroutine is not called up
-if a computation is being continued.
+if a computation is continued.
 This avoids having to carry out several bottom smoothings or modifications
 of the bottom topography during the computation.
 
@@ -36,7 +36,7 @@ rotate or translate the object.
 The modification is done in the \telfile{USER\_CORRXY} subroutine
 (\bief library), which is called up at the beginning of the computation.
 This subroutine is empty by default and gives an example of programming
-concerning a change of scale and origin, in the form of commented statements.
+a change of scale and origin, within commented statements.
 
 It is also possible to specify the coordinates of the origin point of the mesh.
 This is done using the keyword \telkey{ORIGIN COORDINATES}
@@ -46,10 +46,10 @@ for a use by post-processors for superimposition of results with digital maps
 (coordinates in meshes may be reduced to avoid large real numbers).
 These 2 integers may also be used in subroutines under the names
 \telfile{I\_ORIG} and \telfile{J\_ORIG}.
-Otherwise they are not used yet.
+Otherwise they do not have a use yet.
 
 
-\section{Spherical coordinates (LATITU)}
+\section{Spherical coordinates (\telfile{LATITU})}
 \label{sec:spher:coord:LATI}
 If a simulation is performed over a large domain, \telemac{2d} offers
 the possibility of running the computation with spherical coordinates.
@@ -57,7 +57,7 @@ the possibility of running the computation with spherical coordinates.
 This option is activated when the keyword \telkey{SPHERICAL COORDINATES}
 is set to YES (default value = NO).
 In this case, \telemac{2d} calls a subroutine named \telfile{LATITU}
-at the beginning of the computation.
+through the subroutine \telfile{INBIEF} at the beginning of the computation.
 This calculates a set of tables depending on the latitude of each point.
 To do this, it uses the Cartesian coordinates of each point provided
 in the geometry file, and the latitude of origin point of the mesh
@@ -83,20 +83,20 @@ to introduce any other latitude-dependent computation.
 and \telfile{USER\_PRERES\_TELEMAC2D})}
 
 A standard feature of \telemac{2d} is the storage of some computed variables.
-In some cases, the user may wish to compute other variables and insert them
+In some cases, the user may wish to compute other variables and store them
 in the results file (the number of variables is currently limited to four).
 
 \telemac{2d} has a numbering system in which, for example,
 the array containing the Froude number has the number 7.
 The new variables created by the user may have the numbers 23, 24, 25 and 26.
 
-In the same way, each variable is identified by a letter
-in the keyword \telkey{VARIABLES FOR GRAPHIC PRINTOUTS}.
+In the same way, each variable is identified by a letter in the keyword
+\telkey{VARIABLES FOR GRAPHIC PRINTOUTS}.
 The new variables are identified by the letters N, O, R and Z,
 which correspond respectively to the numbers 23, 24, 25 and 26.
 
-In the \telfile{USER\_NOMVAR\_TELEMAC2D} subroutine, it is possible
-to change the abbreviations (mnemonics) used for the keywords
+In the \telfile{USER\_NOMVAR\_TELEMAC2D} subroutine, it is
+possible to change the abbreviations (mnemonics) used for the keywords
 \telkey{VARIABLES FOR GRAPHIC PRINTOUTS} and
 \telkey{VARIABLES FOR LISTING PRINTOUTS}.
 Sequences of 8 letters may be used.
@@ -109,35 +109,37 @@ VARIABLES FOR GRAPHIC PRINTOUTS : 'U, V, H, B'
 
 In the software data structure, these four variables correspond to the tables
 \telfile{PRIVE\%ADR(1)\%P\%R(X), PRIVE\%ADR(2)\%P\%R(X), PRIVE\%ADR(3)\%P\%R(X)}
-and \telfile{PRIVE\%ADR(4)\%P\%R(X)}, \telfile{PRIVE} (in which \telfile{X}
-is the number of points in the mesh).
+and \telfile{PRIVE\%ADR(4)\%P\%R(X)} (in which \telfile{X} is the number of
+nodes in the mesh).
 These may be used in several places in the programming, like all \tel variables.
 For example, they may be used in the subroutines \telfile{USER\_CORRXY},
 \telfile{USER\_CORSTR}, \telfile{USER\_BORD} etc.
-If a \telfile{PRIVE} table is used for programming a case, it is essential
+If a \telfile{PRIVE} table is used to program a case, it is essential
 to check the value of the keyword \telkey{NUMBER OF PRIVATE ARRAYS}.
-This value fixes the number of tables used (0, 1, 2, 3 or more) and then determines
- the amount of memory space required.
+This value fixes the number of tables used (0, 1, 2, 3 or more)
+and then determines the amount of memory space required.
 The user can also access the tables via the aliases
 \telfile{PRIVE1, PRIVE2, PRIVE3} and \telfile{PRIVE4}.
 
 An example of programming using the second \telfile{PRIVE} table is given below.
-It is being initialized with the value 10.
+It is initialised with the value 10.
+
 \begin{lstlisting}[language=TelFortran]
- DO I=1,NPOIN
-   PRIVE%ADR(2)%P%R(I) = 10.D0
- ENDDO
+DO I=1,NPOIN
+  PRIVE%ADR(2)%P%R(I) = 10.D0
+ENDDO
 \end{lstlisting}
+
 New variables are programmed in two stages:
 
 \begin{itemize}
 \item Firstly, it is necessary to define the name of these new variables
 by filling in the \telfile{USER\_NOMVAR\_TELEMAC2D} subroutine.
-This consists of two equivalent structures, one for English and the other for
-French.
+This consists of two equivalent structures, one for English and the other
+for French.
 Each structure defines the name of the variables in the results file
 that is to be generated and then the name of the variables to be read
-from the previous computation if this is a continuation.
+from the previous computation if this is a restart.
 This subroutine may also be modified when, for example, a file generated with
 the English version of \telemac{2d} is to be continued with the French version.
 In this case, the \telfile{TEXTPR} table of the French part of the subroutine
@@ -145,8 +147,8 @@ must contain the English names of the variables,
 
 \item Secondly, it is necessary to modify the \telfile{USER\_PRERES\_TELEMAC2D}
 subroutine in order to introduce the computation of the new variable(s).
-The variables \telfile{LEO, SORLEO, IMP, SORIMP} are also used to determine
-whether the variable is to be printed in the printout file
+The variables \telfile{LEO, SORLEO, IMP, SORIMP} are also used to
+determine whether the variable is to be printed in the printout file
 or in the results file at the time step in question.
 \end{itemize}
 
@@ -158,7 +160,7 @@ initialize a table or memory space to a particular value.
 To do that, the \bief library furnishes a subroutine called \telfile{FILPOL}
 that lets the user modify or initialize tables in particular mesh areas.
 
-A call of the type \telfile{CALL FILPOL (F,C, XSOM, YSOM, NSOM, MESH)}
+A call of the type \telfile{CALL FILPOL (F, C, XSOM, YSOM, NSOM, MESH)}
 fills table \telfile{F} with the \telfile{C} value in the convex polygon
 defined by \telfile{NSOM} nodes (coordinates \telfile{XSOM, YSOM}).
 The variable \telfile{MESH} is needed for the \telfile{FILPOL} subroutine
@@ -181,10 +183,10 @@ specifies the format of this binary file ('SERAFIN ' by default).
 
 The \telfile{BIEF\_VALIDA} subroutine is called at each time step
 when the keyword \telkey{VALIDATION} has the value YES,
-enabling a comparison to be done with the analytical solution at each time step.
+enabling a comparison to be done with the validation solution at each time step.
 By default, the \telfile{BIEF\_VALIDA} subroutine only does a comparison
 with the last time step.
-The results of this comparison are given in the control listing.
+The results of this comparison are given in the output listing.
 
 
 \section{Changing the type of a boundary condition (\telfile{PROPIN\_TELEMAC2D})}
@@ -208,7 +210,7 @@ and must be done with great care!
 The principle of coupling two (or in theory more) simulation modules involves
 running the two calculations simultaneously and exchanging the various results
 at each time step.
-For example, the following principle is used to link a hydrodynamic module
+For example, the following principle is used to couple a hydrodynamic module
 and a sediment transport module:
 
 \begin{itemize}
@@ -228,20 +230,20 @@ at the next time step, and so on.
 \end{itemize}
 
 Several modules can be coupled in the current version of the code:
-the sedimentary transport modules \gaia or \sisyphe,
+the sediment transport modules \gaia or \sisyphe,
 the sea state computational module \tomawac,
 the water quality module \waqtel (and even DELWAQ)
 and the ice module \khione.
 The time step used for the two calculations is not necessarily the same and is
 managed automatically by the coupling algorithms
 and the keyword \telkey{COUPLING PERIOD FOR SISYPHE} and
-\telkey{COUPLING PERIOD FOR TOMAWAC} which default values are 1
+\telkey{COUPLING PERIOD FOR TOMAWAC} with default values 1
 (coupling at every iteration).
 
-This function requires two keywords.
+This feature requires two keywords.
 The keyword \telkey{COUPLING WITH} indicates which simulation code is to be
 coupled with \telemac{2d}.
-The value of this keyword can be:
+The values of this keyword can be:
 
 \begin{itemize}
 \item \telkey{COUPLING WITH} = `GAIA' for coupling with the \gaia module,
@@ -279,14 +281,16 @@ The possible choices are:
 \item 5: EUTRO module,
 \item 7: MICROPOL module,
 \item 11: THERMIC module,
-\item 13: AED2 model,
+%\item 13: AED2 model,
 \item 17: degradation law.
 \end{itemize}
 
 Several modules can be combined by giving the multiplication of the process
 choices, e.g. 55 = 5 $\times$ 11 activates EUTRO and THERMIC modules.
-It is noted that AED2 should be used on its own, for the time being,
-without possible combination with other processes.
+Note that AED2 is currently not coupled with \telemac{2d} contrary to
+\telemac{3d}.
+%It is noted that AED2 should be used on its own, for the time being,
+%without possible combination with other processes.
 Please refer to the \waqtel documentation for additional informations for
 \waqtel.\\
 
@@ -299,7 +303,7 @@ has to generate the appropriate files necessary to run a water quality
 simulation with DELWAQ.
 In that case, it is necessary to specify \telkey{COUPLING WITH} = 'DELWAQ'.
 Please refer to Appendix \ref{tel2d:app4} for all informations concerning
-the communication with DELWAQ.\\
+communications with DELWAQ.\\
 
 In the case of coupling \telemac{2d} and \sisyphe, the bed roughness can be
 determined directly by \sisyphe if the keyword
@@ -336,7 +340,7 @@ in order to determine the phase and amplitude of one or more waves.
 This can only be done if the mean level is zero.
 Amplitudes and phases are supplied for each point and for each period.
 
-This function is activated by the keyword \telkey{FOURIER ANALYSIS PERIODS} and
+This feature is activated by the keyword \telkey{FOURIER ANALYSIS PERIODS} and
 provides a list of the analysis periods (e.g. the periods of tide-induced waves
 that are to be studied).
 The results are supplied directly at the last time step in the results file with
@@ -355,7 +359,7 @@ the computation will stop with an error message.
 
 \section{Checking the mesh (\telfile{CHECKMESH})}
 
-The subroutine \telfile{CHECKMESH} of the \bief library is available to look for
+The \telfile{CHECKMESH} subroutine of the \bief library is available to look for
 errors in the mesh, e.g. superimposed points \ldots
 The keyword \telkey{CHECKING THE MESH} (default value = NO) should be activated
 to YES to call this subroutine.

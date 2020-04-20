@@ -13,6 +13,7 @@ from utils.progressbar import ProgressBar
 from scipy.spatial import cKDTree
 from matplotlib.tri import Triangulation
 
+
 class Selafin(object):
     """                                 (DOXYGEN parsing)
     Class Selafin
@@ -50,9 +51,9 @@ class Selafin(object):
         self.file.update({'name': file_name})
         # "<" means little-endian, ">" means big-endian
         self.file.update({'endian': ">"})
-        self.file.update({'float': ('f', 4)}) #'f' size 4, 'd' = size 8
+        self.file.update({'float': ('f', 4)})  # 'f' size 4, 'd' = size 8
         if file_name != '':
-            self.file.update({'hook':open(file_name, 'rb')})
+            self.file.update({'hook': open(file_name, 'rb')})
             # ~~> checks endian encoding
             self.file['endian'] = get_endian_from_char(self.file['hook'], 80)
             # ~~> header parameters
@@ -61,12 +62,12 @@ class Selafin(object):
             # ~~> sizes and connectivity
             self.get_header_integers_slf()
             # ~~> checks float encoding
-            self.file['float'] = get_float_type_from_float(\
+            self.file['float'] = get_float_type_from_float(
                       self.file['hook'], self.file['endian'], self.npoin3)
             # ~~> xy mesh
             self.get_header_floats_slf()
             # ~~> time series
-            self.tags = {'cores':[], 'times':[]}
+            self.tags = {'cores': [], 'times': []}
             self.get_time_history_slf()
         else:
             self.title = ''
@@ -92,12 +93,12 @@ class Selafin(object):
             self.ipob3 = []
             self.meshx = []
             self.meshy = []
-            self.tags = {'cores':[], 'times':[]}
+            self.tags = {'cores': [], 'times': []}
             self.datetime = np.asarray([1972, 7, 13, 17, 15, 13])
         self.fole = {}
         self.fole.update({'name': ''})
-        self.fole.update({'endian':self.file['endian']})
-        self.fole.update({'float':self.file['float']})
+        self.fole.update({'endian': self.file['endian']})
+        self.fole.update({'float': self.file['float']})
         self.tree = None
         self.neighbours = None
         self.edges = None
@@ -151,13 +152,13 @@ class Selafin(object):
         endian = self.file['endian']
         # ~~ Read nelem3, npoin3, ndp3, nplan ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         _, self.nelem3, self.npoin3, self.ndp3, self.nplan, _ = \
-                  unpack(endian+'6i', f.read(4+16+4))
+            unpack(endian+'6i', f.read(4+16+4))
         self.nelem2 = self.nelem3
         self.npoin2 = self.npoin3
         self.ndp2 = self.ndp3
         self.nplan = max(1, self.nplan)
         if self.iparam[6] > 1:
-            self.nplan = self.iparam[6] # /!\ How strange is that ?
+            self.nplan = self.iparam[6]  # /!\ How strange is that ?
             self.nelem2 = self.nelem3 // (self.nplan - 1)
             self.npoin2 = self.npoin3 // self.nplan
             self.ndp2 = self.ndp3 // 2
@@ -188,13 +189,13 @@ class Selafin(object):
         # ~~ Read the x-coordinates of the nodes ~~~~~~~~~~~~~~~~~~
         ftype, fsize = self.file['float']
         f.seek(4, 1)
-        self.meshx = np.asarray(\
+        self.meshx = np.asarray(
                 unpack(endian+str(self.npoin3)+ftype,
                        f.read(fsize*self.npoin3))[0:self.npoin2])
         f.seek(4, 1)
         # ~~ Read the y-coordinates of the nodes ~~~~~~~~~~~~~~~~~~
         f.seek(4, 1)
-        self.meshy = np.asarray(\
+        self.meshy = np.asarray(
                 unpack(endian+str(self.npoin3)+ftype,
                        f.read(fsize*self.npoin3))[0:self.npoin2])
         f.seek(4, 1)
@@ -277,7 +278,7 @@ class Selafin(object):
         """
         Set alter values
         """
-        if vrs != None:
+        if vrs is not None:
             self.alter_zm = m_z
             self.alter_zp = p_z
             self.alter_z_names = vrs.split(':')
@@ -291,7 +292,7 @@ class Selafin(object):
         ftype, fsize = self.fole['float']
         # ~~ Write title ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         f.write(pack(endian+'i80si', 80, self.title.encode('utf8'), 80))
-      # ~~ Write nbv(1) and nbv(2) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # ~~ Write nbv(1) and nbv(2) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         f.write(pack(endian+'iiii', 4+4, self.nbv1, self.nbv2, 4+4))
         # ~~ Write variable names and units ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         for i in range(self.nbv1):
@@ -348,7 +349,7 @@ class Selafin(object):
         endian = self.fole['endian']
         ftype, fsize = self.fole['float']
         # Print time record
-        if type(time) == type(0.0):
+        if isinstance(time, type(0.0)):
             f.write(pack(endian+'i'+ftype+'i', fsize, time, fsize))
         else:
             f.write(pack(endian+'i'+ftype+'i', fsize, self.tags['times'][time],
@@ -409,7 +410,8 @@ class Selafin(object):
             for var in range(len(self.cldnames)):
                 if alter_var.lower() in self.cldnames[var].lower():
                     varsor[var+self.nbv1] = \
-                            self.alter_zm * varsor[var+self.nbv1]+ self.alter_zp
+                            self.alter_zm * varsor[var+self.nbv1] +\
+                            self.alter_zp
         return varsor
 
     def get_series(self, nodes, vars_indexes=None, showbar=True):
@@ -455,11 +457,11 @@ class Selafin(object):
                     jnod = onodes[0]
                     f.seek(fsize*(jnod[1]-1), 1)
                     z[vars_indexes.index(ivar), jnod[0], time] = \
-                              unpack(endian+ftype, f.read(fsize))[0]
+                        unpack(endian+ftype, f.read(fsize))[0]
                     for inod in onodes[1:]:
                         f.seek(fsize*(inod[1]-jnod[1]-1), 1)
                         z[vars_indexes.index(ivar), inod[0], time] = \
-                                  unpack(endian+ftype, f.read(fsize))[0]
+                            unpack(endian+ftype, f.read(fsize))[0]
                         jnod = inod
                     f.seek(fsize*self.npoin3-fsize*jnod[1], 1)
                 else:
@@ -475,7 +477,7 @@ class Selafin(object):
 
         @param reset (boolean) Force reset of tree
         """
-        if reset or self.tree == None:
+        if reset or self.tree is None:
             isoxy = np.column_stack((np.sum(self.meshx[self.ikle2],
                                             axis=1)/3.0,
                                      np.sum(self.meshy[self.ikle2],
@@ -488,8 +490,8 @@ class Selafin(object):
 
         @param reset (boolean) Force computing neighbours
         """
-        if reset or self.neighbours == None or self.edges == None:
-            #from matplotlib.tri import Triangulation
+        if reset or self.neighbours is None or self.edges is None:
+            # from matplotlib.tri import Triangulation
             mpltri = Triangulation(self.meshx, self.meshy, self.ikle2)\
                         .get_cpp_triangulation()
             self.neighbours = mpltri.get_neighbors()
@@ -501,4 +503,3 @@ class Selafin(object):
         """
         if self.file['name'] != '':
             self.file['hook'].close()
-

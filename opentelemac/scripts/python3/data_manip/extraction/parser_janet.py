@@ -59,11 +59,12 @@ VAR_3DBL = re.compile(r'(?P<number1>[+-]?(|[^a-zA-Z(,])(?:(\d+(|\.)\d*[dDeE](\+|
 # ____/ Toolbox for I2S/I3S /______________________________________/
 #
 
+
 def get_insel(file_name):
     # ~~ Get all ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     core = get_file_content(file_name)
     if not re.match(DAT_FOOTER, core[len(core)-1]):
-        raise TelemacException(\
+        raise TelemacException(
              '\nCould not parse the following '
              'end line of the file: {}'.format(core[len(core)-1]))
 
@@ -106,7 +107,7 @@ def get_insel(file_name):
                     xyi.append((proc.group('number1'), proc.group('number2')))
                     val.append('')
                 else:
-                    raise TelemacException(\
+                    raise TelemacException(
                         '\nCould not parse the following '
                         'polyline record: {}'.format(core[iline]))
         iline += 1
@@ -134,15 +135,18 @@ def get_insel(file_name):
 
     return file_type, npoin, poly, vals, typ
 
+
 """
     self.poly is a numpy object, while self.type is not.
 """
+
+
 class Insel(object):
 
     def __init__(self, file_name):
         self.file_name = file_name
         self.file_type, self.npoin, self.poly, self.vals, self.typ = \
-                  get_insel(self.file_name)
+            get_insel(self.file_name)
 
     def toi2s(self, ins):
         ins.head = []
@@ -161,14 +165,16 @@ class Insel(object):
 # ____/ MAIN CALL  /_______________________________________________/
 #
 
+
 __author__ = "Sebastien E. Bourban"
 __date__ = "$09-Sep-2011 08:51:29$"
+
 
 def main():
     """ Main function of parserJanet """
 
     print('\n\nInterpreting command line options\n'+'~'*72+'\n')
-    parser = ArgumentParser(\
+    parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
         description=('''\n
 Tools for handling Janet native files in python.
@@ -178,7 +184,7 @@ Tools for handling Janet native files in python.
     options = parser.parse_args()
 
     if len(options.args) != 1:
-        raise TelemacException(\
+        raise TelemacException(
                 '\nThis program takes only one Insel type file '
                 'as a time as input.\n'
                 ' ... an i2s or i3s file of the same name '
@@ -202,6 +208,7 @@ Tools for handling Janet native files in python.
     print('\n\nMy work is done\n\n')
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

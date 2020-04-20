@@ -22,6 +22,7 @@ from utils.files import put_file_content, get_file_content, zipsortie, \
 from utils.exceptions import TelemacException
 from postel.parser_output import get_latest_output_files
 
+
 class StudyException(TelemacException):
     """
     Exception from Study class
@@ -33,10 +34,11 @@ class StudyException(TelemacException):
         @param study (Study) Study object for which there was and error
         @param message (String) The error message
         """
-        string = "\n{} Study of {}:\n".format(\
-                study.code_name,
-                study.steering_file)
+        string = "\n{} Study of {}:\n".format(
+            study.code_name,
+            study.steering_file)
         super().__init__(string+message)
+
 
 class Study():
     """
@@ -53,8 +55,8 @@ class Study():
                                          working directory
         """
         if not path.exists(steering_file):
-            raise TelemacException(\
-              "Could not find your steering file :\n{}".format(steering_file))
+            raise TelemacException(
+                "Could not find your steering file :\n{}".format(steering_file))
         self.steering_file = steering_file
         self.case_dir = path.dirname(path.realpath(self.steering_file))
         self.working_dir = ''
@@ -64,7 +66,6 @@ class Study():
         self.run_cmd = ''
         self.mpi_cmd = ''
         self.par_cmd = ''
-
 
         # Getting configuration information
         self.cfgname = CFGS.cfgname
@@ -87,8 +88,9 @@ class Study():
         self.dico_file = path.join(self.cfg['MODULES'][self.code_name]['path'],
                                    self.code_name+'.dico')
         if not path.exists(self.dico_file):
-            raise StudyException(self,\
-                'Could not find the dictionary file: {}'.format(self.dico_file))
+            raise StudyException(self,
+                                 'Could not find the dictionary file: {}'
+                                 .format(self.dico_file))
 
         # ~~> processing steegin file
         self.cas = TelemacCas(self.steering_file, self.dico_file)
@@ -104,7 +106,7 @@ class Study():
 
         self.cpl_cases = {}
 
-        #/!\ having done the loop this way it will not check for DELWAQ
+        # /!\ having done the loop this way it will not check for DELWAQ
         cpl_codes = []
         for cplage in cplages:
             for mod in self.cfg['MODULES']:
@@ -113,15 +115,14 @@ class Study():
 
         for code in cpl_codes:
             # ~~~~ Extract the CAS File name ~~~~~~~~~~~~~~~~~~~~~~~
-            cas_name_cpl = self.cas.get(\
-                      code.upper()+' STEERING FILE')
-            cas_name_cpl = path.join(self.case_dir,
-                                     cas_name_cpl)
+            cas_name_cpl = self.cas.get(code.upper()+' STEERING FILE')
+            cas_name_cpl = path.join(self.case_dir, cas_name_cpl)
 
             if not path.isfile(cas_name_cpl):
-                raise StudyException(self,\
-                     'Missing coupling steering file for '+code+': '+\
-                           cas_name_cpl)
+                raise StudyException(self,
+                                     'Missing coupling steering file for '
+                                     + code + ': ' +
+                                     cas_name_cpl)
 
             # ~~ Read the coupled CAS File ~~~~~~~~~~~~~~~~~~~~~~~~~
             dico_file_plage = path.join(self.cfg['MODULES'][code]['path'],
@@ -133,15 +134,14 @@ class Study():
         # ~~> structural assumptions
         self.bin_path = path.join(self.cfg['root'], 'builds',
                                   self.cfgname, 'bin')
-        self.obj_path = self.cfg['MODULES'][self.code_name]['path'].replace(\
-               path.join(self.cfg['root'], 'sources'),
-               path.join(self.cfg['root'], 'builds', self.cfgname, 'obj'))
+        self.obj_path = self.cfg['MODULES'][self.code_name]['path'].replace(
+            path.join(self.cfg['root'], 'sources'),
+            path.join(self.cfg['root'], 'builds', self.cfgname, 'obj'))
         self.lib_path = path.join(self.cfg['root'], 'builds',
                                   self.cfgname, 'lib')
 
         self.set_working_dir(working_dir)
         self.set_exe()
-
 
     def set_working_dir(self, working_dir_name=''):
         """
@@ -153,9 +153,9 @@ class Study():
         """
         # ~~> default temporary directory name
         # /!\ includes date/time in the name
-        tmp_dir = self.case_dir+sep+\
-                  path.basename(self.steering_file) + '_' + \
-                  strftime("%Y-%m-%d-%Hh%Mmin%Ss", localtime())
+        tmp_dir = self.case_dir+sep +\
+            path.basename(self.steering_file) + '_' + \
+            strftime("%Y-%m-%d-%Hh%Mmin%Ss", localtime())
         wdir = tmp_dir
         self.working_dir = wdir
         self.sortie_file = wdir
@@ -171,7 +171,6 @@ class Study():
         # ~~> dealing with the temporary directory
         if not path.exists(self.working_dir):
             mkdir(self.working_dir)
-
 
     def copy_files(self, dir_path, verbose=False, copy_cas_file=True):
         """
@@ -191,8 +190,6 @@ class Study():
             if copy_cas_file:
                 shutil.copy2(self.steering_file,
                              path.join(dir_path, self.steering_file))
-
-
         else:
             self.cas.copy_cas_files(dir_path, verbose=verbose,
                                     copy_cas_file=copy_cas_file)
@@ -214,17 +211,18 @@ class Study():
             return
 
         self.nctile, self.ncnode, ncsize = \
-                check_para_tilling(nctile, ncnode,
-                                   ncsize, 1, self.ncsize)
+            check_para_tilling(nctile, ncnode,
+                               ncsize, 1, self.ncsize)
         if self.cfg['MPI'] != {}:
             ncsize = max(1, ncsize)
         elif ncsize > 1:
-            raise StudyException(self,\
-              '\nParallel inconsistency: ' \
-              '\n     +> you may be using an inappropriate configuration: '\
-              +self.cfgname+ \
-              '\n     +> or may be wishing for scalar mode while setting to '\
-              +str(ncsize)+' processors')
+            raise StudyException(
+                self,
+                '\nParallel inconsistency: '
+                '\n     +> you may be using an inappropriate configuration: '
+                + self.cfgname +
+                '\n     +> or may be wishing for scalar mode while setting to '
+                + str(ncsize)+' processors')
         if self.cfg['MPI'] == {}:
             ncsize = 0
         # ~~ Forces keyword if parallel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -248,7 +246,7 @@ class Study():
             create_mascaret_files(self.cfg, path.basename(self.steering_file))
             return
         # >>> Copy INPUT files into wdir
-        process_lit(\
+        process_lit(
             self.cas,
             self.case_dir,
             self.ncsize,
@@ -258,7 +256,7 @@ class Study():
         # module might have sections and zones as well
 
         for cas_cpl in self.cpl_cases.values():
-            process_lit(\
+            process_lit(
                 cas_cpl,
                 self.case_dir,
                 self.ncsize,
@@ -268,7 +266,6 @@ class Study():
         chdir(self.working_dir)
         # >>> Creating LNG file
         process_config(self.lang)
-
 
     def build_mpi_cmd(self, hosts):
         """
@@ -281,11 +278,11 @@ class Study():
             if 'HOSTS' in self.cfg['MPI']:
                 self.cfg['MPI']['HOSTS'] = hosts.replace(':', ' ')
             else:
-                self.cfg['MPI'].update({'HOSTS':hosts.replace(':', ' ')})
+                self.cfg['MPI'].update({'HOSTS': hosts.replace(':', ' ')})
         # ~~> MPI Command line and options ( except <exename> )
         # /!\ cfg['MPI'] is also modified
         mpicmd = get_mpi_cmd(self.cfg['MPI'])\
-                  .replace('<root>', self.cfg['root'])
+            .replace('<root>', self.cfg['root'])
         # mpi_exec supports: -n <ncsize> -wdir <wdir> <exename>
         mpicmd = mpicmd.replace('<ncsize>', str(self.ncsize))
         # >>> Parallel execution configuration
@@ -322,7 +319,7 @@ class Study():
         # >>> Placing yourself in the temporary folder
         chdir(self.working_dir)
 
-        self.exe_name = process_executable(\
+        self.exe_name = process_executable(
             self.working_dir,
             self.bin_path, self.lib_path,
             self.obj_path, self.cfg['SYSTEM'],
@@ -399,7 +396,7 @@ class Study():
             weir_name = ''
         # Identify the partitioner to use for Partel
         i_part = get_partitionner(self.cas.get('PARTITIONING TOOL'))
-        #Are we gonna concatenate the output of partel or not ?
+        # Are we gonna concatenate the output of partel or not ?
         concat = self.cas.get('CONCATENATE PARTEL OUTPUT')
         s_concat = 'YES' if concat else 'NO'
 
@@ -449,12 +446,16 @@ class Study():
         @return job_id (integer) Id of the job that was launched
         """
         # /!\ This is being done in parallel when multiple cas_files
-        #if not hpcpass:
+        # if not hpcpass:
         chdir(self.working_dir)
         # ~~> HPC Command line launching runcode
         hpccmd = get_hpc_cmd(self.cfg['HPC']).replace('<root>',
                                                       self.cfg['root'])
         hpccmd = hpccmd.replace('<wdir>', self.working_dir)
+        if 'id_log' in options:
+            hpccmd = hpccmd.replace('<id_log>', options.id_log)
+        else:
+            hpccmd = hpccmd.replace('<id_log>', 'id.log')
         # ~~> HPC dependency between jobs
         hpcjob = get_hpc_depend(self.cfg['HPC'])
         if hpcjob != '' and job_id != '':
@@ -478,9 +479,9 @@ class Study():
         run_code(hpccmd, sortie)
 
         job_id = get_file_content(sortie)[0].strip()
-        print('... Your simulation ('+self.steering_file+\
+        print('... Your simulation ('+self.steering_file +
               ') has been launched through the queue.\n')
-        print('   +> You need to wait for completion before re-collecting'\
+        print('   +> You need to wait for completion before re-collecting'
               'files using the option --merge\n')
 
         return job_id
@@ -518,7 +519,6 @@ class Study():
 
         return stdin, sortie
 
-
     def run_hpc_full(self, options, job_id=''):
         """
         Rerun whole script in jpbscheduler
@@ -530,6 +530,10 @@ class Study():
         hpccmd = get_hpc_cmd(self.cfg['HPC']).replace('<root>',
                                                       self.cfg['root'])
         hpccmd = hpccmd.replace('<wdir>', self.working_dir)
+        if 'id_log' in options:
+            hpccmd = hpccmd.replace('<id_log>', options.id_log)
+        else:
+            hpccmd = hpccmd.replace('<id_log>', 'id.log')
 
         # ~~> HPC dependency between jobs
         hpcjob = get_hpc_depend(self.cfg['HPC'])
@@ -578,13 +582,12 @@ class Study():
         run_code(hpccmd, sortie)
 
         job_id = get_file_content(sortie)[0].strip()
-        print('... Your simulation ('+self.steering_file+\
+        print('... Your simulation ('+self.steering_file +
               ') has been launched through the queue.\n')
-        print('    +> You need to wait for completion '\
+        print('    +> You need to wait for completion '
               'before checking on results.\n')
 
         return job_id
-
 
     def run(self, options):
         """
@@ -597,7 +600,8 @@ class Study():
         # You need to do this if ...
         #     - options.split is out already
         #     - options.compileonly is out already
-        #     - if options.run, obvisouly this is the main run of the executable
+        #     - if options.run, obvisouly this is the main run
+        #        of the executable
         # Inputs ...
         #     - runcmd if options.hpc
         #     - cas_files[name]['run'] and cas_files[name]['sortie'] otherwise
@@ -614,15 +618,17 @@ class Study():
         # Inputs ...
         #     - ncsize, nctilem ncnode, wdir, casdir, options, code_name
         #     - cfg['HPC']['STDIN'] and cfg['MPI']['HOSTS']
-        #     - cas_files.values()[0]['sortie'] and cas_files.values()[0]['exe']
+        #     - cas_files.values()[0]['sortie'] and
+        #       cas_files.values()[0]['exe']
         #     - cas_files[name]['run']
         # Outputs ...
         #     > runcmd and put_file_content(stdinfile,)
         elif 'STDIN' not in self.cfg['HPC']:
-            raise StudyException(self,\
-                   '\nI would need the key hpc_stdin in you '\
-                   'configuration so I can launch your simulation '\
-                   'on the HPC queue.')
+            raise StudyException(
+                self,
+                '\nI would need the key hpc_stdin in you '
+                'configuration so I can launch your simulation '
+                'on the HPC queue.')
         elif 'EXCODE' in self.cfg['HPC']:
             self.run_hpc_exe(options)
         elif 'PYCODE' in self.cfg['HPC']:
@@ -638,22 +644,22 @@ class Study():
         # ~~> Path
         bin_path = path.join(self.cfg['root'], 'builds', self.cfgname, 'bin')
         execmd = get_gretel_cmd(bin_path, self.cfg)\
-                  .replace('<root>', self.cfg['root'])
+            .replace('<root>', self.cfg['root'])
         # ~~> Run GRETEL
         chdir(self.working_dir)
         # Global GEO file
         cas = self.cas
         g_geo, g_fmt_geo, g_bnd = get_glogeo(cas)
-        run_recollection(\
-                execmd, cas, g_geo, g_fmt_geo, g_bnd,
-                self.ncsize)
+        run_recollection(
+            execmd, cas, g_geo, g_fmt_geo, g_bnd,
+            self.ncsize)
 
         # Running it for coupled steering files
         for cas_cpl in self.cpl_cases.values():
             g_geo, g_fmt_geo, g_bnd = get_glogeo(cas_cpl)
-            run_recollection(\
-                    execmd, cas_cpl, g_geo, g_fmt_geo, g_bnd,
-                    self.ncsize)
+            run_recollection(
+                execmd, cas_cpl, g_geo, g_fmt_geo, g_bnd,
+                self.ncsize)
 
     def gather(self, sortie_file, nozip):
         """

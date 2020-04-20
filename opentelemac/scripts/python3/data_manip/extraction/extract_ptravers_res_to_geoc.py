@@ -10,6 +10,7 @@ import argparse
 from data_manip.formats.mascaret_file import MascaretFile, Reach
 from data_manip.formats.mascaretgeo_file import MascaretGeoFile
 
+
 def extract_ptravers_res_to_geoc(name, output_name, record):
     """
     Extract from ptravers Courlis res file to Croulise geometry file at a given
@@ -28,7 +29,7 @@ def extract_ptravers_res_to_geoc(name, output_name, record):
         output_name = '{}_time_{}s.geoC'.format(short_name,
                                                 courlis_ptravers.times[record])
 
-    print('\nExtracting time {}s from {} to {}\n'\
+    print('\nExtracting time {}s from {} to {}\n'
           .format(courlis_ptravers.times[record], name, output_name))
 
     # minus 4 because there are 4 variables in addition to layers elevation
@@ -38,7 +39,7 @@ def extract_ptravers_res_to_geoc(name, output_name, record):
 
     section_vars_indexes = [i for i in range(0, nlayers + 2)]
 
-    _, layers_elevation = courlis_ptravers.get_values(\
+    _, layers_elevation = courlis_ptravers.get_values(
                              record,
                              get_section_values=True,
                              section_vars_indexes=section_vars_indexes)
@@ -69,6 +70,7 @@ def extract_ptravers_res_to_geoc(name, output_name, record):
 
     courlis_geo.save(output_name)
 
+
 def extrac_ptraver_parser(subparser):
     """
     Build subparser
@@ -78,9 +80,9 @@ def extrac_ptraver_parser(subparser):
     @returns (ArgumentParser) The updated parser
     """
     parser = subparser.add_parser('extract_ptravers_res_to_geoc',
-                                  help=\
-                    'Extract from ptravers Courlis res file to Courlis geometry'
-                    'file at a given record')
+                                  help='Extract from ptravers Courlis\
+                                   res file to Courlis geometry'
+                                  'file at a given record')
     parser.add_argument("args", metavar='ptravers Courlis file')
     parser.add_argument("-o", "--output",
                         dest="outputFileName",
@@ -89,10 +91,12 @@ def extrac_ptraver_parser(subparser):
                              "geometry file")
     parser.add_argument("-r", "--time-record",
                         dest="record", type=int, default='-1',
-                        help="Record number of the state you want extract from "
+                        help="Record number of the state you want\
+                              to extract from "
                              "ptravers to a geometry courlis file")
 
     return subparser
+
 
 def main():
     """
@@ -100,7 +104,8 @@ def main():
     """
 
     parser = argparse.ArgumentParser(
-        description='Extract from ptravers Courlis res file to Courlis geometry'
+        description='Extract from ptravers Courlis res file to\
+                        Courlis geometry'
                     'file at a given record')
 
     parser.add_argument("args", metavar='ptravers Courlis file')
@@ -111,13 +116,15 @@ def main():
                              "geometry file")
     parser.add_argument("-r", "--time-record",
                         dest="record", type=int, default='-1',
-                        help="Record number of the state you want extract from "
+                        help="Record number of the state you want\
+                                to extract from "
                              "ptravers to a geometry courlis file")
 
     options = parser.parse_args()
 
     extract_ptravers_res_to_geoc(options.args, options.outputFileName,
                                  options.record)
+
 
 if __name__ == '__main__':
     main()

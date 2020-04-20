@@ -61,7 +61,7 @@ def is_in_polygon(pt_x, pt_y, poly):
             llambda = (dist_a*(ydep-pt_y) - dist_b*(xdep-pt_x)) / det
             # if the intersection point is a vertex, increases the angle
             # otherwise the point would be counted twice instead of just once
-            if(abs(pt_x+dist_a*mu_val-xdep) <= EPS \
+            if(abs(pt_x+dist_a*mu_val-xdep) <= EPS
                 and abs(pt_y+dist_b*mu_val-ydep) <= EPS) or \
               (abs(pt_x+dist_a*mu_val-xarr) <= EPS
                and abs(pt_y+dist_b*mu_val-yarr) <= EPS):

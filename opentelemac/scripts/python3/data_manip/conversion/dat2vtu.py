@@ -37,46 +37,46 @@ def write_one_step_in_time(file_name,
         fle.write('<VTKFile type="UnstructuredGrid" version="0.1"> \n')
         fle.write('<UnstructuredGrid> \n')
         fle.write('<Piece NumberOfPoints="'
-                  +str(number_of_points)+
+                  + str(number_of_points) +
                   '" NumberOfCells="1"> \n')
         fle.write('<PointData> \n')
-        fle.write('<DataArray type="Int32" '\
+        fle.write('<DataArray type="Int32" '
                   'Name="id" format="ascii"> \n')
         for i in range(number_of_points):
             fle.write(str(p_id[i])+' ')
-            if (i+1)%6 == 0 or (i+1) == number_of_points:
+            if (i+1) % 6 == 0 or (i+1) == number_of_points:
                 fle.write('\n')
         fle.write('</DataArray> \n')
-        fle.write('<DataArray type="Int32" '\
+        fle.write('<DataArray type="Int32" '
                   'Name="state" format="ascii"> \n')
         for i in range(number_of_points):
             fle.write(str(state[i])+' ')
-            if (i+1)%6 == 0 or (i+1) == number_of_points:
+            if (i+1) % 6 == 0 or (i+1) == number_of_points:
                 fle.write('\n')
         fle.write('</DataArray> \n')
         fle.write('</PointData> \n')
         fle.write('<Points> \n')
-        fle.write('<DataArray type="Float32" '\
+        fle.write('<DataArray type="Float32" '
                   'NumberOfComponents="3" format="ascii"> \n')
         for i in range(3*number_of_points):
             fle.write(str(xyz_position[i])+' ')
-            if (i+1)%6 == 0 or (i+1) == 3*number_of_points:
+            if (i+1) % 6 == 0 or (i+1) == 3*number_of_points:
                 fle.write('\n')
         fle.write('</DataArray> \n')
         fle.write('</Points> \n')
         fle.write('<Cells> \n')
-        fle.write('<DataArray type="Int32" '\
+        fle.write('<DataArray type="Int32" '
                   'Name="connectivity" format="ascii"> \n')
         for i in range(number_of_points):
             fle.write(str(i)+' ')
-            if (i+1)%6 == 0 or (i+1) == number_of_points:
+            if (i+1) % 6 == 0 or (i+1) == number_of_points:
                 fle.write('\n')
         fle.write('</DataArray> \n')
-        fle.write('<DataArray type="Int32" '\
+        fle.write('<DataArray type="Int32" '
                   'Name="offsets" format="ascii"> \n')
         fle.write(str(number_of_points)+'\n')
         fle.write('</DataArray> \n')
-        fle.write('<DataArray type="Int32" '\
+        fle.write('<DataArray type="Int32" '
                   'Name="types" format="ascii"> \n')
         fle.write("1 \n")
         fle.write('</DataArray> \n')
@@ -92,7 +92,7 @@ def write_one_step_in_time(file_name,
         with open(file_name_path_pvd, 'w') as fle:
             fle.write('<VTKFile type="Collection" version="0.1"> \n')
             fle.write('<Collection> \n')
-            fle.write('<DataSet timestep="'+str(time)+'" '\
+            fle.write('<DataSet timestep="'+str(time)+'" '
                       'group="" part="0" file="'+file_name_path_vtu+'"/>\n')
             fle.write('</Collection> \n')
             fle.write('</VTKFile> \n')
@@ -106,6 +106,7 @@ def write_one_step_in_time(file_name,
                       'group="" part="0" file="'+file_name_path_vtu+'"/>\n'
             fle.write(file_text[:where_is] + new_set + file_text[where_is:])
 
+
 def convert_drogues_file_to_vtu(file_name_path,
                                 output_file_name_path=None):
     """
@@ -115,7 +116,7 @@ def convert_drogues_file_to_vtu(file_name_path,
     @param output_file_name_path (string) Path of output file
     """
     if not path.exists(file_name_path):
-        raise TelemacException(\
+        raise TelemacException(
                 '... could not find ASCII file for drogues: '
                 '{}'.format(file_name_path))
     with open(file_name_path, 'r', encoding='utf-8') as fle:
@@ -176,6 +177,7 @@ def convert_drogues_file_to_vtu(file_name_path,
             else:
                 is_time_step = False
 
+
 def dat2vtu_parser(subparser):
     """
     Defines the arguments for argparse
@@ -184,9 +186,10 @@ def dat2vtu_parser(subparser):
 
     @returns (ArgumentParser)  The updated parser
     """
-    parser = subparser.add_parser('dat2vtu',\
-            help="Convert a drogues file (output of telemac) "\
-                 "into a VTU file (Paraview)")
+    parser = subparser.add_parser('dat2vtu',
+                                  help="Convert a drogues file\
+                                        (output of telemac) "
+                                  "into a VTU file (Paraview)")
     parser.add_argument(
         "drogues_file", default="",
         help="Name of the drogue file")

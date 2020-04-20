@@ -15,7 +15,8 @@ class MascaretGeoFile:
     - file_name (str) file name
     - fformat (str) file format ('opt' or 'rub')
 
-    - has_ref (bool): has X and Y coordinates for points (and hydraulic axis position)
+    - has_ref (bool): has X and Y coordinates for points
+        (and hydraulic axis position)
     - has_layers (bool): has sediment layers
     - nlayers (int): number of layers
     - layer_names (list): list of layer names
@@ -26,8 +27,9 @@ class MascaretGeoFile:
         """
         @param file_name (str) file name
         @param fformat (str) file format ('opt' or 'rub')
-        @param mode (str) define the mode for the class, 'read' by default to read a file,
-                          anything else to create a file
+        @param mode (str) define the mode for the class,
+            'read' by default to read a file,
+            anything else to create a file
         """
         self.file_name = file_name
         self.reaches = OrderedDict()
@@ -36,15 +38,17 @@ class MascaretGeoFile:
         self.nlayers = 0
         self.layer_names = []
 
-        if mode=='read':
+        if mode == 'read':
             # File format information
             if fformat is None:
                 self.fformat = os.path.splitext(file_name)[1][1:]
             else:
                 self.fformat = fformat.lower().strip()
             if self.fformat not in ('geo', 'georef'):
-                raise NotImplementedError('Format `%s` not supported, only geo and georef formats are supported as input' %
-                                          self.fformat)
+                raise NotImplementedError(
+                    'Format `%s` not supported,\
+                     only geo and georef formats are supported as input' %
+                    self.fformat)
             self.has_ref = 'ref' in self.fformat
 
             # Layers for sediments (Courlis)
@@ -83,7 +87,8 @@ class MascaretGeoFile:
                         reach.add_section(section)
 
                     if self.has_ref:
-                        _, reach_name, section_name, pk_str, x1, y1, x2, y2, _, xa, ya = line.split()
+                        _, reach_name, section_name, pk_str, x1, y1, x2, y2,\
+                         _, xa, ya = line.split()
                         xa = float(xa)
                         ya = float(ya)
                     else:
@@ -143,7 +148,8 @@ class MascaretGeoFile:
             ref, layers = True, True
 
         if ref and not self.has_ref:
-            raise MascaretException('Could not write `%s` format without any geo-referenced data' % fformat)
+            raise MascaretException('Could not write `%s` format without\
+             any geo-referenced data' % fformat)
 
         with open(output_file_name, 'w') as fileout:
             for _, reach in self.reaches.items():
@@ -153,11 +159,14 @@ class MascaretGeoFile:
                     if ref:
                         # Get river_banks and `AXE` coordinates if necessary
                         xa, ya = sec.axis
-                        positions_str += ' %f %f %f %f' % (sec.x[0], sec.y[0], sec.x[-1], sec.y[-1])
+                        positions_str += ' %f %f %f %f' %\
+                            (sec.x[0], sec.y[0], sec.x[-1], sec.y[-1])
                         positions_str += ' AXE %f %f' % (xa, ya)
 
                     # Write profile header
-                    fileout.write('Profil %s %s %f%s\n' % (reach.name, sec.name, sec.pk, positions_str))
+                    fileout.write(
+                        'Profil %s %s %f%s\n' %
+                        (reach.name, sec.name, sec.pk, positions_str))
 
                     # Write points and layers if necessary
                     if not ref and not layers:
@@ -165,26 +174,35 @@ class MascaretGeoFile:
                             fileout.write('%f %f B\n' % (dist, z))
 
                     elif ref and not layers:
-                        for dist, x, y, z in zip(sec.distances, sec.x, sec.y, sec.z):
+                        for dist, x, y, z in zip(sec.distances,
+                                                 sec.x, sec.y, sec.z):
                             fileout.write('%f %f B %f %f\n' % (dist, z, x, y))
 
                     elif not ref and layers:
-                        for i, (dist, z) in enumerate(zip(sec.distances, sec.z)):
+                        for i, (dist, z) in enumerate(zip(sec.distances,
+                                                          sec.z)):
                             if self.nlayers == 0:
                                 layers_str = ''
                             else:
-                                layers_str = ' ' + ' '.join([MascaretGeoFile.OUTPUT_FLOAT_FMT % zl
-                                                             for zl in sec.layers_elev[:, i]])
-                            fileout.write('%f %f%s B\n' % (dist, z, layers_str))
+                                layers_str = ' ' +\
+                                    ' '.join(
+                                        [MascaretGeoFile.OUTPUT_FLOAT_FMT % zl
+                                            for zl in sec.layers_elev[:, i]])
+                            fileout.write('%f %f%s B\n' %
+                                          (dist, z, layers_str))
 
                     elif ref and layers:
-                        for i, (dist, x, y, z) in enumerate(zip(sec.distances, sec.x, sec.y, sec.z)):
+                        for i, (dist, x, y, z) in enumerate(zip(sec.distances,
+                                                            sec.x, sec.y,
+                                                            sec.z)):
                             if self.nlayers == 0:
                                 layers_str = ''
                             else:
-                                layers_str = ' ' + ' '.join([MascaretGeoFile.OUTPUT_FLOAT_FMT % zl
-                                                             for zl in sec.layers_elev[:, i]])
-                            fileout.write('%f %f%s B %f %f\n' % (dist, z, layers_str, x, y))
+                                layers_str = ' ' + ' '\
+                                    .join([MascaretGeoFile.OUTPUT_FLOAT_FMT %
+                                          zl for zl in sec.layers_elev[:, i]])
+                            fileout.write('%f %f%s B %f %f\n' %
+                                          (dist, z, layers_str, x, y))
 
     def __repr__(self):
         return 'MascaretGeoFile: %s' % self.file_name
@@ -219,8 +237,10 @@ if __name__ == '__main__':
     import os
     from utils.files import recursive_glob
     try:
-        geo_files = recursive_glob(os.path.join(os.environ['HOMETEL'], 'examples', 'mascaret'), '*.geo')
-        geo_files += recursive_glob(os.path.join(os.environ['HOMETEL'], 'examples', 'mascaret'), 'geometrie')
+        geo_files = recursive_glob(os.path.join(os.environ['HOMETEL'],
+                                   'examples', 'mascaret'), '*.geo')
+        geo_files += recursive_glob(os.path.join(os.environ['HOMETEL'],
+                                    'examples', 'mascaret'), 'geometrie')
         for file_name in sorted(geo_files):
             geo_file = MascaretGeoFile(file_name, 'geo')
             print(geo_file.summary())

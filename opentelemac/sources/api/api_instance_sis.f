@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief module handling all the instance function
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history R-S MOURADI (EDF R&D, LNHE)
-!+       17/03/2016
-!+       V7P1
-!+       Creation of the file
+!>@brief Module handling all the instance function
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_INSTANCE_SIS
@@ -126,17 +120,11 @@
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief creates a sisysphe instance
+      !>@brief Creates a sisysphe instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id   [out]    id of the new instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[out] ID Id of the new instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CREATE_INSTANCE_SIS(ID,IERR)
       ! initialise instance for sysiphe
@@ -190,18 +178,11 @@
 
         END SUBROUTINE CREATE_INSTANCE_SIS
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief Updates a sisyphe instance
+      !>@brief Updates a sisyphe instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (edf r&d, lnhe)
-      !+       17/03/2016
-      !+       V7P1
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE UPDATE_INSTANCE_SIS(ID,IERR)
       ! initialise instance for sisyphe
@@ -296,18 +277,11 @@
       END SUBROUTINE UPDATE_INSTANCE_SIS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief deletes a sisyphe instance
+      !>@brief Deletes a sisyphe instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (edf r&d, lnhe)
-      !+       17/03/2016
-      !+       V7P1
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE DELETE_INSTANCE_SIS(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -321,18 +295,11 @@
       END SUBROUTINE DELETE_INSTANCE_SIS
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief check if the id is following convention
+      !>@brief Check if the id is following convention
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (edf r&d, lnhe)
-      !+       17/03/2016
-      !+       V7P1
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CHECK_INSTANCE_SIS(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -354,17 +321,10 @@
 
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief Returns the error message of the instance
+      !>@brief Returns the error message of the instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (edf r&d, lnhe)
-      !+       17/03/2016
-      !+       V7P1
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param mess  [out]   The erro message
+      !>@param[in] ID Id of the instance
+      !>@param[out] MESS The error message
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INSTANCE_ERROR_SIS(ID,MESS)
         INTEGER, INTENT(IN) :: ID

@@ -1,22 +1,28 @@
 """
 Contains the class TelemacFile
 """
+from os import path
+import math
+import re
+
+import numpy as np
+from scipy.spatial import cKDTree
+import matplotlib.tri as mtri
+
 from utils.exceptions import TelemacException
 from telapy.api.hermes import HermesFile
 from data_manip.extraction.linspace import \
         linspace_poly, curvilinear_abscissa
-from os import path
-import math
-import numpy as np
-from scipy.spatial import cKDTree
-import matplotlib.tri as mtri
+
+SPE_NAME = re.compile(r'F(?P<spe>.[0-9]{1,4})[ ]?PT2D(?P<point>[0-9]{6})')
 
 class TelemacFile(HermesFile):
     """
     Class to extract data from a TelemacFile
     """
 
-    def __init__(self, file_name, bnd_file=None, log_lvl='INFO', fformat=None, access='r'):
+    def __init__(self, file_name, bnd_file=None, log_lvl='INFO', fformat=None,
+                 access='r'):
         """
         Initialisation of a file reader
 
@@ -296,8 +302,8 @@ class TelemacFile(HermesFile):
             if self.boundary_file is not None:
                 self._nelebd = self.get_bnd_npoin()
             else:
-                raise TelemacException(\
-                        "Can not read nelebd no boundary file was given")
+                raise TelemacException(
+                    "Can not read nelebd no boundary file was given")
 
         return self._nelebd
 
@@ -310,8 +316,8 @@ class TelemacFile(HermesFile):
             if self.boundary_file is not None:
                 self._ikle_bnd = self.get_bnd_connectivity()
             else:
-                raise TelemacException(\
-                        "Can not read ikle_bnd no boundary file was given")
+                raise TelemacException(
+                    "Can not read ikle_bnd no boundary file was given")
 
         return self._ikle_bnd
 
@@ -374,7 +380,6 @@ class TelemacFile(HermesFile):
 
         return self._meshy
 
-
     @property
     def nptir(self):
         """
@@ -420,7 +425,6 @@ class TelemacFile(HermesFile):
 
         return self._tri
 
-
     @property
     def times(self):
         """
@@ -453,7 +457,7 @@ class TelemacFile(HermesFile):
         @param reset (boolean) Force computing neighbours
         """
         if reset or self.neighbours is None or self.edges is None:
-            #from matplotlib.tri import Triangulation
+            # from matplotlib.tri import Triangulation
             mpltri = self.tri.get_cpp_triangulation()
             self.neighbours = mpltri.get_neighbors()
             self.edges = mpltri.get_edges()
@@ -500,9 +504,9 @@ class TelemacFile(HermesFile):
             # Seaching in 3d mesh
             meshz = self.get_data_value('ELEVATION Z', 0)
             for i in range(self.npoin3):
-                dist = (self.meshx[i]- point[0])**2 + \
-                       (self.meshy[i]- point[1])**2 + \
-                       (meshz[i]- point[2])**2
+                dist = (self.meshx[i] - point[0])**2 + \
+                       (self.meshy[i] - point[1])**2 + \
+                       (meshz[i] - point[2])**2
 
                 if dist < best_dist:
                     best_dist = dist
@@ -512,8 +516,8 @@ class TelemacFile(HermesFile):
             if plane is None:
                 # Searching in a 2d mesh
                 for i in range(self.npoin2):
-                    dist = (self.meshx[i]- point[0])**2 + \
-                           (self.meshy[i]- point[1])**2
+                    dist = (self.meshx[i] - point[0])**2 + \
+                           (self.meshy[i] - point[1])**2
 
                     if dist < best_dist:
                         best_dist = dist
@@ -521,15 +525,15 @@ class TelemacFile(HermesFile):
             else:
                 # Searching in a given plane for the closest node
                 for i in range(plane*self.npoin2, (plane+1)*self.npoin2):
-                    dist = (self.meshx[i]- point[0])**2 + \
-                           (self.meshy[i]- point[1])**2
+                    dist = (self.meshx[i] - point[0])**2 + \
+                           (self.meshy[i] - point[1])**2
 
                     if dist < best_dist:
                         best_dist = dist
                         node = i
 
         else:
-            raise TelemacException(\
+            raise TelemacException(
                 "Point should be 2d or 3d: {}".format(point))
 
         return node
@@ -545,17 +549,17 @@ class TelemacFile(HermesFile):
         """
         discret = []
         # ~~> Calculate the minimum mesh resolution
-        dxy = math.sqrt(min(np.square(np.sum(np.fabs(\
-                              self.meshx[self.ikle2]-\
-                              self.meshx[np.roll(self.ikle2, 1)]),
-                                             axis=1)/3.0) + \
-                             np.square(np.sum(np.fabs(\
-                              self.meshy[self.ikle2]-\
-                              self.meshy[np.roll(self.ikle2, 1)]),
-                                              axis=1)/3.0)))
+        dxy = math.sqrt(min(np.square(np.sum(np.fabs(
+            self.meshx[self.ikle2] -
+            self.meshx[np.roll(self.ikle2, 1)]),
+                                             axis=1)/3.0) +
+                            np.square(np.sum(np.fabs(
+                                self.meshy[self.ikle2] -
+                                self.meshy[np.roll(self.ikle2, 1)]),
+                                             axis=1)/3.0)))
         for i in range(len(polyline)-1):
-            dio = math.sqrt(sum(np.square(np.array(polyline[i])\
-                                          -np.array(polyline[i+1]))))
+            dio = math.sqrt(sum(np.square(np.array(polyline[i])
+                                          - np.array(polyline[i+1]))))
             discret.append(int(dio/dxy))
 
         return discret
@@ -574,8 +578,8 @@ class TelemacFile(HermesFile):
             if self.boundary_file is not None:
                 self._nbor = self.get_bnd_numbering()
             else:
-                raise TelemacException(\
-                        "Can not read nbor no boundary file was given")
+                raise TelemacException(
+                    "Can not read nbor no boundary file was given")
 
         return self._nbor
 
@@ -588,8 +592,8 @@ class TelemacFile(HermesFile):
             if self.boundary_file is not None:
                 self._bnd_info = self.get_bnd_value()
             else:
-                raise TelemacException(\
-                        "Can not read bnd_info no boundary file was given")
+                raise TelemacException(
+                    "Can not read bnd_info no boundary file was given")
 
         return self._bnd_info
 
@@ -612,8 +616,8 @@ class TelemacFile(HermesFile):
         try:
             import _api as api
         except ImportError as xcpt:
-            raise TelemacException(\
-                "Could not load the telemac api.\n"\
+            raise TelemacException(
+                "Could not load the telemac api.\n"
                 "They are mandatory for this function\n"+str(xcpt))
 
         ikles = self.ikle2.reshape(self.nelem2*3) + 1
@@ -629,9 +633,9 @@ class TelemacFile(HermesFile):
         coord = coords.reshape(self.npoin2*2)
 
         # Not using nelbor, ifabor, kp1bor (for now)
-        _, _, _, numliq = identify_liq_bnd(\
-                ikles, ndim, liubor, lihbor, nbor,
-                coord)
+        _, _, _, numliq = identify_liq_bnd(
+            ikles, ndim, liubor, lihbor, nbor,
+            coord)
 
         nbor -= 1
 
@@ -658,7 +662,7 @@ class TelemacFile(HermesFile):
         """
         res = float('nan')*np.ones((len(points)), dtype=np.float64)
         if len(np.shape(np.array(points))) != 2:
-            raise TelemacException('Warning problem with the list of '\
+            raise TelemacException('Warning problem with the list of '
                                    'extraction points')
         # dimension of the computation result
         dim = np.shape(np.array(points))[1]
@@ -667,7 +671,7 @@ class TelemacFile(HermesFile):
         elif dim == 3:
             res = self._get_data_on_3d_points(varname, record, points)
         else:
-            raise TelemacException('Warning problem with the dimension of '\
+            raise TelemacException('Warning problem with the dimension of '
                                    'extraction points')
         return res
 
@@ -688,7 +692,7 @@ class TelemacFile(HermesFile):
         res = np.zeros((len(points)), dtype=np.float64)
         values = self.get_data_value(varname, record)
         if len(values) > self.npoin2:
-            raise TelemacException('Warning the dimension of the result '\
+            raise TelemacException('Warning the dimension of the result '
                                    'file is greater than 2')
         data_interp = mtri.LinearTriInterpolator(self.tri, values)
         pt_x = [pt[0] for pt in points]
@@ -713,14 +717,14 @@ class TelemacFile(HermesFile):
 
         res = float('nan')*np.ones((len(points)), dtype=np.float64)
         for i, point in enumerate(points):
-            elev = self.get_data_on_vertical_segment(\
-                    'ELEVATION Z', record, point[:-1])
-            values = self.get_data_on_vertical_segment(\
-                    varname, record, point[:-1])
+            elev = self.get_data_on_vertical_segment(
+                'ELEVATION Z', record, point[:-1])
+            values = self.get_data_on_vertical_segment(
+                varname, record, point[:-1])
             for plan in range(self.nplan-1):
                 if elev[plan] <= point[-1] and point[-1] <= elev[plan+1]:
-                    shz = (point[-1]-elev[plan])/max((elev[plan+1]\
-                                                      -elev[plan]), 1.e-6)
+                    shz = (point[-1]-elev[plan])/max((elev[plan+1]
+                                                      - elev[plan]), 1.e-6)
                     res[i] = (1.0-shz)*values[plan]+shz*values[plan+1]
         return res
 
@@ -734,7 +738,8 @@ class TelemacFile(HermesFile):
         @param record (int) Number of the desired record to extract
         @param polyline_points (list) List of points defining the polyline
         @param discretized_number (list) list of number of discretized points
-        on each polyline segment if None given will use self.discretize_polyline
+        on each polyline segment if None given will
+            use self.discretize_polyline
 
         @returns (numpy.array, numpy.array, numpy.array)
 
@@ -743,7 +748,7 @@ class TelemacFile(HermesFile):
             raise TelemacException("Action possible only on 2d mesh")
 
         if len(np.shape(np.array(polyline_points))) != 2:
-            raise TelemacException('Warning problem with the list of '\
+            raise TelemacException('Warning problem with the list of '
                                    'extraction points')
 
         if discretized_number is None:
@@ -752,15 +757,15 @@ class TelemacFile(HermesFile):
         # dimension of the computation result
         dim = np.shape(np.array(polyline_points))[1]
         if dim == 2:
-            polygone_discretized_points = linspace_poly(polyline_points,\
-                                                    discretized_number)
-            values_polylines = self.get_data_on_points(\
-                                  varname,
-                                  record,
-                                  polygone_discretized_points)
+            polygone_discretized_points = linspace_poly(polyline_points,
+                                                        discretized_number)
+            values_polylines = self.get_data_on_points(
+                varname,
+                record,
+                polygone_discretized_points)
             abs_curv = curvilinear_abscissa(polygone_discretized_points)
         else:
-            raise TelemacException('Warning the extraction on a polyline'\
+            raise TelemacException('Warning the extraction on a polyline'
                                    ' is valid only in 2d')
         return polygone_discretized_points, abs_curv, values_polylines
 
@@ -781,16 +786,16 @@ class TelemacFile(HermesFile):
 
         values = self.get_data_value(varname, record)
         if plane_number < 0 or plane_number >= self.nplan:
-            raise TelemacException(\
-                    'Wrong plane number {} should be in [0, {}]'\
-                    .format(plane_number, self.nplan-1))
+            raise TelemacException(
+                'Wrong plane number {} should be in [0, {}]'
+                .format(plane_number, self.nplan-1))
         start = plane_number*self.npoin2
         end = (plane_number+1)*self.npoin2
         extracted_values = values[start:end]
 
         return extracted_values
 
-    def get_data_on_horizontal_slice(\
+    def get_data_on_horizontal_slice(
             self, varname, record, zslices, nplanref=None):
         """
         Extract values of plan in telemac-3d result file for the given variable
@@ -805,10 +810,10 @@ class TelemacFile(HermesFile):
         if self.get_mesh_dimension() != 3:
             raise TelemacException("Action possible only on 3d mesh")
 
-        if isinstance(zslices, list) or isinstance(zslices, np.ndarray):
+        if isinstance(zslices, (list, np.ndarray)):
             if zslices.ndim > 1:
-                raise TelemacException('Warning the slice coordinate'\
-                                      'must be 1d')
+                raise TelemacException('Warning the slice coordinate'
+                                       'must be 1d')
             res = np.zeros(((self.npoin2), len(zslices)), dtype=np.float64)
             zslices_list = zslices
         elif isinstance(zslices, int):
@@ -821,10 +826,11 @@ class TelemacFile(HermesFile):
 
         if 'ELEVATION Z' in self.varnames:
             if nplanref is not None:
-                zref = self.get_data_on_horizontal_plane(\
-                                'ELEVATION Z', record, nplanref)
+                zref = self.get_data_on_horizontal_plane(
+                    'ELEVATION Z', record, nplanref)
             values_elevation = self.get_data_value('ELEVATION Z', record)
-            values_elevation = values_elevation.reshape(self.nplan, self.npoin2)
+            values_elevation = values_elevation.reshape(self.nplan,
+                                                        self.npoin2)
             values_var = self.get_data_value(varname, record)
             values_var = values_var.reshape(self.nplan, self.npoin2)
 
@@ -835,20 +841,22 @@ class TelemacFile(HermesFile):
                     for i in range(self.nplan-1):
                         if values_elevation[i, j] <= zslice[j] and \
                            zslice[j] <= values_elevation[i+1, j]:
-                            shz = (zslice[i]-values_elevation[i, j])/\
-                                  max((values_elevation[i+1, j] \
+                            shz = (zslice[i]-values_elevation[i, j]) /\
+                                  max((values_elevation[i+1, j]
                                        - values_elevation[i, j]), 1.0e-6)
-                            res[j, izs] = (1.0-shz)*values_var[i, j]+shz*\
-                                         values_var[i+1, j]
+                            res[j, izs] = (1.0-shz)*values_var[i, j]+shz *\
+                                values_var[i+1, j]
                             break
         else:
-            raise TelemacException('Warning the dimension of the result '\
+            raise TelemacException('Warning the dimension of the result '
                                    'file is not 3 ELEVATION Z is missing')
 
-        if isinstance(zslices, list) or isinstance(zslices, np.ndarray):
+        if isinstance(zslices, (list, np.ndarray)):
             return res
-        elif isinstance(zslices, int):
+        if isinstance(zslices, int):
             return res[:, 0]
+
+        return None
 
     def get_data_on_vertical_plane(self, varname, record, polyline_points,
                                    discretized_number=None):
@@ -868,7 +876,7 @@ class TelemacFile(HermesFile):
             raise TelemacException("Action possible only on 3d mesh")
 
         if len(np.shape(np.array(polyline_points))) != 2:
-            raise TelemacException('Warning problem with the list of '\
+            raise TelemacException('Warning problem with the list of '
                                    'extraction points')
 
         if discretized_number is None:
@@ -877,20 +885,20 @@ class TelemacFile(HermesFile):
         dim = np.shape(np.array(polyline_points))[1]
         if dim == 2:
             nplan = self.nplan
-            polygone_discretized_points = linspace_poly(\
-                                        polyline_points, discretized_number)
+            polygone_discretized_points = linspace_poly(
+                polyline_points, discretized_number)
             npoly = len(polygone_discretized_points)
             values_polylines = np.zeros((npoly, nplan), dtype=np.float64)
             abs_curv = curvilinear_abscissa(polygone_discretized_points)
             for plan in range(self.nplan):
-                values = self.get_data_on_horizontal_plane(\
-                                                varname, record, plan)
+                values = self.get_data_on_horizontal_plane(
+                    varname, record, plan)
                 data_interp = mtri.LinearTriInterpolator(self.tri, values)
                 pt_x = [pt[0] for pt in polygone_discretized_points]
                 pt_y = [pt[1] for pt in polygone_discretized_points]
                 values_polylines[:, plan] = data_interp(pt_x, pt_y)
         else:
-            raise TelemacException('Warning the extraction on a polyline'\
+            raise TelemacException('Warning the extraction on a polyline'
                                    ' of 2d points')
         return polygone_discretized_points, abs_curv, values_polylines
 
@@ -910,17 +918,16 @@ class TelemacFile(HermesFile):
             raise TelemacException("Action possible only on 3d mesh")
 
         if len(point) != 2:
-            raise TelemacException('Warning the extraction point '\
+            raise TelemacException('Warning the extraction point '
                                    'must be 2d')
         nplan = self.nplan
         res = np.zeros(nplan)
         for plan in range(self.nplan):
-            values = self.get_data_on_horizontal_plane(\
-                               var_name, record, plan)
+            values = self.get_data_on_horizontal_plane(
+                var_name, record, plan)
             data_interp = mtri.LinearTriInterpolator(self.tri, values)
             res[plan] = data_interp(point[0], point[1])
         return res
-
 
     #
     # Extractrion of a timeserie (extraction of data over all records)
@@ -957,7 +964,6 @@ class TelemacFile(HermesFile):
             res[:, record] = self.get_data_on_points(varname, record, points)
         return res
 
-
     def get_timeseries_on_polyline(self, varname, polyline_points,
                                    discretized_number=None):
         """
@@ -976,7 +982,7 @@ class TelemacFile(HermesFile):
             raise TelemacException("Action possible only on 2d mesh")
 
         if len(np.shape(np.array(polyline_points))) != 2:
-            raise TelemacException('Warning problem with the list of '\
+            raise TelemacException('Warning problem with the list of '
                                    'extraction points')
 
         if discretized_number is None:
@@ -985,13 +991,13 @@ class TelemacFile(HermesFile):
         # dimension of the computation result
         dim = np.shape(np.array(polyline_points))[1]
         if dim == 2:
-            polygone_discretized_points = linspace_poly(polyline_points,\
-                                                    discretized_number)
-            values_polylines = self.get_timeseries_on_points(\
-                                 varname, polygone_discretized_points)
+            polygone_discretized_points = linspace_poly(polyline_points,
+                                                        discretized_number)
+            values_polylines = self.get_timeseries_on_points(
+                varname, polygone_discretized_points)
             abs_curv = curvilinear_abscissa(polygone_discretized_points)
         else:
-            raise TelemacException('Warning the extraction on a polyline'\
+            raise TelemacException('Warning the extraction on a polyline'
                                    ' is valid only in 2d')
         return polygone_discretized_points, abs_curv, values_polylines
 
@@ -1010,8 +1016,8 @@ class TelemacFile(HermesFile):
 
         res = np.zeros((self.nplan, self.ntimestep), dtype=np.float64)
         for record in range(self.ntimestep):
-            res[:, record] = self.get_data_on_vertical_segment(\
-                                    varname, record, point)
+            res[:, record] = self.get_data_on_vertical_segment(
+                varname, record, point)
         return res
 
     #############################################
@@ -1026,13 +1032,11 @@ class TelemacFile(HermesFile):
         - Quadrangles
         - All variables start with FPTS
         """
-        import re
 
         is_spectrum = self.ndp3 == 4
-        regex = re.compile(r'F[0-9]{2} PT2D[0-9]{6}')
+        #
         is_spectrum = is_spectrum and \
-                      all([regex.match(var) is not None\
-                               for var in self.varnames])
+            all([SPE_NAME.match(var) is not None for var in self.varnames])
 
         return is_spectrum
 
@@ -1045,8 +1049,8 @@ class TelemacFile(HermesFile):
         frequencie steps
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException(\
-                    "This file does not seem to be a spectrum file")
+            raise TelemacException(
+                "This file does not seem to be a spectrum file")
 
         nfreq = 0
         eps = 1e-6
@@ -1083,12 +1087,13 @@ class TelemacFile(HermesFile):
         Returns the list of spectrum points in the file
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException(\
-                    "This file does not seem to be a spectrum file")
+            raise TelemacException(
+                "This file does not seem to be a spectrum file")
 
         points = []
         for var in self.varnames:
-            number = var.split()[-1][5:].lstrip('0')
+            proc = SPE_NAME.match(var)
+            number = proc.group('point').lstrip('0')
             points.append(int(number))
 
         return points
@@ -1102,8 +1107,8 @@ class TelemacFile(HermesFile):
         @returns (string) Name of the variable
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException(\
-                    "This file does not seem to be a spectrum file")
+            raise TelemacException(
+                "This file does not seem to be a spectrum file")
 
         spectrum_var = None
         # Getting the variable for point point
@@ -1122,7 +1127,8 @@ class TelemacFile(HermesFile):
         """
         Return value of the angular dispersion
 
-        @param point (int) number of the point for which we extract the spectrum
+        @param point (int) number of the point for which
+            we extract the spectrum
         @param record (int) Time record for which to extract
         @param radian (boolean) If true theta is built in radian otherwise in
         degree
@@ -1131,8 +1137,8 @@ class TelemacFile(HermesFile):
         dispersion values
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException(\
-                    "This file does not seem to be a spectrum file")
+            raise TelemacException(
+                "This file does not seem to be a spectrum file")
 
         spectrum_var = self.get_spectrum_varname(point)
 
@@ -1167,15 +1173,16 @@ class TelemacFile(HermesFile):
         """
         Return value of spectrum for a given point and record
 
-        @param point (int) number of the point for which we extract the spectrum
+        @param point (int) number of the point for which
+            we extract the spectrum
         @param record (int) Time record for which to extract
 
         @returns (numpy.array, numpy.array) The frequencie list, The spectrum
         values
         """
         if not self.is_a_spectrum_file():
-            raise TelemacException(\
-                    "This file does not seem to be a spectrum file")
+            raise TelemacException(
+                "This file does not seem to be a spectrum file")
 
         spectrum_var = self.get_spectrum_varname(point)
 
@@ -1292,17 +1299,18 @@ class TelemacFile(HermesFile):
 
         # Checking dimensions of varnames and varunits
         if len(self._varnames) != self._nvar:
-            raise TelemacException(\
-                    "Error in varnames we have {} variables and {} names" \
-                    "\n varnames: {}"\
-                    .format(self._nvar, len(self._varnames), self._varnames))
+            raise TelemacException(
+                "Error in varnames we have {} variables and {} names"
+                "\n varnames: {}"
+                .format(self._nvar, len(self._varnames), self._varnames))
         if len(self._varunits) != self._nvar:
-            raise TelemacException(\
-                    "Error in varnames we have {} variables and {} units"\
-                    "\n varunits: {}"\
-                    .format(self._nvar, len(self._varunits), self._varunits))
+            raise TelemacException(
+                "Error in varnames we have {} variables and {} units"
+                "\n varunits: {}"
+                .format(self._nvar, len(self._varunits), self._varunits))
 
-        self.set_header(self._title, self._nvar, self._varnames, self._varunits)
+        self.set_header(self._title, self._nvar, self._varnames,
+                        self._varunits)
 
         # Mesh part
         date2 = np.zeros((3), dtype=np.int32)
@@ -1336,12 +1344,11 @@ class TelemacFile(HermesFile):
             # Checking that variables are properly sets
             for variable in ['nelebd', 'ikle_bnd', 'bnd_info', 'nbor']:
                 if getattr(self, "_"+variable) is None:
-                    raise TelemacException(\
-                            "Missing {} in class".format(variable))
+                    raise TelemacException(
+                        "Missing {} in class".format(variable))
 
             lihbor, liubor, livbor, hbor, ubor, vbor, chbord, \
-                    litbor, tbor, atbor, btbor, color = self._bnd_info
-
+                litbor, tbor, atbor, btbor, color = self._bnd_info
 
             self.set_bnd(self.typ_bnd_elem, self._nelebd, self._ikle_bnd,
                          lihbor, liubor, livbor, hbor, ubor, vbor, chbord,
@@ -1358,16 +1365,16 @@ class TelemacFile(HermesFile):
 
         # Chacking dimensions of values and times
         if self._values.shape != (self._ntimestep, self._nvar, self._npoin3):
-            raise TelemacException(\
+            raise TelemacException(
                 "Error in shape of values (ntimestep, nvar, npoin3):"
-                "\nvalues is {} and should be {}"\
+                "\nvalues is {} and should be {}"
                 .format(self._values.shape,
                         (self._ntimestep, self._nvar, self._npoin3)))
 
         if self._times.shape != (self._ntimestep,):
-            raise TelemacException(\
+            raise TelemacException(
                 "Error in shape of times (ntimestep):"
-                "\ntimes is {} and should be {}"\
+                "\ntimes is {} and should be {}"
                 .format(self._times.shape,
                         (self._ntimestep,)))
 

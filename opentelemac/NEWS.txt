@@ -1,6 +1,9 @@
 Trunk
 ===========================
 
+TOMAWAC: Changing name of variables in spectrum file now FXXXXXPT2DXXXXXX (for
+exmaple F00001PT2D000303)
+
 Doc: Adding html version of notebooks in documentation/notebooks. In trunk run
 doc_telemac.py -M notebooks to generate it. In release it will be there.
 Run firefox $HOMETEL/documentation/notebooks/index.html to see it.

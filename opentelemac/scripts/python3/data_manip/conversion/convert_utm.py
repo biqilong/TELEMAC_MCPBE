@@ -1,18 +1,6 @@
-#!/usr/bin/env python
-r"""@author Tobias Bieniek
+"""@author Tobias Bieniek
         Tobias.Bieniek@gmx.de
         https://github.com/Turbo87/utm
-
-    @note ... this work has been copied from Tobias's code and
-        redesigned based on a_1 collaborative effort between
-  .________.                                                          ,--.
-  |        |                                                      .  (  (
-  |,-.    /   HR Wallingford                EDF - LNHE           / \_ \_/ .--.
-  /   \  /    Howbery Park,                 6, quai Watier       \   )   /_   )
-    ,.  `'     Wallingford, Oxfordshire      78401 Cedex           `-'_  __ `--
-  /  \   /    OX10 8BA, United Kingdom      Chatou, France        __/ \ \ `.
- /    `-'|    www.hrwallingford.com         innovation.edf.com   |    )  )  )
-!________!                                                        `--'   `--
 
     @brief
         Bidirectional UTM-WGS84 converter for python
@@ -42,199 +30,368 @@ r"""@author Tobias Bieniek
     "WGS 66",                  R =  6378145, E = 0.006694542,
     "WGS-72",                  R =  6378135, E = 0.006694318,
     "WGS-84",                  R =  6378137, E = 0.00669438
-
-    @history 27/11/2013 -- Sebastien E. Bourban:
-        Re-interpretation of Tobias's code for the purpose of the
-            TELEMAC-MASCARET system -- Thank you Tobias !
-        Extension to numpy arrays
-        Removal of the requirement for a_1 Zone Letter
 """
-from __future__ import print_function
-# _____          ___________________________________________________
-# ____/ Imports /__________________________________________________/
+# Copyright (C) 2012 Tobias Bieniek <Tobias.Bieniek@gmx.de>
 #
-# ~~> dependencies towards standard python
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+#    The above copyright notice and this permission notice shall be included in
+#    all copies or substantial portions of the Software.
+#
+#    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+#    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+#    DEALINGS IN THE SOFTWARE.
+#
+# For most use cases in this module, numpy is indistinguishable
+# from math, except it also works on numpy arrays
 import numpy as np
-import math
 from utils.exceptions import TelemacException
 
-# _____                 ____________________________________________
-# ____/ Primary Access /___________________________________________/
-#
-__all__ = ['to_lat_long', 'from_lat_long']
-
-# _____                   __________________________________________
-# ____/ Global Variables /_________________________________________/
-#
+__all__ = ['to_latlon', 'from_latlon']
 
 K0 = 0.9996
-E = 0.00669438   # "WGS-84"
-R = 6378137      # "WGS-84"
 
+E = 0.00669438
 E2 = E * E
 E3 = E2 * E
 E_P2 = E / (1.0 - E)
 
-SQRT_E = math.sqrt(1 - E)
+SQRT_E = np.sqrt(1 - E)
 _E = (1 - SQRT_E) / (1 + SQRT_E)
-_E3 = _E * _E * _E
+_E2 = _E * _E
+_E3 = _E2 * _E
 _E4 = _E3 * _E
+_E5 = _E4 * _E
 
 M1 = (1 - E / 4 - 3 * E2 / 64 - 5 * E3 / 256)
 M2 = (3 * E / 8 + 3 * E2 / 32 + 45 * E3 / 1024)
 M3 = (15 * E2 / 256 + 45 * E3 / 1024)
 M4 = (35 * E3 / 3072)
 
-P2 = (3 * _E / 2 - 27 * _E3 / 32)
-P3 = (21 * _E3 / 16 - 55 * _E4 / 32)
-P4 = (151 * _E3 / 96)
+P2 = (3. / 2 * _E - 27. / 32 * _E3 + 269. / 512 * _E5)
+P3 = (21. / 16 * _E2 - 55. / 32 * _E4)
+P4 = (151. / 96 * _E3 - 417. / 128 * _E5)
+P5 = (1097. / 512 * _E4)
 
-# _____                     ________________________________________
-# ____/ Conversion LatLong /_______________________________________/
-#
+R = 6378137
 
-def to_lat_long(easting, northing, zone):
+ZONE_LETTERS = "CDEFGHJKLMNPQRSTUVWXX"
 
-    # ~~> easting
-    easting = easting - 500000
-    mineast = np.min(easting)
-    maxeast = np.max(easting)
-    if mineast < -1000000 or maxeast > 1000000:
-        raise TelemacException(\
-                '... Easting out of range '
-                '(must be between 100 km and 1000 km)')
 
-    maxnord = np.max(northing)
-    if maxnord < 0:
-        northing = northing - 10000000   # South and North
-    minnord = np.min(northing)
-    maxnord = np.max(northing)
-    if minnord < 0 or maxnord > 10000000:
-        raise TelemacException(\
-                '... Northing out of range '
-                '(must be between 0 m and 10.000.000 m)')
+def in_bounds(x, lower, upper, upper_strict=False):
+    """
+    Check that x is in bound of [lower, upper]
 
-    # ~~> zoning
-    if zone < 1 or zone > 60:
-        raise TelemacException(\
-                '... Zone number out of range '
-                '(must be between 1 and 60)')
+    @param x (float/int) value to check
+    @param lower (float/int) Min of bound
+    @param upper (float/int) Max of bound
+    @param upper_strict (bool) Max included or not
 
-    m = northing / K0
-    mu1 = m / (R*M1)
+    @return (bool)
+    """
+    if upper_strict:
+        return lower <= np.min(x) and np.max(x) < upper
+    return lower <= np.min(x) and np.max(x) <= upper
 
-    p_rad = (mu1 + P2*np.sin(2*mu1) + P3*np.sin(4*mu1) + P4*np.sin(6*mu1))
+
+def check_valid_zone(zone_number, zone_letter):
+    """
+    Check that zone number and zone letter are valid
+
+    @param zone_number (int) Zone number
+    @param zone_letter (str) Zone letter
+
+    @returns (bool) True if valis
+    """
+    if not 1 <= zone_number <= 60:
+        raise TelemacException(
+            'zone number out of range (must be between 1 and 60)')
+
+    if zone_letter:
+        zone_letter = zone_letter.upper()
+
+        if not 'C' <= zone_letter <= 'X' or zone_letter in ['I', 'O']:
+            raise TelemacException(
+                'zone letter out of range (must be between C and X)')
+
+
+def mixed_signs(x):
+    """
+    Check if x contains mixed signs
+
+    @param x (np.array) The array to check
+
+    @returns (bool) True id mixed signs
+    """
+    return np.min(x) < 0 and np.max(x) >= 0
+
+
+def negative(x):
+    """
+    Returns True if x contains only negative values
+
+    @param x (np.array) x
+
+    @returns (bool)
+    """
+    return np.max(x) < 0
+
+
+def to_latlon(easting, northing, zone_number, zone_letter=None,
+              northern=None, strict=True):
+    """
+    This function convert an UTM coordinate into Latitude and Longitude
+
+    @param easting (int)
+            Easting value of UTM coordinate
+
+    @param northing (int)
+            Northing value of UTM coordinate
+
+    @param zone number (int)
+            Zone Number is represented with global map numbers of an UTM Zone
+            Numbers Map. More information see utmzones [1]_
+
+    @param zone_letter: str
+            Zone Letter can be represented as string values. Where UTM Zone
+            Designators can be accessed in [1]_
+
+    @param northern: bool
+            You can set True or False to set this parameter. Default is None
+
+
+       .. _[1]: http://www.jaworski.ca/utmzones.htm
+
+    @returns (np.array, np.array) longitude, latitude
+    """
+    if not zone_letter and northern is None:
+        raise ValueError('either zone_letter or northern needs to be set')
+
+    if zone_letter and northern is not None:
+        raise ValueError('set either zone_letter or northern, but not both')
+
+    if strict:
+        if not in_bounds(easting, 100000, 1000000, upper_strict=True):
+            raise TelemacException(
+                'easting out of range (must be between 100.000m and 999.999m)')
+        if not in_bounds(northing, 0, 10000000):
+            raise TelemacException(
+                'northing out of range (must be between 0m and 10.000.000m)')
+
+    check_valid_zone(zone_number, zone_letter)
+
+    if zone_letter:
+        zone_letter = zone_letter.upper()
+        northern = (zone_letter >= 'N')
+
+    x = easting - 500000
+    y = northing
+
+    if not northern:
+        y -= 10000000
+
+    m = y / K0
+    m_u = m / (R * M1)
+
+    p_rad = (m_u +
+             P2 * np.sin(2 * m_u) +
+             P3 * np.sin(4 * m_u) +
+             P4 * np.sin(6 * m_u) +
+             P5 * np.sin(8 * m_u))
 
     p_sin = np.sin(p_rad)
-    p_sin2 = np.power(p_sin, 2)
+    p_sin2 = p_sin * p_sin
 
     p_cos = np.cos(p_rad)
 
-    p_tan = np.divide(p_sin, p_cos)
-    p_tan2 = np.power(p_tan, 2)
-    p_tan4 = np.power(p_tan, 4)
+    p_tan = p_sin / p_cos
+    p_tan2 = p_tan * p_tan
+    p_tan4 = p_tan2 * p_tan2
 
     ep_sin = 1 - E * p_sin2
-    ep_sin_sqrt = np.power((1 - E * p_sin2), -0.5)
+    ep_sin_sqrt = np.sqrt(1 - E * p_sin2)
 
-    n = np.power((R * ep_sin_sqrt * K0), -1)
-    tmp = (ep_sin)/(1-E)
+    n = R / ep_sin_sqrt
+    r_0 = (1 - E) / ep_sin
 
-    c_1 = _E * np.power(p_cos, 2)
-    c_2 = np.power(c_1, 2)
+    c_0 = _E * p_cos**2
+    c_2 = c_0 * c_0
 
-    d_1 = np.multiply(easting, n)
-    d_2 = np.power(d_1, 2)
-    d_3 = np.power(d_1, 3)
-    d_4 = np.power(d_1, 4)
-    d_5 = np.power(d_1, 5)
-    d_6 = np.power(d_1, 6)
+    d_0 = x / (n * K0)
+    d_2 = d_0 * d_0
+    d_3 = d_2 * d_0
+    d_4 = d_3 * d_0
+    d_5 = d_4 * d_0
+    d_6 = d_5 * d_0
 
-    latitude = (p_rad - np.multiply(\
-              np.multiply(p_tan, tmp), \
-              (d_2/2 - d_4/24 * (5+3*p_tan2+10*c_1-4*c_2-9*E_P2))) + \
-        d_6/720 * (61+90*p_tan2+298*c_1+45*p_tan4-252*E_P2-3*c_2))
-    latitude = np.degrees(latitude)
+    latitude = (p_rad - (p_tan / r_0) *
+                (d_2 / 2 -
+                 d_4 / 24 * (5 + 3 * p_tan2 + 10 * c_0 - 4 * c_2 - 9 * E_P2))
+                + d_6 / 720 * (61 + 90 * p_tan2 + 298 * c_0 + 45 * p_tan4
+                               - 252 * E_P2 - 3 * c_2))
 
-    longitude = np.divide(\
-            (d_1 - np.multiply(d_3, (1+2*p_tan2+c_1))/6 + \
-             np.multiply(d_5, (5-2*c_1+28*p_tan2-3*c_2+8*E_P2+24*p_tan4))/120),
-            p_cos)
-    longitude = np.degrees(longitude) + ((zone-1)*6 - 180 + 3)
+    longitude = (d_0 -
+                 d_3 / 6 * (1 + 2 * p_tan2 + c_0) +
+                 d_5 / 120 * (5 - 2 * c_0 + 28 * p_tan2 - 3 * c_2 + 8 * E_P2
+                              + 24 * p_tan4)) / p_cos
 
-    return longitude, latitude
+    return (np.degrees(longitude)
+            + zone_number_to_central_longitude(zone_number),
+            np.degrees(latitude))
 
 
-def from_lat_long(longitude, latitude, zone):
+def from_latlon(latitude, longitude, force_zone_number=None,
+                force_zone_letter=None):
+    """
+    This function convert Latitude and Longitude to UTM coordinate
 
-    # ~~> latitude
-    minlat = np.min(latitude)
-    maxlat = np.max(latitude)
-    if minlat < -84 or maxlat > 84:
-        raise TelemacException(\
-                '... Latitude out of range '
-                '(must be between 84 deg S and 84 deg N)')
+    @param latitude (np.array)
+             Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)
+
+    @param longitude (np.array)
+             Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).
+
+    @param force_zone_number (int)
+             Zone Number is represented with global map numbers of an UTM Zone
+             Numbers Map. You may force conversion including one UTM Zone
+             Number.
+             More information see utmzones [1]_
+    @param force_zone_letter (str)
+             Zone letter to be forced
+
+       .. _[1]: http://www.jaworski.ca/utmzones.htm
+
+    @returns (np.array, np.array, int) easting, northing, zone
+    """
+    if not in_bounds(latitude, -80.0, 84.0):
+        raise TelemacException(
+            'latitude out of range (must be between 80 deg S and 84 deg N)')
+    if not in_bounds(longitude, -180.0, 180.0):
+        raise TelemacException(
+            'longitude out of range (must be between 180 deg W and 180 deg E)')
+    if force_zone_number is not None:
+        check_valid_zone(force_zone_number, force_zone_letter)
+
     lat_rad = np.radians(latitude)
     lat_sin = np.sin(lat_rad)
     lat_cos = np.cos(lat_rad)
-    lat_tan = np.divide(lat_sin, lat_cos)
-    lat_tan2 = np.power(lat_tan, 2)
-    lat_tan4 = np.power(lat_tan, 4)
 
-    # ~~> longitude
-    minlon = np.min(longitude)
-    maxlon = np.max(longitude)
-    if minlon < -180 or maxlon > 180:
-        raise TelemacException(\
-                '... Longitude out of range (must be between 180 deg W '
-                'and 180 deg E)')
+    lat_tan = lat_sin / lat_cos
+    lat_tan2 = lat_tan * lat_tan
+    lat_tan4 = lat_tan2 * lat_tan2
+
+    if force_zone_number is None:
+        zone_number = latlon_to_zone_number(latitude, longitude)
+    else:
+        zone_number = force_zone_number
+
+    if force_zone_letter is None:
+        zone_letter = latitude_to_zone_letter(latitude)
+    else:
+        zone_letter = force_zone_letter
+
     lon_rad = np.radians(longitude)
+    central_lon = zone_number_to_central_longitude(zone_number)
+    central_lon_rad = np.radians(central_lon)
 
-    # ~~> zone number for the mid point
+    n = R / np.sqrt(1 - E * lat_sin**2)
+    c_0 = E_P2 * lat_cos**2
 
-    midlat = (maxlat+minlat) / 2.0
-    if zone == 0:
-        midlon = (maxlon+minlon) / 2.0
-        if 56 <= midlat <= 64 and 3 <= midlon <= 12:
-            zone = 32
-        elif 72 <= midlat <= 84 and midlon >= 0:
-            if midlon <= 9:
-                zone = 31
-            elif midlon <= 21:
-                zone = 33
-            elif midlon <= 33:
-                zone = 35
-            elif midlon <= 42:
-                zone = 37
-        else:
-            zone = int((midlon+180) / 6) + 1
+    a_0 = lat_cos * (lon_rad - central_lon_rad)
+    a_2 = a_0 * a_0
+    a_3 = a_2 * a_0
+    a_4 = a_3 * a_0
+    a_5 = a_4 * a_0
+    a_6 = a_5 * a_0
 
-    # ~~> central longitude
-    centre = (zone - 1) * 6 - 180 + 3
-    centre = math.radians(centre)
+    m = R * (M1 * lat_rad -
+             M2 * np.sin(2 * lat_rad) +
+             M3 * np.sin(4 * lat_rad) -
+             M4 * np.sin(6 * lat_rad))
 
-    n = R * np.power((1 - E * np.power(lat_sin, 2)), -0.5)
-    c_1 = E_P2 * np.power(lat_cos, 2)
+    easting = K0 * n * (a_0 +
+                        a_3 / 6 * (1 - lat_tan2 + c_0) +
+                        a_5 / 120 * (5 - 18*lat_tan2 + lat_tan4
+                                     + 72*c_0 - 58*E_P2)) + 500000
 
-    a_1 = np.multiply(lat_cos, (lon_rad-centre))
-    a_2 = np.power(a_1, 2)
-    a_3 = np.power(a_1, 3)
-    a_4 = np.power(a_1, 4)
-    a_5 = np.power(a_1, 5)
-    a_6 = np.power(a_1, 6)
+    northing = K0 * (m + n*lat_tan*(a_2 / 2 +
+                                    a_4 / 24 * (5 - lat_tan2 + 9*c_0
+                                                + 4*c_0**2) +
+                                    a_6 / 720 * (61 - 58*lat_tan2 + lat_tan4
+                                                 + 600*c_0 - 330 * E_P2)))
 
-    m = R*(M1*lat_rad - M2*np.sin(2*lat_rad) + M3*np.sin(4*lat_rad) - \
-             M4*np.sin(6*lat_rad))
+    if mixed_signs(latitude):
+        raise ValueError("latitudes must all have the same sign")
 
-    easting = 500000 + K0 * \
-        np.multiply(n, (a_1 + a_3/6 * (1-lat_tan2+c_1) + \
-                             a_5/120 * (5-18*lat_tan2+lat_tan4+72*c_1-58*E_P2)))
+    if negative(latitude):
+        northing += 10000000
 
-    northing = K0 * (m + np.multiply(np.multiply(n, lat_tan), ( \
-        a_2/2 + a_4/24 * (5-lat_tan2+9*c_1+4*np.power(c_1, 2)) + \
-        a_6/720*(61-58*lat_tan2+lat_tan4+600*c_1-330*E_P2))))
+    return easting, northing, zone_number, zone_letter
 
-    if midlat < 0:
-        northing = northing + 10000000
 
-    return easting, northing, zone
+def latitude_to_zone_letter(latitude):
+    """
+    Identify zone letter from lattitude
+
+    @param latitude (np.array) latitude
+
+    @returns (str) zone letter
+    """
+    # If the input is a numpy array, just use the first element
+    # User responsibility to make sure that all points are in one zone
+    latitude = latitude.flat[0]
+
+    if -80 <= latitude <= 84:
+        return ZONE_LETTERS[int(latitude + 80) >> 3]
+
+    return None
+
+
+def latlon_to_zone_number(latitude, longitude):
+    """
+    Identify zone number from lattitude and longitude
+
+    @param latitude (np.array) latitude
+    @param longitude (np.array) longitude
+
+    @returns (int) zone number
+    """
+    # If the input is a numpy array, just use the first element
+    # User responsibility to make sure that all points are in one zone
+    latitude = latitude.flat[0]
+    longitude = longitude.flat[0]
+
+    if 56 <= latitude < 64 and 3 <= longitude < 12:
+        return 32
+
+    if 72 <= latitude <= 84 and longitude >= 0:
+        if longitude < 9:
+            return 31
+        if longitude < 21:
+            return 33
+        if longitude < 33:
+            return 35
+        if longitude < 42:
+            return 37
+
+    return int((longitude + 180) / 6) + 1
+
+
+def zone_number_to_central_longitude(zone_number):
+    """
+    Returns central longitude of a zone number
+
+    @param zone_number (int) zone number
+
+    @returns (int) central longitude
+    """
+    return (zone_number - 1) * 6 - 180 + 3

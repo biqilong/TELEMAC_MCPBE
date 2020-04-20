@@ -22,6 +22,13 @@
 !
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!>@param[in] GEO Name of the geometry file
+!>@param[in,out] GEOFORMAT Format of the geometry file
+!>@param[in] BND Name of the boudnary file
+!>@param[in] RES Name of the result file
+!>@param[in,out] RESFORMAT Format of the result file
+!>@param[in] NPROC Number of processors
+!>@param[in] NPLAN_RES Number of planes for the result file
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_HERMES

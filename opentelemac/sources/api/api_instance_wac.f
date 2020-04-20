@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief module handling all the instance function
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief Module handling all the instance function
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_INSTANCE_WAC
@@ -63,18 +57,11 @@
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief creates a tomawac instance
+      !>@brief Creates a tomawac instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id   [out]    id of the new instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[out] ID Id of the new instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CREATE_INSTANCE_WAC(ID,IERR)
       ! initialise instance for tomawac
@@ -121,18 +108,11 @@
       END SUBROUTINE CREATE_INSTANCE_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief updates a tomawac instance
+      !>@brief Updates a tomawac instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history c goeury & y audouin (edf r&d, lnhe)
-      !+       17/06/2016
-      !+       V7P1
-      !+       update the api instance
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id   [out]    id of the new instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[out] ID Id of the new instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE UPDATE_INSTANCE_WAC(ID,IERR)
       ! initialise instance for tomawac
@@ -163,18 +143,11 @@
       END SUBROUTINE UPDATE_INSTANCE_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief deletes a tomawac instance
+      !>@brief Deletes a tomawac instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE DELETE_INSTANCE_WAC(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -188,18 +161,11 @@
       END SUBROUTINE DELETE_INSTANCE_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief check if the id is following convention
+      !>@brief Check if the id is following convention
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param ierr [out]    0 if subroutine successfull,
-      !+                   error id otherwise
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CHECK_INSTANCE_WAC(ID,IERR)
         INTEGER, INTENT(IN) :: ID
@@ -220,17 +186,10 @@
       END SUBROUTINE CHECK_INSTANCE_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief Returns the error message of the instance
+      !>@brief Returns the error message of the instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param mess  [out]   The erro message
+      !>@param[in] ID Id of the instance
+      !>@param[out] MESS The error message
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INSTANCE_ERROR_WAC(ID,MESS)
         INTEGER, INTENT(IN) :: ID

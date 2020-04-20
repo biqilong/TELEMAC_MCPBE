@@ -8,6 +8,7 @@ Copyright EDF 2016-2017
 
 """
 
+
 def printinfo(i, nitermax, fvalopt, indopt, nsimul):
     """
     Show basic info if verbose mode is on

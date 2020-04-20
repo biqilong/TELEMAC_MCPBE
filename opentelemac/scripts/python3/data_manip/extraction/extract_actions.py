@@ -6,6 +6,7 @@ import numpy as np
 from utils.exceptions import TelemacException
 from data_manip.extraction.telemac_file import TelemacFile
 
+
 def add_options_csv(parser):
     """
     Add options for a figure (x_label, y_label, title, fig_name...)
@@ -15,7 +16,7 @@ def add_options_csv(parser):
     @returns the updated parser
     """
     # Options to save the file instead of displaying it
-    parser.add_argument(\
+    parser.add_argument(
         dest="csv_name",
         help="Name of the output csv file")
 
@@ -25,6 +26,7 @@ def add_options_csv(parser):
         help="Delimiter in the csv file")
 
     return parser
+
 
 def arg_points(string):
     """
@@ -36,13 +38,13 @@ def arg_points(string):
         try:
             x, y = map(float, string.split(','))
             return x, y
-        except:
+        except Exception as e:
             raise argparse.ArgumentTypeError("Points must be x,y")
     elif n_coords == 3:
         try:
             x, y, z = map(float, string.split(','))
             return x, y, z
-        except:
+        except Exception as e:
             raise argparse.ArgumentTypeError("Points must be x,y,z")
     else:
         raise argparse.ArgumentTypeError("Points must be either x,y or x,y,z")
@@ -56,11 +58,12 @@ def add_options_timeseries(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('timeseries',\
-            help='Extract timeseries over points or nodes')
+    parser = subparser.add_parser('timeseries',
+                                  help='Extract timeseries over\
+                                        points or nodes')
 
-    parser.add_argument(dest="file_name",\
-            help="Telemac file to extract from")
+    parser.add_argument(dest="file_name",
+                        help="Telemac file to extract from")
 
     parser.add_argument(
         "-v", "--var",
@@ -82,6 +85,7 @@ def add_options_timeseries(subparser):
     add_options_csv(parser)
 
     return subparser
+
 
 def extract_timeseries(file_name, var_name, points=None, nodes=None):
     """
@@ -116,6 +120,7 @@ def extract_timeseries(file_name, var_name, points=None, nodes=None):
 
     return header, data.T
 
+
 def add_options_mesh2d(subparser):
     """
     Defines options for mesh action
@@ -124,15 +129,16 @@ def add_options_mesh2d(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('mesh2d',\
-            help='Extract x y from file')
+    parser = subparser.add_parser('mesh2d',
+                                  help='Extract x y from file')
 
-    parser.add_argument(dest="file_name",\
-            help="Telemac file to extract from")
+    parser.add_argument(dest="file_name",
+                        help="Telemac file to extract from")
 
     add_options_csv(parser)
 
     return subparser
+
 
 def extract_mesh2d(file_name):
     """
@@ -151,6 +157,7 @@ def extract_mesh2d(file_name):
 
     return header, data
 
+
 def add_options_spectrum(subparser):
     """
     Defines options for spectrum action
@@ -159,11 +166,12 @@ def add_options_spectrum(subparser):
 
     @returns the update subparser
     """
-    parser = subparser.add_parser('spectrum',\
-            help='Extract spectrum of a given node at a given record/time')
+    parser = subparser.add_parser('spectrum',
+                                  help='Extract spectrum of a\
+                                        given node at a given record/time')
 
-    parser.add_argument(dest="file_name",\
-            help="Telemac file to extract from")
+    parser.add_argument(dest="file_name",
+                        help="Telemac file to extract from")
 
     parser.add_argument(
         "-p", "--point",
@@ -192,13 +200,15 @@ def add_options_spectrum(subparser):
 
     return subparser
 
+
 def extract_spectrum(file_name, point, radian=False, record=0, time=None):
     """
     Extract timeseries informations on a list of nodes or points
 
     @param file_name (str) Name of the file from which to extract
     @param point (int) Point number of the spectrum to extract
-    @param radian (bool) If true theta will be given in radian instead of degree
+    @param radian (bool) If true theta will be given in radian instead
+        of degree
     @param record (int) Record to extract
     @param time (float) Time to extract
 
@@ -214,7 +224,6 @@ def extract_spectrum(file_name, point, radian=False, record=0, time=None):
     nfreq = len(freqs)
     ntheta = res.npoin2//nfreq
 
-
     spectrum_var = res.get_spectrum_varname(point)
 
     # Getting record from time if given
@@ -223,7 +232,7 @@ def extract_spectrum(file_name, point, radian=False, record=0, time=None):
 
     # Reshaping to match nfreq*ntheta
     tmp_data = res.get_data_value(spectrum_var, record)\
-               .reshape((nfreq, ntheta))
+        .reshape((nfreq, ntheta))
 
     # Adding frequencies as first column
     data = np.column_stack((freqs, tmp_data))

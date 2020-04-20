@@ -26,7 +26,7 @@ from scipy.io import netcdf
 
 try:
     import json
-except:
+except ImportError:
     import simplejson as json
 
 # When using the following user ID to access the ECMWF computing
@@ -37,11 +37,11 @@ except:
 # username: s.bourban@hrwallingford.com
 # password: Lxtc14
 #
-CONFIG = {\
-     "url"   : "https://api.ecmwf.int/v1",
-     "key"   : "70f6a4499dddb7d17545f9bd3cf5ef3f",
-     "email" : "s.bourban@hrwallingford.com",
-     "password"   : "Lxtc14",
+CONFIG = {
+     "url": "https://api.ecmwf.int/v1",
+     "key": "70f6a4499dddb7d17545f9bd3cf5ef3f",
+     "email": "s.bourban@hrwallingford.com",
+     "password": "Lxtc14",
          }
 # ECMWF Re-Analysis, Keys to retrieve requests
 #
@@ -54,7 +54,8 @@ CONFIG = {\
 #     era40  - ECMWF Global Reanalysis Data - ERA-40 (Sep 1957 - Aug 2002)
 #     eraclim  - ERA-20CM: Ensemble of climate model integrations
 #     icoads  - ICOADS v2.5.1 with interpolated 20CR feedback
-#     interim  - ECMWF Global Reanalysis Data - ERA Interim (Jan 1979 - present)
+#     interim  - ECMWF Global Reanalysis Data -
+#           ERA Interim (Jan 1979 - present)
 #     ispd  - ISPD v2.2
 #     yotc  - YOTC (Year of Tropical Convection)
 #  'step', "6" being the default:
@@ -79,22 +80,28 @@ CONFIG = {\
 # This software is licensed under the terms of the Apache Licence Version 2.0
 # which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
 # In applying this licence, ECMWF does not waive the privileges and immunities
-# granted to it by virtue of its status as an intergovernmental organisation nor
+# granted to it by virtue of its status as an intergovernmental
+# organisation nor
 # does it submit to any jurisdiction.
 #
+
 
 class RetryError(Exception):
     def __init__(self, code, text):
         self.code = code
         self.text = text
+
     def __str__(self):
         return "%d %s" % (self.code, self.text)
+
 
 class APIException(Exception):
     def __init__(self, value):
         self.value = value
+
     def __str__(self):
         return repr(self.value)
+
 
 def robust(func):
 
@@ -112,14 +119,15 @@ def robust(func):
                     raise
                 time.sleep(60)
             except BadStatusLine as excpt:
-                print("WARNING: httplib.BadStatusLine received %s"%(str(excpt)))
+                print("WARNING: httplib.BadStatusLine received %s" %
+                      (str(excpt)))
                 tries += 1
                 if tries > 10:
                     raise
                 time.sleep(60)
             except URLError as excpt:
-                print("WARNING: httplib2.URLError received %s %s" % \
-                          (str(excpt.errno), str(excpt)))
+                print("WARNING: httplib2.URLError received %s %s" %
+                      (str(excpt.errno), str(excpt)))
                 tries += 1
                 if tries > 10:
                     raise
@@ -133,15 +141,18 @@ def robust(func):
                 if tries > 10:
                     raise
                 time.sleep(60)
-            except:
+            except Exception as e:
                 print("Unexpected error: %s" % (str(sys.exc_info()[0])))
                 print(traceback.format_exc())
                 raise
 
     return wrapped
 
+
 SAY = True
 URL = ""
+
+
 class Ignore303(HTTPRedirectHandler):
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
@@ -177,6 +188,7 @@ class Ignore303(HTTPRedirectHandler):
         infourl.code = code
         return infourl
 
+
 class Connection(object):
 
     def __init__(self, email=None, key=None, verbose=False, quiet=False):
@@ -196,11 +208,11 @@ class Connection(object):
     def call(self, url, payload=None, method="GET"):
 
         if self.verbose:
-            print(method +' '+ url)
+            print(method + ' ' + url)
 
-        headers = {"Accept":"application/json",
-                   "From":self.email,
-                   "X-ECMWF-KEY":self.key}
+        headers = {"Accept": "application/json",
+                   "From": self.email,
+                   "X-ECMWF-KEY": self.key}
 
         opener = build_opener(Ignore303)
 
@@ -224,7 +236,8 @@ class Connection(object):
                 # It seems that some version of urllib2 are buggy
                 if excpt.code <= 299:
                     res = excpt
-                else: raise
+                else:
+                    raise
         except HTTPError as excpt:
             print(repr(excpt))
             error = True
@@ -258,7 +271,7 @@ class Connection(object):
             try:
                 self.last = json.loads(body)
             except Exception as excpt:
-                self.last = {"error":"%s: %s" % (excpt, body)}
+                self.last = {"error": "%s: %s" % (excpt, body)}
                 error = True
 
         if self.verbose:
@@ -318,8 +331,9 @@ class Connection(object):
         try:
             if self.location:
                 self.call(self.location, None, "DELETE")
-        except:
+        except Exception as e:
             pass
+
 
 class Ecmwf(object):
     """
@@ -347,7 +361,6 @@ class Ecmwf(object):
         self.dirc = None
         self.typ = None
 
-
     def connect_to_ecmwf(self, dataset):
 
         status = ''
@@ -356,8 +369,8 @@ class Ecmwf(object):
                                      quiet=True, verbose=False)
         # ~> Verify connection
         user = self.connection.call("%s/%s" % (CONFIG['url'], "who-am-i"))
-        print('   ~> access through username: %s\n' % \
-                  (user["full_name"] or "user '%s'" % user["uid"],))
+        print('   ~> access through username: %s\n' %
+              (user["full_name"] or "user '%s'" % user["uid"],))
         # ~> Request dataset
         self.connection.submit("%s/%s/requests" % (CONFIG['url'], dataset),
                                self.request)
@@ -401,7 +414,7 @@ class Ecmwf(object):
             if ibar == result["size"]:
                 break
             if tries == 3:
-                raise TelemacException(\
+                raise TelemacException(
                         "    ... exhausted the number "
                         "of download trials.\nYou may wish "
                         "to attempt this again later.")
@@ -440,20 +453,20 @@ class Ecmwf(object):
             x_2 = float(x_2) + 360.0
         self.maskx = np.logical_and(float(x_1) <= x[0], x[0] <= float(x_2))
         if not np.any(self.maskx):
-            raise TelemacException(\
+            raise TelemacException(
                     '... your spatial range seems out of bound:\n       '
                     'you asked for [ {}-{}], while x is:\n       {}'
                     '\n\n'.format(x_1, x_2, repr(x)))
 
         self.masky = np.logical_and(float(y_1) <= y.T[0], y.T[0] <= float(y_2))
         if not np.any(self.masky):
-            raise TelemacException(\
+            raise TelemacException(
                     '... your spatial range seems out of bound:\n       '
                     'you asked for [ {}-{}], while x is:\n       {}'
                     '\n\n'.format(y_1, y_2, repr(y)))
 
         self.slf2d.meshx = np.tile(x, self.ny1d)\
-                                    .reshape(self.ny1d, self.nx1d).T.ravel()
+            .reshape(self.ny1d, self.nx1d).T.ravel()
         self.slf2d.meshy = np.tile(y, self.nx1d)
 
         self.slf2d.nplan = 1
@@ -467,7 +480,7 @@ class Ecmwf(object):
         for i in range(self.slf2d.npoin2):
             if self.slf2d.meshx[i] > 180:
                 self.slf2d.meshx[i] = self.slf2d.meshx[i] - 360.0
-        #for i in range(2172,self.ny1d):
+        # for i in range(2172,self.ny1d):
         #   self.slf2d.meshy[i] = 47.0 + ( i-2172 )/18.0
 
         # ~~> Connectivity
@@ -499,13 +512,13 @@ class Ecmwf(object):
         for i in range(self.nx1d):
             ipoin = i*self.ny1d
             self.slf2d.ipob3[ipoin] = i + 1
-            ipoin = i*self.ny1d -1
+            ipoin = i*self.ny1d - 1
             self.slf2d.ipob3[ipoin] = 2*self.nx1d+(self.ny1d-2) - i
             pbar.update(i)
         # ~~> along the y-axis (alt)
         for i in range(1, self.ny1d):
             ipoin = i
-            self.slf2d.ipob3[ipoin] = 2*self.nx1d + 2*(self.ny1d-2) -i + 1
+            self.slf2d.ipob3[ipoin] = 2*self.nx1d + 2*(self.ny1d-2) - i + 1
             ipoin = self.ny1d*(self.nx1d-1) + i
             self.slf2d.ipob3[ipoin] = self.nx1d + i
             pbar.update(i+self.nx1d)
@@ -515,16 +528,15 @@ class Ecmwf(object):
         self.slf2d.iparam = [0, 0, 0, 0, 0, 0, 0,
                              2*self.nx1d+2*(self.ny1d-2), 0, 1]
 
-
     def put_geometry(self, file_name):
 
         print('   +> writing up the geometry file')
 
         self.slf2d.fole = {}
-        self.slf2d.fole.update({'hook':open(file_name, 'wb')})
-        self.slf2d.fole.update({'name':file_name})
-        self.slf2d.fole.update({'endian':">"})     # big endian
-        self.slf2d.fole.update({'float':('f', 4)})  # single precision
+        self.slf2d.fole.update({'hook': open(file_name, 'wb')})
+        self.slf2d.fole.update({'name': file_name})
+        self.slf2d.fole.update({'endian': ">"})     # big endian
+        self.slf2d.fole.update({'float': ('f', 4)})  # single precision
 
         self.slf2d.varnames = ['RANGE          ']
         self.slf2d.varunits = ['UI             ']
@@ -544,8 +556,8 @@ class Ecmwf(object):
         for itime in range(len(self.slf2d.tags['times'])):
             self.slf2d.append_core_time_slf(itime)
             var = self.ecmwfdata.variables['d2fd'][itime]
-            z = 10 ** (varsf * np.swapaxes(np.swapaxes(var, 1, 3), 0, 2) + \
-                varof)
+            z = 10 ** (varsf * np.swapaxes(np.swapaxes(var, 1, 3), 0, 2) +
+                       varof)
             for j in range(self.ny1d):
                 for i in range(self.nx1d):
                     var2d[i, j] = max(z[j][i].ravel())
@@ -555,7 +567,6 @@ class Ecmwf(object):
         pbar.finish()
 
         self.slf2d.fole['hook'].close()
-
 
     def set_spectral(self):
 
@@ -593,7 +604,7 @@ class Ecmwf(object):
                 self.slf2d.meshx[j_d+self.nb_direct*j_f] = \
                           self.freq[j_f]*math.sin(math.pi*self.dirc[j_d]/180.)
                 self.slf2d.meshy[j_d+self.nb_direct*j_f] = \
-                          self.freq[j_f]*math.cos(math.pi*self.dirc[j_d]/180.)
+                    self.freq[j_f]*math.cos(math.pi*self.dirc[j_d]/180.)
                 ipoin += 1
                 pbar.update(ipoin)
         pbar.finish()
@@ -613,7 +624,7 @@ class Ecmwf(object):
             self.slf2d.ikle3[ielem][1] = ielem
             self.slf2d.ikle3[ielem][2] = ielem + self.nb_direct
             self.slf2d.ikle3[ielem][3] = self.slf2d.ikle3[ielem][0] + \
-                                                  self.nb_direct
+                self.nb_direct
             pbar.update(ielem)
         pbar.finish()
 
@@ -625,7 +636,6 @@ class Ecmwf(object):
         for j_d in range(self.nb_direct, 2*self.nb_direct):
             self.slf2d.ipob3[j_d] = self.nb_direct * (self.nb_freq + 1) - j_d
 
-
     def append_header_ecmwf(self):
 
         self.slf2d.varnames = []
@@ -633,24 +643,24 @@ class Ecmwf(object):
         # ~~> variables
         self.slf2d.title = ''
         if self.typ == 'wave':
-            self.slf2d.varnames = ['WAVE HEIGHT     ', \
-                'WAVE PERIOD     ', 'WAVE DIRECTION  ']
-            self.slf2d.varunits = ['M               ', \
-                'S               ', 'DEGREES         ']
+            self.slf2d.varnames = ['WAVE HEIGHT     ',
+                                   'WAVE PERIOD     ', 'WAVE DIRECTION  ']
+            self.slf2d.varunits = ['M               ',
+                                   'S               ', 'DEGREES         ']
         elif self.typ == 'spec':
             for i in range(self.nx1d * self.ny1d):
-                self.slf2d.varnames.append(\
+                self.slf2d.varnames.append(
                           ('F PT '+str(i+1)+'                ')[:16])
                 self.slf2d.varunits.append('UI              ')
             print('    - from ', self.slf2d.varnames[0], ' to ',
                   self.slf2d.varnames[-1])
         else:
-            self.slf2d.varnames = ['SURFACE PRESSURE', \
-                'WIND VELOCITY U ', 'WIND VELOCITY V ', \
-                'AIR TEMPERATURE ']
-            self.slf2d.varunits = ['UI              ', \
-                'M/S             ', 'M/S             ', \
-                'DEGREES         ']
+            self.slf2d.varnames = ['SURFACE PRESSURE',
+                                   'WIND VELOCITY U ', 'WIND VELOCITY V ',
+                                   'AIR TEMPERATURE ']
+            self.slf2d.varunits = ['UI              ',
+                                   'M/S             ', 'M/S             ',
+                                   'DEGREES         ']
         self.slf2d.nbv1 = len(self.slf2d.varnames)
         self.slf2d.nvar = self.slf2d.nbv1
         self.slf2d.varindex = range(self.slf2d.nvar)
@@ -693,8 +703,8 @@ class Ecmwf(object):
             varof = self.ecmwfdata.variables['d2fd'].add_offset
             varsf = self.ecmwfdata.variables['d2fd'].scale_factor
             var = self.ecmwfdata.variables['d2fd'][itime]
-            z = 10 ** (varsf * np.swapaxes(np.swapaxes(var, 1, 3), 0, 2) + \
-                    varof)
+            z = 10 ** (varsf * np.swapaxes(np.swapaxes(var, 1, 3), 0, 2) +
+                       varof)
             for j in range(self.ny1d):
                 for i in range(self.nx1d):
                     self.slf2d.append_core_vars_slf([z[j][i].ravel()])
@@ -705,7 +715,7 @@ class Ecmwf(object):
                                 0, 1).ravel()
             varof = self.ecmwfdata.variables['sp'].add_offset
             varsf = self.ecmwfdata.variables['sp'].scale_factor
-            #print( self.ecmwfdata.variables['sp'].units )
+            # print( self.ecmwfdata.variables['sp'].units )
             self.slf2d.append_core_vars_slf([varsf*var2d+varof])
 
             # ~~> WIND VELOCITY U == 'u10'
@@ -713,7 +723,7 @@ class Ecmwf(object):
                                 0, 1).ravel()
             varof = self.ecmwfdata.variables['u10'].add_offset
             varsf = self.ecmwfdata.variables['u10'].scale_factor
-            #print( self.ecmwfdata.variables['u10'].units )
+            # print( self.ecmwfdata.variables['u10'].units )
             self.slf2d.append_core_vars_slf([varsf*var2d+varof])
 
             # ~~> WIND VELOCITY V == 'v10'
@@ -721,7 +731,7 @@ class Ecmwf(object):
                                 0, 1).ravel()
             varof = self.ecmwfdata.variables['v10'].add_offset
             varsf = self.ecmwfdata.variables['v10'].scale_factor
-            #print( self.ecmwfdata.variables['v10'].units )
+            # print( self.ecmwfdata.variables['v10'].units )
             self.slf2d.append_core_vars_slf([varsf*var2d+varof])
 
             # ~~> AIR TEMPERATURE == 't2m'
@@ -732,7 +742,6 @@ class Ecmwf(object):
             # Kelvin to Celsius
             self.slf2d.append_core_vars_slf([varsf*var2d+varof-273.15])
 
-
     def put_content(self, file_name, stream, showbar=True):
 
         # ~~> netcdf reader
@@ -741,10 +750,10 @@ class Ecmwf(object):
         if self.typ == 'spec':
             # ~~> new Selafin writer
             self.slf2d.fole = {}
-            self.slf2d.fole.update({'hook':open(file_name, 'wb')})
-            self.slf2d.fole.update({'name':file_name})
-            self.slf2d.fole.update({'endian':">"})     # big endian
-            self.slf2d.fole.update({'float':('f', 4)})  # single precision
+            self.slf2d.fole.update({'hook': open(file_name, 'wb')})
+            self.slf2d.fole.update({'name': file_name})
+            self.slf2d.fole.update({'endian': ">"})     # big endian
+            self.slf2d.fole.update({'float': ('f', 4)})  # single precision
 
             print('     +> Write Selafin header')
             self.append_header_ecmwf()
@@ -752,7 +761,8 @@ class Ecmwf(object):
             print('     +> Write Selafin core')
             ibar = 0
             if showbar:
-                pbar = ProgressBar(maxval=len(self.slf2d.tags['times'])).start()
+                pbar = ProgressBar(maxval=len(self.slf2d.tags['times']))\
+                    .start()
             for itime in range(len(self.slf2d.tags['times'])):
                 self.append_core_time_ecmwf(itime)
                 self.append_core_vars_ecmwf(ibar)
@@ -766,10 +776,10 @@ class Ecmwf(object):
         else:
             # ~~> new Selafin writer
             self.slf2d.fole = {}
-            self.slf2d.fole.update({'hook':open(file_name, 'wb')})
-            self.slf2d.fole.update({'name':file_name})
-            self.slf2d.fole.update({'endian':">"})     # big endian
-            self.slf2d.fole.update({'float':('f', 4)})  # single precision
+            self.slf2d.fole.update({'hook': open(file_name, 'wb')})
+            self.slf2d.fole.update({'name': file_name})
+            self.slf2d.fole.update({'endian': ">"})     # big endian
+            self.slf2d.fole.update({'float': ('f', 4)})  # single precision
 
             print('     +> Write Selafin header')
             self.append_header_ecmwf()
@@ -777,7 +787,8 @@ class Ecmwf(object):
             print('     +> Write Selafin core')
             ibar = 0
             if showbar:
-                pbar = ProgressBar(maxval=len(self.slf2d.tags['times'])).start()
+                pbar = ProgressBar(maxval=len(self.slf2d.tags['times']))\
+                    .start()
             for itime in range(len(self.slf2d.tags['times'])):
                 self.append_core_time_ecmwf(itime)
                 self.append_core_vars_ecmwf(ibar)
@@ -787,4 +798,3 @@ class Ecmwf(object):
             self.slf2d.fole['hook'].close()
             if showbar:
                 pbar.finish()
-

@@ -9,17 +9,20 @@ from configuration.cfg import Config
 from execution.get import get_mpi_cmd
 import re
 
+
 def shell_cmd(cmd):
     """
     execute the command cmd, trapping the possible errors
     @param cmd (str) the command
     """
     # abort = False
-    process = subprocess.Popen(cmd, shell=True, stdin=None, stdout=subprocess.PIPE)
+    process = subprocess.Popen(cmd, shell=True, stdin=None,
+                               stdout=subprocess.PIPE)
 
     (stdout, stderr) = process.communicate()
     del stderr
     return stdout, process.returncode
+
 
 def mpirun_cmd():
     """
@@ -34,17 +37,18 @@ def mpirun_cmd():
         CFGS.parse_cfg_file(cfg_file, cfg_name, root_dir, python_dir)
         CFGS.compute_execution_info()
         cfgmpi = CFGS.configs[CFGS.cfgname]['MPI']
-    except:
+    except RuntimeError:
         cfgmpi = {}
-        
+
     if cfgmpi != {}:
         cmd = get_mpi_cmd(cfgmpi)
     else:
         try:
             shcmd = "ompi_info -V -parsable 2>/dev/null"
-            shout, _  = shell_cmd(shcmd)
-            openmpi_series = int(re.sub(r'^.*Open MPI v([0-9]+).*$', r'\1', str(shout)))
-        
+            shout, _ = shell_cmd(shcmd)
+            openmpi_series = int(re.sub(r'^.*Open MPI v([0-9]+).*$', r'\1',
+                                 str(shout)))
+
             if openmpi_series == 1:
                 cmd = "mpirun -np <ncsize> <exename>"
             elif openmpi_series == 4:

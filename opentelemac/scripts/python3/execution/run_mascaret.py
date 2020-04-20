@@ -10,6 +10,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from utils.messages import Messages, svn_banner
 from config import add_config_argument, update_config, CFGS
 
+
 def create_mascaret_files(cfg, cas):
     """
         Creates if not there the following files in the current folder:
@@ -46,6 +47,7 @@ def create_mascaret_files(cfg, cas):
         shutil.copyfile(path.join(cfg['root'], 'sources', 'mascaret', 'data',
                                   'dico_Courlis.txt'),
                         "dico_Courlis.txt")
+
 
 def run_mascaret():
     """

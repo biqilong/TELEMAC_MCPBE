@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief GETTER/SETTER OF TELEMAC2D VARIABLES
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief Getter/setter of telemac2d variables
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_HANDLE_VAR_T2D
@@ -13,37 +7,32 @@
         USE API_HANDLE_ERROR
         USE API_INSTANCE_T2D
         IMPLICIT NONE
-        ! Size of the string containing the name of a variable
+        !> Size of the string containing the name of a variable
         INTEGER, PARAMETER :: T2D_VAR_LEN=40
-        ! Size of the string containing the type of a variable
+        !> Size of the string containing the type of a variable
         INTEGER, PARAMETER :: T2D_TYPE_LEN=12
-        ! Size of the string containing the information about a variable
+        !> Size of the string containing the information about a variable
         INTEGER, PARAMETER :: T2D_INFO_LEN=200
-        ! The maximum number of variables
+        !> The maximum number of variables
         INTEGER, PARAMETER :: NB_VAR_T2D=82
+        !> List of variable names
         CHARACTER(LEN=40),ALLOCATABLE,DIMENSION(:) :: VNAME_T2D
+        !> List of variable info
         CHARACTER(LEN=200),ALLOCATABLE,DIMENSION(:) :: VINFO_T2D
 !
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE VARIABLE FROM TELEMAC2D
+      !>@brief Get a double variable from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Contains the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_T2D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -147,21 +136,16 @@
 !
       END SUBROUTINE GET_DOUBLE_T2D_D
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE VARIABLE OF TELEMAC2D
+      !>@brief Defines the value of a double variable of telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_T2D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -254,21 +238,8 @@
       END SUBROUTINE SET_DOUBLE_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE ARRAY FROM TELEMAC2D
+      !>@brief Get a double array from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    Array that will contain the value
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_ARRAY_T2D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
 !
@@ -277,7 +248,7 @@
         INTEGER,                    INTENT(IN) :: DIM1
         DOUBLE PRECISION,           INTENT(INOUT):: VALEUR(*)
         INTEGER,                    INTENT(OUT):: IERR
-        INTEGER, OPTIONAL,           INTENT(IN) :: BLOCK_INDEX
+        INTEGER, OPTIONAL,          INTENT(IN) :: BLOCK_INDEX
 !
         IERR = 0
 !
@@ -389,21 +360,8 @@
       END SUBROUTINE GET_DOUBLE_ARRAY_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF SET A DOUBLE ARRAY FROM TELEMAC2D
+      !>@brief Set a double array from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    Array that will contain the value
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_ARRAY_T2D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
 !
@@ -524,21 +482,14 @@
       END SUBROUTINE SET_DOUBLE_ARRAY_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER ARRAY FROM TELEMAC2D
+      !>@brief Get an integer array from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM DIM1       [IN]    Size of VALEUR
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Contains the read value
+      !>@param[in] DIM1 Size of valeur
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_ARRAY_T2D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -603,21 +554,14 @@
       END SUBROUTINE GET_INTEGER_ARRAY_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF SET AN INTEGER ARRAY FROM TELEMAC2D
+      !>@brief Set an integer array from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM DIM1       [IN]    Size of VALEUR
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] DIM1 Size of valeur
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_ARRAY_T2D_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -682,23 +626,16 @@
       END SUBROUTINE SET_INTEGER_ARRAY_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER VARIABLE FROM TELEMAC2D
+      !>@brief Get an integer variable from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] inst the instance
+      !>@param[in] varname name of the variable to read
+      !>@param[out] valeur containis the read value
+      !>@param[in] index1 index on the first dimension
+      !>@param[in] index2 index on the second dimension
+      !>@param[in] index3 index on the third dimension
+      !>@param[out] ierr 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_T2D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -788,23 +725,16 @@
       END SUBROUTINE GET_INTEGER_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE OF TELEMAC2D
+      !>@brief Defines the value of an integer variable of telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_T2D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -875,23 +805,16 @@
       END SUBROUTINE SET_INTEGER_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A STRING VARIABLE FROM TELEMAC2D
+      !>@brief Get a string variable from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM VALUELEN   [IN]    Length of the string
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_STRING_T2D_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -955,23 +878,16 @@
       END SUBROUTINE GET_STRING_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A STRING VARIABLE OF TELEMAC2D
+      !>@brief Defines the value of a string variable of telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM VALUELEN   [IN]    LENGTH OF THE STRING
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_STRING_T2D_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -1025,23 +941,16 @@
       END SUBROUTINE SET_STRING_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A BOOLEAN VARIABLE FROM TELEMAC2D
+      !>@brief Get a boolean variable from telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_BOOLEAN_T2D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -1073,23 +982,16 @@
       END SUBROUTINE GET_BOOLEAN_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A BOOLEAN VARIABLE OF TELEMAC2D
+      !>@brief Defines the value of a boolean variable of telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_BOOLEAN_T2D_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -1116,29 +1018,15 @@
       END SUBROUTINE SET_BOOLEAN_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET INFORMATIONS ON A VARIABLE OF TELEMAC2D
+      !>@brief Get informations on a variable of telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !+HISTORY C. GOEURY (EDF R&D LNHE)
-      !+        04/09/2016
-      !+        V7P1
-      !++=
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE
-      !PARAM VARTYPE   [OUT]    TYPE OF THE VARIABLE
-      !+                        (INTEGER, DOUBLE, STRING, BOOLEAN)
-      !PARAM READONLY  [OUT]    0 IF THE VARIABLE IS READ ONLY
-      !+                        1 IF IT IS WRITTABLE
-      !PARAM NDIM      [OUT]    NUMBER OF DIMENSION
-      !+                        (0 IF IT IS NOT AN ARRAY)
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] INST Instance
+      !>@param[in] VARNAME Name of the variable
+      !>@param[out] DIM1 Size of the first dimension 0 if ndim=0
+      !>@param[out] DIM2 Size of the second dimension 0 if ndim<1
+      !>@param[out] DIM3 Size of the third dimension 0 if ndim<2
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_SIZE_T2D_D
      &         (INST, VARNAME, DIM1, DIM2, DIM3, IERR)
@@ -1282,34 +1170,22 @@
       END SUBROUTINE GET_VAR_SIZE_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE SIZE OF EACH DIMENSION OF A VARAIBLE
+      !>@brief Get type information of a varaible
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !HISTORY C GOEURY (EDF R&D, LNHE)
-      !+       01/09/2016
-      !+       V7P1
-      !+       IENT,JENT AND KENT ADDED FOR MPI CONTROL IN GET AND SET
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARAIBLE
-      !PARAM DIM1      [OUT]    SIZE OF THE FIRST DIMENSION
-      !PARAM DIM2      [OUT]    SIZE OF THE SECOND DIMENSION
-      !PARAM DIM3      [OUT]    SIZE OF THE THIRD DIMENSION
-      !PARAM IENT      [OUT]    1 if the numbering is on point
-      !PARAM JENT      [OUT]    1 if the numbering is on point
-      !PARAM KENT      [OUT]    1 if the numbering is on point
-      !PARAM GETPOS    [OUT]    Postion after which the get is posible
-      !+                        on the variable
-      !PARAM SETPOS    [OUT]    Postion after which the Set is posible
-      !+                        on the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] VARNAME Name of the variable
+      !>@param[out] VARTYPE Type of the variable (INTEGER, STRING,
+      !!                    DOUBLE, BOOLEAN)
+      !>@param[out] NDIM Number of dimension
+      !>@param[out] READONLY True if the variable cannot be modified
+      !>@param[out] IENT 1 if the numbering is on point
+      !>@param[out] JENT 1 if the numbering is on point
+      !>@param[out] KENT 1 if the numbering is on point
+      !>@param[out] GETPOS Postion after which the get is posible
+      !!                        on the variable
+      !>@param[out] SETPOS Postion after which the set is posible
+      !!                        on the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_TYPE_T2D_D
      &        (VARNAME, VARTYPE, READONLY, NDIM,IENT,JENT,KENT,
@@ -1864,22 +1740,15 @@
       END SUBROUTINE GET_VAR_TYPE_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE DESCRIPTION OF THE ITH VARIABLE
+      !>@brief Get the description of the ith variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [IN]     Integer
-      !PARAM VAR_LEN   [IN]     Size of varname
-      !PARAM INFO_LEN  [IN]     Size of varinfo
-      !PARAM VARNAME   [OUT]    Name of the variable
-      !PARAM VARINFO   [OUT]    Description of the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] I Number of the variable
+      !>@param[in] VAR_LEN Size of varname
+      !>@param[in] INFO_LEN Size of varinfo
+      !>@param[out] VARNAME Name of the variable
+      !>@param[out] VARINFO Description of the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_INFO_T2D_D(I, VAR_LEN, INFO_LEN,
      &                              VARNAME, VARINFO, IERR)
@@ -1906,17 +1775,10 @@
       END SUBROUTINE GET_VAR_INFO_T2D_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF SET THE DESCRIPTION OF EACH VARIABLE
+      !>@brief Build the description of each variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_LIST_T2D_D(IERR)
 !

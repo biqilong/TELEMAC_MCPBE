@@ -12,6 +12,7 @@ Copyright EDF 2017-2018
 :return: the random population
 """
 
+
 def validate(func, nvar, bounds, vdx, verbose):
     """
     Test the types of arguments

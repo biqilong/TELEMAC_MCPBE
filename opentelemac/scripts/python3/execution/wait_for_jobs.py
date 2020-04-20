@@ -8,7 +8,7 @@ def check_job_slurm(job_id, call_count=0):
     Return a job status
 
     @param job_id (str) Job id of the job to check
-    @parma call_count (int) Recursive number of call if 5 is reached returns -1
+    @param call_count (int) Recursive number of call if 5 is reached returns -1
 
     @returns (int) 'success' if completed
                    'failed' if job crashed
@@ -21,7 +21,7 @@ def check_job_slurm(job_id, call_count=0):
     # TODO: Extract more than just the path ? We could get the listing...
     try:
         tmp = subprocess.check_output(cmd, shell=True)
-    except:
+    except Exception as e:
         time.sleep(1)
         tmp = subprocess.check_output(cmd, shell=True)
     output = tmp.decode('utf-8')
@@ -46,3 +46,26 @@ def check_job_slurm(job_id, call_count=0):
         return 'timeout'
 
     return 'running'
+
+def get_job_time_slurm(job_id):
+    """
+    Return the time that took a job
+
+    @param job_id (str) Job id of the job to check
+
+    @returns (float) time in seconds
+    """
+    cmd = "sacct -j {} -o ElapsedRaw -P".format(job_id)
+    try:
+        tmp = subprocess.check_output(cmd, shell=True)
+    except:
+        time.sleep(1)
+        tmp = subprocess.check_output(cmd, shell=True)
+    output = tmp.decode('utf-8')
+
+    # Extract line containing status (second one)
+    line = output.split('\n')[1]
+    # Line should be something like that: 666
+    run_time = float(line)
+
+    return run_time

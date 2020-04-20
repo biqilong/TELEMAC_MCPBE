@@ -49,6 +49,7 @@ class StudyMascaret(object):
     def finalize(self):
         del self.masc
 
+
 def main():
     """
     main function containing an example of a run
@@ -73,6 +74,7 @@ def main():
     masc.run_model_boucle()
     masc.error_message()
     masc.finalize()
+
 
 if __name__ == "__main__":
     main()

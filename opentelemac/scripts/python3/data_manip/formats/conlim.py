@@ -13,6 +13,7 @@ import numpy as np
 
 from utils.files import get_file_content, put_file_content
 
+
 class Conlim(object):
     """ Boundary conditions class """
 
@@ -36,8 +37,8 @@ class Conlim(object):
         if file_name != '':
             # ~~> Number of boundary points ( tuple() necessary for dtype
             # parsing )
-            core = [tuple(line.strip().split()[0:13]) \
-                         for line in get_file_content(file_name)]
+            core = [tuple(line.strip().split()[0:13])
+                    for line in get_file_content(file_name)]
             self.nptfr = len(core)
             self.bor = np.array(core, dtype)
             # ~~> Dictionary of kfrgl
@@ -76,7 +77,7 @@ class Conlim(object):
 
         # ~~> Initiates NUMLIQ
         solids = self.bor['lih'] == 2
-        self.nfrliq = 0 # liquid boundary numbers start at 1
+        self.nfrliq = 0  # liquid boundary numbers start at 1
 
         # ~~> Finds TELEMAC's south-east corner
 
@@ -86,17 +87,17 @@ class Conlim(object):
             # ~~> look for a solid point
             inode = 0
             while not solids[self.kfrgl[contour[inode]]] and \
-                  inode < len(contour):
+                    inode < len(contour):
                 inode += 1
-            if inode == len(contour): # No solid boundary found in contour
+            if inode == len(contour):  # No solid boundary found in contour
                 self.nfrliq += 1
                 for i in contour:
                     self.por['lq'][self.kfrgl[i]] = self.nfrliq
-                continue # go to next contour
+                continue  # go to next contour
             # ~~> list all liquid boundaries on contour
             wassolid = True
-            for i in contour: # this makes sure you go around contour only once
-                isolid = self.kfrgl[contour[inode%len(contour)]]
+            for i in contour:  # this makes sure to go around contour only once
+                isolid = self.kfrgl[contour[inode % len(contour)]]
                 if not solids[isolid]:
                     if wassolid:
                         self.nfrliq += 1
@@ -119,8 +120,8 @@ class Conlim(object):
         core = []
         for ifr in range(self.nptfr):
             if self.index[ifr] != 0:
-                line = (' '.join(['{0[' + repr(i) + ']}' \
-                            for i in range(len(self.bor[ifr]))]))\
+                line = (' '.join(['{0[' + repr(i) + ']}'
+                        for i in range(len(self.bor[ifr]))]))\
                      .format(self.bor[ifr])
                 if self.nptir != {} and self.ifapar != {}:
                     line += ' '+repr(self.por[ifr][0])
@@ -166,4 +167,3 @@ class Conlim(object):
 
         core.append("")
         put_file_content(file_name, core)
-

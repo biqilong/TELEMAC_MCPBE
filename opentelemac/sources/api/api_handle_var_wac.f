@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief GETTER/SETTER OF tomawac VARIABLES
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief Getter/setter of tomawac variables
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_HANDLE_VAR_WAC
@@ -13,21 +7,23 @@
         USE API_HANDLE_ERROR
         USE API_INSTANCE_WAC
         IMPLICIT NONE
-        ! Size of the string containing the name of a variable
+        !> Size of the string containing the name of a variable
         INTEGER, PARAMETER :: WAC_VAR_LEN=40
-        ! Size of the string containing the type of a variable
+        !> Size of the string containing the type of a variable
         INTEGER, PARAMETER :: WAC_TYPE_LEN=12
-        ! Size of the string containing the information about a variable
+        !> Size of the string containing the information about a variable
         INTEGER, PARAMETER :: WAC_INFO_LEN=200
-        ! The maximum number of variable
-        INTEGER, PARAMETER :: NB_VAR_WAC=15
+        !> The maximum number of variable
+        INTEGER, PARAMETER :: NB_VAR_WAC=16
+        !> List of variable names
         CHARACTER(LEN=WAC_VAR_LEN),ALLOCATABLE :: VNAME_WAC(:)
+        !> List of variable info
         CHARACTER(LEN=WAC_INFO_LEN),ALLOCATABLE :: VINFO_WAC(:)
 !
       CONTAINS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE ARRAY
+      !>@brief Get a double array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_ARRAY_WAC_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
@@ -57,7 +53,7 @@
       END SUBROUTINE GET_DOUBLE_ARRAY_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE VARIABLE OF tomawac
+      !>@brief Defines the value of a double variable of tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_ARRAY_WAC_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
@@ -83,7 +79,7 @@
       END SUBROUTINE SET_DOUBLE_ARRAY_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER VARIABLE FROM tomawac
+      !>@brief Get an integer variable from tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_ARRAY_WAC_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -113,7 +109,7 @@
       END SUBROUTINE GET_INTEGER_ARRAY_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE OF tomawac
+      !>@brief Defines the value of an integer variable of tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_ARRAY_WAC_D
      &     (INST, VARNAME, VALEUR, DIM1, IERR)
@@ -143,23 +139,16 @@
       END SUBROUTINE SET_INTEGER_ARRAY_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE VARIABLE FROM tomawac
+      !>@brief Get a double variable from tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Contains the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_WAC_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -190,23 +179,16 @@
       END SUBROUTINE GET_DOUBLE_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE VARIABLE OF tomawac
+      !>@brief Defines the value of a double variable of tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_WAC_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -233,23 +215,16 @@
       END SUBROUTINE SET_DOUBLE_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER VARIABLE FROM tomawac
+      !>@brief Get an integer variable from tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_WAC_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -289,23 +264,16 @@
       END SUBROUTINE GET_INTEGER_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE OF tomawac
+      !>@brief Defines the value of an integer variable of tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_WAC_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -330,23 +298,16 @@
       END SUBROUTINE SET_INTEGER_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A STRING VARIABLE FROM tomawac
+      !>@brief Get a string variable from tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM VALUELEN   [IN]    Length of the string
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_STRING_WAC_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -387,23 +348,16 @@
       END SUBROUTINE GET_STRING_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A STRING VARIABLE OF tomawac
+      !>@brief Defines the value of a string variable of tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM VALUELEN   [IN]    LENGTH OF THE STRING
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_STRING_WAC_D
      &     (INST, VARNAME, VALEUR, VALUELEN, INDEX1, INDEX2, IERR)
@@ -433,23 +387,16 @@
       END SUBROUTINE SET_STRING_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A BOOLEAN VARIABLE FROM tomawac
+      !>@brief Get a boolean variable from tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_BOOLEAN_WAC_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -475,23 +422,16 @@
       END SUBROUTINE GET_BOOLEAN_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A BOOLEAN VARIABLE OF tomawac
+      !>@brief Defines the value of a boolean variable of tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in,out] INST The instance
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_BOOLEAN_WAC_D
      &     (INST, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -516,29 +456,15 @@
       END SUBROUTINE SET_BOOLEAN_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET INFORMATIONS ON A VARIABLE OF tomawac
+      !>@brief Get size informations on a variable of tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !+HISTORY C. GOEURY (EDF R&D LNHE)
-      !+        04/09/2016
-      !+        V7P1
-      !++=
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE
-      !PARAM VWACYPE   [OUT]    TYPE OF THE VARIABLE
-      !+                        (INTEGER, DOUBLE, STRING, BOOLEAN)
-      !PARAM READONLY  [OUT]    0 IF THE VARIABLE IS READ ONLY
-      !+                        1 IF IT IS WRITTABLE
-      !PARAM NDIM      [OUT]    NUMBER OF DIMENSION
-      !+                        (0 IF IT IS NOT AN ARRAY)
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] INST Instance
+      !>@param[in] VARNAME Name of the variable
+      !>@param[out] DIM1 Size of the first dimension
+      !>@param[out] DIM2 Size of the second dimension
+      !>@param[out] DIM3 Size of the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_SIZE_WAC_D
      &         (INST, VARNAME, DIM1, DIM2, DIM3, IERR)
@@ -581,34 +507,22 @@
       END SUBROUTINE GET_VAR_SIZE_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE SIZE OF EACH DIMENSION OF A VARAIBLE
+      !>@brief Get the information on the type of variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !HISTORY C GOEURY (EDF R&D, LNHE)
-      !+       01/09/2016
-      !+       V7P1
-      !+       IENT,JENT AND KENT ADDED FOR MPI CONTROL IN GET AND SET
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM INST   [IN,OUT]    THE INSTANCE
-      !PARAM VARNAME    [IN]    NAME OF THE VARAIBLE
-      !PARAM DIM1      [OUT]    SIZE OF THE FIRST DIMENSION
-      !PARAM DIM2      [OUT]    SIZE OF THE SECOND DIMENSION
-      !PARAM DIM3      [OUT]    SIZE OF THE THIRD DIMENSION
-      !PARAM IENT      [OUT]    1 if the numbering is on point
-      !PARAM JENT      [OUT]    1 if the numbering is on point
-      !PARAM KENT      [OUT]    1 if the numbering is on point
-      !PARAM GETPOS    [OUT]    Postion after which the get is posible
-      !+                        on the variable
-      !PARAM SETPOS    [OUT]    Postion after which the Set is posible
-      !+                        on the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] VARNAME Name of the varaible
+      !>@param[out] VARTYPE Type of the varaible (INTEGER, DOUBLE,
+      !                     BOOLEAN, STRING)
+      !>@param[out] READONLY True if the varaible cannot be modified
+      !>@param[out] NDIM Name of the varaible
+      !>@param[out] IENT 1 if the numbering is on point
+      !>@param[out] JENT 1 if the numbering is on point
+      !>@param[out] KENT 1 if the numbering is on point
+      !>@param[out] GETPOS Postion after which the get is posible
+      !!                        on the variable
+      !>@param[out] SETPOS Postion after which the set is posible
+      !!                        on the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_TYPE_WAC_D
      &        (VARNAME, VARTYPE, READONLY, NDIM,IENT,JENT,KENT,
@@ -647,12 +561,6 @@
           NDIM = 0
           GETPOS = RUN_SET_CONFIG_POS
           SETPOS = RUN_SET_CONFIG_POS
-        ELSE IF(TRIM(VARNAME).EQ.'MODEL.NUMLIQ') THEN
-          VARTYPE = 'INTEGER'
-          READONLY = .FALSE.
-          NDIM = 1
-          GETPOS = RUN_ALLOCATION_POS
-          SETPOS = RUN_ALLOCATION_POS
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.IKLE') THEN
           VARTYPE = 'INTEGER'
           READONLY = .TRUE.
@@ -692,12 +600,6 @@
           GETPOS = RUN_ALLOCATION_POS
           SETPOS = RUN_ALLOCATION_POS
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.GEOMETRYFILE') THEN
-          VARTYPE = 'STRING'
-          READONLY = .FALSE.
-          NDIM = 1
-          GETPOS = RUN_ALLOCATION_POS
-          SETPOS = RUN_ALLOCATION_POS
-        ELSE IF(TRIM(VARNAME).EQ.'MODEL.METEOFILE') THEN
           VARTYPE = 'STRING'
           READONLY = .FALSE.
           NDIM = 1
@@ -744,22 +646,15 @@
       END SUBROUTINE GET_VAR_TYPE_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE DESCRIPTION OF THE ITH VARIABLE
+      !>@brief Get the description of the ith variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [IN]     Integer
-      !PARAM VAR_LEN   [IN]     Size of varname
-      !PARAM INFO_LEN  [IN]     Size of varinfo
-      !PARAM VARNAME   [OUT]    Name of the variable
-      !PARAM VARINFO   [OUT]    Description of the variable
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] I Number of the variable
+      !>@param[in] VAR_LEN Size of varname
+      !>@param[in] INFO_LEN Size of varinfo
+      !>@param[out] VARNAME Name of the variable
+      !>@param[out] VARINFO Description of the variable
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_INFO_WAC_D(I, VAR_LEN, INFO_LEN,
      &                              VARNAME, VARINFO, IERR)
@@ -786,17 +681,10 @@
       END SUBROUTINE GET_VAR_INFO_WAC_D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DESCRIPTION OF EACH VARIABLE
+      !>@brief Get a description of each variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_LIST_WAC_D(IERR)
 !
@@ -855,7 +743,13 @@
           I = I + 1
           VNAME_WAC(I) = 'MODEL.Y'
           VINFO_WAC(I) = 'Y COORDINATES FOR EACH POINT OF THE MESH'
-          ! <get_var_list>
+          I = I + 1
+          VNAME_WAC(I) = 'MODEL.BOTTOM'
+          VINFO_WAC(I) = 'BOTTOM'
+          I = I + 1
+          VNAME_WAC(I) = 'MODEL.EQUATION'
+          VINFO_WAC(I) = 'NAME OF THE EQUATION USED IN THE CODE'
+          ! <set_var_list>
           IF(I.NE.NB_VAR_WAC) THEN
             IERR = INCREASE_NB_VAR_WAC_ERROR
             RETURN

@@ -48,6 +48,7 @@ from data_manip.conversion.convert_utm import to_lat_long
 __author__ = "Juliette C.E. Parisi"
 __date__ = "$02-Dec-2013 15:09:48$"
 
+
 def main():
     """ Main function of convertToSPE """
 
@@ -61,17 +62,18 @@ def main():
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Reads config file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print('\n\nInterpreting command line options\n'+'~'*72+'\n')
-    parser = ArgumentParser(\
+    parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
         description=('''\n
-A script to map spectral outter model results, stored as SELAFIN files, onto the
+A script to map spectral outter model results, stored as SELAFIN files,
+ onto the
     spatially and time varying boundary of a spatially contained SELAFIN file
     of your choosing (your MESH).
         '''),
-        usage=' (--help for help)\n---------\n       => '\
-                ' %(prog)s  open-bound.cli open-bound.slf in-outer-geo.slf '\
-                'in-outer-spec.slf out-bound.slf \n---------')
-    parser.add_argument(\
+        usage=' (--help for help)\n---------\n       => '
+              ' %(prog)s  open-bound.cli open-bound.slf in-outer-geo.slf '
+              'in-outer-spec.slf out-bound.slf \n---------')
+    parser.add_argument(
         "--ll2utm", dest="ll2utm", default=None,
         help="assume outer file is in lat-long and open-bound file in UTM")
     parser.add_argument("args", default='', nargs=5)
@@ -81,12 +83,12 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
 # ~~~~ cli+slf new mesh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     cli_file = options.args[0]
     if not path.exists(cli_file):
-        raise TelemacException(\
+        raise TelemacException(
                 '... the provided cli_file does not seem '
                 'to exist: {}\n\n'.format(cli_file))
     geo_file = options.args[1]
     if not path.exists(geo_file):
-        raise TelemacException(\
+        raise TelemacException(
                 '... the provided geo_file does not seem to exist: '
                 '{}\n\n'.format(geo_file))
 
@@ -99,7 +101,7 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
     # Find corresponding (x,y) in corresponding new mesh
     print('   +> getting hold of the GEO file and of its bathymetry')
     geo = Selafin(geo_file)
-    if options.ll2utm != None:
+    if options.ll2utm is not None:
         zone = int(options.ll2utm)
         x, y = to_lat_long(geo.meshx[bor-1], geo.meshy[bor-1], zone)
     else:
@@ -111,7 +113,7 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
 # ~~~~ slf+spe existing res ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     slf_file = options.args[2]
     if not path.exists(slf_file):
-        raise TelemacException(\
+        raise TelemacException(
                 '... the provided slf_file does not seem to exist: '
                 '{}\n\n'.format(slf_file))
     slf = Selafin(slf_file)
@@ -119,7 +121,7 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
     slf.set_mpl_tri()
     spe_file = options.args[3]
     if not path.exists(spe_file):
-        raise TelemacException(\
+        raise TelemacException(
                 '... the provided slf_file does not seem to exist: '
                 '{}\n\n'.format(spe_file))
     spe = Selafin(spe_file)
@@ -142,17 +144,17 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
     bnd_file = options.args[4]
     bnd = Selafin('')
     bnd.fole = {}
-    bnd.fole.update({'hook':open(bnd_file, 'wb')})
-    bnd.fole.update({'name':bnd_file})
-    bnd.fole.update({'endian':">"})     # big endian
+    bnd.fole.update({'hook': open(bnd_file, 'wb')})
+    bnd.fole.update({'name': bnd_file})
+    bnd.fole.update({'endian': ">"})     # big endian
     bnd.fole.update({'float': ('f', 4)})  # single precision
 
     # Meta data and variable names
     bnd.title = spe.title
     # spectrum for new locations / nodes
     for i in range(len(bor)):
-        bnd.varnames.append(('F'+('00'+str(i))[-2:]+' PT2D'+('000000'+\
-                                  str(bor[i]))[-6:]+'                ')[:16])
+        bnd.varnames.append(('F'+('00'+str(i))[-2:]+' PT2D'+('000000' +
+                             str(bor[i]))[-6:]+'                ')[:16])
         bnd.varunits.append('UI              ')
     bnd.nbv1 = len(bnd.varnames)
     bnd.nvar = bnd.nbv1
@@ -209,8 +211,9 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
     print('   +> reading / writing variables')
     pbar = ProgressBar(maxval=len(spe.tags['times'])).start()
     for itime in range(len(spe.tags['times'])):
-        f.seek(spe.tags['cores'][itime]) # [itime] is the frame to be extracted
-        f.seek(4+fsize+4, 1) # the file pointer is initialised
+        f.seek(spe.tags['cores'][itime])  # [itime] is the frame
+        # to be extracted
+        f.seek(4+fsize+4, 1)  # the file pointer is initialised
         bnd.append_core_time_slf(itime)
 
         # Extract relevant spectrum, where
@@ -221,11 +224,12 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
             # the file pointer advances through all records to keep on track
             f.seek(4, 1)
             if ivar in vars_indexes:
-                z[jvar, :] = unpack(endian+str(spe.npoin2)+\
-                                         ftype, f.read(fsize*spe.npoin2))
+                z[jvar, :] = unpack(endian+str(spe.npoin2) +
+                                    ftype, f.read(fsize*spe.npoin2))
                 jvar += 1
             else:
-                # the file pointer advances through all records to keep on track
+                # the file pointer advances through
+                # all records to keep on track
                 f.seek(fsize*spe.npoin2, 1)
             f.seek(4, 1)
 
@@ -248,8 +252,8 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
     print('   +> writing out the file with coordinate to impose')
     dat = [str(len(bor)) + ' 0']
     for i in np.sort(bor):
-        dat.append(str(i) + ' ' + repr(geo.meshx[i-1]) + ' ' + \
-                      repr(geo.meshy[i-1]) + ' 0.0')
+        dat.append(str(i) + ' ' + repr(geo.meshx[i-1]) + ' ' +
+                   repr(geo.meshy[i-1]) + ' 0.0')
     put_file_content(bnd_file+'.dat', dat)
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -257,6 +261,7 @@ A script to map spectral outter model results, stored as SELAFIN files, onto the
     print('\n\nMy work is done\n\n')
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

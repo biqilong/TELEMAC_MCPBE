@@ -1,11 +1,5 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!brief USER API FUNCTIONS
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!history Y AUDOUIN (EDF R&D, LNHE)
-!+       21/08/2013
-!+       V6P3
-!+       Creation of the file
+!>@brief USER API FUNCTIONS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       MODULE API_INTERFACE
@@ -41,17 +35,20 @@
 !***********************************************************************
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE TELEMAC2D VARIABLES
+      !>@brief Run partel
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN & C. GOEURY (EDF R&D, LNHE)
-      !+       24/08/2016
-      !+       V6P3
-      !+       PARTITIONNING TREATMENT
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] CODE Short name of code for wich running partel
+      !!               (T2D, T3D...)
+      !>@param[in] NAMEINP Name of the geometry file
+      !>@param[in] NAMECLI Name of the boundary conditions file
+      !>@param[in] NPARTS  Number of partitions
+      !>@param[in] PMETHOD 1: for metis 2: for scotch
+      !>@param[in] FFORMAT Format of the geometry file
+      !>@param[in] NAMESEC Name of the section file ' ' if there are none
+      !>@param[in] NAMEZFI Name of the friction zone file ' ' if there are none
+      !>@param[in] NAMESEU Name of the weir file ' ' if there are none
+      !>@param[out] ierr 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_PARTEL(CODE,NAMEINP, NAMECLI, NPARTS, PMETHOD,
      &  FFORMAT,NAMESEC, NAMEZFI,NAMESEU, IERR)
@@ -99,17 +96,17 @@
 !
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE TELEMAC2D VARIABLES
+      !>@brief Run parres
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY C. GOEURY (EDF R&D, LNHE)
-      !+       31/08/2016
-      !+       V7p1
-      !+       PARTITIONNING TREATMENT
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] CODE Short name of code for wich running partel
+      !!               (T2D, T3D...)
+      !>@param[in] NAMEGEO Name of the geometry file
+      !>@param[in] NAMEINP Name of the file to be partitionned
+      !>@param[in] NPARTS Number of partitions
+      !>@param[in] GEOFORMAT Format of the geometry file
+      !>@param[in] INPFORMAT Format of the file to be partitioned
+      !>@param[out] ierr 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_PARRES(CODE,NAMEGEO, NAMEINP, NPARTS, GEOFORMAT,
      &     INPFORMAT,IERR)
@@ -144,17 +141,17 @@
 !
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE TELEMAC2D VARIABLES
+      !>@brief Running gretel
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY C. GOEURY (EDF R&D, LNHE)
-      !+       24/08/2016
-      !+       V6P3
-      !+       PARTITIONNING TREATMENT
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] CODE Short name of code for wich running partel
+      !!               (T2D, T3D...)
+      !>@param[in] GEO Name of the geometry file
+      !>@param[in,out] GEOFORMAT Format of the geometry file
+      !>@param[in] BND Name of the boudnary file
+      !>@param[in] RES Name of the result file
+      !>@param[in,out] RESFORMAT Format of the result file
+      !>@param[in] NPROC Number of processors
+      !>@param[in] NPLAN_RES Number of planes for the result file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_GRETEL(CODE,GEO,GEOFORMAT,BND,RES,RESFORMAT,NPROC,
      &     NPLAN_RES)
@@ -186,19 +183,12 @@
 
       END SUBROUTINE RUN_GRETEL
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF Check that the instance exist
+      !>@brief Check that the instance exist
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CHECK_INSTANCE(ID, TAG, IERR)
         INTEGER,                    INTENT(IN)    :: ID
@@ -226,22 +216,17 @@
 !***********************************************************************
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE VARIABLE
+      !>@brief Get a double array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR [IN,OUT]    CONTAINGS THE READ VALUE
-      !PARAM DIM1       [IN]    Dimension of the array
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[in,out] VALEUR Contaings the read value
+      !>@param[in] DIM1 Dimension of the array
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
+      !>@param[in] BLOCK_INDEX Used for bief bloc represent index of the
+      !!                      array in the bloc to extract
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE_ARRAY
      &   (ID, TAG, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
@@ -315,22 +300,17 @@
 !
       END SUBROUTINE GET_DOUBLE_ARRAY
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF SET A DOUBLE VARIABLE
+      !>@brief Set a double array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR [IN,OUT]    CONTAINIS THE READ VALUE
-      !PARAM DIM1       [IN]    Dimension of the array
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[in,out] VALEUR Containis the read value
+      !>@param[in] DIM1 Dimension of the array
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
+      !>@param[in] BLOCK_INDEX Used for bief bloc represent index of the
+      !!                      array in the bloc to extract
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE_ARRAY
      &   (ID, TAG, VARNAME, VALEUR, DIM1, IERR, BLOCK_INDEX)
@@ -403,22 +383,15 @@
 !
       END SUBROUTINE SET_DOUBLE_ARRAY
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A INTEGER ARRAY
+      !>@brief Get a integer array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR [IN,OUT]    CONTAINIS THE READ VALUE
-      !PARAM DIM1       [IN]    Dimension of the array
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[in,out] VALEUR Containis the read value
+      !>@param[in] DIM1 Dimension of the array
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER_ARRAY
      &   (ID, TAG, VARNAME, VALEUR, DIM1, IERR)
@@ -460,22 +433,15 @@
 !
       END SUBROUTINE GET_INTEGER_ARRAY
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF SET A INTEGER ARRAY
+      !>@brief Set a integer array
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR [IN,OUT]    CONTAINIS THE READ VALUE
-      !PARAM DIM1       [IN]    Dimension of the array
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[in,out] VALEUR Containis the read value
+      !>@param[in] DIM1 Dimension of the array
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER_ARRAY
      &   (ID, TAG, VARNAME, VALEUR, DIM1, IERR)
@@ -517,29 +483,17 @@
 !
       END SUBROUTINE SET_INTEGER_ARRAY
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DOUBLE VARIABLE
+      !>@brief Get a double variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !HISTORY C GOEURY (EDF R&D, LNHE)
-      !+       01/09/2016
-      !+       V7P1
-      !+       TREATMENT OF PARTITIONNING
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_DOUBLE
      &   (ID, TAG, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -581,30 +535,17 @@
       END SUBROUTINE GET_DOUBLE
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A DOUBLE VARIABLE
+      !>@brief Defines the value of a double variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !HISTORY C GOEURY (EDF R&D, LNHE)
-      !+       01/09/2016
-      !+       V7P1
-      !+       TREATMENT OF PARTITIONNING
-      !!
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_DOUBLE
      &   (ID, TAG, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -644,24 +585,17 @@
       END SUBROUTINE SET_DOUBLE
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET AN INTEGER VARIABLE
+      !>@brief Get an integer variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_INTEGER(ID, TAG, VARNAME, VALEUR,
      &             INDEX1, INDEX2, INDEX3, IERR)
@@ -701,24 +635,17 @@
       END SUBROUTINE GET_INTEGER
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF AN INTEGER VARIABLE
+      !>@brief Defines the value of an integer variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_INTEGER(ID, TAG, VARNAME, VALEUR,
      &             INDEX1, INDEX2, INDEX3, IERR)
@@ -758,24 +685,17 @@
       END SUBROUTINE SET_INTEGER
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A STRING VARIABLE
+      !>@brief Get a string variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM VALUELEN   [IN]    Length of the string
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_STRING(ID, TAG, VARNAME, VALEUR,
      &             VALUELEN, INDEX1, INDEX2, IERR)
@@ -825,24 +745,17 @@
       END SUBROUTINE GET_STRING
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A STRING VARIABLE
+      !>@brief Defines the value of a string variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM VALUELEN   [IN]    LENGTH OF THE STRING
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] VALUELEN Length of the string
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_STRING(ID, TAG, VARNAME, VALEUR,
      &             VALUELEN, INDEX1, INDEX2, IERR)
@@ -882,24 +795,17 @@
       END SUBROUTINE SET_STRING
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A BOOLEAN VARIABLE
+      !>@brief Get a boolean variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO READ
-      !PARAM VALEUR    [OUT]    CONTAINIS THE READ VALUE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to read
+      !>@param[out] VALEUR Containis the read value
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_BOOLEAN
      &     (ID, TAG, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -939,24 +845,17 @@
       END SUBROUTINE GET_BOOLEAN
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF DEFINES THE VALUE OF A BOOLEAN VARIABLE
+      !>@brief Defines the value of a boolean variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE TO WRITE
-      !PARAM VALEUR     [IN]    THE VALUE TO WRITE IN THE VARIABLE
-      !PARAM INDEX1     [IN]    INDEX ON THE FIRST DIMENSION
-      !PARAM INDEX2     [IN]    INDEX ON THE SECOND DIMENSION
-      !PARAM INDEX3     [IN]    INDEX ON THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable to write
+      !>@param[in] VALEUR The value to write in the variable
+      !>@param[in] INDEX1 Index on the first dimension
+      !>@param[in] INDEX2 Index on the second dimension
+      !>@param[in] INDEX3 Index on the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_BOOLEAN
      &     (ID, TAG, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
@@ -996,30 +895,23 @@
       END SUBROUTINE SET_BOOLEAN
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET INFORMATIONS ON A VARIABLE
+      !>@brief Get informations on a variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARIABLE
-      !PARAM VARTYPE   [OUT]    TYPE OF THE VARIABLE
-      !+                        (INTEGER, DOUBLE, STRING, BOOLEAN)
-      !PARAM READONLY  [OUT]    0 IF THE VARIABLE IS READ ONLY
-      !+                        1 IF IT IS WRITTABLE
-      !PARAM NDIM      [OUT]    NUMBER OF DIMENSION
-      !+                        (0 IF IT IS NOT AN ARRAY)
-      !PARAM IENT      [OUT]    1 if the numbering is on point
-      !PARAM JENT      [OUT]    1 if the numbering is on point
-      !PARAM KENT      [OUT]    1 if the numbering is on point
-      !PARAM GETPOS    [OUT]    1 if the numbering is on point
-      !PARAM SETPOS    [OUT]    1 if the numbering is on point
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the variable
+      !>@param[out] VARTYPE Type of the variable
+      !!                        (INTEGER, DOUBLE, STRING, BOOLEAN)
+      !>@param[out] READONLY 0 if the variable is read only
+      !!                        1 IF IT IS WRITTABLE
+      !>@param[out] NDIM Number of dimension
+      !!                        (0 IF IT IS NOT AN ARRAY)
+      !>@param[out] IENT 1 if the numbering is on point
+      !>@param[out] JENT 1 if the numbering is on point
+      !>@param[out] KENT 1 if the numbering is on point
+      !>@param[out] GETPOS 1 if the numbering is on point
+      !>@param[out] SETPOS 1 if the numbering is on point
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_TYPE
      &        (TAG, VARNAME, VARTYPE, READONLY, NDIM,IENT,JENT,KENT,
@@ -1063,23 +955,16 @@
       END SUBROUTINE GET_VAR_TYPE
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET THE SIZE OF EACH DIMENSION OF A VARAIBLE
+      !>@brief Get the size of each dimension of a varaible
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME    [IN]    NAME OF THE VARAIBLE
-      !PARAM DIM1      [OUT]    SIZE OF THE FIRST DIMENSION
-      !PARAM DIM2      [OUT]    SIZE OF THE SECOND DIMENSION
-      !PARAM DIM3      [OUT]    SIZE OF THE THIRD DIMENSION
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] VARNAME Name of the varaible
+      !>@param[out] DIM1 Size of the first dimension
+      !>@param[out] DIM2 Size of the second dimension
+      !>@param[out] DIM3 Size of the third dimension
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_SIZE(ID, TAG, VARNAME, DIM1, DIM2, DIM3, IERR)
         INTEGER,               INTENT(IN) :: ID
@@ -1116,20 +1001,13 @@
       END SUBROUTINE GET_VAR_SIZE
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF GET A DESCRIPTION OF EACH VARIABLE
+      !>@brief Get a description of each variable
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM TAG        [IN]    SHORT OF THE MODULE TO USE (T2D,SIS...)
-      !PARAM VARNAME   [OUT]    LIST OF ALL THE VARIABLES
-      !PARAM VARINFO   [OUT]    LIST OF ALL THE DESCRIPTIONS
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[out] VARNAME List of all the variables
+      !>@param[out] VARINFO List of all the descriptions
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_VAR_LIST(TAG, VARNAME, VARINFO, IERR)
 !
@@ -1174,19 +1052,12 @@
       END SUBROUTINE
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief Returns the error message of the instance
+      !>@brief Returns the error message of the instance
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history y audouin (edf r&d, lnhe)
-      !+       21/08/2013
-      !+       V6P3
-      !+       creation of the file
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !param id    [in]    id of the instance
-      !param tag   [IN]    Short of the module to use (t2d,sis...)
-      !param ierr  [in]    Error code
-      !param mess  [out]   The error message
+      !>@param[in] ID Id of the instance
+      !>@param[in] TAG Short of the module to use (t2d,sis...)
+      !>@param[in] IERR Error code
+      !>@param[out] MESS The error message
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE GET_ERROR_MESSAGE(ID,TAG,IERR,MESS)
         INTEGER, INTENT(IN) :: ID
@@ -1230,21 +1101,14 @@
 ! EXECUTION FUNCTIONS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE INSTANCE AND SET THE OUTPUT
+      !>@brief Initialise the instance and set the output
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID   [OUT]    ID OF THE INSTANCE
-      !PARAM LU    [IN]    OUTPUT STREAM ID
-      !PARAM LNG   [IN]    OUTPUT LANGUAGE 2 ENGLISH 1 FRENCH
-      !PARAM COMM  [IN]    MPI COMMUNICATOR
-      !PARAM IERR [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[out] ID Id of the instance
+      !>@param[in] LU Output stream id
+      !>@param[in] LNG Output language 2 english 1 french
+      !>@param[in] COMM Mpi communicator
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_SET_CONFIG_T2D(ID,LU,LNG,COMM,IERR)
 !
@@ -1273,17 +1137,11 @@
       END SUBROUTINE RUN_SET_CONFIG_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief initializes variables for TELEMAC2D in case of coupling
+      !>@brief Initializes variables for TELEMAC2D in case of coupling
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID    [IN]    ID OF THE TELEMAC2D INSTANCE
-      !PARAM IERR [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[in] ID Id of the telemac2d instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE CPL_INIT(ID,IERR)
 !
@@ -1298,23 +1156,16 @@
 
       END SUBROUTINE CPL_INIT
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF READS THE CASE FILE
+      !>@brief Reads the case file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM CAS_FILE   [IN]    PATH TO THE CASE FILE
-      !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
-      !PARAM INIT       [IN]    IF TRUE P_INIT IS CALLED
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
-      !PARAM GAIA_CAS_FILE   [IN]    PATH TO THE GAIA CASE FILE
-      !PARAM GAIA_DICO_FILE  [IN]    PATH TO THE GAIA DICTIONARY FILE
+      !>@param[in] ID Id of the instance
+      !>@param[in] CAS_FILE Path to the case file
+      !>@param[in] DICO_FILE Path to the dictionary file
+      !>@param[in] INIT If true p_init is called
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
+      !>@param[in] GAIA_CAS Path to the gaia case file
+      !>@param[in] GAIA_DICO Path to the gaia dictionary file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_T2D(ID,CAS_FILE, DICO_FILE,INIT,IERR,
      &                             GAIA_CAS,GAIA_DICO)
@@ -1348,18 +1199,11 @@
       END SUBROUTINE RUN_READ_CASE_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF ALLOCATE ALL OF TELEMAC2D VARIABLES
+      !>@brief Allocate all of telemac2d variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_ALLOCATION_T2D(ID,IERR)
 !
@@ -1383,18 +1227,11 @@
       END SUBROUTINE RUN_ALLOCATION_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE TELEMAC2D VARIABLES
+      !>@brief Initialise the telemac2d variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_INIT_T2D(ID,IERR)
 !
@@ -1416,18 +1253,11 @@
       END SUBROUTINE RUN_INIT_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN TELEMAC2D
+      !>@brief Run a timestep in telemac2d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_T2D(ID,IERR)
 !
@@ -1440,18 +1270,11 @@
       END SUBROUTINE RUN_TIMESTEP_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN TELEMAC2D without writing results
+      !>@brief Run a timestep in telemac2d without writing results
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_COMPUTE_T2D(ID,IERR)
 !
@@ -1473,18 +1296,11 @@
       END SUBROUTINE RUN_TIMESTEP_COMPUTE_T2D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN TELEMAC2D only writing results
+      !>@brief Run a timestep in telemac2d only writing results
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_RES_T2D(ID,IERR)
 !
@@ -1506,18 +1322,11 @@
 !
       END SUBROUTINE RUN_TIMESTEP_RES_T2D
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF FINALIZE A TELEMAC2D RUN
+      !>@brief Finalize a telemac2d run
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_FINALIZE_T2D(ID,IERR)
 !
@@ -1551,21 +1360,14 @@
 ! EXECUTION FUNCTIONS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE INSTANCE AND SET THE OUTPUT
+      !>@brief Initialise the instance and set the output
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE TELEMAC3D INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID   [OUT]    ID OF THE INSTANCE
-      !PARAM LU    [IN]    OUTPUT STREAM ID
-      !PARAM LNG   [IN]    OUTPUT LANGUAGE 2 ENGLISH 1 FRENCH
-      !PARAM COMM  [IN]    MPI COMMUNICATOR
-      !PARAM IERR [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[out] ID Id of the instance
+      !>@param[in] LU Output stream id
+      !>@param[in] LNG Output language 2 english 1 french
+      !>@param[in] COMM Mpi communicator
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_SET_CONFIG_T3D(ID,LU,LNG,COMM,IERR)
 !
@@ -1594,25 +1396,22 @@
       END SUBROUTINE RUN_SET_CONFIG_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF READS THE CASE FILE
+      !>@brief Reads the case file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE TELEMAC3D INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM CAS_FILE   [IN]    PATH TO THE CASE FILE
-      !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
-      !PARAM INIT       [IN]    IF TRUE P_INIT IS CALLED
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] CAS_FILE Path to the case file
+      !>@param[in] DICO_FILE Path to the dictionary file
+      !>@param[in] INIT If true p_init is called
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
+      !>@param[in] WAQ_CAS_FILE Path to the gaia case file
+      !>@param[in] WAQ_DICO_FILE Path to the gaia dictionary file
+      !>@param[in] GAIA_CAS_FILE Path to the gaia case file
+      !>@param[in] GAIA_DICO_FILE Path to the gaia dictionary file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_T3D(ID,CAS_FILE, DICO_FILE, INIT, IERR,
-     &                            WAQ_CAS_FILE, WAQ_DICO_FILE,
-     &                            GAIA_CAS_FILE, GAIA_DICO_FILE)
+     &                             WAQ_CAS_FILE, WAQ_DICO_FILE,
+     &                             GAIA_CAS_FILE, GAIA_DICO_FILE)
 !
           INTEGER,            INTENT(IN) :: ID
           CHARACTER(LEN=250), INTENT(IN) :: CAS_FILE
@@ -1645,18 +1444,11 @@
       END SUBROUTINE RUN_READ_CASE_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF ALLOCATE ALL OF TELEMAC3D VARIABLES
+      !>@brief Allocate all of telemac3d variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE TELEMAC3D INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_ALLOCATION_T3D(ID,IERR)
 !
@@ -1680,18 +1472,11 @@
       END SUBROUTINE RUN_ALLOCATION_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE TELEMAC3D VARIABLES
+      !>@brief Initialise the telemac3d variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE TELEMAC3D INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_INIT_T3D(ID,IERR)
 !
@@ -1713,18 +1498,11 @@
       END SUBROUTINE RUN_INIT_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN TELEMAC3D
+      !>@brief Run a timestep in telemac3d
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE TELEMAC3D INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_T3D(ID,IERR)
 !
@@ -1747,18 +1525,11 @@
       END SUBROUTINE RUN_TIMESTEP_T3D
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF FINALIZE A TELEMAC3D RUN
+      !>@brief Finalize a telemac3d run
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE TELEMAC3D INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_FINALIZE_T3D(ID,IERR)
 !
@@ -1791,21 +1562,14 @@
 ! EXECUTION FUNCTIONS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE INSTANCE AND SET THE OUTPUT
+      !>@brief Initialise the instance and set the output
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID   [OUT]    ID OF THE INSTANCE
-      !PARAM LU    [IN]    OUTPUT STREAM ID
-      !PARAM LNG   [IN]    OUTPUT LANGUAGE 2 ENGLISH 1 FRENCH
-      !PARAM COMM  [IN]    MPI COMMUNICATOR
-      !PARAM IERR [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[out] ID Id of the instance
+      !>@param[in] LU Output stream id
+      !>@param[in] LNG Output language 2 english 1 french
+      !>@param[in] COMM Mpi communicator
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_SET_CONFIG_SIS(ID,LU,LNG,COMM,IERR)
 !
@@ -1833,21 +1597,15 @@
       END SUBROUTINE RUN_SET_CONFIG_SIS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF READS THE CASE FILE
+      !>@brief Reads the case file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM CODE       [IN]    CODE FOR COUPLED CALL
-      !PARAM CAS_FILE   [IN]    PATH TO THE CASE FILE
-      !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] CODE Code for coupled call
+      !>@param[in] CAS_FILE Path to the case file
+      !>@param[in] DICO_FILE Path to the dictionary file
+      !>@param[in] INIT If true p_init is called
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_SIS(ID,CODE,CAS_FILE, DICO_FILE, INIT,
      &                             IERR)
@@ -1878,18 +1636,11 @@
       END SUBROUTINE RUN_READ_CASE_SIS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF ALLOCATE ALL OF SISYPHE VARIABLES
+      !>@brief Allocate all of sisyphe variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI(EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_ALLOCATION_SIS(ID,IERR)
 !
@@ -1913,18 +1664,11 @@
       END SUBROUTINE RUN_ALLOCATION_SIS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE SISYPHE VARIABLES
+      !>@brief Initialise the sisyphe variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_INIT_SIS(ID,IERR)
 !
@@ -1946,18 +1690,11 @@
       END SUBROUTINE RUN_INIT_SIS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN SISYPHE
+      !>@brief Run a timestep in sisyphe
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_SIS(ID,IERR)
 !
@@ -1980,18 +1717,11 @@
       END SUBROUTINE RUN_TIMESTEP_SIS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF FINALIZE A SISYPHE RUN
+      !>@brief Finalize a sisyphe run
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       17/03/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_FINALIZE_SIS(ID,IERR)
 !
@@ -2020,18 +1750,12 @@
 !***********************************************************************
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief saves original charr and susp values after first sisyphe call
+      !>@brief Saves original charr and susp values after first sisyphe call
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID_T2D    [IN]    ID OF THE TELEMAC2D INSTANCE
-      !PARAM ID_SIS    [IN]    ID OF THE SISYPHE INSTANCE
-      !PARAM IERR     [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[in] ID_T2D Id of the telemac2d instance
+      !>@param[in] ID_SIS Id of the sisyphe instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       SUBROUTINE SAVE_CHARR_SUSP(ID_T2D, ID_SIS,IERR)
@@ -2053,22 +1777,16 @@
 
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief deals with cases : BEDLOAD OF SUSPENSION
+      !>@brief Deals with cases : BEDLOAD OF SUSPENSION
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID_T2D    [IN]    ID OF THE TELEMAC2D INSTANCE
-      !PARAM ID_SIS    [IN]    ID OF THE SISYPHE INSTANCE
-      !param CHARR_SUSP     [OUT]    DEFINES WHICH SISYPHE CALL
-      !                              = 1 Means Bedload
-      !                              = 2 Means Suspension
-      !                              = 3 Means Both
-      !PARAM IERR [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[in] ID_T2D Id of the telemac2d instance
+      !>@param[in] ID_SIS Id of the sisyphe instance
+      !>@param[out] CHARR_SUSP Defines which sisyphe call
+      !!                             = 1 Means Bedload
+      !!                             = 2 Means Suspension
+      !!                             = 3 Means Both
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       SUBROUTINE CHARR_OR_SUSP(ID_T2D, ID_SIS, CHARR_SUSP, IERR)
@@ -2093,22 +1811,16 @@
 
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief sets loop variables for sisyphe in case of coupling
+      !>@brief Sets loop variables for sisyphe in case of coupling
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID_T2D              [IN]    ID OF THE TELEMAC2D INSTANCE
-      !PARAM ID_SIS              [IN]    ID OF THE SISYPHE INSTANCE
-      !param CALL_TYPE       [IN]    DEFINES WHICH SISYPHE CALL
-      !                              = 0 Means Initializing
-      !                              = 1 Means Bedload CALL
-      !                              = 2 Means Suspension CALL
-      !PARAM IERR           [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                             ERROR ID OTHERWISE
+      !>@param[in] ID_T2D Id of the telemac2d instance
+      !>@param[in] ID_SIS Id of the sisyphe instance
+      !>@param[in] CALL_TYPE Defines which sisyphe call
+      !!                             = 0 Means Initializing
+      !!                             = 1 Means Bedload CALL
+      !!                             = 2 Means Suspension CALL
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                             error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_SIS(ID_T2D,ID_SIS, CALL_TYPE,IERR)
 !
@@ -2129,18 +1841,12 @@
       END SUBROUTINE SET_VAR_SIS
 
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !brief sends variables to telemac2d after sisyphe call
+      !>@brief Sends variables to telemac2d after sisyphe call
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !history R-S MOURADI (EDF R&D, LNHE)
-      !+       15/04/2016
-      !+       V7P1
-      !+       Creation of the file
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID_T2D              [IN]    ID OF THE TELEMAC2D INSTANCE
-      !PARAM ID_SIS              [IN]    ID OF THE SISYPHE INSTANCE
-      !PARAM IERR           [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                             ERROR ID OTHERWISE
+      !>@param[in] ID_T2D Id of the telemac2d instance
+      !>@param[in] ID_SIS Id of the sisyphe instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                             error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE SET_VAR_T2D(ID_T2D, ID_SIS, IERR)
 !
@@ -2167,21 +1873,14 @@
 ! EXECUTION FUNCTIONS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE INSTANCE AND SET THE OUTPUT
+      !>@brief Initialise the instance and set the output
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID   [OUT]    ID OF THE INSTANCE
-      !PARAM LU    [IN]    OUTPUT STREAM ID
-      !PARAM LNG   [IN]    OUTPUT LANGUAGE 2 ENGLISH 1 FRENCH
-      !PARAM COMM  [IN]    MPI COMMUNICATOR
-      !PARAM IERR [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[out] ID Id of the instance
+      !>@param[in] LU Output stream id
+      !>@param[in] LNG Output language 2 english 1 french
+      !>@param[in] COMM Mpi communicator
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_SET_CONFIG_ART(ID,LU,LNG,COMM,IERR)
 !
@@ -2210,21 +1909,14 @@
       END SUBROUTINE RUN_SET_CONFIG_ART
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF READS THE CASE FILE
+      !>@brief Reads the case file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM CAS_FILE   [IN]    PATH TO THE CASE FILE
-      !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
-      !PARAM INIT       [IN]    IF TRUE P_INIT IS CALLED
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] CAS_FILE Path to the case file
+      !>@param[in] DICO_FILE Path to the dictionary file
+      !>@param[in] INIT If true p_init is called
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_ART(ID,CAS_FILE, DICO_FILE, INIT,IERR)
 !
@@ -2253,18 +1945,11 @@
       END SUBROUTINE RUN_READ_CASE_ART
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF ALLOCATE ALL OF ARTEMIS VARIABLES
+      !>@brief Allocate all of artemis variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_ALLOCATION_ART(ID,IERR)
 !
@@ -2288,18 +1973,11 @@
       END SUBROUTINE RUN_ALLOCATION_ART
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE ARTEMIS VARIABLES
+      !>@brief Initialise the artemis variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_INIT_ART(ID,IERR)
 !
@@ -2321,18 +1999,11 @@
       END SUBROUTINE RUN_INIT_ART
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN ARTEMIS
+      !>@brief RUN A TIMESTEP IN ARTEMIS
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_ART(ID,IERR)
 !
@@ -2355,18 +2026,11 @@
       END SUBROUTINE RUN_TIMESTEP_ART
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF FINALIZE A ARTEMIS RUN
+      !>@brief Finalize a artemis run
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY Y AUDOUIN (EDF R&D, LNHE)
-      !+       21/08/2013
-      !+       V6P3
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_FINALIZE_ART(ID,IERR)
 !
@@ -2400,21 +2064,14 @@
 ! EXECUTION FUNCTIONS
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE INSTANCE AND SET THE OUTPUT
+      !>@brief Initialise the instance and set the output
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE tomawac INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID   [OUT]    ID OF THE INSTANCE
-      !PARAM LU    [IN]    OUTPUT STREAM ID
-      !PARAM LNG   [IN]    OUTPUT LANGUAGE 2 ENGLISH 1 FRENCH
-      !PARAM COMM  [IN]    MPI COMMUNICATOR
-      !PARAM IERR [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                   ERROR ID OTHERWISE
+      !>@param[out] ID Id of the instance
+      !>@param[in] LU Output stream id
+      !>@param[in] LNG Output language 2 english 1 french
+      !>@param[in] COMM Mpi communicator
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                   error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_SET_CONFIG_WAC(ID,LU,LNG,COMM,IERR)
 !
@@ -2443,21 +2100,14 @@
       END SUBROUTINE RUN_SET_CONFIG_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF READS THE CASE FILE
+      !>@brief Reads the case file
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE tomawac INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM CAS_FILE   [IN]    PATH TO THE CASE FILE
-      !PARAM DICO_FILE  [IN]    PATH TO THE DICTIONARY FILE
-      !PARAM INIT       [IN]    IF TRUE P_INIT IS CALLED
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[in] CAS_FILE Path to the case file
+      !>@param[in] DICO_FILE Path to the dictionary file
+      !>@param[in] INIT If true p_init is called
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_READ_CASE_WAC(ID,CAS_FILE, DICO_FILE, INIT,IERR)
 !
@@ -2486,18 +2136,11 @@
       END SUBROUTINE RUN_READ_CASE_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF ALLOCATE ALL OF tomawac VARIABLES
+      !>@brief Allocate all of tomawac variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE tomawac INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_ALLOCATION_WAC(ID,IERR)
 !
@@ -2521,18 +2164,11 @@
       END SUBROUTINE RUN_ALLOCATION_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF INITIALISE THE tomawac VARIABLES
+      !>@brief Initialise the tomawac variables
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE tomawac INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_INIT_WAC(ID,IERR)
 !
@@ -2554,18 +2190,11 @@
       END SUBROUTINE RUN_INIT_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN A TIMESTEP IN tomawac
+      !>@brief Run a timestep in tomawac
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE tomawac INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_WAC(ID,IERR)
 !
@@ -2588,18 +2217,11 @@
       END SUBROUTINE RUN_TIMESTEP_WAC
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF FINALIZE A tomawac RUN
+      !>@brief Finalize a tomawac run
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY MP DAOU (AEE HNUM)
-      !+       19/07/2017
-      !+       V7P2
-      !+       CREATION OF THE tomawac INTERFACE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID         [IN]    ID OF THE INSTANCE
-      !PARAM IERR      [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                        ERROR ID OTHERWISE
+      !>@param[in] ID Id of the instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                        error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_FINALIZE_WAC(ID,IERR)
 !
@@ -2630,19 +2252,12 @@
 !***********************************************************************
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF RUN SISYPHE IN CASE OF COUPLING : BEDLOAD VS SUSPENSION
+      !>@brief Run sisyphe in case of coupling : bedload vs suspension
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !HISTORY R-S MOURADI (EDF R&D, LNHE)
-      !+       12/05/2016
-      !+       V7P1
-      !+       CREATION OF THE FILE
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM ID_T2D   [IN]    THE INSTANCE
-      !PARAM ID_SIS   [IN]    THE INSTANCE
-      !PARAM IERR    [OUT]    0 IF SUBROUTINE SUCCESSFULL,
-      !+                      ERROR ID OTHERWISE
+      !>@param[in] ID_T2D The instance
+      !>@param[in] ID_SIS The instance
+      !>@param[out] IERR 0 if subroutine successfull,
+      !!                      error id otherwise
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_TIMESTEP_SIS_CPL(ID_T2D, ID_SIS, IERR)
         INTEGER,             INTENT(IN) :: ID_T2D, ID_SIS
@@ -2683,25 +2298,21 @@
 !***********************************************************************
 !
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !BRIEF Identify the liquid boundaries
+      !>@brief Identify the liquid boundaries
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !
-      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      !PARAM IKLE     [OUT]    Connectivity array
-      !PARAM IKLES    [IN]     Connectivity array 1D form
-      !PARAM KP1BOR   [OUT]    Neigbouring boundary nodes array
-      !PARAM NUMLIQ   [OUT]    Array for liquid boundaries
-      !PARAM DIM_MESH [IN]     Dimension of the mesh
-      !PARAM NPOIN2   [IN]     Number of 2D points
-      !PARAM NPTFR    [IN,OUT] Number of boundary points
-      !PARAM NPOIN    [IN]     Number of points
-      !PARAM NELEM2   [IN,OUT] Number of 2D elements
-      !PARAM NELBOR   [OUT]    Number of boundary elements
-      !PARAM LIUBOR   [IN]     Boundary value for velocity
-      !PARAM LIHBOR   [IN]     Boundary value for height
-      !PARAM NBOR     [IN,OUT] Boundary numbering array
-      !PARAM IFABOR   [OUT]    Array for boundaries
-      !PARAM F        [IN]     Coordinates
+      !>@param[in] IKLES Connectivity array 1d form
+      !>@param[in] DIM_MESH Dimension of the mesh
+      !>@param[in] NPTFR Number of boundary points
+      !>@param[in] NPOIN Number of points
+      !>@param[in,out] NELEM2 Number of 2d elements
+      !>@param[in] LIUBOR Boundary value for velocity
+      !>@param[in] LIHBOR Boundary value for height
+      !>@param[in,out] NBOR Boundary numbering array
+      !>@param[in] COORD Coordinates
+      !>@param[out] NELBOR Number of boundary elements
+      !>@param[out] IFABOR Array for boundaries
+      !>@param[out] KP1BOR Neigbouring boundary nodes array
+      !>@param[out] NUMLIQ Array for liquid boundaries
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE IDENTIFY_LIQ_BND(
      &  IKLES, DIM_MESH, NPTFR, NPOIN, NELEM2,

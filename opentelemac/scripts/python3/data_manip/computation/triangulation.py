@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.tri as mtri
 
+
 def triangulation_from_data(x, z):
     """
     Extract values of plan in telemac-3d result file for the given variable

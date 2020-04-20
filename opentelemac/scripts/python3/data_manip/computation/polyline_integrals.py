@@ -27,6 +27,7 @@ import numpy as np
 # ____/ MAIN CALL  /_______________________________________________/
 #
 
+
 def compute_segments_lengthes(polyline_coords):
     """
     Compute the length of each segment of the polygonal chain,
@@ -47,6 +48,7 @@ def compute_segments_lengthes(polyline_coords):
             first_point = second_point
     return length
 
+
 def compute_segments_normals(polyline_coords):
     """
     Compute the normal to each segment of the polygonal chain
@@ -64,10 +66,12 @@ def compute_segments_normals(polyline_coords):
         else:
             normal_length = get_norm2((x, y), (prev_x, prev_y))
             if normal_length < 10e-10:
-                raise TelemacException("The normal "\
-                    "length is too small, check your mesh and polyline\n")
+                raise TelemacException("The normal "
+                                       "length is too small,\
+                                        check your mesh and polyline\n")
             normals.append([y-prev_y, prev_x-x]/normal_length)
     return normals
+
 
 def compute_segments_tangents(polyline_coords):
     """
@@ -86,10 +90,12 @@ def compute_segments_tangents(polyline_coords):
         else:
             normal_length = get_norm2((prev_y, x), (y, prev_x))
             if normal_length < 10e-10:
-                raise TelemacException("The normal "\
-                    "length is too small, check your mesh and polyline\n")
+                raise TelemacException("The normal "
+                                       "length is too small,\
+                                        check your mesh and polyline\n")
             tangents.append([x-prev_x, y-prev_y]/normal_length)
     return tangents
+
 
 def wet_area_2d(polyline_coords, water_depth):
     """
@@ -120,6 +126,7 @@ def wet_area_2d(polyline_coords, water_depth):
         # compute the area of the wet section
         wet_area += (water_depth[i+1] + water_depth[i])*lengthes[i+1]/2.
     return wet_area
+
 
 def flux_2d(polyline_coords, flux_x, flux_y, scalar=None):
     """
@@ -170,9 +177,9 @@ def flux_2d(polyline_coords, flux_x, flux_y, scalar=None):
         # that if flux_x is not nan they should be correctly defined
 
         # compute the fluxes
-        product_i = (flux_x[i]*normals[i+1][0]\
-                    + flux_y[i]*normals[i+1][1]) * scal_i
-        product_i_plus_1 = (flux_x[i+1]*normals[i+1][0]\
-                           + flux_y[i+1]*normals[i+1][1]) * scal_ip1
+        product_i = (flux_x[i]*normals[i+1][0]
+                     + flux_y[i]*normals[i+1][1]) * scal_i
+        product_i_plus_1 = (flux_x[i+1]*normals[i+1][0]
+                            + flux_y[i+1]*normals[i+1][1]) * scal_ip1
         flux += (product_i + product_i_plus_1)*lengthes[i+1]/2.
     return flux

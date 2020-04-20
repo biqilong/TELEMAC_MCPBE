@@ -46,6 +46,7 @@ from utils.exceptions import TelemacException
 __author__ = "Juliette C.E. Parisi"
 __date__ = "$02-Dec-2013 15:09:48$"
 
+
 def main():
     """ Main function of convertToIni """
 
@@ -54,19 +55,20 @@ def main():
     from argparse import ArgumentParser, RawDescriptionHelpFormatter
     from data_manip.formats.selafin import Selafin
     from data_manip.extraction.parser_selafin import subset_variables_slf, \
-                                       get_value_history_slf
+        get_value_history_slf
     from pretel.meshes import xys_locate_mesh
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Reads config file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print('\n\nInterpreting command line options\n'+'~'*72+'\n')
-    parser = ArgumentParser(\
+    parser = ArgumentParser(
        formatter_class=RawDescriptionHelpFormatter,
        description=('''\n
-A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
+A script to map 2D or 3D outter model results stored in a SELAFIN file,\
+ onto the
    one frame of contained SELAFIN file of your choosing (your MESH).
       '''),
-       usage=' (--help for help)\n---------\n       =>  '\
+       usage=' (--help for help)\n---------\n       =>  '
              '%(prog)s  geo-mesh.slf in-result.slf out-init.slf \n---------')
     parser.add_argument("args", default='', nargs=3)
     options = parser.parse_args()
@@ -75,7 +77,7 @@ A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
 # ~~~~ slf new mesh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     geo_file = options.args[0]
     if not path.exists(geo_file):
-        raise TelemacException(\
+        raise TelemacException(
             '... the provided geo_file does not seem to exist: {}'
             '\n\n'.format(geo_file))
 
@@ -83,14 +85,15 @@ A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
     print('   +> getting hold of the GEO file and of its bathymetry')
     geo = Selafin(geo_file)
     xys = np.vstack((geo.meshx, geo.meshy)).T
-    _ = geo.get_variables_at(0, \
-                  subset_variables_slf("BOTTOM: ", geo.varnames)[0])[0]
+    _ = geo.get_variables_at(0,
+                             subset_variables_slf("BOTTOM: ",
+                                                  geo.varnames)[0])[0]
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ slf existing res ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     slf_file = options.args[1]
     if not path.exists(slf_file):
-        raise TelemacException(\
+        raise TelemacException(
             '... the provided geo_file does not seem to exist: {}'
             '\n\n'.format(slf_file))
 
@@ -118,21 +121,21 @@ A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
     ini_file = options.args[2]
     ini = Selafin('')
     ini.fole = {}
-    ini.fole.update({'hook':open(ini_file, 'wb')})
-    ini.fole.update({'name':ini_file})
-    ini.fole.update({'endian':">"})     # big endian
-    ini.fole.update({'float':('f', 4)})  # single precision
+    ini.fole.update({'hook': open(ini_file, 'wb')})
+    ini.fole.update({'name': ini_file})
+    ini.fole.update({'endian': ">"})     # big endian
+    ini.fole.update({'float': ('f', 4)})  # single precision
 
     # Meta data and variable names
     ini.title = ''
     ini.nbv1 = 5
     # /!\ ELEVATION has to be the first variable
     # (for possible vertical re-interpolation within TELEMAC)
-    ini.varnames = ['ELEVATION Z     ', \
-                    'VELOCITY U      ', 'VELOCITY V      ', \
+    ini.varnames = ['ELEVATION Z     ',
+                    'VELOCITY U      ', 'VELOCITY V      ',
                     'SALINITY        ', 'TEMPERATURE     ']
-    ini.varunits = ['M               ', \
-                    'M/S             ', 'M/S             ', \
+    ini.varunits = ['M               ',
+                    'M/S             ', 'M/S             ',
                     '                ', '                ']
     ini.nvar = ini.nbv1
     ini.varindex = range(ini.nvar)
@@ -148,13 +151,13 @@ A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
 
     print('   +> setting connectivity')
     ini.ikle3 = \
-       np.repeat(geo.npoin2*np.arange(ini.nplan-1),
-                 geo.nelem2*ini.ndp3)\
-         .reshape((geo.nelem2*(ini.nplan-1), ini.ndp3)) + \
-       np.tile(np.add(np.tile(geo.ikle2, 2),
-                      np.repeat(geo.npoin2*np.arange(2), geo.ndp2)),
-               (ini.nplan-1, 1))
-    ini.ipob3 = np.ravel(np.add(np.repeat(geo.ipob2, ini.nplan)\
+        np.repeat(geo.npoin2*np.arange(ini.nplan-1),
+                  geo.nelem2*ini.ndp3)\
+        .reshape((geo.nelem2*(ini.nplan-1), ini.ndp3)) + \
+        np.tile(np.add(np.tile(geo.ikle2, 2),
+                np.repeat(geo.npoin2*np.arange(2), geo.ndp2)),
+                (ini.nplan-1, 1))
+    ini.ipob3 = np.ravel(np.add(np.repeat(geo.ipob2, ini.nplan)
                                   .reshape((geo.npoin2, ini.nplan)),
                                 geo.npoin2*np.arange(ini.nplan)).T)
     ini.iparam = [0, 0, 0, 0, 0, 0, ini.nplan, 0, 0, 0]
@@ -173,8 +176,8 @@ A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
     print('   +> setting variables')
     ini.tags['times'] = slf.tags['times']
     # VARIABLE extraction
-    vrs = subset_variables_slf("ELEVATION Z: ;VELOCITY U: ;VELOCITY V: "\
-                             ";SALINITY: ;TEMPERATURE: ", slf.varnames)
+    vrs = subset_variables_slf("ELEVATION Z: ;VELOCITY U: ;VELOCITY V: "
+                               ";SALINITY: ;TEMPERATURE: ", slf.varnames)
 
     # Read / Write data for first time step
     zeros = np.zeros((ini.npoin3, 1), dtype=np.float)
@@ -188,9 +191,9 @@ A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
     data[4] = np.maximum(data[4], zeros)
     print('   +> correcting variables')
     # duplicate values below bottom
-    data = np.reshape(\
-            np.transpose(\
-              np.reshape(\
+    data = np.reshape(
+            np.transpose(
+              np.reshape(
                 np.ravel(data), (ini.nvar, ini.npoin2, ini.nplan)),
               (0, 2, 1)),
             (ini.nvar, ini.npoin3))
@@ -206,6 +209,7 @@ A script to map 2D or 3D outter model results stored in a SELAFIN file, onto the
     print('\n\nMy work is done\n\n')
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

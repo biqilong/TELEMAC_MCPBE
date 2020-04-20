@@ -1,10 +1,10 @@
 r"""@author Sebastien E. Bourban
 
     @brief
-            Tools for handling MSH files when created by the mesh generator GMSH
+        Tools for handling MSH files when created by the mesh generator GMSH
 
     @details
-            Contains read/write functions for binary and asci MSH files
+        Contains read/write functions for binary and asci MSH files
 """
 from __future__ import print_function
 # _____          ___________________________________________________
@@ -31,6 +31,7 @@ from utils.exceptions import TelemacException
 # _____                  ___________________________________________
 # ____/ Primary Classes /__________________________________________/
 #
+
 
 class GEO(InS):
 
@@ -59,18 +60,18 @@ class GEO(InS):
         geo = []
         ipoin = self.ipoin[-1]
         for i, x_y in zip(range(len(poly)), poly):
-            geo.append('Point('+str(i+ipoin+1)+') = { '+
+            geo.append('Point('+str(i+ipoin+1)+') = { ' +
                        str(x_y[0])+','+str(x_y[1])+',0,2000 };')
         # Lines
         iline = self.iline[-1]
         for i in range(len(poly))[:-1]:
-            geo.append('Line('+str(i+iline+1)+') = { '+
+            geo.append('Line('+str(i+iline+1)+') = { ' +
                        str(i+iline+1)+','+str(i+iline+2)+' };')
-        geo.append('Line('+str(len(poly)+iline)+') = { '+
+        geo.append('Line('+str(len(poly)+iline)+') = { ' +
                    str(len(poly)+iline)+','+str(iline+1)+' };')
         # Line Loop
         iloop = self.iloop[-1]
-        geo.append('Line Loop('+str(len(poly)+iloop+1)+') = {'+
+        geo.append('Line Loop('+str(len(poly)+iloop+1)+') = {' +
                    ','.join([str(i+iloop+1) for i in range(len(poly))])+' };')
         # next set of entities
         self.ipoin.append(ipoin+len(poly))
@@ -90,8 +91,8 @@ class GEO(InS):
 
         # make up surface with wholes
         psurf = self.isurf[-1]
-        geo.append('Plane Surface('+str(psurf+1)+') = {'+\
-                      ','.join([str(i) for i in self.iloop[1:]])+'};')
+        geo.append('Plane Surface('+str(psurf+1)+') = {' +
+                   ','.join([str(i) for i in self.iloop[1:]])+'};')
         self.isurf.append(psurf+1)
 
         # write up
@@ -100,15 +101,15 @@ class GEO(InS):
 
 class MSH(Selafin):
 
-    mshkeys = {"MeshFormat":'',
-               "Nodes":'',
-               "Elements":[],
-               "PhysicalName":'',
-               "Periodic":'',
-               "NodeData":'',
-               "ElementData":'',
-               "ElementNodeData":'',
-               "InterpolationScheme":''}
+    mshkeys = {"MeshFormat": '',
+               "Nodes": '',
+               "Elements": [],
+               "PhysicalName": '',
+               "Periodic": '',
+               "NodeData": '',
+               "ElementData": '',
+               "ElementNodeData": '',
+               "InterpolationScheme": ''}
 
     frst_keys = re.compile(r'[$](?P<key>[^\s]+)\s*\Z', re.I)
     last_keys = re.compile(r'[$]End(?P<key>[^\s]+)\s*\Z', re.I)
@@ -129,12 +130,12 @@ class MSH(Selafin):
 
         # ~~ Openning files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         self.fle = {}
-        self.fle.update({'name':file_name})
+        self.fle.update({'name': file_name})
         # "<" means little-endian, ">" means big-endian
-        self.fle.update({'endian':">"})
-        self.fle.update({'integer':('i', 4)}) #'i' size 4
-        self.fle.update({'float': ('f', 4)}) #'f' size 4, 'd' = size 8
-        self.fle.update({'hook':open(file_name, 'r')})
+        self.fle.update({'endian': ">"})
+        self.fle.update({'integer': ('i', 4)})  # 'i' size 4
+        self.fle.update({'float': ('f', 4)})  # 'f' size 4, 'd' = size 8
+        self.fle.update({'hook': open(file_name, 'r')})
         fle = iter(self.fle['hook'])
 
         # ~~ Read/Write dimensions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,12 +145,12 @@ class MSH(Selafin):
         proc = re.match(self.frst_keys, line)
         if proc:
             if proc.group('key') != "MeshFormat":
-                raise TelemacException(\
+                raise TelemacException(
                     '... Could not recognise your MSH file format. '
                     'Missing MeshFormat key.')
             line = fle.next().split()
             if line[0] != "2.2":
-                raise TelemacException(\
+                raise TelemacException(
                     '... Could not read your MSH file format. '
                     'Only the version 2.2 is allowed.')
             file_type = int(line[1])
@@ -164,7 +165,7 @@ class MSH(Selafin):
         proc = re.match(self.last_keys, line)
         if proc:
             if proc.group('key') != "MeshFormat":
-                raise TelemacException(\
+                raise TelemacException(
                         '... Could not complete reading the header of you MSH '
                         'file format. Missing EndMeshFormat key.')
 
@@ -176,7 +177,7 @@ class MSH(Selafin):
                 break
             proc = re.match(self.frst_keys, line)
             if not proc:
-                raise TelemacException(\
+                raise TelemacException(
                     '... Was expecting a new Section starter. '
                     'Found this instead: {}'.format(line))
             key = proc.group('key')
@@ -193,15 +194,15 @@ class MSH(Selafin):
                     meshx = np.zeros(npoin, dtype=np.float)
                     meshy = np.zeros(npoin, dtype=np.float)
                     meshz = np.zeros(npoin, dtype=np.float)
-                #map_nodes = []
+                # map_nodes = []
                 for i in range(npoin):
                     line = fle.next().split()
-                    #map_nodes.append(int(line[0]))
+                    # map_nodes.append(int(line[0]))
                     meshx[i] = np.float(line[1])
                     meshy[i] = np.float(line[2])
                     meshz[i] = np.float(line[3])
                 # TODO: renumbering nodes according to map_nodes ?
-                #map_nodes = np.asarray(map_nodes)
+                # map_nodes = np.asarray(map_nodes)
                 self.npoin2 = npoin
                 self.meshx = meshx
                 self.meshy = meshy
@@ -238,7 +239,7 @@ class MSH(Selafin):
         proc = re.match(self.last_keys, line)
         if proc:
             if proc.group('key') != key:
-                raise TelemacException(\
+                raise TelemacException(
                         '... Could not complete reading the header of your '
                         'MSH file format. Missing {} end key.'.format(key))
 
@@ -255,7 +256,7 @@ class MSH(Selafin):
         print('     +> boundaries')
         # ~~> establish neighborhood
         _ = Triangulation(self.meshx, self.meshy, self.ikle3)\
-                         .get_cpp_triangulation().get_neighbors()
+            .get_cpp_triangulation().get_neighbors()
         # ~~> build the enssemble of boundary segments
         # ~~> define ipobO from an arbitrary start point
         self.ipob3 = np.ones(self.npoin3, dtype=np.int)
@@ -265,10 +266,10 @@ class MSH(Selafin):
 
         # ~~> new SELAFIN writer
         self.fole = {}
-        self.fole.update({'hook':open(file_name, 'wb')})
-        self.fole.update({'name':file_name})
-        self.fole.update({'endian':">"})     # big endian
-        self.fole.update({'float':('f', 4)})  # single precision
+        self.fole.update({'hook': open(file_name, 'wb')})
+        self.fole.update({'name': file_name})
+        self.fole.update({'endian': ">"})     # big endian
+        self.fole.update({'float': ('f', 4)})  # single precision
 
         print('     +> Write SELAFIN header')
         self.append_header_slf()
@@ -282,15 +283,17 @@ class MSH(Selafin):
 # ____/ MAIN CALL  /_______________________________________________/
 #
 
+
 __author__ = "Sebastien E. Bourban"
 __date__ = "$11-Nov-2015 17:51:29$"
 
+
 def main():
 
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# ~~~~ Reads config file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # ~~~~ Reads config file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print('\n\nLoading Options and Configurations\n'+'~'*72+'\n')
-    parser = ArgumentParser(\
+    parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
         description=('''\n\
 Tools for handling MSH files when created by the mesh generator GMSH
@@ -298,16 +301,16 @@ Tools for handling MSH files when created by the mesh generator GMSH
     parser.add_argument("args", nargs='*')
     options = parser.parse_args()
     if len(options.args) < 1:
-        raise TelemacException(\
+        raise TelemacException(
              '\nThe name of and action is required, together with '
              'associated arguments\n')
 
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# ~~~~ Reads code name ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # ~~~~ Reads code name ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     code_name = options.args[0]
 
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# ~~~~ Case of MSH to SELAFIN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # ~~~~ Case of MSH to SELAFIN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if code_name == 'msh2slf':
 
         # ~~ Reads command line arguments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -317,7 +320,7 @@ Tools for handling MSH files when created by the mesh generator GMSH
             raise TelemacException
         file_name = options.args[1]
         if not path.exists(file_name):
-            raise TelemacException(\
+            raise TelemacException(
                     '... Could not file your MSH file: '
                     '{}'.format(file_name))
 
@@ -340,24 +343,24 @@ Tools for handling MSH files when created by the mesh generator GMSH
             raise TelemacException
         file_name = options.args[1]
         if not path.exists(file_name):
-            raise TelemacException(\
+            raise TelemacException(
                     '... Could not file your i2s/i3s file: '
                     '{}'.format(file_name))
 
         # ~~ Parse the i2s/i3s file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        print('      ~> scanning your MSH file: {}'\
+        print('      ~> scanning your MSH file: {}'
               .format(path.basename(file_name)))
         geo = GEO(file_name)
         head, _ = path.splitext(file_name)
         # ~~ Convert to GEO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        print('      ~> converting it to a SELAFIN: {}'\
+        print('      ~> converting it to a SELAFIN: {}'
               .format(path.basename(file_name)))
         geo.put_content(head+'.geo')
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Case of UNKNOWN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     else:
-        raise TelemacException(\
+        raise TelemacException(
                 '\nDo not know what to do with this code name: '
                 '{}'.format(code_name))
 
@@ -367,6 +370,7 @@ Tools for handling MSH files when created by the mesh generator GMSH
     print('\n\nMy work is done\n\n')
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

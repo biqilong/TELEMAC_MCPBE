@@ -186,7 +186,7 @@ class MascaretApi(object):
         il_temp2 = ctypes.c_int()
         self.logger.error("Getting size var in model  #{}..."
                           .format(self.id_masc.value))
-        self.error = self.libmascaret.C_GET_TAILLE_VAR_MASCARET(\
+        self.error = self.libmascaret.C_GET_TAILLE_VAR_MASCARET(
                                self.id_masc, var_name, 0,
                                ctypes.byref(nb_nodes),
                                ctypes.byref(il_temp1),
@@ -209,10 +209,10 @@ class MascaretApi(object):
             q_c = (ctypes.c_double * self.nb_nodes.value)(q)
             z_c = (ctypes.c_double * self.nb_nodes.value)(z)
             self.logger.debug('Initilizing MASCARET from constant value...')
-            self.error = self.libmascaret.C_INIT_LIGNE_MASCARET(\
+            self.error = self.libmascaret.C_INIT_LIGNE_MASCARET(
                                   self.id_masc, ctypes.byref(q_c),
                                   ctypes.byref(z_c), self.nb_nodes)
-            self.logger.debug(\
+            self.logger.debug(
                'State constant initialisation successfull'
                'from constant value.')
         else:
@@ -304,10 +304,10 @@ class MascaretApi(object):
         file_name_c = (ctypes.c_char_p * len_file)(*file_name)
         file_type_c = (ctypes.c_char_p * len_file)(*file_type)
         self.logger.debug('Importing a model...')
-        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(\
+        self.error = self.libmascaret.C_IMPORT_MODELE_MASCARET(
                                             self.id_masc, file_name_c,
                                             file_type_c, len_file, self.iprint)
-        self.logger.info(\
+        self.logger.info(
                 "Model imported with:\n-> file_name: {}\n-> file_type: {}."
                 .format(file_name, file_type))
 
@@ -337,13 +337,13 @@ class MascaretApi(object):
             print('In user_defined for bc_qt')
             self.bc_qt = self.user_settings['Q_BC']
         if 'Ks' in self.user_settings:
-            print ('In user_defined for ks')
+            print('In user_defined for ks')
             if self.user_settings['Ks']['zone']:
                 self.zone_friction_minor = self.user_settings['Ks']
             else:
                 self.friction_minor = self.user_settings['Ks']
         if 'bathy' in self.user_settings:
-            print ('In user_defined for bathy')
+            print('In user_defined for bathy')
             self.cross_section = self.user_settings['bathy']
 
     def __repr__(self):
@@ -422,7 +422,7 @@ class MascaretApi(object):
                         'ind_zone': self.user_settings['Ks']['ind_zone'],
                         'value': x[0]}
                 else:
-                    self.friction_minor = {\
+                    self.friction_minor = {
                             'idx': self.user_settings['Ks']['idx'],
                             'value': x[0]}
             elif flag == 'Q':
@@ -480,7 +480,7 @@ class MascaretApi(object):
                              - ticks[id_tick])
                       + y_1 * (ticks[id_tick+1]
                                - self.user_settings['misc']['curv_abs'])
-                     ) / (ticks[id_tick+1]-ticks[id_tick])
+                      ) / (ticks[id_tick+1]-ticks[id_tick])
             return output
         else:
             return \
@@ -500,7 +500,7 @@ class MascaretApi(object):
                 n = 1
 
             n_x = ('distKs' in self.user_settings['MC']) \
-                  + ('distQ' in self.user_settings['MC'])
+                + ('distQ' in self.user_settings['MC'])
             self.doe = np.empty((self.user_settings['MC']['Ne'], n_x))
 
             if 'distKs' in self.user_settings['MC']:
@@ -606,8 +606,8 @@ class MascaretApi(object):
 
         self.l_name_all_bc = l_name_all_bc
         self.l_num_all_bc = l_num_all_bc
-        print ('In info_all_bc, _allself.l_name_all_bc,self.l_num_all_bc',
-               self.l_name_all_bc, self.l_num_all_bc)
+        print('In info_all_bc, _allself.l_name_all_bc,self.l_num_all_bc',
+              self.l_name_all_bc, self.l_num_all_bc)
         self.logger.debug('Info all : BC info get.')
 
         return nb_bc, l_name_all_bc, l_num_all_bc
@@ -622,7 +622,7 @@ class MascaretApi(object):
         :return: boundary conditions for Qt
         :rtype: list(float)
         """
-        print ('In bc_qt Getter')
+        print('In bc_qt Getter')
         var_name = ctypes.c_char_p(b'Model.Graph.Discharge')
         # Nb of BC
         size1 = ctypes.c_int()
@@ -639,7 +639,8 @@ class MascaretApi(object):
 
         bc_qt = np.ones((size1.value, size2.value), float)
         self.logger.debug('Getting discharge values...')
-        for k, k_k in itertools.product(range(size1.value), range(size2.value)):
+        for k, k_k in itertools.product(range(size1.value),
+                                        range(size2.value)):
             q_bc_c = ctypes.c_double()
             num_bc_c = ctypes.c_int(k + 1)
             indextime_bc_c = ctypes.c_int(k_k + 1)
@@ -669,7 +670,7 @@ class MascaretApi(object):
 
         :param dict q_bc: Boundary conditions on Qt ``{'idx','value'}``
         """
-        print ('In bc_qt Setter')
+        print('In bc_qt Setter')
         new_tab_q_bc = self.bc_qt
         idx, value = q_bc['idx'], q_bc['value']
         new_tab_q_bc[idx, :] = value
@@ -689,7 +690,8 @@ class MascaretApi(object):
                           .format(size1.value, size2.value, size3.value))
 
         self.logger.debug('Setting discharge values...')
-        for k, k_k in itertools.product(range(size1.value), range(size2.value)):
+        for k, k_k in itertools.product(range(size1.value),
+                                        range(size2.value)):
             q_bc_c = ctypes.c_double()
             num_bc_c = ctypes.c_int(k + 1)
             indextime_bc_c = ctypes.c_int(k_k + 1)
@@ -933,7 +935,8 @@ class MascaretApi(object):
                 self.logger.debug('In Getter Cross Section, loop = {}{}'
                                   .format(k, k_k))
                 self.error = self.libmascaret.C_GET_DOUBLE_MASCARET(
-                    self.id_masc, var_name, k+1, k_k+1, 0, ctypes.byref(zbot_c))
+                    self.id_masc, var_name, k+1, k_k+1, 0,
+                    ctypes.byref(zbot_c))
                 self.logger.debug('In Getter Cross Section, zbot = {}'
                                   .format(zbot_c.value))
                 res_zbot.append(zbot_c.value)
@@ -994,14 +997,14 @@ class MascaretApi(object):
                                       .format(zbot_c.value))
                     new_zbot_c = ctypes.c_double()
                     new_zbot_c.value = zbot_c.value + shift_dz
-                    self.error = self.libmascaret.C_SET_DOUBLE_MASCARET(\
+                    self.error = self.libmascaret.C_SET_DOUBLE_MASCARET(
                          self.id_masc, var_name, k+1, k_k+1, 0, new_zbot_c)
         else:
             idx = bathy['idx']
             for k_k in range(size2.value):
                 self.logger.debug('In Setter Cross Section,'
-                                  ' profil idx and loop = {}, {}'\
-                                          .format(idx, k_k))
+                                  ' profil idx and loop = {}, {}'
+                                  .format(idx, k_k))
                 error = self.libmascaret.C_GET_DOUBLE_MASCARET(
                     self.id_masc, var_name, idx+1, k_k+1, 0,
                     ctypes.byref(zbot_c))
@@ -1009,7 +1012,7 @@ class MascaretApi(object):
                                   .format(zbot_c.value))
                 new_zbot_c = ctypes.c_double()
                 new_zbot_c.value = zbot_c.value + shift_dz
-                self.error = self.libmascaret.C_SET_DOUBLE_MASCARET(\
+                self.error = self.libmascaret.C_SET_DOUBLE_MASCARET(
                      self.id_masc, var_name, idx+1, k_k+1, 0, new_zbot_c)
 
         if error != 0:

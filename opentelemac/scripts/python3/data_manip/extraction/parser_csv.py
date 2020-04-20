@@ -21,6 +21,8 @@ from utils.exceptions import TelemacException
 # ____/ General Toolbox /__________________________________________/
 #
 # same as in parser_fortran
+
+
 def clean_spaces(istr):
     """
     Clean up string of spaces
@@ -41,8 +43,11 @@ def clean_spaces(istr):
 # _____                  ___________________________________________
 # ____/ Primary Classes /__________________________________________/
 #
+
+
 VAR_BRACKS = re.compile(r'(?P<name>.*?)(?P<unit>\([\w,*\s+-/:]*?\))')
 CSV_HEADER = re.compile(r'[#]')
+
 
 class CSV(object):
 
@@ -104,17 +109,17 @@ class CSV(object):
             self.colunits = xunit
             self.colcore = np.array([x_0])
         elif len(x[1]) != len(self.colcore[0]):
-            raise TelemacException(\
+            raise TelemacException(
                     '... cannot aggregate columns of different supports: '
                     '{}'.format(repr(x[0])))
         u_0 = '(-)'
         ynames, y_0 = yval
         dim = len(ynames) - 1
         # ynames[0] is an extra meta data
-        if dim == 1: # /!\ This has been checked
+        if dim == 1:  # /!\ This has been checked
             # ~~> This is called for cast objects, for intance
             n_0 = ynames[1]
-            for i_0 in range(len(n_0)): # each variables
+            for i_0 in range(len(n_0)):  # each variables
                 proc = re.match(VAR_BRACKS, n_0[i_0])
                 if proc:
                     n_0[i_0] = proc.group('name').strip()
@@ -139,8 +144,8 @@ class CSV(object):
             n_0, n_1, n_2 = ynames[1:]
             for i_2 in range(len(n_2)):       # each plan
                 for i_1 in range(len(n_1)):    # each time
-                    for i_0 in range(len(n_0)): # each variables
-                        self.rowvars.append(n_0[i_0]+':'+str(n_1[i_1])+'_'+\
+                    for i_0 in range(len(n_0)):  # each variables
+                        self.rowvars.append(n_0[i_0]+':'+str(n_1[i_1])+'_' +
                                             str(n_2[i_2]))
                         self.rowunits.append(u_0)
                         self.colcore = np.vstack((self.colcore,
@@ -151,8 +156,8 @@ class CSV(object):
                 for i_2 in range(len(n_2)):
                     for i_1 in range(len(n_1)):
                         for i_0 in range(len(n_0)):
-                            self.rowvars.append(n_0[i_0]+':'+str(n_1[i_1])+\
-                                                '_'+str(n_2[i_2])+
+                            self.rowvars.append(n_0[i_0]+':'+str(n_1[i_1]) +
+                                                '_'+str(n_2[i_2]) +
                                                 '_'+str(n_3[i_3]))
                             self.rowunits.append(u_0)
                             self.colcore = np.vstack((self.colcore,
@@ -170,10 +175,10 @@ class CSV(object):
             if len(self.rowheader) > 0:
                 fle.write('\n'.join(self.rowheader)+'\n')
             else:
-                fle.write(b'#\n#\n') # TODO: use header for meta data
-            fle.write('{},{}\n'.format(self.colvars, ','.join(self.rowvars))\
+                fle.write(b'#\n#\n')  # TODO: use header for meta data
+            fle.write('{},{}\n'.format(self.colvars, ','.join(self.rowvars))
                       .encode('utf-8'))
-            fle.write('{},{}\n'.format(self.colunits, ','.join(self.rowunits))\
+            fle.write('{},{}\n'.format(self.colunits, ','.join(self.rowunits))
                       .encode('utf-8'))
             np.savetxt(fle, self.colcore.T, delimiter=',')
 
@@ -184,7 +189,7 @@ class CSV(object):
         @param file_name (string) Name of the input file
         """
         if not path.exists(file_name):
-            raise TelemacException(\
+            raise TelemacException(
                     '... could not find your ASCII file: '
                     '{}'.format(file_name))
         with open(file_name, 'r', encoding='utf-8') as fle:
@@ -210,7 +215,7 @@ class CSV(object):
             self.colunits = units[0]
             self.rowunits = units[1:]
             if len(self.rowvars) != len(self.rowunits):
-                raise TelemacException(\
+                raise TelemacException(
                         '... variables and units are incorrectly '
                         'numbered in {}'.format(file_name))
             # ~~> parse main values

@@ -41,6 +41,7 @@ except ImportError:
 __author__ = "Sebastien E. Bourban"
 __date__ = "$12-Dec-2014 08:51:29$"
 
+
 def build_period(tfrom, tstop):
     """
     Define the time period for the data request
@@ -49,23 +50,24 @@ def build_period(tfrom, tstop):
     @param tstop (string) Last date (ex "1980-12-31")
     """
     period = [[], []]
-    if tfrom != None:
+    if tfrom is not None:
         for i in tfrom.split('-'):
             period[0].append(i)
     else:
-        raise TelemacException(\
+        raise TelemacException(
                 '... could not find your from date. '
                 'Please use --from option '
                 '(- delimited, no spaces).\n\n')
-    if tstop != None:
+    if tstop is not None:
         for i in tstop.split('-'):
             period[1].append(i)
     else:
-        raise TelemacException(\
+        raise TelemacException(
                 '... could not find your stop date. '
                 'Please use --stop option '
                 '(- delimited, no spaces).\n\n')
     return period
+
 
 def build_box(blcorner, trcorner):
     """
@@ -77,25 +79,26 @@ def build_box(blcorner, trcorner):
     @return The model box
     """
     modelbox = [[], []]
-    if blcorner != None:
+    if blcorner is not None:
         x, y = literal_eval(blcorner)
         modelbox[0].append(str(x))
         modelbox[0].append(str(y))
     else:
-        raise TelemacException(\
+        raise TelemacException(
                 '... could not find your bounding box bottom left'
                 'corner. Please use --bl option (, delimited, no '
                 'spaces).\n\n')
-    if trcorner != None:
+    if trcorner is not None:
         x, y = literal_eval(trcorner)
         modelbox[1].append(str(x))
         modelbox[1].append(str(y))
     else:
-        raise TelemacException(\
+        raise TelemacException(
                 '... could not find your bounding box top right '
                 'corner. Please use --tr option (, delimited, no '
                 'spaces).\n\n')
     return modelbox
+
 
 def build_data_request(modelbox, period, dataset, stream, res_name):
     """
@@ -113,23 +116,23 @@ def build_data_request(modelbox, period, dataset, stream, res_name):
 
     if dataset == 'interim':
         download = True
-        req = {\
-            'dataset' : "interim",
-            'step'    : "0",
-            'number'  : "all",
-            'levtype' : "sfc",      # surface or single level
-            'date'    : "2011-02-15/to/2011-06-15",
-            'time'    : "00/06/12/18",
+        req = {
+            'dataset': "interim",
+            'step': "0",
+            'number': "all",
+            'levtype': "sfc",      # surface or single level
+            'date': "2011-02-15/to/2011-06-15",
+            'time': "00/06/12/18",
             # 'origin'  : "all",
-            'type'    : "an",       # analysis
+            'type': "an",       # analysis
             # because these are ambigous: "ap/u10/v10/t2m"
-            'param'   : "134.128/165.128/166.128/167.128",
-            'area'    : "41/140/34/147",
-            'grid'    : "0.125/0.125",
-            'target'  : head+'.nc',
-            'format'  : 'netcdf',
-            'class'   : "ei",
-            'stream'  : stream
+            'param': "134.128/165.128/166.128/167.128",
+            'area': "41/140/34/147",
+            'grid': "0.125/0.125",
+            'target': head+'.nc',
+            'format': 'netcdf',
+            'class': "ei",
+            'stream': stream
               }
         if stream == 'wave':
             req['param'] = "swh/mwp/mwd"
@@ -137,24 +140,24 @@ def build_data_request(modelbox, period, dataset, stream, res_name):
         file_type = 'netcdf'
     elif dataset == 'era5':
         download = True
-        req = {\
-            'dataset' : "era5",
-            'step'    : "0",
-            'number'  : "all",
-            'levtype' : "sfc",      # surface or single level
-            'date'    : "2011-02-15/to/2011-06-15",
-            'time'    : "00/01/02/03/04/05/06/07/08/09/10/11/12/13/"
-                        "14/15/16/17/18/19/20/21/22/23",
+        req = {
+            'dataset': "era5",
+            'step': "0",
+            'number': "all",
+            'levtype': "sfc",      # surface or single level
+            'date': "2011-02-15/to/2011-06-15",
+            'time': "00/01/02/03/04/05/06/07/08/09/10/11/12/13/"
+                    "14/15/16/17/18/19/20/21/22/23",
             # 'origin'  : "all",
-            'type'    : "an",       # analysis
+            'type': "an",       # analysis
             # because these are ambigous: "ap/u10/v10/t2m"
-            'param'   : "134.128/165.128/166.128/167.128",
-            'area'    : "41/140/34/147",
-            'grid'    : "0.125/0.125",
-            'target'  : head+'.nc',
-            'format'  : 'netcdf',
-            'class'   : "ea",
-            'stream'  : stream
+            'param': "134.128/165.128/166.128/167.128",
+            'area': "41/140/34/147",
+            'grid': "0.125/0.125",
+            'target': head+'.nc',
+            'format': 'netcdf',
+            'class': "ea",
+            'stream': stream
               }
         if stream == 'wave':
             req['param'] = "swh/mwp/mwd"
@@ -169,7 +172,7 @@ def build_data_request(modelbox, period, dataset, stream, res_name):
         if path.isdir(dataset):
             # only supported file type
             file_type = 'grib'
-            dataset = [path.join(dataset, d) \
+            dataset = [path.join(dataset, d)
                        for d in listdir(dataset)]
         # ~~> actual file
         elif path.exists(dataset):
@@ -179,29 +182,29 @@ def build_data_request(modelbox, period, dataset, stream, res_name):
                 file_type = 'grib'
             dataset = [dataset]
         else:
-            raise TelemacException(\
+            raise TelemacException(
                     '... could not find your local files.\n\n')
         # ~~> In case of GRIB files
         if file_type == 'grib':
             if not IMPORTGRIB:
-                raise TelemacException(\
+                raise TelemacException(
                     '... could not import pygrib on this platform.\n\n')
         # ~~> In case of GRIB files
-        req = {\
-            'date'    : "2011-02-15/to/2011-06-15",
-            'time'    : "00/01/02/03/04/05/06/07/08/09/10/11/12/13/14/15"
-                        "/16/17/18/19/20/21/22/23",
+        req = {
+            'date': "2011-02-15/to/2011-06-15",
+            'time': "00/01/02/03/04/05/06/07/08/09/10/11/12/13/14/15"
+                    "/16/17/18/19/20/21/22/23",
             # because these are ambigous: "ap/u10/v10"
-            'param'   : "151/165/166",
-            'area'    : "41/140/34/147",
-            'grid'    : "0.125/0.125",
-            'target'  : dataset[0]
+            'param': "151/165/166",
+            'area': "41/140/34/147",
+            'grid': "0.125/0.125",
+            'target': dataset[0]
               }
         if stream == 'spec':
             req['param'] = "251"
 
     req['date'] = '-'.join(period[0]) + '/to/' + '-'.join(period[1])
-    req['area'] = '/'.join(modelbox[0])+ '/' + \
+    req['area'] = '/'.join(modelbox[0]) + '/' + \
                   '/'.join(modelbox[1])
     return req, file_type, download
 
@@ -225,7 +228,7 @@ def write_file(req, file_type, download, dataset, stream, period, root_name):
     if file_type == 'grib':
 
         if download:
-            raise TelemacException(\
+            raise TelemacException(
                     '... I am not programmed to '
                     'download grib files directly.\n\n')
         print('\n\n'+72*'~'+'\n')
@@ -274,6 +277,7 @@ def write_file(req, file_type, download, dataset, stream, period, root_name):
         print('\nConverting netcdf file into SELAFIN\n')
         ecmwf2slf.put_content(root_name, stream)
 
+
 def ecmwf2srf_parser(subparser):
     """
     Add arguments for a cemwf2srf conversion
@@ -282,37 +286,38 @@ def ecmwf2srf_parser(subparser):
 
     @return (argumentParser) the updated argument parser
     """
-    parser = subparser.add_parser('ecmwf2srf',\
-            help='extracting ECMWF data into a serafin-format file')
-    parser.add_argument(\
+    parser = subparser.add_parser('ecmwf2srf',
+                                  help='extracting ECMWF data into\
+                                        a serafin-format file')
+    parser.add_argument(
         "root_name", default='',
         help="specify the root name of the resulting SELAFIN file.")
-    parser.add_argument(\
+    parser.add_argument(
         "-f", "--from",
         dest="tfrom", default=None,
         help='specify the first date included. Example: "1972-13-07"')
-    parser.add_argument(\
+    parser.add_argument(
         "-s", "--stop",
         dest="tstop", default=None,
         help='specify the last date included "1980-12-31"')
-    parser.add_argument(\
+    parser.add_argument(
         "--bl", dest="blcorner", default=None,
         help='specify the bottom left corner. Example: "(25,-117)"')
-    parser.add_argument(\
+    parser.add_argument(
         "--tr", dest="trcorner", default=None,
         help='specify the top right corner. Example: "(27,-110)"')
-    parser.add_argument(\
+    parser.add_argument(
         "--dataset",
         dest="dataset", default='interim',
-        help="type of dataset requested either 'interim', 'era5' or the name "\
-              "of a grib or netcdf file or dirctory contaiing grib or netcdf "\
-              "files, depending on periods and resolution, etc.")
-    parser.add_argument(\
+        help="type of dataset requested either 'interim', 'era5' or the name "
+             "of a grib or netcdf file or dirctory contaiing grib or netcdf "
+             "files, depending on periods and resolution, etc.")
+    parser.add_argument(
         "--stream",
         dest="stream", default='oper',
         choices=set(("oper", "wave", "spec")),
-        help="type of stream requested either 'oper' (atmospheric) or "\
-              "'wave' (waves), etc.")
+        help="type of stream requested either 'oper' (atmospheric) or "
+             "'wave' (waves), etc.")
 
     return subparser
 
@@ -325,7 +330,6 @@ def ecmwf2srf(tfrom, tstop, blcorner, trcorner, dataset, stream, root_name):
 
     # arbitrary box (small pieve of the atlantic side of Mexico)
     modelbox = build_box(blcorner, trcorner)
-
 
     req, file_type, download = build_data_request(modelbox, period,
                                                   dataset,

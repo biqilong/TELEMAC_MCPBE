@@ -36,6 +36,7 @@ from utils.exceptions import TelemacException
 __author__ = "Sebastien E. Bourban"
 __date__ = "$02-Feb-2015 15:09:48$"
 
+
 def main():
     """ Main function of convertToSPG """
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -43,13 +44,13 @@ def main():
     from argparse import ArgumentParser, RawDescriptionHelpFormatter
     from data_manip.formats.selafin import Selafin
     from data_manip.extraction.parser_selafin import subset_variables_slf, \
-                                       get_value_history_slf
+        get_value_history_slf
     from pretel.meshes import xys_locate_mesh
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # ~~~~ Reads config file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print('\n\nInterpreting command line options\n'+'~'*72+'\n')
-    parser = ArgumentParser(\
+    parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
         description=('''\n
 Creates a binary sponge file from a global model (SLF form)
@@ -57,8 +58,9 @@ Creates a binary sponge file from a global model (SLF form)
     the SPG file are extracted only at the nodes where the SPONGE mask
     value is more than 0.5.
         '''),
-        usage=' (--help for help)\n---------\n       =>  '\
-              '%(prog)s  geo-mask.slf in-result.slf out-sponge.slf \n---------')
+        usage=' (--help for help)\n---------\n       =>  '
+              '%(prog)s  geo-mask.slf in-result.slf out-sponge.slf\
+               \n---------')
     parser.add_argument("args", default='', nargs=3)
     options = parser.parse_args()
 
@@ -66,13 +68,13 @@ Creates a binary sponge file from a global model (SLF form)
 # ~~~~ slf new mesh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     geo_file = options.args[0]
     if not path.exists(geo_file):
-        raise TelemacException(\
+        raise TelemacException(
                 'Could not find geo_file: {}\n\n'.format(geo_file))
 
     # Read the new GEO file and its SPONGE mask variable
     print('   +> getting hold of the GEO file and of its SPONGE mask')
     geo = Selafin(geo_file)
-    _, spg = geo.get_variables_at(0, subset_variables_slf(\
+    _, spg = geo.get_variables_at(0, subset_variables_slf(
               "BOTTOM: ;SPONGE mask: ", geo.varnames)[0])[0:2]
     print('   +> extracting the masked elements')
     # Keeping only masked nodes
@@ -89,7 +91,7 @@ Creates a binary sponge file from a global model (SLF form)
 # ~~~~ slf existing res ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     slf_file = options.args[1]
     if not path.exists(geo_file):
-        raise TelemacException(\
+        raise TelemacException(
                 'Could not find slf_file: {}\n\n'.format(slf_file))
     slf = Selafin(slf_file)
     slf.set_kd_tree()
@@ -115,21 +117,21 @@ Creates a binary sponge file from a global model (SLF form)
     bnd_file = options.args[2]
     bnd = Selafin('')
     bnd.fole = {}
-    bnd.fole.update({'hook':open(bnd_file, 'wb')})
-    bnd.fole.update({'name':bnd_file})
-    bnd.fole.update({'endian':">"})     # big endian
-    bnd.fole.update({'float':('f', 4)})  # single precision
+    bnd.fole.update({'hook': open(bnd_file, 'wb')})
+    bnd.fole.update({'name': bnd_file})
+    bnd.fole.update({'endian': ">"})     # big endian
+    bnd.fole.update({'float': ('f', 4)})  # single precision
 
     # Meta data and variable names
     bnd.title = ''
     bnd.nbv1 = 5
     # /!\ ELEVATION has to be the first variable
     # (for possible vertical re-interpolation within TELEMAC)
-    bnd.varnames = ['ELEVATION Z     ', \
-                    'VELOCITY U      ', 'VELOCITY V      ', \
+    bnd.varnames = ['ELEVATION Z     ',
+                    'VELOCITY U      ', 'VELOCITY V      ',
                     'SALINITY        ', 'TEMPERATURE     ']
-    bnd.varunits = ['M               ', \
-                    'M/S             ', 'M/S             ', \
+    bnd.varunits = ['M               ',
+                    'M/S             ', 'M/S             ',
                     '                ', '                ']
     bnd.nvar = bnd.nbv1
     bnd.varindex = range(bnd.nvar)
@@ -163,8 +165,8 @@ Creates a binary sponge file from a global model (SLF form)
         bnd.nelem3 = bnd.nelem2
     # 3D structures
     if slf.nplan > 1:
-        bnd.ipob3 = np.ravel(np.add(np.repeat(bnd.ipob2, slf.nplan)\
-                                              .reshape((bnd.npoin2, slf.nplan)),
+        bnd.ipob3 = np.ravel(np.add(np.repeat(bnd.ipob2, slf.nplan)
+                                    .reshape((bnd.npoin2, slf.nplan)),
                                     bnd.npoin2*np.arange(slf.nplan)).T)
         bnd.ikle3 = \
             np.repeat(bnd.npoin2*np.arange(slf.nplan-1),
@@ -191,8 +193,8 @@ Creates a binary sponge file from a global model (SLF form)
     # TIME and DATE extraction
     bnd.tags['times'] = slf.tags['times']
     # VARIABLE extraction
-    vrs = subset_variables_slf("ELEVATION Z: ;VELOCITY U: ;VELOCITY V: "\
-                                      ";SALINITY: ;TEMPERATURE: ", slf.varnames)
+    vrs = subset_variables_slf("ELEVATION Z: ;VELOCITY U: ;VELOCITY V: "
+                               ";SALINITY: ;TEMPERATURE: ", slf.varnames)
 
     # Read / Write data, one time step at a time to support large files
     print('   +> reading / writing variables')
@@ -222,6 +224,7 @@ Creates a binary sponge file from a global model (SLF form)
     print('\n\nMy work is done\n\n')
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

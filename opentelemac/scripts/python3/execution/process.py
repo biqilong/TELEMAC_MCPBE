@@ -11,6 +11,7 @@ from utils.messages import Messages
 from utils.exceptions import TelemacException
 from config import CFGS
 
+
 def check_para_tilling(in_tile, in_node, in_size, ncruns, cas_ncsize):
     """
     @brief Check the consistency between number of core
@@ -68,17 +69,18 @@ def check_para_tilling(in_tile, in_node, in_size, ncruns, cas_ncsize):
 
     # ~~ Special case of batching ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if in_node == 0:
-        # ~~> temporary measure before doing each run in parallel of one another
+        # ~~> temporary measure before doing
+        # each run in parallel of one another
         ncnode = max(1, ncsize) // nctile
         if ncnode * nctile < max(1, ncsize):
             ncnode = ncnode + 1
         # ~~> valid for runs in parallel of one another
-        #ncnode = int( max( 1,ncsize ) * ncruns / nctile )
-        #if ncnode * nctile < max( 1,ncsize ) * ncruns: ncnode = ncnode + 1
+        # ncnode = int( max( 1,ncsize ) * ncruns / nctile )
+        # if ncnode * nctile < max( 1,ncsize ) * ncruns: ncnode = ncnode + 1
 
     if ncruns == 1:
-    # ~~ Standard cases ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # If the command line options.nctile and options.ncnode are fixed
+        # ~~ Standard cases ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # If the command line options.nctile and options.ncnode are fixed
         if in_tile != 0 and in_node != 0 and ncsize == 0:
             ncsize = ncnode * nctile
     # If options.ncsize is set, it will have priority over the others
@@ -100,6 +102,7 @@ def check_para_tilling(in_tile, in_node, in_size, ncruns, cas_ncsize):
 
     return nctile, ncnode, ncsize
 
+
 def hide_root(string):
     """
     Replace the path to sources of telemac by <root>
@@ -110,6 +113,7 @@ def hide_root(string):
     """
 
     return string.replace(CFGS.get_root(), "<root>")
+
 
 def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
     """
@@ -141,12 +145,12 @@ def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
     #
     # Copying steering file and dictionary
     tmp_cas_name = cas.dico.data['STEERING FILE']['SUBMIT'].split(';')[1]
-    print('         copying: '+ path.basename(cas.file_name)+
+    print('         copying: ' + path.basename(cas.file_name) +
           ' -> '+path.join(hide_root(tmp_dir), tmp_cas_name))
     shutil.copyfile(path.join(cas_dir, cas.file_name),
                     path.join(tmp_dir, tmp_cas_name))
     tmp_dico_name = cas.dico.data['DICTIONARY']['SUBMIT'].split(';')[1]
-    print('         copying: '+ path.basename(cas.dico.file_name)+
+    print('         copying: ' + path.basename(cas.dico.file_name) +
           ' -> '+path.join(hide_root(tmp_dir), tmp_dico_name))
     shutil.copyfile(cas.dico.file_name,
                     path.join(tmp_dir, tmp_dico_name))
@@ -188,9 +192,9 @@ def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
         if path.exists(tmp_file_name):
             if not is_newer(tmp_file_name, file_name) == 1:
                 # ~~> further check are necessary depending on file type
-                #TODO: Remove that ?
+                # TODO: Remove that ?
                 if file_type[0:7] == 'SELAFIN' or \
-                    file_type[0:5] == 'PARAL':
+                        file_type[0:5] == 'PARAL':
                     # ~~> check if all files are there
                     #    > while file_name is one file, tmp_file_name could
                     #    have been split already into multiple parallel files
@@ -212,29 +216,30 @@ def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
                 elif submit[0:3] == 'CAS':
                     # TODO: Adapt that
                     #    > force the copying of the CAS file for some reason
-                    print('     re-copying: '+ tmp_file_name)
+                    print('     re-copying: ' + tmp_file_name)
                     put_file_content(tmp_file_name, cas.steering_file)
                     continue
                 else:
                     #    > you have passed all checks
                     #      you can ignore that file
-                    print('        ignoring: '+ path.basename(file_name)+' '\
-                          + tmp_file_name)
+                    print('        ignoring: ' + path.basename(file_name) +
+                          ' ' + tmp_file_name)
                     continue
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # ~~> files are otherwise copied (or linked)
         if use_link:
-            print('         linking: '+ path.basename(file_name)+
+            print('         linking: ' + path.basename(file_name) +
                   ' -> '+hide_root(tmp_file_name))
             symlink_file(path.join(getcwd(), file_name), tmp_file_name)
         else:
-            print('         copying: '+ path.basename(file_name)+
+            print('         copying: ' + path.basename(file_name) +
                   ' -> '+hide_root(tmp_file_name))
             shutil.copyfile(path.join(getcwd(), file_name), tmp_file_name)
 
     if xcpt != []:
-        raise TelemacException(xcpt) # raise full report
+        raise TelemacException(xcpt)  # raise full report
     return
+
 
 def process_ecr(cas, cas_dir, sortiefile, ncsize):
     """
@@ -259,7 +264,7 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
             npsize = 1
             while 1:                              # HORIZONTAL SECTION FILES
                 file_name = path.join(cas_dir,
-                                      file_name\
+                                      file_name
                                       + '_{0:03d}'.format(npsize))
                 if path.isfile(file_name):
                     base, ext = path.splitext(file_name)
@@ -271,24 +276,24 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                         if not path.isfile(base+'_old'+str(i)+ext):
                             break
                     shutil.move(file_name, base+'_old'+str(i)+ext)
-                tmp_file_name = tmp_file_name+\
-                       '_{0:03d}'.format(npsize)
+                tmp_file_name = tmp_file_name +\
+                    '_{0:03d}'.format(npsize)
                 if not path.isfile(tmp_file_name):
                     break
                 shutil.move(tmp_file_name, file_name)
-                print('        moving: '+ path.basename(file_name))
+                print('        moving: ' + path.basename(file_name))
                 npsize = npsize + 1
             npsize = 1
             while 1:                              # VERTICAL SECTION FILES
                 nptime = 1
-                v_file = tmp_file_name+\
-                         '_{0:03d}'.format(npsize)+'-{0:03d}'.format(nptime)
+                v_file = tmp_file_name +\
+                    '_{0:03d}'.format(npsize)+'-{0:03d}'.format(nptime)
                 if not path.isfile(v_file):
                     break
                 while 1:
                     file_name = path.join(cas_dir,
-                                          file_name+\
-                                          '_{0:03d}'.format(npsize)+\
+                                          file_name +
+                                          '_{0:03d}'.format(npsize) +
                                           '-{0:03d}'.format(nptime))
                     if path.isfile(file_name):
                         base, ext = path.splitext(file_name)
@@ -301,12 +306,12 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                                 break
                         shutil.move(file_name, base+'_old'+str(i)+ext)
                     tmp_file_name = tmp_file_name\
-                           + '_{0:03d}'.format(npsize)\
-                           + '-{0:03d}'.format(nptime)
+                        + '_{0:03d}'.format(npsize)\
+                        + '-{0:03d}'.format(nptime)
                     if not path.isfile(tmp_file_name):
                         break
                     shutil.move(tmp_file_name, file_name)
-                    print('        moving: '+ path.basename(file_name))
+                    print('        moving: ' + path.basename(file_name))
                     nptime = nptime + 1
                 npsize = npsize + 1
         # MAIN MODULE
@@ -315,9 +320,9 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
             c_base, c_ext = path.splitext(file_name)
             while 1:
                 file_name = path.join(cas_dir,
-                                      c_base\
-                                      + '{0:05d}-{1:05d}'\
-                                      .format(ncsize-1, npsize)\
+                                      c_base
+                                      + '{0:05d}-{1:05d}'
+                                      .format(ncsize-1, npsize)
                                       + c_ext)
                 if path.isfile(file_name):
                     base, ext = path.splitext(file_name)
@@ -329,21 +334,21 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                         if not path.isfile(base+'_old'+str(i)+ext):
                             break
                     shutil.move(file_name, base+'_old'+str(i)+ext)
-                tmp_file_name_par = tmp_file_name+\
-                         '{0:05d}-{1:05d}'.format(ncsize-1, npsize)
+                tmp_file_name_par = tmp_file_name +\
+                    '{0:05d}-{1:05d}'.format(ncsize-1, npsize)
                 if not path.isfile(tmp_file_name_par):
                     break
-                shutil.move(tmp_file_name_par, file_name) #shutil.copy2(tmp_file_name,file_name)
-                print('        moving: '+ path.basename(file_name))
+                shutil.move(tmp_file_name_par, file_name)
+                # shutil.copy2(tmp_file_name,file_name)
+                print('        moving: ' + path.basename(file_name))
                 npsize = npsize + 1
         elif submit[5] == 'MULTI2':
             for itmp_file_name in listdir('.'):
                 if itmp_file_name.count(tmp_file_name) == 1:
                     base, ext = path.splitext(file_name)
                     new_tmp_file_name = \
-                       itmp_file_name.lower()\
-                           .replace(tmp_file_name.lower(),
-                                    base)
+                        itmp_file_name.lower()\
+                        .replace(tmp_file_name.lower(), base)
                     new_file_name = path.join(cas_dir, new_tmp_file_name) + ext
                     if path.isfile(new_file_name):
                         base, ext = path.splitext(new_file_name)
@@ -356,7 +361,7 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                                 break
                         shutil.move(new_file_name, base+'_old'+str(i)+ext)
                     shutil.move(itmp_file_name, new_file_name)
-                    print('        moving: '+ path.basename(new_file_name))
+                    print('        moving: ' + path.basename(new_file_name))
         else:
             file_name = path.join(cas_dir, file_name)
             if path.isfile(file_name):
@@ -370,25 +375,25 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                         break
                 shutil.move(file_name, base+'_old'+str(i)+ext)
             if not path.isfile(tmp_file_name):
-                xcpt.append({'name':'process_ecr',
-                             'msg':'did not create outfile: '+\
-                                   path.basename(file_name)+' ('+tmp_file_name+')'})
+                xcpt.append({'name': 'process_ecr',
+                             'msg': 'did not create outfile: ' +
+                            path.basename(file_name)+' ('+tmp_file_name+')'})
                 continue
             shutil.move(tmp_file_name, file_name)
-            print('        moving: '+ path.basename(file_name))
+            print('        moving: ' + path.basename(file_name))
 
     # ~~~ copy the sortie file(s) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     sortiefiles = []
-    if sortiefile != None:
+    if sortiefile is not None:
         crun = path.basename(sortiefile)
         cref = path.join(cas_dir, sortiefile)
         if not path.isfile(crun):
-            xcpt.append({'name':'process_ecr',
-                         'msg':'did not create listing file: '+\
-                               path.basename(cref)+' ('+crun+')'})
-            raise TelemacException(xcpt) # raise full report
+            xcpt.append({'name': 'process_ecr',
+                         'msg': 'did not create listing file: ' +
+                         path.basename(cref)+' ('+crun+')'})
+            raise TelemacException(xcpt)  # raise full report
         shutil.copy(crun, cref)
-        print('      copying: '+ path.basename(cref))
+        print('      copying: ' + path.basename(cref))
         sortiefiles.append(cref)
 
         # ~~~> If in parallel, also copy the slave log files
@@ -402,17 +407,18 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                 crun = slavefile
                 cref = path.join(cas_dir, slogfile)
                 if not path.isfile(crun):
-                    xcpt.append({'name':'process_ecr',
-                                 'msg':'could not find the listing file: '\
+                    xcpt.append({'name': 'process_ecr',
+                                 'msg': 'could not find the listing file: '
                                         + crun})
-                    raise TelemacException(xcpt) # raise full report
+                    raise TelemacException(xcpt)  # raise full report
                 shutil.copy(crun, cref)
-                print('      copying: '+ path.basename(cref))
+                print('      copying: ' + path.basename(cref))
                 sortiefiles.append(cref)
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if xcpt != []:
-        raise TelemacException(xcpt) # raise full report
+        raise TelemacException(xcpt)  # raise full report
     return sortiefiles
+
 
 def process_artnim(cas, cas_dir):
     """
@@ -459,9 +465,9 @@ def process_artnim(cas, cas_dir):
     if value != '':
         file_name_amp = path.join(cas_dir, value)
     if not path.isfile(file_name_amp):
-        raise TelemacException(\
-              'Could not find the file of amplitudes'\
-                      'and phases.:\n'+file_name_amp)
+        raise TelemacException(
+              'Could not find the file of amplitudes'
+              'and phases.:\n'+file_name_amp)
 
     # ~~> Parameters
     tfrom = 2006.07
@@ -480,6 +486,7 @@ def process_artnim(cas, cas_dir):
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     return file_name_wfs
 
+
 def process_config(lang):
     """
     @brief Process the CONFIG file
@@ -493,6 +500,7 @@ def process_config(lang):
     # ~~ create CONFIG ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     put_file_content('CONFIG', ['2' if lang == 'en' else '1', '6', ''])
     return True
+
 
 def process_executable(working_dir, pbin, plib, pobj, system,
                        trace, code_name):
@@ -517,15 +525,16 @@ def process_executable(working_dir, pbin, plib, pobj, system,
     @note possible fortran files may or may not be associated with the
         principal code and may be files or directories
     @note If the executable exist, and that the user fortran files have not
-        changed and that the system has not been recompiled, then the executable
-        remains valid
+        changed and that the system has not been recompiled,
+        then the executable remains valid
     @note The name of the executable is taken to be based on the name defined
         by the user, i.e. the name of the PRINCI whether it is a file or a
         directory.
     @note
         - exe_file: The name of the default executable as well as the system
           preference for that file extension
-        - ori_file: The user define name of the executable, based on the name of
+        - ori_file: The user define name of the executable,
+          based on the name of
           the FORTRAN FILE whether a file or a directory.
         - use_name,obj_name,f90_name,obj_cmd,exe_cmd
     """
@@ -536,10 +545,10 @@ def process_executable(working_dir, pbin, plib, pobj, system,
     # ~~ default executable (no user defined fortran file(s)
     exe_file = path.join(pbin, code_name+system['sfx_exe'])
     if not path.exists(exe_file):
-        raise TelemacException(\
-              '\nNot able to find your default executable: ' + \
-              exe_file + '\n' + \
-              '\n ... you have to compile this module at least: '+\
+        raise TelemacException(
+              '\nNot able to find your default executable: ' +
+              exe_file + '\n' +
+              '\n ... you have to compile this module at least: ' +
               code_name)
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -561,15 +570,15 @@ def process_executable(working_dir, pbin, plib, pobj, system,
     #
     # ~~ case of user fortran
     if ori_fort != []:
-        # wir_fort working sub-directory, locally contain all user fortran files
+        # wir_fort working sub-directory,
+        # locally contain all user fortran files
         use_file = 'out_user_fortran'+system['sfx_exe']
     #
     # ~~ without user fortran
     else:
-    # ~~ default executable
+        # ~~ default executable
         use_file = 'out_' + code_name + system['sfx_exe']
     exe_fort = path.join(working_dir, use_file)
-
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # copy the default executable
@@ -578,15 +587,15 @@ def process_executable(working_dir, pbin, plib, pobj, system,
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     else:
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # ~~> Compiling fortran file(s)
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # ~~> Compiling fortran file(s)
         # ~~ default command line for compilation of obects
         cmdo_file = path.join(pobj, code_name+'.cmdo')
         if not path.exists(cmdo_file):
-            raise TelemacException(\
-                  '\nNot able to find your OBJECT command line: ' + \
-                  cmdo_file + '\n' + \
-                  '\n ... you have to compile this module at least: '+\
+            raise TelemacException(
+                  '\nNot able to find your OBJECT command line: ' +
+                  cmdo_file + '\n' +
+                  '\n ... you have to compile this module at least: ' +
                   code_name)
         obj_cmd = get_file_content(cmdo_file)[0]
         # ~~ make the keys portable (no full path)
@@ -616,29 +625,29 @@ def process_executable(working_dir, pbin, plib, pobj, system,
             tail, code = mes.run_cmd(obj_cmd.replace('<f95name>', f90),
                                      False)
             if code != 0:
-                raise TelemacException(\
-                    'Could not compile your FORTRAN (runcode='+\
-                     str(code)+').\n        '+tail)
+                raise TelemacException(
+                    'Could not compile your FORTRAN (runcode=' +
+                    str(code)+').\n        '+tail)
             print(' ... completed')
             objs.append(path.splitext(f90)[0]+system['sfx_obj'])
         # ~~ default command line for linkage into an executable
         cmdx_file = path.join(plib, code_name+'.cmdx')
         if not path.exists(cmdx_file):
-            raise TelemacException(\
-                 '\nNot able to find your EXECUTE command line: '\
-                 + cmdx_file + '\n'\
-                 + '\n ... you have to compile this module '\
+            raise TelemacException(
+                 '\nNot able to find your EXECUTE command line: '
+                 + cmdx_file + '\n'
+                 + '\n ... you have to compile this module '
                  'at least: ' + code_name)
         exe_cmd = get_file_content(cmdx_file)[0]
         # ~~ make the keys portable (no full path)
         for k in trace:
             exe_cmd = exe_cmd.replace('['+k+']', path.normpath(trace[k]))
         exe_cmd = exe_cmd.replace('<objs>', ' '.join(objs))\
-                            .replace('<exename>', '"'+exe_fort+'"')
+            .replace('<exename>', '"'+exe_fort+'"')
         tail, code = mes.run_cmd(exe_cmd, False)
         if code != 0:
-            raise TelemacException(\
-                 'Could not link your executable (runcode='+\
+            raise TelemacException(
+                 'Could not link your executable (runcode=' +
                  str(code)+').\n        '+tail)
         print('         created: '+path.basename(exe_fort))
 
@@ -646,6 +655,7 @@ def process_executable(working_dir, pbin, plib, pobj, system,
         chdir(curdir)
 
     return exe_fort
+
 
 def print_twice(pipe, ofile, last_line):
 
@@ -669,7 +679,7 @@ def print_twice(pipe, ofile, last_line):
         if dat == b'':
             if not lastlineempty:
                 print(dat.decode('utf-8'))
-                if ofile != None:
+                if ofile is not None:
                     # Write to sortiefile (if requested)
                     ofile.write(dat.decode('utf-8')+'\n')
                 # Set to avoid printing multiple consecutive newlines
@@ -677,11 +687,9 @@ def print_twice(pipe, ofile, last_line):
         else:
             lastlineempty = False
             print(dat.decode('utf-8'))
-            if ofile != None:
+            if ofile is not None:
                 # Write to sortiefile (if requested)
                 ofile.write(dat.decode('utf-8')+'\n')
             last_dat = dat
 
     last_line.append(last_dat)
-
-

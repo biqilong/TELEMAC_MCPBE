@@ -10,12 +10,13 @@ import matplotlib.cm as cm
 # Keep import enven if not used
 from mpl_toolkits.mplot3d import Axes3D
 
-def plot3d_scalar_map(fig, axe, mesh, data,\
-        x_label='', y_label='', data_name='data',\
-        vmin=None, vmax=None, nv=10, levels=None, \
-        colorbar=True, cbar_properties=None, cbar_ticks=None,\
-        cbar_ax=None, cbar_cax=None,\
-        cmap_name='jet', **kwargs):
+
+def plot3d_scalar_map(fig, axe, mesh, data,
+                      x_label='', y_label='', data_name='data',
+                      vmin=None, vmax=None, nv=10, levels=None,
+                      colorbar=True, cbar_properties=None, cbar_ticks=None,
+                      cbar_ax=None, cbar_cax=None,
+                      cmap_name='jet', **kwargs):
     """
     Plot a 3d representation of a triangle mesh with a data as z coordinates
     with default title (2D mesh (%d triangles, %d nodes) with "data_name" (%s))
@@ -45,7 +46,7 @@ def plot3d_scalar_map(fig, axe, mesh, data,\
     """
     # Checking we indeed have a 3d Axes
     if not isinstance(axe, Axes3D):
-        raise TelemacException(\
+        raise TelemacException(
                 "axe must be a Axes3D instance it is %s", type(axe))
 
     # Getting cmap object from name
