@@ -22,7 +22,8 @@
       USE BIEF
       USE DECLARATIONS_GAIA
       USE DECLARATIONS_TELEMAC3D, ONLY: NPOIN3,TA,S0TA,S1TA,DNUVIV,EP,
-     &                                  FLOCMAC_DIA,RHO0,WCHU,NPOIN2
+     &                                  FLOCMAC_DIA,RHO0,WCHU,NPOIN2,
+     &                                  UETCAR,H
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 
@@ -80,10 +81,10 @@
         SHR_G(IPOIN) = SQRT(EP%R(IPOIN)/DNUVIV)
 
 !       FOR THE BOTTOM NODE, EP COULD ALSO USE THEORETICAL VALUE (ML)            
-!       IF(IPOIN.LE.NPOIN2) THEN
-!         SHR_G(IPOIN) = SQRT(UETCAR%R(IPOIN)**1.5/(KARMAN*0.001)
-!    &                                 * (1-0.001/H%R(IPOIN))/DNUVIV)
-!       ENDIF
+        IF(IPOIN.LE.NPOIN2) THEN
+          SHR_G(IPOIN) = SQRT(UETCAR%R(IPOIN)**1.5/(KARMAN*0.001)
+     &                                 * (1-0.001/H%R(IPOIN))/DNUVIV)
+       ENDIF
 
         WCHU_P = WCHU%ADR(IMICFLC)%P%R(IPOIN)
         WCHU_F = WCHU%ADR(IMACFLC)%P%R(IPOIN)
