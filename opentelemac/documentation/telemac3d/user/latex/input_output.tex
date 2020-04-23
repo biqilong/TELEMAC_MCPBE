@@ -21,8 +21,8 @@ of the type of each boundary,
 \item The FORTRAN file, which contains the specific subroutines of the
 simulation (modified TELEMAC subroutine or specifically created),
 
-\item The bottom topography file, which contains the description of the bottom
-topography. Generally, the topographic data are already contained in the
+\item The bottom topography file, containing the elevation of the bottom.
+Generally, the topographic data are already available in the
 geometry file and the bottom topography file is generally not used,
 
 \item The liquid boundaries file, which contains the information on the
@@ -53,7 +53,7 @@ the 2D mesh,
 performing a calculation, the user can request the printing of additional
 information by activating the logical keyword \telkey{DEBUGGER} (default = 0).
 \telkey{DEBUGGER = 1} provides the calling sequences of subroutines from the
-main program \telfile{telemac3d.f}. This technique is useful in case of
+main program \telfile{TELEMAC3D}. This technique is useful in case of
 critical computation crash to identify the responsible subroutine,
 
 %\item The file for Scope, which is an additional test file available for the
@@ -93,8 +93,10 @@ http://www.salome-platform.org.
 
 Depending on the specified format, the binary files may be treated by different
 software. However, in the current release of TELEMAC, only the SERAFIN single
-precision format can be read by the post-processing tools like RUBENS,
-FUDAA-PREPRO or Blue Kenue.
+precision format can be read by the post-processing tools like RUBENS
+or Blue Kenue.
+It is not the case for Paraview or FUDAA-PREPRO.
+%Tecplot?
 
 The selection of the format of a file is done by the corresponding keyword.
 Thereby, the keyword \telkey{GEOMETRY FILE FORMAT} specifies the format of the
@@ -136,7 +138,7 @@ The keywords involved are:
 
 The steering file contains all the data about the selection of computational
 options (physical, numerical, etc.). It is an ASCII file which can be generated
-either through the FUDAA-PREPRO software or directly using a text
+either through the FUDAA-PREPRO or EFICAS software or directly using a text
 editor. In a way, it serves as the computation dashboard. It includes a set of
 keywords to which values are assigned. If a keyword does not occur in that
 file, then \telemac{3D} will assign it the default value as defined in the
@@ -147,9 +149,9 @@ value is 10 seconds.
 
 \telemac{3D} reads the steering file at the beginning of the computation.
 
-Both dictionary file and steering file are read using the \telfile{DAMOCLES}
-library which is included in the TELEMAC chain. It is therefore necessary,
-when generating the steering file, to observe the \telfile{DAMOCLES} syntax
+Both dictionary file and steering file are read using the \telfile{damocles}
+library which is included in the \tel chain. It is therefore necessary,
+when generating the steering file, to observe the \telfile{damocles} syntax
 rules (what is performed automatically if the file is generated using
 FUDAA-PREPRO).
 
@@ -187,7 +189,7 @@ or
 TIME STEP : 10.
 \end{lstlisting}
 
-Or else
+or else
 
 \begin{lstlisting}[language=TelemacCas]
 TIME STEP =
@@ -217,7 +219,7 @@ machine (in a machine with a 32 bit architecture, the extreme values range from
 is tolerated,
 
 \item Writing the reals: the point and the comma are accepted as a decimal
-separator, as well as the Fortran formats E and D. ( 1.E-3  0.001  0,001  1.D-3
+separator, as well as the FORTRAN formats E and D. ( 1.E-3  0.001  0,001  1.D-3
 represent the same value),
 
 \item Writing the logical values: the values 1, OUI,  YES,  .TRUE.,  TRUE,  or
@@ -247,8 +249,8 @@ behind that command so that they can easily be reactivated later on. However,
 the computation keeps running,
 
 \item The \telkey{\&ETA} command prints the list of keywords and the
-values which are assigned to them when DAMOCLES meets that command. That
-display will take place at the head of the output listing,
+values which are assigned to them when \telfile{damocles} meets that command.
+That display will take place at the head of the output listing,
 
 \item The \telkey{\&LIS} command prints the list of keywords. That
 display will take place at the head of the output listing,
@@ -262,11 +264,25 @@ the computation does not keep running.
 
 \section{The geometry file}
 
-It is the same file as that used by \telemac{2D}. It is a SERAFIN-formatted
-binary file which can then be read by RUBENS or FUDAA-PREPRO and is generated
-either by MATISSE, Blue Kenue or Janet or by the \stbtel module (from the
-file(s) originating from of mesh generator). The SERAFIN format structure is
-described in Appendix \ref{sec:srffmt}.
+It is the same file as that used by \telemac{2D}.
+This is a binary file.
+The format of this file is given by the keyword \telkey{GEOMETRY FILE FORMAT}.
+There are 3 possibilities:
+\begin{itemize}
+\item SERAFIN: classical single precision format in \tel,
+\item SERAFIND: classical double precision format in \tel,
+\item MED: MED double precision format based on HDF5.
+\end{itemize}
+
+If it is a SERAFIN-formatted binary file, it can be read by
+Paraview, FUDAA-PREPRO, Tecplot 360, Blue Kenue or RUBENS
+and is generated either by SALOME-HYDRO, Janet, Blue Kenue or MATISSE,
+or by the \stbtel module (from the file(s) originating from of mesh generator).
+The SERAFIN format structure is described in Appendix \ref{sec:srffmt}.
+
+If it is a MED-formatted binary file, it can be read by
+Paraview only and can be generated by SALOME-HYDRO
+or by the \stbtel module (from the file(s) originating from of mesh generator).
 
 That file contains all the data about the two-dimensional mesh (see in
 subsection \ref{sec:2dmesh}).
@@ -284,20 +300,20 @@ file. Any computational 2D result file can therefore be used as a geometry file
 when a further simulation on the same mesh is desirable.
 
 That file name is provided using the keyword: \telkey{GEOMETRY FILE} and its
-format is specified by the keyword: \telkey{GEOMETRY FILE FORMAT} (default
+format is specified by the keyword \telkey{GEOMETRY FILE FORMAT} (default
 value: 'SERAFIN '), see subsection \ref{sec:binfile}.
 
 
 \section{The boundary conditions file}
 
-It is the same file as that used by \telemac{2D}. It is a formatted file which is
-generated automatically by MATISSE or \stbtel and can be amended
-using FUDAA-PREPRO or a text editor. Each line in that file is
-dedicated to a point at the 2D mesh boundary. The edge point numbering is that
-of the file lines; it first describes the domain outline in the counter
-clockwise direction from the bottom left-hand point (point where the sum of
-horizontal co-ordinates of which is minimum), then the islands in the clockwise
-direction.
+It is the same file as that used by \telemac{2D}. It is a formatted file which
+is generated automatically by most of the mesh generators compatible with \tel
+or \stbtel and can be amended using FUDAA-PREPRO or a text editor.
+Each line in that file is dedicated to a point at the 2D mesh boundary.
+The edge point numbering is that of the file lines;
+it first describes the domain outline in the counter clockwise direction
+from the bottom left-hand point (point where the sum of horizontal co-ordinates
+of which is minimum), then the islands in the clockwise direction.
 
 For a thorough description of that file, refer to the specific subsection
 \ref{sec:bndfile}.
@@ -375,8 +391,8 @@ last time step stored in this file. The result of the comparison is given in
 the control printout in the form of a maximum difference in elevation and the
 three components of velocity.
 
-The name of this file is given by the keyword: \telkey{REFERENCE FILE} and its
-format is specified by the keyword: \telkey{REFERENCE FILE FORMAT} (default
+The name of this file is given by the keyword \telkey{REFERENCE FILE} and its
+format is specified by the keyword \telkey{REFERENCE FILE FORMAT} (default
 value: 'SERAFIN '), see subsection \ref{sec:binfile}.
 
 
@@ -479,7 +495,13 @@ ${2}^{\rm{nd}}$ one\dots ),
 
 \item P3 private variable 3,
 
-\item P4 private variable 4.
+\item P4 private variable 4,
+
+\item US : Stokes velocity along $x$ axis (m/s),
+
+\item VS : Stokes velocity along $y$ axis (m/s),
+
+\item WS : Stokes velocity along $z$ axis (m/s).
 \end{itemize}
 
 That file name is provided using the keyword: \telkey{3D RESULT FILE} and its
@@ -729,32 +751,36 @@ read by the user, but it should not be modified in any case.
 
 \section{Topographic and bathymetric data}
 \label{sec:topo}
-Topographical and bathymetric data may be supplied to \telemac{3D} at three
+Topographic and bathymetric data may be supplied to \telemac{3D} at three
 levels:
 
 \begin{itemize}
-\item Either directly in the geometry file by a topographical or bathymetric
-value associated with each mesh node. In this case, the data are processed
-while the mesh is being built using MATISSE, Janet or Blue Kenue, MATISSE or
-when the \bief module is run before \telemac{3D} is started. \bief reads
-the information in one or more bottom topography files (5 at most) and
-interpolates at each point in the domain,
+\item Either directly in the \telkey{GEOMETRY FILE} by a topographic
+or bathymetric value associated with each mesh node.
+In this case, the data are processed while the mesh is being built using
+SALOME-HYDRO, Janet, Blue Kenue or MATISSE,
+or when \stbtel is run before \telemac{3D} is started.
+\stbtel reads the information in one or more bottom topography files (5 at most)
+and interpolates at each point in the domain,
 
-\item Or in the form of a cluster of points with elevations that have no
-relation with the mesh nodes, during the \telemac{3D} computation. \telemac{3D}
-then makes the interpolation directly with the same algorithm as \bief. The
-file name is provided by the keyword \telkey{BOTTOM TOPOGRAPHY FILE}. Unlike
-\bief, \telemac{3D} only manages one single bottom topography file. This may be
-in SINUSX format or more simply a file consisting of three columns X, Y, Z. The
-SINUSX format is described in the RUBENS user manual,
+\item Or in the form of a cluster of points with elevations that have
+no relation with the mesh nodes, during the \telemac{3D} computation.
+\telemac{3D} then makes the interpolation directly with the same algorithm as
+\stbtel.
+The file name is provided by the keyword \telkey{BOTTOM TOPOGRAPHY FILE}.
+Unlike \stbtel, \telemac{3D} only manages one single bottom topography file.
+This may be in SINUSX format or more simply a file consisting of three columns
+X, Y, Z.
+The SINUSX format is described in the RUBENS user manual,
 
 \item Or using the \telfile{USER\_T3D\_CORFON} subroutine.
 This is usually what is done for schematic test cases.
 \end{itemize}
 
 In all cases, \telemac{3D} offers the possibility of smoothing the bottom
-topography in order to obtain a more regular geometry. The smoothing algorithm
-can be iterated several times depending on the degree of smoothing required.
+topography in order to obtain a more regular geometry.
+The smoothing algorithm can be iterated several times depending on the degree of
+smoothing required.
 The keyword \telkey{NUMBER OF BOTTOM SMOOTHINGS} then defines the number of
-iterations carried out in the \telfile{T3D\_CORFON} subroutine. The default
-value of this keyword is 0.
+iterations carried out in the \telfile{T3D\_CORFON} subroutine.
+The default value of this keyword is 0.

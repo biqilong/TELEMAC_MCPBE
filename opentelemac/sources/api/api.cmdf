@@ -473,6 +473,7 @@ files: bief_def.f
   front2.f
   bief_allvec.f
   centre_mass_seg.f
+  checkmesh.f
   comp_fac.f
   cpik12.f
   cpik13.f
@@ -532,7 +533,7 @@ files: bief_def.f
   bief_deallobj.f
   bief_deallspec.f
   dealmesh.f
-  drogues.f
+  initial_drogues.f
   streamline.f
   algae_transp.f
   deall_bief.f
@@ -543,7 +544,6 @@ files: bief_def.f
   bief_ininds.f
   bief_nbfel.f
   bief_nbsegel.f
-  checkmesh.f
   cpikle2.f
   cpikle3.f
   ielbor.f
@@ -898,12 +898,12 @@ files: declarations_parallel.F
   p_dsum.F
   p_dsumerr.F
   p_imax.F
+  p_isum.F
   p_ireadi.F
   p_iwriti.F
   p_exit.F
   p_init.F
   p_sync.F
-  p_isum.F
   p_mpi_type_commit.F
   p_mpi_type_create_struct.F
   p_mpi_type_get_extent.F

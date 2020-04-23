@@ -26,7 +26,7 @@ files: bief_def.f
   read_config.f
   bief_init.f
   bief_open_files.f
-  drogues.f
+  initial_drogues.f
   streamline.f
   bief_nbmpts.f
   bief_nbpts.f
@@ -63,11 +63,6 @@ files: bief_def.f
   bief_ininds.f
   bief_nbfel.f
   bief_nbsegel.f
-  paraco.f
-  parcom2.f
-  parcom2_seg.f
-  parcom.f
-  checkmesh.f
   cpikle2.f
   cpikle3.f
   dimens.f
@@ -96,6 +91,10 @@ files: bief_def.f
   mini.f
   double_to_integer.f
   integer_to_double.f
+  paraco.f
+  parcom2.f
+  parcom2_seg.f
+  parcom.f
   paracoi8.f
   parcom2i8.f
   paraco_comp.f
@@ -392,6 +391,7 @@ files: bief_def.f
   lubksb.f
   ludcmp.f
   centre_mass_seg.f
+  checkmesh.f
   comp_fac.f
   cpik12.f
   cpik13.f
@@ -526,10 +526,10 @@ files: declarations_parallel.F
   p_mpi_alltoallv_oil.F
   p_mpi_type_free.F
   p_iread.F
-  p_iwrit.F
-  p_wait_paraco.F
   p_ireadi.F
+  p_iwrit.F
   p_iwriti.F
+  p_wait_paraco.F
   p_ireadi8.F
   p_iwriti8.F
   p_dsum.F

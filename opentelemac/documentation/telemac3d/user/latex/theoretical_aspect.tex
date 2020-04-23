@@ -347,14 +347,15 @@ numberings a detailed account of which is given below.
 \label{sec:2dmesh}
 
 The two-dimensional mesh, which is made of triangles, can be prepared using a
-mesh generator software compatible with the TELEMAC system (MATISSE,
-Blue Kenue, Janet\dots).
+mesh generator software compatible with the TELEMAC system (SALOME-HYDRO,
+Janet, Blue Kenue, MATISSE\dots).
 
 Using a mesh generator that does not belong to the TELEMAC chain involves
 converting the resulting file, through the \stbtel interface for instance, to
-the serafin format, which can be read by TELEMAC as well as by the RUBENS, Blue
-Kenue or FUDAA-PREPRO post-processors. In addition, \stbtel checks such
-things as the proper orientation of the local numbering of the mesh elements.
+the SERAFIN format, which can be read by \tel as well as by ParaView,
+FUDAA-PREPRO, Tecplot 360, Blue Kenue, RUBENS post-processors.
+In addition, \stbtel checks such things as the proper orientation of the local
+numbering of the mesh elements.
 
 The two-dimensional mesh (included in the \telkey{GEOMETRY FILE}) consists of
 \telfile{NELEM2} elements and \telfile{NPOIN2} vertices of elements which are

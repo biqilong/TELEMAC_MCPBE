@@ -6958,6 +6958,7 @@
 !
       USE BIEF
       USE INTERFACE_PARALLEL
+      USE DECLARATIONS_TELEMAC, ONLY : SECU
 !
       IMPLICIT NONE
 !
@@ -7009,8 +7010,9 @@
       TYPE(BIEF_OBJ), POINTER :: VISC
 !
 !     SECURITY COEFFICIENT FOR MEMORY ALLOCATION
+!     SECU IS INITIALISED IN DECLARATIONS_TELEMAC
 !
-      REAL, PARAMETER :: SECU=1.
+!     REAL, PARAMETER :: SECU=1.
 !
 !-----------------------------------------------------------------------
 !

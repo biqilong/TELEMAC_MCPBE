@@ -24,10 +24,10 @@
       USE INTERFACE_TOMAWAC, ONLY: WAC
 !     MODULE SPECIFIC TO COUPLING WITH ESTEL-3D
       USE M_COUPLING_ESTEL3D, ONLY : INFILTRATION_INIT, DEPTH_FILL
-      USE DROGUES, ONLY : NDRG_CLSS
+      USE INITIAL_DROGUES, ONLY : NDRG_CLSS
 
 !     ALGAE MODEL
-      USE ALGAE_TRANSP, ONLY: INIT_BASSET
+      USE ALGAE_TRANSP
 !     DELWAQ
       USE TEL4DEL, ONLY: TEL4DELWAQ
       USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_ISUM
@@ -901,6 +901,24 @@
 28    FORMAT(/,5X,'THE REGION ',1I5,'IS OUTSIDE THE DOMAIN     ',
      &       /,5X,'OR IT DOES NOT CONTAIN ANY NODE OF THE MESH ')
 !
+!-----------------------------------------------------------------------
+!  INITIALISING THE ALGAE VARIABLES
+!
+      IF(ALGAE) THEN
+!       ALLOCATE THE ALGAE VARIABLES IF NEEDED
+        CALL ALLOC_ALGAE(NFLOT_MAX,MESH,DT)
+        CALL OS('X=Y     ',X=U_X_AV_0,Y=U_X_AV)
+        CALL OS('X=Y     ',X=U_Y_AV_0,Y=U_Y_AV)
+        CALL OS('X=Y     ',X=U_Z_AV_0,Y=U_Z_AV)
+        CALL OS('X=Y     ',X=K_AV_0  ,Y=K_AV)
+        CALL OS('X=Y     ',X=EPS_AV_0,Y=EPS_AV)
+        CALL OS('X=Y     ',X=U_X_0   ,Y=U_X)
+        CALL OS('X=Y     ',X=U_Y_0   ,Y=U_Y)
+        CALL OS('X=Y     ',X=U_Z_0   ,Y=U_Z)
+        CALL OS('X=Y     ',X=V_X_0   ,Y=V_X)
+        CALL OS('X=Y     ',X=V_Y_0   ,Y=V_Y)
+        CALL OS('X=Y     ',X=V_Z_0   ,Y=V_Z)
+      ENDIF
 !
 !-----------------------------------------------------------------------
 !
@@ -908,13 +926,6 @@
 !
       FOUND = .FALSE.
       IF( NDRG_CLSS.GT.0 ) THEN
-!
-        IF(ALGAE) THEN                    ! ALGAE TRANSPORT MODEL ACTIVE
-          IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING INIT_BASSET'
-!         VARIABLES USED TO CALCULATE THE BASSET HISTORY FORCE
-          CALL INIT_BASSET(NFLOT_MAX,IELMH,DT)
-          IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM INIT_BASSET'
-        ENDIF
 !
 !       PREVIOUS DROGUES FILE
         IF( T2D_FILES(T2DPLO)%NAME(1:1).NE.' ' ) THEN

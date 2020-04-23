@@ -24,10 +24,10 @@ these stages.
 
 \subsection{Advection step}
 \label{sec:advstep}
-Whether the convection terms will be considered or not will be determined by
-means of the logical keyword \telkey{ADVECTION STEP} (default
+Whether the advection terms will be taken into account or not will be
+determined by the logical keyword \telkey{ADVECTION STEP} (default
 value YES). However, even though that keyword is set to YES, then some
-advection terms can be deactivated by means of the following complete keywords
+advection terms can be deactivated by using the following complete keywords
 (value 0 = "NO ADVECTION "):
 
 \begin{itemize}
@@ -39,7 +39,8 @@ depth into account (default value = 5 which is the single choice and now
 mandatory),
 
 \item \telkey{SCHEME FOR ADVECTION OF K-EPSILON}: for the advection of power
-and turbulent dissipation,
+and turbulent dissipation for the $k-\epsilon$ model or $\tilde{\nu}$ for
+Spalart-Allmaras model,
 
 \item \telkey{SCHEME FOR ADVECTION OF TRACERS}: for the advection of tracers
 (one value per tracer).
@@ -62,7 +63,8 @@ keywords by the following keywords:
 
 \item \telkey{SCHEME FOR DIFFUSION OF TRACERS} (one value common to all tracers),
 
-\item \telkey{SCHEME FOR DIFFUSION OF K-EPSILON}.
+\item \telkey{SCHEME FOR DIFFUSION OF K-EPSILON} for both $k-\epsilon$ model
+and Spalart-Allmaras model.
 \end{itemize}
 
 The 0 value at each keyword cancels the diffusion, whereas the 1 value
@@ -81,15 +83,15 @@ The 0 value at each keyword cancels the diffusion, whereas the 1 value
 %The velocity and water depth propagation processes are taken into account by
 %the logical keyword \telkey{PROPAGATION STEP} (default value YES).
 
-Since the version 6.0 of TELEMAC, the propagation step (for velocity and water
+Since the release 6.0 of TELEMAC, the propagation step (for velocity and water
 depth) is necessarily treated with \telemac{2D} "wave equation" option.
 
 The propagation step can be linearized by activating the keyword
-\telkey{LINEARIZED PROPAGATION} (default value = NO) particularly when one
-conducts a case study for which an analytical solution in the linearized case
-is available. It is then necessary to set the water depth around which the
-linearization is performed by means of the keyword \telkey{MEAN DEPTH FOR
-LINEARIZATION} (default value 0.).
+\telkey{LINEARIZED PROPAGATION} (default value = NO), in particular when running
+a test case for which an analytical solution is available in the linearized case.
+It is then necessary to set the water depth around which the
+linearization is to be performed, by using the keyword
+\telkey{MEAN DEPTH FOR LINEARIZATION} (default value = 0.).
 
 With the "wave equation" option, the keyword
 \telkey{FREE SURFACE GRADIENT COMPATIBILITY} can be used.
@@ -98,10 +100,10 @@ it possible to delete the spurious oscillations of the free surface, but
 slightly alters the consistency between the water depth and the velocities in
 the continuity equation.
 
-When using the non-hydrostatic version, it is possible to enable the dynamic
-pressure term in treatment of the wave equation. This option is enabled by the
-logical keyword \telkey{DYNAMIC PRESSURE IN WAVE EQUATION} but it leads a
-dilemma:
+When using the non-hydrostatic version, it is possible to enable an estimation
+of the dynamic pressure gradient in the treatment of the wave equation.
+This option is enabled by the logical keyword
+\telkey{DYNAMIC PRESSURE IN WAVE EQUATION} but it leads a dilemma:
 
 \begin{itemize}
 \item If the keyword is set to YES, the dynamic pressure gradient is taken
@@ -178,8 +180,8 @@ printing an error message in the list control.
 The default value for both
 \telkey{SCHEME FOR ADVECTION OF VELOCITIES} and
 \telkey{SCHEME FOR ADVECTION OF K-EPSILON}
-is 5 since version 8.1
-(old value until version 8.0 was 1 i.e. method of characteristics). 
+is 5 since release 8.1
+(old value until release 8.0 was 1 i.e. method of characteristics). 
 Combined with the new default values of the keywords
 \telkey{SCHEME OPTION FOR ADVECTION OF VELOCITIES} = 4
 and \telkey{SCHEME OPTION FOR ADVECTION OF K-EPSILON} = 4,
@@ -191,7 +193,7 @@ The default value for the tracers is still 5 and also with the default value of
 most reliable scheme, since the "mass" conservation of the active tracers is a
 frequently essential point in \telemac{3D}.
 
-Since version 6.0, the value concerning the water depth advection scheme is
+Since release 6.0, the value concerning the water depth advection scheme is
 ignored by \telemac{3D}. The optimum advection scheme is automatically selected
 by the software (conservative scheme).
 
@@ -212,10 +214,10 @@ The MURD schemes present several options described in \ref{sec:MURD}.
 
 \subsection{Configuration of the SUPG scheme}
 \label{sec:supg}
-When using the SUPG method, the user must determine the type of upwinding
-desired using the keyword \telkey{SUPG OPTION} which is an array of
-4 integers related, to the velocity, the water depth, tracers and
-$k$-$\varepsilon $ model respectively.
+When using the SUPG method, the user has to determine the type of upwinding
+desired with the keyword \telkey{SUPG OPTION} which is an array of 4 integers
+related to the velocities, the water depth, tracer(s) and $k$-$\epsilon $ model
+(or Spalart-Allmaras model) respectively.
 Default value = (1;0;1;1).
 
 The possible values are:
@@ -223,18 +225,27 @@ The possible values are:
 \begin{itemize}
 \item 0: no upwinding,
 
-\item 1: upwinding with the conventional SUPG method, that is to say, the
-upwinding is 1,
+\item 1: upwinding with the classical SUPG method, i.e. the upwinding is 1,
 
-\item 2: upwinding with the modified SUPG method, that is to say, the
-upwinding is equal to the Courant number.
+\item 2: upwinding with the modified SUPG method, i.e. the upwinding is equal
+to the Courant number.
 \end{itemize}
 
 In theory, option 2 is more accurate when the Courant number is less than 1,
-but should not be used when the latter is important. Thus, option 2 should be
-used in models for which the Courant number remains low. If the Courant number
-cannot be estimated, it is strongly recommended to use option 1 (which can be
-considered as the most universal).
+but should not be used for large Courant numbers.
+Thus, option 2 should be used in models for which the Courant number remains low.
+If the Courant number cannot be estimated, it is strongly recommended
+to use option 1 (which can be considered as more ''universal'').
+
+In practice, only the 1$^{\rm{st}}$ coefficient is used
+(and applied to $U$, $V$ and $W$).
+It is also this coefficient which is applied to tracer(s), $k$ and $\epsilon$
+if needed.
+The only possible value for the 2$^{\rm{nd}}$ coefficient is 0,
+so no need to change it.
+
+At the end, the user only needs to give one value to the keyword
+\telkey{SUPG OPTION} with \telemac{3d}.
 
 \subsection{Configuration of the MURD schemes}
 \label{sec:MURD}
@@ -250,11 +261,11 @@ It can be set to:
  \item 2: first order predictor-corrector scheme,
  \item 3: second order predictor-corrector scheme,
  \item 4: locally semi-implicit predictor-corrector scheme
-(for tidal flats): LIPS (default value since version 8.1).
+(for tidal flats): LIPS (default value since release 8.1).
 \end{itemize}
 The default value for \telkey{SCHEME OPTION FOR ADVECTION OF VELOCITIES} is
-4 (i.e. LIPS) since version 8.1 which works with tidal flats (old value = 1
-i.e. explicit scheme until version 8.0).
+4 (i.e. LIPS) since release 8.1 which works with tidal flats (old value = 1
+i.e. explicit scheme until release 8.0).
 If there are no tidal flats in the domain, using option 2 (first order
 predictor-corrector scheme) may accelerate the computation but it does not
 work with tidal flats.
@@ -270,14 +281,47 @@ On the other hand, for unsteady flows, it is suggested to set the keyword
 \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES} = 2 (at least),
 which is a good compromise between accuracy and computational time.
 Indeed, by increasing the number of corrections, the scheme is more accurate but
-the CPU time rapidly increases.\\
-The keyword \telkey{NUMBER OF SUB-STEPS OF DISTRIBUTIVE SCHEMES} can be
-activated only for locally semi-implicit predictor-corrector schemes (LIPS).
+the CPU time rapidly increases.
+The keyword \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES} can be used
+with advection schemes of type (3, 4, 5, LIPS or not).
+
+The keyword \telkey{MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES}
+enables to limit the number of solver iterations for the advection schemes
+of type NERD (\telkey{SCHEME FOR ADVECTION OF}... = 13 or 14).
+The default value is 10.
+
+The keyword \telkey{NUMBER OF SUB-STEPS OF DISTRIBUTIVE SCHEMES} can only be
+activated for locally semi-implicit predictor-corrector schemes aka LIPS
+(\telkey{SCHEME FOR ADVECTION OF...} = 4 or 5
++ \telkey{SCHEME OPTION FOR ADVECTION OF...} = 4).
 The default value is 1.
 As the keyword mentions, it allows to subdivide the time step given by the user
 in the steering file, into several sub-steps.
 Again, it produces an effect on the precision of the scheme and it is convenient
 to set this keyword in order to have Courant numbers not too large (around 1).
+
+
+\begin{WarningBlock}{Note:}
+\begin{itemize}
+
+\item If present, the keyword \telkey{SCHEME OPTION FOR ADVECTION OF VELOCITIES}
+replaces and has priority over the following keywords:
+\telkey{OPTION FOR CHARACTERISTICS} and \telkey{SUPG OPTION}.
+
+\item The same remark are valid for advection of tracer, $k$, $\epsilon$ and
+$\tilde{\nu}$.
+However there are dedicated keywords: \telkey{SCHEME FOR ADVECTION OF TRACERS}
+and \telkey{SCHEME FOR ADVECTION OF K-EPSILON},
+
+\item \telkey{MATRIX STORAGE} = 3 is mandatory with some distributive schemes
+for advection (= 3, 13, or 14).
+\end{itemize}
+\end{WarningBlock}
+
+If using \telkey{ELEMENT} = 'TETRAHEDRON' and
+\telkey{SCHEME FOR ADVECTION OF...} = 3 aka Leo Postma
+(resp. 13 aka Leo Postma for tidal flats), 
+this last keyword is automatically changed to 4 aka N (resp. 14).
 
 \subsection{Configuration of the weak characteristics}
 
@@ -289,6 +333,11 @@ keyword \telkey{OPTION FOR CHARACTERISTICS}:
 
 \item 2: the weak form.
 \end{itemize}
+
+If \telkey{SCHEME FOR ADVECTION OF...} = 1,
+and also the corresponding keyword
+\telkey{SCHEME OPTION FOR ADVECTION OF...} =~2,
+\telkey{OPTION FOR CHARACTERISTICS} is automatically set to 2.\\
 
 None of them are recommended for the advection of tracers because they are not
 mass conservative. The weak form will decrease the diffusion. If the keyword
@@ -367,7 +416,7 @@ The implicitation coefficients are theoretically always higher than 0.5 (0.55
 or 0.6 will generally yield good results).
 
 The user can use the keyword \telkey{IMPLICITATION FOR VELOCITIES} (default
-value: 0.55 since version 8.1, old default value = 1. until version 8.0)
+value: 0.55 since release 8.1, old default value = 1. until release 8.0)
 which defines the value of the $\theta_{u}$ coefficient for the
 velocity components. The keyword \telkey{IMPLICITATION FOR DEPTH} (default
 value: 0.55) is provided to set the value of "propagation height" multiplying
@@ -397,22 +446,24 @@ selected by the user through the following keywords:
 \item \telkey{SOLVER FOR DIFFUSION OF VELOCITIES} (default value: 1),
 
 \item \telkey{SOLVER FOR PROPAGATION} (default value: 7
-  since version 8.1, old default value = 1 until version 8.0),
+  since release 8.1, old default value = 1 until release 8.0),
 
 \item \telkey{SOLVER FOR PPE} (default value: 7
-  since version 8.1, old default value = 1 until version 8.0),
+  since release 8.1, old default value = 1 until release 8.0),
 
 %\item \telkey{SOLVER FOR VERTICAL VELOCITY} (default value: 7
-%  since version 8.1, old default value = 1 until version 8.0),
+%  since release 8.1, old default value = 1 until release 8.0),
 %
 \item \telkey{SOLVER FOR DIFFUSION OF TRACERS} (default value: 1, one value for
 each tracer),
 
-\item \telkey{SOLVER FOR DIFFUSION OF K-EPSILON }(default value: 1).
+\item \telkey{SOLVER FOR DIFFUSION OF K-EPSILON} (default value: 1)
+for both $k-\epsilon$ model and Spalart-Allmaras model.
 \end{itemize}
 
 Each of these keywords can assume a value ranging from 1 to 8, which values
-correspond to the following possibilities:
+correspond to the following possibilities.
+Options 1 to 6 are all related to the conjugate gradient method:
 
 \begin{itemize}
 \item 1: conjugate gradient method (when the matrix of the system to solve
@@ -420,7 +471,7 @@ is symmetric),
 
 \item 2: conjugate residual method,
 
-\item 3: conjugate gradient method on a normal equation,
+\item 3: conjugate gradient on a normal equation method,
 
 \item 4: minimum error method,
 
@@ -430,12 +481,16 @@ is symmetric),
 
 \item 7: GMRES (Generalised Minimum RESidual) method,
 
-\item 8: direct solver.
+\item 8: direct solver (YSMP, solver of the Yale university),
+does not work in parallel mode.
 \end{itemize}
+
+The conjugate gradient is generally recommended for symmetric linear systems,
+thus when solving the diffusion equations.
 
 The GMRES method is well suited for improperly conditioned systems. This method
 requires that the dimension of the Krylov space be defined. That parameter is
-set by means of the following keywords:
+set using the following keywords:
 
 \begin{itemize}
 \item \telkey{OPTION OF SOLVER FOR DIFFUSION OF VELOCITIES},
@@ -446,11 +501,12 @@ set by means of the following keywords:
 
 \item \telkey{OPTION OF SOLVER FOR DIFFUSION OF TRACERS},
 
-\item \telkey{OPTION OF SOLVER FOR DIFFUSION OF K-EPSILON}.
+\item \telkey{OPTION OF SOLVER FOR DIFFUSION OF K-EPSILON}
+for both $k-\epsilon$ model and Spalart-Allmaras model.
 \end{itemize}
 
-The default values are set to 5 since version 8.1 (old default values
-= 3 until version 8.0). The larger that parameter is, the higher the
+The default values are set to 5 since release 8.1 (old default values
+= 3 until release 8.0). The larger that parameter is, the higher the
 memory requirements and the number of matrix-vector products per iteration (and
 consequently the computational time as well) are, but the better the
 convergence is.
@@ -467,29 +523,30 @@ Accuracy is specified by the following keywords:
 
 \begin{itemize}
 \item \telkey{ACCURACY FOR DIFFUSION OF VELOCITIES} (default value: 1.E-8
-  since version 8.1, old default value = 1.E-5 until version 8.0),
+  since release 8.1, old default value = 1.E-5 until release 8.0),
 
 \item \telkey{ACCURACY FOR PROPAGATION} (default value: 1.E-8
-  since version 8.1, old default value = 1.E-6 until version 8.0),
+  since release 8.1, old default value = 1.E-6 until release 8.0),
 
 \item \telkey{ACCURACY FOR PPE} (default value: 1.E-4
-  since version 8.1, old default value = 1.E-4 until version 8.0),
+  since release 8.1, old default value = 1.E-4 until release 8.0),
 
 %\item \telkey{ACCURACY FOR VERTICAL VELOCITY} (default value: 1.E-8
-%  since version 8.1, old default value = 1.E-6 until version 8.0),
+%  since release 8.1, old default value = 1.E-6 until release 8.0),
 %
 \item \telkey{ACCURACY FOR DIFFUSION OF TRACERS} (default value: 1.E-8
-since version 8.0, one value common to all tracers),
+since release 8.0, one value common to all tracers),
 
 \item \telkey{ACCURACY FOR DIFFUSION OF K-EPSILON} (default value: 1.E-8
-  since version 8.1, old default value = 1.E-6 until version 8.0).
+  since release 8.1, old default value = 1.E-6 until release 8.0)
+for both $k-\epsilon$ model and Spalart-Allmaras model.
 \end{itemize}
 
 The maximum number of iterations is specified by the following keywords:
 
 \begin{itemize}
-\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF VELOCITIES
-}(default value: 60),
+\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF VELOCITIES}
+(default value: 60),
 
 \item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR PROPAGATION} (default value:
 200),
@@ -499,13 +556,13 @@ The maximum number of iterations is specified by the following keywords:
 %\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR VERTICAL VELOCITY} (default
 %value: 100),
 %
-\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF TRACERS }(default
+\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF TRACERS} (default
 value: 60, one value common to all tracers),
 
-\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF K-EPSILON }(default
-value: 200),
+\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR DIFFUSION OF K-EPSILON} (default
+value: 200) for both $k-\epsilon$ model and Spalart-Allmaras model,
 
-\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES }(default
+\item \telkey{MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES} (default
 value: 10) only for schemes 13 and 14.
 \end{itemize}
 
@@ -547,7 +604,8 @@ made by means of the following keywords:
 \item \telkey{PRECONDITIONING FOR DIFFUSION OF TRACERS} (one value for each
 tracer),
 
-\item \telkey{PRECONDITIONING FOR DIFFUSION OF K-EPSILON}.
+\item \telkey{PRECONDITIONING FOR DIFFUSION OF K-EPSILON}
+for both $k-\epsilon$ model and Spalart-Allmaras model.
 \end{itemize}
 
 The available options are:
@@ -621,8 +679,23 @@ The treatment of negative depths can be specified using the keyword
 conservative smoothing of negative depths. The second option is to limit the
 flux between the elements to ensure strictly positive water depths. This second
 option should be used with advection schemes consistent with tidal flats (+
-mass lumping option for height at value 1.). The value 0 means that no special
+\telkey{MASS-LUMPING FOR DEPTH} = 1.). The value 0 means that no special
 treatment is performed.
+
+The numerical advection schemes (\telkey{SCHEME FOR ADVECTION OF}...) for tidal
+flats are:
+\begin{itemize}
+\item 13 or 14: NERD scheme,
+\item 4 or 5 coupled with \telkey{OPTION FOR ADVECTION OF}... = 4:
+LIPS scheme.
+\end{itemize}
+
+\begin{WarningBlock}{Note:}
+NERD schemes (13 and 14) and LIPS require the keywords
+  \telkey{TIDAL FLATS} = YES
++ \telkey{OPTION FOR THE TREATMENT OF TIDAL FLATS} = 1
++ \telkey{TREATMENT OF NEGATIVE DEPTHS} = 2.
+\end{WarningBlock}
 
 The keyword \telkey{MINIMAL VALUE FOR DEPTH} the default value of which is
 -1,000 enables to set the threshold below which the smoothing is. For example,
@@ -681,12 +754,25 @@ perform a mass-lumping on the mass matrices. That procedure consists in partly
 or wholly returning the mass matrix to its diagonal and enables to
 substantially shorten the computational times. The resulting solutions,
 however, become smoothed, except for in steady flow conditions in which they
-are unchanged. The mass-lumping rate is set by means of the keywords
-\telkey{MASS-LUMPING FOR DEPTH}, \telkey{MASS-LUMPING FOR VELOCITIES},
+are unchanged. The mass-lumping rate is set with the keywords
+\telkey{MASS-LUMPING FOR DEPTH},
 \telkey{MASS-LUMPING FOR DIFFUSION} and \telkey{MASS-LUMPING FOR WEAK
 CHARACTERISTICS}. Value 1. means maximum mass-lumping (the mass matrices are
 diagonal), value 0. (default value) corresponds to the normal treatment without
-any mass-lumping. For further details, the reader shall refer to the \telemac{3D}
+any mass-lumping.\\
+
+If using \telkey{OPTION FOR THE TREATMENT OF TIDAL FLATS} = 1 (default value)
+and \telkey{TREATMENT OF NEGATIVE DEPTHS} = 2 (flux control),
+the keyword \telkey{MASS-LUMPING FOR DEPTH} must be equal to 1.
+
+The keyword \telkey{MASS-LUMPING FOR DIFFUSION} used for the mass-matrix
+in the diffusion step is automatically set to 1. in \telfile{DIFF3D}
+if diffusion is explicit (\telkey{IMPLICITATION FOR DIFFUSION} < 0.001)
+or if the advection scheme is of type 3, 4, 5, 13 or 14 (N, PSI, NERD).
+
+The keyword \telkey{MASS-LUMPING FOR VELOCITIES} is read but not used.\\
+
+For further details, the reader shall refer to the \telemac{3D}
 Theoretical Note.
 
 \subsection{Convergence aid}
@@ -709,22 +795,27 @@ of $\delta h$ at the previous time step, and $\delta h^{n-1} $ is the value of
 $\delta h$ two time steps earlier. It is actually an extrapolation.
 \end{itemize}
 
+If option 2 with the non-hydrostatic version, \telkey{INITIAL GUESS FOR DEPTH}
+is automatically set to 1.
 
 \subsection{Matrix storage}
 
 \telemac{3D} provides a couple of procedures for storing the various matrices it
 has to handle, namely the conventional EBE (Element By Element) method and the
-segment-wise storage. The latter procedure is faster (by approx 20\%) in most
-cases.
+segment-wise storage.
+The second is faster (about 20\%) in most cases.
 
-The choice among these two types of storage is made by means of the keyword
-\telkey{MATRIX STORAGE} which can assume the following values:
+The choice between the two storage methods can be done using the keyword
+\telkey{MATRIX STORAGE}, with the following values:
 
 \begin{itemize}
-\item 1: classical EBE method,
+\item 1: classical Element by Element (EBE) method,
 
-\item 3: edge-based storage (default value).
+\item 3: edge-based storage method (default and recommended value).
 \end{itemize}
+
+\telkey{MATRIX STORAGE} = 3 is mandatory with some distributive schemes
+for advection (= 3, 13 or 14).
 
 \subsection{Velocities projection}
 

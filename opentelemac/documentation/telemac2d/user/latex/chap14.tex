@@ -207,11 +207,11 @@ and must be done with great care!
 \section{Coupling}
 \label{sec:coupling}
 
-The principle of coupling two (or in theory more) simulation modules involves
+The principle of coupling two or several simulation modules involves
 running the two calculations simultaneously and exchanging the various results
 at each time step.
-For example, the following principle is used to couple a hydrodynamic module
-and a sediment transport module:
+For example, the following principle is used to couple the hydrodynamic module
+and the sediment transport module:
 
 \begin{itemize}
 \item The two codes perform the calculation at the initial instant
@@ -260,7 +260,8 @@ The values of this keyword can be:
 \end{itemize}
 
 If wanting to couple with 2 modules or more, the differents modules are to
-be written in the \telkey{COUPLING WITH} separated with semicolon.
+be written in the \telkey{COUPLING WITH} separated with semicolon, for example:
+\telkey{COUPLING WITH} = `GAIA, TOMAWAC'.
 
 Depending on the module(s) used, the keywords
 \telkey{GAIA STEERING FILE}, \telkey{SISYPHE STEERING FILE},
@@ -294,6 +295,22 @@ Note that AED2 is currently not coupled with \telemac{2d} contrary to
 Please refer to the \waqtel documentation for additional informations for
 \waqtel.\\
 
+If coupling with the ice module \khione, the integer keyword
+\telkey{ICE PROCESSES} must be set to a value different from 1
+(default = 1) in the \telemac{2d} steering file.
+This keyword provides the ice process number with the number being defined on
+the basis of a multiplication of primary numbers (2, 3, 5, 7, 11, 13\ldots).
+For instance, 14 (= 2 $\times$ 7) activates processes 2 and 7.
+The possible choices are:
+\begin{itemize}
+\item 0: all available processes are included,
+\item 1: no ice process included (default value),
+\item 2: thermal budget+frazil growth,
+\item 3: ice cover impact on hydrodynamics,
+\item 5: clogging on racks,
+\item 7: static border ice growth.
+\end{itemize}
+
 The FORTRAN files of the different modules can be used and are compiled
 independently (check that the FORTRAN files of \gaia, \sisyphe and \tomawac
 do not contain a main program).\\
@@ -308,7 +325,8 @@ communications with DELWAQ.\\
 In the case of coupling \telemac{2d} and \sisyphe, the bed roughness can be
 determined directly by \sisyphe if the keyword
 \telkey{BED ROUGHNESS PREDICTION} is enabled in the settings file
-sediment transport model.
+sediment transport model. This option can be useful for applications
+accounting for rippled or mega-rippled bed or dunes.
 If this option is used, the friction law on the bottom used
 in the hydrodynamic calculation of \telemac{2d} must necessarily be
 the law of Nikuradse (\telkey{LAW OF BOTTOM FRICTION} = 5).

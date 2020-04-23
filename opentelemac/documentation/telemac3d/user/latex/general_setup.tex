@@ -237,7 +237,7 @@ to 0 (default value). The initial water depths are then computed from the
 bottom elevation,
 
 \item 'CONSTANT ELEVATION': Initializes the free surface elevation to the
-values as provided by the keyword \telkey{INITIAL ELEVATION}
+values as supplied by the keyword \telkey{INITIAL ELEVATION}
 (default value = 0.). The initial water
 depths are then computed by getting the difference between the free surface
 elevation and the bottom elevation.
@@ -248,7 +248,7 @@ the initial elevation, the initial water depth is zero,
 (free surface coinciding with bottom). In other words, the whole domain is
 "dry" at the beginning of the computation,
 
-\item 'CONSTANT DEPTH': Initializes the water depths to the value as provided
+\item 'CONSTANT DEPTH': Initializes the water depths to the value as supplied
 by the keyword \telkey{INITIAL DEPTH} (default value = 0.),
 
 \item `TPXO SATELLITE ALTIMETRY': The initial conditions are set using
@@ -411,7 +411,7 @@ and each type may be associated with one value (either used or not).
 
 The maximum number of boundaries is set to 30 by default but it can be changed
 by the user with the keyword \telkey{MAXIMUM NUMBER OF BOUNDARIES}.
-This avoids changing the previously hardcoded values (until version 7.0),
+This avoids changing the previously hardcoded values (until release 7.0),
 which required recompiling the whole package.
 
 After such a description of what is a boundary in \telemac{3D}, we will describe
@@ -732,51 +732,52 @@ change the boundary condition type in time, if required.
 
 \subsection{Prescribing values through keywords}
 
-In most simple cases, the boundary conditions will be prescribed by means of
-keywords. However, if the values to be prescribed are variable in time, it is
-necessary to program the adequate functions or to use the liquid boundaries
-file.
+In most simple cases, the boundary conditions are prescribed using keywords.
+However, if the values to be prescribed vary in time, it is necessary to program
+the adequate functions or to use the liquid boundaries file.
 
 The appropriate keywords to prescribe the boundary values are as follows:
 
 \begin{itemize}
 \item \telkey{PRESCRIBED ELEVATIONS}: provided to set the
-elevation value of a prescribed height liquid boundary. It is an array which
-can contain up to \telfile{MAXFRO} reals,
-and therefore up to \telfile{MAXFRO} boundaries of that kind
-can be handled. The values defined by that keyword overwrite the depth values
-read from the boundary conditions file,
+elevation value of a prescribed elevation liquid boundary (free surface).
+It is an array that can contain up to \telfile{MAXFRO} reals, and therefore up
+to \telfile{MAXFRO} boundaries of that kind can be handled.
+The values defined by that keyword overwrite the depth values read
+from the \telkey{BOUNDARY CONDITIONS FILE},
 
 \begin{WarningBlock}{Warning:}
-The free surface level is set with this keyword, whereas the water depth is set
-in the boundary conditions file.
+The value given here is the free surface level, whereas the value given
+in the \telkey{BOUNDARY CONDITIONS FILE} is the water depth.
 \end{WarningBlock}
 
 \item \telkey{PRESCRIBED FLOWRATES}: provided to set the flow rate value of a
-prescribed flow at a liquid boundary. It is an array which can contain up to
-\telfile{MAXFRO} reals, and therefore up \telfile{MAXFRO}
-boundaries of that kind can be handled. A
-positive value corresponds to a domain inflow rate. The values defined by that
-keyword overwrite the velocity values read from the boundary conditions file,
+prescribed flow at a liquid boundary.
+It is an array which can contain up to \telfile{MAXFRO} reals, and therefore up
+\telfile{MAXFRO} boundaries of that kind can be handled.
+A positive value corresponds to a domain inflow rate.
+The values defined by that keyword overwrite the velocity values read
+from the \telkey{BOUNDARY CONDITIONS FILE},
 
 \item \telkey{PRESCRIBED VELOCITIES}: provided to set the velocity value of a
-prescribed velocity liquid boundary. The scalar value is the wall normal
-velocity. A positive value corresponds to a domain inflow. It is an array which
-can contain up to \telfile{MAXFRO} reals,
-and therefore up \telfile{MAXFRO} boundaries of that kind can
-be handled. The values defined by that keyword overwrite the values read from
-the boundary conditions file.
+prescribed velocity liquid boundary.
+The scalar value is the wall normal velocity.
+A positive value corresponds to a domain inflow.
+It is an array which can contain up to \telfile{MAXFRO} reals, and therefore up
+\telfile{MAXFRO} boundaries of that kind can be handled.
+The values defined by that keyword overwrite the values read from the
+\telkey{BOUNDARY CONDITIONS FILE}.
 \end{itemize}
 
 In addition, several simple rules should be observed:
-
-The boundary type as specified in the boundary conditions files should
-obviously be in accordance with the keywords in the steering file (do not
+\begin{itemize}
+\item The boundary type as specified in the \telkey{BOUNDARY CONDITIONS FILE}
+should obviously be in accordance with the keywords in the steering file (do not
 insert the keyword \telkey{PRESCRIBED FLOWRATES} if there are no boundary
 points the \telfile{LIUBOR} and \telfile{LIVBOR} of which are set to
-5). The keyword, however, is ignored if no type matches it.
+5). The keyword, however, is ignored if no type matches it,
 
-For each keyword, the number of specified values should be equal to the whole
+\item For each keyword, the number of specified values should be equal to the whole
 number of liquid boundaries, whatever their types may be. When a boundary is
 inconsistent with the keyword, then the specified value is ignored (a 0.0 value
 or, on the contrary, a very high value such as 999.0 may be systematically
@@ -786,7 +787,7 @@ For example, in the channel test case, the first boundary (downstream boundary)
 is of prescribed level type whereas the second one (upstream boundary) is of
 prescribed flow rate type. The steering file contains a sequence of the
 following type:
-
+\end{itemize}
 \begin{lstlisting}[language=TelemacCas]
 PRESCRIBED ELEVATIONS = 0.5, 0.0
 PRESCRIBED FLOWRATES  = 0.0, 50.0
@@ -798,11 +799,11 @@ By default, the boundary condition on the bottom is an impermeable slip
 boundary (Neumann condition of the same type as vertical conditions).
 
 However, bottom velocities can be set to zero by using value 2 of the keyword
-\telkey{BOUNDARY CONDITION ON THE BOTTOM} (Default value of 1 correspond to a
+\telkey{BOUNDARY CONDITION ON THE BOTTOM} (Default value of 1 corresponds to a
 slip condition). This option is valid only if the vertical mesh is refined at
 bottom level.
 
-Since version 7.1, it is possible to prescribe a flux on the bed in TELEMAC-3D
+Since release 7.1, it is possible to prescribe a flux on the bed in TELEMAC-3D
 (e.g.: a flow rate on several liquid boundaries placed on the bed).
 To do so, it is necessary to define the imposed flow rates using the keywords
 \telkey{OPEN BOUNDARY CONDITIONS ON THE BED} set to YES (default value = NO)
@@ -859,17 +860,17 @@ For example to add a circular boundary of radius 5~m centred around coordinate
 In this example, it should be noted that \telfile{NLIQBED\%I(IPOIN2)} = 1
 defines the position for the first liquid boundary defined in the steering file.
 This is all that needs to be defined by the user to deal with fluxes on the bed.
-However, in version 7.1, only constant velocity profile is available.
+However, in release 7.1, only constant velocity profile is available.
 It should also be noted that it has not been possible to prescribe a tracer
 or turbulence yet.
 
 \subsection{Using the liquid boundaries file}
 \label{sec:liqbnd}
 In case of time variable values, which are nonetheless constant in space along
-the relevant liquid boundary, the prescription can be made using the liquid
+the relevant liquid boundary, the prescription can be done using the liquid
 boundaries file (as an alternative to programming).
 
-It is a user-edited text file the name of which should be given by the keyword
+It is a user-edited ASCII file the name of which should be given by the keyword
 \telkey{LIQUID BOUNDARIES FILE}. That file has the
 following format:
 
@@ -922,7 +923,7 @@ surface is prescribed at the second boundary.
 \subsection{Prescribing values through programming}
 
 Still in the case of time variable values that are constant in time along the
-liquid boundary processed, the prescription can be made simply by programming
+liquid boundary processed, the prescription can be done simply by programming
 particular subroutines:
 
 \begin{itemize}
@@ -1037,8 +1038,9 @@ to prescribe the complex boundary values of the tracers.
 
 When processing a prescribed flow rate or prescribed velocity boundary, the
 user has the keyword \telkey{VELOCITY PROFILES} to specify which "horizontal"
-velocity profile should be prescribed by \telemac{3D}. The following options are
-possible:
+velocity profile should be prescribed by \telemac{3D} (one value per liquid
+boundary).
+The following options are possible:
 
 \begin{itemize}
 \item 1: The profile is normal and homogeneous along the boundary (default
@@ -1066,8 +1068,9 @@ point of the free surface on the boundary.
 
 When processing a prescribed flow rate or prescribed velocity boundary, the
 user has the keyword \telkey{VELOCITY VERTICAL PROFILES} to specify which
-"vertical" velocity profile should be prescribed by \telemac{3D}. The options for
-that keyword are:
+"vertical" velocity profile should be prescribed by \telemac{3D}
+(one value per liquid boundary).
+The options for that keyword are:
 
 \begin{itemize}
 \item 0: programmed by the user,
@@ -1086,15 +1089,17 @@ the dynamic boundary condition.
 \subsection{Thompson conditions}
 
 In some cases, not all the necessary information concerning the boundary
-conditions is available. This is usual for coastal domains where only the
-values of the sea level on several points are known. This kind of model is
-referred to as an ``under-constrained'' model.
+conditions is available.
+This is usual for coastal domains where only the values of the sea level
+on several points are known.
+This kind of model is referred to as an ''under-constrained'' model.
 
-To solve this problem, the Thompson method uses the characteristics method to
-calculate the missing values. For example, \telemac{3D} will compute the velocity
-at the boundary in the case of a prescribed elevation.
+To solve this problem, the Thompson method uses the theory of characteristics
+to calculate the missing values.
+For example, \telemac{3D} will compute the velocity at the boundary in the case
+of a prescribed elevation.
 
-This method can also be used for ``over-constrained'' models. In this case,
+This method can also be used for ''over-constrained'' models. In this case,
 the user specifies too much information at the boundary. If the velocity
 information and the level information are not consistent, too little or too
 much energy is going into the model. For this, the Thompson method computes a
@@ -1118,6 +1123,19 @@ values are ``suggested''.
 However it is important to note that, given the two-dimensional aspect, the
 Thompson method can only be used in the case of a zero velocity gradient
 imposed on the vertical (uniform velocity along the vertical).
+
+\begin{WarningBlock}{Note:}
+\begin{enumerate}
+\item This keyword should be given for ALL liquid boundaries like given in the
+following example: \newline
+\telkey{OPTION FOR LIQUID BOUNDARIES}= 2;1;2;2 \newline
+which means that you are asking \telemac{3d} to apply Thompson boundary
+condition to boundaries number 1,3 and 4;
+unlike boundary number 2, where \telemac{3d} will use a strong prescription.
+\item This option will trigger the computation of characteristics' trajectories
+in order to get informations from inside the domain.
+\end{enumerate}
+\end{WarningBlock}
 
 
 \subsection{Tidal harmonic constituents databases}
@@ -1147,14 +1165,14 @@ d'Etudes en Géophysique et Océanographie Spatiales (LEGOS),
 \item The PREVIMER atlases.
 \end{itemize}
 
-However it is important to note that, in the current version of the code, the
+However it is important to note that, in the current release of the code, the
 latter 2 databases are not completely interfaced with \telemac{3D} and their use
 is recommended only for advanced users.
 
 The keyword \telkey{OPTION FOR TIDAL BOUNDARY CONDITIONS} activates the use of
 one of the available database when set to a value different from 0
 (the default value 0 means that this function is not activated). 
-Since version 7.1, this keyword is an array of integers separated by semicolons
+Since release 7.1, this keyword is an array of integers separated by semicolons
 (one per liquid boundary) so that the user can describe whether tidal boundary
 conditions should be computed or not (e.g. a weir) on a liquid boundary. 
 When this keyword is activated, every tidal

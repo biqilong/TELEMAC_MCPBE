@@ -1,7 +1,7 @@
       MODULE ALGAE_TRANSP
         USE BIEF_DEF, ONLY : BIEF_OBJ
 
-      USE DROGUES, ONLY : NDRG_CLSS,NODCLSS,PARCLSS
+      USE INITIAL_DROGUES, ONLY : NDRG_CLSS,NODCLSS,PARCLSS
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !***********************************************************************
@@ -19,8 +19,6 @@
 ! SUBROUTINES MADE AVAILABLE
       PUBLIC :: DEALLOC_ALGAE,ALLOC_ALGAE,INTERP_ALGAE,
      &          DISP_ALGAE
-!
-      INTEGER :: ALGAE_START = 1 ! THIS VALUE NEEDS TO BE UPDATED IN FLOT
 !
 !     MAXIMUM NUMBER OF ALGAE CLASSES - FOR MEMORY ALLOCATION PURPOSES
       INTEGER :: NALG_CLSS
@@ -93,7 +91,7 @@
                      SUBROUTINE ALLOC_ALGAE
 !                    **********************
 !
-     &(NP_TOT,IELMH,MESH)
+     &(NP_TOT,MESH,DT)
 !
 !***********************************************************************
 ! TELEMAC 2D VERSION 6.3    MAI 2013                       ANTOINE JOLY
@@ -129,36 +127,13 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER         , INTENT(IN) :: NP_TOT,IELMH
+      INTEGER         , INTENT(IN) :: NP_TOT
       TYPE(BIEF_MESH) , INTENT(IN) :: MESH
+      DOUBLE PRECISION, INTENT(IN) :: DT
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER I
-!
-!=======================================================================
-!     ALLOCATE THE VARIABLES
-!=======================================================================
-!
-!     DROGUES PROPERTIES
-!      CALL BIEF_ALLVEC(3,NODCLSS, 'CLSFLO',IELMH,1,1,MESH)
-!      CALL BIEF_ALLVEC(2,PARCLSS, 'TYPFLO',NP_TOT,1,0,MESH)
-!      DO I = 1,NP_TOT
-!        PARCLSS%I(I) = 1
-!      ENDDO
-!
-!      IF( NDRG_CLSS.GT.0 ) THEN
-!       DEFINES THE SPATIAL SAMPLING OF PARCELS WITHIN AN AREA
-!        ALLOCATE( DRG_DENSITY(NDRG_CLSS) )
-!        DRG_DENSITY = 0
-!      ENDIF
-!      IF( ALGAE ) THEN
-!        CALL BIEF_ALLVEC(3,ALG_PARCLSS, 'TYPALG',NP_TOT,1,0,MESH)
-!        DO I = 1,NP_TOT
-!          ALG_PARCLSS%I(I) = 1
-!          ALG_PARCLSS%R(I) = 1.D0
-!        ENDDO
-!      ENDIF
 !
 ! MEAN FLUID VARIABLES
       CALL BIEF_ALLVEC(1,U_X_AV_0,'UX_AV0',NP_TOT,1,0,MESH)
@@ -191,6 +166,8 @@
       CALL BIEF_ALLVEC(1,TEFF,'TEFF__',NP_TOT,1,0,MESH)
       CALL BIEF_ALLVEC(2,I_A_GL,'I_A_GL',NP_TOT,1,0,MESH)
       CALL BIEF_ALLVEC(2,DISLODGE,'DISLOD',NP_TOT,1,0,MESH)
+! VARIABLES USED TO CALCULATE THE BASSET HISTORY FORCE
+      CALL INIT_BASSET(NP_TOT,MESH%DIM1,DT)
 !
 !=======================================================================
 ! INITIALISE THE VARIABLES
@@ -312,6 +289,7 @@
         END DO
       END DO
 !
+      NWIN=100
       TWIN=REAL(NWIN)*DT
 !
       IF(ALLOCATED(PSI))DEALLOCATE(PSI)
@@ -463,7 +441,7 @@
      & (NA_TOT,NA,NDIM,DT,AT,U_X_AV_0,U_Y_AV_0,U_Z_AV_0,K_AV_0,
      &  EPS_AV_0,H_FLU,U_X_AV,U_Y_AV,U_Z_AV,U_X_0,U_Y_0,U_Z_0,V_X_0,
      &  V_Y_0,V_Z_0,DX_A,DY_A,DZ_A,ELEM_ALG,U_X,U_Y,U_Z,V_X,V_Y,V_Z,
-     &  X_A,Y_A,Z_A,LT,DALGAE,RALGAE,EALGAE,TALGAE,MALGAE,YALGAE,
+     &  X_A,Y_A,Z_A,LT,DALGAE,RALGAE,EALGAE,TALGAE,YALGAE,
      &  REL_ALGAE)
 !
 !***********************************************************************
@@ -527,7 +505,6 @@
 ! | RALGAE         | -->| DENSITY OF THE ALGAE PARTICLES               |
 ! | EALGAE         | -->| THICKNESS OF THE ALGAE PARTICLES             |
 ! | TALGAE         | -->| TIME AT WHICH ALGAE PARTICLES ARE RELEASED   |
-! | MALGAE         | -->| MASS OF ALGAE PER UNIT AREA                  |
 ! | YALGAE         | -->| ALGAE TYPE OF THE PARTICLES                  |
 ! | REL_ALGAE      | -->| TYPE OF ALGAE RELEASE                        |
 ! |________________|____|______________________________________________|
@@ -562,7 +539,6 @@
       DOUBLE PRECISION,INTENT(IN)    :: RALGAE(*)
       DOUBLE PRECISION,INTENT(IN)    :: EALGAE(*)
       DOUBLE PRECISION,INTENT(IN)    :: TALGAE(*)
-      DOUBLE PRECISION,INTENT(IN)    :: MALGAE(*)
       INTEGER         ,INTENT(IN)    :: YALGAE(*)
       INTEGER         ,INTENT(IN)    :: REL_ALGAE(*)
 ! CONSTANTS OF THE BODIES
@@ -578,7 +554,7 @@
       DOUBLE PRECISION               :: F_B
       DOUBLE PRECISION               :: TAU_PART
       DOUBLE PRECISION               :: FI_C
-      DOUBLE PRECISION               :: D_ALG,R_ALG,E_ALG,T_ALG,M_ALG
+      DOUBLE PRECISION               :: D_ALG,R_ALG,E_ALG,T_ALG
       INTEGER                        :: Y_ALG,REL_ALG
 ! PROPERTIES OF THE FLOW
       DOUBLE PRECISION               :: T_I
@@ -692,7 +668,6 @@
         R_ALG = RALGAE(PARCLSS%I(I_A))
         E_ALG = EALGAE(PARCLSS%I(I_A))
         T_ALG = TALGAE(PARCLSS%I(I_A))
-        M_ALG = MALGAE(PARCLSS%I(I_A))
         Y_ALG = YALGAE(PARCLSS%I(I_A))
         REL_ALG = REL_ALGAE(PARCLSS%I(I_A))
 ! CONSTANTS

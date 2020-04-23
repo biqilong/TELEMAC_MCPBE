@@ -9,7 +9,7 @@ physical parameters may or should be specified upon a simulation.
 Firstly, it should be specified whether one wants to use the hydrostatic
 pressure hypothesis or not. That choice is made using the keyword
 \telkey{NON-HYDROSTATIC VERSION} which, by default, has been set to YES since
-version 8.0.
+release 8.0.
 As a reminder, the hydrostatic pressure hypothesis
 (\telkey{NON-HYDROSTATIC VERSION} = NO)
 consists in simplifying the
@@ -187,6 +187,12 @@ This algorithm is implemented in the subroutine \telfile{VISCLM}.
 
 That option is activated by setting the horizontal or vertical turbulence
 model to 4 (Smagorinsky).
+If \telkey{VERTICAL TURBULENCE MODEL} = 4,
+\telkey{HORIZONTAL TURBULENCE MODEL} is automatically set to 4
+even though the user has set to a different value before.
+On the contrary, a Smagorinski model in the horizontal directions
+(\telkey{HORIZONTAL TURBULENCE MODEL} = 4) can be used with every possible
+value for \telkey{VERTICAL TURBULENCE MODEL}.
 
 The Smagorinsky scheme is recommended, in particular, in the presence of a
 highly non-linear flow \cite{Smagorinsky1963}.
@@ -222,16 +228,16 @@ The default value of that viscosity may have to be increased to ensure a minimum
 diffusion, especially during the first time steps of the computation.
 
 There are two options to compute the lateral boundary conditions of $k$ and
-$\epsilon$ (in subroutine KEPCL3) with the keyword
+$\epsilon$ (in \telfile{KEPCL3} subroutine) with the keyword
 \telkey{OPTION FOR THE BOUNDARY CONDITIONS OF K-EPSILON}:
 \begin{itemize}
 \item 1 = No turbulence ($k$ and $\epsilon$ takes the minimum values
 \telfile{KMIN} and \telfile{EMIN} defined in subroutine \telfile{CSTKEP}),
 which is the default value,
-\item 2 = Hans and Burchard’s formula (introduced in version 7.0).
+\item 2 = Hans and Burchard’s formula (introduced in release 7.0).
 \end{itemize}
 
-Since version 8.1, \telemac{3D} can be coupled with the GOTM library
+Since release 8.1, \telemac{3D} can be coupled with the GOTM library
 (General Ocean Turbulence Model).
 It enables to use a turbulence model library over the vertical by setting
 the keyword \telkey{VERTICAL TURBULENCE MODEL} to 6="STANDARD GOTM"
@@ -242,6 +248,31 @@ stratification.
 As GOTM is a 1DV water column model, the turbulence model can only be used over
 the vertical and the user can choose another turbulence model in the $x$ and
 $y$ directions with the keyword \telkey{HORIZONTAL TURBULENCE MODEL}.
+
+\subsection{$k-\omega$ model}
+
+\telemac{3D} gives an opportunity to use a $k$-$\omega$ model for solving
+the turbulence equations.
+That model is activated by setting the keywords of turbulence models
+(\telkey{HORIZONTAL TURBULENCE MODEL} and \telkey{VERTICAL TURBULENCE MODEL})
+to the value 7.
+It is not possible to mix $k-\epsilon$ and $k-\omega$ in two different
+directions.
+
+Parameters definition for the $k-\omega$ model is common
+with the $k-\epsilon$ model one.
+
+\subsection{Spalart-Allamaras and DES models}
+
+The use of Spalart-Allmaras  model (resp. DES for Detached Eddy Simulation)
+is activated by giving the value 5 (resp. 9) to the keywords
+\telkey{HORIZONTAL TURBULENCE MODEL} and \telkey{VERTICAL TURBULENCE MODEL}.
+In that casem it is mandatory the same turbulence model for both directions
+\telkey{HORIZONTAL TURBULENCE MODEL} = \telkey{VERTICAL TURBULENCE MODEL} = 5.
+
+Parameters definition for the Spalart-Allmaras model is common
+with the $k-\epsilon$ model one.
+
 
 \section{Setting up the friction}
 
@@ -289,15 +320,16 @@ The friction law used for the bottom friction modelling is set by the keyword
 
 \item  4: Manning law,
 
-\item  5: Nikuradse law (default value since version 8.1).
+\item  5: Nikuradse law (default value since release 8.1).
 \end{itemize}
 
 As regards the 1-5 values, the value of the friction coefficient corresponds to
 the selected law, and shall be given by means of the keyword \telkey{FRICTION
-COEFFICIENT FOR THE BOTTOM}. Obviously, that only holds true if the friction is
-constant in both space and time. The default value for that parameter is 0.01
+COEFFICIENT FOR THE BOTTOM}.
+This is of course only valid if the friction is constant in time and space.
+The default value for that parameter is 0.01
 which corresponds to 1~cm for a Nikuradse law (old default value = 60 for Chézy
-law until version 8.0).
+law until release 8.0).
 
 The computation of turbulent constraint at the bottom depends on the velocity
 profile above the bottom (within the boundary layer). The profile depends on
@@ -341,15 +373,16 @@ values:
 
 The size of asperities (which is used in the Nikuradse law) is given by the
 \telkey{FRICTION COEFFICIENT FOR LATERAL SOLID BOUNDARIES} (default value
-0.01~m since version 8.1, old default value = 60! until version 8.0).
+0.01~m since release 8.1, old default value = 60! until release 8.0).
 
-The friction is activated using the keyword \telkey{TURBULENCE REGIME FOR
-LATERAL SOLID BOUNDARIES}. The available options are:
+The friction is activated using the keyword
+\telkey{TURBULENCE REGIME FOR LATERAL SOLID BOUNDARIES}.
+The available options are:
 
 \begin{itemize}
-\item  1: smooth regime,
+\item 1: smooth regime,
 
-\item  2: rough (default value).
+\item 2: rough (default value).
 \end{itemize}
 
 That option changes the formulation of the velocity profile and consequently,
@@ -441,7 +474,7 @@ It is the same implementation as in \telemac{2D} and the Dirac option is
 recommended with a big number of sources.
 The maximum number of sources is set to 20 by default but it can be changed
 by the user with the keyword \telkey{MAXIMUM NUMBER OF SOURCES}.
-This avoids changing the previously hardcoded values (until version 7.0),
+This avoids changing the previously hardcoded values (until release 7.0),
 which required recompiling the whole package.
 
 \section{Setting up the water-atmosphere exchanges}
@@ -455,7 +488,7 @@ used first of all for determining whether this influence is taken into account
 
 If so, the coefficient is then provided with the keyword
 \telkey{COEFFICIENT OF WIND INFLUENCE} (default value =
-$1.55 \times 10^{-6}$ since version 8.0, 0. before), see below.\\
+$1.55 \times 10^{-6}$ since release 8.0, 0. before), see below.\\
 
 Wind effect can be managed using the keyword \telkey {OPTION FOR WIND}
 (default = 0). This keyword can have the following values:
@@ -504,7 +537,7 @@ $\rho_{air}$ is approximately 1.2 kg/m$^3$ and $\rho$
 is approximately 1,000 kg/m$^3$. Thus it is necessary to divide the value of
 $a_{wind}$ by 1,000 to obtain the value of the \telemac{3D} keyword.
 The default value of \telkey{COEFFICIENT OF WIND INFLUENCE} has been set to
-$1.55 \times 10^{-6}$ since version 8.0.
+$1.55 \times 10^{-6}$ since release 8.0.
 
 The whole formulation used to consider the wind effects, through the keyword
 \telkey{COEFFICIENT OF WIND INFLUENCE} (refer to the Theoretical Note for the
@@ -522,16 +555,17 @@ of water bodies.
 \end{WarningBlock}
 
 If there are tidal flats or dry zones in the domain, the wind may trigger
-unphysical velocities as it becomes the only driving term in the equations. To
-avoid this, the influence of the wind is cancelled below a threshold value of
-depth, with the key-word \telkey{THRESHOLD DEPTH FOR WIND} (default value at
-1~m).
+unphysical velocities as it becomes the only driving term in the equations.
+To avoid this, the influence of the wind is cancelled below a threshold value
+of depth, with the keyword \telkey{THRESHOLD DEPTH FOR WIND}
+(default value = 1~m).
+Be careful if the model includes shallow waters, lower than this value.
 
 
-\subsection{The temperature}
+%\subsection{The temperature}
 
-Air temperature may be specified using the keyword \telkey{AIR TEMPERATURE} if
-it is constant in time and space.
+%Air temperature may be specified using the keyword \telkey{AIR TEMPERATURE} if
+%it is constant in time and space.
 
 
 \subsection{The pressure}
@@ -561,17 +595,17 @@ incorrect if the tracer is the temperature.
 
 \subsection{Atmosphere-water exchange models}
 
-Before version 7.0, heat exchange between water and atmosphere could have been
+Before release 7.0, heat exchange between water and atmosphere could have been
 done with a linearised formula of the balance of heat exchange fluxes at the
 free surface. An example of an exchange with a constant atmosphere temperature
 and a constant sea salinity used to be given as standard (as comments) through a
 direct programming in the \telfile{BORD3D} subroutine.
 
 A much more elaborated model has been introduced in \telemac{3D}.
-Since version 7.2, this model has been integrated in \waqtel and
+Since release 7.2, this model has been integrated in \waqtel and
 \telemac{3D} has to be coupled with \waqtel to activate it
 (\telkey{COUPLING WITH} = 'WAQTEL'), with
-\telkey{WATER QUALITY PROCESS} = 11 (since version 8.0, 5 previously)
+\telkey{WATER QUALITY PROCESS} = 11 (since release 8.0, 5 previously)
 in the \waqtel steering file.
 This module calculates the complete balance of exchanged fluxes involved:
 
@@ -674,7 +708,7 @@ to compute the respective position of the moon and the sun.
 
 It is possible to take into account the wave driven currents by retrieving
 information calculated by a wave propagation module of the TELEMAC modelling
-system (mainly \tomawac but also \artemis). In the current version,
+system (mainly \tomawac but also \artemis). In the current release,
 only taking into account a steady state is possible. The procedure is as
 follows:
 
@@ -695,7 +729,7 @@ default this number is set to 1. The name of the variables to read is "FORCE
 FX" and "FORCE FY", but this can be changed within the \telfile{TRISOU} subroutine.
 \end{itemize}
 
-In the current version of \telemac{3D}, this driving force is considered as being
+In the current release of \telemac{3D}, this driving force is considered as being
 constant over the vertical.
 
 If the user wishes to take into account several results of the wave propagation
@@ -704,7 +738,7 @@ programming is required.
 
 \section{Other physical parameters}
 
-When modelling large domains, the influence of the Coriolis force of inertia
+When modelling large areas, the influence of the Coriolis force of inertia
 has to be taken into account. This is done by activating the logical keyword
 \telkey{CORIOLIS} (which is set to NO by default). In such a case, the value of
 the Coriolis coefficient (refer to the Theoretical Note) is defined by the
@@ -712,16 +746,21 @@ keyword \telkey{CORIOLIS COEFFICENT} (default value is 0.). The latter should
 be computed according to latitude $\lambda$ through the formula:
 
 \begin{itemize}
-\item  $2\, \omega \, \sin \, \left(\lambda \right)$ where $\omega$ is the
-Earth's rotational velocity of $7.2921 \times {10}^{-5}$ rad/s and $\lambda$ is the
-average latitude of the model.
+\item  FCOR = $2 \omega  \sin (\lambda )$ where $\omega$ is the angular
+velocity of the Earth, equal to 7.2921 $\times$ 10$^{-5}$~rad/s
+and $\lambda$ is the average latitude of the model.
 \end{itemize}
+
+The components of the Coriolis force are thus:
+
+FU = FCOR $\times$ V          and          FV = -FCOR $\times$ U
 
 In the case of very large domains such as portions of oceans, it is necessary
 to carry out a simulation with spherical coordinates, in which case the
-Coriolis coefficient is adjusted automatically at each point of the domain (see
-10.3), by activating the keyword \telkey{SPHERICAL COORDINATES}.
+Coriolis coefficient is adjusted automatically at each point of the domain
+by activating the keyword \telkey{SPHERICAL COORDINATES}
+(see \ref{sec:spher:coord:LATI}).
+Its default value is NO.
 
-\telemac{3D} additionally offers the opportunity to set the acceleration due to
-gravity (keyword \telkey{GRAVITY ACCELERATION} which, by
-default, is set to 9.81~m/s${}^{2}$).
+Gravity acceleration can be changed with the keyword \telkey{GRAVITY ACCELERATION}
+whose default value is set at 9.81~m/s$^2$.

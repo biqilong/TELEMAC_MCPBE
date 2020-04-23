@@ -314,8 +314,10 @@ the \telfile{PROPIN\_TELEMAC2D} subroutine (see \ref{sec:chang:type:bc:propin}).
 
 \subsection{The boundary conditions file}
 \label{sub:bc:file}
-The file is normally supplied by FUDAA-PREPRO, BLUEKENUE or STBTEL,
-but may be created and modified using a text editor.
+The file is normally supplied by most of the mesh generators compatible
+with \tel, or \stbtel 
+%FUDAA-PREPRO, Blue Kenue or \stbtel,
+but may be created and modified using FUDAA-PREPRO or a text editor.
 Each line of this file is dedicated to one point of the mesh boundary.
 The numbering of the boundary points is the same as that of the lines of the
 file.
@@ -390,10 +392,10 @@ For example a test like:
 which is compatible with parallel mode.
 Be careful not to modify the last column of the boundary conditions file
 that contains this \telfile{BOUNDARY\_COLOUR} table,
-when using tidal harmonic constants databases (cf. [2]).
+when using tidal harmonic constants databases (cf. \cite{Pham2012}).
 \end{itemize}
 
-\subsection{Prescribing values using keywords}
+\subsection{Prescribing values through keywords}
 \label{subs:val:key}
 In most simple cases, boundary conditions are prescribed using keywords.
 However, if the values to be prescribed vary in time, it is necessary to program
@@ -406,11 +408,11 @@ The keywords used for prescribing boundary conditions are the following:
 \item \telkey{PRESCRIBED ELEVATIONS}:
 This is used to define the elevation of an open boundary with prescribed
 elevation (free surface).
-It is a table that contains up to \telfile{MAXFRO}
+It is an array that can contain up to \telfile{MAXFRO}
 (set to 300 and can be changed by user) real numbers for managing up to
 \telfile{MAXFRO} boundaries of this type.
-The values provided with this keyword cancel the depth values read from
-the \telkey{BOUNDARY CONDITIONS FILE}.
+The values defined by that keyword overwrite the depth values read
+from the \telkey{BOUNDARY CONDITIONS FILE}.
 \end{itemize}
 
 N.B.: the value given here is the free surface level, whereas the value given
@@ -420,11 +422,11 @@ in the \telkey{BOUNDARY CONDITIONS FILE} is the water depth.
 \item \telkey{PRESCRIBED FLOWRATES}:
 This is used to set the flowrate value of an open boundary with prescribed
 flowrate.
-It is a table that contains up to \telfile{MAXFRO} real numbers for managing up
+It is an array that contains up to \telfile{MAXFRO} real numbers for managing up
 to \telfile{MAXFRO} boundaries of this type.
 A positive value corresponds to an inflow into the domain, whereas a negative
 value corresponds to an outflow.
-The values provided with this keyword cancel the flowrate values read
+The values provided with this keyword overwrite the flowrate values read
 from the \telkey{BOUNDARY CONDITIONS FILE}.
 In this case, the technique used by \telemac{2D} to compute the velocity profile
 is that described in section \ref{subs:presc:vel:prof}.
@@ -435,25 +437,25 @@ velocity.
 The scalar value provided is the intensity of the velocity perpendicular
 to the wall.
 A positive value corresponds to an inflow into the domain.
-It is a table that contains up to \telfile{MAXFRO} real numbers for managing up
+It is an array that contains up to \telfile{MAXFRO} real numbers for managing up
 to \telfile{MAXFRO} boundaries of this type.
-The values provided with this keyword cancel the values read
-from the boundary conditions file.
+The values provided with this keyword overwrite the values read from the
+\telkey{BOUNDARY CONDITIONS FILE}.
 \end{itemize}
 
 Some simple rules must also be complied with:
 
 \begin{itemize}
 \item There must of course be agreement between the type of boundary specified
-in the boundary conditions file and the keywords of the steering file
+in the \telkey{BOUNDARY CONDITIONS FILE} and the keywords of the steering file
 (do not use the keyword \telkey{PRESCRIBED FLOWRATES} if there are no boundary
 points with the \telfile{LIUBOR} and \telfile{LIVBOR} values set at 5),
 
-\item If a boundary type is defined in the boundary conditions file,
+\item If a boundary type is defined in the \telkey{BOUNDARY CONDITIONS FILE},
 the corresponding keyword must be defined in the steering file,
 
 \item The keywords \telkey{PRESCRIBED {\dots}}, if present,
-supersede the data read in the boundary conditions file,
+supersede the data read in the \telkey{BOUNDARY CONDITIONS FILE},
 
 \item For each keyword, the number of specified values must be equal
 to the total number of open boundaries.
@@ -509,7 +511,7 @@ a form similar to:
 \end{lstlisting}
 Using the liquid boundaries file is an alternative to programming the subroutines
 mentioned above.
-This is a text file edited by the user, the name of which is given with the
+This is an ASCII file edited by the user, the name of which is given with the
 keyword \telkey{LIQUID BOUNDARIES FILE}.
 This file has the following format:
 
@@ -553,7 +555,7 @@ s  m3/s m
 \end{lstlisting}
 \begin{WarningBlock}{Note:}
 Up to release 7.0, it is necessary to have the corresponding keywords
-\telkey{PRESCRIBED {\dots}} to trigger the use of the liquid boundary file.
+\telkey{PRESCRIBED {\dots}} to trigger the use of the liquid boundaries file.
 \end{WarningBlock}
 
 \subsection{Stage-discharge curves}
@@ -702,16 +704,16 @@ of the boundary, as shown on Figure \ref{good:presc:vel:prof}.
 
 In some cases, not all the necessary information concerning the boundary
 conditions is available.
-This is usual for coastal domains where only the values of the sea level on
-several points are known.
-This kind of model is referred to as an ``under-constrained'' model.
+This is usual for coastal domains where only the values of the sea level
+on several points are known.
+This kind of model is referred to as an ''under-constrained'' model.
 
 To solve this problem, the Thompson method uses the theory of characteristics
 to calculate the missing values.
 For example, \telemac{2D} will compute the velocity at the boundary in the case
 of a prescribed elevation.
 
-This method can also be used for ``over-constrained'' models.
+This method can also be used for ''over-constrained'' models.
 In this case, the user specifies too much information at the boundary.
 If the velocity information and the level information are not consistent,
 the Thompson technique computes new values that will comply
@@ -735,8 +737,8 @@ the values are ``imposed'', in the case of the second option, the values are
 \item This keyword should be given for ALL liquid boundaries like given in the
 following example: \newline
 \telkey{OPTION FOR LIQUID BOUNDARIES}= 2;1;2;2 \newline
-which means that you are asking Telemac to apply Thompson boundary condition to
-boundaries number 1,3 and 4;
+which means that you are asking \telemac{2d} to apply Thompson boundary
+condition to boundaries number 1,3 and 4;
 unlike boundary number 2, where \telemac{2d} will use a strong prescription.
 \item This option will trigger the computation of characteristics' trajectories
 in order to get informations from inside the domain.
@@ -763,7 +765,7 @@ N.B.: This option is not compatible with perfectly conservative advection scheme
 
 \subsection{Definition of types of boundary condition when preparing the mesh}
 
-When using BLUEKENUE, the boundary condition type is prescribed during the last
+When using Blue Kenue, the boundary condition type is prescribed during the last
 step of mesh generation.
 
 When using the other mesh generators, it is generally possible to define

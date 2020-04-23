@@ -38,7 +38,7 @@ mentioned as well.
 
 \telemac{3D} is developed by the LNHE (Laboratoire National d'Hydraulique et
 Environnement) of the Research and Development Division of EDF (EDF-R\&D). As
-for previous versions, the 7.1 release of the code complies with the Quality
+for previous releases, the 7.1 release of the code complies with the Quality
 Assurance procedures of scientific and technical softwares of EDF-R\&D. It is a
 process of construction and verification of the product quality in the
 different phases of his life. In particular, a software following the Quality
@@ -50,13 +50,13 @@ checked at every new release.
 
 \section{Position of the \telemac{3d} code within the telemac modelling system}
 
-The \telemac{3D} software is part of the TELEMAC modelling system developed by
-the LNHE of EDF R\&D. TELEMAC is a set of modelling tools allowing to treat
+The \telemac{3D} software is part of the \tel modelling system developed by
+the LNHE of EDF R\&D. \tel is a set of modelling tools allowing to treat
 every aspects of natural free surface hydraulics: currents, waves, transport of
 tracers and sedimentology.
 
 The pre-processing and post-processing of simulations can be done either
-directly within the TELEMAC system or with different software that present an
+directly within the \tel system or with different software that present an
 interface of communication with the system. We can particularly mention the
 following tools:
 
@@ -78,7 +78,9 @@ CEA and OPENCASCADE which enables to handle raw data (bathymetry, maps,
 pictures, LIDAR\ldots) until the mesh generation.
 The post-processing tool ParaViS available in the SALOME platform is based on
 the ParaView software and can visualise 1D, 2D or 3D results.
-A first version of SALOME-HYDRO has been available since Spring 2016,
+A first release of SALOME-HYDRO has been available since Spring 2016,
+\item The Tecplot 360 software, developed by Tecplot which enables to visualise
+2D and 3D results,
 \item The QGIS software, which is an open source Geographic Information System.
 \end{itemize}
 
@@ -92,7 +94,7 @@ workstations under the Unix operating system.
 
 \section{User programming}
 
-When using a simulation module from the TELEMAC system, the user may have to
+When using a simulation module from the \tel system, the user may have to
 program specific subroutines which are not in the code's standard release. In
 particular, that is made through a number of so-called «~user~» subroutines.
 These subroutines are written so that they can be modified, provided that the
@@ -128,4 +130,4 @@ In case of an integer-typed pointer, the \telfile{\%R} is replaced by a \telfile
 However, in order to avoid having to handle too many \telfile{\%R} and \telfile{\%I},
 a number of aliases are defined, such as, the \telfile{NPOIN3}, \telfile{NELEM3} and
 \telfile{NPTFR2} variables. For further details, the user can refer to
-the programming guide in TELEMAC \cite{HervouetProg2009}.
+the programming guide in \tel \cite{HervouetProg2009}.

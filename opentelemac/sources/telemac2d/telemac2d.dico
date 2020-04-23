@@ -6778,25 +6778,6 @@ AIDE =
 AIDE1 =
 'Thickness of algae in m'
 /
-NOM = 'MASSE DES ALGUES CONTENUE DANS 1 M2'
-NOM1 = 'MASS OF ALGAE PER UNIT AREA'
-TYPE = REAL
-INDEX = 79
-TAILLE = 2
-DEFAUT = 0.;0.
-DEFAUT1 = 0.;0.
-MNEMO = 'MALGAE'
-APPARENCE = 'DYNLIST'
-RUBRIQUE =
-'TRANSPORT DE PARTICULE';'ALGUES';''
-RUBRIQUE1 =
-'PARTICLE TRANSPORT';'ALGAES';''
-NIVEAU = 0
-AIDE =
-'Masse des algues en kg/m2'
-AIDE1 =
-'Mass of algae in kg/m2'
-/
 NOM = 'TYPE DE RELACHE DES ALGUES'
 NOM1 = 'ALGAE RELEASE TYPE'
 TYPE = INTEGER
@@ -6888,6 +6869,24 @@ AIDE =
 'Taux de degradation pour les algues'
 AIDE1 =
 'Rate of degradation for algae'
+/
+NOM = 'COEFFICIENT DE SECURITE POUR SCARACT'
+NOM1 = 'SECURITY COEFFICIENT FOR SCARACT'
+TYPE = REAL
+INDEX = 79
+TAILLE = 1
+DEFAUT = 1.
+DEFAUT1 = 1.
+MNEMO = 'SECU'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'INITIALISATION';'GLOBAL'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INITIALIZATION';'GLOBAL'
+NIVEAU = 0
+AIDE =
+'Coefficient de sécurité pour l''allocation de mémoire pour SCARACT.'
+AIDE1 =
+'Security coefficient for memory allocation for SCARACT.'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 8.3-OIL SPILL

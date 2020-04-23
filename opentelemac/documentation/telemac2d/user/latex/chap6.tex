@@ -101,6 +101,16 @@ This option will be preferably used with a definition of friction by domains,
 see Appendix \ref{tel2d:app5}.
 
 
+\subsection{Wave friction enhancement}
+
+Combined wave and current flows influence the resultant bed shear stress due to
+additional mass transport~\cite{OConnorYoo1988}.
+A proper consideration of the wave--current interaction effects on the friction
+coefficient can be accounted by activating with the keyword
+\telkey{WAVE ENHANCED FRICTION FACTOR} (default = NO).
+This feature is only possible by coupling \telemac{2d} with \tomawac.
+
+
 \subsection{Sidewall friction}
 
 By default, \telemac{2D} ignores friction phenomena on the solid boundaries
@@ -116,6 +126,19 @@ If this value varies spatially, the user can fill the column \telfile{AUBOR}
 in the \telkey{BOUNDARY CONDITIONS FILE} (see Section \ref{sub:bc:file}).
 \telfile{AUBOR} is then considered as a quadratic coefficient whose
 interpretation depends on the chosen friction law.
+
+The friction is activated using the keyword
+\telkey{TURBULENCE REGIME FOR SOLID BOUNDARIES}.
+The available options are:
+
+\begin{itemize}
+\item 1: smooth regime,
+
+\item 2: rough (default value).
+\end{itemize}
+
+That option changes the formulation of the velocity profile and consequently,
+the friction velocity. See previous section for more information.
 
 
 \section{Modelling of turbulence}
@@ -271,6 +294,14 @@ dispersion terms (see \cite{Smagorinsky1963} for more details).
 
 The use of this model is activated by giving the value 5 to keyword
 \telkey{TURBULENCE MODEL}.
+A description of this model, implementation and validation can be found in
+\cite{Dorfmann2016}.
+It is a combination of the depth-averaged parabolic eddy viscosity model
+with the Prandl's mixing length theory for the horizontal in order to account
+both the vertical and horizontal turbulence production.
+The calibration coefficients $\alpha_t$ and $C_l$ may be changed in the
+\telfile{MIXLENGTH} subroutine.
+Default values are $\alpha_t = \frac{0.4}{6}$ and $C_l = 0.2666667$.
 
 
 \subsection{Spalart-Allmaras model}
@@ -313,7 +344,7 @@ The logical keyword \telkey{WIND} (default = NO, i.e. no wind) is used first of
 all for determining whether this influence is to be taken into account.
 If so, the coefficient is then provided with the keyword
 \telkey{COEFFICIENT OF WIND INFLUENCE} (see {\S} below).
-Since V7P0 release, wind effect is managed using a new keyword,
+Since release 7.0, wind effect is managed using a new keyword,
 \telkey{OPTION FOR WIND} (default = 0): this keyword can have the following
 values:
 
@@ -370,8 +401,9 @@ to obtain the value of the \telemac{2D} keyword.
 
 If there are tidal flats or dry zones in the domain, the wind may trigger
 unphysical velocities as it becomes the only driving term in the equations.
-To avoid this, wind is cancelled below a threshold value of depth,
-with the keyword \telkey{THRESHOLD DEPTH FOR WIND} (default value = 1~m).
+To avoid this, the influence of the wind is cancelled below a threshold value
+of depth, with the keyword \telkey{THRESHOLD DEPTH FOR WIND}
+(default value = 1~m).
 Be careful if the model includes shallow waters, lower than this value.
 
 \subsection{Atmospheric pressure}
@@ -443,11 +475,12 @@ temperature.
 \subsection{Rainfall-runoff Modelling}
 
 Rainfall-runoff can be modelled with the Curve Number runoff model developed
-by USA Soil Conservation Service (from 1954).
+by USA Soil Conservation Service \cite{soil1972national}. It takes into 
+account infiltration processes to compute the effective rain induced runoff.
 Runoff potential is defined by a unique parameter called the Curve Number (CN)
 which is function of hydrological soil groups, land use, hydrologic surface
 condition of native pasture and antecedent moisture conditions.
-See for example Applied Hydrology (Chow, Maidment, Mays, 1988)
+See Applied Hydrology \citep{chow1988mays} 
 for more details and typical CN values. 
 
 The Curve Number runoff model is activated when the keyword
@@ -468,7 +501,8 @@ and can be set with the keyword \telkey{OPTION FOR INITIAL ABSTRACTION RATIO}
  2: revised method with $\lambda$ = 0.05 and automatic conversion of CN values).
 CN values to be given in input must correspond to the original method
 (initial abstraction ratio $\lambda$ = 0.2) and to normal antecedent moisture
-conditions.
+conditions. See \cite{woodward2003runoff} for more details about the initial
+abstraction ratio.
 
 Other options can be activated manually in the \telfile{RUNOFF\_SCS\_CN}
 subroutine (in folder sources/telemac2d):

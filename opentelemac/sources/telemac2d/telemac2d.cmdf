@@ -78,7 +78,7 @@ files: bief_def.f
   bief_init.f
   bief_open_files.f
   config_code.f
-  drogues.f
+  initial_drogues.f
   streamline.f
   algae_transp.f
   deall_bief.f
@@ -482,6 +482,7 @@ files: bief_def.f
   fonstr.f
   front2.f
   centre_mass_seg.f
+  checkmesh.f
   comp_fac.f
   cpik12.f
   cpik13.f
@@ -525,7 +526,6 @@ files: bief_def.f
   bief_ininds.f
   bief_nbfel.f
   bief_nbsegel.f
-  checkmesh.f
   cpikle2.f
   cpikle3.f
   mxptel31.f

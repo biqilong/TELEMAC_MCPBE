@@ -25,14 +25,13 @@
 /
 / INDICES IN USE SO FAR:
 /  - INTEGER (ENTIER):
-/       1-31,33-37,39-43,45-49,51-77,81-82,84-87,89-92,95-127     OUT OF 116
+/       1-31,33-37,39-43,45-49,51-77,81-82,84-87,89-92,95-127 OUT OF 116
 /  - REAL (REEL):
-/       1-6,8-26,28-36,51-67,71-72,77-107,119     OUT OF 85
+/       1-6,8-26,28-36,51-67,71-72,77-107,119 OUT OF  85
 /  - LOGICAL (LOGIQUE):
-/       1-2,5-22,31-34,51-51,61-61,69-72,75-87,90-93,118-119     OUT OF 49
+/       1-2,5-22,31-34,51-51,61-61,69-72,75-87,90-93,118-119 OUT OF  49
 /  - CHARACTER (CARACTERE):
-/       1-3,6-11,13-14,16-23,25-25,27-35,41-41,50-53,55-79,83-95,98-98,100-103
-/                                                                OUT OF 75
+/       1-3,6-11,13-14,16-23,25-25,27-35,41-41,50-53,55-79,83-95,98-98,100-103 OUT OF  77
 /
 /-------------------------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////
@@ -96,10 +95,10 @@ RUBRIQUE1 =
 'COMPUTATION ENVIRONMENT';'GLOBAL';''
 NIVEAU = 0
 AIDE =
-'Si OUI on appelle le sous-programme \telfile{CHECKMESH}
-qui verifie la coherence du maillage, points superposes, etc.'
+'Si OUI on appelle le sous-programme \telfile{CHECKMESH} qui verifie
+la coherence du maillage, points superposes, etc.'
 AIDE1 =
-'If this key word is equal to YES, a call to subroutine
+'If this keyword is equal to YES, a call to subroutine
 \telfile{CHECKMESH} will look for errors in the mesh,
 superimposed points, etc.'
 /
@@ -318,7 +317,7 @@ INDEX = 23
 TAILLE = 1
 DEFAUT = 'SERAFIN '
 DEFAUT1 = 'SERAFIN '
-MNEMO = 'T3D\_FILES(T3DBND)%FMT'
+MNEMO = 'T3D\_FILES(T3DBND)\%FMT'
 CHOIX =
 'SERAFIN ';
 'SERAFIND';
@@ -336,16 +335,16 @@ AIDE =
 'Format du \telkey{FICHIER BINAIRE DE DONNEES DE FRONTIERE}.
 Les valeurs possibles sont :
 \begin{itemize}
-\item SERAFIN : format standard simple precision pour Telemac;
-\item SERAFIND: format standard double precision pour Telemac;
+\item SERAFIN : format standard simple precision pour \tel ;
+\item SERAFIND: format standard double precision pour \tel ;
 \item MED     : format MED base sur HDF5.
 \end{itemize}'
 AIDE1 =
 'Format of the \telkey{BINARY BOUNDARY DATA FILE}.
 Possible values are:
 \begin{itemize}
-\item SERAFIN : classical single precision format in Telemac;
-\item SERAFIND: classical double precision format in Telemac;
+\item SERAFIN : classical single precision format in \tel,
+\item SERAFIND: classical double precision format in \tel,
 \item MED     : MED format based on HDF5.
 \end{itemize}'
 /
@@ -364,11 +363,11 @@ RUBRIQUE1 =
 'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
 NIVEAU = 1
 AIDE =
-'Nom du fichier FORTRAN a soumettre, contenant les
-sous-programmes specifiques au modele.'
+'Nom du fichier ou repertoire FORTRAN a soumettre,
+contenant les sous-programmes specifiques au modele.'
 AIDE1 =
-'Name of the FORTRAN file to be submitted, including specific
-subroutines of the model.'
+'Name of the FORTRAN file or directory to be submitted,
+including specific subroutines of the model.'
 /
 NOM = 'FICHIER DES FONDS'
 NOM1 = 'BOTTOM TOPOGRAPHY FILE'
@@ -556,16 +555,16 @@ NIVEAU = 1
 AIDE =
 'Option utilisee principalement pour le dossier de validation. Le
 \telkey{FICHIER DE REFERENCE} est alors considere comme une
-reference a laquelle on va comparer le calcul. La comparaison
-est effectuee par le sous-programme VALIDA qui peut etre une comparaison
-avec une solution exacte par exemple.'
+reference a laquelle on va comparer le calcul. La comparaison est
+effectuee par le sous-programme \telfile{BIEF\_VALIDA}
+qui peut etre une comparaison avec une solution exacte par exemple.'
 AIDE1 =
 'This option is primarily used for the validation documents.
-The \telkey{REFERENCE FILE} is then considered as a
-reference which the computation is going to be compared with.
-The comparison is done by the subroutine VALIDA, which can be
-modified so as to include, for example, a comparison with an exact
-solution.'
+The \telkey{REFERENCE FILE} is then considered as a reference
+which the computation is going to be compared with.
+The comparison is done by the subroutine \telfile{BIEF\_VALIDA},
+which can be modified so as to include, for example,
+a comparison with an exact solution.'
 /
 NOM = 'FICHIER DE REFERENCE'
 NOM1 = 'REFERENCE FILE'
@@ -652,7 +651,7 @@ calcul avec la periodicite donnee par le mot cle \telkey{PERIODE POUR
 LES SORTIES GRAPHIQUES}.'
 AIDE1 =
 'Name of the file into which the 3D results of the computation
-are written, the periodicity being given by the keyword:
+are written with a periodicity given by the keyword
 \telkey{GRAPHIC PRINTOUT PERIOD}.'
 /
 NOM = 'FORMAT DU FICHIER DES RESULTATS 3D'
@@ -712,7 +711,7 @@ calcul avec la periodicite donnee par le mot cle \telkey{PERIODE POUR
 LES SORTIES GRAPHIQUES}.'
 AIDE1 =
 'Name of the file into which the 2D results of the computation
-are written with a period given by the keyword
+are written with a periodicity given by the keyword
 \telkey{GRAPHIC PRINTOUT PERIOD}.'
 /
 NOM = 'FORMAT DU FICHIER DES RESULTATS 2D'
@@ -877,7 +876,7 @@ melange ;
 \item P4  : variable privee 4 ;
 \item US  : vitesse de Stokes suivant l''axe des $x$ (m/s) ;
 \item VS  : vitesse de Stokes suivant l''axe des $y$ (m/s) ;
-\item WS  : vitesse de Stokes suivant l''axe des $z$ (m/s) .
+\item WS  : vitesse de Stokes suivant l''axe des $z$ (m/s).
 \end{itemize}'
 AIDE1 =
 'Names of variables to be written in the
@@ -1102,8 +1101,8 @@ AIDE =
 \telkey{VARIABLES POUR LES SORTIES GRAPHIQUES 2D ou 3D}
 (voir ces mot-cles) dans le \telkey{FICHIER DES RESULTATS 2D ou 3D}.'
 AIDE1 =
-'Determines, in number of time steps, the printout period for
-the \telkey{VARIABLES FOR 2D (or 3D) GRAPHIC PRINTOUTS}
+'Determines, in number of time steps, the printout period for the
+\telkey{VARIABLES FOR 2D (or 3D) GRAPHIC PRINTOUTS}
 in the \telkey{2D or 3D RESULT FILE}.'
 /
 NOM = 'NUMERO DU PREMIER PAS DE TEMPS POUR LES SORTIES GRAPHIQUES'
@@ -1229,7 +1228,7 @@ RUBRIQUE1 =
 'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
 NIVEAU = 0
 AIDE =
-'Nombre de tableaux mis a disposition de l''utilisateur.'
+'Nombre de tableaux mis a disposition de l utilisateur.'
 AIDE1 =
 'Number of arrays for own user programming.'
 /
@@ -1248,7 +1247,7 @@ RUBRIQUE1 =
 NIVEAU = 1
 AIDE =
 'Nombre de tableaux 2D mis a disposition de l utilisateur
-dans le bloc PRIVE2D. Il doit etre inferieur ou egal a 4.'
+dans le bloc \telfile{PRIVE2D}. Il doit etre inferieur ou egal a 4.'
 AIDE1 =
 'Number of 2D arrays for own user programming
 in block \telfile{PRIVE2D}. It has to be lower or equal to 4.'
@@ -1297,7 +1296,7 @@ AIDE =
 'Fichier de resultats formate mis a la disposition de
 l''utilisateur.'
 AIDE1 =
-'Formatted file of results made available to the user.'
+'Formatted file of results available to the user.'
 /
 NOM = 'FICHIER DE RESULTATS BINAIRE'
 NOM1 = 'BINARY RESULTS FILE'
@@ -1319,8 +1318,7 @@ AIDE =
 'Fichier de resultats code en binaire mis a la disposition
 de l''utilisateur.'
 AIDE1 =
-'Additional binary-coded result file made available
-to the user.'
+'Additional binary-coded result file available to the user.'
 /
 ////////////////////////////////////////////////////////////////////////
 /////// 1.3.2-LISTING
@@ -1339,9 +1337,9 @@ RUBRIQUE1 =
 'COMPUTATION ENVIRONMENT';'OUTPUT';'LISTING'
 NIVEAU = 0
 AIDE =
-'Sortie des resultats sur support papier.
+'Sortie des resultats sur support papier ou a l ecran.
 Si l''on met NON le listing ne contient que l''entete et la mention
-FIN NORMALE DU PROGRAMME. Commande a eviter'
+FIN NORMALE DU PROGRAMME. Commande a eviter.'
 AIDE1 =
 'Result printout on hard copy.
 When NO is selected, the listing only includes the heading and the
@@ -1402,8 +1400,8 @@ RUBRIQUE1 =
 'COMPUTATION ENVIRONMENT';'OUTPUT';'LISTING'
 NIVEAU = 0
 AIDE =
-'Donne a chaque sortie listing une information sur le bilan de
-masse.'
+'Donne a \telkey{PERIODE POUR LES SORTIES LISTING}
+une information sur le bilan de masse.'
 AIDE1 =
 'Gives the information about mass-balance
 at every \telkey{LISTING PRINTOUT PERIOD}.'
@@ -1422,13 +1420,13 @@ RUBRIQUE1 =
 'COMPUTATION ENVIRONMENT';'OUTPUT';'LISTING'
 NIVEAU = 0
 AIDE =
-'Determine la periode en nombre de pas de temps d''impression
-des ''VARIABLES A IMPRIMER''. Pour la mise au point,
+'Determine la periode en nombre de pas de temps d''impression des
+VARIABLES A IMPRIMER. Pour la mise au point,
 il faut savoir que la sortie des resultats est effectuee
 systematiquement sur le listing.'
 AIDE1 =
-'Determines, in number of time steps, the printout period of
-the VARIABLES TO BE PRINTED.
+'Determines, in number of time steps, the printout period of the
+VARIABLES TO BE PRINTED.
 The results are systematically printed out on the listing file.'
 /
 NOM = 'NUMERO DU PREMIER PAS DE TEMPS POUR LES SORTIES LISTING'
@@ -1529,7 +1527,7 @@ NIVEAU = 0
 AIDE =
 'Nom d''un fichier contenant les resultats d''un calcul precedent
 realise sur le meme maillage et dont le dernier pas de temps enregistre
-va fournir les conditions initiales pour une suite de de calcul.
+va fournir les conditions initiales pour une suite de calcul.
 Dans le cas d''une suite de calcul que l''on souhaite parfaite,
 le \telkey{FICHIER DU CALCUL PRECEDENT} doit etre le
 \telkey{FICHIER POUR SUITE} du dernier calcul, ce dernier fichier
@@ -1603,10 +1601,10 @@ NIVEAU = 1
 AIDE =
 'En cas de suite de calcul, numero de l''enregistrement
 de depart dans le fichier du calcul precedent. 0 signifie
-que l''on prend le dernier enregistrement'
+que l''on prend le dernier enregistrement.'
 AIDE1 =
-'In case of \telkey{COMPUTATION CONTINUED}, record number to
-start from in the \telkey{PREVIOUS COMPUTATION FILE}.
+'In case of \telkey{COMPUTATION CONTINUED} = YES, record number
+to start from in the \telkey{PREVIOUS COMPUTATION FILE}.
 0 means that the last record is taken.'
 /
 NOM = 'REMISE A ZERO DU TEMPS'
@@ -1921,12 +1919,14 @@ AIDE =
 'Permet de fixer la date d''origine des temps du modele lorsque
 la maree est prise en compte (force generatrice de la maree et/ou les
 conditions aux limites de maritimes.
-Egalement utilise en chainage avec DELWAQ.'
+Egalement utilise pour les flotteurs,
+les echanges thermiques avec atmosphere, le chainage avec DELWAQ.'
 AIDE1 =
 'Enables to set the date of the time origin of the model when
 taking into account of the tide (tide generator force and/or the tidal
 boundary conditions).
-Also used when chaining with DELWAQ.'
+Also used with drogues, heat exchange with atmosphere,
+chaining with DELWAQ.'
 /
 NOM = 'HEURE DE L''ORIGINE DES TEMPS'
 NOM1 = 'ORIGINAL HOUR OF TIME'
@@ -1945,12 +1945,14 @@ AIDE =
 'Permet de fixer l''heure d''origine des temps du modele lorsque
 la maree est prise en compte (force generatrice de la maree et/ou les
 conditions aux limites de maritimes.
-Egalement utilise en chainage avec DELWAQ.'
+Egalement utilise pour les flotteurs,
+les echanges thermiques avec atmosphere, en chainage avec DELWAQ.'
 AIDE1 =
 'Enables to set the time of the time origin of the model when
 taking into account of the tide (tide generator force and/or the tidal
 boundary conditions).
-Also used when chaining with DELWAQ.'
+Also used with drogues, heat exchange with atmosphere,
+chaining with DELWAQ.'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 2.2-LOCATION
@@ -2047,11 +2049,13 @@ NIVEAU = 0
 AIDE =
 'Donne la valeur de la latitude du point origine du maillage
 (pour la projection de Mercator, voir le mot cle
-\telkey{SYSTEME GEOGRAPHIQUE}).'
+\telkey{SYSTEME GEOGRAPHIQUE}).
+Egalement utilise pour les echanges thermiques avec l atmosphere.'
 AIDE1 =
 'Gives the value of the latitude of the origin point of the
 mesh (for the Mercator projection, see the keyword
-\telkey{GEOGRAPHIC SYSTEM}).'
+\telkey{GEOGRAPHIC SYSTEM}).
+Also used for heat exchange with atmosphere.'
 /
 NOM = 'LONGITUDE DU POINT ORIGINE'
 NOM1 = 'LONGITUDE OF ORIGIN POINT'
@@ -2069,11 +2073,14 @@ NIVEAU = 0
 AIDE =
 'Donne la valeur de la longitude du point origine du maillage
 (pour la projection de Mercator, voir le mot cle
-\telkey{SYSTEME GEOGRAPHIQUE}).'
+\telkey{SYSTEME GEOGRAPHIQUE}).
+Egalement utilise pour la force generatrice de la maree,
+echanges thermiques avec l atmosphere.'
 AIDE1 =
 'Gives the value of the longitude of the origin point of the
 mesh (for the Mercator projection, see the keyword
-\telkey{GEOGRAPHIC SYSTEM}).'
+\telkey{GEOGRAPHIC SYSTEM}).
+Also used for tide generating force, heat exchange with atmosphere.'
 /
 NOM = 'NORD'
 NOM1 = 'NORTH'
@@ -2090,9 +2097,9 @@ RUBRIQUE1 =
 NIVEAU = 2
 AIDE =
 'Angle que fait le nord,
-dans le sens trigonometrique, avec L, axe Oy.'
+dans le sens trigonometrique, avec L, axe Oy. Lu mais non utilise.'
 AIDE1 =
-'Angle of North, counted counter-clockwise, with Oy.'
+'Angle of North, counted counter-clockwise, with Oy. Read but not used.'
 /
 NOM = 'COORDONNEES DE L''ORIGINE'
 NOM1 = 'ORIGIN COORDINATES'
@@ -2280,7 +2287,8 @@ RUBRIQUE1 =
 'NUMERICAL PARAMETERS';'ADVECTION';''
 NIVEAU = 1
 AIDE =
-'Option s''utilisant uniquement pour les schemas SUPG, PSI et N.
+'Option s''utilisant uniquement pour les schemas SUPG, PSI et N
+(un entier par frontiere liquide).
 Les choix possibles sont :
 \begin{itemize}
 \item 1 : priorite aux valeurs imposees ;
@@ -2289,7 +2297,8 @@ Les choix possibles sont :
 Avec l''option 2, on ne retrouve pas exactement les valeurs imposees
 des traceurs, mais le flux est correct.'
 AIDE1 =
-'Used so far only with the SUPG, PSI and N schemes.
+'Used so far only with the SUPG, PSI and N schemes
+(one integer per open boundary).
 Possible choices are:
 \begin{itemize}
 \item 1: priority to prescribed values,
@@ -2319,13 +2328,9 @@ Les choix possibles sont :
 \item 1 : SUPG classique ;
 \item 2 : SUPG modifiee.
 \end{itemize}
-Ces coefficients sont respectivement appliques a :
-\begin{itemize}
-\item $U$, $V$ et $W$ ;
-\item $H$ ;
-\item $T$ ;
-\item $k$ et $\epsilon$.
-\end{itemize}'
+Seul le premier coefficient (applique a $U$, $V$ et $W$) est utilise.
+C est aussi ce coefficient qui est applique aux traceurs, $k$
+et $\epsilon$ eventuellement.'
 AIDE1 =
 'Specifies the type of upwinding used.
 Possible choices are:
@@ -2334,13 +2339,9 @@ Possible choices are:
 \item 1: classical SUPG,
 \item 2: modified SUPG.
 \end{itemize}
-These coefficients are applied respectively to:
-\begin{itemize}
-\item 1) $U$, $V$ and $W$,
-\item 2) $H$,
-\item 3) $T$,
-\item 4) $k$ and $\epsilon$.
-\end{itemize}'
+Only the 1st coefficient is used (and applied to $U$, $V$ and $W$).
+It is also this coefficient which is applied to tracer(s), $k$
+and $\epsilon$ if needed.'
 /
 NOM = 'MAXIMUM D''ITERATIONS POUR LES SCHEMAS DE CONVECTION'
 NOM1 = 'MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES'
@@ -2376,10 +2377,20 @@ RUBRIQUE1 =
 'NUMERICAL PARAMETERS';'ADVECTION';''
 NIVEAU = 2
 AIDE =
-'Pour les options predicteur-correcteur
-avec schema localement implicite.'
+'Pour les options predicteur-correcteur avec schema localement
+implicite (4 ou 5).
+Ce mot-cle permet de diviser le pas de temps donne par l utilisateur
+dans le \telkey{FICHIER DES PARAMETRES} en plusieurs sous-pas.
+A nouveau, il produit un effet sur la precision du schema et
+il est pratique d ajuster ce mot-cle afin d avoir des nombres de
+Courant pas trop grands (autour de 1).'
 AIDE1 =
-'Only for implicit scheme with predictor-corrector.'
+'Only for implicit scheme with predictor-corrector (4 or 5).
+This keyword allows to subdivide the time step given by the user in the
+\telkey{STEERING FILE}, into several sub-steps.
+Again, it produces an effect on the precision of the scheme and
+it is convenient to set this keyword in order to have Courant numbers
+not too large (around 1).'
 /
 NOM = 'NOMBRE DE CORRECTIONS DES SCHEMAS DISTRIBUTIFS'
 NOM1 = 'NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES'
@@ -2395,9 +2406,30 @@ RUBRIQUE1 =
 'NUMERICAL PARAMETERS';'ADVECTION';''
 NIVEAU = 2
 AIDE =
-'Pour les options avec predicteur-correcteur.'
+'Pour les options avec predicteur-correcteur et schema de convection
+de type (3, 4 et 5, LIPS ou pas).
+Nombre d iterations pour tous les pas de temps (ou sous pas) pour
+converger vers la solution.
+Il est utile pour les cas non stationnaires.
+Pour les ecoulements quasi-stationnaires, ce mot-cle n a pas d impact
+sur la solution, il peut donc etre fixe a 0.
+D un autre cote, pour les ecoulements instationnaires, il est suggere
+de fixer ce mot-cle a 2 (au moins), ce qui est un bon compromis
+entre precision et temps CPU.
+En effet, en augmentant le nombre de corrections, le schema est plus
+precis mais le temps CPU augmente rapidement.'
 AIDE1 =
-'For predictor-corrector options.'
+'For predictor-corrector options with advection scheme of type
+3, 4, 5, LIPS or not).
+Number of iterations for every time step (or sub-time step) to converge
+to the solution.
+It is useful for unsteady cases.
+For quasi-steady flows, this keyword does not have a large impact
+on the solution, so it can be set to 0.
+On the other hand, for unsteady flows, it is suggested to set this
+keyword to 2 (at least), which is a good compromise between accuracy
+and computational time. Indeed, increasing the number of corrections
+the scheme is more accurate but the CPU time rapidly increases.'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 4.2-DIFFUSION
@@ -2416,9 +2448,15 @@ RUBRIQUE1 =
 'NUMERICAL PARAMETERS';'DIFFUSION';''
 NIVEAU = 0
 AIDE =
-'Mass-lumping de la matrice de masse dans la diffusion.'
+'Mass-lumping de la matrice de masse dans la diffusion.
+Si la diffusion est explicite (\telkey{IMPLICITATION FOR DIFFUSION}
+< 0.001) ou qu un schema de convection est de type 3, 4, 5, 13 ou 14,
+il est automatiquement mis a 1. dans \telfile{DIFF3D}.'
 AIDE1 =
-'Mass-lumping of the mass-matrix in the diffusion step.'
+'Mass-lumping of the mass-matrix in the diffusion step.
+If diffusion is explicit (\telkey{IMPLICITATION FOR DIFFUSION} < 0.001)
+or if the advection scheme is of type 3, 4, 5, 13 or 14,
+it is automatically set to 1. in \telfile{DIFF3D}.'
 /
 ////////////////////////////////////////////////////////////////////////
 /// 5-HYDRODYNAMICS
@@ -2895,7 +2933,8 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'PHYSICAL PARAMETERS';'METEOROLOGY'
 NIVEAU = 0
 AIDE =
-'Retire la force due au vent dans les petites profondeurs'
+'Retire la force due au vent dans les petites profondeurs
+plus petites que cette valeur.'
 AIDE1 =
 'Wind is not taken into account for depths smaller
 than this value.'
@@ -2990,7 +3029,7 @@ TAILLE = 1
 SUBMIT = 'T3ATMA-READ;T3ATMA;FACUL;ASC;LIT;SCAL'
 DEFAUT = ''
 DEFAUT1 = ''
-MNEMO = 'T3D\_FILES(T3ATMA)%NAME'
+MNEMO = 'T3D\_FILES(T3ATMA)\%NAME'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'PARAMETRES PHYSIQUES';'METEOROLOGIE'
 RUBRIQUE1 =
@@ -3011,7 +3050,7 @@ TAILLE = 1
 SUBMIT = 'T3ATMB-READ;T3ATMB;FACUL;BIN;LIT;SELAFIN'
 DEFAUT = ''
 DEFAUT1 = ''
-MNEMO = 'T3D\_FILES(T3ATMB)%NAME'
+MNEMO = 'T3D\_FILES(T3ATMB)\%NAME'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'PARAMETRES PHYSIQUES';'METEOROLOGIE'
 RUBRIQUE1 =
@@ -3031,7 +3070,7 @@ INDEX = 41
 TAILLE = 1
 DEFAUT = 'SERAFIN '
 DEFAUT1 = 'SERAFIN '
-MNEMO = 'T3D\_FILES(T3ATMB)%FMT'
+MNEMO = 'T3D\_FILES(T3ATMB)\%FMT'
 CHOIX =
 'SERAFIN ';
 'SERAFIND';
@@ -3344,9 +3383,9 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'BOUNDARY CONDITIONS';''
 NIVEAU = 1
 AIDE =
-'Fixe la cote sur les frontieres a cote imposee.'
+'Valeurs des cotes imposees aux frontieres liquides.'
 AIDE1 =
-'Sets the elevation on elevation-imposed boundaries.'
+'Values of the elevations prescribed at open boundaries.'
 /
 NOM = 'DEBITS IMPOSES'
 NOM1 = 'PRESCRIBED FLOWRATES'
@@ -3362,10 +3401,9 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'BOUNDARY CONDITIONS';''
 NIVEAU = 1
 AIDE =
-'Fixe le debit sur les frontieres a debit impose.'
+'Valeurs des debits imposes aux frontieres liquides.'
 AIDE1 =
-'Sets the value for flow rate on flow
-rate-imposed boundaries.'
+'Values of the flowrates prescribed at open boundaries.'
 /
 NOM = 'VITESSES IMPOSEES'
 NOM1 = 'PRESCRIBED VELOCITIES'
@@ -3381,9 +3419,9 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'BOUNDARY CONDITIONS';''
 NIVEAU = 1
 AIDE =
-'Fixe la vitesse sur les frontieres a vitesse imposee.'
+'Valeurs des vitesses imposees aux frontieres liquides.'
 AIDE1 =
-'Sets the magnitude of velocity on velocity-imposed boundaries.'
+'Values of the magnitudes of velocity prescribed at open boundaries.'
 /
 NOM = 'FICHIER DES FRONTIERES LIQUIDES'
 NOM1 = 'LIQUID BOUNDARIES FILE'
@@ -3430,7 +3468,8 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'BOUNDARY CONDITIONS';''
 NIVEAU = 1
 AIDE =
-'Permet de specifier le type de profil horizontal de vitesse.
+'Permet de specifier le type de profil horizontal de vitesse
+(un entier par frontiere liquide).
 Les choix possibles sont :
 \begin{itemize}
 \item 1 : profil normal constant ;
@@ -3443,7 +3482,8 @@ Les choix possibles sont :
 la surface libre la plus basse de la frontiere.
 \end{itemize}'
 AIDE1 =
-'Specifies the type of horizontal profile of velocities.
+'Specifies the type of horizontal profile of velocities
+(one integer per open boundary).
 Possible choices are:
 \begin{itemize}
 \item 1: constant normal profile,
@@ -3476,7 +3516,8 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'BOUNDARY CONDITIONS';''
 NIVEAU = 1
 AIDE =
-'Permet de specifier le type de profil vertical de vitesse.
+'Permet de specifier le type de profil vertical de vitesse
+(un entier par frontiere liquide).
 Les choix possibles sont :
 \begin{itemize}
 \item 0 : programmation utilisateur ;
@@ -3484,7 +3525,8 @@ Les choix possibles sont :
 \item 2 : logarithmique.
 \end{itemize}'
 AIDE1 =
-'Specifies the type of vertical profile of velocity.
+'Specifies the type of vertical profile of velocity
+(one integer per open boundary).
 Possible choices are:
 \begin{itemize}
 \item 0: defined by user,
@@ -3550,6 +3592,12 @@ TYPE = INTEGER
 INDEX = 109
 TAILLE = 2
 MNEMO = 'FRTYPE'
+CHOIX =
+'1="classique"';
+'2="methode de Thompson avec calcul de caracteristiques"'
+CHOIX1 =
+'1="classical"';
+'2="Thompson method based on characteristics"'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'CONDITIONS AUX LIMITES';''
 RUBRIQUE1 =
@@ -3666,7 +3714,7 @@ AIDE =
 'Specifie le type de conditions aux limites au fond.
 Les choix possibles sont :
 \begin{itemize}
-\item 1 : conditions de Neumann pour les vitesses au fond;
+\item 1 : conditions de Neumann pour les vitesses au fond ;
 \item 2 : vitesses nulles au fond. Va de pair logiquement avec
  un bon raffinement du maillage au fond.
 \end{itemize}'
@@ -3801,18 +3849,18 @@ Les valeurs possibles sont :
            faisant la difference entre les cotes de surface libre
            et du fond ;
 \item COTE CONSTANTE : Initialise la cote de surface libre a la
-           valeur donnee par le mot-cle COTE INITIALE. Les hauteurs
-           d''eau initiales sont calculees comme precedemment ;
+valeur donnee par le mot-cle \telkey{COTE INITIALE}. Les hauteurs
+d''eau initiales sont calculees comme precedemment ;
 \item HAUTEUR NULLE : Initialise les hauteurs d''eau a 0 ;
 \item HAUTEUR CONSTANTE : Initialise les hauteurs d''eau a la valeur
-           donnee par le mot-cle HAUTEUR INITIALE ;
+donnee par le mot-cle \telkey{HAUTEUR INITIALE} ;
 \item ALTIMETRIE SATELLITE TPXO : Les conditions initiales sur la
 hauteur d''eau et les vitesses sont etablies sur la base des donnees
 satellite TPXO dont les 8 premieres composantes ont ete extraites et
-sauvees dans le fichier ;
-\telkey{BASE BINAIRE DE DONNEES DE MAREE} ;
+sauvees dans les fichiers
+\telkey{BASE BINAIRE 1/2 DE DONNEES DE MAREE} ;
 \item PARTICULIERES : Les conditions initiales sur la hauteur d''eau
-doivent etre precisees dans le sous-programme \telfile{CONDIN}.
+doivent etre precisees dans le sous-programme \telkey{USER\_CONDI3D\_H}.
 \end{itemize}'
 AIDE1 =
 'Makes it possible to define the initial conditions of
@@ -3831,9 +3879,9 @@ by the keyword \telkey{INITIAL DEPTH},
 \item TPXO SATELITE ALTIMETRY: The initial conditions on the free
 surface and velocities are established from the satellite program
 data given by the harmonic constants database coming from OSU
-(e.g. TPXO),
+(e.g. TPXO) and stored in the \telkey{BINARY DATABASE 1/2 FOR TIDE},
 \item SPECIAL or PARTICULAR: The initial conditions with the water depth
-should be stated in the \telfile{CONDIN} subroutine.
+should be stated in the \telfile{USER\_CONDI3D\_H} subroutine.
 \end{itemize}'
 /
 NOM = 'COTE INITIALE'
@@ -3855,7 +3903,7 @@ AIDE =
 'Valeur utilisee avec l''option :
 \telkey{CONDITIONS INITIALES} : ''COTE CONSTANTE''.'
 AIDE1 =
-'Value to be used with the option :
+'Value to be used with the option:
 \telkey{INITIAL CONDITIONS} : ''CONSTANT ELEVATION''.'
 /
 NOM = 'HAUTEUR INITIALE'
@@ -3889,6 +3937,12 @@ TAILLE = 1
 DEFAUT = 3
 DEFAUT1 = 3
 MNEMO = 'OPTASS'
+CHOIX =
+'1="EBE classique"';
+'3="Stockage par segments"'
+CHOIX1 =
+'1="classical EBE"';
+'3="Edge-based storage"'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'PARAMETRES NUMERIQUES';''
 RUBRIQUE1 =
@@ -3923,26 +3977,22 @@ RUBRIQUE1 =
 NIVEAU = 0
 AIDE =
 '\telemac{3d} offre la possibilite d''effectuer du
-mass-lumping sur $H$ ou $U$.
+mass-lumping sur $H$.
 Ceci revient a ramener tout ou partie (suivant la valeur de ce
-coefficient) des matrices \telfile{AM1 (H)} ou \telfile{AM2 (U)}
-et \telfile{AM3 (V)} sur leur diagonale.
+coefficient) de la matrice \telfile{AM1 (H)} sur sa diagonale.
 Cette technique permet d''accelerer le code dans des proportions tres
 importantes et de le rendre egalement beaucoup plus stable. Cependant
 les solutions obtenues se trouvent lissees.
-Ce parametre fixe le taux de mass-lumping effectue sur $H$.
-Utilisation deconseillee.'
+Ce parametre fixe le taux de mass-lumping effectue sur $H$.'
 AIDE1 =
-'\telemac{3d} offers the posibility to perform mass-lumping
-on $H$ or $U$.
+'\telemac{3d} offers the possibility to perform mass-lumping
+on $H$.
 This gathers all or part (given the value of the coefficient)
-of the \telfile{AM1(H)} or \telfile{AM2(Ut)} and \telfile{AM3(V)}
-matrices on their diagonal.
+of the \telfile{AM1(H)} matrices on their diagonal.
 This technique can speed-up the code a lot and also render it
 more stable.
 Yet, the solutions are smoothened.
-This parameter sets the mass-lumping amount done for $H$.
-Not recommended for use.'
+This parameter sets the mass-lumping amount done for $H$.'
 /
 NOM = 'FILTRE LES INCONSISTANCES HYDROSTATIQUES'
 NOM1 = 'HYDROSTATIC INCONSISTENCY FILTER'
@@ -4247,7 +4297,10 @@ du systeme. Trois possibilites sont offertes :
  au pas de temps precedent),
 \item 2 : $\delta h$ = 2 $\delta h_n$ - $\delta h_{n-1}$
 (extrapolation).
-\end{itemize}'
+\end{itemize}
+Si l option 2 est utilisee avec la version non-hydrostatique,
+\telkey{ORDRE DU TIR INITIAL POUR LA HAUTEUR} est automatiquement
+mis a 1.'
 AIDE1 =
 'Initial guess for the solver in the propagation step.
 Makes it possible to modify the initial value of $\delta h$, upon each
@@ -4259,7 +4312,9 @@ speeded up when the system is being solved. 3 options are available:
 \item 1: $\delta h$ = $\delta h_n$  (ultimate $\delta h$ value
 in the next previous time step),
 \item 2: $\delta h$ = 2 $\delta h_n$ - $\delta h_{n-1}$ (extrapolation).
-\end{itemize}'
+\end{itemize}
+If option 2 with the non-hydrostatic version,
+\telkey{INITIAL GUESS FOR DEPTH} is automatically set to 1.'
 /
 NOM = 'PROPAGATION LINEARISEE'
 NOM1 = 'LINEARIZED PROPAGATION'
@@ -4277,11 +4332,15 @@ NIVEAU = 0
 AIDE =
 'Permet de lineariser l''etape de propagation,
 par exemple lors de la realisation de cas tests pour lesquels on dispose
-d''une solution analytique dans le cas linearise.'
+d''une solution analytique dans le cas linearise.
+Il faut alors preciser la valeur de
+\telkey{PROFONDEUR MOYENNE POUR LA LINEARISATION}.'
 AIDE1 =
 'Provided for linearizing the propagation step, e.g. when
 performing test-cases for which an analytical solution in the linearized
-case is available.'
+case is available.
+Thus, the value of \telkey{MEAN DEPTH FOR LINEARIZATION} has
+to be given.'
 /
 NOM = 'PROFONDEUR MOYENNE POUR LA LINEARISATION'
 NOM1 = 'MEAN DEPTH FOR LINEARIZATION'
@@ -4300,12 +4359,11 @@ COMPORT =
 IS BRUT (brown)'
 NIVEAU = 0
 AIDE =
-'Fixe la hauteur d''eau autour de laquelle s''effectue la
-linearisation lorsque l''option \telkey{PROPAGATION LINEARISEE} est
-choisie.'
+'Fixe la hauteur d''eau autour de laquelle s''effectue la linearisation
+lorsque l''option \telkey{PROPAGATION LINEARISEE} est choisie.'
 AIDE1 =
-'Sets the water depth about which the linearization is done when
-the \telkey{LINEARIZED PROPAGATION} option is selected.'
+'Sets the water depth about which the linearization is done
+when the \telkey{LINEARIZED PROPAGATION} option is selected.'
 /
 ////////////////////////////////////////////////////////////////////////
 /////// 5.4.3-ADVECTION
@@ -4378,7 +4436,8 @@ Les choix possibles sont :
 \item 13 : Leo Postma pour bancs decouvrants ;
 \item 14 : schema N pour bancs decouvrants.
 \end{itemize}
-Valeurs par defaut de \telkey{SCHEMA POUR LA CONVECTION DES VITESSES} = 5
+Valeurs par defaut de
+\telkey{SCHEMA POUR LA CONVECTION DES VITESSES} = 5
 + \telkey{OPTION DU SCHEMA POUR LA CONVECTION DES VITESSES} = 4 donnent
 le schema LIPS.
 Ancienne valeur par defaut = 1 (caracteristiques) jusqu a la version
@@ -4455,10 +4514,10 @@ RUBRIQUE1 =
 NIVEAU = 0
 AIDE =
 'Fixe le taux de mass-lumping effectue sur la vitesse.
-Utilisation deconseillee.'
+Lu mais non utilise.'
 AIDE1 =
 'Sets the amount of mass-lumping that is performed on
-the velocity. Not recommended for use.'
+the velocity. Read but not used.'
 /
 NOM = 'OPTION DU SCHEMA POUR LA CONVECTION DES VITESSES'
 NOM1 = 'SCHEME OPTION FOR ADVECTION OF VELOCITIES'
@@ -4524,13 +4583,21 @@ AIDE =
 \begin{itemize}
 \item 1: forme forte ;
 \item 2: forme faible.
-\end{itemize}'
+\end{itemize}
+Si \telkey{SCHEMA POUR LA CONVECTION...} = 1
+et le mot-cle correspondant
+\telkey{OPTION DU SCHEMA POUR LA CONVECTION...} = 2,
+\telkey{OPTION POUR LES CARACTERISTIQUES} est automatiquement mis a 2.'
 AIDE1 =
 'Possible choices are:
 \begin{itemize}
 \item 1: strong form,
 \item 2: weak form.
-\end{itemize}'
+\end{itemize}
+If \telkey{SCHEME FOR ADVECTION OF...} = 1
+and also the corresponding keyword
+\telkey{SCHEME OPTION FOR ADVECTION OF...} = 2,
+\telkey{OPTION FOR CHARACTERISTICS} is automatically set to 2.'
 /
 NOM = 'NOMBRE DE POINTS DE GAUSS POUR LES CARACTERISTIQUES FAIBLES'
 NOM1 = 'NUMBER OF GAUSS POINTS FOR WEAK CHARACTERISTICS'
@@ -4547,10 +4614,13 @@ RUBRIQUE1 =
 NIVEAU = 2
 AIDE =
 'Voir les release notes v6.3.
-6 (points) est le seul choix pour TELEMAC-3D.'
+Nombre de points de Gauss utilises pour le calcul des caracteristiques
+faibles.
+6 (points) est le seul choix pour \telemac{3d}.'
 AIDE1 =
 'See release notes v6.3.
-6 (points) is the only choice for TELEMAC-3D.'
+Number of Gauss points used to compute the weak characteristics.
+6 (points) is the only choice for \telemac{3d}.'
 /
 NOM = 'MASS-LUMPING POUR LES CARACTERISTIQUES FAIBLES'
 NOM1 = 'MASS-LUMPING FOR WEAK CHARACTERISTICS'
@@ -5071,11 +5141,11 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'NUMERICAL PARAMETERS';'NON HYDROSTATIC'
 NIVEAU = 1
 AIDE =
-'Si OUI, impose une vitesse en surface
+'Si OUI, permet d imposer une vitesse en surface
 selon la condition a la limite dynamique.'
 AIDE1 =
-'If YES, will set at the free surface a
-velocity obeying the dynamic boundary condition.'
+'If YES, it enables to prescribe a velocity at the free surface
+coherent with the dynamic boundary condition.'
 /
 NOM = 'CORRECTION DE CONTINUITE SUR FRONTIERES OUVERTES'
 NOM1 = 'CONTINUITY CORRECTION ON OPEN BOUNDARIES'
@@ -5166,7 +5236,7 @@ NIVEAU = 0
 AIDE =
 'Permet de supprimer les tests sur les bancs decouvrants, dans
 les cas ou l''on est certain qu''il n''y en aura pas.
-En cas de doute : .TRUE.'
+En cas de doute, utiliser OUI.'
 AIDE1 =
 'When NO, the specific treatments for tidal flats are by-passed.
 This spares time, but of course you must be sure that you have no
@@ -5194,18 +5264,25 @@ RUBRIQUE1 =
 'HYDRODYNAMICS';'TIDAL FLATS INFO';''
 NIVEAU = 0
 AIDE =
-'Utilise si \telkey{BANCS DECOUVRANTS} est vrai.
+'Utilise si \telkey{BANCS DECOUVRANTS} est OUI.
 Les choix possibles sont :
 \begin{itemize}
-\item 1 : equations resolues partout avec correction sur les bancs
-decouvrants ;
-\item 2 : gel des elements decouvrants.
+\item 1 : equations resolues partout avec correction
+sur les bancs decouvrants (correction du gradient de surface libre) ;
+\item 2 : gel des elements decouvrants (zones de bancs decouvrants
+sont masquees).
+Attention : la conservation de la masse peut etre alteree ;
+\item 3 : comme 1 mais avec porosite (methode defina).
 \end{itemize}'
 AIDE1 =
-'Used if \telkey{TIDAL FLATS} is true. Possible choices are:
+'Used if \telkey{TIDAL FLATS} is YES.
+Possible choices are:
 \begin{itemize}
-\item 1: equations solved everywhere with correction on tidal flats,
-\item 2: dry elements frozen.
+\item 1: equations solved everywhere with correction on tidal flats
+(corrected free surface gradient),
+\item 2: dry elements are frozen (tidal flats area are masked).
+Warning: mass-conservation may be altered,
+\item 3: like 1 but with porosity (defina method).
 \end{itemize}'
 /
 NOM = 'TRAITEMENT DES HAUTEURS NEGATIVES'
@@ -5216,6 +5293,14 @@ TAILLE = 1
 DEFAUT = 1
 DEFAUT1 = 1
 MNEMO = 'OPT\_HNEG'
+CHOIX =
+'0="PAS DE TRAITEMENT"';
+'1="LISSAGE"';
+'2="LIMITATION DES FLUX"'
+CHOIX1 =
+'0="NO TREATMENT"';
+'1="SMOOTHING"';
+'2="FLUX CONTROL"'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'INFO BANCS DECOUVRANTS';''
 RUBRIQUE1 =
@@ -5228,7 +5313,9 @@ AIDE =
 \item 0 : pas de traitement ;
 \item 1 : lissage ;
 \item 2 : limitation des flux.
-\end{itemize}'
+\end{itemize}
+Si l option 2 avec bancs decouvrants est utilisee,
+il est obligatoire d avoir \telkey{MASS-LUMPING SUR H} = 1.'
 AIDE1 =
 'Only with \telkey{OPTION FOR THE TREATMENT OF TIDAL FLATS}
 = 1. Possible choices are:
@@ -5236,7 +5323,9 @@ AIDE1 =
 \item 0: no treatment,
 \item 1: smoothing,
 \item 2: flux control.
-\end{itemize}'
+\end{itemize}
+If using option 2 with tidal flats, it is mandatory to set
+\telkey{MASS-LUMPING ON H} = 1.'
 /
 NOM = 'TRAITEMENT SUR LES BANCS DECOUVRANTS POUR LES VITESSES'
 NOM1 = 'TREATMENT ON TIDAL FLATS FOR VELOCITIES'
@@ -5286,10 +5375,10 @@ NIVEAU = 0
 AIDE =
 'Pour les profondeurs inferieures, la viscosite sera
 progressivement reduite. Voir le sous-programme
-\telfile{VISCLIP}.'
+\telfile{CLIP}.'
 AIDE1 =
 'Below the threshold, viscosity will be progressively
-cancelled. See subroutine \telfile{VISCLIP}.'
+cancelled. See \telfile{CLIP} subroutine.'
 /
 NOM = 'VALEUR MINIMALE POUR LA HAUTEUR'
 NOM1 = 'MINIMAL VALUE FOR DEPTH'
@@ -5975,8 +6064,12 @@ TAILLE = 1
 DEFAUT = 'TECPLOT'
 DEFAUT1 = 'TECPLOT'
 MNEMO = 'T3D\_FILES(T3DBLO)\%FMT'
-CHOIX = 'BKBINPCL'; 'TECPLOT'
-CHOIX1 = 'BKBINPCL'; 'TECPLOT'
+CHOIX =
+'BKBINPCL';
+'TECPLOT'
+CHOIX1 =
+'BKBINPCL';
+'TECPLOT'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'TRANSPORT DE PARTICULES';'FLOTTEURS'
 RUBRIQUE1 =
@@ -6013,7 +6106,7 @@ NIVEAU = 0
 AIDE =
 'Nombre de pas de temps entre 2 sorties de positions de
 flotteurs dans le fichier des resultats binaire supplementaire
-N affecte pas la qualite du calcul de la trajectoire'
+N affecte pas la qualite du calcul de la trajectoire.'
 AIDE1 =
 'Number of time steps between 2 outputs of drogues
 positions in the binary file.
@@ -6101,7 +6194,7 @@ TAILLE = 1
 SUBMIT = 'T3DBUS-READ;T3DBUS;FACUL;ASC;LIT;SCAL'
 DEFAUT = ''
 DEFAUT1 = ''
-MNEMO = 'T3D\_FILES(T3DBUS)%NAME'
+MNEMO = 'T3D\_FILES(T3DBUS)\%NAME'
 APPARENCE =
 'LISTE IS FICHIER'
 RUBRIQUE =
@@ -6129,10 +6222,13 @@ RUBRIQUE1 =
 NIVEAU = 0
 AIDE =
 'Option pour le traitement des buses. Il existe deux formulations
-dans \tel.'
+dans \telemac{3d}, basees sur les formules de Bodhaine (1968)
+et Carlier (1976).
+Lire le \telemac{3d} theory guide plus plus d informations.'
 AIDE1 =
-'Option for the treatment of culverts. There are two options
-in \tel.'
+'Option for the treatment of culverts. There are two options in
+\telemac{3d} based on Bodhaine (1968) and Carlier (1976) formulae.
+Read the \telemac{3d} theory guide for more informations.'
 /
 ////////////////////////////////////////////////////////////////////////
 /// 6-TURBULENCE
@@ -6347,20 +6443,22 @@ AIDE =
 'Permet de specifier le modele de longueur utilise pour la
 turbulence verticale. Les choix possibles sont :
 \begin{itemize}
-\item 1: Prandtl ;
+\item 1: Prandtl (notamment pour ecoulements avec forte composante
+barotropique comme les courants de maree) ;
 \item 3: Nezu et Nakawaga ;
-\item 5: Quetin ;
-\item 6: Tsanis.
+\item 5: Quetin (meilleure representation du vent) ;
+\item 6: Tsanis (meilleure representation du vent).
 \end{itemize}
 4 (jet) a ete supprime.'
 AIDE1 =
 'Specifies the mixing length model used for vertical turbulence.
 Possible choices are:
 \begin{itemize}
-\item 1: Prandtl,
+\item 1: Prandtl (suits such flows with a strong barotropic component
+as tidal flows),
 \item 3: Nezu and Nakawaga,
-\item 5: Quetin,
-\item 6: TsaniS.
+\item 5: Quetin (better representation of wind drift),
+\item 6: Tsanis (better representation of wind drift).
 \end{itemize}
 4 (jet) has been suppressed.'
 /
@@ -6383,7 +6481,7 @@ AIDE =
 Les choix possibles sont :
 \begin{itemize}
 \item 0: rien ;
-\item 1: fait par l''utilisateur ;
+\item 1: fait par l''utilisateur (dans \telkey{USER\_DRIUTI}) ;
 \item 2: Viollet ;
 \item 3: Munk et Anderson.
 \end{itemize}'
@@ -6392,7 +6490,7 @@ AIDE1 =
 length turbulence model). The possible choices are:
 \begin{itemize}
 \item 0: nothing,
-\item 1: user programmed,
+\item 1: user programmed (in \telkey{USER\_DRIUTI}),
 \item 2: Viollet,
 \item 3: Munk and Anderson.
 \end{itemize}'
@@ -6431,7 +6529,7 @@ NIVEAU = 1
 AIDE =
 'Valeur de la constante de Von Karman.'
 AIDE1 =
-'Value of Von Karman''s constant.'
+'Value of Von Karman constant.'
 /
 NOM = 'FICHIER DES PARAMETRES GOTM'
 NOM1 = 'GOTM STEERING FILE'
@@ -6447,9 +6545,11 @@ RUBRIQUE =
 RUBRIQUE1 =
 'TURBULENCE';'PHYSICAL PARAMETERS';''
 NIVEAU = 1
-AIDE = 'Fichier contenant les parametres de GOTM. Utilise avec
+AIDE =
+'Fichier contenant les parametres de GOTM. Utilise avec
 \telkey{MODELE DE TURBULENCE VERTICAL} = 6.'
-AIDE1 = 'File containing parameters of GOTM. Use in combination with
+AIDE1 =
+'File containing parameters of GOTM. Use in combination with
 \telkey{VERTICAL TURBULENCE MODEL} = 6.'
 /
 ////////////////////////////////////////////////////////////////////////
@@ -6529,17 +6629,25 @@ RUBRIQUE1 =
 'TURBULENCE';'NUMERICAL PARAMETERS';''
 NIVEAU = 2
 AIDE =
-'Mode de calcul des derivees des vitesses suivant $z$ :
+'Mode de calcul des derivees des vitesses suivant $z$
+uniquement pour un modele de longueur de melange sur la verticale :
 \begin{itemize}
 \item 1 : derivee lineaire (classique) ;
-\item 2 : derivee logarithmique (mieux pour profils logarithmiques).
-\end{itemize}'
+\item 2 : derivee logarithmique (mieux pour profils logarithmiques)
+entre le fond et 0.2 fois la hauteur d eau.
+\end{itemize}
+L option 2 permet une meilleure representation des resultats
+pour la modelisation d un profil de vitesse pres du fond.'
 AIDE1 =
-'Way of computing the velocity derivatives along $z$:
+'Way of computing the velocity derivatives along $z$
+only for a mixing length model over the vertical:
 \begin{itemize}
 \item 1: linear derivative (classic),
-\item 2: logarithmic derivative (better for logarithmic profiles).
-\end{itemize}'
+\item 2: logarithmic derivative (better for logarithmic profiles)
+between the bottom and 0.2 times the water depth.
+\end{itemize}
+Option 2 allows getting better results when modelling the velocity
+profile near the bottom.'
 /
 ////////////////////////////////////////////////////////////////////////
 /////// 6.3.1-ADVECTION
@@ -6580,7 +6688,8 @@ IS BRUT (blue)'
 NIVEAU = 0
 AIDE =
 'Fixe le schema utilise pour la convection du modele
-$k$-$\epsilon$. Les choix possibles sont :
+$k$-$\epsilon$ ou Spalart-Allmaras.
+Les choix possibles sont :
 \begin{itemize}
 \item 0 : pas de convection ;
 \item 1 : caracteristiques ;
@@ -6588,7 +6697,8 @@ $k$-$\epsilon$. Les choix possibles sont :
 \item 3 : schema de Leo Postma ;
 \item 4 : MURD schema N - options supplementaires possibles :
   \begin{itemize}
-  \item OPTION DU SCHEMA POUR LA CONVECTION DES VITESSES/TRACEURS/K-EPSILON) :
+  \item OPTION DU SCHEMA POUR LA CONVECTION DES VITESSES/TRACEURS/
+K-EPSILON) :
   \begin{itemize}
   \item 1: schema explicite classique ;
   \item 2: predicteur-correcteur au premier order ;
@@ -6596,20 +6706,23 @@ $k$-$\epsilon$. Les choix possibles sont :
   \item 4: schema implicite compatible avec les bancs decouvrants;
   \end{itemize}
   \item NOMBRE DE CORRECTIONS POUR LES SCHEMAS DISTRIBUTIFS :
-  fixe le nombre de corrections pour les schemas distributifs predicteur-correcteur
-  du premier et deuxieme ordre (une value autour de 4 est recommandee) ;
+  fixe le nombre de corrections pour les schemas distributifs
+  predicteur-correcteur du premier et deuxieme ordre
+  (une value autour de 4 est recommandee) ;
   \end{itemize}
 \item 5 : MURD schema PSI ;
 \item 13 : Leo Postma pour bancs decouvrants ;
 \item 14 : schema N explicite pour bancs decouvrants.
 \end{itemize}
-Valeurs par defaut de \telkey{SCHEMA POUR LA CONVECTION DU K-EPSILON} = 5
+Valeurs par defaut de
+\telkey{SCHEMA POUR LA CONVECTION DU K-EPSILON} = 5
 + \telkey{OPTION DU SCHEMA POUR LA CONVECTION DU K-EPSILON} = 4 donnent
 le schema LIPS.
 Ancienne valeur par defaut = 1 (caracteristiques) jusqu a la version
 V8P0.'
 AIDE1 =
-'Sets the advection scheme for the $k$-$\epsilon$ model.
+'Sets the advection scheme for the $k$-$\epsilon$ model
+or Spalart-Allmaras model.
 Possible choices are:
 \begin{itemize}
 \item 0: no convection,
@@ -6626,8 +6739,8 @@ Possible choices are:
   \item 4: implicit scheme compatible with tidal flats;
   \end{itemize}
   \item \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES}:
-  sets the number of sub-iterations for the 1st and 2nd order predictor-corrector
-  schemes (a value around 4 is recommended);
+  sets the number of sub-iterations for the 1st and 2nd order
+  predictor-corrector schemes (a value around 4 is recommended).
   \end{itemize}
 \item 5: MURD scheme PSI,
   \begin{itemize}
@@ -6639,8 +6752,8 @@ Possible choices are:
   \item 4: implicit scheme compatible with tidal flats;
   \end{itemize}
   \item \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES}:
-  sets the number of sub-iterations for the 1st and 2nd order predictor-corrector
-  schemes (a value around 4 is recommended);
+  sets the number of sub-iterations for the 1st and 2nd order
+  predictor-corrector schemes (a value around 4 is recommended).
   \end{itemize}
 \item 13: Leo Postma for tidal flats,
 \item 14: explicit N-scheme for tidal flats.
@@ -6768,7 +6881,7 @@ IS BRUT (brown)'
 NIVEAU = 0
 AIDE =
 'Permet de choisir le solveur utilise pour la resolution de
-la diffusion du modele $k$-$\epsilon$.
+la diffusion du modele $k$-$\epsilon$ ou Spalart-Allmaras.
 Les choix possibles sont :
 \begin{itemize}
 \item 1 : gradient conjugue ;
@@ -6782,6 +6895,7 @@ Les choix possibles sont :
 \end{itemize}'
 AIDE1 =
 'Choice of the solver for the diffusion of $k$ and $\epsilon$.
+but also $\tilde{\nu}$.
 Possible choices are:
 \begin{itemize}
 \item 1: conjugate gradient,
@@ -6809,11 +6923,11 @@ RUBRIQUE1 =
 NIVEAU = 0
 AIDE =
 'Fixe la precision demandee pour le calcul de la diffusion
-du $k$-$\epsilon$.
+du $k$-$\epsilon$ ou $\tilde{\nu}$.
 Ancienne valeur par defaut = 1.E-6 jusqu a la version V8P0.'
 AIDE1 =
 'Sets the accuracy needed for the computation of the
-diffusion of the $k$-$\epsilon$ model.
+diffusion of the $k$-$\epsilon$ or Spalart-Allmaras models.
 Old default value = 1.E-6 until version V8P0.'
 /
 NOM = 'MAXIMUM D''ITERATIONS POUR LA DIFFUSION DU K-EPSILON'
@@ -6835,10 +6949,10 @@ NIVEAU = 0
 AIDE =
 'Fixe le nombre maximum d''iterations accepte lors de la
 resolution du systeme diffusion-termes sources du modele
-$k$-$\epsilon$.'
+$k$-$\epsilon$ ou du modele de Spalart-Allmaras.'
 AIDE1 =
 'Limits the number of solver iterations for the diffusion of
-$k$-$\epsilon$.'
+$k$-$\epsilon$ or $\tilde{\nu}$.'
 /
 NOM = 'PRECONDITIONNEMENT POUR LA DIFFUSION DU K-EPSILON'
 NOM1 = 'PRECONDITIONING FOR DIFFUSION OF K-EPSILON'
@@ -6882,7 +6996,8 @@ IS BRUT (brown)'
 NIVEAU = 0
 AIDE =
 'Permet de preconditionner le systeme relatif
-a la diffusion du modele $k$-$\epsilon$. Les choix possibles sont :
+a la diffusion du modele $k$-$\epsilon$ ou du modele Spalart-Allmaras.
+Les choix possibles sont :
 \begin{itemize}
 \item 0 : aucun ;
 \item 2 : diagonal ;
@@ -6898,7 +7013,8 @@ a la diffusion du modele $k$-$\epsilon$. Les choix possibles sont :
 \end{itemize}'
 AIDE1 =
 'Choice of preconditioning for the diffusion of
-the $k$-$\epsilon$ model. Possible choices are:
+the $k$-$\epsilon$ model or Spalart-Allmaras model.
+Possible choices are:
 \begin{itemize}
 \item 0: no preconditioning,
 \item 2: diagonal,
@@ -7058,8 +7174,8 @@ RUBRIQUE1 =
 'TRACERS';'PHYSICAL PARAMETERS';'SOURCES'
 NIVEAU = 1
 AIDE =
-'Fixe la valeur des traceurs aux sources
-toutes les sources pour le premier traceur
+'Fixe la valeur des traceurs aux sources.
+Toutes les sources pour le premier traceur
 puis toutes les sources du deuxieme traceur, etc.
 (cf. manuel utilisateur).
 Par exemple, s''il y a 3 traceurs (T1, T2 et T3) et 2 sources
@@ -7104,7 +7220,8 @@ actif par defaut. Les choix possibles sont :
           (et du sediment si present) ;
 \item 4 : BETA donnes par l''utilisateur pour chaque traceur
           (et effets du sediment avec un beta predefini si present);
-\item 5 : le sediment et les autres traceurs sont forces a etre passifs ;
+\item 5 : le sediment et les autres traceurs sont forces a etre
+passifs ;
 \item 6 : Jackett et al. 2006.
 \end{itemize}'
 AIDE1 =
@@ -7115,7 +7232,8 @@ law by default. The possible choices are:
 \item 0: nothing (and sediment if present),
 \item 1: function of the temperature (and sediment if present),
 \item 2: function of the salinity (and sediment if present),
-\item 3: function of the temperature and salinity (and sediment if present),
+\item 3: function of the temperature and salinity
+(and sediment if present),
 \item 4: user-defined BETA coefficients (and effect of the
          sediment with its own behaviour if present),
 \item 5: the sediment and other tracers are forced to be passive,
@@ -7138,10 +7256,10 @@ NIVEAU = 1
 AIDE =
 'Valeur du traceur pour laquelle la densite est donnee lors de
 l''utilisation de la valeur 4 du mot cle
-\telkey{LOI DE DENSITE}.'
+\telkey{LOI DE DENSITE} (une valeur par traceur).'
 AIDE1 =
 'Reference value of tracers corresponding to the given density
-when using \telkey{DENSITY LAW} = 4.'
+when using \telkey{DENSITY LAW} = 4 (one value per tracer).'
 /
 NOM = 'COEFFICIENT DE DILATATION BETA POUR LES TRACEURS'
 NOM1 = 'BETA EXPANSION COEFFICIENT FOR TRACERS'
@@ -7161,12 +7279,13 @@ AIDE =
 Ce coefficient permet de definir l''evolution de la densite de
 l''eau en fonction de la concentration en traceur lors de
 l''utilisation de la valeur 4 du mot cle
-\telkey{LOI DE DENSITE}.'
+\telkey{LOI DE DENSITE}
+(une valeur par traceur).'
 AIDE1 =
 'Unit: K$^{-1}$.
 This coefficient is used to define the evolution of the water density
 with respect to the tracer concentration when using
-\telkey{DENSITY LAW} = 4.'
+\telkey{DENSITY LAW} = 4 (one value per tracer).'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 7.2-BOUNDARY CONDITIONS
@@ -7220,7 +7339,10 @@ RUBRIQUE1 =
 NIVEAU = 1
 AIDE =
 'Permet de specifier le type de profil de concentration des
-traceurs sur la verticale. Les choix possibles sont :
+traceurs sur la verticale.
+Il y a autant de valeurs a donner que le produit du nombre de traceurs
+par le nombre de frontieres liquides.
+Les choix possibles sont :
 \begin{itemize}
 \item 0 : Programmation utilisateur ;
 \item 1 : Constant ;
@@ -7230,7 +7352,10 @@ traceurs sur la verticale. Les choix possibles sont :
 \end{itemize}'
 AIDE1 =
 'Specifies the type of profiles of tracer concentration on the
-vertical. Possible choices are:
+vertical.
+There are as many values to be given as the product of the number of
+tracers and the number of open boundaries.
+Possible choices are:
 \begin{itemize}
 \item 0: user defined,
 \item 1: constant,
@@ -7257,9 +7382,15 @@ RUBRIQUE1 =
 'TRACERS';'INITIALIZATION';''
 NIVEAU = 0
 AIDE =
-'Fixe la valeur initiale des traceurs.'
+'Fixe la valeur initiale du/des traceur(s).
+Les valeurs requises sont separees par un point virgule ; si plus d une.
+Le nombre de valeurs fournies doit etre egal au nombre de traceurs
+declares.'
 AIDE1 =
-'Sets the initial values of tracers.'
+'Sets the initial values of tracer(s).
+Required value(s) separated with a semicolumn ; if more than one.
+The number of supplied values must be equal to the number of declared
+tracers.'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 7.4-NUMERICAL PARAMETERS
@@ -7302,7 +7433,8 @@ COMPORT =
 IS BRUT (blue)'
 NIVEAU = 1
 AIDE =
-'Fixe le schema utilise pour la convection des traceurs.
+'Fixe le schema utilise pour la convection des traceurs
+(un entier par traceur).
 Les choix possibles sont :
 \begin{itemize}
 \item 0 : pas de convection ;
@@ -7314,11 +7446,12 @@ Les choix possibles sont :
 \item 13 : Leo Postma pour bancs decouvrants ;
 \item 14 : schema N pour bancs decouvrants.
 \end{itemize}
-Valeurs par defaut de \telkey{SCHEMA POUR LA CONVECTION DES TRACEURS} = 5
+Valeurs par defaut de
+\telkey{SCHEMA POUR LA CONVECTION DES TRACEURS} = 5
 + \telkey{OPTION DU SCHEMA POUR LA CONVECTION DES TRACEURS} = 4 donnent
 le schema LIPS.'
 AIDE1 =
-'Sets the advection scheme for the tracers.
+'Sets the advection scheme for the tracers (one integer per tracer).
 Possible choices are:
 \begin{itemize}
 \item 0: no convection,
@@ -7458,7 +7591,7 @@ IS BRUT (brown)'
 NIVEAU = 1
 AIDE =
 'Permet de choisir le solveur utilise pour la resolution de
-la diffusion des traceurs.
+la diffusion des traceurs (un entier par traceur).
 Les choix possibles sont :
 \begin{itemize}
 \item 1 : gradient conjugue ;
@@ -7471,7 +7604,8 @@ Les choix possibles sont :
 \item 8 : solveur direct.
 \end{itemize}'
 AIDE1 =
-'Choice of the solver for the diffusion of tracers.
+'Choice of the solver for the diffusion of tracers
+(one integer per tracer).
 Possible choices are:
 \begin{itemize}
 \item 1: conjugate gradient,
@@ -7499,11 +7633,11 @@ RUBRIQUE1 =
 NIVEAU = 1
 AIDE =
 'Fixe la precision demandee pour le calcul de la diffusion
-des traceurs.
+des traceurs. Une seule valeur pour tous les traceurs.
 Ancienne valeur par defaut = 1.E-6 jusqu a la version V7P3.'
 AIDE1 =
 'Sets the accuracy needed for the computation of
-the diffusion of the tracers.
+the diffusion of the tracers. One single value for every tracer.
 Old default value = 1.E-6 until version V7P3.'
 /
 NOM = 'MAXIMUM D''ITERATIONS POUR LA DIFFUSION DES TRACEURS'
@@ -7524,10 +7658,10 @@ IS BRUT (brown)'
 NIVEAU = 1
 AIDE =
 'Limite le nombre d''iterations du solveur a chaque pas
-de temps pour le calcul de la diffusion des traceurs.'
+de temps pour le calcul de la diffusion du ou des traceurs.'
 AIDE1 =
 'Limits the number of solver iterations for the diffusion of
-tracers.'
+tracer(s).'
 /
 NOM = 'PRECONDITIONNEMENT POUR LA DIFFUSION DES TRACEURS'
 NOM1 = 'PRECONDITIONING FOR DIFFUSION OF TRACERS'
@@ -7649,13 +7783,15 @@ AIDE =
 \begin{itemize}
 \item 0 : forcage a zero ;
 \item 1 : valeur avant masquage.
-\end{itemize}'
+\end{itemize}
+Utiliser le choix 1 pour assurer la convervation du/des traceur(s)'
 AIDE1 =
 'Treatment of tidal flats at the diffusion step for tracers.
 \begin{itemize}
 \item 0: forced to zero,
 \item 1: value before masked.
-\end{itemize}'
+\end{itemize}
+Use choice 1 to ensure conservation of tracer(s).'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 7.6-TURBULENCE
@@ -8900,7 +9036,7 @@ NOM1 = 'COUPLING WITH'
 TYPE = STRING
 INDEX = 62
 TAILLE = 1
-DEFAUT = 'RIEN'
+DEFAUT = ''
 DEFAUT1 = ''
 MNEMO = 'COUPLING, IN BIEF'
 CHOIX =
@@ -8925,7 +9061,7 @@ RUBRIQUE1 =
 'COUPLING';'';''
 NIVEAU = 0
 AIDE =
-'Liste des codes avec lesquels on couple TELEMAC-3D :
+'Liste des codes avec lesquels on couple \telemac{3d} :
 \begin{itemize}
 \item \sisyphe : couplage interne avec \sisyphe ;
 \item \tomawac : couplage interne avec \tomawac les forces
@@ -8937,7 +9073,7 @@ induites par les vagues sont 3D ;
 \item \gaia : couplage interne avec \gaia.
 \end{itemize}'
 AIDE1 =
-'List of codes to be coupled with TELEMAC-3D:
+'List of codes to be coupled with \telemac{3d}:
 \begin{itemize}
 \item \sisyphe: internal coupling with \sisyphe,
 \item \tomawac: internal coupling with \tomawac, forces are constant
@@ -8947,7 +9083,6 @@ along the depth,
 \item DELWAQ: will yield results file for DELWAQ,
 \item \gaia: internal coupling with \gaia.
 \end{itemize}'
-
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 9.1-SISYPHE
@@ -9034,7 +9169,7 @@ Par defaut, il est couple a chaque pas de temps.'
 AIDE1 =
 'Sets the coupling period with the \tomawac module, in number
 of time steps. By default, it is coupled at every time step.'
-
+/
 NOM = 'FROTTEMENT SUR LE FOND DU AUX VAGUES'
 NOM1 = 'BOTTOM FRICTION DUE TO WAVES'
 TYPE = LOGICAL
@@ -9056,7 +9191,6 @@ AIDE1 =
 'Allows to take into account the momentum lost by waves due to
 bottom friction. You need a fine mesh around the bottom to
 be precise.'
-
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 9.3-WAQTEL
@@ -9129,11 +9263,11 @@ RUBRIQUE1 =
 'COUPLING';'WAQTEL';''
 NIVEAU = 0
 AIDE =
-'Fichier des parametres physiques pour les
-processus de qualite d''eau (internes, pas ceux de DELWAQ).'
+'Fichier des parametres physiques pour les processus de qualite d eau
+(internes, pas ceux de DELWAQ).'
 AIDE1 =
 'File for physical parameters of water quality processes
-(local ones of \telemac-TRACER not those of DELWAQ).'
+(local ones of \telemac{3d}-\waqtel not those of DELWAQ).'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 9.4-DELWAQ
@@ -9155,9 +9289,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de commande pour le couplage avec DELWAQ.'
+'Fichier de commande pour le chainage avec DELWAQ.'
 AIDE1 =
-'Steering file for coupling with DELWAQ.'
+'Steering file for chaining with DELWAQ.'
 /
 NOM = 'PERIODE DE SORTIE POUR DELWAQ'
 NOM1 = 'DELWAQ PRINTOUT PERIOD'
@@ -9194,9 +9328,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DES DISTANCES ENTRE NOEUDS'
 NOM1 = 'NODES DISTANCES DELWAQ FILE'
@@ -9215,9 +9349,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DES SURFACES DU FOND'
 NOM1 = 'BOTTOM SURFACES DELWAQ FILE'
@@ -9236,9 +9370,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DES VOLUMES'
 NOM1 = 'VOLUMES DELWAQ FILE'
@@ -9257,9 +9391,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DES SURFACES DE FLUX'
 NOM1 = 'EXCHANGE AREAS DELWAQ FILE'
@@ -9278,9 +9412,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DES FLUX VERTICAUX'
 NOM1 = 'VERTICAL FLUXES DELWAQ FILE'
@@ -9299,9 +9433,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DE LA VITESSE'
 NOM1 = 'VELOCITY DELWAQ FILE'
@@ -9320,9 +9454,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DE LA DIFFUSION'
 NOM1 = 'DIFFUSIVITY DELWAQ FILE'
@@ -9341,9 +9475,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DE LA TEMPERATURE'
 NOM1 = 'TEMPERATURE DELWAQ FILE'
@@ -9362,9 +9496,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'FICHIER DELWAQ DE LA SALINITE'
 NOM1 = 'SALINITY DELWAQ FILE'
@@ -9383,9 +9517,9 @@ RUBRIQUE1 =
 'COUPLING';'DELWAQ';''
 NIVEAU = 0
 AIDE =
-'Fichier de resultats pour le couplage avec DELWAQ.'
+'Fichier de resultats pour le chainage avec DELWAQ.'
 AIDE1 =
-'Results file for coupling with DELWAQ.'
+'Results file for chaining with DELWAQ.'
 /
 NOM = 'VITESSE POUR DELWAQ'
 NOM1 = 'VELOCITY FOR DELWAQ'
@@ -9488,7 +9622,7 @@ NOM = 'AD NOMBRE DES DERIVEES'
 NOM1 = 'AD NUMBER OF DERIVATIVES'
 TYPE = INTEGER
 INDEX = 13
-TAILLE = 0
+TAILLE = 1
 DEFAUT = 0
 DEFAUT1 = 0
 MNEMO = 'NADVAR'
@@ -9526,7 +9660,7 @@ NOM = 'AD NOMBRE DE DIRECTIONS'
 NOM1 = 'AD NUMBER OF DIRECTIONS'
 TYPE = INTEGER
 INDEX = 69
-TAILLE = 0
+TAILLE = 1
 DEFAUT = 1
 DEFAUT1 = 1
 MNEMO = 'AD\_NUMOFDIR'

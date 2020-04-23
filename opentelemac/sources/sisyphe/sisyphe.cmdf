@@ -30,7 +30,7 @@ files: bief_def.f
   read_config.f
   bief_init.f
   bief_open_files.f
-  drogues.f
+  initial_drogues.f
   streamline.f
   bief_nbmpts.f
   bief_nbpts.f
@@ -66,11 +66,6 @@ files: bief_def.f
   bief_ininds.f
   bief_nbfel.f
   bief_nbsegel.f
-  paraco.f
-  parcom2.f
-  parcom2_seg.f
-  parcom.f
-  checkmesh.f
   cpikle2.f
   cpikle3.f
   dimens.f
@@ -85,6 +80,10 @@ files: bief_def.f
   segbor.f
   almesh.f
   bief_allvec_in_block.f
+  paraco.f
+  parcom2.f
+  parcom2_seg.f
+  parcom.f
   flux_ef_vf.f
   ovdb.f
   osdb.f
@@ -184,6 +183,7 @@ files: bief_def.f
   fonstr.f
   front2.f
   centre_mass_seg.f
+  checkmesh.f
   comp_fac.f
   cpik12.f
   cpik13.f

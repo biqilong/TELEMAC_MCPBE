@@ -76,7 +76,7 @@ The user can activate or deactivate some of these steps.
 
 Whether or not the advection terms are taken into account is determined
 by the logical keyword \telkey{ADVECTION} (default value = YES).
-However, even if this keyword is positioned at YES, it is possible
+However, even if this keyword is set at YES, it is possible
 to deactivate certain advection terms using the following logical keywords:
 
 \begin{itemize}
@@ -102,10 +102,10 @@ However, if the propagation-diffusion step is activated, the user may still
 decide whether or not to take into account velocity diffusion by setting
 the logical keyword \telkey{DIFFUSION OF VELOCITY} (default value = YES).
 
-The propagation step may be linearized by activating the keyword
-\telkey{LINEARIZED PROPAGATION}, in particular when running a test case
-for which an analytical solution is available in the linearized case.
-It is then necessary to determine the water depth around which the
+The propagation step can be linearized by activating the keyword
+\telkey{LINEARIZED PROPAGATION} (default value = NO), in particular when running
+a test case for which an analytical solution is available in the linearized case.
+It is then necessary to set the water depth around which the
 linearization is to be performed, by using the keyword
 \telkey{MEAN DEPTH FOR LINEARIZATION} (default value = 0.).
 
@@ -147,7 +147,8 @@ possibilities:
 \begin{itemize}
 \item 1: Method of characteristics,
 
-\item 2: Centred semi implicit scheme + SUPG,
+\item 2: Centred semi implicit scheme + SUPG
+(Streamline Upwind Petrov Galerkin),
 
 \item 3: Upwind explicit finite volume
 (referenced as 8 before release 6.0),
@@ -206,22 +207,22 @@ which is a good compromise between accuracy and computational time.
 Indeed, increasing the number of corrections the scheme is more accurate
 but the CPU time rapidly increases.
 The keyword \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES} can be used
-with advection schemes of type (3, 4, 5 and ERIA).
+with advection schemes of type (3, 4, 5, LIPS or not, and ERIA).
 
 The keyword \telkey{MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES}
 enables to limit the number of solver iterations for the advection schemes
 of type NERD or ERIA (\telkey{SCHEME FOR ADVECTION OF}... = 13, 14 or 15).
 The default value is 10.
 
-The keyword \telkey{NUMBER OF SUB-STEPS OF DISTRIBUTIVE SCHEMES}
-can only be activated for locally semi-implicit predictor-corrector schemes
+The keyword \telkey{NUMBER OF SUB-STEPS OF DISTRIBUTIVE SCHEMES} can only be
+activated for locally semi-implicit predictor-corrector schemes aka LIPS
 (\telkey{SCHEME FOR ADVECTION OF...} = 3, 4 or 5
 + \telkey{SCHEME OPTION FOR ADVECTION OF...} = 4).
+The default value is 1.
 As the keyword mentions, it allows to subdivide the time step given by the user
 in the steering file, into several sub-steps.
-Again, it produces an effect on the precision of the scheme
-and it is convenient to set this keyword in order to have Courant numbers
-not too large (around 1).
+Again, it produces an effect on the precision of the scheme and it is convenient
+to set this keyword in order to have Courant numbers not too large (around 1).
 
 \begin{WarningBlock}{Note:}
 \begin{itemize}
@@ -257,9 +258,9 @@ For dam break studies option 14;5 is recommended.
 The keyword \telkey{TYPE OF ADVECTION} will be soon replaced
 by the following keywords (already active):
 \begin{itemize}
-\item \telkey{SCHEME FOR ADVECTION OF VELOCITIES},
-\item \telkey{SCHEME FOR ADVECTION OF TRACERS},
-\item \telkey{SCHEME FOR ADVECTION OF K-EPSILON}.
+\item \telkey{SCHEME FOR ADVECTION OF VELOCITIES} (default = 1),
+\item \telkey{SCHEME FOR ADVECTION OF TRACERS} (default = 1),
+\item \telkey{SCHEME FOR ADVECTION OF K-EPSILON} (default = 1).
 \end{itemize}
 The keyword for advection of water depth is not necessary, since the scheme is
 automatically selected by \telemac{2D}, as already said here above.
@@ -269,7 +270,7 @@ This involves updating the advection field for the same time step over several
 sub-iterations.
 During the first sub-iteration, the velocity field is given by the results
 obtained at the previous time step.
-The number of sub-iterations is fixed by the keyword
+The number of sub-iterations is set by the keyword
 \telkey{NUMBER OF SUB-ITERATIONS FOR NON-LINEARITIES},
 which has a default value of 1.
 This option is time consuming but it can be helpful for some studies
@@ -324,7 +325,7 @@ matrices $AM1$ for depth, and $AM2$ and $AM3$ for velocity
 This technique means bringing some or all of the matrix on to the diagonal,
 and enables computation times to be shortened considerably.
 However, the solution obtained is more smoothed.
-The rate of mass-lumping is fixed with the keywords \telkey{MASS-LUMPING ON H},
+The mass-lumping rate is set with the keywords \telkey{MASS-LUMPING ON H},
 \telkey{MASS-LUMPING ON VELOCITY} and
 \telkey{MASS-LUMPING FOR WEAK CHARACTERISTICS}.
 The value 1. indicates maximum mass-lumping (the mass matrices are diagonal)
@@ -346,32 +347,33 @@ As told at the beginning of this subsection, if using
 changes \telkey{MASS-LUMPING ON VELOCITY} to value 1.
 
 
-\subsubsection{Configuration of SUPG scheme}
+\subsubsection{Configuration of the SUPG scheme}
 
-When the SUPG method is being used, the user has to fix the type of upwind
-scheme required with the keyword \telkey{SUPG OPTION} which, like the keyword
-\telkey{TYPE OF ADVECTION}, is an array of 4 integers relating, in order,
-to the velocities, water depth, tracer(s) and $k-\epsilon$ model
-(or Spalart-Allmaras model).
+When using the SUPG method, the user has to determine the type of upwinding
+desired with the keyword \telkey{SUPG OPTION} which, like the keyword
+\telkey{TYPE OF ADVECTION}, is an array of 4 integers
+related to the velocities, the water depth, tracer(s) and $k-\epsilon$ model
+(or Spalart-Allmaras model) respectively.
+Default value = (2;2;2;2).
 
 The possible values are the following:
 
 \begin{itemize}
 \item 0: No upwind scheme,
 
-\item 1: Upwind scheme with the classic SUPG method,
+\item 1: Upwind scheme with the classical SUPG method,
 i.e. upwind scheme = 1,
 
 \item 2: Upwind scheme with the modified SUPG method,
 i.e. upwinding equal to the Courant number.
 \end{itemize}
 
-In theory, option 2 is more accurate when the Courant number is
-less than 1 but must not be used for large Courant numbers.
-Thus, option 2 can be used only for models in which the Courant number is
+In theory, option 2 is more accurate when the Courant number is less than 1,
+but must not be used for large Courant numbers.
+Thus, option 2 should be used only for models in which the Courant number is
 very low.
 If the Courant number cannot be estimated, it is strongly recommended
-to use option 1 (which can be considered as more ``universal'').
+to use option 1 (which can be considered as more ''universal'').
 
 The configuration of the SUPG method concerns option 2 of the keyword
 \telkey{TYPE OF ADVECTION} but the second number for \telkey{SUPG OPTION}
@@ -482,15 +484,18 @@ This section only concerns Finite Elements method.
 \subsection{Solver}
 
 During some steps, the solver used for solving the systems of equations
-may be selected by means of the following keywords:
+can be selected through the following keywords:
 
 \begin{itemize}
-\item \telkey{SOLVER}: for the hydrodynamic propagation step,
+\item \telkey{SOLVER}: for the hydrodynamic propagation step
+(default value = 3),
 
-\item \telkey{SOLVER FOR DIFFUSION OF TRACERS}: for the tracers diffusion step,
+\item \telkey{SOLVER FOR DIFFUSION OF TRACERS}: for the tracers diffusion step
+(default value = 1),
 
 \item \telkey{SOLVER FOR K-EPSILON MODEL}:
-for solving the $k-\epsilon$ model system or Spalart-Allmaras model system.
+for solving the $k-\epsilon$ model system or Spalart-Allmaras model system
+(default value = 1).
 \end{itemize}
 
 Each keyword may have a value between 1 and 9.
@@ -498,7 +503,8 @@ These values correspond to the following possibilities.
 Options 1 to 6 are all related to the conjugate gradient method:
 
 \begin{itemize}
-\item 1: Conjugate gradient method,
+\item 1: Conjugate gradient method (when the matrix of the system to solve
+is symmetric),
 
 \item 2: Conjugate residual method,
 
@@ -513,12 +519,13 @@ Options 1 to 6 are all related to the conjugate gradient method:
 \item 7: GMRES (Generalised Minimum RESidual) method,
 
 \item 8: Direct solver (YSMP, solver of the Yale university),
-does not work in parallel mode,
+does not work in parallel mode.
 
-\item 9: MUMPS solver: it is a specific direct solver that may work
-in parallel but requires the installation of extra libraries.
+%\item 9: MUMPS solver: it is a specific direct solver that may work
+%in parallel but requires the installation of extra libraries.
 \end{itemize}
 
+The GMRES method is well suited for improperly conditioned systems.
 If the GMRES method is used, the dimension of the Krylov space has to be
 specified with the appropriate keyword, i.e.:
 
@@ -607,7 +614,7 @@ iterations actually run and the accuracy achieved,
 \item Or the process has not converged quickly enough.
 \telemac{2D} then displays the message ``MAXIMUM NUMBER OF ITERATIONS REACHED''
 and the accuracy actually achieved.
-In some cases, and if the number of iterations is already positioned
+In some cases, and if the number of iterations is already set
 at a high value (e.g. more than 120), the convergence may still be improved
 by decreasing the time step or by modifying the mesh.
 \end{itemize}
@@ -879,11 +886,12 @@ to an increase in the mass of water as it eliminates negative water depths.
 \telemac{2D} includes 2 different methods of matrix storage:
 an Element by Element (EBE) method and an edge-based method.
 The second is faster (about 20\%) in most cases.
+
 The choice between the two storage methods can be done using the keyword
 \telkey{MATRIX STORAGE}, with the following values:
 
 \begin{itemize}
-\item 1: Element by Element (EBE) method,
+\item 1: classical Element by Element (EBE) method,
 
 \item 3: edge-based storage method (default and recommended value).
 \end{itemize}

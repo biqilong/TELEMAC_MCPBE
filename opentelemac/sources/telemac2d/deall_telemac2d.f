@@ -686,7 +686,6 @@
           DEALLOCATE(RALGAE)
           DEALLOCATE(EALGAE)
           DEALLOCATE(TALGAE)
-          DEALLOCATE(MALGAE)
         ENDIF
       ENDIF
 

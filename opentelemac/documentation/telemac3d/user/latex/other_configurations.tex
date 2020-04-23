@@ -51,7 +51,7 @@ Otherwise they do not have a use yet.
 
 
 \section{Spherical coordinates (\telfile{LATITU})}
-
+\label{sec:spher:coord:LATI}
 If a simulation is performed over a large domain, \telemac{3D} offers
 the possibility of running the computation with spherical coordinates.
 
@@ -78,6 +78,8 @@ keyword \telkey{SPATIAL PROJECTION TYPE}. That can take the following values:
 In this case of option 3, the coordinates of the mesh nodes should be
 expressed with latitude and longitude in degrees. \telemac{3D} then converts with
 the information with the help of the Mercator's projection.
+It is important to notice here that, if option \telkey{SPHERICAL COORDINATES}
+= YES, \telkey{SPATIAL PROJECTION TYPE} has to be 2 or 3.
 
 The \telfile{LATITU} subroutine (\bief library) may be modified by the user to introduce
 any other latitude-dependent computation.
@@ -115,13 +117,13 @@ for 3D variables.
 At the end of the \telfile{NOMVAR\_TELEMAC3D} or \telfile{NOMVAR\_2D\_IN\_3D}
 subroutines, it is
 possible to change the abbreviations (mnemonics) used for the keywords
-\telkey{VARIABLES FOR GRAPHIC 2D PRINTOUTS} and \telkey{VARIABLES FOR GRAPHIC
-3D PRINTOUTS}. Sequences of 8 letters may be used.
+\telkey{VARIABLES FOR 2D GRAPHIC PRINTOUTS} and \telkey{VARIABLES FOR 3D GRAPHIC
+PRINTOUTS}. Sequences of 8 letters may be used.
 Consequently, the variables must be separated by spaces, commas or
 semicolons in the keywords, e.g.:
 
 \begin{lstlisting}[language=TelemacCas]
-VARIABLES FOR GRAPHIC 2D PRINTOUTS : 'U, V, H, B'
+VARIABLES FOR 2D GRAPHIC PRINTOUTS : 'U, V, H, B'
 \end{lstlisting}
 
 In the software data structure, these four variables correspond to the tables
@@ -240,7 +242,7 @@ bottom,
 at the next time step, and so on.
 \end{itemize}
 
-Several modules can be coupled in the current version of the code:
+Several modules can be coupled in the current release of the code:
 the sediment transport modules \gaia or \sisyphe,
 the sea state computational module \tomawac with 2 options (like with
 \telemac{2d} and forces constant along the vertical, or with 3D forces)

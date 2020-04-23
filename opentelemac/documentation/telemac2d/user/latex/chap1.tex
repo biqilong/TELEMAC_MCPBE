@@ -67,7 +67,44 @@ The test cases are also used for developing the software
 and are checked at least each time new releases are produced.
 
 
-\section{Programming by the user}
+\section{Position of the \telemac{2d} code within the telemac modelling system}
+
+The \telemac{2d} software is part of the \tel modelling system developed by
+the LNHE of EDF R\&D. \tel is a set of modelling tools allowing to treat
+every aspects of natural free surface hydraulics: currents, waves, transport of
+tracers and sedimentology.
+
+The pre-processing and post-processing of simulations can be done either
+directly within the \tel system or with different software that present an
+interface of communication with the system. We can particularly mention the
+following tools:
+
+\begin{itemize}
+\item The FUDAA-PREPRO software, developed from the FUDAA platform
+by the CEREMA's Recherche, Informatique et Modélisation Department, covers all
+the pre-processing tasks involved by the achievement of a numerical hydraulic
+study, as well as a graphical post-processing tool,
+\item The Blue Kenue software, developed the Hydraulic Canadian
+Center, proposes a powerful mesh generation tool and a user-friendly
+post-processing tool,
+\item The Janet software, developed by Smile Consult GmbH, which offers among
+others, a mesh generation tool,
+\item The ParaView software, developed by Sandia National Laboratories, Los
+Alamos National Laboratory and Kitware, which enables to visualise 3D results,
+big data in particular and is open source,
+\item The SALOME-HYDRO software based on the SALOME platform, developed by EDF,
+CEA and OPENCASCADE which enables to handle raw data (bathymetry, maps,
+pictures, LIDAR\ldots) until the mesh generation.
+The post-processing tool ParaViS available in the SALOME platform is based on
+the ParaView software and can visualise 1D, 2D or 3D results.
+A first version of SALOME-HYDRO has been available since Spring 2016,
+\item The Tecplot 360 software, developed by Tecplot which enables to visualise
+2D and 3D results,
+\item The QGIS software, which is an open source Geographic Information System.
+\end{itemize}
+
+
+\section{User programming}
 
 Users may wish to program particular functions of a simulation module
 that are not provided for in the standard version of the \tel system.

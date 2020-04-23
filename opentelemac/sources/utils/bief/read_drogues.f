@@ -37,7 +37,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
-      USE DROGUES, ONLY : NDRG_TAGS
+      USE INITIAL_DROGUES, ONLY : NDRG_TAGS
       USE INTERFACE_PARALLEL, ONLY : P_IMAX
 !
       USE DECLARATIONS_SPECIAL

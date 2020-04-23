@@ -49,40 +49,40 @@ and $\rho_{\rm{water}} = 999.972.(1-7.10^{-6}(T_{\rm{mean}}-4)^2)$.
 
 \section{Prescribing initial conditions}
 
-If the initial values of the tracers are constant all over the domain,
-it is simply a question of inserting the keyword
-\telkey{INITIAL VALUES OF TRACERS} with the required value(s) in the steering
-file separated with a semicolon ; if more than 1.
+If the initial values of tracers are constant all over the domain, just insert,
+into the steering file, the keyword \telkey{INITIAL VALUES OF TRACERS} with the
+required value(s) separated with a semicolumn; if more than one.
 The number of supplied values must be equal to the number of declared tracers.
 
 In more complex cases, it is necessary to work directly in the
-\telfile{USER\_CONDIN\_TRAC} subroutine, in a similar manner to that described
+\telfile{USER\_CONDIN\_TRAC} subroutine, in a similar way to that described
 in the section dealing with the initial hydrodynamic conditions.
 
-If a computation is being continued, the initial state of the tracers
-corresponds to that of the last time step stored in the continuation file
-(if the continuation file does not contain any information concerning
-a particular tracer, \telemac{2D} then uses the value assigned to the keyword
+If a computation is being continued, the initial condition of the tracers
+corresponds to that of the last time step stored in the restart file.
+If the restart file does not contain any information about the tracer,
+\telemac{2D} will use the value assigned to the keyword
 \telkey{INITIAL VALUES OF TRACERS}).
 
 \section{Prescribing boundary conditions}
 \label{sec:tr:prescr:bc}
-Boundary conditions are prescribed in the same way as hydrodynamic conditions.
+Tracer boundary conditions are prescribed in the same way as hydrodynamic
+conditions.
 
-The type of boundary condition will be given by the value of \telfile{LITBOR}
+The boundary condition type will be given by the value of \telfile{LITBOR}
 in the boundary conditions file (see sections \ref{subs:desc:bc} and
 \ref{sub:bc:file}).
 
-In the case of an inflowing open boundary with one or several prescribed tracer(s)
-(\telfile{LITBOR} = 5), the value of the tracer may be given in various ways:
+In case of an inflowing open boundary with one or several prescribed tracer(s)
+(\telfile{LITBOR} = 5), the tracer value can be given in various ways:
 
 \begin{itemize}
 \item If the value is constant along the boundary and in time, it is provided
 in the steering file by the keyword \telkey{PRESCRIBED TRACERS VALUES}.
-This is a table of real numbers for managing several boundaries and several
+This is an array of real numbers for managing several boundaries and several
 tracers (100 at most, this number can be changed by changing the keyword
 \telkey{MAXIMUM NUMBER OF TRACERS}).
-The numbering convention is the same as that used for the hydrodynamic boundary
+The writing convention is the same as that used for the hydrodynamic boundary
 conditions.
 The values specified by the keyword cancel the values read from the boundary
 conditions file.
@@ -92,8 +92,8 @@ first tracer at the second open boundary,
 second tracer at second open boundary, etc.,
 
 \item If the value is constant in time but varies along the boundary,
-it will be directly set by the \telfile{TBOR} variable
-in the \telkey{BOUNDARY CONDITIONS FILE}.
+it will be set directly by the \telfile{TBOR} variable
+in the \telkey{BOUNDARY CONDITIONS FILE},
 
 \item If the value is constant along the boundary but varies in time,
 the user must specify this with the function \telfile{TR} or with the
@@ -129,7 +129,9 @@ See chapter \ref{ch:manag:ws} for more details.
 \section{Numerical specifications}
 \label{sec:num:spec}
 The way of treating advection od tracers is specified in the third value
-of the keyword \telkey{TYPE OF ADVECTION}.
+of the keyword \telkey{TYPE OF ADVECTION} or directly with the keyword
+\telkey{SCHEME FOR ADVECTION OF TRACERS} (which has priority to
+\telkey{TYPE OF ADVECTION}, if present in the \telkey{STEERING FILE}).
 The possibilities are the same as for velocity.
 
 The user can also use the real keyword

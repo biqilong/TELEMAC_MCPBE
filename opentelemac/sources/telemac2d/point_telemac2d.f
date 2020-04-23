@@ -151,7 +151,7 @@
       USE BIEF
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_TELEMAC2D
-      USE DROGUES, ONLY: NDRG_CLSS,NODCLSS,PARCLSS
+      USE INITIAL_DROGUES, ONLY: NDRG_CLSS,NODCLSS,PARCLSS
       USE ALGAE_TRANSP
 !
       USE DECLARATIONS_SPECIAL
@@ -1142,25 +1142,6 @@
         DO I = 1,NFLOT_MAX
           PARCLSS%I(I) = 1
         ENDDO
-!
-        IF( ALGAE ) THEN
-!
-!         ALLOCATE THE ALGAE VARIABLES IF NEEDED
-          CALL ALLOC_ALGAE(NFLOT_MAX,IELMH,MESH)
-!
-          CALL OS('X=Y     ',X=U_X_AV_0,Y=U_X_AV)
-          CALL OS('X=Y     ',X=U_Y_AV_0,Y=U_Y_AV)
-          CALL OS('X=Y     ',X=U_Z_AV_0,Y=U_Z_AV)
-          CALL OS('X=Y     ',X=K_AV_0  ,Y=K_AV)
-          CALL OS('X=Y     ',X=EPS_AV_0,Y=EPS_AV)
-          CALL OS('X=Y     ',X=U_X_0   ,Y=U_X)
-          CALL OS('X=Y     ',X=U_Y_0   ,Y=U_Y)
-          CALL OS('X=Y     ',X=U_Z_0   ,Y=U_Z)
-          CALL OS('X=Y     ',X=V_X_0   ,Y=V_X)
-          CALL OS('X=Y     ',X=V_Y_0   ,Y=V_Y)
-          CALL OS('X=Y     ',X=V_Z_0   ,Y=V_Z)
-!
-        ENDIF
 !
       ENDIF
 !

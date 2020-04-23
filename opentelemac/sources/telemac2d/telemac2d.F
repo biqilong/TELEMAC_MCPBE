@@ -1702,7 +1702,7 @@
      &              IT1%I,T1%R,T2%R,T2%R,IT2%I,W1%R,W1%R,NPOIN,STOCHA,
      &              VISC,1,SVOID,0,
      &              AALGAE=ALGAE,DALGAE=DALGAE,RALGAE=RALGAE,
-     &              EALGAE=EALGAE,TALGAE=TALGAE,MALGAE=MALGAE,
+     &              EALGAE=EALGAE,TALGAE=TALGAE,
      &              YALGAE=YALGAE,
      &              REL_ALGAE=REL_ALGAE,TW1_ALGAE=TW1_ALGAE,
      &              TW2_ALGAE=TW2_ALGAE,A_ALGAE=A_ALGAE,

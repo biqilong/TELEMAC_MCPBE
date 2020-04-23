@@ -1,6 +1,6 @@
-!                          **************
-                           MODULE DROGUES
-!                          **************
+!                          **********************
+                           MODULE INITIAL_DROGUES
+!                          **********************
 !
 !***********************************************************************
 ! TELEMAC V8P0
@@ -39,7 +39,7 @@
 !     NUMBER OF DIFFERENT CLASSES OF DROGUES (ALL TYPES OF CLASSES)
       INTEGER :: NDRG_CLSS
 !
-!     INCREMENTAL HIGHTEST TAG NUMBER FOR DROGUES
+!     INCREMENTAL HIGHEST TAG NUMBER FOR DROGUES
 !     TAG NUMBERS ARE UNIQUE TO ALL PARCELS
       INTEGER :: NDRG_TAGS = 0
 !
@@ -219,7 +219,7 @@
         CALL PLANTE(1)
         STOP
       ENDIF
-      LENGTH = AKLE(2*NEL)
+      IF (NEL.GT.0) LENGTH = AKLE(2*NEL)
 !
 !         ALLOCATING UNIQUE TAG NUMBERS FOR EACH PROCESSOR
 !
@@ -814,102 +814,6 @@
       RETURN
       END SUBROUTINE SAMPLE_POINTS
 !
-!
-!=======================================================================
-!
-!     2) MEMORY MANAGEMENT
-!
-!                  ************************
-                   SUBROUTINE ALLOC_DROGUES
-!                  ************************
-!
-     &( NP,MESH )
-!
-!***********************************************************************
-! TELEMAC V8P0
-!***********************************************************************
-!
-!brief    Allocate arrays associated with DROGUES.
-!
-!history  S.E. BOURBAN (HRW)
-!+   21/08/2016
-!+   V8P0
-!+   Initial implementation
-!
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NT      |-->| NUMBER OF DROGUES TYPES
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-!***********************************************************************
-!
-      IMPLICIT NONE
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!
-      INTEGER, INTENT(IN)           :: NP
-      TYPE(BIEF_MESH), INTENT(IN)   :: MESH
-!
-!-----------------------------------------------------------------------
-!
-!     DRG_DENSITY: COUNTING DROGUES PER SURFACE AREA
-!
-!      ALLOCATE( DRG_DENSITY(NT) )
-!
-!-----------------------------------------------------------------------
-!
-!     DROGUES'S POSITIONS AND MOVEMENTS
-!
-!
-!-----------------------------------------------------------------------
-!
-      RETURN
-      END SUBROUTINE ALLOC_DROGUES
-!
-!                 **************************
-                  SUBROUTINE DEALLOC_DROGUES
-!                 **************************
-!
-     &( )
-!
-!***********************************************************************
-! TELEMAC V8P0
-!***********************************************************************
-!
-!brief    De-allocate arrays associated with DROGUES.
-!
-!history  S.E. BOURBAN (HRW)
-!+   21/08/2016
-!+   V8P0
-!+   Initial implementation
-!
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!***********************************************************************
-!
-      IMPLICIT NONE
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!-----------------------------------------------------------------------
-!
-!     DRG_DENSITY: COUNTING DROGUES PER SURFACE AREA
-!
-!      DEALLOCATE( DRG_DENSITY )
-!
-!-----------------------------------------------------------------------
-!
-!     DROGUES'S POSITIONS AND MOVEMENTS
-!
-!      IF( ALLOCATED(DRG_XP) ) DEALLOCATE(DRG_XP)
-!      IF( ALLOCATED(DRG_YP) ) DEALLOCATE(DRG_YP)
-!      IF( ALLOCATED(DRG_UP) ) DEALLOCATE(DRG_UP)
-!      IF( ALLOCATED(DRG_VP) ) DEALLOCATE(DRG_VP)
-!
-!-----------------------------------------------------------------------
-!
-      RETURN
-      END SUBROUTINE DEALLOC_DROGUES
-!
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-      END MODULE DROGUES
+      END MODULE INITIAL_DROGUES
