@@ -9,7 +9,7 @@
 """
 from telapy.api.t2d import Telemac2d
 from telapy.api.sis import Sisyphe
-#
+
 
 class CplT2dSis(object):
     """The Generic Python class for t2d-sis coupling"""
@@ -43,14 +43,12 @@ class CplT2dSis(object):
                            log_lvl=log_lvl,
                            recompile=False)
 
-
     def set_case(self):
         """
            Read the steering file and run allocation
         """
         self.t2d.set_case()
         self.sis.set_case(init=False)
-
 
     def init_state_default(self):
         """
@@ -72,16 +70,15 @@ class CplT2dSis(object):
         #
         self.cpl_period = self.t2d.get('MODEL.CPL_PERIOD')
 
-
     def run_one_time_step(self, istep):
         """
         Run one time step
         """
         self.t2d.api_inter.run_timestep_compute_t2d(self.t2d.my_id)
         if(self.cpl_period*(int(istep/self.cpl_period)) == istep):
-            self.t2d.api_inter.run_timestep_sis_cpl(self.t2d.my_id, self.sis.my_id)
+            self.t2d.api_inter.run_timestep_sis_cpl(self.t2d.my_id,
+                                                    self.sis.my_id)
         self.t2d.api_inter.run_timestep_res_t2d(self.t2d.my_id)
-
 
     def run_all_time_steps(self):
         """
@@ -106,4 +103,3 @@ class CplT2dSis(object):
     def __del__(self):
         del self.sis
         del self.t2d
-

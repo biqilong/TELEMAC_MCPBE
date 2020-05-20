@@ -62,7 +62,8 @@ class ClassCpl2D:
         nbor_numliq = self.t2d.get_array('MODEL.NBOR')
         numliq = self.t2d.get_array('MODEL.NUMLIQ')
         numliq = numliq.astype(int)
-        # Always include the comm_2d master in the restricted coupling interfaces comm
+        # Always include the comm_2d master in the restricted
+        # coupling interfaces comm
         self.has_fr_co = self.coupler.rank == 0
         # Mesh internal boundaries processor association
         nachb = {}
@@ -79,7 +80,8 @@ class ClassCpl2D:
             self.nb_node_loc[i] = len(self.tab_frliq[i])
         if self.has_fr_co:
             self.tab_frliq = np.array(self.tab_frliq)
-        # create a small communicator for the processors having some coupling points
+        # create a small communicator for the processors
+        # having some coupling points
         self.coupler.comm_fr_co = self.comm.Split(self.has_fr_co)
         self.comm_fr_co = self.coupler.comm_fr_co
 
@@ -167,7 +169,8 @@ class ClassCpl2D:
             tps1d = [v * dt_1d for v in range(len(conlim_co[0, :]))]
 
             for j in range(self.nb_model_1d):
-                self.interp_conlim_co[:, j] = np.interp(tps2d, tps1d, conlim_co[j, :])
+                self.interp_conlim_co[:, j] = \
+                    np.interp(tps2d, tps1d, conlim_co[j, :])
 
     def comput_conlim(self, pos_model_1d, type_cl_in_1d):
         """
@@ -181,15 +184,18 @@ class ClassCpl2D:
 
         if self.coupler.rank == 0:
             if 1 in type_cl_in_1d:
-                self.flux_boundaries = self.t2d.get_array('MODEL.FLUX_BOUNDARIES')
+                self.flux_boundaries = \
+                    self.t2d.get_array('MODEL.FLUX_BOUNDARIES')
             conlim = []
             for i, typec in enumerate(type_cl_in_1d):
                 if typec == 1:
                     if pos_model_1d[i] == 2:
                         # id_fr_co_2d[i]-1 because of  fortran begin 1
-                        conlim.append(self.flux_boundaries[self.id_fr_co_2d[i] - 1])
+                        conlim.append(self.flux_boundaries[self.id_fr_co_2d[i]
+                                      - 1])
                     elif pos_model_1d[i] == 1:
-                        conlim.append(-self.flux_boundaries[self.id_fr_co_2d[i] - 1])
+                        conlim.append(-self.flux_boundaries[self.id_fr_co_2d[i]
+                                      - 1])
                 elif typec == 2:
                     conlim.append(self.calc_sl_moy(self.glo_h, i))
         else:
@@ -220,7 +226,8 @@ class ClassCpl2D:
             cote = self.t2d.get_array('MODEL.COTE')
             deb = self.t2d.get_array('MODEL.DEBIT')
             for i, typc in enumerate(type_cl_in_1d):
-                # ! cas 1 : The 1D model have Q in Boundary condition(BC), it send  Z
+                # ! cas 1 : The 1D model have Q in Boundary
+                # condition(BC), it send  Z
                 if typc == 1:
                     cote[self.id_fr_co_2d[i] - 1] = condlim[i]
                     # ! cas 2 :  The 1D model have Z in BC, it send  Q
@@ -244,11 +251,14 @@ class ClassCpl2D:
         if z_m - x_a[1] >= epsi and z_m - x_b[1] >= epsi:
             air = (2 * z_m - x_a[1] - x_b[1]) * self.dist(x_b[0], x_a[0]) * 0.5
             # It is considered that the water level is straight on the elements
-            # at the ends of the liquid border. What is not the case in Telemac.
+            # at the ends of the liquid border. What is not
+            # the case in Telemac.
         elif z_m - x_a[1] < epsi <= z_m - x_b[1]:
-            air = self.dist(x_b[0], x_a[0]) * (z_m - x_b[1]) ** 2 / (2 * (x_a[1] - x_b[1]))
+            air = self.dist(x_b[0], x_a[0]) * (z_m - x_b[1]) ** 2 / \
+                (2 * (x_a[1] - x_b[1]))
         elif z_m - x_a[1] >= epsi > z_m - x_b[1]:
-            air = self.dist(x_b[0], x_a[0]) * (z_m - x_a[1]) ** 2 / (2 * (x_b[1] - x_a[1]))
+            air = self.dist(x_b[0], x_a[0]) * (z_m - x_a[1]) ** 2 / \
+                (2 * (x_b[1] - x_a[1]))
         return air
 
     @staticmethod
@@ -278,7 +288,8 @@ class ClassCpl2D:
         if self.coupler.rank == 0:
 
             if 1 not in type_cl_in_1d:
-                self.flux_boundaries = self.t2d.get_array('MODEL.FLUX_BOUNDARIES')
+                self.flux_boundaries = \
+                    self.t2d.get_array('MODEL.FLUX_BOUNDARIES')
 
             grav = 9.81
 
@@ -288,8 +299,8 @@ class ClassCpl2D:
                 area_sm = 0
                 for idb in range(self.nb_node_glo[i] - 1):
                     idb2 = idb + 1
-                    # we consider THE FREE SURFACE ON THE LIQUID BORDER IS straight
-                    # to remain consistent with Mascaret
+                    # we consider THE FREE SURFACE ON THE LIQUID BORDER IS
+                    # straight to remain consistent with Mascaret
                     x_1 = [self.glo_x[i][idb], self.glo_y[i][idb]]
                     x_2 = [self.glo_x[i][idb2], self.glo_y[i][idb2]]
                     area_sm += self.calc_area(
@@ -300,10 +311,12 @@ class ClassCpl2D:
                 v_2d = None
                 if pos == 2:
                     # id_fr_co_2d[i]-1 because of  fortran begin 1
-                    vars_2d[i, 2] = self.flux_boundaries[self.id_fr_co_2d[i] - 1]
+                    vars_2d[i, 2] = self.flux_boundaries[self.id_fr_co_2d[i]
+                                                         - 1]
                     v_2d = vars_2d[i, 2] / area_sm
                 elif pos == 1:
-                    vars_2d[i, 2] = -self.flux_boundaries[self.id_fr_co_2d[i] - 1]
+                    vars_2d[i, 2] = -self.flux_boundaries[self.id_fr_co_2d[i]
+                                                          - 1]
                     v_2d = vars_2d[i, 2] / area_sm
 
                 # Velocity into interface
@@ -335,7 +348,8 @@ class ClassCpl2D:
             else:
                 valgr = None
             for i in range(self.nb_fr_co):
-                valtmp = [loc2d[self.tab_frliq[i][j] - 1] for j in range(self.nb_node_loc[i])]
+                valtmp = [loc2d[self.tab_frliq[i][j] - 1]
+                          for j in range(self.nb_node_loc[i])]
                 if self.coupler.ncsize > 1:
                     vallo = self.comm_fr_co.reduce(valtmp, op=MPI.SUM, root=0)
                 else:

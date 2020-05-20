@@ -498,7 +498,7 @@ for solving the $k-\epsilon$ model system or Spalart-Allmaras model system
 (default value = 1).
 \end{itemize}
 
-Each keyword may have a value between 1 and 9.
+Each keyword may have a value between 1 and 8.
 These values correspond to the following possibilities.
 Options 1 to 6 are all related to the conjugate gradient method:
 
@@ -952,8 +952,11 @@ on several meshes is needed.
 \telemac{2d} offers the possibility to carry out a mesh convergence
 by activating the keyword \telkey{CONVERGENCE STUDY} (default = NO).
 The resulting solutions are then compared to an analytical solution
-on a fine mesh.
+on a fine mesh.\\
 
 The user has to give the number of refinement levels with the keyword
 \telkey{REFINEMENT LEVELS} (default = 0).
 Each level multiplies the number of triangular elements by 4 with \stbtel.
+
+This option is only available in sequential mode
+(\telkey{PARALLEL PROCESSORS} = 0 or 1, or Python option --ncsize = 0 or 1).

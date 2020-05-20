@@ -71,9 +71,11 @@ class ClassMod1D:
                              'Validate it with https://jsonlint.com\nSTOP')
 
         self.get_cpl_config()
-        self.jsonbc = 'bc1D_restart_' + self.config + '_' + str(int(self.ti_ini)) + '.json'
+        self.jsonbc = 'bc1D_restart_' + self.config + '_' + \
+            str(int(self.ti_ini)) + '.json'
 
-        # Initialize the model driver as an instance of MascaretStudy from a JSON setting file
+        # Initialize the model driver as an instance of MascaretStudy
+        # from a JSON setting file
 
         dico_mas = self.runcfg['config_{}'.format(self.config)]
 
@@ -81,7 +83,8 @@ class ClassMod1D:
                                    lig=self.restartfile,
                                    log_lvl='CRITICAL',
                                    iprint=0,
-                                   working_directory='study_par_' + self.config)
+                                   working_directory='study_par_'
+                                   + self.config)
         # Complete the coupling definition once the model is loaded
         self.complete_cpl_config()
         # Initialize the coupling service utilities
@@ -137,7 +140,8 @@ class ClassMod1D:
     def complete_cpl_config(self):
         """
         Complete the coupling definition with the model dependent data.
-        NOTICE THAT IT SHOULD BE INTERFACE RELATED NOT ANYMORE INDEXED ON MODELS
+        NOTICE THAT IT SHOULD BE INTERFACE RELATED
+         NOT ANYMORE INDEXED ON MODELS
         """
         masc = self.study.masc
         itface = self.jsoncfg["Interfaces"]
@@ -145,8 +149,10 @@ class ClassMod1D:
         # From now on, we rely on the 1 interface per model hypothesis
         nbextr, _, _ = masc.get_var_size('Model.Boundary.Name')
         for extr in range(nbextr):
-            if myitfc[0]["IdExtr1D"].lower() == masc.get('Model.Boundary.Name', extr).lower():
-                self.cplsect = masc.get('Model.Connect.NodeNumFreeOutflow', extr) - 1
+            if myitfc[0]["IdExtr1D"].lower() == \
+                    masc.get('Model.Boundary.Name', extr).lower():
+                self.cplsect = \
+                    masc.get('Model.Connect.NodeNumFreeOutflow', extr) - 1
                 self.coupling_law = masc.get('Model.Boundary.GraphNum', extr)
 
     def opt_init(self):
@@ -154,7 +160,8 @@ class ClassMod1D:
         Initialize the .opt output file
 
         1. Create the header with the fixed choice of fields
-        2. Initializes the list of the sections and the section - bief association
+        2. Initializes the list of the sections and the section
+            - bief association
         """
 
         self.opt = open(self.study.settings['files']['res'], 'w', buffering=1)
@@ -164,8 +171,10 @@ class ClassMod1D:
         self.opt.write('"Cote de l eau";"Z";"m";3\n')
         self.opt.write('"Debit mineur";"QMIN";"m3/s";3\n')
         self.opt.write('"Debit majeur";"QMAJ";"m3/s";3\n')
-        self.opt.write('"Coefficient de frottement mineur";"KMIN";"m1/3/s";0\n')
-        self.opt.write('"Coefficient de frottement majeur";"KMAJ";"m1/3/s";0\n')
+        self.opt.write(
+            '"Coefficient de frottement mineur";"KMIN";"m1/3/s";0\n')
+        self.opt.write(
+            '"Coefficient de frottement majeur";"KMAJ";"m1/3/s";0\n')
         self.opt.write('"Nombre de Froude";"FR";"";5\n')
         self.opt.write('"Debit total";"Q";"m3/s";3\n')
         self.opt.write('[resultats]\n')
@@ -175,7 +184,8 @@ class ClassMod1D:
             nb_res, _, _ = self.study.masc.get_var_size('Model.NodeRes')
             if nb_res > 0:
                 self.noderes = \
-                    [self.study.masc.get('Model.NodeRes', node) for node in range(nb_res)]
+                    [self.study.masc.get('Model.NodeRes', node)
+                     for node in range(nb_res)]
             else:
                 self.noderes = []
         elif opt_stock == 1:
@@ -189,7 +199,8 @@ class ClassMod1D:
                  for i in range(nbbf)]
         endbf = [self.study.masc.get('Model.Connect.LastNdNum', i)
                  for i in range(nbbf)]
-        self.num_bief_s = [ib + 1 for ib in range(nbbf) for i in range(oribf[ib], endbf[ib])]
+        self.num_bief_s = [ib + 1 for ib in range(nbbf)
+                           for i in range(oribf[ib], endbf[ib])]
         del oribf
         del endbf
 
@@ -208,23 +219,35 @@ class ClassMod1D:
         @param time (float) : time for output
         """
         for node in self.noderes:
-            self.opt.write('%12.1f;"%2i";"%5i"' % (time, self.num_bief_s[node - 1], node))
-            self.opt.write(';%11.2f' % self.study.masc.get('Model.X', node - 1))
-            self.opt.write(';%13.4f' % self.study.masc.get('Model.Zbot', node - 1))
-            self.opt.write(';%12.3f' % self.study.masc.get('State.Z', node - 1))
-            self.opt.write(';%12.3f' % self.study.masc.get('State.Q1', node - 1))
-            self.opt.write(';%12.3f' % self.study.masc.get('State.Q2', node - 1))
-            self.opt.write(';%9.0f' % self.study.masc.get('Model.FricCoefMainCh', node - 1))
-            self.opt.write(';%9.0f' % self.study.masc.get('Model.FricCoefFP', node - 1))
-            self.opt.write(';%14.5f' % self.study.masc.get('State.Froude', node - 1))
-            self.opt.write(';%12.3f' % self.study.masc.get('State.Q', node - 1))
+            self.opt.write(
+                '%12.1f;"%2i";"%5i"' % (time, self.num_bief_s[node - 1], node))
+            self.opt.write(
+                ';%11.2f' % self.study.masc.get('Model.X', node - 1))
+            self.opt.write(
+                ';%13.4f' % self.study.masc.get('Model.Zbot', node - 1))
+            self.opt.write(
+                ';%12.3f' % self.study.masc.get('State.Z', node - 1))
+            self.opt.write(
+                ';%12.3f' % self.study.masc.get('State.Q1', node - 1))
+            self.opt.write(
+                ';%12.3f' % self.study.masc.get('State.Q2', node - 1))
+            self.opt.write(
+                ';%9.0f' % self.study.masc.get(
+                    'Model.FricCoefMainCh', node - 1))
+            self.opt.write(
+                ';%9.0f' % self.study.masc.get('Model.FricCoefFP', node - 1))
+            self.opt.write(
+                ';%14.5f' % self.study.masc.get('State.Froude', node - 1))
+            self.opt.write(
+                ';%12.3f' % self.study.masc.get('State.Q', node - 1))
             self.opt.write('\n')
 
     def handle_restart(self):
         """
         Manage the restart.
 
-        1. At the first iterate store the initial model state and clean old ones
+        1. At the first iterate store the initial model state
+            and clean old ones
         2. At successive iterates, restore it
         """
 
@@ -240,7 +263,8 @@ class ClassMod1D:
 
         1. Store or reload the restart
         2. Store the initial output boundary conditions
-        3. Integrate the model on the coupling step window and store the output BC's
+        3. Integrate the model on the coupling step window
+            and store the output BC's
         4. Compute the convergence criteria at the coupling sections
         """
 
@@ -252,12 +276,14 @@ class ClassMod1D:
 
         for tst in range(self.tstinstp):
             self.tstart = self.t_i + tst * self.d_t
-            self.study.masc.compute_bc(self.tstart, self.tstart + self.d_t, self.d_t,
+            self.study.masc.compute_bc(self.tstart, self.tstart + self.d_t,
+                                       self.d_t,
                                        self.times_bc, self.tbcinstp, self.nbbc,
                                        self.current_bc, self.bc2)
 
             # Store current 1d coupling bc's
-            self.cploutbc[tst + 1] = self.study.masc.get(self.cploutnam, self.cplsect)
+            self.cploutbc[tst + 1] = \
+                self.study.masc.get(self.cploutnam, self.cplsect)
         # Compute convergence criteria
         self.cpl.compute_criteria()
 
@@ -285,7 +311,8 @@ class ClassMod1D:
         if self.cplmethod == 'additiveschwarz':
             self.cpl.transmit_bc()
         # Save the restart
-        filelig = 'WaterLine_' + self.config + '_' + str(int(self.t_f)) + '.lig'
+        filelig = \
+            'WaterLine_' + self.config + '_' + str(int(self.t_f)) + '.lig'
         self.study.save_lig_restart(filelig)
         self.cpl.store_bc()
         self.opt_final()

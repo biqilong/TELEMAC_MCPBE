@@ -504,7 +504,7 @@ function of the initial wind field and/or of the values of the
 following keywords
 \\
  \begin{CommentBlock}{Related keywords}
-INITIAL SIGNIFICANT HEIGHT\\
+INITIAL SIGNIFICANT WAVE HEIGHT\\
 INITIAL PEAK FREQUENCY\\
 INITIAL PEAK FACTOR\\
 INITIAL VALUE OF SIGMA-A FOR SPECTRUM\\
@@ -1345,7 +1345,7 @@ function of the initial wind field and/or of the values of the following
 keywords
 \\
  \begin{CommentBlock}{Related keywords}
-BOUNDARY SIGNIFICANT HEIGHT\\
+BOUNDARY SIGNIFICANT WAVE HEIGHT\\
 BOUNDARY PEAK FREQUENCY\\
 BOUNDARY PEAK FACTOR\\
 BOUNDARY VALUE OF SIGMA-A FOR SPECTRUM\\

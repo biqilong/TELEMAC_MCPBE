@@ -268,7 +268,7 @@
 !
       INTEGER I,J
 !
-      CHARACTER(LEN=16), POINTER  :: CHOIX(:)
+      CHARACTER(LEN=16), allocatable  :: CHOIX(:)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -342,9 +342,11 @@
 !     1: ASCII FILE
 !     2: BINARY FILE
 !
+      ALLOCATE(CHOIX(METEO_MAXVALUE))
       DO I = 1,2
         IF( METEO_DEJA(I) ) THEN
-          CHOIX => METEO_CHOIX(I,1:METEO_MAXVALUE)
+          CHOIX = ' '
+          CHOIX = METEO_CHOIX(I,1:METEO_MAXVALUE)
 !
           J = FIND_NAME( 'TAIR', CHOIX, METEO_MAXVALUE )
           INC_TAIR = INC_TAIR .OR. ( J.NE.0 )
@@ -378,6 +380,7 @@
 !
         ENDIF
       ENDDO
+      DEALLOCATE(CHOIX)
 !
 !-----------------------------------------------------------------------
 !
@@ -599,13 +602,14 @@
       INTEGER           J,IPOIN
       DOUBLE PRECISION  A,B,C,D,ALPHA,DELTA
       DOUBLE PRECISION  X1,Y1,Z1,X2,Y2,Z2,X3,Y3,Z3,NX,NY,NZ,MX,MY
-      CHARACTER(LEN=16), POINTER  :: CHOIX(:)
+      CHARACTER(LEN=16), ALLOCATABLE  :: CHOIX(:)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
 !     A: ASCII FILE
+      ALLOCATE(CHOIX(METEO_MAXVALUE))
       IF( METEO_DEJA(1) ) THEN
-        CHOIX => METEO_CHOIX(1,1:METEO_MAXVALUE)
+        CHOIX = METEO_CHOIX(1,1:METEO_MAXVALUE)
         J = FIND_NAME( WHAT, CHOIX, METEO_MAXVALUE )
         IF( J.NE.0 ) THEN
 !         ______________________________________________________________
@@ -716,7 +720,7 @@
 !
 !     B: BINARY FILE
       IF( METEO_DEJA(2) ) THEN
-        CHOIX => METEO_CHOIX(2,1:METEO_MAXVALUE)
+        CHOIX = METEO_CHOIX(2,1:METEO_MAXVALUE)
         J = FIND_NAME( WHAT, CHOIX, METEO_MAXVALUE )
         IF( J.NE.0 ) THEN
 !         ______________________________________________________________
@@ -732,6 +736,7 @@
 !
         ENDIF
       ENDIF
+      DEALLOCATE(CHOIX)
 !
 !-----------------------------------------------------------------------
 !

@@ -185,7 +185,7 @@
    // Arguments en sortie :
    //        NbCL : le nombre de condition limite dans le modele
    //.................................................................................................................................
-   EXTC int C_GET_NB_CONDITION_LIMITE_MASCARET(int , int *);
+   EXTC int C_GET_NB_CONDITION_LIMITE_MASCARET(int *, int *);
 
    //.................................................................................................................................
    // Recupere le nom d'une condition limite du modele ainsi que le numero de la loi correspondante
@@ -196,7 +196,7 @@
    //        NomCL  : Le nom de la condition limite dans le modele
    //        NumLoi : Numero de la Loi correspondant a la condition limite dans le modele
    //.................................................................................................................................
-   EXTC int C_GET_NOM_CONDITION_LIMITE_MASCARET(int , int , char **, int *);
+   EXTC int C_GET_NOM_CONDITION_LIMITE_MASCARET(int *, int *, char **, int *);
 
    //.................................................................................................................................
    // Calcul d'un nouvel etat au "TpsFinal" en utilisant le modele courant, les nouvelles contions limites et l'etat precedent
@@ -298,7 +298,7 @@
    // Argument en sortie :
    //      valeur       : valeur de l'entier de la variable pour les indexes specifies
 
-   EXTC int C_GET_BOOL_MASCARET(int *, char **, int *, int *, int *, int *, int *);
+   EXTC int C_GET_BOOL_MASCARET(int *, char **, int *, int *, int *, int *);
    // Arguments en entree :
    //      Identifiant : Identifiant de l'instance Mascaret retourne par "CREATE_MASCARET"
    //      NomVar      : Nom de la variable (notation pointe), la liste des variables est retournee par C_GET_DESC_VAR_MASCARET

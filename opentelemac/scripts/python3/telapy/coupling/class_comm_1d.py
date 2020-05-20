@@ -41,27 +41,38 @@ class ClassComm1D:
 
         if self.rank == 0:
             # Transmitted boundary conditions
-            self.mod.bcsendvar = np.zeros([self.mod.nb_1d_models, self.mod.tbcinstp],
-                                          dtype=np.float64)
-            dest = self.comm_1d.Get_size()  # 2D has the first rank after 1D instances
-            self.bc_1to2 = self.cpl_comm.Send_init(self.mod.bcsendvar, dest, 1012)
+            self.mod.bcsendvar = \
+                np.zeros([self.mod.nb_1d_models, self.mod.tbcinstp],
+                         dtype=np.float64)
+            dest = self.comm_1d.Get_size()
+            # 2D has the first rank after 1D instances
+            self.bc_1to2 = \
+                self.cpl_comm.Send_init(self.mod.bcsendvar, dest, 1012)
 
             # Received boundary conditions
-            self.mod.bcgetvar = np.zeros([self.mod.nb_1d_models, self.mod.nit_2d],
-                                         dtype=np.float64)
-            ori = self.comm_1d.Get_size()  # 2D has the first rank after 1D instances
-            self.bc_2to1 = self.cpl_comm.Recv_init(self.mod.bcgetvar, ori, 1021)
+            self.mod.bcgetvar = \
+                np.zeros([self.mod.nb_1d_models, self.mod.nit_2d],
+                         dtype=np.float64)
+            ori = self.comm_1d.Get_size()
+            # 2D has the first rank after 1D instances
+            self.bc_2to1 = \
+                self.cpl_comm.Recv_init(self.mod.bcgetvar, ori, 1021)
 
             # Transmitted 1D convergence criteria
-            self.mod.vars_1d = np.zeros([self.mod.nb_1d_models, self.mod.nbcriteria],
-                                        dtype=np.float64)
-            dest = self.comm_1d.Get_size()  # 2D has the first rank after 1D instances
-            self.cr_1to2 = self.cpl_comm.Send_init(self.mod.vars_1d, dest, 2012)
+            self.mod.vars_1d = \
+                np.zeros([self.mod.nb_1d_models, self.mod.nbcriteria],
+                         dtype=np.float64)
+            dest = self.comm_1d.Get_size()
+            # 2D has the first rank after 1D instances
+            self.cr_1to2 = \
+                self.cpl_comm.Send_init(self.mod.vars_1d, dest, 2012)
 
             # Received 2D convergence criteria
-            self.mod.vars_2d = np.zeros([self.mod.nb_1d_models, self.mod.nbcriteria],
-                                        dtype=np.float64)
-            ori = self.comm_1d.Get_size()  # 2D has the first rank after 1D instances
+            self.mod.vars_2d = \
+                np.zeros([self.mod.nb_1d_models, self.mod.nbcriteria],
+                         dtype=np.float64)
+            ori = self.comm_1d.Get_size()
+            # 2D has the first rank after 1D instances
             self.cr_2to1 = self.cpl_comm.Recv_init(self.mod.vars_2d, ori, 2021)
 
     def receive_bc(self):
@@ -76,7 +87,8 @@ class ClassComm1D:
         if self.rank == 0:
             self.bc_2to1.Start()
             self.bc_2to1.wait()
-            self.comm_1d.Scatter(self.mod.bcgetvar, self.mod.cpl_from2d, root=0)
+            self.comm_1d.Scatter(self.mod.bcgetvar, self.mod.cpl_from2d,
+                                 root=0)
         else:
             self.comm_1d.Scatter(None, self.mod.cpl_from2d, root=0)
 
@@ -98,7 +110,8 @@ class ClassComm1D:
 
     def transmit_criteria(self):
         """
-        Transmit the computed criteria at coupling section to the convergence unit
+        Transmit the computed criteria at coupling section
+         to the convergence unit
 
         1. Collect the computed criteria on the master processor
         2. Transmit them

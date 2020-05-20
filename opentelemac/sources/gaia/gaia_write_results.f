@@ -53,11 +53,13 @@
      &                   SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,
      &                   ILEO=YAGOUT,COMPGRAPH=GRCOMP+1)
       ELSE
-        CALL BIEF_DESIMP(GAI_FILES(GAIRES)%FMT,VARSOR,
-     &                   NPOIN,GAI_FILES(GAIRES)%LU,
-     &                   T_TEL,LT,LISTCOUNT,GRAFCOUNT,
-     &                   SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,
-     &                   ILEO=YAGOUT)
+        IF(GRAFCOUNT*(LT/GRAFCOUNT).EQ.LT) THEN
+          CALL BIEF_DESIMP(GAI_FILES(GAIRES)%FMT,VARSOR,
+     &                     NPOIN,GAI_FILES(GAIRES)%LU,
+     &                     T_TEL,LT,LISTCOUNT,GRAFCOUNT,
+     &                     SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,
+     &                     ILEO=YAGOUT)
+        ENDIF
       ENDIF
       IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE BIEF_DESIMP'
 !

@@ -64,10 +64,15 @@ class ClassMod2D:
         self.l_t = 0
         self.atsave = 0
         self.ltsave = 0
-        self.jsonbc_in = 'bc2D_restart_' + self.config + '_' + str(int(self.t_ini_2d)) + '.json'
-        self.jsonbc_out = 'bc2D_restart_' + self.config + '_' + str(int(self.t_end_2d)) + '.json'
+        self.jsonbc_in = \
+            'bc2D_restart_' + self.config + '_' + str(int(self.t_ini_2d)) \
+            + '.json'
+        self.jsonbc_out = \
+            'bc2D_restart_' + self.config + '_' + str(int(self.t_end_2d)) \
+            + '.json'
         self.fct_cpl = ClassCpl2D(self.t2d, self.coupler,
-                                  self.nb_model_1d, self.nb_criteria, self.id_fr_co_2d)
+                                  self.nb_model_1d, self.nb_criteria,
+                                  self.id_fr_co_2d)
 
         self.has_fr_co = self.fct_cpl.has_fr_co
         self.dbgcom = False
@@ -118,13 +123,16 @@ class ClassMod2D:
         self.crit_arret_v = [i["ConvCriteria"]["Velocity"] for i in itface]
         self.nit = int(self.freq / self.dt_2d)
         self.nb_criteria = 6
-        # WARNING: we rely for the moment on the hypothesys of common 1d timestepping
+        # WARNING: we rely for the moment on the hypothesys
+        # of common 1d timestepping
         self.dt_1d = mods1d[list(mods1d.keys())[0]]["TimeStep"]
         self.nit_1d = int(self.freq / self.dt_1d) + 1
         self.type_cl_in_1d = \
-            np.array([1 if i["Condition1D"].lower() == "waterlevel" else 2 for i in itface])
+            np.array([1 if i["Condition1D"].lower() ==
+                     "waterlevel" else 2 for i in itface])
         self.pos_model_1d = \
-            np.array([1 if i["1DPosition"].lower() == "upstream" else 2 for i in itface])
+            np.array([1 if i["1DPosition"].lower() ==
+                     "upstream" else 2 for i in itface])
         self.id_fr_co_2d = np.array([i["LiqBdry2D"] for i in itface])
 
     @staticmethod
@@ -161,17 +169,21 @@ class ClassMod2D:
                 for id_model in dico['model']:
                     idm = int(id_model)
                     if self.type_cl_in_1d[idm] == 1:
-                        cote[self.id_fr_co_2d[idm] - 1] = float(dico['conlim_co'][idm])
+                        cote[self.id_fr_co_2d[idm] - 1] = \
+                            float(dico['conlim_co'][idm])
                     elif self.type_cl_in_1d[idm] == 2:
-                        deb[self.id_fr_co_2d[idm] - 1] = float(dico['conlim_co'][idm])
+                        deb[self.id_fr_co_2d[idm] - 1] = \
+                            float(dico['conlim_co'][idm])
                 self.last_from1d = dico['last_from1d']
 
                 self.t2d.set_array('MODEL.COTE', cote)
                 self.t2d.set_array('MODEL.DEBIT', deb)
                 # os.remove(self.jsonbc_in)
 
-        # AP insert something here to store the values at the coupling interfaces
-        # AP as read in from the model definition (unless self.cpl2dstart 'persist2d')
+        # AP insert something here to store the values
+        # at the coupling interfaces
+        # AP as read in from the model definition
+        # (unless self.cpl2dstart 'persist2d')
         if self.cplmethod == 'additiveschwarz' \
                 and self.cpl2dstart != 'persist2d' \
                 and self.has_fr_co:
@@ -181,19 +193,24 @@ class ClassMod2D:
             for i, typc in enumerate(self.type_cl_in_1d):
                 # ! cas 1 :  The 1D model have Q in BC, it send  Z
                 if typc == 1:
-                    self.ini_frliq[i] = copy.deepcopy(cote[self.id_fr_co_2d[i] - 1])
+                    self.ini_frliq[i] = \
+                        copy.deepcopy(cote[self.id_fr_co_2d[i] - 1])
 
                 # ! cas 2 :  The 1D model have Z in BC, it send  Q
                 elif typc == 2:
-                    self.ini_frliq[i] = copy.deepcopy(deb[self.id_fr_co_2d[i] - 1])
+                    self.ini_frliq[i] = \
+                        copy.deepcopy(deb[self.id_fr_co_2d[i] - 1])
             if not cond_json:
                 self.last_from1d = copy.deepcopy(self.ini_frliq)
 
             if self.dbgcom and self.rank == 0:
-                print('DBG add pr1d or pe1d init_step ini_frliq\n', self.ini_frliq)
+                print('DBG add pr1d or pe1d init_step ini_frliq\n',
+                      self.ini_frliq)
 
-        self.conv = ClassConvergence(self.nb_model_1d, self.maxiter, output=self.rank == 0)
-        self.conv.set_criteria(height=self.crit_arret_h, velocity=self.crit_arret_v)
+        self.conv = ClassConvergence(self.nb_model_1d, self.maxiter,
+                                     output=self.rank == 0)
+        self.conv.set_criteria(height=self.crit_arret_h,
+                               velocity=self.crit_arret_v)
 
         if self.rank == 0:
             print("FIN INITIALISATION DES PARAMETRE COUPLAGE")
@@ -226,7 +243,8 @@ class ClassMod2D:
             self.t2d.set('MODEL.AT', self.atsave)
             self.t2d.set('MODEL.LT', self.ltsave)
 
-        # AP insert here the handling of the initial bc update accordingly to method
+        # AP insert here the handling of the initial bc update
+        # accordingly to method
         # AP and (id additive) restart variants self.cpl2dstart
         if self.cplmethod == 'multiplicativeschwarz' and self.has_fr_co:
             self.coupler.get_cl()
@@ -278,7 +296,8 @@ class ClassMod2D:
                     np.repeat([self.last_from1d], self.nit + 1, axis=0)
 
             if self.dbgcom and self.rank == 0:
-                print('DBG add pe1d s0 i0 conlim_co\n', self.fct_cpl.interp_conlim_co)
+                print('DBG add pe1d s0 i0 conlim_co\n',
+                      self.fct_cpl.interp_conlim_co)
                 print('DBG add pe1d s0 i0 last_from1d', self.last_from1d)
         elif self.stp > 0 and self.iter == 0:
             self.coupler.get_cl()
@@ -290,7 +309,8 @@ class ClassMod2D:
                 np.repeat([self.last_from1d], self.nit + 1, axis=0)
             if self.dbgcom and self.rank == 0:
                 print('DBG add pe1d s>0 i0 new last_from1d', self.last_from1d)
-                print('DBG add pe1d s>0 i0 conlim_co\n', self.fct_cpl.interp_conlim_co)
+                print('DBG add pe1d s>0 i0 conlim_co\n',
+                      self.fct_cpl.interp_conlim_co)
         else:
             self.coupler.get_cl()
             self.last_from1d = copy.deepcopy(self.conlim_co[:, -1])
@@ -298,12 +318,14 @@ class ClassMod2D:
                                        self.dt_1d, self.conlim_co)
             if self.dbgcom and self.rank == 0:
                 print('DBG add pe1d s>0 || i>0 last_from1d', self.last_from1d)
-                print('DBG add pe1d s>0 || i>0 conlim_co\n', self.fct_cpl.interp_conlim_co)
+                print('DBG add pe1d s>0 || i>0 conlim_co\n',
+                      self.fct_cpl.interp_conlim_co)
 
     def update_persist2d(self):
         """
         Update boundary conditions with persist2d method:
-        Start with the last conditions received from the 2D model on the previous
+        Start with the last conditions received from the 2D model
+            on the previous
         coupling step but keep only the last time step value (constant in time)
         """
 
@@ -328,7 +350,8 @@ class ClassMod2D:
         if self.has_fr_co:
             self.fct_cpl.cl_modif(self.type_cl_in_1d,
                                   self.fct_cpl.interp_conlim_co[(self.l_t + 1 -
-                                                                 self.stp * self.nit), :])
+                                                                 self.stp *
+                                                                 self.nit), :])
 
         self.t2d.run_one_time_step_compute()
         self.l_t = self.t2d.get('MODEL.LT')
@@ -344,11 +367,13 @@ class ClassMod2D:
         @return nothing
         """
 
-        self.fct_cpl.var_interface(self.pos_model_1d, self.type_cl_in_1d, self.vars_2d)
+        self.fct_cpl.var_interface(self.pos_model_1d, self.type_cl_in_1d,
+                                   self.vars_2d)
         if self.rank == 0:
             self.coupler.transmit_cl_1d()
             self.coupler.get_vars_1d()
-            self.converged = self.conv.main(self.iter, self.vars_1d, self.vars_2d, ib_tps=self.stp)
+            self.converged = self.conv.main(self.iter, self.vars_1d,
+                                            self.vars_2d, ib_tps=self.stp)
         if self.ncsize > 1:
             self.converged = self.coupler.comm_2d.bcast(self.converged, root=0)
 
@@ -363,7 +388,8 @@ class ClassMod2D:
         if self.rank == 0:
             p_c = int(step * 100. / self.cplsteps)
             pci = int((p_c - 1) / 5) + 1
-            progress = '[' + pci * '=' + (20 - pci) * ' ' + '] ' + str(p_c).rjust(3) + '%'
+            progress = '[' + pci * '=' + (20 - pci) * ' ' + '] ' + \
+                str(p_c).rjust(3) + '%'
             print(progress, file=sys.stderr, end='\r')
 
         if step % self.freq_res == 0 and step != self.cplsteps:

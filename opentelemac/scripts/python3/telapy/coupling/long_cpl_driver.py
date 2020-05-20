@@ -123,13 +123,15 @@ class LongCplDriver:
         self.param['dt_couplage'] = self.couplingdef["Coupling"]["TimeStep"]
         self.param['nb_mod_1d'] = len(self.couplingdef["1D"])
         self.param['nom_mod_1d'] = list(self.couplingdef["1D"].keys())
-        self.param['dt_1d'] = self.couplingdef["1D"][self.param['nom_mod_1d'][0]]["TimeStep"]
+        self.param['dt_1d'] =  \
+            self.couplingdef["1D"][self.param['nom_mod_1d'][0]]["TimeStep"]
         self.param['nb_mod_2d'] = len(self.couplingdef["2D"])
         self.param['nom_mod_2d'] = list(self.couplingdef["2D"].keys())
-        self.param['dt_2d'] = self.couplingdef["2D"][self.param['nom_mod_2d'][0]]["TimeStep"]
+        self.param['dt_2d'] =  \
+            self.couplingdef["2D"][self.param['nom_mod_2d'][0]]["TimeStep"]
         self.param['freq_res'] = \
-            self.couplingdef["2D"][self.param['nom_mod_2d'][0]]["OutputFreq"] / \
-            self.param['dt_couplage']
+            self.couplingdef["2D"][self.param['nom_mod_2d'][0]]["OutputFreq"] \
+            / self.param['dt_couplage']
 
     def lec_telfile(self, dico):
         """
@@ -222,30 +224,30 @@ class LongCplDriver:
         tstart = self.param['startTime']
 
         # configuration define
-        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         root_dir = os.path.expandvars('$HOMETEL')
         python_dir = os.path.join(root_dir, 'scripts', 'python3')
-        CFGS.parse_cfg_file(self.systelcfg, self.usetelcfg, root_dir, python_dir)
+        CFGS.parse_cfg_file(self.systelcfg, self.usetelcfg, root_dir,
+                            python_dir)
         CFGS.compute_modules_info()
         CFGS.compute_system_info()
         CFGS.compute_partel_info()
         CFGS.compute_mpi_info()
 
-
         #
-        # # ~~~ Modification of .cas files et config files in function to 2D run type  ~~~~~
-        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # # ~~~ Modification of .cas files et config files in function
+        # #      to 2D run type  ~~~~~
+        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if self.param['Run_type_2D'].lower() == 'sequentiel':
             self.param['nb_proc_2D'] = 1
 
         # # ~~~ Creating symbolic link for initial water line if reprise ~~~~~
-        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         folder_cas = os.path.dirname(self.cas_file)
 
-
-
         if self.param['reprise']:
-            file_tmp = os.path.join(folder_cas, 'WaterLineInit_{}.slf'.format(tstart))
+            file_tmp = os.path.join(folder_cas, 'WaterLineInit_{}.slf'
+                                    .format(tstart))
             if not os.path.exists(file_tmp):
                 raise Exception("ERROR. INTIAL WATER LINE"
                                 "OF 2D MODEL IS MISSED."
@@ -261,14 +263,16 @@ class LongCplDriver:
         i_b = 0
         while i_b < self.param['nb_mod_2d']:
             file_tmp = os.path.join(folder_cas, 'bc2D_restart_{}_{}.json'
-                                    .format(self.param['nom_mod_2d'][i_b], tstart))
+                                    .format(self.param['nom_mod_2d'][i_b],
+                                            tstart))
             if os.path.exists(file_tmp):
                 copy2(file_tmp, '.')
             i_b += 1
 
         # print("~~~~~ CREATION TEMPORARY DATA FILE OF TELEMAC ~~~~~")
         os.chdir(os.path.realpath(os.path.dirname(self.cas_file)))
-        my_study = Study(os.path.basename(self.cas_file), 'telemac2d', self.cas_file_tmp)
+        my_study = Study(os.path.basename(self.cas_file), 'telemac2d',
+                         self.cas_file_tmp)
         os.chdir(self.cas_file_tmp)
         self.dico_file = my_study.dico_file
         # creation  split files
@@ -287,10 +291,10 @@ class LongCplDriver:
             last_time_t2dpre = float(res.times[-1])
             res.close()
             if last_time_t2dpre != tstart:
-                raise Exception("\nERROR, THE RESTART TIME OF PARAMETERS FILES {} "
-                                "AND OF RESTART {} AREN'T THE SAME."
-                                "PROGRAM STOP.\n\n".format(tstart,
-                                                           last_time_t2dpre))
+                raise Exception(
+                    "\nERROR, THE RESTART TIME OF PARAMETERS FILES {} "
+                    "AND OF RESTART {} AREN'T THE SAME."
+                    "PROGRAM STOP.\n\n".format(tstart, last_time_t2dpre))
 
         # # ~~~ Check data of Mascaret  ~~~~~
         # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -300,17 +304,19 @@ class LongCplDriver:
             name_dict = "config_{}".format(self.param['nom_mod_1d'][i_b])
             if name_dict in self.list_dico_mod.keys():
                 dico = self.list_dico_mod[name_dict]
-                self.dico_file_model1d[self.param['nom_mod_1d'][i_b]] = dico['files']
+                self.dico_file_model1d[self.param['nom_mod_1d'][i_b]] = \
+                    dico['files']
             i_b += 1
         #
         #
         # # ~~~ Modification .cas file from coupling data ~~~~~
-        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         #
         # # ~~~ 2D.cas  file~~~~~
         # print('~~~~~~~~~~Modification of .cas file~~~~~~~~~~\n')
         periode_sorties = \
-            int(self.param['freq_res'] * self.param['dt_couplage'] / self.param['dt_2d'])
+            int(self.param['freq_res'] * self.param['dt_couplage']
+                / self.param['dt_2d'])
         filecas = os.path.join(self.cas_file_tmp, 'T2DCAS')
         cas = TelemacCas(filecas, self.dico_file, check_files=False)
 
@@ -337,7 +343,7 @@ class LongCplDriver:
         """
         Function controlling the coupling
         """
-        # ---------------------------------------------------------------------------------
+        # ---------------------------------------------------------
         # ~~~~~~~~~~~~~~~~~~~~~~~~~
         # ~~~~~ CONFIGURATION ~~~~~
         # ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -348,9 +354,12 @@ class LongCplDriver:
         self.configrun = config_run
 
         dicorun = self.configrun["Run"]
-        ref_date = datetime.datetime.strptime(dicorun["RefDate"], '%d/%m/%Y %H:%M:%S')
-        start_date = datetime.datetime.strptime(dicorun["StartDate"], '%d/%m/%Y %H:%M:%S')
-        end_date = datetime.datetime.strptime(dicorun["EndDate"], '%d/%m/%Y %H:%M:%S')
+        ref_date = datetime.datetime.strptime(dicorun["RefDate"],
+                                              '%d/%m/%Y %H:%M:%S')
+        start_date = datetime.datetime.strptime(dicorun["StartDate"],
+                                                '%d/%m/%Y %H:%M:%S')
+        end_date = datetime.datetime.strptime(dicorun["EndDate"],
+                                              '%d/%m/%Y %H:%M:%S')
         if "SingleExecDuration" in dicorun:
 
             iso8601_duration_re = re.compile(
@@ -393,12 +402,14 @@ class LongCplDriver:
 
         self.param['reprise'] = dicorun["RestartFromFile"].lower() == "yes"
 
-        if self.configrun["2D"][self.param['nom_mod_2d'][0]]["Parallel"].lower() == 'no':
+        if self.configrun["2D"][self.param['nom_mod_2d'][0]]["Parallel"] \
+                .lower() == 'no':
             self.param['Run_type_2D'] = 'sequentiel'
             self.param['nb_proc_2D'] = 1
         else:
             self.param['Run_type_2D'] = 'parallele'
-            self.param['nb_proc_2D'] = self.configrun["2D"][self.param['nom_mod_2d'][0]]["NbProc"]
+            self.param['nb_proc_2D'] = \
+                self.configrun["2D"][self.param['nom_mod_2d'][0]]["NbProc"]
 
         nbrun = \
             math.ceil(float(self.param['endTime'] - self.param['startTime']) /
@@ -414,7 +425,8 @@ class LongCplDriver:
         print('|  Initial time:   ', dicorun["StartDate"])
         print('|  End time:       ', dicorun["EndDate"])
         if "SingleExecDuration" in dicorun:
-            print('|  Split Run every:', dicorun["SingleExecDuration"], "({} exec[s])"
+            print('|  Split Run every:',
+                  dicorun["SingleExecDuration"], "({} exec[s])"
                   .format(nbrun))
         else:
             print('|  Run not splitted ({} exec)'.format(nbrun))
@@ -427,10 +439,10 @@ class LongCplDriver:
         print('|')
         print('|  Interfaces:      ')
         for itf in self.couplingdef["Interfaces"]:
-            print('|    {:<12.12s} ({:<10.10s}) {:<10.10s} of {:<12.12s}'.format(
-                "{}:{}".format(itf["Id1D"], itf["IdExtr1D"]), itf["Condition1D"],
-                itf["1DPosition"],
-                "{}:{}".format(itf["Id2D"], itf["LiqBdry2D"])))
+            print('|    {:<12.12s} ({:<10.10s}) {:<10.10s} of {:<12.12s}'
+                  .format("{}:{}".format(itf["Id1D"], itf["IdExtr1D"]),
+                          itf["Condition1D"], itf["1DPosition"],
+                          "{}:{}".format(itf["Id2D"], itf["LiqBdry2D"])))
         print("+--------------------------------------------------------+\n")
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -488,20 +500,23 @@ class LongCplDriver:
                 current_run["1D"][name] = {}
                 folder_lig = \
                     os.path.dirname(self.dico_file_model1d[name]["lig"])
-                file = "WaterLine_{}_{}.lig".format(name,
-                                                    ('%.6f' % tstart).rstrip('0').rstrip('.'))
+                file = "WaterLine_{}_{}.lig"\
+                    .format(name, ('%.6f' % tstart).rstrip('0').rstrip('.'))
                 file_lig = os.path.join(folder_lig, file)
                 if not os.path.exists(file_lig):
-                    raise IOError("ERROR: MISSING WATERLINE FILE {}".format(file_lig))
+                    raise IOError(
+                        "ERROR: MISSING WATERLINE FILE {}".format(file_lig))
                 current_run["1D"][name]["WaterLineFile"] = file_lig
 
-                file = "bc1D_restart_{}_{}.json".format(name,
-                                                        ('%.6f' % tstart).rstrip('0').rstrip('.'))
+                file = "bc1D_restart_{}_{}.json"\
+                    .format(name, ('%.6f' % tstart).rstrip('0').rstrip('.'))
                 file_bc = os.path.join(folder_lig, file)
                 if os.path.exists(file_bc):
                     copy2(file_bc, os.path.join(self.case_path, 'EXEC'))
 
-                current_run['config_{}'.format(name)] = self.list_dico_mod['config_{}'.format(name)]
+                current_run['config_{}'
+                            .format(name)] =\
+                    self.list_dico_mod['config_{}'.format(name)]
 
                 i_b += 1
             current_run['coupling_def'] = self.couplingdef
@@ -518,7 +533,8 @@ class LongCplDriver:
             i_b = 0
             while i_b < self.param['nb_mod_1d']:
                 pattern = 'listing .*$'
-                filedst = os.path.join(self.case_path, "Results", "COUPLING_FROM_{}".format(tdeb),
+                filedst = os.path.join(self.case_path, "Results",
+                                       "COUPLING_FROM_{}".format(tdeb),
                                        "ResultatsListing_{}.lis"
                                        .format(self.param['nom_mod_1d'][i_b]))
                 repl = 'listing ' + filedst
@@ -531,9 +547,10 @@ class LongCplDriver:
 
                 i_b += 1
             #    # ~~~  Suppression of old listing files of MASCARET~~~~~
-            #    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            #    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             globpattern = os.path.join(self.case_path,
-                                       'Results', 'COUPLING_FROM_{}'.format(tdeb),
+                                       'Results',
+                                       'COUPLING_FROM_{}'.format(tdeb),
                                        'Res')
             globpattern = globpattern + "*.lis"
             for file in glob.glob(globpattern):
@@ -543,15 +560,17 @@ class LongCplDriver:
             #    # ~~~~~~~~~~~~~~~~~~~~~~~
             listing_file = os.path.basename(self.cas_file)
             listing_file = '{}.stdout'.format(listing_file)
-            print("Running the coupled model between init time {} and end time {}"
-                  .format(tstart, tstop))
+            print("Running the coupled model between init time {} "
+                  "and end time {}".format(tstart, tstop))
 
             cmd = mpirun_cmd()
-            cmd = cmd.replace('<ncsize>', str(int(self.param['nb_mod_1d'] + self.param['nb_proc_2D'])))
+            cmd = cmd.replace('<ncsize>', str(int(self.param['nb_mod_1d'] +
+                              self.param['nb_proc_2D'])))
 
-            launch_py =  os.path.join(os.environ['HOMETEL'], 'scripts', 'python3', 'run_cpl.py')
-            launch_exe = "{0} launcher --n1d {1} > {2}".format(launch_py,
-                                                               self.param['nb_mod_1d'], listing_file)
+            launch_py = os.path.join(os.environ['HOMETEL'], 'scripts',
+                                     'python3', 'run_cpl.py')
+            launch_exe = "{0} launcher --n1d {1} > {2}"\
+                .format(launch_py, self.param['nb_mod_1d'], listing_file)
 
             cmd = cmd.replace('<exename>', launch_exe)
 
@@ -565,7 +584,8 @@ class LongCplDriver:
             #
             #    # ~~~ Suppression of  MASCARET listing files~~~~~
             #    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            globpattern = os.path.join(self.case_path, 'Results', 'COUPLING_FROM_{}'
+            globpattern = os.path.join(self.case_path, 'Results',
+                                       'COUPLING_FROM_{}'
                                        .format(tdeb), 'Res')
             globpattern = globpattern + "*.lis"
             for file in glob.glob(globpattern):
@@ -578,8 +598,10 @@ class LongCplDriver:
             i_b = 0
             while i_b < self.param['nb_mod_1d']:
                 folder_lig = os.path.dirname(
-                    self.dico_file_model1d[self.param['nom_mod_1d'][i_b]]["lig"])
-                name_file = 'WaterLine_{}_*.lig'.format(self.param['nom_mod_1d'][i_b])
+                    self.dico_file_model1d[
+                        self.param['nom_mod_1d'][i_b]]["lig"])
+                name_file = 'WaterLine_{}_*.lig'.format(
+                    self.param['nom_mod_1d'][i_b])
                 for file in glob.glob(name_file):
                     file_mv(file, os.path.join(folder_lig, file))
                 if self.param['chkPts'] or tdeb + freq == tfinal:
@@ -589,7 +611,8 @@ class LongCplDriver:
                 i_b += 1
             if tdeb + freq < tfinal:
                 #    # ~~~ Creation 2D reprise files ~~~~~
-                chop_step = int(freq / (self.param['freq_res'] * self.param['dt_couplage']) + 1)
+                chop_step = int(freq / (self.param['freq_res'] *
+                                self.param['dt_couplage']) + 1)
 
                 if self.param['Run_type_2D'].lower() == 'parallele':
                     prepath_para = os.path.join(self.cas_file_tmp, 'T2DPRE')
@@ -610,7 +633,8 @@ class LongCplDriver:
                 filesrc = os.path.join(filesrc, "output",
                                        "ResultatsOpthyca_{0}.opt"
                                        .format(self.param['nom_mod_1d'][i_b]))
-                filedst = os.path.join(self.case_path, "Results", "COUPLING_FROM_{}"
+                filedst = os.path.join(self.case_path,
+                                       "Results", "COUPLING_FROM_{}"
                                        .format(tdeb),
                                        "ResultatsOpthyca_{}.opt"
                                        .format(self.param['nom_mod_1d'][i_b]))
@@ -619,14 +643,18 @@ class LongCplDriver:
                 filesrc = "study_par_{}".format(self.param['nom_mod_1d'][i_b])
                 filesrc = \
                     os.path.join(filesrc, "output",
-                                 self.dico_file_model1d[self.param['nom_mod_1d'][i_b]]['listing'])
+                                 self.dico_file_model1d[
+                                    self.param['nom_mod_1d'][i_b]]['listing'])
                 filedst = \
-                    os.path.join(self.case_path, "Results", "COUPLING_FROM_{}".format(tdeb),
-                                 self.dico_file_model1d[self.param['nom_mod_1d'][i_b]]['listing'])
+                    os.path.join(self.case_path, "Results",
+                                 "COUPLING_FROM_{}".format(tdeb),
+                                 self.dico_file_model1d[
+                                    self.param['nom_mod_1d'][i_b]]['listing'])
                 file_mv(filesrc, filedst, verbose=False)
                 i_b += 1
 
-            filedst = os.path.join(self.case_path, "Results", "COUPLING_FROM_{}"
+            filedst = os.path.join(self.case_path, "Results",
+                                   "COUPLING_FROM_{}"
                                    .format(tdeb), listing_file)
             file_mv(listing_file, filedst)
 
@@ -634,7 +662,9 @@ class LongCplDriver:
             result_file = os.path.basename(self.cas_file)
             result_file = '{}_Resultats.slf'.format(result_file)
             restart_dir = os.path.dirname(self.cas_file)
-            restart_file = os.path.join(restart_dir, 'WaterLineInit_{}.slf'.format(tdeb + freq))
+            restart_file = os.path.join(restart_dir,
+                                        'WaterLineInit_{}.slf'
+                                        .format(tdeb + freq))
 
             filedst = os.path.join(self.case_path,
                                    "Results", "COUPLING_FROM_{}".format(tdeb),
@@ -643,25 +673,30 @@ class LongCplDriver:
                 copy2("T2DRES", restart_file)
             file_mv("T2DRES", filedst)
 
-            if self.couplingdef["Coupling"]["Method"].lower() == "additiveschwarz" and \
+            if self.couplingdef["Coupling"]["Method"].lower() == \
+                "additiveschwarz" and \
                     (self.param['chkPts'] or tdeb + freq == tfinal):
                 restart_dir = os.path.dirname(self.cas_file)
                 i_b = 0
                 while i_b < self.param['nb_mod_2d']:
                     restart_file = 'bc2D_restart_{}_{}.json'. \
                         format(self.param['nom_mod_2d'][i_b], tdeb + freq)
-                    copy2(restart_file, os.path.join(restart_dir, restart_file))
+                    copy2(restart_file,
+                          os.path.join(restart_dir, restart_file))
                     i_b += 1
 
-            filedst = os.path.join(self.case_path, "Results", "COUPLING_FROM_{}".format(tdeb),
-                                   "Convergence_criteria.out")
+            filedst = os.path.join(
+                self.case_path, "Results", "COUPLING_FROM_{}".format(tdeb),
+                "Convergence_criteria.out")
             file_mv("Convergence_criteria.out", filedst)
-            filedst = os.path.join(self.case_path, "Results", "COUPLING_FROM_{}".format(tdeb),
-                                   "Convergence_criteria.csv")
+            filedst = os.path.join(
+                self.case_path, "Results", "COUPLING_FROM_{}".format(tdeb),
+                "Convergence_criteria.csv")
             file_mv("Convergence_criteria.csv", filedst)
             tdeb = tdeb + freq
 
-            if os.path.isdir(os.path.join(self.case_path, 'EXEC', '__pycache__')):
+            if os.path.isdir(os.path.join(self.case_path, 'EXEC',
+                             '__pycache__')):
                 rmtree(os.path.join(self.case_path, 'EXEC', '__pycache__'))
 
         # # ~~~~~~~~~~~~~~~~~~~~~~
@@ -672,7 +707,8 @@ class LongCplDriver:
         os.chdir("..")
         # cd ..
         end = time.time()
-        print("My work is done. Coupled job lasted : {} s \n".format(end - start))
+        print("My work is done. Coupled job lasted : {} s \n"
+              .format(end - start))
         os.chdir(previous_path)
 
     def run(self):

@@ -52,6 +52,7 @@ subroutine EXPORT_XML(RetourErreur, Identifiant, NomFichier, avecDesc, exportMod
    integer index1, index2, index3, valInt, tailleString
    real(8) valDouble
    logical valBool
+   logical tracerOption
    character(LEN=256) valString
    integer taille1, taille2, taille3,taille
    character(len=255) baliseModeleEtat
@@ -69,6 +70,9 @@ subroutine EXPORT_XML(RetourErreur, Identifiant, NomFichier, avecDesc, exportMod
       RETURN
    end if
 
+   ! Test for Tracer option
+   call GET_BOOL_MASCARET(RetourErreur, Identifiant, 'Model.TracerOn', 0, 0, 0, tracerOption)
+
    call OUVERTURE_BALISE_XML(RetourErreur, Identifiant, NomFichier, uniteLogique, baliseModeleEtat)
 
    ! Initialisation des noms et des descriptions des variables MASCARET
@@ -80,22 +84,23 @@ subroutine EXPORT_XML(RetourErreur, Identifiant, NomFichier, avecDesc, exportMod
 
    do i=1, NB_VAR_MASCARET
       nomVar = TabNom(i)
-      erreur = GET_TYPE_VAR_MASC(nomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
-      if (erreur /= 0) then
-         RetourErreur = erreur
-         RETURN
-      end if
+     if(xor(index(nomVar, '.Tracer').gt.0, tracerOption).eqv..false.) then
+        erreur = GET_TYPE_VAR_MASC(nomVar, TypeVar, Categorie, Modifiable, dimVar, MessageErreur)
+        if (erreur /= 0) then
+           RetourErreur = erreur
+           RETURN
+        end if
 
-      if ((exportModele       .AND. (Categorie=='MODEL')).OR. &
-         ((.NOT.exportModele) .AND. (Categorie/='MODEL'))    ) then
+        if ((exportModele       .AND. (Categorie=='MODEL')).OR. &
+           ((.NOT.exportModele) .AND. (Categorie/='MODEL'))    ) then
 
-         call EXPORT_VAR_XML(erreur, Identifiant, uniteLogique, nomVar, avecDesc)
-         if (erreur /= 0) then
-            RetourErreur = erreur
-            RETURN
-         end if
-      end if
-
+           call EXPORT_VAR_XML(erreur, Identifiant, uniteLogique, nomVar, avecDesc)
+           if (erreur /= 0) then
+              RetourErreur = erreur
+              RETURN
+           end if
+        end if
+      endif
    end do
 
    ! Fermeture de l'entete XML
@@ -690,7 +695,7 @@ subroutine EXPORT_DIM2(Erreur, Identifiant, NomVar, TypeVar, UniteLogique)
 
       write(UniteLogique,"(3x,'<',A,' dim=""1"" taille=""',A,'"">')") TRIM(TypeVar), TRIM(adjustl(tailleString))
       do j=1, taille2
-         call getValeurString(Erreur, Identifiant, NomVar, TypeVar, i, j, 1, valeur)
+         call getValeurString(Erreur, Identifiant, NomVar, TypeVar, i, j, 0, valeur)
          if (Erreur /= 0) then
            return
          end if
@@ -849,5 +854,3 @@ subroutine FERMETURE_BALISE_XML(erreur, Identifiant, uniteLogique, balise)
    write(uniteLogique,"('</',A,'>')") TRIM(balise)
    close(uniteLogique)
 end subroutine FERMETURE_BALISE_XML
-
-

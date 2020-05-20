@@ -1,6 +1,38 @@
 Trunk
 ===========================
 
+TELEMAC-2D: new keyword to calibrate the 2D mixing length turbulence model
+  - MIXING LENGTH MODEL COEFFICIENTS
+
+TELEMAC-3D: new default value for keyword COEFFICIENT OF WIND INFLUENCE VARYING
+WITH WIND SPEED = YES (old = NO)
+
+TELEMAC-3D: new keywords
+  - MINIMUM VOLUME OF 3D ELEMENTS
+  - MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE BOTTOM
+  - MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE FREE SURFACE
+  - THRESHOLD HEIGHT BEFORE CRUSHED ELEMENTS
+
+TELEMAC-3D: fix the reading of BINARY BOUNDARY DATA FILE and the computation
+of HBOR using it in BORD3D
+
+TELEMAC-3D: fix the bad initialisation of wave variables transmitted to GAIA
+in case of triple coupling TELEMAC-3D+TOMAWAC+GAIA
+
+TELEMAC-3D: fix of wrong argument when calling CVDF3D with Spalart-Allmaras or
+DES turbulence models, now connected to a k-epsilon model parameter
+
+TELEMAC-3D: Deleted keywords
+  - 3D RESULT FILE BINARY
+  - 2D RESULT FILE BINARY
+
+TELEMAC-2D: Deleted keywords
+  - PSI SCHEME OPTION
+  - PROPAGATION OPTION
+  - UPWIND COEFFICIENTS
+  - TIME STEP REDUCTION FOR K-EPSILON MODEL
+  - COUPLING DIRECTORY
+
 TOMAWAC: Changing name of variables in spectrum file now FXXXXXPT2DXXXXXX (for
 exmaple F00001PT2D000303)
 

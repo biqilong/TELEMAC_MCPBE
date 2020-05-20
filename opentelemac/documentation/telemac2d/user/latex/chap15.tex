@@ -21,21 +21,22 @@ keyword \telkey{PARALLEL PROCESSORS}.
 The keyword may have the following values:
 
 \begin{itemize}
-\item 0: Use of the classical version of \telemac{2d},
+\item 0: Use of the classical version of \telemac{2d}
+(in a parallel version same as 1),
 
 \item 1: Use of the parallel version of \telemac{2d} with one processor,
 
 \item N: Use of the parallel version of \telemac{2d} with the specified number
-of processors, here N (it can work also just for testing on a single processor!).
+of processors, here N.
 \end{itemize}
 
-Domain decomposition and results file combination operations are now automatic
-and handled completely by the start-up procedure.
+%Domain decomposition and results file combination operations are now automatic
+%and handled completely by the start-up procedure.
+The parallel version uses a domain decomposition method to split/merge the mesh
+for each processor.
+Those extra steps are done using PARTEL/GRETEL and are launched by the Python
+execution scripts.
 
-Parallel machines are eventually configured by a single file (see system
-installation document).
-
-Note that for Python version of TELEMAC, the number of processors/cores can be
-given as an argument for the launching command and not as a hard-coded keyword
-in the \telkey{STEERING FILE}
+Note that the number of processors/cores can be given as an argument for the
+launching command and not as a hard-coded keyword in the \telkey{STEERING FILE}
 (e.g. telemac2d.py --ncsize=4 cas.txt will run \telemac{2d} on 4 processors).

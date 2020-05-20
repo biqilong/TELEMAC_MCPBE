@@ -30,12 +30,12 @@ The three-dimensional mesh, consisting of prisms possibly cut into
 %in that case but the default element for discretization is a prism
 %with \telkey{ELEMENT} = 'PRISM'),
 tetrahedrons, is automatically constructed by \telemac{3D} from the
-two-dimensional mesh. This construction is done in the subroutine
-\telfile{CALCOT} from the information given by the subroutine defining the
+two-dimensional mesh. This construction is done in the \telfile{CALCOT}
+subroutine from the information given by the subroutine defining the
 mesh transformation \telfile{USER\_MESH\_TRANSF} or, by default if using a
 classical sigma transformation, in the \telfile{CONDIM} subroutine.
 
-The number of prisms is specified in the data file by means of the keyword
+The number of prisms is specified in the steering file by means of the keyword
 \telkey{NUMBER OF HORIZONTAL LEVELS} (default value = 2). That number of levels
 is equivalent to the number of stacked prisms plus 1. Its minimum value is 2 (1
 prism in the vertical direction).
@@ -83,7 +83,7 @@ A value of 2 (Figure \ref{fig:mesh_transf2}) will allow the user to define the
 distribution of levels (e.g. refinement near surface) while maintaining the
 levels mobility (sigma transformation with given proportions). The latter
 choice implies that the user will program his/her distribution in the
-\telfile{USER\_MESH\_TRANSF} subroutine to define the array \telfile{ZSTAR}
+\telfile{USER\_MESH\_TRANSF} subroutine to define the \telfile{ZSTAR} array
 that describes
 the distribution of levels along the vertical as a percentage of the water depth.
 Changes to make are:
@@ -191,12 +191,37 @@ ZPLANE%R(6)=0.D0
 \end{figure}
 
 Various programming examples are provided as comments in the
-\telfile{USER\_MESH\_TRANSF} subroutine.
+\telfile{USER\_MESH\_TRANSF} subroutine.\\
 
 The triangular based prismatic elements can optionally be split into
 tetrahedrons. This option is enabled using the \telkey{ELEMENT} keyword can
-take the value 'PRISM' (default value) or 'TETRAHEDRON'.
+take the value 'PRISM' (default value) or 'TETRAHEDRON'.\\
 
+There are some divisions by 3D volumes in the \telfile{MESH\_PROP} subroutine.
+A minimum volume value can be set with the keyword
+\telkey{MINIMUM VOLUME OF 3D ELEMENTS} expressed in m$^3$
+(default = $10^{\rm{-6}}$~m$^3$ = 1~cm$^3$).
+This value can be changed, for example when modelling scale experiments where
+dimensions are not big (total length of the order 1~m or less).\\
+
+When using \telkey{MESH TRANSFORMATION} = 3, for all or several planes,
+the distance between this kind of planes are spaced with a minimum value.
+Close to the bottom, this minimum distance between planes can be set with the
+keyword \telkey{MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE BOTTOM}
+whereas close to the free surface, this minimum distance can be set with the
+keyword \telkey{MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE FREE SURFACE}.
+By default, each distance is set to 0.2~m.
+
+The keyword \telkey{THRESHOLD HEIGHT BEFORE CRUSHED ELEMENTS} can be used
+to decide below which height the 3D elements are treated as crushed.
+This is not done for the free surface plane.
+The default value 0~m means there are no elements treated as crushed
+(outside tidal flats).
+With constant elevation planes, to have crushed elements at the bottom rather
+than elements at the bottom with a minimum height of
+\telkey{MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE BOTTOM},
+this last keyword should be set to 0~m and
+\telkey{THRESHOLD HEIGHT BEFORE CRUSHED ELEMENTS} to a value greater than 0~m.
 
 \section{Prescribing the initial conditions}
 

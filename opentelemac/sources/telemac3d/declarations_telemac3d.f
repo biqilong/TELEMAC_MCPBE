@@ -2193,6 +2193,22 @@
 !
       DOUBLE PRECISION, PARAMETER :: EPS_AED2 = 1.D-9
 !
+!     MINIMUM VOLUME OF 3D ELEMENTS
+!
+      DOUBLE PRECISION MINIMUM_VOLUME
+!
+!     MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE BOTTOM
+!
+      DOUBLE PRECISION DISMIN_BOT
+!
+!     MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE FREE SURFACE
+!
+      DOUBLE PRECISION DISMIN_SUR
+!
+!     THRESHOLD HEIGHT BEFORE CRUSHED ELEMENTS
+!
+      DOUBLE PRECISION MIN_DZ
+!
 !-----------------------------------------------------------------------
 ! (7) STRINGS
 !-----------------------------------------------------------------------
@@ -2227,7 +2243,7 @@
 !
 !
 !
-      CHARACTER(LEN=3)  BINRES
+!     CHARACTER(LEN=3)  BINRES
 !
 !
 !
@@ -2235,7 +2251,7 @@
 !
 !
 !
-      CHARACTER(LEN=3)  BINHYD
+!     CHARACTER(LEN=3)  BINHYD
 !
 !     CHOICE OF EQUATIONS TO SOLVE
 !

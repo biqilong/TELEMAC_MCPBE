@@ -53,16 +53,9 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       DOUBLE PRECISION RPLS,RPLI,ZFP,ZSP,DISBOT,DISSUR
-      DOUBLE PRECISION DISMIN_BOT,DISMIN_SUR,MIN_DZ
       INTEGER IPOIN,IPLAN,I1,I2,ITRAC
 !
 !***********************************************************************
-!
-!     HARDCODED
-!
-      DISMIN_SUR = 0.2D0
-      DISMIN_BOT = 0.2D0
-      MIN_DZ     = 0.D0
 !
 !     1) IN ALL CASES: FREE SURFACE = BOTTOM+DEPTH
 !
@@ -181,7 +174,7 @@
 !
 !       5) A POINT THAT IS TOO CLOSE TO THE LOWER ONE ON A VERTICAL
 !          IS PUT ON THE LOWER, I.E. A MINIMUM HEIGHT IS PRESCRIBED
-!          IN ELEMENTS, OTHERS ARE FRANKLY SMASHED. THIS IS NOT DONE
+!          IN ELEMENTS, OTHERS ARE TREATED AS CRUSHED. THIS IS NOT DONE
 !          FOR FREE SURFACE.
 !
         IF(NPLAN.GT.2.AND.MIN_DZ.GT.0.D0) THEN

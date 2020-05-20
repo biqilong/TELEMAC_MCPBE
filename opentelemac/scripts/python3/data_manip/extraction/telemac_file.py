@@ -80,7 +80,6 @@ class TelemacFile(HermesFile):
         self._nvar = None
         self._varnames = None
         self._varunits = None
-        self._times = None
         self._values = None
         self._times = None
 
@@ -462,6 +461,21 @@ class TelemacFile(HermesFile):
             self.neighbours = mpltri.get_neighbors()
             self.edges = mpltri.get_edges()
 
+    def get_z_name(self):
+        """
+        Return name of the variable containing the Z elevation
+        If not found return None
+
+        @returns (str) name of the variable containing the z elevation
+        """
+        if "COTE Z" in self.varnames:
+            return "COTE Z"
+        elif "ELEVATION Z" in self.varnames:
+            return "ELEVATION Z"
+
+        return None
+
+
     #############################################
     #
     # Tools
@@ -502,7 +516,7 @@ class TelemacFile(HermesFile):
 
         if len(point) == 3:
             # Seaching in 3d mesh
-            meshz = self.get_data_value('ELEVATION Z', 0)
+            meshz = self.get_data_value(self.get_z_name(), 0)
             for i in range(self.npoin3):
                 dist = (self.meshx[i] - point[0])**2 + \
                        (self.meshy[i] - point[1])**2 + \
@@ -718,7 +732,7 @@ class TelemacFile(HermesFile):
         res = float('nan')*np.ones((len(points)), dtype=np.float64)
         for i, point in enumerate(points):
             elev = self.get_data_on_vertical_segment(
-                'ELEVATION Z', record, point[:-1])
+                self.get_z_name(), record, point[:-1])
             values = self.get_data_on_vertical_segment(
                 varname, record, point[:-1])
             for plan in range(self.nplan-1):
@@ -824,11 +838,13 @@ class TelemacFile(HermesFile):
 
         zref = np.zeros((self.npoin2), dtype=np.float64)
 
-        if 'ELEVATION Z' in self.varnames:
+        z_name = self.get_z_name()
+
+        if z_name is not None:
             if nplanref is not None:
                 zref = self.get_data_on_horizontal_plane(
-                    'ELEVATION Z', record, nplanref)
-            values_elevation = self.get_data_value('ELEVATION Z', record)
+                    z_name, record, nplanref)
+            values_elevation = self.get_data_value(z_name, record)
             values_elevation = values_elevation.reshape(self.nplan,
                                                         self.npoin2)
             values_var = self.get_data_value(varname, record)

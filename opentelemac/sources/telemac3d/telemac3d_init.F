@@ -1197,6 +1197,22 @@
 #endif
 !
 !=======================================================================
+!     COUPLING WITH TOMAWAC
+!=======================================================================
+!
+      IF(INCLUS(COUPLING,'TOMAWAC')) THEN
+!
+        WRITE (LU,*) 'TELEMAC-3D: INTERNAL COUPLING WITH TOMAWAC'
+        CALL CONFIG_CODE(3)
+        IF(DEBUG.GT.0) WRITE(LU,*) 'PREMIER APPEL DE TOMAWAC'
+        CALL T3D_WAC_CPL_UPDATE(0)
+        CALL WAC(PART=0)
+        IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE TOMAWAC'
+        CALL CONFIG_CODE(1)
+!
+      ENDIF
+!
+!=======================================================================
 !     COUPLING WITH GAIA OR SISYPHE
 !=======================================================================
 !
@@ -1260,22 +1276,6 @@
 !
         CALL CPSTVC(UN,U)
         CALL CPSTVC(VN,V)
-!
-      ENDIF
-!
-!=======================================================================
-!     COUPLING WITH TOMAWAC
-!=======================================================================
-!
-      IF(INCLUS(COUPLING,'TOMAWAC')) THEN
-!
-        WRITE (LU,*) 'TELEMAC-3D: INTERNAL COUPLING WITH TOMAWAC'
-        CALL CONFIG_CODE(3)
-        IF(DEBUG.GT.0) WRITE(LU,*) 'PREMIER APPEL DE TOMAWAC'
-        CALL T3D_WAC_CPL_UPDATE(0)
-        CALL WAC(PART=0)
-        IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE TOMAWAC'
-        CALL CONFIG_CODE(1)
 !
       ENDIF
 !

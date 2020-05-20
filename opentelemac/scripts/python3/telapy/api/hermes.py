@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#TODO: Add more logger info
+# TODO: Add more logger info
 """
     Python wrapper to the Fortran APIs of module hermes of Telemac-Mascaret
 
@@ -19,6 +19,7 @@ QUADRANGLE = 20
 TRIANGLE = 10
 BND_SEGMENT = 55
 BND_POINT = 1
+
 
 def elem2str(elem):
     """
@@ -45,6 +46,7 @@ def elem2str(elem):
         string = 'unknown'
 
     return string
+
 
 class HermesFile():
     """The Generic Python class for TELEMAC-MASCARET APIs"""
@@ -87,7 +89,7 @@ class HermesFile():
                 ext = 'dll'
             else:
                 raise TelemacException('Error: unsupported Operating System!')
-            raise TelemacException(\
+            raise TelemacException(
                     'Error: unable to load the dynamic library '
                     + '_hermes.' + ext
                     + '\nYou can check the environment variable:'
@@ -101,12 +103,12 @@ class HermesFile():
             else:
                 self.openmode = b'READ     '
                 if not path.exists(self.file_name):
-                    raise TelemacException(\
+                    raise TelemacException(
                             "Could not find {}".format(self.file_name))
         elif 'w' in access:
             self.openmode = b'WRITE    '
         else:
-            raise TelemacException(\
+            raise TelemacException(
                     "Error in access string '%s' \
                     should contain only r and/or w " % access)
 
@@ -115,19 +117,19 @@ class HermesFile():
                           self.fformat,
                           self.openmode)
         self.my_id, self.error = \
-                HermesFile._hermes.open_mesh(self.fformat,
-                                             self.file_name,
-                                             self.openmode)
+            HermesFile._hermes.open_mesh(self.fformat,
+                                         self.file_name,
+                                         self.openmode)
         if self.boundary_file is not None:
             self.logger.debug("Opening bnd %s in format %s in mode %s",
                               self.fformat,
                               self.file_name,
                               self.openmode)
             self._errror = \
-                    HermesFile._hermes.open_bnd(self.fformat,
-                                                self.boundary_file,
-                                                self.my_id,
-                                                self.openmode)
+                HermesFile._hermes.open_bnd(self.fformat,
+                                            self.boundary_file,
+                                            self.my_id,
+                                            self.openmode)
 
         if b'READ' in self.openmode:
             # Identifying elements type in files
@@ -169,10 +171,10 @@ class HermesFile():
         :param int value: value to assign
         """
         if value != 0:
-            self.logger.error("Hermes API error:\n%s", \
+            self.logger.error("Hermes API error:\n%s",
                               HermesFile._hermes.get_error_message())
-            raise TelemacException("Hermes API error:\n%s", \
-                              HermesFile._hermes.get_error_message())
+            raise TelemacException("Hermes API error:\n%s",
+                                   HermesFile._hermes.get_error_message())
         self._error = 0
 
     def close(self):
@@ -187,7 +189,8 @@ class HermesFile():
 
         self.logger.debug("Closing mesh file %s", self.file_name)
         if HermesFile._hermes is not None:
-            self.error = HermesFile._hermes.close_mesh(self.fformat, self.my_id)
+            self.error = HermesFile._hermes.close_mesh(self.fformat,
+                                                       self.my_id)
 
     def get_mesh_title(self):
         """
@@ -225,9 +228,9 @@ class HermesFile():
 
         self.logger.debug("Getting number of elements")
         nelem, self.error = \
-                HermesFile._hermes.get_mesh_nelem(self.fformat,
-                                                  self.my_id,
-                                                  self.typ_elem)
+            HermesFile._hermes.get_mesh_nelem(self.fformat,
+                                              self.my_id,
+                                              self.typ_elem)
 
         return nelem
 
@@ -239,7 +242,7 @@ class HermesFile():
         """
 
         self.logger.debug("Getting number of points per element")
-        ndp, self.error = HermesFile._hermes.get_mesh_npoin_per_element(\
+        ndp, self.error = HermesFile._hermes.get_mesh_npoin_per_element(
                        self.fformat,
                        self.my_id, self.typ_elem)
 
@@ -258,10 +261,10 @@ class HermesFile():
         ndp = self.get_mesh_npoin_per_element()
         self.logger.debug("Number of points per element: %d", ndp)
         tmp_ikle = np.zeros((nelem*ndp), dtype=np.int32)
-        self.error = HermesFile._hermes.get_mesh_connectivity(\
+        self.error = HermesFile._hermes.get_mesh_connectivity(
                       self.fformat, self.my_id, self.typ_elem,
                       tmp_ikle, nelem, ndp)
-        ikle = tmp_ikle.reshape((nelem, ndp)) -1
+        ikle = tmp_ikle.reshape((nelem, ndp)) - 1
 
         return ikle
 
@@ -274,7 +277,7 @@ class HermesFile():
 
         self.logger.debug("Getting number of points %d %d",
                           self.my_id, self.typ_elem)
-        npoin, self.error = HermesFile._hermes.get_mesh_npoin(\
+        npoin, self.error = HermesFile._hermes.get_mesh_npoin(
                            self.fformat, self.my_id, self.typ_elem)
 
         return npoin
@@ -287,7 +290,7 @@ class HermesFile():
         """
 
         self.logger.debug("Getting number of planes")
-        nplan, self.error = HermesFile._hermes.get_mesh_nplan(\
+        nplan, self.error = HermesFile._hermes.get_mesh_nplan(
                                    self.fformat, self.my_id)
 
         return nplan
@@ -300,7 +303,7 @@ class HermesFile():
         """
 
         self.logger.debug("Getting number of dimension")
-        ndim, self.error = HermesFile._hermes.get_mesh_dimension(\
+        ndim, self.error = HermesFile._hermes.get_mesh_dimension(
                                 self.fformat, self.my_id)
 
         return ndim
@@ -325,7 +328,7 @@ class HermesFile():
             var_names, _ = self.get_data_var_list()
             coord = self.get_data_value(var_names[0], 0)
         else:
-            self.error = HermesFile._hermes.get_mesh_coord(\
+            self.error = HermesFile._hermes.get_mesh_coord(
                     self.fformat,
                     self.my_id,
                     jdim,
@@ -345,7 +348,7 @@ class HermesFile():
         self.logger.debug("Getting local to gloval numbering")
         npoin = self.get_mesh_npoin()
         knolg = np.zeros((npoin), dtype=np.int32)
-        self.error = HermesFile._hermes.get_mesh_l2g_numbering(\
+        self.error = HermesFile._hermes.get_mesh_l2g_numbering(
                 self.fformat,
                 self.my_id,
                 knolg,
@@ -361,7 +364,7 @@ class HermesFile():
         """
 
         self.logger.debug("Getting number of interface points")
-        nptir, self.error = HermesFile._hermes.get_mesh_nptir(\
+        nptir, self.error = HermesFile._hermes.get_mesh_nptir(
                             self.fformat, self.my_id)
 
         return nptir
@@ -377,7 +380,7 @@ class HermesFile():
         npoin = self.get_mesh_npoin()
         nelebd = self.get_bnd_nelem()
         ipobo = np.zeros((npoin), dtype=np.int32)
-        self.error = HermesFile._hermes.get_bnd_ipobo(\
+        self.error = HermesFile._hermes.get_bnd_ipobo(
                            self.fformat,
                            self.my_id,
                            nelebd,
@@ -397,7 +400,7 @@ class HermesFile():
         self.logger.debug("Getting boundary numbering")
         nptfr = self.get_bnd_npoin()
         nbor = np.zeros((nptfr), dtype=np.int32)
-        self.error = HermesFile._hermes.get_bnd_numbering(\
+        self.error = HermesFile._hermes.get_bnd_numbering(
                               self.fformat,
                               self.my_id,
                               self.typ_bnd_elem,
@@ -421,7 +424,7 @@ class HermesFile():
         else:
             ndp = 1
         tmp_ikle_bnd = np.zeros((nelebd*ndp), dtype=np.int32)
-        self.error = HermesFile._hermes.get_bnd_connectivity(\
+        self.error = HermesFile._hermes.get_bnd_connectivity(
                            self.fformat,
                            self.my_id,
                            self.typ_bnd_elem,
@@ -443,7 +446,7 @@ class HermesFile():
         """
 
         self.logger.debug("Getting number of boundary points")
-        nptfr, self.error = HermesFile._hermes.get_bnd_npoin(\
+        nptfr, self.error = HermesFile._hermes.get_bnd_npoin(
                                     self.fformat,
                                     self.my_id,
                                     self.typ_bnd_elem)
@@ -458,7 +461,7 @@ class HermesFile():
         """
 
         self.logger.debug("Getting number of boundary elements")
-        nelebd, self.error = HermesFile._hermes.get_bnd_nelem(\
+        nelebd, self.error = HermesFile._hermes.get_bnd_nelem(
                                    self.fformat,
                                    self.my_id,
                                    self.typ_bnd_elem)
@@ -488,7 +491,7 @@ class HermesFile():
         tbor = np.zeros((nptfr))
         atbor = np.zeros((nptfr))
         btbor = np.zeros((nptfr))
-        self.error = HermesFile._hermes.get_bnd_value(\
+        self.error = HermesFile._hermes.get_bnd_value(
                                                 self.fformat,
                                                 self.my_id,
                                                 self.typ_bnd_elem,
@@ -508,7 +511,7 @@ class HermesFile():
                                                 nptfr)
 
         color = np.zeros((nptfr), dtype=np.int32)
-        self.error = HermesFile._hermes.get_bnd_color(\
+        self.error = HermesFile._hermes.get_bnd_color(
                                 self.fformat, self.my_id,
                                 self.typ_bnd_elem,
                                 color)
@@ -524,7 +527,7 @@ class HermesFile():
         """
 
         self.logger.debug("Get number of variables")
-        nvar, self.error = HermesFile._hermes.get_data_nvar(\
+        nvar, self.error = HermesFile._hermes.get_data_nvar(
                                    self.fformat,
                                    self.my_id)
 
@@ -563,7 +566,7 @@ class HermesFile():
         """
 
         self.logger.debug("Get data ntimestep")
-        ntimestep, self.error = HermesFile._hermes.get_data_ntimestep(\
+        ntimestep, self.error = HermesFile._hermes.get_data_ntimestep(
                                 self.fformat, self.my_id)
 
         return ntimestep
@@ -579,12 +582,12 @@ class HermesFile():
 
         if record == -1:
             ntimestep = self.get_data_ntimestep()
-            rrecord = ntimestep -1
+            rrecord = ntimestep - 1
         else:
             rrecord = record
 
         self.logger.debug("Get data time at %d", record)
-        time, self.error = HermesFile._hermes.get_data_time(\
+        time, self.error = HermesFile._hermes.get_data_time(
                                       self.fformat,
                                       self.my_id,
                                       rrecord)
@@ -608,13 +611,13 @@ class HermesFile():
 
         if record == -1:
             ntimestep = self.get_data_ntimestep()
-            rrecord = ntimestep -1
+            rrecord = ntimestep - 1
         else:
             rrecord = record
 
         self.logger.debug("Getting data for %s at %d",
                           var_name2, record)
-        self.error = HermesFile._hermes.get_data_value(\
+        self.error = HermesFile._hermes.get_data_value(
                                        self.fformat,
                                        self.my_id,
                                        rrecord,
@@ -645,10 +648,9 @@ class HermesFile():
                 tmp_var_name[i*32+16+j] = unitj.encode('utf-8')
 
         self.logger.debug("Writing header information")
-        self.error = HermesFile._hermes.set_header(\
+        self.error = HermesFile._hermes.set_header(
                                     self.fformat, self.my_id,
                                     tmp_title, tmp_var_name, nvar)
-
 
     def set_mesh(self, mesh_dim, typ_elem, ndp, nptfr, nptir, nelem, npoin,
                  ikles, ipobo, knolg, coordx, coordy, nplan, date,
@@ -684,7 +686,7 @@ class HermesFile():
         tmp_ikle = ikles.T.reshape((nelem*ndp)) + 1
 
         self.logger.debug("Writing mesh information")
-        self.error = HermesFile._hermes.set_mesh(\
+        self.error = HermesFile._hermes.set_mesh(
                                  self.fformat, self.my_id,
                                  mesh_dim, typ_elem, ndp, nptfr,
                                  nptir, nelem, tmp_ikle,
@@ -711,7 +713,7 @@ class HermesFile():
 
         self.logger.debug("Writing data for %s at record %d",
                           tmp_var_name, record)
-        self.error = HermesFile._hermes.add_data(\
+        self.error = HermesFile._hermes.add_data(
                                   self.fformat, self.my_id,
                                   tmp_var_name, time, record,
                                   first_var, values, nval)
@@ -747,7 +749,7 @@ class HermesFile():
         tmp_ikle = ikle.T.reshape((nelebd*ndp))
 
         self.logger.debug("Writing boundary file")
-        self.error = HermesFile._hermes.set_bnd(\
+        self.error = HermesFile._hermes.set_bnd(
                                       self.fformat, self.my_id,
                                       typ_bnd_elem, nelebd, ndp, tmp_ikle,
                                       lihbor,
@@ -807,7 +809,7 @@ class HermesFile():
         tmp_ikle_bnd = ikle_bnd.T.reshape((nelebd*ndp))
 
         self.logger.debug("Transfering group information")
-        self.error = HermesFile._hermes.transfer_group_info(\
+        self.error = HermesFile._hermes.transfer_group_info(
                    self.fformat, src.my_id,
                    self.my_id, self.typ_elem,
                    tmp_typ_bnd_elem, tmp_ikle_bnd, nelebd, ndp,

@@ -82,6 +82,7 @@
       INTEGER ISEG,NB1,NB2,IELEM,I,I1,I2,I3
       DOUBLE PRECISION XEL,YEL,XG1,XG2,YG1,YG2,XSOM(3),YSOM(3)
       DOUBLE PRECISION X_MIDPOINT,Y_MIDPOINT,DET
+      DOUBLE PRECISION, ALLOCATABLE :: TMP_CMI1(:), TMP_CMI2(:)
 !
 !-----------------------------------------------------------------------
 !   INITIALIZATION OF VARIABLES
@@ -155,7 +156,7 @@
           CMI(1,ISEG) = X_MIDPOINT
           CMI(2,ISEG) = Y_MIDPOINT
           ! JMI: IN WHICH ELEMENT IS CMI
-          ! WE USE CROSS PRODUCT 
+          ! WE USE CROSS PRODUCT
           XSOM(1)=X(NB1)
           XSOM(2)=X(NB2)
           YSOM(1)=Y(NB1)
@@ -166,8 +167,8 @@
 
           IF(ORISEG(IELEM,I).EQ.2) DET = -DET
 !         BE CARREFUL FIXME:
-!           - IN CASE OF ISEG IS AT THE INTERFACE OF THE TRIANGLE 
-!             EACH SUBDOMAIN WILL SEE IT       
+!           - IN CASE OF ISEG IS AT THE INTERFACE OF THE TRIANGLE
+!             EACH SUBDOMAIN WILL SEE IT
           IF(DET.GE.0.D0) THEN
             JMI(ISEG) = IELEM
           ENDIF
@@ -177,12 +178,19 @@
 !     FOR PARALLELISM
 !
       IF(NCSIZE.GT.1) THEN
-!       TODO: CMI(1,1:NSEG) HERE IMPLIES A TEMPORARY COPY BY THE COMPILER
-!       AND THEN A REDISTRIBUTION
-        CALL PARCOM2_SEG(CMI(1,1:NSEG),
-     &                   CMI(2,1:NSEG),
+!       TODO: Manually creating temporary array
+        ALLOCATE(TMP_CMI1(NSEG))
+        ALLOCATE(TMP_CMI2(NSEG))
+        TMP_CMI1 = CMI(1,1:NSEG)
+        TMP_CMI2 = CMI(2,1:NSEG)
+        CALL PARCOM2_SEG(TMP_CMI1,
+     &                   TMP_CMI2,
      &                   CMI,
      &                   NSEG,1,1,2,MESH,1,11)
+        CMI(1,1:NSEG) = TMP_CMI1
+        CMI(2,1:NSEG) = TMP_CMI2
+        DEALLOCATE(TMP_CMI1)
+        DEALLOCATE(TMP_CMI2)
       ENDIF
 !
 ! BOUNDARY SEGMENTS

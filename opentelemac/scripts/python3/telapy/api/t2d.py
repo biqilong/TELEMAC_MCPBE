@@ -70,7 +70,7 @@ class Telemac2d(ApiModule):
         self.nbTrac = None
         self.aksave = None
         self.epsave = None
-        self.tracsave=None
+        self.tracsave = None
 
     def save_state(self):
         """
@@ -85,7 +85,7 @@ class Telemac2d(ApiModule):
             self.aksave = self.get_array('MODEL.AK')
             self.epsave = self.get_array('MODEL.EP')
 
-        if self.nbTrac>0:
+        if self.nbTrac > 0:
             for k in range(self.nbTrac):
                 self.tracsave[k] = self.get_array('MODEL.TRACER')
 

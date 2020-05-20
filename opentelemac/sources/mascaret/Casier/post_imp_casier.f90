@@ -66,7 +66,7 @@ subroutine POST_IMP_CASIER( &
    integer :: ull, ulc, retour
    integer :: icasier, nb_casier, iliaison, nb_liaison
 
-!============================ Instructions ============================== 
+!============================ Instructions ==============================
 
    ! INITIALISATION
    ! --------------
@@ -76,7 +76,7 @@ subroutine POST_IMP_CASIER( &
    ulc = FichierListingCasier%Unite
    ull = FichierListingLiaison%Unite
 
-   ! ECRITURE DES DONNEES INITIALES CASIER 
+   ! ECRITURE DES DONNEES INITIALES CASIER
    ! =====================================
    if( PhaseSimulation == PHASE_INITIALISATION ) then
       write(ulc,'(A)') "/* caracteristiques des casiers : resultats */"
@@ -99,7 +99,7 @@ subroutine POST_IMP_CASIER( &
    write (ulc,"('******** TEMPS ******** = ',f12.1,' s')") TEMPS
    write(ulc,*)
    do icasier = 1 , nb_casier
-      write(ulc,"('""CAS',i3,'""',';',f8.5,';',f12.2,';',f12.2)") &
+      write(ulc,"('""CAS',i3,'""',';',f9.5,';',f12.2,';',f12.2)") &
          icasier, Casier(icasier)%Cote, Casier(icasier)%Surface , Casier(icasier)%Volume
       write(ulc,"(A,i3,f12.3)") "BILAN VOLUME CASIER", icasier , Casier(icasier)%Bilan
       write(ulc,"(A,i3,g15.9)") "ERREUR VOLUME CASIER", icasier, Casier(icasier)%BilanErreur

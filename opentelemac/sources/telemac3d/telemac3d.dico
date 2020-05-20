@@ -27,11 +27,11 @@
 /  - INTEGER (ENTIER):
 /       1-31,33-37,39-43,45-49,51-77,81-82,84-87,89-92,95-127 OUT OF 116
 /  - REAL (REEL):
-/       1-6,8-26,28-36,51-67,71-72,77-107,119 OUT OF  85
+/       1-6,8-26,28-40,51-67,71-72,77-107,119 OUT OF  89
 /  - LOGICAL (LOGIQUE):
 /       1-2,5-22,31-34,51-51,61-61,69-72,75-87,90-93,118-119 OUT OF  49
 /  - CHARACTER (CARACTERE):
-/       1-3,6-11,13-14,16-23,25-25,27-35,41-41,50-53,55-79,83-95,98-98,100-103 OUT OF  77
+/       1-3,6-11,13-14,16-23,28-35,41-41,50-53,55-79,83-95,98-98,100-103 OUT OF  75
 /
 /-------------------------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////
@@ -1126,94 +1126,6 @@ AIDE1 =
 'Determines the number of time steps after which the results
 are first written into the \telkey{2D} or \telkey{3D RESULT FILE}.'
 /
-NOM = 'BINAIRE DU FICHIER DES RESULTATS 3D'
-NOM1 = '3D RESULT FILE BINARY'
-TYPE = STRING
-INDEX = 25
-TAILLE = 1
-DEFAUT = 'STD'
-DEFAUT1 = 'STD'
-MNEMO = 'BINRES'
-CHOIX =
-'STD';
-'IBM';
-'I3E'
-CHOIX1 =
-'STD';
-'IBM';
-'I3E'
-RUBRIQUE =
-'ENVIRONNEMENT DE CALCUL';'SORTIE';'RESULTATS'
-RUBRIQUE1 =
-'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
-NIVEAU = 3
-AIDE =
-'Type du binaire utilise pour l''ecriture du
-\telkey{FICHIER DES RESULTATS 3D}.
-Ce type depend de la machine sur laquelle le fichier a ete genere.
-Les valeurs possibles sont :
-\begin{itemize}
-\item IBM pour un fichier cree sur IBM ;
-\item I3E pour un fichier cree sur HP ;
-\item STD.
-\end{itemize}
-Il s''agit alors d''ordres READ et WRITE normaux.'
-AIDE1 =
-'Binary file type used for writing the
-\telkey{3D RESULT FILE}.
-This type depends on the machine on which the file was generated.
-The possible values are as follows:
-\begin{itemize}
-\item IBM, for a file on an IBM (from a CRAY),
-\item I3E, for a file on an HP (from a CRAY),
-\item STD, binary type of the machine on which the user is working.
-\end{itemize}
-In that case, normal READ and WRITE commands are used.'
-/
-NOM = 'BINAIRE DU FICHIER DES RESULTATS 2D'
-NOM1 = '2D RESULT FILE BINARY'
-TYPE = STRING
-INDEX = 27
-TAILLE = 1
-DEFAUT = 'STD'
-DEFAUT1 = 'STD'
-MNEMO = 'BINHYD'
-CHOIX =
-'STD';
-'IBM';
-'I3E'
-CHOIX1 =
-'STD';
-'IBM';
-'I3E'
-RUBRIQUE =
-'ENVIRONNEMENT DE CALCUL';'SORTIE';'RESULTATS'
-RUBRIQUE1 =
-'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
-NIVEAU = 3
-AIDE =
-'Type du binaire utilise pour l''ecriture du
-\telkey{FICHIER DES RESULTATS 2D}.
-Ce type depend de la machine sur laquelle le fichier a ete genere.
-Les valeurs possibles sont :
-\begin{itemize}
-\item IBM pour un fichier cree sur IBM ;
-\item I3E pour un fichier cree sur HP ;
-\item STD.
-\end{itemize}
-Il s''agit alors d''ordres READ et WRITE normaux.'
-AIDE1 =
-'Binary file type used for writing the
-\telkey{2D RESULT FILE}.
-This type depends on the machine on which the file was generated.
-The possible values are as follows:
-\begin{itemize}
-\item IBM, for a file on an IBM (from a CRAY),
-\item I3E, for a file on an HP (from a CRAY),
-\item STD, binary type of the machine on which the user is working.
-\end{itemize}
-In that case, normal READ and WRITE commands are used.'
-/
 NOM = 'NOMBRE DE TABLEAUX PRIVES'
 NOM1 = 'NUMBER OF PRIVATE ARRAYS'
 TYPE = INTEGER
@@ -2187,6 +2099,81 @@ implemented),
 This keyword must comply with what is done in \telkey{CONDIM}
 subroutine.'
 /
+NOM = 'VOLUME MINIMAL DES ELEMENTS 3D'
+NOM1 = 'MINIMUM VOLUME OF 3D ELEMENTS'
+TYPE = REAL
+INDEX = 37
+TAILLE = 1
+DEFAUT = 1.E-6
+DEFAUT1 = 1.E-6
+MNEMO = 'MINIMUM\_VOLUME'
+RUBRIQUE =
+'VERTICALE';'';''
+RUBRIQUE1 =
+'VERTICAL';'';''
+AIDE =
+'Volume minimal des elements 3D exprime en m$^3$.'
+AIDE1 =
+'Minimum volume of 3D elements in m$^3$.'
+/
+NOM = 'DISTANCE MINIMALE ENTRE PLANS PRES DU FOND'
+NOM1 = 'MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE BOTTOM'
+TYPE = REAL
+INDEX = 38
+TAILLE = 1
+DEFAUT = 0.2
+DEFAUT1 = 0.2
+MNEMO = 'DISMIN\_BOT'
+RUBRIQUE =
+'VERTICALE';'';''
+RUBRIQUE1 =
+'VERTICAL';'';''
+AIDE =
+'Distance minimale entre plans pres du fond.
+Seulement pour les plans de type \telfile{TRANSF\_PLANE\%I(...)} = 3.'
+AIDE1 =
+'Minimum distance between planes close to the bottom.
+Only for planes of type \telfile{TRANSF\_PLANE\%I(...)} = 3.'
+/
+NOM = 'DISTANCE MINIMALE ENTRE PLANS PRES DE LA SURFACE LIBRE'
+NOM1 = 'MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE FREE SURFACE'
+TYPE = REAL
+INDEX = 39
+TAILLE = 1
+DEFAUT = 0.2
+DEFAUT1 = 0.2
+MNEMO = 'DISMIN\_SUR'
+RUBRIQUE =
+'VERTICALE';'';''
+RUBRIQUE1 =
+'VERTICAL';'';''
+AIDE =
+'Distance minimale entre plans pres de la surface libre.
+Seulement pour les plans de type \telfile{TRANSF\_PLANE\%I(...)} = 3.'
+AIDE1 =
+'Minimum distance between planes close to the free surface.
+Only for planes of type \telfile{TRANSF\_PLANE\%I(...)} = 3.'
+/
+NOM = 'HAUTEUR SEUIL AVANT ELEMENTS ECRASES'
+NOM1 = 'THRESHOLD HEIGHT BEFORE CRUSHED ELEMENTS'
+TYPE = REAL
+INDEX = 40
+TAILLE = 1
+DEFAUT = 0.
+DEFAUT1 = 0.
+MNEMO = 'MIN\_DZ'
+RUBRIQUE =
+'VERTICALE';'';''
+RUBRIQUE1 =
+'VERTICAL';'';''
+AIDE =
+'Hauteur minimale sous laquelle les elements 3D sont traites comme
+ecrases.
+Ce n est pas fait pour le plan de la surface libre.'
+AIDE1 =
+'Minimum height below which 3D elements are treated as crushed.
+This is not done for the free surface plane.'
+/
 ////////////////////////////////////////////////////////////////////////
 /// 4-NUMERICAL PARAMETERS
 ////////////////////////////////////////////////////////////////////////
@@ -2899,8 +2886,8 @@ NOM1 = 'COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED'
 TYPE = LOGICAL
 INDEX = 22
 TAILLE = 1
-DEFAUT = NON
-DEFAUT1 = NO
+DEFAUT = OUI
+DEFAUT1 = YES
 MNEMO = 'FAIRACCU'
 RUBRIQUE =
 'HYDRODYNAMIQUE';'PARAMETRES PHYSIQUES';'METEOROLOGIE'
@@ -2913,11 +2900,13 @@ NIVEAU = 0
 AIDE =
 'Si OUI, la valeur du coefficient d''entrainement du vent est
 calculee en fonction de la vitesse du vent.
-La valeur de \telkey{COEFFICIENT D''INFLUENCE DU VENT} est ecrasee.'
+La valeur de \telkey{COEFFICIENT D''INFLUENCE DU VENT} est ecrasee.
+Ancienne valeur par defaut = NON jusqu a la version V8P1.'
 AIDE1 =
 'If YES, the value of the wind driving coefficient is computed
 with respect to the wind velocity.
-The value of \telkey{COEFFICIENT OF WIND INFLUENCE} is overwritten.'
+The value of \telkey{COEFFICIENT OF WIND INFLUENCE} is overwritten.
+Old default value = NO until V8P1.'
 /
 NOM = 'PROFONDEUR LIMITE POUR LE VENT'
 NOM1 = 'THRESHOLD DEPTH FOR WIND'

@@ -805,8 +805,7 @@
 !
       ELSEIF(ITURB.EQ.5) THEN
 !
-        CALL MIXLENGTH(VISC,CF,U,V,H,MESH,T1,T2,T3,T4,MSK,MASKEL,PROPNU,
-     &                 UNSV2D,IELMU,NPTFR)
+        CALL MIXLENGTH(VISC,MESH,T1,T2,T3,T4)
 !
       ELSEIF(ITURB.EQ.6) THEN
 !
@@ -1221,12 +1220,12 @@
 !
         IF(INCLUS(COUPLING,'SISYPHE')) THEN
           WRITE (LU,*) 'ERROR:---------------------------------------'
-          WRITE (LU,*) 'ERROR:   Must not coulpe both: '
-          WRITE (LU,*) 'ERROR:               Telemc2D with Sisyphe'
-          WRITE (LU,*) 'ERROR:       and     Telemc2D with Nestor  !'
+          WRITE (LU,*) 'ERROR:   Must not couple both: '
+          WRITE (LU,*) 'ERROR:               Telemac2D with Sisyphe'
+          WRITE (LU,*) 'ERROR:       and     Telemac2D with Nestor  !'
           WRITE (LU,*) 'ERROR:    '
           WRITE (LU,*) 'ERROR:   In case you need Sisyphe and Nestor'
-          WRITE (LU,*) 'ERROR:   couple Netor with Sisyphe !'
+          WRITE (LU,*) 'ERROR:   couple Nestor with Sisyphe !'
           WRITE (LU,*) 'ERROR:---------------------------------------'
           CALL PLANTE(1)
           STOP

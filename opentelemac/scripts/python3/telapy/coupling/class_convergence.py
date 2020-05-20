@@ -15,7 +15,8 @@ class ClassConvergence:
         Constructor
         @param nb_model1d (int) :  number of 1D model
         @param do_stop (int) : Max iteration of schwarz loop
-        @param output (bool) : boolean indicating the creation of convergence file
+        @param output (bool) : boolean indicating the creation
+         of convergence file
         """
         self.nb_model1d = nb_model1d
         self.output = output
@@ -104,12 +105,14 @@ class ClassConvergence:
                 for ivar in range(len(self.list_out)):
                     var = self.list_out[ivar]
                     wdt = self.list_wdt[ivar]
-                    val_1d += '{}_1D : {:{wdt}.3f}'.format(var.upper(),
-                                                           eval('self.{}_1d[{}]'.format(var, i)),
-                                                           wdt=wdt)
-                    val_2d += '{}_2D : {:{wdt}.3f}'.format(var.upper(),
-                                                           eval('self.{}_2d[{}]'.format(var, i)),
-                                                           wdt=wdt)
+                    val_1d += '{}_1D : {:{wdt}.3f}' \
+                              .format(var.upper(),
+                                      eval('self.{}_1d[{}]'.format(var, i)),
+                                      wdt=wdt)
+                    val_2d += '{}_2D : {:{wdt}.3f}' \
+                              .format(var.upper(),
+                                      eval('self.{}_2d[{}]'.format(var, i)),
+                                      wdt=wdt)
                     if ivar == len(self.list_out) - 1:
                         val_1d += '\n'
                         val_2d += '\n'
@@ -123,8 +126,12 @@ class ClassConvergence:
                 for ivar in range(len(self.list_out)):
                     var = self.list_out[ivar]
                     wdt = self.list_wdt[ivar]
-                    line1d += '{:{wdt}.3f}'.format(eval('self.{}_1d[{}]'.format(var, i)), wdt=wdt)
-                    line2d += '{:{wdt}.3f}'.format(eval('self.{}_2d[{}]'.format(var, i)), wdt=wdt)
+                    line1d += '{:{wdt}.3f}' \
+                              .format(eval('self.{}_1d[{}]'.format(var, i)),
+                                      wdt=wdt)
+                    line2d += '{:{wdt}.3f}' \
+                              .format(eval('self.{}_2d[{}]'.format(var, i)),
+                                      wdt=wdt)
                     if ivar == len(self.list_out) - 1:
                         line1d += '\n'
                         line2d += '\n'

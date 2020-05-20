@@ -62,7 +62,7 @@ class Mascaret():
 
         :param str libmascaret: path to the library
         """
-        ld_library = os.environ['LD_LIBRARY_PATH']
+        ld_library = os.getenv('LD_LIBRARY_PATH')
         self.logger.debug('LD_LIBRARY_PATH: {}'.format(ld_library))
         self.logger.info('Loading {}...'.format(libmascaret))
         if sys.platform.startswith('linux') \
@@ -379,14 +379,13 @@ class Mascaret():
         var_name_c = (ctypes.c_char_p * 1)(var_name.encode('utf8'))
         id_masc_c = (ctypes.c_int * 1)(self.id_masc)
         val_c = ctypes.c_int()
-        true_c = ctypes.c_int()
         i_c = ctypes.c_int(i)
         j_c = ctypes.c_int(j)
         k_c = ctypes.c_int(k)
         self.logger.debug('Getting {}...'.format(var_name))
         self.error = self.libmascaret.C_GET_BOOL_MASCARET(
             id_masc_c, var_name_c, ctypes.byref(i_c), ctypes.byref(j_c),
-            ctypes.byref(k_c), ctypes.byref(val_c), ctypes.byref(true_c))
+            ctypes.byref(k_c), ctypes.byref(val_c))
         self.logger.debug('Value: val={}.'.format(val_c.value))
 
         return val_c.value == true_c.value
@@ -825,14 +824,15 @@ class Mascaret():
 
         @return (int) the number of BC of type 1,2,3,7
         """
-        nb_bc_c = ctypes.c_int()
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
+        nb_bc_c = (ctypes.c_int * 1)()
         self.logger.debug('Getting the number of boundary conditions...')
         self.error = self.libmascaret.C_GET_NB_CONDITION_LIMITE_MASCARET(
-            self.id_masc, ctypes.byref(nb_bc_c))
+            id_masc_c, nb_bc_c)
         self.logger.debug('Number of boundary conditions: {}.'
-                          .format(nb_bc_c.value))
+                          .format(nb_bc_c[0]))
 
-        return nb_bc_c.value
+        return nb_bc_c[0]
 
     def get_name_cl(self, num_cl):
         """Get the names of boundary conditions
@@ -843,13 +843,14 @@ class Mascaret():
 
         @return (int, str) the number of BC and name of type 1,2,3,7
         """
-        num_cl_c = ctypes.c_int(num_cl)
+        id_masc_c = (ctypes.c_int * 1)(self.id_masc)
+        num_cl_c = (ctypes.c_int * 1)(num_cl)
         name_all_bc = (ctypes.c_char_p * 1)((" " * 30).encode('utf8'))
         n_law = ctypes.c_int()
         self.logger.debug('Getting names of boundary condition #{}'.
-                          format(num_cl_c.value))
+                          format(num_cl_c))
         self.error = self.libmascaret.C_GET_NOM_CONDITION_LIMITE_MASCARET(
-            self.id_masc, num_cl_c, ctypes.byref(name_all_bc),
+            id_masc_c, num_cl_c, ctypes.byref(name_all_bc),
             ctypes.byref(n_law))
 
         return n_law.value, name_all_bc[0]

@@ -15,108 +15,109 @@ from utils.exceptions import TelemacException
 
 # Template for the Python script of a study
 STUDY_TEMPLATE =\
-"""#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# Class {module} import
-from telapy.api.t2d import {module}
-from mpi4py import MPI
+    """
+    #!/usr/bin/env python
+    # -*- coding: utf-8 -*-
+    # Class {module} import
+    from telapy.api.t2d import {module}
+    from mpi4py import MPI
 
-TMP_DIR_NAME = 'tmp_'
+    TMP_DIR_NAME = 'tmp_'
 
-def create_tmp_folder(tmp_path,data_path):
-    "Creating temporary folder and copying input files folder"
-    import string, random
-    from os import sep, mkdir, walk
-    from shutil import copy, copytree
-    #
-    liste_char = string.ascii_letters+string.digits
-    compteur = 7
-    random_string = ""
-    for i in range(compteur):
-        random_string += liste_char[random.randint(0,len(liste_char)-1)]
-    tmp_dir = tmp_path + sep + TMP_DIR_NAME + str(random_string)
-    mkdir(tmp_dir)
+    def create_tmp_folder(tmp_path,data_path):
+        "Creating temporary folder and copying input files folder"
+        import string, random
+        from os import sep, mkdir, walk
+        from shutil import copy, copytree
+        #
+        liste_char = string.ascii_letters+string.digits
+        compteur = 7
+        random_string = ""
+        for i in range(compteur):
+            random_string += liste_char[random.randint(0,len(liste_char)-1)]
+        tmp_dir = tmp_path + sep + TMP_DIR_NAME + str(random_string)
+        mkdir(tmp_dir)
 
-    # Copying all that is in the case dir into temporary folder
-    _, subdirs, files = next(walk(data_path))
-    for fle in files:
-        copy(data_path+sep+fle, tmp_dir)
-    for subdir in subdirs:
-        copytree(data_path+sep+subdir, tmp_dir+sep+subdir)
+        # Copying all that is in the case dir into temporary folder
+        _, subdirs, files = next(walk(data_path))
+        for fle in files:
+            copy(data_path+sep+fle, tmp_dir)
+        for subdir in subdirs:
+            copytree(data_path+sep+subdir, tmp_dir+sep+subdir)
 
-    return tmp_dir, random_string
+        return tmp_dir, random_string
 
-def delete_tmp_folder(tmp_path, res_path, random_string, res_file):
-    "Removing temporary folder and copying back result file"
-    from os import path
-    from shutil import copy, rmtree
-    #
-    copy(path.join(tmp_path, 'input.txt'),
-         path.join(res_path, 'input_'+random_string+'.txt'))
-    copy(path.join(tmp_path, 'output.txt'),
-         path.join(res_path, 'output_'+random_string+'.txt'))
-    root, ext = path.splitext(res_file)
-    copy(path.join(tmp_path, res_file),
-         path.join(res_path, root+'_'+random_string+ext))
+    def delete_tmp_folder(tmp_path, res_path, random_string, res_file):
+        "Removing temporary folder and copying back result file"
+        from os import path
+        from shutil import copy, rmtree
+        #
+        copy(path.join(tmp_path, 'input.txt'),
+             path.join(res_path, 'input_'+random_string+'.txt'))
+        copy(path.join(tmp_path, 'output.txt'),
+             path.join(res_path, 'output_'+random_string+'.txt'))
+        root, ext = path.splitext(res_file)
+        copy(path.join(tmp_path, res_file),
+             path.join(res_path, root+'_'+random_string+ext))
 
-    rmtree(tmp_path)
+        rmtree(tmp_path)
 
-def dump_input_data({inputs}):
-    "Dumping input data into a input.txt file"
-    input_file = 'input.txt'
-    with open(input_file,'w') as f:
-        f.write('#{input_names}\\n'.replace(',', ' '))
-        for iput in [{input_names}]:
-            f.write(str(iput)+' ')
+    def dump_input_data({inputs}):
+        "Dumping input data into a input.txt file"
+        input_file = 'input.txt'
+        with open(input_file,'w') as f:
+            f.write('#{input_names}\\n'.replace(',', ' '))
+            for iput in [{input_names}]:
+                f.write(str(iput)+' ')
 
-def dump_output_data({outputs}):
-    "Dumping output data into a input.txt file"
-    "Creating temporary folder and copying input files folder"
-    output_file = 'output.txt'
-    with open(output_file,'w') as f:
-        f.write('#{outputs}\\n'.replace(',', ' '))
-        for output in [{outputs}]:
-            f.write(str(output)+' ')
+    def dump_output_data({outputs}):
+        "Dumping output data into a input.txt file"
+        "Creating temporary folder and copying input files folder"
+        output_file = 'output.txt'
+        with open(output_file,'w') as f:
+            f.write('#{outputs}\\n'.replace(',', ' '))
+            for output in [{outputs}]:
+                f.write(str(output)+' ')
 
-def study_function({inputs}):
-    from os import path, sep, chdir
-    comm = MPI.COMM_WORLD
-    steering_file = path.basename('{steering_file}')
-    case_dir = path.dirname('{steering_file}')
-    if '{user_fortran}' == 'None':
-        user_fortran = None
-    else:
-        user_fortran = '{user_fortran}'.replace(case_dir+sep, '')
-    # Creating a temporary folder to run the study
-    tmp_dir, random_string = create_tmp_folder('{working_dir}', case_dir)
-    # Moving to the study folder
-    chdir(tmp_dir)
-    dump_input_data({input_names})
-    # Creation of the instance {module}
-    my_case = {module}(steering_file, user_fortran=user_fortran, comm=comm)
-    {run_config_getset}
-    # Reading the steering file informations
-    my_case.set_case()
-    {run_read_case_getset}
-    # Initalization
-    my_case.init_state_default()
-    {run_init_getset}
-    # Run all time steps
-    my_case.run_all_time_steps()
-    {run_timestep_getset}
-    # Ending the run
-    my_case.finalize()
-    {run_finalize_getset}
-    # Instance delete
-    del(my_case)
-    dump_output_data({outputs})
-    # Creating a temporary folder to run the study
-    delete_tmp_folder(tmp_dir, '{res_path}', random_string, res_file)
+    def study_function({inputs}):
+        from os import path, sep, chdir
+        comm = MPI.COMM_WORLD
+        steering_file = path.basename('{steering_file}')
+        case_dir = path.dirname('{steering_file}')
+        if '{user_fortran}' == 'None':
+            user_fortran = None
+        else:
+            user_fortran = '{user_fortran}'.replace(case_dir+sep, '')
+        # Creating a temporary folder to run the study
+        tmp_dir, random_string = create_tmp_folder('{working_dir}', case_dir)
+        # Moving to the study folder
+        chdir(tmp_dir)
+        dump_input_data({input_names})
+        # Creation of the instance {module}
+        my_case = {module}(steering_file, user_fortran=user_fortran, comm=comm)
+        {run_config_getset}
+        # Reading the steering file informations
+        my_case.set_case()
+        {run_read_case_getset}
+        # Initalization
+        my_case.init_state_default()
+        {run_init_getset}
+        # Run all time steps
+        my_case.run_all_time_steps()
+        {run_timestep_getset}
+        # Ending the run
+        my_case.finalize()
+        {run_finalize_getset}
+        # Instance delete
+        del(my_case)
+        dump_output_data({outputs})
+        # Creating a temporary folder to run the study
+        delete_tmp_folder(tmp_dir, '{res_path}', random_string, res_file)
 
-    return {outputs}
+        return {outputs}
 
-{outputs} = study_function({inputs})
-"""
+    {outputs} = study_function({inputs})
+    """
 NO_POSITION = -1
 RUN_SET_CONFIG_POS = 0
 RUN_READ_CASE_POS = 1
@@ -126,6 +127,7 @@ RUN_TIMESTEP_POS = 4
 RUN_FINALIZE_POS = 5
 
 VARINFO = {}
+
 
 def jdc_to_dict(jdc, command_list):
     """
@@ -139,11 +141,13 @@ def jdc_to_dict(jdc, command_list):
     exec("parameters = " + jdc.strip() in context)
     return context['parameters']
 
+
 def _args_to_dict(**kwargs):
     """
     Unreferrencing
     """
     return kwargs
+
 
 def get_jdc_dict_var_as_tuple(jdc_dict, varname):
     """
@@ -155,6 +159,7 @@ def get_jdc_dict_var_as_tuple(jdc_dict, varname):
         return (jdc_dict[varname],)
     else:
         return jdc_dict[varname]
+
 
 def generate_set(input_variable):
     """
@@ -199,6 +204,7 @@ def generate_set(input_variable):
 
     return string
 
+
 def generate_get(output_variable):
     """
     Will generate a string containing a call to the get of the api
@@ -225,6 +231,7 @@ def generate_get(output_variable):
         raise TelemacException("Missin Zone definition")
 
     return string
+
 
 def handle_variables(jdc):
     """
@@ -298,7 +305,7 @@ def get_result_keyword(module):
     if module == 'Telemac2d':
         key_name = 'MODEL.RESULTFILE'
     else:
-        raise TelemacException(\
+        raise TelemacException(
                 "module "+module+" is not handled "
                 "by generate_study yet!")
 
@@ -317,8 +324,8 @@ def get_result_file(module):
     var = {'NAME': 'res_file',
            'VAR_INFO': {'VAR_NAME': key_name,
                         'ZONE_DEF': {'INDEX': (0, 0, 0)}
-                       }
-          }
+                        }
+           }
     return generate_get(var)
 
 
@@ -335,8 +342,8 @@ def set_result_file(module, res_file):
     var = {'NAME': 'tmpname',
            'VAR_INFO': {'VAR_NAME': key_name,
                         'ZONE_DEF': {'INDEX': (0, 0, 0)}
-                       }
-          }
+                        }
+           }
     return generate_set(var).replace('tmpname', "'{}'".format(res_file))
 
 
@@ -365,13 +372,13 @@ def generate_study_script(jdc):
     res_folder = jdc.get('RESULT_DIRECTORY', path.dirname(steering_file))
 
     if 'RESULTS_FILE_NAME' in jdc:
-        getset[RUN_READ_CASE_POS] += set_result_file(\
+        getset[RUN_READ_CASE_POS] += set_result_file(
                                        module,
                                        jdc['RESULTS_FILE_NAME'])\
                                      + linesep + ' '*4
     getset[RUN_READ_CASE_POS] += get_result_file(module) + linesep + ' '*4
 
-    my_study = STUDY_TEMPLATE.format(\
+    my_study = STUDY_TEMPLATE.format(
             inputs=", ".join(inputs),
             input_names=", ".join(input_names),
             outputs=", ".join(output_names),
@@ -400,7 +407,7 @@ def generate_study_yacs(jdc):
     try:
         import SALOMERuntime
     except BaseException:
-        raise TelemacException(\
+        raise TelemacException(
                 "Missing Salome this function "
                 "is only available within Salome")
 

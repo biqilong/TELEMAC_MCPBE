@@ -85,6 +85,7 @@
       INTEGER IS,I1,I2,I3,JT,J,NSG,NUBO1,NUBO2,ILIM,I
       DOUBLE PRECISION AIRJ,DXTZ,DYTZ,AIX,AIY,AJX,AJY,FACT,TEMPOR
       DOUBLE PRECISION GRADI,GRADJ,GRIJ,GRJI,AMDS,DSH
+      DOUBLE PRECISION, ALLOCATABLE :: TMP_X1(:), TMP_X2(:), TMP_X3(:)
 !
 !-----------------------------------------------------------------------
 !
@@ -237,9 +238,18 @@
 !
 !  FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN  !  X1,X2,X3,NSEG,NPLAN,ICOM,IAN,MESH,OPT,IELM )
-        CALL PARCOM2_SEG(DSZ(1,1:NSEG),DSZ(2,1:NSEG),DSM(1:NSEG),
+        ! Manually creating contiguous arrays
+        ALLOCATE(TMP_X1(NSEG))
+        ALLOCATE(TMP_X2(NSEG))
+        TMP_X1 = DSZ(1,1:NSEG)
+        TMP_X2 = DSZ(2,1:NSEG)
+        CALL PARCOM2_SEG(TMP_X1,TMP_X2,DSM(1:NSEG),
      &                   NSEG,1,2,2,
      &                   MESH,1,11)
+        DSZ(1,1:NSEG) = TMP_X1
+        DSZ(2,1:NSEG) = TMP_X2
+        DEALLOCATE(TMP_X1)
+        DEALLOCATE(TMP_X2)
       ENDIF
 
       RETURN

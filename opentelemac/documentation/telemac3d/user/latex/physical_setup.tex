@@ -529,7 +529,8 @@ if $\| \vec{U}_{wind} \| > 19.22$ m/s & $a_{wind} = 2.513 \times 10^{-3}$ \\
 
 This formula can be activated by setting the keyword
 \telkey{COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED} to YES
-(default value is NO).
+(default value is YES since release 8.2).
+If YES, the value of \telkey{COEFFICIENT OF WIND INFLUENCE} is overwritten.
 
 The parameter \telkey{COEFFICIENT OF WIND INFLUENCE} asked for by \telemac{3D}
 is: $a_{wind} (\rho_{air} / \rho)$ and not only $a_{wind}$.

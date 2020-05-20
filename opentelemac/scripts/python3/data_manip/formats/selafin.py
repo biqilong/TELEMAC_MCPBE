@@ -229,7 +229,7 @@ class Selafin(object):
         Get values for a given time step and a list of variables
 
         @param frame (int) Time step to extract
-        @param vars_indexes (list) List of variable names
+        @param vars_indexes (list) List of variable indices
 
         @return (np.array) array containg the values for each variable
         """

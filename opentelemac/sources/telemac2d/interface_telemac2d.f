@@ -1899,16 +1899,11 @@
 !
       INTERFACE
         SUBROUTINE MIXLENGTH
-     &(VISC,CF,U,V,H,MESH,T1,T2,T3,T4,MSK,MASKEL,PROPNU,
-     & UNSV2D,IELMU,NPTFR)
+     &(VISC,MESH,T1,T2,T3,T4)
       USE BIEF_DEF
       IMPLICIT NONE
-      LOGICAL,          INTENT(IN)    :: MSK
-      INTEGER,          INTENT(IN)    :: IELMU,NPTFR
-      DOUBLE PRECISION, INTENT(IN)    :: PROPNU
       TYPE(BIEF_MESH),  INTENT(INOUT) :: MESH
       TYPE(BIEF_OBJ),   INTENT(INOUT) :: VISC,T1,T2,T3,T4
-      TYPE(BIEF_OBJ),   INTENT(IN)    :: MASKEL,CF,U,V,H,UNSV2D
         END SUBROUTINE
       END INTERFACE
 !-----------------------------------------------------------------------

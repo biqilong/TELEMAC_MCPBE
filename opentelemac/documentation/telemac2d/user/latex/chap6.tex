@@ -299,10 +299,16 @@ A description of this model, implementation and validation can be found in
 It is a combination of the depth-averaged parabolic eddy viscosity model
 with the Prandl's mixing length theory for the horizontal in order to account
 both the vertical and horizontal turbulence production.
-The calibration coefficients $\alpha_t$ and $C_l$ may be changed in the
-\telfile{MIXLENGTH} subroutine.
-Default values are $\alpha_t = \frac{0.4}{6}$ and $C_l = 0.2666667$.
+The calibration coefficients $C_l$ and $\alpha_t$ used in the
+\telfile{MIXLENGTH} subroutine may be changed by the means of the
+\telkey{MIXING LENGTH MODEL COEFFICIENTS} which is an array of 2 values
+in the same order: $C_l$ ; $\alpha_t$.
+Default values are $C_l = 0.1066667$ ($C_l = \frac{4 \kappa}{15}$) and
+$\alpha_t$ = 0.0666667 ($\alpha_t = \frac{\kappa}{6}$)
+with $\kappa$ the Von Karman constant set by default at 0.4 in \telemac{2d}.
 
+Warning: until release 8.1, the $C_l$ default value was hard-coded in the
+\telfile{MIXLENGTH} subroutine at $\frac{4}{15}$ without the $\kappa$ factor.
 
 \subsection{Spalart-Allmaras model}
 

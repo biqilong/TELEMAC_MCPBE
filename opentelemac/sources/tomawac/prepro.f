@@ -146,6 +146,7 @@
             SIZ_ISUB = 1
             JF_ISUB = 1
           ENDIF
+          ! Manually creating contiguous temporary array
           ALLOCATE(TMP_ISUB(SIZ_ISUB))
           TMP_ISUB = SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB)
           CALL CHARAC(SSHZ%ADR(JF)%P,SSHZ%ADR(JF)%P,0,
@@ -198,6 +199,9 @@
             SIZ_FRE = 1
             JF_FRE = 1
           ENDIF
+          ! Manually creating contiguous temporary array
+          ALLOCATE(TMP_ISUB(SIZ_ISUB))
+          TMP_ISUB = SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB)
           CALL CHARAC(SSHZ%ADR(JF)%P,SSHZ%ADR(JF)%P,0,
      &                CX,CY,SCT,SCF,STETA,SFR,DT,MESH3D%IFABOR,IELM3,
      &                NPOIN2,NPLAN,JF,NF,.FALSE.,SSHP1%ADR(JF)%P,
@@ -205,7 +209,7 @@
      &                ELT(1:NPOIN3,JF),ETA(1:NPOIN3,JF),
      &                FRE((JF_FRE-1)*SIZ_FRE+1:JF_FRE*SIZ_FRE),
      &                ITR01(1:NPOIN3,1),
-     &                SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB),
+     &                TMP_ISUB,
      &                ITR01(1:NPOIN3,2),MESH3D,NELEM2,NELEM2,
      &                MESH%IKLE, MESH%SURDET,
      &                BID,BID,SLVBID,0.D0,.FALSE.,3,BID,1,
@@ -215,6 +219,8 @@
      &                .TRUE.,
 !                     AND 4D
      &                .TRUE.)
+          SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB) = TMP_ISUB
+          DEALLOCATE(TMP_ISUB)
 !
         ENDDO
 !

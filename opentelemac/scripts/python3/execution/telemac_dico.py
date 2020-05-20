@@ -209,7 +209,6 @@ class TelemacDico():
             data = self.data[key]
             for irub in range(3):
                 # Empty rubrique displaying keyword
-                print('rub: ', key, data['RUBRIQUE1'])
                 rub = data['RUBRIQUE1'][irub]
                 if rub == '':
                     indent = (irub-1)*2

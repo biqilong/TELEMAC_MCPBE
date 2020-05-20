@@ -51,7 +51,7 @@
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
-      INTEGER :: NSEC, IHOWSEC, I, N, ERR, INP
+      INTEGER :: NSEC, IHOWSEC, I, N, ERR, INP, TMP(2)
       DOUBLE PRECISION :: XA, YA, DISTB, DISTE, DMINB, DMINE
 !
 !-----------------------------------------------------------------------
@@ -142,7 +142,8 @@
               STOP
             ENDIF
             DO I=1,CHAIN(N)%NSEG
-              READ(INP,*) CHAIN(N)%LISTE(I,:)
+              READ(INP,*) TMP
+              CHAIN(N)%LISTE(I,:) = TMP
               CHAIN(N)%NPAIR=-1 ! HM...
               CHAIN(N)%XYBEG=0.0D0
               CHAIN(N)%XYEND=0.0D0

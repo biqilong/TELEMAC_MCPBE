@@ -165,7 +165,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER I,K,ERR,ITRAC
-      INTEGER NREJEX,NREJEY,NCOSUP,NREJEV,NCRITE
+      INTEGER NREJEX,NREJEY,NREJEV,NCRITE
 !
       CHARACTER(LEN=8) MNEMO(MAXVAR)
       CHARACTER(LEN=PATH_LEN) NOM_CAS,NOM_DIC
@@ -212,10 +212,10 @@
       DISCRE(4) = 11
       DISCRE(5) = 11
 !
-      COSUPG(1) = 1.D0
-      COSUPG(2) = 1.D0
-      COSUPG(3) = 1.D0
-      COSUPG(4) = 1.D0
+!     COSUPG(1) = 1.D0
+!     COSUPG(2) = 1.D0
+!     COSUPG(3) = 1.D0
+!     COSUPG(4) = 1.D0
 !
       OPTSUP(1) = 2
       OPTSUP(2) = 2
@@ -510,7 +510,7 @@
       ITURB            = MOTINT( ADRESS(1, 7) )
       KFROT            = MOTINT( ADRESS(1, 8) )
       SLVPRO%NITMAX    = MOTINT( ADRESS(1,10) )
-      OPTPRO           = MOTINT( ADRESS(1,12) )
+!     OPTPRO           = MOTINT( ADRESS(1,12) )
       SLVK%NITMAX      = MOTINT( ADRESS(1,13) )
       SLVEP%NITMAX     = SLVK%NITMAX
       SLVNU%NITMAX     = SLVK%NITMAX
@@ -914,7 +914,7 @@
       AGGLOC    = MOTREA( ADRESS(2,20) )
       AGGLOU    = MOTREA( ADRESS(2,21) )
       HMIN      = MOTREA( ADRESS(2,22) )
-      REDUC     = MOTREA( ADRESS(2,23) )
+!     REDUC     = MOTREA( ADRESS(2,23) )
       SLVK%EPS  = MOTREA( ADRESS(2,24) )
       SLVEP%EPS = MOTREA( ADRESS(2,25) )
       HAULIN    = MOTREA( ADRESS(2,26) )
@@ -1095,12 +1095,16 @@
         STOP
       ENDIF
 !
-      NCOSUP = DIMEN(2,40)
-      IF(NCOSUP.NE.0) THEN
-        DO K=1,NCOSUP
-          COSUPG(K) = MOTREA( ADRESS(2,40) + K-1 )
-        ENDDO
-      ENDIF
+!     NCOSUP = DIMEN(2,40)
+!     IF(NCOSUP.NE.0) THEN
+!       DO K=1,NCOSUP
+!         COSUPG(K) = MOTREA( ADRESS(2,40) + K-1 )
+!       ENDDO
+!     ENDIF
+!
+      CALMIXLENGTH(1) = MOTREA( ADRESS(2,40)     )
+      CALMIXLENGTH(2) = MOTREA( ADRESS(2,40) + 1 )
+!
       NCRITE = DIMEN(2,41)
       IF(NCRITE.NE.0) THEN
         DO K=1,NCRITE

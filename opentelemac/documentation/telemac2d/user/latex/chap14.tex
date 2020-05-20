@@ -252,6 +252,9 @@ The values of this keyword can be:
 
 \item \telkey{COUPLING WITH} = `TOMAWAC' for coupling with the \tomawac module,
 
+\item \telkey{COUPLING WITH} = `TOMAWAC2' for coupling with the \tomawac module
+and possibly different geometry files (see below),
+
 \item \telkey{COUPLING WITH} = `WAQTEL' for coupling with the \waqtel module,
 
 \item \telkey{COUPLING WITH} = `KHIONE' for coupling with the \khione module.
@@ -329,7 +332,40 @@ sediment transport model. This option can be useful for applications
 accounting for rippled or mega-rippled bed or dunes.
 If this option is used, the friction law on the bottom used
 in the hydrodynamic calculation of \telemac{2d} must necessarily be
-the law of Nikuradse (\telkey{LAW OF BOTTOM FRICTION} = 5).
+the law of Nikuradse (\telkey{LAW OF BOTTOM FRICTION} = 5).\\
+
+A very particular coupling can be performed using \telkey{COUPLING WITH} =
+'TOMAWAC2'.
+In that case, the geometry files of \telemac{2d} and \tomawac do not need
+to be the same anymore.
+It only works if MPI is available and if the two geometry files contain
+variables indicating nodes and weights to be used to interpolate for each node
+of the mesh.
+
+For example, if the \tomawac geometry file contains the variables:
+
+\begin{lstlisting}
+TELTOM01 = 1, 1, 2, 4
+TELTOM02 = 2, 2, 3, 5
+TELTOM03 = 3, 3, 4, 6
+TELTOM01WTS = 0.33, 0., 0.33, 0.5
+TELTOM02WTS = 0.33, 1., 0.33, 0.
+TELTOM03WTS = 0.34, 0., 0.34, 0.5
+\end{lstlisting}
+
+Then to interpolate the values on the first point,
+\tomawac uses the points 1, 2, 3 of the \telemac{2d} geometry file with the
+weights 0.33, 0.33, 0.34,
+for the second one: 1, 2, 3 with the weights 0., 1., 0.,
+for the third one: 2, 3, 4 with the weights 0.33, 0.33, 0.34
+and for the fourth one: 4, 5, 6 with the weights 0.5, 0., 0.5.
+Obviously for each triplet, the sum of weights has to be equal to 1.
+
+An example can be found in the littoral \sisyphe example with the two
+geometry files geo\_tom\_tom2tel\_diff.slf and
+geo\_t2d\_tel2tom\_diff.slf.
+
+In the future, this feature could be extended to the coupling of other modules.
 
 
 \section{Assigning a name to a point}
@@ -381,3 +417,5 @@ The \telfile{CHECKMESH} subroutine of the \bief library is available to look for
 errors in the mesh, e.g. superimposed points \ldots
 The keyword \telkey{CHECKING THE MESH} (default value = NO) should be activated
 to YES to call this subroutine.
+
+This option works in both sequential and parallel modes.

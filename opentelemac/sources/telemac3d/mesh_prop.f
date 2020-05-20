@@ -67,7 +67,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
-      USE DECLARATIONS_TELEMAC3D, ONLY : AGGLOH
+      USE DECLARATIONS_TELEMAC3D, ONLY : AGGLOH,MINIMUM_VOLUME
       USE INTERFACE_TELEMAC3D, EX_MESH_PROP => MESH_PROP
 !
       USE DECLARATIONS_SPECIAL
@@ -88,8 +88,6 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       DOUBLE PRECISION, POINTER, DIMENSION(:) :: SAVEZ
-      DOUBLE PRECISION MINIMUM_VOLUME
-      MINIMUM_VOLUME=1.D-6
 !
 !-----------------------------------------------------------------------
 !

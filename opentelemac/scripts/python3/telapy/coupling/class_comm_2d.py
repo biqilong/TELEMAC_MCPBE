@@ -21,7 +21,8 @@ class ClassComm2D:
         """
         self.cpl_comm = MPI.COMM_WORLD
         self.comm_2d = self.cpl_comm.Split(2)
-        self.rank = self.comm_2d.Get_rank()  # Useful only when T2D will be parallel
+        # Useful only when T2D will be parallel
+        self.rank = self.comm_2d.Get_rank()
         self.ncsize = self.comm_2d.Get_size()
         self.mod = model
 
@@ -41,24 +42,29 @@ class ClassComm2D:
         self.mod.conlim_co = np.zeros([self.mod.nb_model_1d, self.mod.nit_1d],
                                       dtype=np.float64)
         # Transmitted 2D convergence criteria
-        self.mod.vars_2d = np.zeros([self.mod.nb_model_1d, self.mod.nb_criteria],
-                                    dtype=np.float64)
+        self.mod.vars_2d = \
+            np.zeros([self.mod.nb_model_1d, self.mod.nb_criteria],
+                     dtype=np.float64)
         # Received 1D convergence criteria
-        self.mod.vars_1d = np.zeros([self.mod.nb_model_1d, self.mod.nb_criteria],
-                                    dtype=np.float64)
+        self.mod.vars_1d = \
+            np.zeros([self.mod.nb_model_1d, self.mod.nb_criteria],
+                     dtype=np.float64)
 
         if self.rank == 0:  # Useful only when T2D will be parallel
             # Transmitted boundary conditions
             dest = 0  # 1D instances are before 2D in mpirun
-            self.bc_2to1 = self.cpl_comm.Send_init(self.mod.conlim_2d, dest, 1021)
+            self.bc_2to1 = \
+                self.cpl_comm.Send_init(self.mod.conlim_2d, dest, 1021)
 
             # Received boundary conditions
             ori = 0  # 1D instances are before 2D in mpirun
-            self.bc_1to2 = self.cpl_comm.Recv_init(self.mod.conlim_co, ori, 1012)
+            self.bc_1to2 = \
+                self.cpl_comm.Recv_init(self.mod.conlim_co, ori, 1012)
 
             # Transmitted 2D convergence criteria
             dest = 0  # 1D instances are before 2D in mpirun
-            self.cr_2to1 = self.cpl_comm.Send_init(self.mod.vars_2d, dest, 2021)
+            self.cr_2to1 = \
+                self.cpl_comm.Send_init(self.mod.vars_2d, dest, 2021)
 
             # Received 1D convergence criteria
             ori = 0  # 1D instances are before 2D in mpirun

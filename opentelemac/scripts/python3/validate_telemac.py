@@ -38,6 +38,7 @@ TAGS = ["telemac2d",
         "python2",
         "python3",
         "apistudy",
+        "api_mascaret",
         "coupling",
         "postel3d",
         "stbtel",
@@ -90,7 +91,7 @@ def check_python_rank_tags(py_file, options):
     tags = my_vnv_study.tags
     if tags != []:
         tags_ok = False
-        opt_tags = options.tags.split(';')
+        opt_tags = options.tags.split(',')
 
         if '+' in options.tags:
             for opt_tag in opt_tags:
@@ -120,7 +121,7 @@ def check_python_rank_tags(py_file, options):
     if not tags_ok and options.verbose:
         print('\n ~> '+py_file)
         print('     > nothing to do here (tag):')
-        print('       File tags: {}'.format(';'.join(tags)))
+        print('       File tags: {}'.format(','.join(tags)))
         print('       Options tags: {}'.format(options.tags))
 
     # Cleaning up sys.path
@@ -225,6 +226,7 @@ def run_validation_python_slurm(cfg, options, report, xcpts):
         raise TelemacException(
             "Option --queue is mandatary with --vnv-mode=slurm")
 
+    print("  ~> Submission part")
     for ifile, py_file in enumerate(sorted(list_files)):
         print('\n\nValidation < {}/{} > of {}'\
               .format(ifile+1, n_files, py_file.replace(root, '<root>')))
@@ -335,11 +337,32 @@ def run_validation_python_slurm(cfg, options, report, xcpts):
                 xcpts.add_messages([{'name':fail,
                                      'msg':'The job {}'.format(crash_type)}])
 
+    print("  ~> Displaying listing of all runs")
+    # Displaying listings (before merging because merging will remove temporary folder)
+    for ddir in jobs_ini.values():
+        run_dir = ddir.replace('\n', '')
+        print('\n\nListing for {}:'\
+              .format(run_dir.replace(path.realpath(root), '<root>')))
+        # If cmdexec hpc mode listing is in the temporary folder
+        if 'hpc_cmdexec' in cfg:
+            for ffile in listdir(run_dir):
+                if ffile[:4] == 'tmp_' and \
+                   path.isdir(path.join(run_dir, ffile)):
+                    run_dir = path.join(run_dir, ffile)
+                    break
+
+        for ffile in listdir(run_dir):
+            if ffile.endswith(".out"):
+                with open(path.join(run_dir, ffile), 'r',
+                          encoding='utf-8') as f:
+                    print(f.read())
+
     # If we are in hpc_cmdexec configuration (only out_telemac is in the batch
     # job)
     # Running on more pass to do the merge step
     # Second run
-    if 'hpc_cmdexec' in cfg['HPC']:
+    if 'hpc_cmdexec' in cfg:
+        print("  ~> Merging part")
         options.vnv_pre = True
         options.vnv_run = True
         options.vnv_post = False
@@ -356,16 +379,6 @@ def run_validation_python_slurm(cfg, options, report, xcpts):
             run_python(py_file, options, report, xcpts)
 
 
-    # Displaying listings
-    for ddir in jobs_ini.values():
-        run_dir = ddir.replace('\n', '')
-        print('\n\nListing for {}:'\
-              .format(run_dir.replace(root, '<root>')))
-        for ffile in listdir(run_dir):
-            if ffile.endswith(".out"):
-                with open(path.join(run_dir, ffile), 'r',
-                          encoding='utf-8') as f:
-                    print(f.read())
 
     # Second run
     options.vnv_pre = True
@@ -373,6 +386,7 @@ def run_validation_python_slurm(cfg, options, report, xcpts):
     options.vnv_post = True
     options.vnv_check = True
     options.bypass = True
+    print("  ~> Check + Post-traitment")
     # Running only on jobs that finished
     for ifile, py_file in enumerate(sorted(new_list_files)):
         print('\n\nValidation < {}/{} > of {}'\
@@ -523,6 +537,15 @@ def run_validation_notebooks(options, report, xcpts):
                 if '.ipynb' in ffile:
                     nb_files.append(path.join(dirpath, ffile))
 
+    # Removing exlcuded notebooks
+    if options.nb_exclude is not None:
+        options.nb_exclude = options.nb_exclude.strip("'")
+        for nb_file in list(nb_files):
+            for exclude in options.nb_exclude.split(','):
+                if nb_file.endswith(exclude+".ipynb"):
+                    print("  ~> Excluding: ", nb_file)
+                    nb_files.remove(nb_file)
+
     # Run notebook validation
     n_nb = len(nb_files)
     for i, nb_file in enumerate(sorted(nb_files)):
@@ -569,7 +592,7 @@ a certain rank, and a certain tag'''))
     parser.add_argument( \
         "--tags", dest="tags", default='all',
         help=\
-         "specify tags (; separated) to run "\
+         "specify tags (, separated) to run "\
          "  '-tag' will do the opposite and "\
          "tag1+tag2 will run cases that has both tag1 and tag2), "\
          "default is all of them")
@@ -632,6 +655,13 @@ a certain rank, and a certain tag'''))
         action="store_true", default=False,
         help="Update notebook file with the runned one")
     parser.add_argument(
+        "--notebook-exclude",
+        dest="nb_exclude",
+        default=None,
+        help=",separated list of notebook (name without extension for example index,) to exclude")
+
+
+    parser.add_argument(
         "--verbose",
         dest="verbose",
         action="store_true", default=False,
@@ -653,10 +683,10 @@ a certain rank, and a certain tag'''))
     # Conversion of options.tags (replacing all by list) and checking that the
     # value is valid
     # Removing quotes
-    tmp_tag = options.tags.strip("'\"")
+    tmp_tag = options.tags.strip("'\"").replace(';', ',')
     options.tags = tmp_tag
     # Checking that tags are valid
-    for tag in options.tags.split(';'):
+    for tag in options.tags.split(','):
         if '+' in tag:
             for and_tag in tag.split('+'):
                 # Removing - if in tag
@@ -664,7 +694,7 @@ a certain rank, and a certain tag'''))
                 if ttag not in TAGS:
                     raise TelemacException(\
                        "Unknow tag: {tag}\nTags available: {tags}"\
-                       .format(tag=ttag, tags=';'.join(TAGS)))
+                       .format(tag=ttag, tags=','.join(TAGS)))
         else:
             if tag == 'all':
                 continue
@@ -673,11 +703,11 @@ a certain rank, and a certain tag'''))
             if ttag not in TAGS:
                 raise TelemacException(\
                    "Unknow tag: {tag}\nTags available: {tags}"\
-                   .format(tag=ttag, tags=';'.join(TAGS)))
+                   .format(tag=ttag, tags=','.join(TAGS)))
 
     # Replacing all by list of tags
-    if 'all' in options.tags.split(';'):
-        options.tags = options.tags.replace('all', ';'.join(TAGS))
+    if 'all' in options.tags.split(','):
+        options.tags = options.tags.replace('all', ','.join(TAGS))
 
     # If pre, run, post are all false switching them to true
     if not(options.vnv_pre or options.vnv_run or
@@ -686,6 +716,12 @@ a certain rank, and a certain tag'''))
         options.vnv_run = True
         options.vnv_check = True
         options.vnv_post = True
+    else:
+        # Options not available in this mode
+        if options.vnv_mode == 'slurm':
+            raise TelemacException(
+                "option vnv-pre, vnv-run, vnv-check, "
+                "vnv-post not available in this vnv-mode")
 
     return options
 

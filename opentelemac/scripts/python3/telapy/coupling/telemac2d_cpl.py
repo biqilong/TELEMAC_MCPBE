@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python3
 """
 main program of coupling 2D model
 """
@@ -16,6 +15,7 @@ if (not path.exists(path.join(environ.get('HOMETEL', ''),
     print("  -> TelApy not available doing nothing")
     sys.exit(0)
 
+
 def telemac2d_cpl():
     """
     Main function of script
@@ -25,7 +25,8 @@ def telemac2d_cpl():
     start_time = time.time()
     cpl = ClassMod2D()
     if cpl.coupler.rank == 0:
-        print("\n--- Initialisation {} seconds ---\n".format((time.time() - start_time)))
+        print("\n--- Initialisation {} seconds ---\n".format((time.time()
+              - start_time)))
 
     # Loop on the time integration
     for cpl.stp in range(cpl.cplsteps):
@@ -47,8 +48,8 @@ def telemac2d_cpl():
         # Output at the given frequency
         cpl.write_output()
         if cpl.coupler.rank == 0:
-            print("\n--- {} s, Time loop {} s ---\n".format(cpl.time,
-                                                            time.time() - start_uloop_time))
+            print("\n--- {} s, Time loop {} s ---\n"
+                  .format(cpl.time, time.time() - start_uloop_time))
 
     # Finalization
     cpl.finalize()

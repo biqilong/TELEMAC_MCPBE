@@ -262,12 +262,13 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
         file_name = cas.values[key]
         if submit[5] == 'MULTI':    # POSTEL3D
             npsize = 1
+            # Lookin for horizontal files POSHOR_000
             while 1:                              # HORIZONTAL SECTION FILES
-                file_name = path.join(cas_dir,
-                                      file_name
-                                      + '_{0:03d}'.format(npsize))
-                if path.isfile(file_name):
-                    base, ext = path.splitext(file_name)
+                real_file_name = path.join(
+                    cas_dir,
+                    file_name + '_{0:03d}'.format(npsize))
+                if path.isfile(real_file_name):
+                    base, ext = path.splitext(real_file_name)
                     i = 0
                     # this would be an infinite loop only if you have an
                     # inifite number of files
@@ -275,28 +276,27 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                         i = i + 1
                         if not path.isfile(base+'_old'+str(i)+ext):
                             break
-                    shutil.move(file_name, base+'_old'+str(i)+ext)
-                tmp_file_name = tmp_file_name +\
+                    shutil.move(real_file_name, base+'_old'+str(i)+ext)
+                tmp2_file_name = tmp_file_name +\
                     '_{0:03d}'.format(npsize)
-                if not path.isfile(tmp_file_name):
+                # Temporary file not found exiting
+                if not path.isfile(tmp2_file_name):
                     break
-                shutil.move(tmp_file_name, file_name)
-                print('        moving: ' + path.basename(file_name))
+                shutil.move(tmp2_file_name, real_file_name)
+                print('        moving: ' + path.basename(real_file_name))
                 npsize = npsize + 1
             npsize = 1
+            # Lookin for vertival files POSVER_000-000
+            done = False
             while 1:                              # VERTICAL SECTION FILES
                 nptime = 1
-                v_file = tmp_file_name +\
-                    '_{0:03d}'.format(npsize)+'-{0:03d}'.format(nptime)
-                if not path.isfile(v_file):
-                    break
                 while 1:
-                    file_name = path.join(cas_dir,
+                    real_file_name = path.join(cas_dir,
                                           file_name +
                                           '_{0:03d}'.format(npsize) +
                                           '-{0:03d}'.format(nptime))
-                    if path.isfile(file_name):
-                        base, ext = path.splitext(file_name)
+                    if path.isfile(real_file_name):
+                        base, ext = path.splitext(real_file_name)
                         i = 0
                         # this would be an infinite loop only if you have an
                         # inifite number of files
@@ -304,15 +304,21 @@ def process_ecr(cas, cas_dir, sortiefile, ncsize):
                             i = i + 1
                             if not path.isfile(base+'_old'+str(i)+ext):
                                 break
-                        shutil.move(file_name, base+'_old'+str(i)+ext)
-                    tmp_file_name = tmp_file_name\
+                        shutil.move(real_file_name, base+'_old'+str(i)+ext)
+                    tmp2_file_name = tmp_file_name\
                         + '_{0:03d}'.format(npsize)\
                         + '-{0:03d}'.format(nptime)
-                    if not path.isfile(tmp_file_name):
+                    # Temporary file not found exiting and increasing first npsize
+                    if not path.isfile(tmp2_file_name):
+                        # If not temporary file for first nptime we are done
+                        if nptime == 1:
+                            done = True
                         break
-                    shutil.move(tmp_file_name, file_name)
-                    print('        moving: ' + path.basename(file_name))
+                    shutil.move(tmp2_file_name, real_file_name)
+                    print('        moving: ' + path.basename(real_file_name))
                     nptime = nptime + 1
+                if done:
+                    break
                 npsize = npsize + 1
         # MAIN MODULE
         elif submit[5] == 'PARAL' and ncsize > 1:
