@@ -1,117 +1,71 @@
-!                    ******************
-                     SUBROUTINE MAJTRAC
-!                    ******************
+!                    ********************
+                     SUBROUTINE FLUX_TRAC
+!                    ********************
 !
-     &(NS,NT,DIMT,NSEG,NPTFR,NUBO,
-     & X,Y,AIRS,NU,AIRE,HT,HTN,TN,ZF,NBOR,
-     & TBOR,FLUTENT,FLUTSOR,SMTR,NORDRE,CMI,JMI,
-     & DJXT,DJYT,DXT,DYT,DPX,DPY,DIFT,CVIST,BETA,DSZ,AIRST,HSTOK,
-     & HCSTOK,FLUXT,FLUHBOR,MASSOU,DTT,MESH,
-     & ELTSEG,IFABOR,VNOCL)
+     &(NUBO,IKLE,FLUTENT,FLUTSOR,CMI,DJXT,DJYT,DXT,DYT,DPX,DPY,
+     & BETA,DSZ,AIRST,HC,FLUXT,ELTSEG,IFABOR,VNOCL)
 !
 !***********************************************************************
-! TELEMAC2D   V6P3                                         27/07/2013
+! TELEMAC2D   V8P1
 !***********************************************************************
 !
-!brief    UPDATES THE TRACER.
-!
-!history  INRIA
-!+
-!+        V5P4
-!+
-!
-!history  N.DURAND (HRW), S.E.BOURBAN (HRW)
-!+        13/07/2010
-!+        V6P0
-!+   Translation of French comments within the FORTRAN sources into
-!+   English comments
-!
-!history  N.DURAND (HRW), S.E.BOURBAN (HRW)
-!+        21/08/2010
-!+        V6P0
-!+   Creation of DOXYGEN tags for automated documentation and
-!+   cross-referencing of the FORTRAN sources
-!
-!history  R.ATA
-!+        27/07/2013
-!+        V6P3
-!+   Adaptation for new data structure of finite volumes
-!+   clean and optimize
-!+   parallelism
+!brief    COMPUTES TRACER FLUXES.
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| AIRE           |-->| ELEMENT AREA
-!| AIRS           |-->| CELL AREA
-!| AIRST          |-->| AREA OF SUB-TRIANGLES (SECOND ORDER)
-!| BETA           |---| COEFFICIENT OF EXTRAPOLATION FOR ORDRE 2
-!| CMI            |-->| COORDINATES OF MIDDLE PONTS OF EDGES
-!| CVIST          |-->| COEFFICIENT OF DIFFUSION FOR TRACER
-!| DIFT           |-->| LOGICAL TELLING IF THERE IS DIFFUSION FOR TRACER OR NOT
-!| DIMT           |-->| DIMENSION OF TRACER
-!| DJXT,DJYT      |---| GRADIENTS PER TRIANGLES
-!| DSZ            |-->| VARIATION OF Z FOR ORDRE 2
-!| DTT            |-->| TIME STEP FOR TRACER
-!| DXT,DYT        |---| GRADIENTS AT THE NODES
-!| FLUHBOR        |-->| MASS FLUX AT THE BOUNDARY
-!| FLUTENT,FLUTSOR|<--| TRACER FLUX AT THE INLET AND OUTLET
-!| FLUXT          |-->| MASS FLUX OF TRACER
-!| HCSTOK         |-->| STOCKED H RECONSTRUCTED FOR ORDRE 2
-!| HSTOK          |-->| STOCKED WATER DEPTH
-!| HT             |<--| HT AT TIME N+1
-!| HTN,TN         |-->| HT AT TIME N
-!| JMI            |-->| NUMBER OF THE TRIANGLE IN WHICH IS LOCATED
-!|                |   | THE MIDPOINT OF THE INTERFACE
-!| MASSOU         |<--| MASS OF TRACER ADDED BY SOURCE TERM
-!| NBOR           |-->| GLOBAL NUMBERING OF BOUNDARY POINTS
-!| NORDRE         |-->| ORDRE OF THE SCHEME
-!| NPTFR          |-->| TOTAL NUMBER OF BOUNDARY NODES
-!| NS             |-->| TOTAL NUMBER OF NODES IN THE MESH
-!| NSEG           |-->| TOTAL NUMBER OF EDGES
-!| NT             |-->| TOTAL NUMBER OF ELEMENTS
-!| NU             |-->| NUMBERING OF NODES IN THE TRIANGLES
-!| NUBO           |-->| GLOBAL INDICES OF EDGE EXTREMITIES
-!| SMTR           |-->| TRACER SOURCE TERMS
-!| TBOR           |-->| BOUNDARY CONDITIONS FOR T
-!| X,Y            |-->| COORDINATES IF THE NODES
-!| ZF             |-->| BATHYMETRY
+!>@param  [in]      AIRST       AREA OF SUB-TRIANGLES (SECOND ORDER)
+!>@param  [in,out]  BETA        COEFFICIENT OF EXTRAPOLATION FOR ORDRE2
+!>@param  [in]      CMI         COORDINATES OF MIDDLE PONTS OF EDGES
+!>@param  [in]      DIFT        LOGICAL TELLING IF THERE IS DIFFUSION
+!+                              FOR TRACER OR NOT
+!>@param  [in]      DJXT        GRADIENTS PER TRIANGLES
+!>@param  [in]      DJYT        GRADIENTS PER TRIANGLES
+!>@param  [in]      DPX         GRADIENTS OF P1 BASE FUNCTIONS
+!>@param  [in]      DPY         GRADIENTS OF P1 BASE FUNCTIONS
+!>@param  [in]      DSZ         VARIATION OF Z FOR ORDRE 2
+!>@param  [in]      DXT         GRADIENTS AT THE NODES
+!>@param  [in]      DYT         GRADIENTS AT THE NODES
+!>@param  [in]      ELTSEG      SEGMENT CONPOSING AN ELEMENT
+!>@param  [in,out]  FLUXT       FLUX FOR TRACER AT TIME N
+!>@param  [in,out]  FLUTENT     TRACER FLUX AT THE INLET
+!>@param  [in,out]  FLUTSOR     TRACER FLUX AT THE OUTLET
+!>@param  [in]      HC          STOCKED H RECONSTRUCTED FOR ORDRE 2
+!>@param  [in]      IFABOR      ELEMENTS BEHIND THE EDGES OF A TRIANGLE
+!>@param  [in]      IKLE        NUMBERING OF NODES IN THE TRIANGLES
+!>@param  [in]      NUBO        GLOBAL INDICES OF EDGE EXTREMITIES
+!>@param  [in]      VNOCL       NORMAL VECTOR TO THE INTERFACE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE INTERFACE_TELEMAC2D, EX_MAJTRAC => MAJTRAC
+      USE INTERFACE_TELEMAC2D, EX_FLUX_TRAC => FLUX_TRAC
       USE BIEF_DEF
-      USE DECLARATIONS_TELEMAC2D,ONLY: CET_MT,DST_MT,DSP_MT,
-     &                                 DSM_MT,CORRT_MT,GRADI_MT,
+      USE DECLARATIONS_TELEMAC2D,ONLY: DST_MT,DSP_MT,DIFT,NSEG,NPTFR,
+     &                                 DSM_MT,CORRT_MT,GRADI_MT,SORDER,
      &                                 GRADJ_MT,GRADJI_MT,GRADIJ_MT,
-     &                                 DEJA_MT
+     &                                 DEJA_MT,NPOIN,NELMAX,NTRAC,ILIMT,
+     &                                 LIMTRA,X,Y,V2DPAR,MESH,ZF,DIFNU,
+     &                                 H,DT,TN,TBOR,FLUHTEMP,FLUHBTEMP
+      USE DECLARATIONS_TELEMAC, ONLY: KDIR,KNEU,KDDL
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      LOGICAL, INTENT(IN) :: DIFT
-      INTEGER, INTENT(IN) :: NSEG,NPTFR,NORDRE,DIMT,NS,NT
-      INTEGER, INTENT(IN) :: NUBO(2,NSEG),NU(NT,3)
-      INTEGER, INTENT(IN) :: NBOR(NPTFR),JMI(*)
-      INTEGER, INTENT(IN)             :: ELTSEG(NT,3)
-      INTEGER, INTENT(IN)             :: IFABOR(NT,3)
-      DOUBLE PRECISION, INTENT(INOUT) :: HT(DIMT),FLUTENT,FLUTSOR
-      DOUBLE PRECISION, INTENT(INOUT) :: MASSOU
-      DOUBLE PRECISION, INTENT(IN)    :: TBOR(*),DSZ(2,*)
-      DOUBLE PRECISION, INTENT(IN)    :: X(NS),Y(NS),AIRS(NS),AIRE(NT)
-      DOUBLE PRECISION, INTENT(IN)    :: HTN(DIMT),TN(DIMT),ZF(*)
-      DOUBLE PRECISION, INTENT(IN)    :: SMTR(DIMT),DPX(3,NT),DPY(3,NT)
-      DOUBLE PRECISION, INTENT(IN)    :: CMI(2,*),AIRST(2,*),CVIST
+      INTEGER, INTENT(IN) :: NUBO(2,NSEG),IKLE(NELMAX,3)
+      INTEGER, INTENT(IN)             :: ELTSEG(NELMAX,3)
+      INTEGER, INTENT(IN)             :: IFABOR(NELMAX,3)
+      DOUBLE PRECISION, INTENT(INOUT) :: FLUTENT(*),FLUTSOR(*)
+      DOUBLE PRECISION, INTENT(IN)    :: DSZ(2,*)
+      DOUBLE PRECISION, INTENT(IN)    :: DPX(3,NELMAX),DPY(3,NELMAX)
+      DOUBLE PRECISION, INTENT(IN)    :: CMI(2,*),AIRST(2,*)
       DOUBLE PRECISION, INTENT(INOUT) :: DJXT(*),DJYT(*),DXT(*),DYT(*)
       DOUBLE PRECISION, INTENT(INOUT) :: BETA
-      DOUBLE PRECISION, INTENT(IN)    :: HSTOK(*),VNOCL(3,NSEG)
-      DOUBLE PRECISION, INTENT(IN)    :: HCSTOK(2,*),FLUXT(*)
-      DOUBLE PRECISION, INTENT(IN)    :: FLUHBOR(*),DTT
-      TYPE(BIEF_MESH), INTENT(INOUT)  :: MESH
+      DOUBLE PRECISION, INTENT(IN)    :: VNOCL(3,NSEG),HC(2,*)
+      TYPE(BIEF_OBJ), INTENT(INOUT)   :: FLUXT
 !
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER IS,K,NSG,NUBO1,NUBO2,J,ILIM,ERR,I,IEL
+      INTEGER IS,K,NSG,NUBO1,NUBO2,J,ERR,I,IEL,ITRAC
 !
       DOUBLE PRECISION ZF1,ZF2,FLUH,FLUT,HI0,HJ0,AIX,AIY,AJX,AJY,AMDS
       DOUBLE PRECISION FLU11,FLU41,UAS41,UAS42,DSZ1,DSZ2
@@ -124,17 +78,19 @@
       EXTERNAL         P_DSUM
 !
 !-----------------------------------------------------------------------
+!     LOOP ON TRACERS
+      DO ITRAC=1,NTRAC
+!
+!-----------------------------------------------------------------------
 !
       IF(.NOT.DEJA_MT) THEN
-        ALLOCATE(CET_MT(NS),STAT=ERR)
-        IF(ERR.NE.0) GO TO 1001
         ALLOCATE(DST_MT(2,NSEG),STAT=ERR)
         IF(ERR.NE.0) GO TO 1001
-        ALLOCATE(DSP_MT(NS),STAT=ERR)
+        ALLOCATE(DSP_MT(NPOIN),STAT=ERR)
         IF(ERR.NE.0) GO TO 1001
-        ALLOCATE(DSM_MT(NS)    ,STAT=ERR)
+        ALLOCATE(DSM_MT(NPOIN)    ,STAT=ERR)
         IF(ERR.NE.0) GO TO 1001
-        ALLOCATE(CORRT_MT(NS)   ,STAT=ERR)
+        ALLOCATE(CORRT_MT(NPOIN)   ,STAT=ERR)
         IF(ERR.NE.0) GO TO 1001
         ALLOCATE(GRADI_MT(NSEG),GRADJ_MT(NSEG),STAT=ERR)
         IF(ERR.NE.0) GO TO 1001
@@ -154,9 +110,7 @@
 !
 !-----------------------------------------------------------------------
 !
-!  INITIALISES
-!
-      CET_MT(:)=(/(0.D0,IS=1,NS)/)
+!     INITIALISES
       ALLOCATE(YESNO(NSEG),STAT=ERR)
       IF(ERR.GT.0)THEN
         WRITE(LU,2000) ERR
@@ -164,44 +118,49 @@
         STOP
       ENDIF
 !
-! INITIALIZATION OF YESNO
+!     INITIALIZATION OF YESNO
       DO I=1,NSEG
         YESNO(I)=.FALSE.
       ENDDO
 !
-!   COMPUTES THE TRACER GRADIENTS BY TRIANGLE AND BY NODE
-!   COMPUTES THE DIFFUSION TERM
+!     COMPUTES THE TRACER GRADIENTS BY TRIANGLE AND BY NODE
+!     COMPUTES THE DIFFUSION TERM
+      IF(DIFT.OR.SORDER.EQ.2) CALL GRADNODT(NPOIN,NELMAX,IKLE,
+     &MESH%SURFAC%R,V2DPAR%R,H%R,TN%ADR(ITRAC)%P%R,DPX,DPY,DJXT,DJYT,
+     & DXT,
+     &DYT,DIFT,DIFNU,FLUXT%ADR(ITRAC)%P%R,DT,MESH)
 !
-      IF(DIFT.OR.NORDRE.EQ.2) CALL GRADNODT(NS,NT,NU,AIRE,AIRS,
-     &HSTOK,TN,DPX,DPY,DJXT,DJYT,DXT,DYT,DIFT,CVIST,CET_MT,DTT,MESH)
+!     *****************************
+!     REBUILDS 2ND ORDER FOR TRACER
+!     *****************************
+      IF(SORDER.EQ.2) THEN
 !
-      IF(NORDRE.EQ.2) THEN
-!
-!  REBUILDS 2ND ORDER FOR TRACER
-!  *************************************
-!
-!    INITIALIZATION
-      DSP_MT(:)  =(/(0.D0,IS=1,NS)/)
-      DSM_MT(:)  =(/(0.D0,IS=1,NS)/)
+!     INITIALIZATION
+      DSP_MT(:)  =(/(0.D0,IS=1,NPOIN)/)
+      DSM_MT(:)  =(/(0.D0,IS=1,NPOIN)/)
       DST_MT(1,:)=(/(0.D0,IS=1,NSEG)/)
       DST_MT(2,:)=(/(0.D0,IS=1,NSEG)/)
-!    INITIALIZATION  OF GRADIENTS
+!
+!     INITIALIZATION  OF GRADIENTS
       GRADI_MT(:) =(/(0.D0,IS=1,NSEG)/)
       GRADJ_MT(:) =(/(0.D0,IS=1,NSEG)/)
       GRADIJ_MT(:)=(/(0.D0,IS=1,NSEG)/)
       GRADJI_MT(:)=(/(0.D0,IS=1,NSEG)/)
 !
-!
-      DO IEL=1, NT
+!     LOOP ON ELEMENTS
+      DO IEL=1, NELMAX
         DO I = 1,3
           IF(.NOT.YESNO(ELTSEG(IEL,I)))THEN
             NSG = ELTSEG(IEL,I)
-!     RECUPERATE JMI
-            J   = JMI(NSG) ! THIS THE TRIANGLE IN WHICH IS LOCATED CMI
-            IF(NCSIZE.GT.1.AND.J.EQ.0) CYCLE  ! THAT MEANS CMI IS NOT LOCATED IN TRIANGLE J
+!           RECUPERATE JMI
+!           THIS THE TRIANGLE IN WHICH IS LOCATED CMI
+            J   = MESH%JMI%I(NSG)
 !
-!    RECUPERATE NODES OF THE EDGE WITH THE GOOD ORIENTATION
-!     WITH RESPECT TO THE NORMAL
+!           THAT MEANS CMI IS NOT LOCATED IN TRIANGLE J
+            IF(NCSIZE.GT.1.AND.J.EQ.0) CYCLE
+!
+!           RECUPERATE NODES OF THE EDGE WITH THE GOOD ORIENTATION
+!           WITH RESPECT TO THE NORMAL
             NUBO1 = NUBO(1,NSG)
             NUBO2 = NUBO(2,NSG)
             PROD_SCAL= ((X(NUBO2)-X(NUBO1))*VNOCL(1,NSG)+
@@ -211,8 +170,8 @@
               NUBO2 = NUBO(1,NSG)
             ENDIF
 !
-            ZF1 = ZF(NUBO1)
-            ZF2 = ZF(NUBO2)
+            ZF1 = ZF%R(NUBO1)
+            ZF2 = ZF%R(NUBO2)
 !
             IF(PROD_SCAL.LT.0.D0)THEN
               DSZ1 = DSZ(2,NSG)
@@ -222,8 +181,8 @@
               DSZ2 = DSZ(2,NSG)
             ENDIF
 !
-            HI0 = HSTOK(NUBO1)
-            HJ0 = HSTOK(NUBO2)
+            HI0 = H%R(NUBO1)
+            HJ0 = H%R(NUBO2)
 !
 !           STICKS TO 1ST ORDER FOR A COVERED EDGE
 !
@@ -251,6 +210,7 @@
           ENDIF
         ENDDO
       ENDDO
+!
       IF(NCSIZE.GT.1)THEN      ! NPON,NPLAN,ICOM,IAN , HERE ICOM=1 VALUE WITH MAX | |
         CALL PARCOM2_SEG(GRADI_MT,GRADJ_MT,GRADI_MT,
      &              NSEG,1,2,2,MESH,1,11)
@@ -258,25 +218,26 @@
      &              NSEG,1,2,2,MESH,1,11)
       ENDIF
 !
-!    EXTRAPOLATES THE GRADIENTS AND SLOPE LIMITOR
+!     EXTRAPOLATES THE GRADIENTS AND SLOPE LIMITOR
 !
-      ILIM=2
-      BETA=0.3333D0
+      BETA=1.D0/3.D0
+!
       DO NSG=1,NSEG
-        DST_MT(1,NSG)  = EXLIM (ILIM,BETA,GRADI_MT(NSG),GRADIJ_MT(NSG))
-        DST_MT(2,NSG)  = EXLIM (ILIM,BETA,GRADJ_MT(NSG),GRADJI_MT(NSG))
+        DST_MT(1,NSG)  = EXLIM (ILIMT,BETA,GRADI_MT(NSG),GRADIJ_MT(NSG))
+        DST_MT(2,NSG)  = EXLIM (ILIMT,BETA,GRADJ_MT(NSG),GRADJI_MT(NSG))
       ENDDO
 !
-! INITIALIZATION OF YESNO
+!     INITIALIZATION OF YESNO
       DO I=1,NSEG
         YESNO(I)=.FALSE.
       ENDDO
-      DO IEL=1, NT
+!
+      DO IEL=1, NELMAX
         DO I = 1,3
           IF(.NOT.YESNO(ELTSEG(IEL,I)))THEN
             NSG = ELTSEG(IEL,I)
-!    RECUPERATE NODES OF THE EDGE WITH THE GOOD ORIENTATION
-!     WITH RESPECT TO THE NORMAL
+!           RECUPERATE NODES OF THE EDGE WITH THE GOOD ORIENTATION
+!           WITH RESPECT TO THE NORMAL
             NUBO1 = NUBO(1,NSG)
             NUBO2 = NUBO(2,NSG)
             PROD_SCAL= ((X(NUBO2)-X(NUBO1))*VNOCL(1,NSG)+
@@ -290,39 +251,39 @@
             IF(NCSIZE.GT.1.AND.IFABOR(IEL,I).EQ.-2)THEN ! THIS IS AN INTERFACE EDGE
               IF(DST_MT(1,NSG).GE.0.D0) THEN
                 DSP_MT(NUBO1) = DSP_MT(NUBO1) +
-     &                   DEMI*AIRST(1,NSG)*HCSTOK(1,NSG)*DST_MT(1,NSG) ! WE CONSIDER ONLY
+     &                   DEMI*AIRST(1,NSG)*HC(1,NSG)*DST_MT(1,NSG) ! WE CONSIDER ONLY
               ELSE                                                      ! 0.5 AIRST
                 DSM_MT(NUBO1) = DSM_MT(NUBO1) -
-     &                   DEMI*AIRST(1,NSG)*HCSTOK(1,NSG)*DST_MT(1,NSG) ! PARCOM2 WILL ADD
+     &                   DEMI*AIRST(1,NSG)*HC(1,NSG)*DST_MT(1,NSG) ! PARCOM2 WILL ADD
               ENDIF                                                     ! CONTRIBUTIONS
               IF(DST_MT(2,NSG).GE.0.D0) THEN
                 DSP_MT(NUBO2) = DSP_MT(NUBO2) +
-     &                   DEMI*AIRST(2,NSG)*HCSTOK(2,NSG)*DST_MT(2,NSG)
+     &                   DEMI*AIRST(2,NSG)*HC(2,NSG)*DST_MT(2,NSG)
               ELSE
                 DSM_MT(NUBO2) = DSM_MT(NUBO2) -
-     &                   DEMI*AIRST(2,NSG)*HCSTOK(2,NSG)*DST_MT(2,NSG)
+     &                   DEMI*AIRST(2,NSG)*HC(2,NSG)*DST_MT(2,NSG)
               ENDIF
               IF(DST_MT(2,NSG).GE.0.D0) THEN
                 DSP_MT(NUBO2) = DSP_MT(NUBO2) +
-     &                   DEMI*AIRST(2,NSG)*HCSTOK(2,NSG)*DST_MT(2,NSG)
+     &                   DEMI*AIRST(2,NSG)*HC(2,NSG)*DST_MT(2,NSG)
               ELSE
                 DSM_MT(NUBO2) = DSM_MT(NUBO2) -
-     &                   DEMI*AIRST(2,NSG)*HCSTOK(2,NSG)*DST_MT(2,NSG)
+     &                   DEMI*AIRST(2,NSG)*HC(2,NSG)*DST_MT(2,NSG)
               ENDIF
             ELSE ! NO PARALLELILSM OR NO INTERFACE EDGE
               IF(DST_MT(1,NSG).GE.0.D0) THEN
                 DSP_MT(NUBO1) = DSP_MT(NUBO1) +
-     &          AIRST(1,NSG)* HCSTOK(1,NSG)*DST_MT(1,NSG)
+     &          AIRST(1,NSG)* HC(1,NSG)*DST_MT(1,NSG)
               ELSE
                 DSM_MT(NUBO1) = DSM_MT(NUBO1) -
-     &          AIRST(1,NSG)* HCSTOK(1,NSG)*DST_MT(1,NSG)
+     &          AIRST(1,NSG)* HC(1,NSG)*DST_MT(1,NSG)
               ENDIF
               IF(DST_MT(2,NSG).GE.0.) THEN
                 DSP_MT(NUBO2) = DSP_MT(NUBO2) +
-     &          AIRST(2,NSG)* HCSTOK(2,NSG)*DST_MT(2,NSG)
+     &          AIRST(2,NSG)* HC(2,NSG)*DST_MT(2,NSG)
               ELSE
                 DSM_MT(NUBO2) = DSM_MT(NUBO2) -
-     &          AIRST(2,NSG)* HCSTOK(2,NSG)*DST_MT(2,NSG)
+     &          AIRST(2,NSG)* HC(2,NSG)*DST_MT(2,NSG)
               ENDIF
             ENDIF
 !
@@ -332,13 +293,13 @@
       ENDDO
       !  FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN
-        CALL PARCOM2(DSP_MT,DSM_MT,DSM_MT,NS,1,2,2,MESH)
+        CALL PARCOM2(DSP_MT,DSM_MT,DSM_MT,NPOIN,1,2,2,MESH)
       ENDIF
 !
 !     COMPUTES THE CORRECTIONS TO ENSURE CONSERVATION OF HT
 !                  ***********           ******************
 !
-      DO IS=1,NS
+      DO IS=1,NPOIN
         CORRT_MT(IS) =  DSM_MT(IS) - DSP_MT(IS)
         AMDS =MAX(DSP_MT(IS),DSM_MT(IS))
         IF(AMDS.GT.0.D0) THEN
@@ -346,25 +307,26 @@
         ENDIF
       ENDDO
 !
-      ENDIF ! ENDIF OF NORDRE.EQ.2
+      ENDIF
+!     ENDIF OF SORDER.EQ.2
 !
+!     *******************************************
 !     COMPUTES FLUXES FOR THE INTERNAL INTERFACES
+!     *******************************************
 !
-!  REINITIALIZATION OF YESNO
+!     REINITIALIZATION OF YESNO
       DO I=1,NSEG
         YESNO(I)=.FALSE.
       ENDDO
 !
 !     LOOP ON GLOBAL LIST OF EDGES
-!    ******************************
-!
-      DO IEL=1, NT
+      DO IEL=1, NELMAX
         DO I = 1,3
           IF(.NOT.YESNO(ELTSEG(IEL,I)))THEN
             NSG = ELTSEG(IEL,I)
 !
-!    RECUPERATE NODES OF THE EDGE WITH THE GOOD ORIENTATION
-!     WITH RESPECT TO THE NORMAL
+!           RECUPERATE NODES OF THE EDGE WITH THE GOOD ORIENTATION
+!           WITH RESPECT TO THE NORMAL
             NUBO1 = NUBO(1,NSG)
             NUBO2 = NUBO(2,NSG)
             PROD_SCAL= ((X(NUBO2)-X(NUBO1))*VNOCL(1,NSG)+
@@ -374,20 +336,20 @@
               NUBO2 = NUBO(1,NSG)
             ENDIF
 !
-            UAS41     = TN(NUBO1)
-            UAS42     = TN(NUBO2)
+            UAS41 = TN%ADR(ITRAC)%P%R(NUBO1)
+            UAS42 = TN%ADR(ITRAC)%P%R(NUBO2)
 !
-            FLU11=FLUXT(NSG)
+            FLU11 = FLUHTEMP%ADR(ITRAC)%P%R(NSG)
 !
             IF (FLU11.GE.0.) THEN
-              IF(NORDRE.EQ.2) THEN
+              IF(SORDER.EQ.2) THEN
                 UAS41 = UAS41  + DST_MT(1,NSG) +
      &          MIN(0.D0,CORRT_MT(NUBO1))*MAX(0.D0,DST_MT(1,NSG))+
      &          MAX(0.D0,CORRT_MT(NUBO1))*MAX(0.D0,-DST_MT(1,NSG))
               ENDIF
               FLU41 =  UAS41 * FLU11
             ELSE
-              IF(NORDRE.EQ.2) THEN
+              IF(SORDER.EQ.2) THEN
                 UAS42 = UAS42 + DST_MT(2,NSG) +
      &          MIN(0.D0,CORRT_MT(NUBO2))*MAX(0.D0,DST_MT(2,NSG))+
      &          MAX(0.D0,CORRT_MT(NUBO2))*MAX(0.D0,-DST_MT(2,NSG))
@@ -395,53 +357,55 @@
               FLU41 =  UAS42 * FLU11
             ENDIF
 !
-            CET_MT(NUBO1) = CET_MT(NUBO1) - FLU41
-            CET_MT(NUBO2) = CET_MT(NUBO2) + FLU41
+            FLUXT%ADR(ITRAC)%P%R(NUBO1) = FLUXT%ADR(ITRAC)%P%R(NUBO1)
+     &                                  - FLU41
+            FLUXT%ADR(ITRAC)%P%R(NUBO2) = FLUXT%ADR(ITRAC)%P%R(NUBO2)
+     &                                  + FLU41
 !
             YESNO(NSG)=.TRUE.
           ENDIF
         ENDDO
       ENDDO
-      !  FOR PARALLELILSM
+!
+!     FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN
-        CALL PARCOM2(CET_MT,CET_MT,CET_MT,NS,1,2,1,MESH)
+        CALL PARCOM2(FLUXT%ADR(ITRAC)%P%R,
+     &               FLUXT%ADR(ITRAC)%P%R,
+     &               FLUXT%ADR(ITRAC)%P%R,NPOIN,1,2,1,MESH)
       ENDIF
 !
-!     BOUNDARY FLUX
+!     *********************************
+!     COMPUTES BOUNDARY FLUXES
+!     *********************************
 !
       IF(NPTFR.GT.0)THEN  ! USEFUL FOR PARALLEL CASE
         DO K=1,NPTFR
-          IS=NBOR(K)
+          IS=MESH%NBOR%I(K)
 !
-          FLUH =FLUHBOR(K)
+          FLUH = FLUHBTEMP%ADR(ITRAC)%P%R(K)
 !
           IF(FLUH.GE.0.D0) THEN
-            FLUT= TN(IS)*FLUH
-            FLUTSOR = FLUTSOR +FLUT
+            FLUT = TN%ADR(ITRAC)%P%R(IS)*FLUH
+            FLUTSOR(ITRAC) = FLUTSOR(ITRAC) + FLUT
           ELSE
-            FLUT= TBOR(K)*FLUH
-            FLUTENT = FLUTENT +FLUT
+            IF (LIMTRA%I(K).EQ.KDIR) THEN
+              FLUT = TBOR%ADR(ITRAC)%P%R(K)*FLUH
+            ELSE !IF (LIMTRA(K,1).EQ.KNEU) THEN
+              FLUT = TN%ADR(ITRAC)%P%R(IS)*FLUH
+            ENDIF
+            FLUTENT(ITRAC) = FLUTENT(ITRAC) + FLUT
           ENDIF
 !
-          CET_MT(IS)  = CET_MT(IS) - FLUT
+          FLUXT%ADR(ITRAC)%P%R(IS) = FLUXT%ADR(ITRAC)%P%R(IS) - FLUT
 !
         ENDDO
       ENDIF
 !
-!     UPDATES HT
-!
-      DO IS =1,NS
-!
-        HT(IS)  = HTN(IS) +  (CET_MT(IS)+SMTR(IS))/AIRS(IS)
-        MASSOU = MASSOU + SMTR(IS)
-!
-        IF(HT(IS).LE.1.D-15) HT(IS)=0.D0
-!
-      ENDDO
-      IF(NCSIZE.GT.1)MASSOU=P_DSUM(MASSOU)
-!
       DEALLOCATE(YESNO)
 !
+!-----------------------------------------------------------------------
+!     END OF LOOP ON TRACERS
+      ENDDO
 !-----------------------------------------------------------------------
 !
       RETURN

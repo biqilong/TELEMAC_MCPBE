@@ -53,8 +53,9 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
-      USE DECLARATIONS_TELEMAC2D, ONLY: DT,LT,AT,HN,T5,T6,T7,T8,T9,T10,
-     &                                  IASCNOPT,ENTET,T2DFO1
+      USE DECLARATIONS_TELEMAC2D, ONLY: DT,LT,AT,HN,POTMAXRET,IABST,
+     &                                  ACCR,T8,T9,T10,IASCNOPT,ENTET,
+     &                                  T2DFO1
       USE INTERFACE_TELEMAC2D, EX_RUNOFF_SCS_CN => RUNOFF_SCS_CN
 !
       IMPLICIT NONE
@@ -88,9 +89,9 @@
 !
 !     INITIALIZATION
       IF(LT.EQ.1)THEN
-        CALL OV('X=C     ', X=T5%R, C=0.D0, DIM1=NPOIN)
-        CALL OV('X=C     ', X=T6%R, C=0.D0, DIM1=NPOIN)
-        CALL OV('X=C     ', X=T7%R, C=0.D0, DIM1=NPOIN)
+        CALL OV('X=C     ', X=POTMAXRET%R, C=0.D0, DIM1=NPOIN)
+        CALL OV('X=C     ', X=IABST%R, C=0.D0, DIM1=NPOIN)
+        CALL OV('X=C     ', X=ACCR%R, C=0.D0, DIM1=NPOIN)
         CALL OV('X=C     ', X=ACCROF_OLD%R, C=0.D0, DIM1=NPOIN)
       ENDIF
       CALL OV('X=C     ', X=ACCIA, C=0.D0, DIM1=NPOIN)
@@ -404,16 +405,16 @@
 !
       ENDIF
 !
-!     POTENTIAL MAXIMAL RETENTION (POTMAXRET), M (STOCKED IN T5)
-!     INITIAL ABSTRACTION IA, M (STOCKED IN T6)
+!     POTENTIAL MAXIMAL RETENTION (POTMAXRET), M (STOCKED IN POTMAXRET)
+!     INITIAL ABSTRACTION IA, M (STOCKED IN IABST)
 !
       CC=25.4D0/1000.D0
 !
       DO I=1,NPOIN
 !       POTMAXRET(I) = 25.4D0*(1000.D0/CN%R(I)-10.D0)/1000.D0
 !       IA(I) = POTMAXRET(I) * IA_S
-        T5%R(I)=CC*(1000.D0/MAX(CN%R(I),EPS)-10.D0)
-        T6%R(I)=IA_S*T5%R(I)
+        POTMAXRET%R(I)=CC*(1000.D0/MAX(CN%R(I),EPS)-10.D0)
+        IABST%R(I)=IA_S*POTMAXRET%R(I)
       ENDDO
 !
 !
@@ -442,36 +443,36 @@
 !          runoff (ACCROFF = ACCRF - ACCIA - ACCFA).
 !
 !
-!     ACCUMULATED RAINFALL AT TIME AT (ACCRF), M (ACCRF STOCKED IN  T7)
+!     ACCUMULATED RAINFALL AT TIME AT (ACCRF), M (ACCRF STOCKED IN  ACCR)
 !     ACCRF = ACCRF + RFM
-      CALL OV('X=X+C   ', X=T7%R, C=RFM, DIM1=NPOIN)
+      CALL OV('X=X+C   ', X=ACCR%R, C=RFM, DIM1=NPOIN)
 !
 !     ACCUMULATED INITIAL ABSTRACTION AT TIME AT (ACCIA), M
 !
       DO I=1,NPOIN
-        IF(T7%R(I).LT.T6%R(I)) THEN !IF ACCRF<IA
+        IF(ACCR%R(I).LT.IABST%R(I)) THEN !IF ACCRF<IA
 !         ACCIA = ACCRF
-          ACCIA(I) = T7%R(I)
+          ACCIA(I) = ACCR%R(I)
         ELSE
 !         ACCIA = IA
-          ACCIA(I) = T6%R(I)
+          ACCIA(I) = IABST%R(I)
         ENDIF
       ENDDO
 !
 !     ACCUMULATED FA AT TIME AT (ACCFA), M
       DO I=1,NPOIN
-        IF(T7%R(I).GT.T6%R(I)) THEN !IF ACCRF>IA
+        IF(ACCR%R(I).GT.IABST%R(I)) THEN !IF ACCRF>IA
 !         ACCFA = POTMAXRET * (ACCRF - IA) / (ACCRF - IA + POTMAXRET)
-          ACCFA(I)=T5%R(I)*(T7%R(I)-T6%R(I))/
-     &            (T7%R(I)-T6%R(I)+T5%R(I))
+          ACCFA(I)=POTMAXRET%R(I)*(ACCR%R(I)-IABST%R(I))/
+     &            (ACCR%R(I)-IABST%R(I)+POTMAXRET%R(I))
         ELSE
           ACCFA(I) = 0.D0
         ENDIF
       ENDDO
 !
 !     ACCUMULATED RUNOFF AT TIME AT (ACCROFF), M
-!     ACCROFF = ACCRF (=T7) - ACCIA - ACCFA
-      CALL OV('X=Y-Z   ', X=ACCROFF, Y=T7%R, Z=ACCIA, DIM1=NPOIN)
+!     ACCROFF = ACCRF (=ACCR) - ACCIA - ACCFA
+      CALL OV('X=Y-Z   ', X=ACCROFF, Y=ACCR%R, Z=ACCIA, DIM1=NPOIN)
       CALL OV('X=X-Y   ', X=ACCROFF, Y=ACCFA, DIM1=NPOIN)
 !
 !     HYETOGRAPH RAIN_MPS_GEO, M/S
@@ -483,7 +484,7 @@
 !     ACCUMULATED RAINFALL PRINTED TO THE LISTING (INDEPENDENT OF NODE NUMBER)
       IF(ENTET) THEN
         WRITE(LU,*) ' '
-        WRITE(LU,50)T7%R(1)
+        WRITE(LU,50)ACCR%R(1)
       ENDIF
 !
 !-----------------------------------------------------------------------

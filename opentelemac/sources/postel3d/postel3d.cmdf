@@ -29,11 +29,6 @@ files: bief_def.f
   bief_ininds.f
   bief_nbfel.f
   bief_nbsegel.f
-  paraco.f
-  parcom2.f
-  parcom2_seg.f
-  parcom.f
-  checkmesh.f
   cpikle2.f
   cpikle3.f
   cpstvc.f
@@ -117,11 +112,7 @@ files: declarations_parallel.F
   p_init.F
   p_sync.F
   interface_parallel.f
-  p_iread.F
-  p_iwrit.F
-  p_wait_paraco.F
   p_imax.F
-  p_isum.F
 
 [postel3d]
 path: <root>|sources|postel3d

@@ -45,7 +45,7 @@
 !
 !  MODE: -->(UNCHANGEABLE INPUT),<--(OUTPUT),<-->(CHANGEABLE INPUT)
 !-----------------------------------------------------------------------
-!  CALLING SUBROUTINE HYD_WAF OR FLUXZZ
+!  CALLING SUBROUTINE FLUX_WAF
 !
 !***********************************************************************
 !

@@ -66,7 +66,8 @@
 !
       USE DECLARATIONS_TELEMAC2D, ONLY : MASTR0_BT1,MASTR1_BT1,
      &                                   MASTR2_BT1,MASTEN_BT1,
-     &                                   MASTOU_BT1,DIRTOT_BT1
+     &                                   MASTOU_BT1,DIRTOT_BT1,
+     &                                   NAMETRAC
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
@@ -224,7 +225,7 @@
 !
 !     PRINTS FOR THE TRACER
 !
-        WRITE(LU,501) ITRAC
+        WRITE(LU,501) NAMETRAC(ITRAC)
 !
         IF(LT.EQ.0) THEN
 !
@@ -280,7 +281,7 @@
 !
 !  PRINT FORMATS:
 !
-501   FORMAT(80(' '),/,21X,'BALANCE OF TRACER ',1I2)
+501   FORMAT(80(' '),/,21X,'BALANCE OF TRACER ',1A32)
 601   FORMAT(80('-'),/,19X,'FINAL BALANCE OF TRACER ',1I2)
 2090  FORMAT(5X,'INITIAL QUANTITY OF TRACER:',G16.7,' TRACER UNIT M3')
 2100  FORMAT(/,5X,'QUANTITY OF TRACER:',G16.7,' TRACER UNIT M3')

@@ -395,6 +395,8 @@
         ENDIF
       ENDIF
 !
+      CALL USER_RAIN
+!
 !     SOURCES
 !
       IF(NREJET.GT.0) THEN

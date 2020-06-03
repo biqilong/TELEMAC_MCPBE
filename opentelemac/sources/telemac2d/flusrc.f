@@ -2,59 +2,59 @@
                      SUBROUTINE FLUSRC
 !                    *****************
 !
-     &(IEL1,IEL2,ISEGIN,VNOIN,W,FLUSCE,X,Y,NPOIN,NSEG,ZF,EPS,G)
+     &(IEL1,IEL2,ISEGIN,VNOIN,W,HDZ1,HDZ2,HDXZ1,HDYZ1,HDXZ2,HDYZ2,EPS)
 !
 !***********************************************************************
-! TELEMAC2D   V6P1                                   21/08/2010
+! TELEMAC2D
 !***********************************************************************
 !
-!brief    COMPUTES FLUXES DUE TO NON CENTERED SOURCES TERMS.
+!>@brief    COMPUTES FLUXES DUE TO NON CENTERED SOURCES TERMS.
 !
-!history  N.GOUTAL
-!+        19/08/1994
-!+        V5P2
-!+
+!>@history  N.GOUTAL
+!!        19/08/1994
+!!        V5P2
+!!
 !
-!history  N.DURAND (HRW), S.E.BOURBAN (HRW)
-!+        13/07/2010
-!+        V6P0
-!+   Translation of French comments within the FORTRAN sources into
-!+   English comments
+!>@history  N.DURAND (HRW), S.E.BOURBAN (HRW)
+!!        13/07/2010
+!!        V6P0
+!!   Translation of French comments within the FORTRAN sources into
+!!   English comments
 !
-!history  N.DURAND (HRW), S.E.BOURBAN (HRW)
-!+        21/08/2010
-!+        V6P0
-!+   Creation of DOXYGEN tags for automated documentation and
-!+   cross-referencing of the FORTRAN sources
+!>@history  N.DURAND (HRW), S.E.BOURBAN (HRW)
+!!        21/08/2010
+!!        V6P0
+!!   Creation of DOXYGEN tags for automated documentation and
+!!   cross-referencing of the FORTRAN sources
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| EPS            |-->| TOLERANCE
-!| FLUSCE         |<->| SOURCE FLUXES
-!| G              |-->| GRAVITY
-!| IEL1           |-->| FIRST ELEMENT NUMBER
-!| IEL2           |-->| SECOND ELEMENT NUMBER
-!| ISEGIN         |-->| SEGMENT NUMBER
-!| NPOIN          |-->| TOTAL NUMBER OF NODES
-!| NSEG           |-->| TOTAL NUMBER OF SEGMENTS IN THE MESH
-!| VNOIN          |-->| NORMAL VECTOR TO THE INTERFACE
-!|                |   | (2 FIRST COMPONENTS) AND
-!|                |   | LENGTH OF THE SEGMENT (3RD COMPONENT)
-!| W              |-->| CONSERVATIVE VARIABLE OF THE PROBLEM AT TIME TN
-!| X              |-->| X COORDINATES
-!| Y              |-->| Y COORDINATES
-!| ZF             |-->| BATHYMETRY
+!>@param  [in]      EPS      TOLERANCE
+!>@param  [in,out]  HDZ1     SOURCE FLUXES
+!>@param  [in,out]  HDZ2     SOURCE FLUXES
+!>@param  [in,out]  HDXZ1    SOURCE FLUXES
+!>@param  [in,out]  HDYZ1    SOURCE FLUXES
+!>@param  [in,out]  HDXZ2    SOURCE FLUXES
+!>@param  [in,out]  HDYZ2    SOURCE FLUXES
+!>@param  [in]      IEL1     FIRST ELEMENT NUMBER
+!>@param  [in]      IEL2     SECOND ELEMENT NUMBER
+!>@param  [in]      ISEGIN   SEGMENT NUMBER
+!>@param  [in]      VNOIN    NORMAL VECTOR TO THE INTERFACE
+!!                           (2 FIRST COMPONENTS) AND
+!!                           LENGTH OF THE SEGMENT (3RD COMPONENT)
+!>@param  [in]      W        CONSERVATIVE VARIABLE OF THE PROBLEM AT TIME TN
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_SPECIAL
+      USE DECLARATIONS_TELEMAC2D, ONLY: NPOIN,NSEG,GRAV,ZF,X,Y
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NPOIN,NSEG,ISEGIN,IEL1,IEL2
-      DOUBLE PRECISION, INTENT(IN)    :: G,EPS,VNOIN(3,NSEG),ZF(NPOIN)
-      DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN)
+      INTEGER, INTENT(IN)             :: ISEGIN,IEL1,IEL2
+      DOUBLE PRECISION, INTENT(IN)    :: EPS,VNOIN(3,NSEG)
       DOUBLE PRECISION, INTENT(IN)    :: W(3,NPOIN)
-      DOUBLE PRECISION, INTENT(INOUT) :: FLUSCE(3,NPOIN)
+      DOUBLE PRECISION, INTENT(INOUT) :: HDZ1,HDZ2,HDXZ1,HDYZ1,HDXZ2
+      DOUBLE PRECISION, INTENT(INOUT) :: HDYZ2
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -110,18 +110,18 @@
 !    BOTTOM MODIFICATION: AT REST WITH A DRY ELEMENT
 !
       UN = UJ*XN+VJ*YN
-      ZF1 = ZF(IEL1)
+      ZF1 = ZF%R(IEL1)
       IF(INDIC(1).EQ.1) THEN
-        IF((ZF1+EPS.GT.ZF(IEL2)+HJ).AND.(UN.GE.-EPS)) THEN
-          ZF1 = ZF(IEL2)+HJ-EPS
+        IF((ZF1+EPS.GT.ZF%R(IEL2)+HJ).AND.(UN.GE.-EPS)) THEN
+          ZF1 = ZF%R(IEL2)+HJ-EPS
         ENDIF
       ENDIF
 !
       UN = UI*XN+VI*YN
-      ZF2 = ZF(IEL2)
+      ZF2 = ZF%R(IEL2)
       IF(INDIC(2).EQ.1) THEN
-        IF((ZF2+EPS.GT.ZF(IEL1)+HI).AND.(UN.LE.EPS)) THEN
-          ZF2 = ZF(IEL1)+HI-EPS
+        IF((ZF2+EPS.GT.ZF%R(IEL1)+HI).AND.(UN.LE.EPS)) THEN
+          ZF2 = ZF%R(IEL1)+HI-EPS
         ENDIF
       ENDIF
 !
@@ -143,7 +143,7 @@
 !     MAX OF THE TWO FOLLOWING LINES
       UT = ( RI * UI + RJ * UJ ) / MAX(RI+RJ,1.D-8)
       VT = ( RI * VI + RJ * VJ ) / MAX(RI+RJ,1.D-8)
-      CT2 = G*(HI+HJ)/2.D0
+      CT2 = GRAV*(HI+HJ)/2.D0
       CT = SQRT ( CT2 )
 !
 !   --->  TEST ON THE SIGN OF THE EIGENVALUE LAMB0 =
@@ -197,16 +197,16 @@
 !  BOTTOM GRADIENTS
 !
       GE(1)=0.D0
-      GE(2)=G*((HI+HJ)/2.D0)*(ZF2-ZF1)*XN/DIJ
-      GE(3)=G*((HI+HJ)/2.D0)*(ZF2-ZF1)*YN/DIJ
+      GE(2)=GRAV*((HI+HJ)/2.D0)*(ZF2-ZF1)*XN/DIJ
+      GE(3)=GRAV*((HI+HJ)/2.D0)*(ZF2-ZF1)*YN/DIJ
 !
 !  FRICTION TERMS
 !
 !     CH = 900.D0
-!     H = (CT2/G)**(1./3.)
+!     H = (CT2/GRAV)**(1./3.)
       FE(1)= 0.D0
-!     FE(2)= G*UT*SQRT(UT**2 + VT**2)/((CH**2)*H)
-!     FE(3)= G*VT*SQRT(UT**2 + VT**2)/((CH**2)*H)
+!     FE(2)= GRAV*UT*SQRT(UT**2 + VT**2)/((CH**2)*H)
+!     FE(3)= GRAV*VT*SQRT(UT**2 + VT**2)/((CH**2)*H)
       FE(2) = 0.D0
       FE(3) = 0.D0
 !
@@ -227,9 +227,9 @@
 !
 !TBTB BEGINNING: MODIFICATION OF RLAMBM IF RLAMBM
 !
-        CI2 = G*HI
+        CI2 = GRAV*HI
         CI = SQRT (CI2)
-        CJ2 =  G*HJ
+        CJ2 =  GRAV*HJ
         CJ = SQRT (CJ2)
         RLAMBI = ALPHA - CI
         RLAMBJ = UJ * XN + VJ * YN - CJ
@@ -241,13 +241,13 @@
 !
 !------------CALCUL DES TERMES SOURCES ------------------------
 !
-        FLUSCE (1,IEL1) = 0.D0
-        FLUSCE (2,IEL1) = 0.D0
-        FLUSCE (3,IEL1) = 0.D0
+        HDZ1 = 0.D0
+        HDXZ1= 0.D0
+        HDYZ1= 0.D0
 !
-        FLUSCE (1,IEL2) = 0.D0
-        FLUSCE (2,IEL2) = 0.D0
-        FLUSCE (3,IEL2) = 0.D0
+        HDZ2 = 0.D0
+        HDXZ2= 0.D0
+        HDYZ2= 0.D0
 !
 !
 !
@@ -261,30 +261,30 @@
 !
           PSA = TS11(1)*GE(1)+TS11(2)*GE(2)+TS11(3)*GE(3)
 !
-          FLUSCE(1,IEL1) = PSA*T11(1)
-          FLUSCE(2,IEL1) = PSA*T11(2)
-          FLUSCE(3,IEL1) = PSA*T11(3)
+          HDZ1 = PSA*T11(1)
+          HDXZ1 = PSA*T11(2)
+          HDYZ1 = PSA*T11(3)
 !
 !
           PSA1= TS12(1)*GE(1)+TS12(2)*GE(2)+TS12(3)*GE(3)
           PSA2= TS22(1)*GE(1)+TS22(2)*GE(2)+TS22(3)*GE(3)
 !
 !
-          FLUSCE(1,IEL2) = (PSA1*T12(1)+PSA2*T22(1))
-          FLUSCE(2,IEL2) = (PSA1*T12(2)+PSA2*T22(2))
-          FLUSCE(3,IEL2) = (PSA1*T12(3)+PSA2*T22(3))
+          HDZ2 = (PSA1*T12(1)+PSA2*T22(1))
+          HDXZ2 = (PSA1*T12(2)+PSA2*T22(2))
+          HDYZ2 = (PSA1*T12(3)+PSA2*T22(3))
 !
         ELSE
 !           -----
 !
 !
-          FLUSCE(1,IEL1) = 0.D0
-          FLUSCE(2,IEL1) = 0.D0
-          FLUSCE(3,IEL1) = 0.D0
+          HDZ1 = 0.D0
+          HDXZ1 = 0.D0
+          HDYZ1 = 0.D0
 !
-          FLUSCE(1,IEL2) = GE(1)*CT2*2.D0
-          FLUSCE(2,IEL2) = GE(2)*CT2*2.D0
-          FLUSCE(3,IEL2) = GE(3)*CT2*2.D0
+          HDZ2 = GE(1)*CT2*2.D0
+          HDXZ2 = GE(2)*CT2*2.D0
+          HDYZ2 = GE(3)*CT2*2.D0
 !
         ENDIF
 !          -----
@@ -298,9 +298,9 @@
         RLAMBP = RLAMB0 + CT
         ALPHA = UI * XN + VI * YN
 !
-        CI2 = G*HI
+        CI2 = GRAV*HI
         CI = SQRT (CI2)
-        CJ2 =  G*HJ
+        CJ2 =  GRAV*HJ
         CJ = SQRT (CJ2)
         RLAMBI = ALPHA - CI
         RLAMBJ = UJ * XN + VJ * YN - CJ
@@ -311,13 +311,13 @@
 !
 !-----------COMPUTATION OF SOURCE TERMS --------------------------
 !
-        FLUSCE(1,IEL1) = GE(1)*CT2*2.D0
-        FLUSCE(2,IEL1) = GE(2)*CT2*2.D0
-        FLUSCE(3,IEL1) = GE(3)*CT2*2.D0
+        HDZ1 = GE(1)*CT2*2.D0
+        HDXZ1= GE(2)*CT2*2.D0
+        HDYZ1= GE(3)*CT2*2.D0
 !
-        FLUSCE(1,IEL2) = 0.D0
-        FLUSCE(2,IEL2) = 0.D0
-        FLUSCE(3,IEL2) = 0.D0
+        HDZ2 = 0.D0
+        HDXZ2= 0.D0
+        HDYZ2= 0.D0
 !
 !
 !   --->    TEST ON THE SIGN OF LAMBDAP
@@ -329,26 +329,26 @@
 !-----------COMPUTATION OF SOURCE TERMS------------------
 !
 !
-          FLUSCE(1,IEL1) = 0.D0
-          FLUSCE(2,IEL1) = 0.D0
-          FLUSCE(3,IEL1) = 0.D0
+          HDZ1 = 0.D0
+          HDXZ1= 0.D0
+          HDYZ1= 0.D0
 !
-          FLUSCE(1,IEL2) = 0.D0
-          FLUSCE(2,IEL2) = 0.D0
-          FLUSCE(3,IEL2) = 0.D0
+          HDZ2 = 0.D0
+          HDXZ2= 0.D0
+          HDYZ2= 0.D0
           PSA1= TS11(1)*GE(1)+TS11(2)*GE(2)+TS11(3)*GE(3)
           PSA2= TS21(1)*GE(1)+TS21(2)*GE(2)+TS21(3)*GE(3)
 !
 !
-          FLUSCE(1,IEL1) = (PSA1*T11(1)+PSA2*T21(1))
-          FLUSCE(2,IEL1) = (PSA1*T11(2)+PSA2*T21(2))
-          FLUSCE(3,IEL1) = (PSA1*T11(3)+PSA2*T21(3))
+          HDZ1 = (PSA1*T11(1)+PSA2*T21(1))
+          HDXZ1= (PSA1*T11(2)+PSA2*T21(2))
+          HDYZ1= (PSA1*T11(3)+PSA2*T21(3))
 !
           PSA = TS12(1)*GE(1)+TS12(2)*GE(2)+TS12(3)*GE(3)
 !
-          FLUSCE(1,IEL2) = PSA*T12(1)
-          FLUSCE(2,IEL2) = PSA*T12(2)
-          FLUSCE(3,IEL2) = PSA*T12(3)
+          HDZ2 = PSA*T12(1)
+          HDXZ2= PSA*T12(2)
+          HDYZ2= PSA*T12(3)
 !
         ENDIF
 !       -----
@@ -356,12 +356,12 @@
 !       TESTEST
       ENDIF
 !       TESTEST
-      FLUSCE(1,IEL1)=FLUSCE(1,IEL1)*A1/CT2
-      FLUSCE(2,IEL1)=FLUSCE(2,IEL1)*A1/CT2
-      FLUSCE(3,IEL1)=FLUSCE(3,IEL1)*A1/CT2
-      FLUSCE(1,IEL2)=FLUSCE(1,IEL2)*A2/CT2
-      FLUSCE(2,IEL2)=FLUSCE(2,IEL2)*A2/CT2
-      FLUSCE(3,IEL2)=FLUSCE(3,IEL2)*A2/CT2
+      HDZ1 =HDZ1 *A1/CT2
+      HDXZ1=HDXZ1*A1/CT2
+      HDYZ1=HDYZ1*A1/CT2
+      HDZ2 =HDZ2 *A2/CT2
+      HDXZ2=HDXZ2*A2/CT2
+      HDYZ2=HDYZ2*A2/CT2
 !
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !

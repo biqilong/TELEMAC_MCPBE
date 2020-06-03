@@ -195,6 +195,7 @@
         IF(INCLUS(COUPLING,'TOMAWAC2')) CALL INIT_COUPLE
         CALL PRINT_HEADER(CODE3,CODE1)
 !
+        CALL T2D_WAC_CPL_UPDATE()
         CALL LECDON_TOMAWAC(FILE_DESC,PATH,NCAR,DUMMY,DUMMY)
 !
 !-----------------------------------------------------------------------

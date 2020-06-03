@@ -1144,7 +1144,6 @@ files: friction_def.f
   loiden.f
   loinoy.f
   clsing.f
-  coefro.f
   smoothing_flux.f
   filter_h.f
   flusec_t2d.f
@@ -1219,6 +1218,7 @@ files: friction_def.f
   user_vvsce.f
   vvsce.f
   prosou.f
+  user_rain.f
   prosou_fv.f
   smagor.f
   spalallcl.f
@@ -1271,47 +1271,38 @@ files: friction_def.f
   trsce.f
   valro.f
   caldt.f
-  flu_zokagoa.f
-  cdlzz.f
-  flux_hllc.f
-  cdl_hllc.f
-  flu_tchamen.f
-  cdl_tch.f
-  limiter.f
-  flux_waf.f
-  cdl_waf.f
   zerophi.f
   zeropsi.f
-  cdl.f
-  exlim.f
-  flucin.f
-  gradnod.f
-  fluhyd.f
+  cdl_cin.f
+  flux_hllc.f
+  flux_kin.f
+  flux_roe.f
+  flux_tchamen.f
+  limiter.f
+  flux_waf.f
+  flux_zokagoa.f
+  flux_choice.f
+  cdl_fv.f
   flusrc.f
-  fluxe.f
-  fluroe.f
-  flusew.f
-  flutrac.f
-  fluxzz.f
-  flux_tch.f
-  gradz.f
-  hyd_hllc.f
-  hyd_waf.f
-  intemp.f
+  hyd_fv.f
+  flux_fv.f
+  exlim.f
   gradnodt.f
-  majtrac.f
-  cdlproj.f
-  friction.f
-  majzz.f
-  reinit.f
+  flux_trac.f
+  fv_balance.f
   seg_neighbors.f
-  smtrac.f
+  init_fv.f
+  init_trac.f
+  cdlproj.f
+  majzz.f
+  gradnod.f
+  gradz.f
+  second_order.f
   source_moment.f
-  testeur.f
-  resolu.f
   volfin.f
   wall_friction.f
   telemac2d.F
+  coefro.f
   grad_zconv.f
 
 [telemac3d]

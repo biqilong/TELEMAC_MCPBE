@@ -41,7 +41,7 @@
 !  MODE: -->( UNCHANGEABLE INPUT ),<--(OUTPUT),<-->(CHANGEABLE INPUT)
 !-----------------------------------------------------------------------
 !
-!     - CALLING SUBROUTINE(S) : HYD_WAF
+!     - CALLING SUBROUTINE(S) : HYD_FV
 !
 !***********************************************************************
 !

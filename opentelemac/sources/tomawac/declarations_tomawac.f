@@ -1369,7 +1369,7 @@
       TYPE CPL_WAC_DATA_OBJ
         ! Number of telemac time steps
         INTEGER :: NIT_TEL
-        ! Variable currently not used
+        ! Coupling period with telemac
         INTEGER :: PERCOU_WAC
         ! Current velocity along x in telemac model
         TYPE(BIEF_OBJ), POINTER :: U_TEL
@@ -1378,9 +1378,11 @@
         ! Telemac model water depth
         TYPE(BIEF_OBJ), POINTER :: H_TEL
 
-        ! TODO: Get info
+        ! Mean direction of wave
         TYPE(BIEF_OBJ), POINTER :: DIRMOY_TEL
+        ! Significant wave height
         TYPE(BIEF_OBJ), POINTER :: HM0_TEL
+        ! Peak Period order 5th
         TYPE(BIEF_OBJ), POINTER :: TPR5_TEL
 
         ! Orbital velocity

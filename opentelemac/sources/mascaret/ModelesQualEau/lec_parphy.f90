@@ -92,6 +92,8 @@ subroutine LEC_PARPHY( &
       enddo
 
    endif
+   close( unit = fichier_Parphy%Unite )
+
 
    ! Fin des traitements
    !--------------------

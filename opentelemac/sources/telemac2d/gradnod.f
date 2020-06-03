@@ -2,8 +2,7 @@
                      SUBROUTINE GRADNOD
 !                    ******************
 !
-     &(NS,NT,NU,AIRT,AIRS,UA,DPX,DPY,DJX,DJY,DX,DY,IVIS,CVIS,CE,ZF,
-     & MESH)
+     &(IKLE,UA,DPX,DPY,DJX,DJY,DX,DY,IVIS,CE)
 !
 !***********************************************************************
 ! TELEMAC2D   V6P1                                   21/08/2010
@@ -37,36 +36,30 @@
 !
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| AIRS           |-->| CELL'S AREAS
-!| AIRT           |-->| TRIANGLES' AREAS
 !| CE             |<--| DIFFUSION TERM
-!| CVIS           |-->| COEFFICIENT OF DIFFUSION
 !| DJX,DJY        |<--| GRADIENTS PER TRIANGLE
 !| IVIS           |-->| OPTION FOR DIFFUSION OF VELOCITY
 !| DX,DY          |<--| GRADIENTS AT NODES
-!| NS             |-->| TOTAL NUMER OF NODES IN THE MESH
-!| NT             |-->| TOTAL NUMBER OF ELEMENTS IN THE MESH
-!| NU             |-->| NUMBERING OF NODES IN THE TRIANGLE
+!| IKLE           |-->| NUMBERING OF NODES IN THE TRIANGLE
 !| UA             |-->| UA(1,IS) = H,  UA(2,IS)=U  ,UA(3,IS)=V
-!| T              |-->| TRACERS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
       USE BIEF_DEF, ONLY: NCSIZE
+      USE DECLARATIONS_TELEMAC2D, ONLY:NPOIN,NELEM,MESH,V2DPAR,ZF,
+     &                                 PROPNU,EPS_FV
       USE INTERFACE_TELEMAC2D, EX_GRADNOD => GRADNOD
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NS,NT,IVIS
-      INTEGER, INTENT(IN)             :: NU(NT,3)
-      DOUBLE PRECISION, INTENT(IN)    :: AIRT(NT),AIRS(NS),CVIS
-      DOUBLE PRECISION, INTENT(INOUT) :: DJX(3,NT),DJY(3,NT)
-      DOUBLE PRECISION, INTENT(INOUT) :: DX(3,NS),DY(3,NS)
-      DOUBLE PRECISION, INTENT(INOUT) :: CE(NS,3)
-      DOUBLE PRECISION, INTENT(IN)    :: UA(3,NS),ZF(NS)
-      DOUBLE PRECISION, INTENT(IN)    :: DPX(3,NT),DPY(3,NT)
-      TYPE(BIEF_MESH), INTENT(INOUT)  :: MESH
+      INTEGER, INTENT(IN)             :: IVIS
+      INTEGER, INTENT(IN)             :: IKLE(NELEM,3)
+      DOUBLE PRECISION, INTENT(INOUT) :: DJX(3,NELEM),DJY(3,NELEM)
+      DOUBLE PRECISION, INTENT(INOUT) :: DX(3,NPOIN),DY(3,NPOIN)
+      DOUBLE PRECISION, INTENT(INOUT) :: CE(NPOIN,3)
+      DOUBLE PRECISION, INTENT(IN)    :: UA(3,NPOIN)
+      DOUBLE PRECISION, INTENT(IN)    :: DPX(3,NELEM),DPY(3,NELEM)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -80,7 +73,7 @@
 !
 !     INITIALISES THE HERMITIAN NODAL GRADIENTS
 !
-      DO IS=1,NS
+      DO IS=1,NPOIN
         DO IVAR=1,3
           DX(IVAR,IS) = 0.D0
           DY(IVAR,IS) = 0.D0
@@ -89,22 +82,22 @@
 !
 !     LOOP ON GLOBAL LIST OF TRIANGLES
 !
-      DO JT=1,NT
+      DO JT=1,NELEM
 !
-        NUBO1 = NU(JT,1)
-        NUBO2 = NU(JT,2)
-        NUBO3 = NU(JT,3)
+        NUBO1 = IKLE(JT,1)
+        NUBO2 = IKLE(JT,2)
+        NUBO3 = IKLE(JT,3)
 !
-        AIRJ=   AIRT(JT)
+        AIRJ=   MESH%SURFAC%R(JT)
 !
 !       COMPUTES THE P1-GRADIENTS
 !
 !   COMPUTES THE H+Z GRADIENT
 !
         IVAR=1
-        UA1=UA(IVAR,NUBO1) + ZF(NUBO1)
-        UA2=UA(IVAR,NUBO2) + ZF(NUBO2)
-        UA3=UA(IVAR,NUBO3) + ZF(NUBO3)
+        UA1=UA(IVAR,NUBO1) + ZF%R(NUBO1)
+        UA2=UA(IVAR,NUBO2) + ZF%R(NUBO2)
+        UA3=UA(IVAR,NUBO3) + ZF%R(NUBO3)
 !
         DJX(IVAR,JT) = UA1*DPX(1,JT)+UA2*DPX(2,JT)+UA3*DPX(3,JT) ! GRAD_X(H+Z)|_Tk
         DJY(IVAR,JT) = UA1*DPY(1,JT)+UA2*DPY(2,JT)+UA3*DPY(3,JT) ! GRAD_Y(H+Z)|_Tk
@@ -123,9 +116,21 @@
 !
         DO IVAR=2,3
 !
-          UA1=UA(IVAR,NUBO1) ! U OR V
-          UA2=UA(IVAR,NUBO2)
-          UA3=UA(IVAR,NUBO3)
+          IF(UA(1,NUBO1).GE.EPS_FV) THEN
+            UA1=UA(IVAR,NUBO1)/UA(1,NUBO1) ! U OR V
+          ELSE
+            UA1 = 0.D0
+          ENDIF
+          IF(UA(1,NUBO2).GE.EPS_FV) THEN
+            UA2=UA(IVAR,NUBO2)/UA(1,NUBO2) ! U OR V
+          ELSE
+            UA2 = 0.D0
+          ENDIF
+          IF(UA(1,NUBO3).GE.EPS_FV) THEN
+            UA3=UA(IVAR,NUBO3)/UA(1,NUBO3) ! U OR V
+          ELSE
+            UA3 = 0.D0
+          ENDIF
 !
           DJX(IVAR,JT) = UA1*DPX(1,JT)+UA2*DPX(2,JT)+UA3*DPX(3,JT)! GRAD_X(U)|_Tk
           DJY(IVAR,JT) = UA1*DPY(1,JT)+UA2*DPY(2,JT)+UA3*DPY(3,JT)! GRAD_Y(U)|_Tk
@@ -144,20 +149,20 @@
 
 !     FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN                 ! NPON,NPLAN,ICOM,IAN
-        ALLOCATE(TMP1(NS))
-        ALLOCATE(TMP2(NS))
-        ALLOCATE(TMP3(NS))
+        ALLOCATE(TMP1(NPOIN))
+        ALLOCATE(TMP2(NPOIN))
+        ALLOCATE(TMP3(NPOIN))
         TMP1 = DX(1,:)
         TMP2 = DX(2,:)
         TMP3 = DX(3,:)
-        CALL PARCOM2(TMP1,TMP2,TMP3,NS,1,2,3,MESH )
+        CALL PARCOM2(TMP1,TMP2,TMP3,NPOIN,1,2,3,MESH )
         DX(1,:) = TMP1
         DX(2,:) = TMP2
         DX(3,:) = TMP3
         TMP1 = DY(1,:)
         TMP2 = DY(2,:)
         TMP3 = DY(3,:)
-        CALL PARCOM2(TMP1,TMP2,TMP3,NS,1,2,3,MESH )
+        CALL PARCOM2(TMP1,TMP2,TMP3,NPOIN,1,2,3,MESH )
         DY(1,:) = TMP1
         DY(2,:) = TMP2
         DY(3,:) = TMP3
@@ -166,22 +171,22 @@
         DEALLOCATE(TMP3)
       ENDIF
 !
-      IF(IVIS.EQ.0.OR.CVIS.EQ.0.) GOTO 10 ! IF THERE IS NO VISCOSITY OR NO VELOCITY DIFFUSISION
+      IF(IVIS.EQ.0.OR.PROPNU.EQ.0.) GOTO 10 ! IF THERE IS NO VISCOSITY OR NO VELOCITY DIFFUSISION
 !
 !     INITIALISES CE (WAS NOT DONE BEFORE)
-      CALL OV('X=0     ' ,X=CE(:,1), DIM1=NS)
-      CALL OV('X=0     ' ,X=CE(:,2), DIM1=NS)
-      CALL OV('X=0     ' ,X=CE(:,3), DIM1=NS)
+      CALL OV('X=0     ' ,X=CE(:,1), DIM1=NPOIN)
+      CALL OV('X=0     ' ,X=CE(:,2), DIM1=NPOIN)
+      CALL OV('X=0     ' ,X=CE(:,3), DIM1=NPOIN)
 !
-      DO JT=1,NT
+      DO JT=1,NELEM
 !
-        NUBO1 = NU(JT,1)
-        NUBO2 = NU(JT,2)
-        NUBO3 = NU(JT,3)
+        NUBO1 = IKLE(JT,1)
+        NUBO2 = IKLE(JT,2)
+        NUBO3 = IKLE(JT,3)
 !
-        AIRJ=   AIRT(JT)
+        AIRJ=   MESH%SURFAC%R(JT)
         HTT = UA(1,NUBO1)+UA(1,NUBO2)+UA(1,NUBO3)
-        AUX = CVIS*AIRJ*HTT/3.D0
+        AUX = PROPNU*AIRJ*HTT/3.D0
 !
 !  COMPUTES THE VELOCITY DIFFUSION TERMS
 !
@@ -201,16 +206,16 @@
       ENDDO
 !     FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN                 ! NPON,NPLAN,ICOM,IAN
-        CALL PARCOM2(CE(:,1),CE(:,2),CE(:,3),NS,1,2,3,MESH )
+        CALL PARCOM2(CE(:,1),CE(:,2),CE(:,3),NPOIN,1,2,3,MESH )
       ENDIF
 !
 10       CONTINUE
 !
 !     COMPLETES THE COMPUTATION OF THE NODAL GRADIENTS
 !
-      DO IS=1,NS
+      DO IS=1,NPOIN
 !
-        AIS = TIERS/AIRS(IS)
+        AIS = TIERS/V2DPAR%R(IS)
 !
         DO IVAR=1,3
           DX(IVAR,IS) = DX(IVAR,IS)*AIS

@@ -349,7 +349,9 @@ $A$ the effective area and $U$ is the velocity magnitude of the wind.
 The logical keyword \telkey{WIND} (default = NO, i.e. no wind) is used first of
 all for determining whether this influence is to be taken into account.
 If so, the coefficient is then provided with the keyword
-\telkey{COEFFICIENT OF WIND INFLUENCE} (see {\S} below).
+\telkey{COEFFICIENT OF WIND INFLUENCE} (see below) or automatically calculated
+if \telkey{COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED} = YES
+which is the default value since release 8.2.
 Since release 7.0, wind effect is managed using a new keyword,
 \telkey{OPTION FOR WIND} (default = 0): this keyword can have the following
 values:
@@ -395,15 +397,19 @@ if $\| \vec{U}_{wind} \| > 19.22$ m/s & $a_{wind} = 2.513 \times 10^{-3}$ \\
 
 This formula can be activated by setting the keyword
 \telkey{COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED} to YES
-(default value is NO).
+(default value is YES since release 8.2).
+If YES, the value of \telkey{COEFFICIENT OF WIND INFLUENCE} is overwritten and
+the coefficient is automatically computed depending on the wind velocity.
 
-The parameter \telkey{COEFFICIENT OF WIND INFLUENCE} (default = 0.)
-asked for by \telemac{2D} is:
+If the previous keyword is set to NO (no automatic computation), the parameter
+\telkey{COEFFICIENT OF WIND INFLUENCE} asked for by \telemac{2D} is:
 $a_{wind} \frac{\rho_{air}}{\rho}$ and not only $a_{wind}$.
 
 $\rho_{air}$ is approximately 1.2 kg/m$^3$ and $\rho$ is 1,000 kg/m$^3$.
 Thus it is necessary to divide the value of a$_{wind}$ by 1,000
 to obtain the value of the \telemac{2D} keyword.
+The default value of \telkey{COEFFICIENT OF WIND INFLUENCE} has been set to
+$1.55 \times 10^{-6}$ since release 8.2.
 
 If there are tidal flats or dry zones in the domain, the wind may trigger
 unphysical velocities as it becomes the only driving term in the equations.

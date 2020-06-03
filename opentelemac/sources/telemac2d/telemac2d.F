@@ -405,7 +405,7 @@
 !
 ! ADDED FOR KINETIC SCHEMES
 !
-      DOUBLE PRECISION FLUSORTN,FLUENTN,DTT,SVOID(1)
+      DOUBLE PRECISION SVOID(1)
 !
 !-----------------------------------------------------------------------
 !
@@ -1234,38 +1234,74 @@
 !
       ELSEIF(EQUA(1:15).EQ.'SAINT-VENANT VF') THEN
 !
+      IF(INCLUS(COUPLING,'GAIA')) THEN
+!
+        CALL CONFIG_CODE(6)
+!
+        SUSP1=GAI_CPL%SUSP
+!
+!=======================================================================
+!       LEO IS COMMON FOR THE OUTPUT OF SISYPHE AND T2D
+        CALL PRERES_TELEMAC2D()
+!       KEEP THE SAME GRAPHIC COUNTER FOR T2D ANS SIS
+        IF(LEO)COMPLEO=COMPLEO-1
+!
+!       MANAGE COUPLING PERIOD CALLS
+!
+        YAGAI = .TRUE.
+!
+        IF(SUSP1) THEN
+!
+          IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING GAIA, SUSPENSION'
+!
+          CALL GAIA_STEP(
+     &         LT,LEOPRD_CHARR,LISPRD,TOTAL_ITER,U,V,H,ZF,
+     &         CF,CF,CF,CHESTR,CODE1,
+     &         U,V,AT,VISC,DT,GAI_CPL%CHARR,SUSP1,
+     &         ROEAU,GRAV,
+     &         DIRMOY,HM0,TPR5,ORBVEL,LEO,GRCOMP=COMPLEO)
+          IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM GAIA, SUSPENSION'
+!
+        ELSEIF(GAI_CPL%CHARR.AND.YAGAI) THEN
+!
+          IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING GAIA, BEDLOAD'
+          CALL GAIA_STEP(
+     &         LT,LEOPRD_CHARR,LISPRD,TOTAL_ITER,U,V,H,ZF,
+     &         CF,CF,CF,CHESTR,CODE1,
+     &         U,V,AT,VISC,DT,GAI_CPL%CHARR,SUSP1,
+     &         ROEAU,GRAV,
+     &         DIRMOY,HM0,TPR5,ORBVEL,LEO,GRCOMP=COMPLEO)
+!
+          IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM GAIA, BEDLOAD'
+        ENDIF
+!
+!
+        CALL CONFIG_CODE(1)
+!
+      ENDIF
+!
 !       VOLFIN MAY CHANGE DT
 !
 !       CM1%D%R : HT
 !
-!
-!     ADAPT FRICTION LAWS FOR FINITE VOLUMES
-      IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING COEFRO'
-      IF(EQUA(14:15).EQ.'VF') CALL COEFRO(CF,H,U,V,KARMAN,KFROT,
-     &                             CHESTR,GRAV,MESH,T1,.TRUE.)
-      IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM COEFRO'
-!
         IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING VOLFIN'
-        CALL VOLFIN(W1%R,AT,DT,LT,NELEM,NPTFR,MESH%NSEG,
-     &       TB,ZF%R,CHESTR%R,NPOIN,HN%R,H%R,U%R,V%R,QU%R,QV%R,
-     &       GRAV,ENTET,MESH,LIMPRO%I,
-     &       MESH%NBOR%I,KDIR,KNEU,KDDL,HBOR%R,UBOR%R,VBOR%R,
-     &       MASSES,FLUENT,FLUSOR,CFLWTD,DTVARI,KFROT,
-     &       NREJET,ISCE,TSCE2,MAXSCE,MAXTRA,YASMH,SMH%R,
-     &       NTRAC,T%ADR(1)%P%DIM1,T,HT,TN,
-     &       TBOR,MASSOU,FLUTENT,FLUTSOR,MESH%DTHAUT%R,
-     &       MESH%DPX%R,MESH%DPY%R,CM1%X%R,CM2%X%R,
-     &       MESH%CMI%R,MESH%JMI%I,TE1%R,TE2%R,
-     &       DIFVIT,ITURB,PROPNU,DIFT,DIFNU,
-     &       BM1%X%R,BM2%X%R,OPTVF,
-     &       HSTOK%R,HCSTOK%R,LOGFR%I,DSZ%R,FLUXT,FLUHBOR,
-     &       FLBOR,DTN,FLUSORTN,FLUENTN,
-     &       LT2,FLUXTEMP,FLUHBTEMP,HC%R,SMTR,MESH%AIRST%R,
-     &       TMAX,DTT,GAMMA,FLUX_OLD,MXPTVS,NEISEG%I,V2DPAR,
-     &       UDEL,VDEL,HROPT,RAIN,PLUIE,MASS_RAIN,BILMAS,
-     &       FU,FV,YASMO,CORIOL,FCOR,SPHERI,MESH%SINLAT,LEO,
-     &       NREG,TNP,PT_IN_POLY)
+        CALL VOLFIN(W1%R,DTN,FLUX%R,H%R,U%R,V%R,QU%R,QV%R,
+     &              FLUSOR,FLUENT,SMH%R,MASSES,T,HT,TN,MASSOU,FLUTENT,
+     &              FLUTSOR,CM1%X%R,CM2%X%R,BM1%X%R,BM2%X%R,DSZ%R,FLBOR,
+     &              LOGFR%I,FLUXT,FLUXT_OLD,FLUHTEMP,FLUHBTEMP,SMTR,
+     &              TB%ADR(3)%P%R,TB%ADR(4)%P%R,TE1%R,TE2%R,
+     &              TB%ADR(6)%P%R,TB%ADR(7)%P%R,TB%ADR(8)%P%R,
+     &              TB%ADR(9)%P%R,TB%ADR(10)%P%R,FLUX_OLD%R,MESH,
+     &              MASS_RAIN,LEO,YASMO,DT,YASMH,CORR_I,CORR_J,CORR_ZL,
+     &              CORR_ZR,CORR_HL,CORR_HR,CORR_UL,CORR_UR,CORR_VL,
+     &              CORR_VR)
+
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM VOLFIN'
+!
+!       COMPATIBLE VELOCITY FIELD IN CONTINUITY EQUATION
+!       USED BY SISYPHE AND DELWAQ
+        CALL OV ('X=Y     ', X=UDEL%R, Y=U%R, DIM1=NPOIN)
+        CALL OV ('X=Y     ', X=VDEL%R, Y=V%R, DIM1=NPOIN)
 !
         AT = AT + DT
         IF (LT.GE.NIT.OR.AT.GT.TMAX.OR.
@@ -1352,7 +1388,8 @@
 !     COUPLING WITH GAIA
 !=======================================================================
 !
-      IF(INCLUS(COUPLING,'GAIA')) THEN
+      IF(INCLUS(COUPLING,'GAIA').AND.
+     &   EQUA(1:15).NE.'SAINT-VENANT VF') THEN
 !
         CALL CONFIG_CODE(6)
 !
@@ -1466,10 +1503,10 @@
 !     CASE OF COUPLING WITH GAIA
 !
         ISUSP=ITRAC-IND_SED+1
-
-        CALL PREP_ADVECTION_GAIA(UCONV,VCONV,ICONVF(ITRAC),SOLSYS,
-     &       ISUSP,LITBOR%ADR(ITRAC)%P%I,TBOR%ADR(ITRAC)%P%R,
-     &       TN%ADR(ITRAC)%P%R,KENT,FLBOR,HN)
+        CALL PREP_ADVECTION_GAIA(UCONV,VCONV,ICONVF(ITRAC),
+     &                           SOLSYS,ISUSP,LITBOR%ADR(ITRAC)%P%I,
+     &                           TBOR%ADR(ITRAC)%P%R,TN%ADR(ITRAC)%P%R,
+     &                           KENT,FLBOR,HN)
 
         MASSOU(ITRAC)=0.D0
 !
@@ -1543,27 +1580,6 @@
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM CVDFTR'
       ENDIF
 !
-      IF(INCLUS(COUPLING,'GAIA').AND.SUSP1) THEN
-!
-        CALL CONFIG_CODE(6)
-!
-        IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING GAIA, STEP 2'
-!
-        CALL GAIA_STEP(
-     &       LT,LEOPRD_CHARR,LISPRD,TOTAL_ITER,U,V,H,ZF,
-     &       CF,CF,CF,CHESTR,CODE1,
-     &       U,V,AT,VISC,DT,GAI_CPL%CHARR,SUSP1,
-     &       ROEAU,GRAV,
-     &       DIRMOY,HM0,TPR5,ORBVEL,LEO,GRCOMP=COMPLEO)
-        IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM GAIA, STEP 2'
-!
-        UCONV_GAI%R=>SAVE_UCONV
-        VCONV_GAI%R=>SAVE_VCONV
-!
-        CALL CONFIG_CODE(1)
-!
-      ENDIF
-!
       IF(BILMAS) THEN
       IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING BILANT'
       CALL BILANT(H,T2,T3,DT,LT,TOTAL_ITER,ENTET,
@@ -1584,6 +1600,27 @@
 !=======================================================================
 !
 !
+!
+      IF(INCLUS(COUPLING,'GAIA').AND.SUSP1) THEN
+!
+        CALL CONFIG_CODE(6)
+!
+        IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING GAIA, STEP 2'
+!
+        CALL GAIA_STEP(
+     &       LT,LEOPRD_CHARR,LISPRD,TOTAL_ITER,U,V,H,ZF,
+     &       CF,CF,CF,CHESTR,CODE1,
+     &       U,V,AT,VISC,DT,GAI_CPL%CHARR,SUSP1,
+     &       ROEAU,GRAV,
+     &       DIRMOY,HM0,TPR5,ORBVEL,LEO,GRCOMP=COMPLEO)
+        IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM GAIA, STEP 2'
+!
+        UCONV_GAI%R=>SAVE_UCONV
+        VCONV_GAI%R=>SAVE_VCONV
+!
+        CALL CONFIG_CODE(1)
+!
+      ENDIF
 !
 !
 !=======================================================================
@@ -1648,19 +1685,15 @@
      &             MESH%NPTFR,FLBOR,
      &             FLUX_BOUNDARIES,NUMLIQ%I,NFRLIQ,GAMMA)
 !
-!       ADDED FOR THE KINETIC SCHEMES (TO BE CHECKED)
-!
         IF(NTRAC.GT.0) THEN
           IF(EQUA(1:15).EQ.'SAINT-VENANT VF') THEN
-!
             DO ITRAC=1,NTRAC
-            CALL BILANT1(HSTOK,UCONV,VCONV,HPROP,T3,T4,T5,T6,
-     &                   LT,TOTAL_ITER,ENTET,MASKTR,
-     &                   T%ADR(1)%P,TN%ADR(1)%P,TETAT,
-     &                   MASSOU(ITRAC),MSK,MASKEL,MESH,
-     &                   FLUTSOR(ITRAC),FLUTENT(ITRAC),EQUA,ITRAC)
+              CALL BILANT1(H,U,V,H,T3,T4,T5,T6,
+     &                     LT,TOTAL_ITER,ENTET,MASKTR,
+     &                     T%ADR(ITRAC)%P,TN%ADR(ITRAC)%P,TETAT,
+     &                     MASSOU(ITRAC),MSK,MASKEL,MESH,FLUTSOR(ITRAC),
+     &                     FLUTENT(ITRAC),EQUA,ITRAC)
             ENDDO
-!
           ENDIF
         ENDIF
 !

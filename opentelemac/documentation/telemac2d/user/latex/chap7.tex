@@ -120,8 +120,12 @@ obtained from the momentum equation.
 This technique decreases calculation speed but has the disadvantage
 of smoothing the results.
 The choice between these two options is done using the keyword
-\telkey{TREATMENT OF THE LINEAR SYSTEM}
-(default value is 1: original equations. 2: wave equation).
+\telkey{TREATMENT OF THE LINEAR SYSTEM}:
+\begin{itemize}
+\item 1: original equations (= system of coupled equations,
+which was the old default value until release 8.1),
+\item 2: wave equation (new default value since release 8.2).
+\end{itemize}
 It is important to stress that choosing option 2 automatically selects
 a number of other options:
 use of mass lumping on depth and velocities, and use of explicit velocity
@@ -434,49 +438,78 @@ The keyword \telkey{FINITE VOLUME SCHEME} specifies the type of scheme used.
 The available possibilities are:
 
 \begin{itemize}
-\item 0: Roe scheme,
+\item 0: Roe scheme. See \cite{roe1981approximate} for more details.
 
-\item 1: Kinetic order 1 (default value),
+\item 1: Kinetic scheme (default value). See \cite{audusse2000kinetic}.
 
-\item 2: Kinetic order 2,
+\item 3: Zokagoa scheme (implementation not compatible with tidal flats).
+See \cite{zokagoa2010modeling}.
 
-\item 3: Zokagoa scheme order 1,
+\item 4: Tchamen scheme, 
 
-\item 4: Tchamen scheme order 1,
+\item 5: HLLC (Harten Lax Leer-Contact) scheme,
+which is one the most frequently used scheme in the literature 
+\cite{toro2009hll}.
 
-\item 5: HLLC (Harten Lax Leer-Contact) scheme.
-It is one the most frequently used scheme in the literature.
-It is a first order scheme in time and space,
-
-\item 6: WAF (Weighted Average Flux) scheme.
-It is an improvement of the previous scheme.
-It is a second order scheme in time and space.
+\item 6: WAF (Weighted Average Flux) scheme (parallel not implemented).
 For more details about this scheme, see \cite{Ata2012}.
 \end{itemize}
 
 The algorithm of finite volume schemes is explicit and means that
-the Courant number has to be limited to 1.
+the Courant number must be inferior or equal to 1 to ensure stability.
 It is however recommended to set the keyword \telkey{DESIRED COURANT NUMBER}
-to 0.9.
-The variable time step option is then automatically used.
+to 0.9. This should be combined with the keyword \telkey{VARIABLE TIME-STEP}
+set to YES (default: NO).
 \telemac{2D} then adjusts the calculation time step so as to satisfy
 this Courant number criterion.
+The graphic printout is handled with the time step given in the steering file.
 However, it should be noted that this leads to irregular sampling
-from the graphic printout file and control listing.
+from the control listing. 
 
-The keyword \telkey{NEWMARK TIME INTEGRATION COEFFICIENT} (default = 1.) gives
-the possibility to improve time integration in order to reach second order.
-This is obtained by setting the value of this keyword to 0.5.
+The keyword \telkey{FINITE VOLUME SCHEME SPACE ORDER} (default = 1) allows the
+use of second order reconstructions which gives second order accuracy for 
+spatial schemes.
+The 2 possible choices are:
+\begin{itemize}
+\item 1: First order (default value),
+\item 2: Second order MUSCL scheme \cite{bristeau2005secondorder} (only compatible with 
+Kinetic and HLLC schemes).
+\end{itemize}
+
+Similarly the keyword \telkey{FINITE VOLUME SCHEME TIME ORDER} (default = 1) 
+gives the possiblity to use second order accurate temporal scheme. 
+ The 2 possible choices are:
+\begin{itemize}
+\item 1: Euler explicit scheme (default value),
+\item 2: Newmark scheme.
+\end{itemize}
+The keyword \telkey{NEWMARK TIME INTEGRATION COEFFICIENT} (default = 0.5) 
+gives the possibility to change the Newmark scheme integration parameter.
+When set to 1 the Newmark scheme is equivalent to the Euler 
+explicit time scheme.
 
 The keyword \telkey{OPTION OF THE HYDROSTATIC RECONSTRUCTION}
 enables to choose the option for hydrostatic reconstruction for the
-HLLC and WAF schemes.
+Kinetic, HLLC and WAF schemes.
 The 2 possible choices are:
 \begin{itemize}
-\item 1: Audusse option (default),
-\item 2: Noelle et al. option.
+\item 1: Audusse \textit{et al.} \cite{audusse2004fast} (default),
+\item 2: Chen and Noelle improvement \cite{Chen2017}, 
+which is useful for rain induced runoff (work only with first 
+order in space schemes).
 \end{itemize}
 
+When second order MUSCL scheme is used, the keywords \telkey{FLUX LIMITOR FOR H+Z},
+\telkey{FLUX LIMITOR FOR U AND V} and \telkey{FLUX LIMITOR FOR TRACERS}
+allow user to switch between several second order TVD flux limitors for
+the reconstructions of free surface, velocities and tracers.
+The available choices are:
+\begin{itemize}
+\item 1:  Minmod (default value for H+Z),
+\item 2:  Van Albala (default value for U, V and tracers),
+\item 3:  MC (Monotonized Central)
+\item 4:  Generalized minmod 
+\end{itemize}
 
 \section{Solving the linear system}
 

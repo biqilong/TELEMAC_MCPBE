@@ -44,33 +44,48 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION GRI1,GRI2,GRIJ2,AUX1,E2
+      DOUBLE PRECISION GRI1,GRI2,GRIJ2,AUX1,AUX2,THETA
+      DOUBLE PRECISION, PARAMETER :: E2 = 1.D-12
 !
 !-----------------------------------------------------------------------
 !
-!    EXTRAPOLATES THE GRADIENT AND USES SLOPE LIMITER
-!
+!     EXTRAPOLATES THE GRADIENT AND USES SLOPE LIMITER
       GRI1 = (1.D0+BETA)*GRI - BETA*GRIJ
 !
+!     =======================
+!     MINMOD
+!     =======================
       IF(ILIM.EQ.1) THEN
-!
-!    MINMOD
-!
         EXLIM=0.5D0*(SIGN(1.D0,GRI1)+SIGN(1.D0,GRIJ))
      &   *MIN(ABS(GRI1),ABS(GRIJ))
 !
-!
+!     =======================
+!     VAN ALBADA
+!     =======================
       ELSEIF (ILIM.EQ.2) THEN
-!
-!       VAN ALBADA
-!
-        E2 = 1.D-12
-!
         AUX1 = 0.5D0*(1.D0+SIGN(1.D0,GRI1*GRIJ))
         GRI2  = GRI1*GRI1  + E2
         GRIJ2 = GRIJ*GRIJ  + E2
-!
         EXLIM  = AUX1*(GRI2*GRIJ+GRIJ2*GRI)/(GRI2+GRIJ2)
+!
+!     =======================
+!     MONOTONIZED CENTRAL
+!     =======================
+      ELSEIF (ILIM.EQ.3) THEN
+        AUX1 = SIGN(1.D0, GRIJ)
+        AUX2 = DMIN1(2.D0*GRI1*AUX1,
+     &         DMIN1(0.5D0*(ABS(GRIJ)+GRI1*AUX1), 2.D0*ABS(GRIJ)))
+        EXLIM = AUX1*DMAX1(0.D0, AUX2)
+!
+!     =======================
+!     GENERALIZED MINMOD
+!     =======================
+      ELSEIF (ILIM.EQ.4) THEN
+        THETA = 2.D0 ! BETWEEN 1 AND 2
+        AUX1 = SIGN(1.D0, GRIJ)
+        AUX2 = DMIN1(THETA*GRI1*AUX1,
+     &         DMIN1(0.5D0*(ABS(GRIJ)+GRI1*AUX1), THETA*ABS(GRIJ)))
+        EXLIM = AUX1*DMAX1(0.D0, AUX2)
 !
       ENDIF
 !

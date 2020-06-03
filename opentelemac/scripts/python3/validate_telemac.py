@@ -47,7 +47,8 @@ TAGS = ["telemac2d",
         "gaia",
         "gotm",
         "full_valid",
-        "med"]
+        "med",
+        "fv"]
 
 
 def check_python_rank_tags(py_file, options):

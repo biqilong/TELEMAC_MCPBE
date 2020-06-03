@@ -25,7 +25,7 @@
 /
 / INDICES IN USE SO FAR:
 /  - INTEGER (ENTIER):
-/       1-3,5-11,13-19,21-45,47-108,110-113 OUT OF 108
+/       1-3,5-11,13-19,21-45,47-108,110-119 OUT OF 114
 /  - REAL (REEL):
 /       1-22,24-82 OUT OF  81
 /  - LOGICAL (LOGIQUE):
@@ -2535,8 +2535,8 @@ NOM1 = 'COEFFICIENT OF WIND INFLUENCE'
 TYPE = REAL
 INDEX = 6
 TAILLE = 1
-DEFAUT = 0.
-DEFAUT1 = 0.
+DEFAUT = 1.55E-6
+DEFAUT1 = 1.55E-6
 MNEMO = 'FAIR'
 RUBRIQUE =
 'HYDRO';'PARAMETRES PHYSIQUES HYDRO';'METEOROLOGIE'
@@ -2557,8 +2557,8 @@ NOM1 = 'COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED'
 TYPE = LOGICAL
 INDEX = 59
 TAILLE = 1
-DEFAUT = NON
-DEFAUT1 = NO
+DEFAUT = OUI
+DEFAUT1 = YES
 MNEMO = 'FAIRACCU'
 RUBRIQUE =
 'HYDRO';'PARAMETRES PHYSIQUES HYDRO';'METEOROLOGIE'
@@ -2568,11 +2568,13 @@ NIVEAU = 0
 AIDE =
 'Si OUI, la valeur du coefficient d''entrainement du vent est
 calculee en fonction de la vitesse du vent.
-La valeur de \telkey{COEFFICIENT D''INFLUENCE DU VENT} est ecrasee.'
+La valeur de \telkey{COEFFICIENT D''INFLUENCE DU VENT} est ecrasee.
+Ancienne valeur par defaut = NON jusqu a la version V8P1.'
 AIDE1 =
 'If YES, the value of the wind driving coefficient is computed
 with respect to the wind velocity.
-The value of \telkey{COEFFICIENT OF WIND INFLUENCE} is overwritten.'
+The value of \telkey{COEFFICIENT OF WIND INFLUENCE} is overwritten.
+Old default value = NO until V8P1.'
 /
 NOM = 'VITESSE DU VENT SUIVANT X'
 NOM1 = 'WIND VELOCITY ALONG X'
@@ -3518,14 +3520,14 @@ NOM1 = 'TREATMENT OF THE LINEAR SYSTEM'
 TYPE = INTEGER
 INDEX = 48
 TAILLE = 1
-DEFAUT = 1
-DEFAUT1 = 1
+DEFAUT = 2
+DEFAUT1 = 2
 MNEMO = 'SOLSYS'
 CHOIX =
-'1="traitement couple"';
+'1="Traitement couple"';
 '2="Equation d onde"'
 CHOIX1 =
-'1="coupled"';
+'1="Coupled"';
 '2="Wave equation"'
 RUBRIQUE =
 'HYDRO';'PARAMETRES NUMERIQUES HYDRO';''
@@ -3536,14 +3538,17 @@ AIDE =
 'Choix possibles :
 \begin{itemize}
 \item 1 : Traitement couple ;
-\item 2 : equation d onde.
-\end{itemize}'
+\item 2 : Equation d onde.
+\end{itemize}
+Ancienne valeur par defaut = 1 (couple) jusqu a la version
+V8P1.'
 AIDE1 =
 'Possible choices:
 \begin{itemize}
 \item 1: Coupled,
-\item 2: wave equation.
-\end{itemize}'
+\item 2: Wave equation.
+\end{itemize}
+Old default value = 1 (coupled) until release V8P1.'
 /
 NOM = 'SCHEMA EN VOLUMES FINIS'
 NOM1 = 'FINITE VOLUME SCHEME'
@@ -3555,20 +3560,18 @@ DEFAUT1 = 1
 MNEMO = 'OPTVF'
 CHOIX =
 '0="schema de Roe"';
-'1="schema cinetique ordre 1"';
-'2="schema cinetique ordre 2"';
-'3="schema Zokagoa ordre 1"';
-'4="schema Tchamen ordre 1"';
-'5="schema HLLC ordre 1"';
-'6="schema WAF ordre 2"'
+'1="schema cinetique"';
+'3="schema Zokagoa"';
+'4="schema Tchamen"';
+'5="schema HLLC"';
+'6="schema WAF"'
 CHOIX1 =
 '0="Roe scheme"';
-'1="kinetic order 1"';
-'2="kinetic order 2"';
-'3="Zokagoa scheme order 1"';
-'4="Tchamen scheme order 1"';
-'5="HLLC scheme order 1"';
-'6="WAF scheme order 2"'
+'1="kinetic"';
+'3="Zokagoa scheme"';
+'4="Tchamen scheme"';
+'5="HLLC scheme"';
+'6="WAF scheme"'
 RUBRIQUE =
 'HYDRO';'PARAMETRES NUMERIQUES HYDRO';''
 RUBRIQUE1 =
@@ -3578,23 +3581,189 @@ AIDE =
 'Choix possibles :
 \begin{itemize}
 \item 0 : schema de Roe ;
-\item 1 : cinetique ordre 1 ;
-\item 2 : cinetique ordre 2 ;
+\item 1 : cinetique ;
 \item 3 : schema de Zokagoa ;
 \item 4 : schema de Tchamen ;
-\item 5 : HLLC ordre 1 ;
-\item 6 : WAF ordre 2.
+\item 5 : HLLC ;
+\item 6 : WAF.
 \end{itemize}'
 AIDE1 =
 'Possible choices:
 \begin{itemize}
 \item 0: Roe scheme,
-\item 1: kinetic order 1,
-\item 2: kinetic order 2,
+\item 1: kinetic,
 \item 3: Zokagoa scheme,
 \item 4: Tchamen scheme,
-\item 5: HLLC order 1,
-\item 6: WAF order 2.
+\item 5: HLLC,
+\item 6: WAF.
+\end{itemize}'
+/
+NOM = 'ORDRE EN ESPACE DU SCHEMA VOLUME FINIS'
+NOM1 = 'FINITE VOLUME SCHEME SPACE ORDER'
+TYPE = INTEGER
+INDEX = 114
+TAILLE = 1
+DEFAUT = 1
+DEFAUT1 = 1
+MNEMO = 'SORDER'
+RUBRIQUE =
+'PARAMETRES NUMERIQUES';'AVANCEE';''
+RUBRIQUE1 =
+'NUMERICAL PARAMETERS';'ADVANCED';''
+NIVEAU = 0
+AIDE =
+'Choix possibles :
+\begin{itemize}
+\item 1 : ordre 1 en espace ;
+\item 2 : ordre 2 en espace.
+\end{itemize}'
+AIDE1 =
+'Possible choices:
+\begin{itemize}
+\item 1: first order in space,
+\item 2: second order in space.
+\end{itemize}'
+/
+NOM = 'ORDRE EN TEMPS DU SCHEMA VOLUME FINIS'
+NOM1 = 'FINITE VOLUME SCHEME TIME ORDER'
+TYPE = INTEGER
+INDEX = 115
+TAILLE = 1
+DEFAUT = 1
+DEFAUT1 = 1
+MNEMO = 'TORDER'
+RUBRIQUE =
+'PARAMETRES NUMERIQUES';'AVANCEE';''
+RUBRIQUE1 =
+'NUMERICAL PARAMETERS';'ADVANCED';''
+NIVEAU = 0
+AIDE =
+'Choix possibles :
+\begin{itemize}
+\item 1 : ordre 1 en temps ;
+\item 2 : ordre 2 en temps.
+\end{itemize}'
+AIDE1 =
+'Possible choices:
+\begin{itemize}
+\item 1: first order in time,
+\item 2: second order in time.
+\end{itemize}'
+/
+NOM = 'LIMITEUR DE FLUX POUR H+Z'
+NOM1 = 'FLUX LIMITOR FOR H+Z'
+TYPE = INTEGER
+INDEX = 116
+TAILLE = 1
+DEFAUT = 1
+DEFAUT1 = 1
+MNEMO = 'ILIMHZ'
+RUBRIQUE =
+'PARAMETRES NUMERIQUES';'AVANCEE';''
+RUBRIQUE1 =
+'NUMERICAL PARAMETERS';'ADVANCED';''
+NIVEAU = 0
+AIDE =
+'Choix possibles :
+\begin{itemize}
+\item 1 : Minmod ;
+\item 2 : Van Albada ;
+\item 3 : MC (Monotonized Central-difference) ;
+\item 4 : GenMinmod.
+\end{itemize}'
+AIDE1 =
+'Possible choices:
+\begin{itemize}
+\item 1 : Minmod,
+\item 2 : Van Albada,
+\item 3 : MC (Monotonized Central-difference),
+\item 4 : GenMinmod.
+\end{itemize}'
+/
+NOM = 'LIMITEUR DE FLUX POUR U ET V'
+NOM1 = 'FLUX LIMITOR FOR U AND V'
+TYPE = INTEGER
+INDEX = 117
+TAILLE = 1
+DEFAUT = 2
+DEFAUT1 = 2
+MNEMO = 'ILIMUV'
+RUBRIQUE =
+'PARAMETRES NUMERIQUES';'AVANCEE';''
+RUBRIQUE1 =
+'NUMERICAL PARAMETERS';'ADVANCED';''
+NIVEAU = 0
+AIDE =
+'Choix possibles :
+\begin{itemize}
+\item 1 : Minmod ;
+\item 2 : Van Albada ;
+\item 3 : MC (Monotonized Central-difference) ;
+\item 4 : GenMinmod.
+\end{itemize}'
+AIDE1 =
+'Possible choices:
+\begin{itemize}
+\item 1 : Minmod,
+\item 2 : Van Albada,
+\item 3 : MC (Monotonized Central-difference),
+\item 4 : GenMinmod.
+\end{itemize}'
+/
+NOM = 'LIMITEUR DE FLUX POUR LES TRACEURS'
+NOM1 = 'FLUX LIMITOR FOR TRACERS'
+TYPE = INTEGER
+INDEX = 118
+TAILLE = 1
+DEFAUT = 2
+DEFAUT1 = 2
+MNEMO = 'ILIMT'
+RUBRIQUE =
+'PARAMETRES NUMERIQUES';'AVANCEE';''
+RUBRIQUE1 =
+'NUMERICAL PARAMETERS';'ADVANCED';''
+NIVEAU = 0
+AIDE =
+'Choix possibles :
+\begin{itemize}
+\item 1 : Minmod ;
+\item 2 : Van Albada ;
+\item 3 : MC (Monotonized Central-difference) ;
+\item 4 : GenMinmod.
+\end{itemize}'
+AIDE1 =
+'Possible choices:
+\begin{itemize}
+\item 1 : Minmod,
+\item 2 : Van Albada,
+\item 3 : MC (Monotonized Central-difference),
+\item 4 : GenMinmod.
+\end{itemize}'
+/
+NOM = 'TYPE DE CONDITION A LA LIMITE POUR LE SCHEMA CINETIQUE'
+NOM1 = 'TYPE OF BOUNDARY CONDITION FOR KINETIC SCHEME'
+TYPE = INTEGER
+INDEX = 119
+TAILLE = 1
+DEFAUT = 1
+DEFAUT1 = 1
+MNEMO = 'BNDCIN'
+RUBRIQUE =
+'PARAMETRES NUMERIQUES';'AVANCEE';''
+RUBRIQUE1 =
+'NUMERICAL PARAMETERS';'ADVANCED';''
+NIVEAU = 0
+AIDE =
+'Choix possibles :
+\begin{itemize}
+\item 1 : Imposition faible ;
+\item 2 : Imposition forte.
+\end{itemize}'
+AIDE1 =
+'Possible choices:
+\begin{itemize}
+\item 1: Weak imposition,
+\item 2: Strong imposition.
 \end{itemize}'
 /
 ////////////////////////////////////////////////////////////////////////
@@ -5651,8 +5820,8 @@ NOM1 = 'NEWMARK TIME INTEGRATION COEFFICIENT'
 TYPE = REAL
 INDEX = 60
 TAILLE = 1
-DEFAUT = 1.
-DEFAUT1 = 1.
+DEFAUT = 0.5
+DEFAUT1 = 0.5
 MNEMO = 'GAMMA'
 RUBRIQUE =
 'PARAMETRES NUMERIQUES';'AVANCEE';''
@@ -5708,19 +5877,19 @@ NIVEAU = 1
 AIDE =
 'Donne l option de la reconstruction hydrostatique
 (option utile uniquement pour les Volumes Finis,
-pour les schemas HLLC et WAF) :
+pour les schemas cinetique, HLLC et WAF) :
 \begin{itemize}
-\item 1 : option d Audusse ;
-\item 2 : option de Noelle et al.
+\item 1 : option d Audusse et al. ;
+\item 2 : option de Chen et Noelle.
 \end{itemize}'
 AIDE1 =
 'Gives the option for hydrostatic reconstruction
-(only used for Finite Volumes, for HLLC and WAF schemes):
+(only used for Finite Volumes with kinetic, HLLC and WAF schemes):
 \begin{itemize}
-\item 1: Audusse option,
-\item 2: Noelle et al. option.
+\item 1: Audusse et al. option ;
+\item 2: Chen and Noelle option.
 \end{itemize}'
-/
+
 NOM = 'ETUDE DE CONVERGENCE'
 NOM1 = 'CONVERGENCE STUDY'
 TYPE = LOGICAL
@@ -8248,11 +8417,11 @@ Calage possible par les mots-cles
 AIDE1 =
 'Option for tidal boundary conditions. For real tides, option 1 is
 recommended. This keyword has been an array with a value given per
-liquid boundary, separated by semicolons, since version 7.1. This
+liquid boundary, separated by semicolons, since release 7.1. This
 enables to have tidal conditions (or not) computed on liquid boundaries
 with prescribed velocities or depths, avoiding a clash when using weirs
 in the domain. 0 codes for conditions other than tidal. BEWARE since
-version 7.1! Old models must be changed if their tidal boundary is not
+release 7.1! Old models must be changed if their tidal boundary is not
 number 1. In that case this keyword must be changed and more values
 given. Possible calibration with the keywords
 \telkey{COEFFICIENT TO CALIBRATE TIDAL RANGE},
@@ -8396,7 +8565,7 @@ Ancien nom en version 6.1 : \telkey{BASE DE DONNEES DE MAREE}.'
 AIDE1 =
 'Tide data base of harmonic constituents
 extracted from the \telkey{TIDAL MODEL FILE}.
-Old name in 6.1 version: \telkey{TIDE DATA BASE}.'
+Old name in release 6.1: \telkey{TIDE DATA BASE}.'
 /
 NOM = 'COEFFICIENT DE CALAGE DU MARNAGE'
 NOM1 = 'COEFFICIENT TO CALIBRATE TIDAL RANGE'

@@ -1,76 +1,66 @@
-!                      ****************
+!                     *****************
                        SUBROUTINE CALDT
 !                      ****************
 !
-     &(NS,G,H,U,V,DTHAUT,DT,AT,TMAX,CFL,ICIN,DTVARI,LISTIN,LEO,NORDRE)
+     &(DT,DTN,LEO)
 !
 !***********************************************************************
-!TELEMAC-2D VERSION 7.0                                 30/06/13
+! TELEMAC-2D
 !***********************************************************************
 !
-!brief  COMPUTES THE TIME STEP UNDER CFL CONDITION
+!>@brief  Computes the time step under CFL condition
 !
-!history  INRIA FOR KINETIC SCHEMES
-!+
-!+        V5P8
-!+
+!>@history  INRIA FOR KINETIC SCHEMES
+!!
+!!        V5P8
+!!
 !
-!history  R. ATA (EDF-LNHE) DT FOR REMAINING SCHEMES
-!+        15/03/2010
-!+        V6P1
-!+   Translation of French comments within the FORTRAN sources into
-!+   English comments
-!+
+!>@history  R. ATA (EDF-LNHE) DT FOR REMAINING SCHEMES
+!!        15/03/2010
+!!        V6P1
+!!   Translation of French comments within the FORTRAN sources into
+!!   English comments
 !
-!history  R. ATA (EDF-LNHE)
-!+        15/01/2013
-!+        V6P3
-!+   introduce fixed time step
-!+   handle very specific cases
-!+   parallelization
+!>@history  R. ATA (EDF-LNHE)
+!!        15/01/2013
+!!        V6P3
+!!   introduce fixed time step
+!!   handle very specific cases
+!!   parallelization
 !
-!history  R. ATA (EDF-LNHE) INTRODUCE FIXED TIME STEP
-!+        30/06/2013
-!+        V6P3
-!+  clean and remove unused variables
+!>@history  R. ATA (EDF-LNHE) INTRODUCE FIXED TIME STEP
+!!        30/06/2013
+!!        V6P3
+!!  clean and remove unused variables
 !
-!history  R. ATA (EDF-LNHE) INTRODUCE FIXED TIME STEP
-!+        11/01/2016
-!+        V7P2
-!+  adjust time step to graphical outputs
+!>@history  R. ATA (EDF-LNHE) INTRODUCE FIXED TIME STEP
+!!        11/01/2016
+!!        V7P2
+!!  adjust time step to graphical outputs
 !
-!history  J,RIEHME (ADJOINTWARE)
-!+        November 2016
-!+        V7P2
-!+   Replaced EXTERNAL statements to parallel functions / subroutines
-!+   by the INTERFACE_PARALLEL
+!>@history  J,RIEHME (ADJOINTWARE)
+!!        November 2016
+!!        V7P2
+!!   Replaced EXTERNAL statements to parallel functions / subroutines
+!!   by the INTERFACE_PARALLEL
 !
-!history  R. ATA (EDF-LNHE)
-!+        18/10/ 2018
-!+        V78P0
-!+   fix a bug with graphical output when coupling with sisyphe
-!+   COMPLEO is now incremented only by preres_telemac (like FE)
+!>@history  R. ATA (EDF-LNHE)
+!!        18/10/ 2018
+!!        V78P0
+!!   fix a bug with graphical output when coupling with sisyphe
+!!   COMPLEO is now incremented only by preres_telemac (like FE)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NS             |-->| TOTAL NUMBER OF NODES
-!| G              |-->| GRAVITY
-!| H              |-->| WATER DEPTHS
-!| U              |-->| X-COMPONENT OF VELOCITY
-!| V              |-->| Y-COMPONENT OF VELOCITY
-!| DTHAUT         |-->| CHARACTERISTIC LENTH FOR CFL (DX)
-!| DT             |<--| TIME STEP
-!| AT             |---| CURRENT TIME
-!| TMAX           |---| MAX SIMULATION TIME
-!| CFL            |-->| CFL
-!| ICIN           |-->| WHICH SCHEME (SEE LIST BELOW)
-!| DTVARI         |-->| LOGICAL: VARIABLE TIME STEP
-!| LISTIN         |-->| LOGICAL: OUTPUT LISTING
-!| NORDRE         |-->| ORDER IN SPACE
+!>@param  [in,out]  DT      TIME STEP
+!>@param  [in,out]  DTN     TIME STEP AT PREVIOUS ITERATION
+!>@param  [in,out]  LEO     LOGICAL FOR GRAPHICAL OUTPUT
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF_DEF, ONLY:NCSIZE
-      USE DECLARATIONS_TELEMAC2D,ONLY:DTINI,LEOPRD,PTINIG,LT,NTRAC,
-     &                                LEO_TRAC
+      USE DECLARATIONS_TELEMAC2D,ONLY:DTINI,LEOPRD,PTINIG,GRAV,TORDER,
+     &                                LEO_TRAC,NPOIN,ICIN,SORDER,LT,HN,
+     &                                U,V,CFLWTD,AT,TMAX,MESH,DTVARI,
+     &                                ENTET
       USE INTERFACE_TELEMAC2D, EX_CALDT => CALDT
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_PARALLEL, ONLY : P_DMIN
@@ -78,11 +68,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER         , INTENT(IN)    :: NS,ICIN,NORDRE
-      DOUBLE PRECISION, INTENT(INOUT) :: DT
-      DOUBLE PRECISION, INTENT(IN)    :: H(NS),U(NS),V(NS),DTHAUT(NS)
-      DOUBLE PRECISION, INTENT(IN)    :: G,CFL,AT,TMAX
-      LOGICAL        ,  INTENT(IN)    :: DTVARI,LISTIN
+      DOUBLE PRECISION, INTENT(INOUT) :: DT,DTN
       LOGICAL        ,  INTENT(INOUT) :: LEO
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -90,12 +76,13 @@
       INTEGER IS
       LOGICAL DEJA,THEEND
       DOUBLE PRECISION RA3,EPSL,SIGMAX,UA2,UA3,UNORM,DTT
-      DOUBLE PRECISION RESTE, GPRDTIME
+      DOUBLE PRECISION RESTE,GPRDTIME,DT2
 !
       INTRINSIC MIN,CEILING
 !
 !-----------------------------------------------------------------------
 !
+
       THEEND=.FALSE.
       IF(LEO.OR.LT.EQ.1) LEO_TRAC = .FALSE.
       LEO   =.FALSE.
@@ -107,65 +94,81 @@
       DT = 1.E+12
       EPSL = 0.01D0
 !
-      IF(ICIN.EQ.1) THEN
-!       KINETIC SCHEME
+!     KINETIC SCHEME
+!     ==============
+      IF(ICIN.EQ.1)THEN
 !
-        RA3 = SQRT(1.5D0*G)
-        DO IS=1,NS
-          IF(H(IS).LT.0.D0.AND.LISTIN.AND..NOT.DEJA)THEN
+        RA3 = SQRT(1.5D0*GRAV)
+        DO IS=1,NPOIN
+          IF(HN%R(IS).LT.0.D0.AND.ENTET.AND..NOT.DEJA)THEN
             WRITE(LU,*) 'CALDT WARNING : NEGATIVE WATER DEPTH'
             WRITE(LU,*) ' SEE NODE:',IS,' FOR EXAMPLE'
             DEJA = .TRUE.
           ELSE
-            SIGMAX = ABS(H(IS))
-            UA2    = U(IS)
-            UA3    = V(IS)
+            SIGMAX = ABS(HN%R(IS))
+            UA2    = U%R(IS)
+            UA3    = V%R(IS)
             UNORM=SQRT(UA2*UA2 + UA3*UA3)
             SIGMAX= MAX(EPSL, RA3*SQRT(SIGMAX) +UNORM )
-            DT = MIN(DT, CFL*DTHAUT(IS)/SIGMAX)
+            DT = MIN(DT, CFLWTD*MESH%DTHAUT%R(IS)/SIGMAX)
           ENDIF
         ENDDO
 !
+!     SCHEMES OF ROE, ZOKAGOA, TCHAMEN, HLLC AND WAF
+!     ==============================================
       ELSEIF(ICIN.EQ.0.OR.ICIN.EQ.2.OR.ICIN.EQ.3.OR.
      &       ICIN.EQ.4.OR.ICIN.EQ.5) THEN
-!     SCHEMES OF ROE, ZOKAGOA, TCHAMEN, HLLC AND WAF
 !
-        DO IS=1,NS
-          IF(H(IS).LT.0.D0.AND.LISTIN.AND..NOT.DEJA)THEN
+        DO IS=1,NPOIN
+          IF(HN%R(IS).LT.0.D0.AND.ENTET.AND..NOT.DEJA)THEN
             WRITE(LU,*) 'CALDT WARNING : NEGATIVE WATER DEPTH'
             WRITE(LU,*) ' SEE NODE:',IS,' FOR EXAMPLE'
             DEJA = .TRUE.
           ELSE
-            UA2    = U(IS)
-            UA3    = V(IS)
+            UA2    = U%R(IS)
+            UA3    = V%R(IS)
             UNORM=SQRT(UA2*UA2 + UA3*UA3)
-            SIGMAX= MAX(EPSL,SQRT(G*ABS(H(IS)))+UNORM)
+            SIGMAX= MAX(EPSL,SQRT(GRAV*ABS(HN%R(IS)))+UNORM)
 !           DTHAUT=|Ci|/Sum(Lij)
-            DT = MIN(DT, CFL*DTHAUT(IS)/SIGMAX)
+            DT  = MIN(DT, CFLWTD*MESH%DTHAUT%R(IS)/SIGMAX)
           ENDIF
         ENDDO
 !
       ELSE
         WRITE(LU,4020) ICIN
-4020    FORMAT(1X,'CALDT: ERROR IN THE CHOICE OF ICIN: ',1I6)
+4020    FORMAT(1X,'CALDT: ERROR IN THE CHOICE OF OPTFV: ',1I6)
         CALL PLANTE(1)
         STOP
       ENDIF
+
+!     FOR NEWMARK SCHEME
+!     ==================
+      IF (TORDER.EQ.2) THEN
+        IF (LT.EQ.1) THEN
+          DTN = DT
+        ELSE
+          DT2 = 0.5D0*MIN(DT, DTN)
+          DTN = DT
+          DT = DT2
+        ENDIF
       ENDIF
 !
-!       FOR PARALLELISM
+!   +++++++++++++++++++++++++
+      ENDIF
+!   +++++++++++++++++++++++++
 !
+!     FOR PARALLELISM
       IF(NCSIZE.GT.1) DT=P_DMIN(DT)
 !
       IF(DTVARI) THEN
 !
         IF(TMAX.LT.DT)DT=TMAX !REALLY CRAZY CASES
         DTT=TMAX-AT
-        IF(CFL.GE.1.D0) DT=0.9D0*DT/CFL
+        IF(CFLWTD.GE.1.D0) DT=0.9D0*DT/CFLWTD
         IF(DTT.LE.DT.AND.DTT.GT.0.D0) THEN !LAST TIME STEP
           DT=DTT
 !         END OF COMUTATION WILL BE DETECTED IN RESOLU FOR ORDER 2
-          IF(NORDRE.EQ.1)THEEND=.TRUE.
+          IF(SORDER.EQ.1)THEEND=.TRUE.
         ENDIF
         IF(AT.GT.TMAX) THEN
           WRITE(LU,*)'CALDT: BAD TIME PARAMETERS'
@@ -177,7 +180,6 @@
       ELSE
 !
 !       DT NOT VARIABLE
-!
         WRITE(LU,*) 'ERROR: FIXED TIME-STEP AND CFL NOT GIVEN!...! '
         WRITE(LU,*) 'TIME-STEP MAY NOT SATISFY CFL CONDITION '
         WRITE(LU,*) 'THIS OPTION IS NOT ACCEPTED WITH FINITE VOLUMES '
@@ -198,7 +200,7 @@
 !       CASE WHERE TIME STEP IS BIGGER THEN GRAPHIC OUTPUT (GPRDTIME)
         ELSEIF(GPRDTIME.LT.DT)THEN
           DT=DTINI
-          IF(LISTIN)THEN
+          IF(ENTET)THEN
             WRITE(LU,*) 'WARNING: GRAPHICAL OUTPUT NOT OPTIMIZED: '
             WRITE(LU,*) '   - INITIAL TIME STEP TOO SMALL '
             WRITE(LU,*) '   - AND/OR PERIOD OF GRAPHIC OUTPUT TOO SMALL'
@@ -208,7 +210,7 @@
         ENDIF
 !       ADAPT DT TO TAKE INTO ACCOUNT GRAPHIC OUTPUT
 !       ONLY FOR ORDER 1, ORDER 2 WILL BE DONE IN RESOLU
-        IF(NORDRE.EQ.1)THEN
+        IF(SORDER.EQ.1)THEN
           IS=CEILING(AT/GPRDTIME)
           RESTE=IS*GPRDTIME-AT
 !
@@ -217,15 +219,6 @@
 !           HERE THERE IS GRAPHICAL OUTPUT
             LEO = .TRUE.
             DT=MIN(RESTE,DT)
-          ENDIF
-          IF(ICIN.EQ.1.AND.NTRAC.GT.0) THEN
-            IF(LEO) THEN
-              LEO=.FALSE.
-              LEO_TRAC=.TRUE.
-            ELSEIF(LEO_TRAC) THEN
-              LEO=.TRUE.
-              LEO_TRAC=.FALSE.
-            ENDIF
           ENDIF
         ENDIF
 !
@@ -244,9 +237,9 @@
         STOP
       ENDIF
 !
-      IF(LISTIN) WRITE(LU,*) 'TIME-STEP: ',DT
-      IF(CFL.GE.1.D0) THEN
-        IF(LISTIN) THEN
+      IF(ENTET) WRITE(LU,*) 'TIME-STEP: ',DT
+      IF(CFLWTD.GE.1.D0) THEN
+        IF(ENTET) THEN
           WRITE(LU,*) 'WARNING: CFL NOT GIVEN OR >1 !...! '
           WRITE(LU,*) 'TIME-STEP (WITH CFL = 0.9): ',DT
         ENDIF

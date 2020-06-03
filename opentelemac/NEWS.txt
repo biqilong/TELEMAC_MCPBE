@@ -1,6 +1,13 @@
 Trunk
 ===========================
 
+TELEMAC-2D: new default values for 3 keywords:
+  - TREATMENT OF THE LINEAR SOLVER = 2 (i.e. wave equation, old = 1: coupled),
+  - COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED = YES,
+  - COEFFICIENT OF WIND INFLUENCE = 1.55E-6 (rather than 0.).
+
+TELEMAC-2D: New finite volume architecture
+
 TELEMAC-2D: new keyword to calibrate the 2D mixing length turbulence model
   - MIXING LENGTH MODEL COEFFICIENTS
 

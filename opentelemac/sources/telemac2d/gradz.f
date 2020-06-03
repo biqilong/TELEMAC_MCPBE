@@ -2,15 +2,13 @@
                      SUBROUTINE GRADZ
 !                    ****************
 !
-     &(NS,NT,NSEG,NU,NUBO,X,Y,AIRT,AIRS,CMI,JV,
-     & ZF,DPX,DPY,DSZ,BETA,AIRST,DXIZ,DYIZ,DSP,DSM,CORR,
-     & MESH)
+     &(IKLE,NUBO,CMI,DPX,DPY,DSZ,BETA,AIRST,DXIZ,DYIZ,DSP,DSM,CORR)
 !
 !***********************************************************************
 ! TELEMAC2D   V6P3                                   21/06/2013
 !***********************************************************************
 !
-!brief    SAINT VENANT-KINETIC.
+!brief    Second order for finite volume.
 !+
 !+            COMPUTES THE Z VARIATIONS (2ND ORDER).
 !+            SEE PAPER OF AUDUSSE AND BRISTEAU
@@ -40,9 +38,7 @@
 !+   clean anr remove unused variables
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| AIRS           |-->| CELL'S AREAS
 !| AIRST          |-->| AREAS OF SUBTRIANGLES WITHIN THE CELLS
-!| AIRT           |-->| TRIANGLES' AREAS
 !| BETA           |-->|  EXTRAPOLATION COEFFICIENT
 !| CMI            |-->| COORDINATES OF THE INTERFACE MIDDLE POINT
 !| DPX,DPY        |-->| GRADIENT OF P1 BASE FUNCTIONS
@@ -51,34 +47,27 @@
 !| CORR           |<->| CORRECTION TO HAVE CONSERVATION
 !| DSZ            |<--| VARIATION OF Z FOR ORDRE 2
 !| DXIZ,DYIZ,DSP  |<->| WORKING TABLES
-!| JV             |-->| NUMBER OF TRIANGLE IN WHICH IS LOCATED
 !|                |   | THE INTERFACE MIDDLE POINT
-!| NS             |-->| TOTAL NUMER OF NODES IN THE MESH
-!| NSEG           |-->| TOTAL NUMER OF SEGMENTS IN THE MESH
-!| NT             |-->| TOTAL NUMBER OF ELEMENTS IN THE MESH
-!| NU             |-->| NUMBERING OF NODES IN THE TRIANGLE
+!| IKLE           |-->| NUMBERING OF NODES IN THE TRIANGLE
 !| NUBO           |-->| NUMBERS OF THE TWO NODES FORMING ONE EDGE (SEGMENT)
-!| X,Y            |-->| COORDINATES IF THE NODES
-!| ZF             |-->| BATHYMETRY
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF_DEF
       USE INTERFACE_TELEMAC2D, EX_GRADZ => GRADZ
+      USE DECLARATIONS_TELEMAC2D, ONLY: NPOIN,NELMAX,NSEG,MESH,V2DPAR,
+     &                                  ZF,X,Y
       USE DECLARATIONS_SPECIAL
       USE BIEF, ONLY: OV
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NS,NT,NSEG
-      INTEGER, INTENT(IN)             :: NU(NT,3),NUBO(2,NSEG),JV(*)
-      DOUBLE PRECISION, INTENT(INOUT) :: DSZ(2,*)
-      DOUBLE PRECISION, INTENT(IN)    :: X(NS),Y(NS),AIRT(NT),AIRS(NS)
-      DOUBLE PRECISION, INTENT(INOUT) :: DXIZ(NS),DYIZ(NS)
-      DOUBLE PRECISION, INTENT(INOUT) :: DSP(NS),DSM(*),CORR(NS),BETA
-      DOUBLE PRECISION, INTENT(IN)    :: DPX(3,NT),DPY(3,NT)
-      DOUBLE PRECISION, INTENT(IN)    :: CMI(2,*),AIRST(2,*),ZF(NS)
-      TYPE(BIEF_MESH), INTENT(INOUT)  :: MESH
+      INTEGER, INTENT(IN)             :: IKLE(NELMAX,3),NUBO(2,NSEG)
+      DOUBLE PRECISION, INTENT(INOUT) :: DSZ(2,*),BETA
+      DOUBLE PRECISION, INTENT(INOUT) :: DXIZ(NPOIN),DYIZ(NPOIN)
+      DOUBLE PRECISION, INTENT(INOUT) :: DSP(NPOIN),DSM(*),CORR(NPOIN)
+      DOUBLE PRECISION, INTENT(IN)    :: DPX(3,NELMAX),DPY(3,NELMAX)
+      DOUBLE PRECISION, INTENT(IN)    :: CMI(2,*),AIRST(2,*)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -94,25 +83,25 @@
       ILIM = 1
       BETA = 1.D0
 ! INITIALISATION
-      CALL OV('X=C     ', X=DXIZ, C=0.D0, DIM1=NS)
-      CALL OV('X=C     ', X=DYIZ, C=0.D0, DIM1=NS)
-      CALL OV('X=C     ', X=DSP, C=0.D0, DIM1=NS)
-      CALL OV('X=C     ', X=DSM, C=0.D0, DIM1=NS)
+      CALL OV('X=C     ', X=DXIZ, C=0.D0, DIM1=NPOIN)
+      CALL OV('X=C     ', X=DYIZ, C=0.D0, DIM1=NPOIN)
+      CALL OV('X=C     ', X=DSP, C=0.D0, DIM1=NPOIN)
+      CALL OV('X=C     ', X=DSM, C=0.D0, DIM1=NPOIN)
       DSZ(1,1:NSEG)=(/(0.D0,I=1,NSEG)/)
       DSZ(2,1:NSEG)=(/(0.D0,I=1,NSEG)/)
 !
 !************************************************************************
 !     THIS LOOP IS TO COMPUTE GRAD(Z) WITH EQUATION 5.2
 !************************************************************************
-      DO JT=1,NT
+      DO JT=1,NELMAX
 !
-        I1 = NU(JT,1)
-        I2 = NU(JT,2)
-        I3 = NU(JT,3)
+        I1 = IKLE(JT,1)
+        I2 = IKLE(JT,2)
+        I3 = IKLE(JT,3)
 !
-        AIRJ = AIRT(JT)
-        DXTZ = ZF(I1)*DPX(1,JT)+ZF(I2)*DPX(2,JT)+ZF(I3)*DPX(3,JT) ! GRAD_X(Z)|_Tk
-        DYTZ = ZF(I1)*DPY(1,JT)+ZF(I2)*DPY(2,JT)+ZF(I3)*DPY(3,JT) ! GRAD_Y(Z)|_Tk
+        AIRJ = MESH%SURFAC%R(JT)
+        DXTZ = ZF%R(I1)*DPX(1,JT)+ZF%R(I2)*DPX(2,JT)+ZF%R(I3)*DPX(3,JT) ! GRAD_X(Z)|_Tk
+        DYTZ = ZF%R(I1)*DPY(1,JT)+ZF%R(I2)*DPY(2,JT)+ZF%R(I3)*DPY(3,JT) ! GRAD_Y(Z)|_Tk
 !
         TEMPOR   = AIRJ*DXTZ
         DXIZ(I1) = DXIZ(I1) + TEMPOR ! SUM( |C_k|*GRAD_X(Z)|_Tk )
@@ -127,12 +116,12 @@
       ENDDO
 !     FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN          ! NPON,NPLAN,ICOM,IAN
-        CALL PARCOM2(DXIZ,DYIZ,DYIZ,NS,1,2,2,MESH )
+        CALL PARCOM2(DXIZ,DYIZ,DYIZ,NPOIN,1,2,2,MESH )
       ENDIF
 !
-      DO IS=1,NS
-        DXIZ(IS) = DXIZ(IS)/(3.D0*AIRS(IS))  ! DIVIDE BY SUM(|C_k|)
-        DYIZ(IS) = DYIZ(IS)/(3.D0*AIRS(IS))  ! DIVIDE BY SUM(|C_k|)
+      DO IS=1,NPOIN
+        DXIZ(IS) = DXIZ(IS)/(3.D0*V2DPAR%R(IS))  ! DIVIDE BY SUM(|C_k|)
+        DYIZ(IS) = DYIZ(IS)/(3.D0*V2DPAR%R(IS))  ! DIVIDE BY SUM(|C_k|)
       ENDDO
 ! ************************************************************************
 !  GRAD(Z)_i IS NOW BUILT BY EQUATION 5.2
@@ -142,7 +131,7 @@
       DO NSG=1,NSEG
         FACT  = AIRST(1,NSG)! USEFUL FOR PARALLELISM
 !
-        J     = JV(NSG) ! THIS THE TRIANGLE IN WHICH IS LOCATED CMI
+        J     = MESH%JMI%I(NSG) ! THIS THE TRIANGLE IN WHICH IS LOCATED CMI
         IF(NCSIZE.GT.1.AND.J.EQ.0)CYCLE  ! THAT MEANS CMI IS NOT LOCATED IN TRIANGLE J
         IF(J.EQ.0)THEN
             WRITE(LU,*)'@GRADZ: PROBLEM TO RETRIEVE ELEMENT'
@@ -166,14 +155,14 @@
         GRADI = AIX*DXIZ(NUBO1) + AIY*DYIZ(NUBO1)
         GRADJ = AJX*DXIZ(NUBO2) + AJY*DYIZ(NUBO2)
 !
-        I1 = NU(J,1)
-        I2 = NU(J,2)
-        I3 = NU(J,3)
+        I1 = IKLE(J,1)
+        I2 = IKLE(J,2)
+        I3 = IKLE(J,3)
 !
 !        GRADIENT BY TRIANGLE (GRAD(W)_M=GRAD(W)|Tk)
 !
-        DXTZ =ZF(I1)*DPX(1,J) +ZF(I2)*DPX(2,J) + ZF(I3)*DPX(3,J)
-        DYTZ =ZF(I1)*DPY(1,J) +ZF(I2)*DPY(2,J) + ZF(I3)*DPY(3,J)
+        DXTZ =ZF%R(I1)*DPX(1,J) +ZF%R(I2)*DPX(2,J) + ZF%R(I3)*DPX(3,J)
+        DYTZ =ZF%R(I1)*DPY(1,J) +ZF%R(I2)*DPY(2,J) + ZF%R(I3)*DPY(3,J)
 !
         GRIJ  = AIX*DXTZ + AIY*DYTZ
         GRJI  = AJX*DXTZ + AJY*DYTZ
@@ -206,12 +195,12 @@
       ENDDO
 !  FOR PARALLELILSM
       IF(NCSIZE.GT.1)THEN      ! NPON,NPLAN,ICOM,IAN , HERE ICOM=1 VALUE WITH MAX | |
-        CALL PARCOM2(DSP,DSM,DSM,NS,1,2,2,MESH )
+        CALL PARCOM2(DSP,DSM,DSM,NPOIN,1,2,2,MESH )
       ENDIF
 !
 !  COMPUTES THE CORRECTIONS NECESSARY TO HAVE CONSERVATION
 !
-      DO IS=1,NS
+      DO IS=1,NPOIN
         CORR(IS) =  DSM(IS) - DSP(IS)
         AMDS =MAX(DSP(IS),DSM(IS))
         IF(AMDS.GT.0.D0) THEN

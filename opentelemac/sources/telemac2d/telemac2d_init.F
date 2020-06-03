@@ -579,13 +579,13 @@
 !
         TMAX =DUREE+AT0
         DTINI=DT
+        EPS_FV=1.D-6
 !
       ENDIF
 !
 !-----------------------------------------------------------------------
 !
       LT=0
-      LT2=0
 !
 !=======================================================================
 ! EXTENDS THE VARIABLES WHICH ARE NOT LINEAR P1
@@ -663,16 +663,6 @@
      &              LONGBUS%R,CIRC%I,DELBUS%R,AABUS%I)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM LECBUS'
       ENDIF
-!
-!     ADAPT FRICTION LAWS FOR FINITE VOLUMES
-      IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING COEFRO'
-      IF(EQUA(14:15).EQ.'VF') THEN
-!       SAVE INITIAL FRICTION COEFF SINCE THEY COULD CHANGE DURING TIME LOOP
-        CALL OS('X=Y     ',X=CHESTR0    ,Y=CHESTR)
-        CALL COEFRO(CF,H,U,V,KARMAN,KFROT,
-     &              CHESTR,GRAV,MESH,T1,.TRUE.)
-      ENDIF
-      IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM COEFRO'
 !
 !-----------------------------------------------------------------------
 !
