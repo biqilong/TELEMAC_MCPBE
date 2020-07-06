@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SLOP10
-!                    *****************
+!                   *****************
+                    SUBROUTINE SLOP10
+!                   *****************
 !
      &(COEF,XEL,YEL,Z,IKLE,NELEM,NELMAX)
 !

@@ -1,6 +1,6 @@
-!                    **************
-                     SUBROUTINE PARTITIONER
-!                    **************
+!                   **************
+                    SUBROUTINE PARTITIONER
+!                   **************
      &    (PMETHOD, NELEM, NPOIN, NDP, NPARTS, IKLES, EPART, NPART)
 !
 !
@@ -100,12 +100,12 @@
 
 !
         IF (NDP==3.OR.NDP==6) THEN
-           NCOMMONNODES = 2 ! FOR TRIANGLE OR PRISM
+          NCOMMONNODES = 2 ! FOR TRIANGLE OR PRISM
         ELSE IF(NDP==4) THEN
-           NCOMMONNODES = 3 ! FORT TETRAHEDRON
+          NCOMMONNODES = 3 ! FORT TETRAHEDRON
         ELSE
-           WRITE(LU,*) 'METIS: IMPLEMENTED FOR TRIANGLES OR PRISMS ONLY'
-           CALL PLANTE(1)
+          WRITE(LU,*) 'METIS: IMPLEMENTED FOR TRIANGLES OR PRISMS ONLY'
+          CALL PLANTE(1)
         ENDIF
 !
 !       WE ONLY USE METIS_PARTMESHDUAL AS ONLY THE FINITE ELEMENTS PARTITION
@@ -147,15 +147,15 @@
 !       bUILDING EPTR AND EIND SAME AS BEFORE.
 !
         DO I=1,NELEM+1
-           EPTR(I) = (I-1)*NDP + 1
+          EPTR(I) = (I-1)*NDP + 1
         ENDDO
 !
         K=1
         DO I=1,NELEM
-           DO J=1,NDP
-              EIND(K) = IKLES((I-1)*NDP+J)
-              K = K + 1
-           ENDDO
+          DO J=1,NDP
+            EIND(K) = IKLES((I-1)*NDP+J)
+            K = K + 1
+          ENDDO
         ENDDO
 !       THE NUMBER OF COMMON POINT NEEDED BETWEEN 2 ELEMENTS TO MAKE AN
 !       EDGE
@@ -163,10 +163,10 @@
 !       NCOMMONNODES = 3 FOR TETRAHEDRE
 !       NCOMMONNODES = 4 FOR HEXAHEDRE
         IF (NDP==3.OR.NDP==6) THEN
-           NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
+          NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
         ELSE
-           WRITE(LU,*)'SCOTCH: IMPLEMENTED FOR TRIANGLES OR PRISMS ONLY'
-           CALL PLANTE(1)
+          WRITE(LU,*)'SCOTCH: IMPLEMENTED FOR TRIANGLES OR PRISMS ONLY'
+          CALL PLANTE(1)
         ENDIF
 
 !

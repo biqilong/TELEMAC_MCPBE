@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE OMSEGBOR
-!                    *******************
+!                   *******************
+                    SUBROUTINE OMSEGBOR
+!                   *******************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,C,
      & NDIAG,NSEG1,NBOR,NPTFR,IELM1,IELN1,NSEG11,
@@ -140,74 +140,74 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NON SYMMETRICAL
-           IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
-!            HERE XN(NELEBX,6) IN SEGMENTS POINT 3 IS THE MIDDLE
-!            STORING IN XN  :  1-2  1-3  2-3  2-1  3-1  2-3
-             CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,4),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,5),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,6),
-     &               DIM1=NELEB)
-           ELSE
-!            HERE XN(NELEBX,2)
-             CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,2), DIM1=NELEB)
-           ENDIF
+!         CASE WHERE BOTH MATRICES ARE NON SYMMETRICAL
+          IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
+!           HERE XN(NELEBX,6) IN SEGMENTS POINT 3 IS THE MIDDLE
+!           STORING IN XN  :  1-2  1-3  2-3  2-1  3-1  2-3
+            CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,4),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,5),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,6),
+     &              DIM1=NELEB)
+          ELSE
+!           HERE XN(NELEBX,2)
+            CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,2), DIM1=NELEB)
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
-           IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
-!            HERE XN(NELEBX,3)
-             CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,3),
-     &               DIM1=NELEB)
-           ELSE
-!            HERE XN(NPTFR,1)
-             CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEB)
-           ENDIF
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+          IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
+!           HERE XN(NELEBX,3)
+            CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,3),
+     &              DIM1=NELEB)
+          ELSE
+!           HERE XN(NPTFR,1)
+            CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEB)
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
-           IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
-!            HERE XN(NELEBX,3)
-             CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
-     &               DIM1=NELEB)
-           ELSE
-!            HERE XN(NELEBX,1)
-             CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
-           ENDIF
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+          IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
+!           HERE XN(NELEBX,3)
+            CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
+     &              DIM1=NELEB)
+          ELSE
+!           HERE XN(NELEBX,1)
+            CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
+          ENDIF
 !
         ELSE
 !
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-99         FORMAT(1X,'OMSEGBOR (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
-     &       /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+99        FORMAT(1X,'OMSEGBOR (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
+     &      /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
+          CALL PLANTE(1)
+          STOP
 !
         ENDIF
 !
@@ -232,68 +232,68 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
-           IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
-!            HERE XN(NELEBX,6)
-             CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,4),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,5),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,6),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,3),
-     &               DIM1=NELEB)
-           ELSE
-             CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,2), DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEB)
-           ENDIF
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+          IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
+!           HERE XN(NELEBX,6)
+            CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,4),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,5),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,6),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,3),
+     &              DIM1=NELEB)
+          ELSE
+            CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,2), DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEB)
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
-           IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
-!            HERE XN(NELEBX,3)
-             CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,3),
-     &               DIM1=NELEB)
-           ELSE
-             CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEB)
-           ENDIF
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+          IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
+!           HERE XN(NELEBX,3)
+            CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(         1,2), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,2), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,2), Y=XN(1,3),
+     &              DIM1=NELEB)
+          ELSE
+            CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEB)
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
-           IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
-!            HERE XN(NELEBX,3)
-             CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
-     &               DIM1=NELEB)
-             CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
-     &               DIM1=NELEB)
-           ELSE
-             CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
-           ENDIF
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+          IF(IELM1.EQ.13.AND.IELN1.EQ.2) THEN
+!           HERE XN(NELEBX,3)
+            CALL OV('X=X+Y   ', X=XM(         1,1), Y=XN(1,1),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(  NSEG11+1,1), Y=XN(1,2),
+     &              DIM1=NELEB)
+            CALL OV('X=X+Y   ', X=XM(2*NSEG11+1,1), Y=XN(1,3),
+     &              DIM1=NELEB)
+          ELSE
+            CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEB)
+          ENDIF
 !
         ELSE
 !
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
 !
         ENDIF
 !

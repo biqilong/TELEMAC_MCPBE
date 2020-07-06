@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SAINI
-!                    *****************
+!                   *****************
+                    SUBROUTINE SAINI
+!                   *****************
 !
      &(NU,U,V,W,Z,NPOIN2,NPLAN,KARMAN,NUMIN,
      & UETCAR,H,KFROT,ITURB,STRAIN,MSK,MASKEL,S,MESH3D)
@@ -14,7 +14,7 @@
 !history  A. BOURGOIN
 !+        21/08/2018
 !+        V8P0
-!+   Creation 
+!+   Creation
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| NU             |<->| TURBULENT ENERGY
@@ -62,7 +62,7 @@
       DOUBLE PRECISION :: HAUT,DISTFOND
 !-----------------------------------------------------------------------
 !
-!     INITIALIZATION OF STRAIN WHICH IS USED IN VISCSA TO RETRIEVE K 
+!     INITIALIZATION OF STRAIN WHICH IS USED IN VISCSA TO RETRIEVE K
 !      AND EPS
       IELM3=STRAIN%ELM
       CALL VECTOR(STRAIN,'=','STRAIN          ',IELM3,1.D0,S,

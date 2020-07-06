@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIFSOU
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIFSOU
+!                   *****************
 !
      &(TEXP,TIMP,TSCEXP,HPROP,TN,TETAT,NREJET,ISCE,DSCE,TSCE,
      & MAXSCE,MAXTRA,AT,DT,MASSOU,NTRAC,FAC,NBUSE,ENTBUS,SORBUS,
@@ -54,7 +54,7 @@
 !history  J-M HERVOUET (LNHE)
 !+        26/07/2012
 !+        V6P2
-!+   In parallel, P_DSUM on MASSOU must be done once at the end
+!+   In parallel, P_SUM on MASSOU must be done once at the end
 !
 !history  C.COULET (ARTELIA)
 !+        14/06/2013
@@ -233,7 +233,7 @@
 !               SOURCE TERM ADDED TO THE MASS OF TRACER
                 IF(NCSIZE.GT.1) THEN
 !                 FAC TO AVOID COUNTING THE POINT SEVERAL TIMES
-!                 (SEE CALL TO P_DSUM BELOW)
+!                 (SEE CALL TO P_SUM BELOW)
                   MASSOU(ITRAC)=MASSOU(ITRAC)+DT*DEBIT*TRASCE*FAC(IR)
                 ELSE
                   MASSOU(ITRAC)=MASSOU(ITRAC)+DT*DEBIT*TRASCE
@@ -279,7 +279,7 @@
 !                 SOURCE TERM ADDED TO THE MASS OF TRACER
                   IF(NCSIZE.GT.1) THEN
 !                   FAC TO AVOID COUNTING THE POINT SEVERAL TIMES
-!                   (SEE CALL TO P_DSUM BELOW)
+!                   (SEE CALL TO P_SUM BELOW)
                     MASSOU(ITRAC)=MASSOU(ITRAC)+DT*DEBIT*TRASCE*FAC(II)
                   ELSE
                     MASSOU(ITRAC)=MASSOU(ITRAC)+DT*DEBIT*TRASCE
@@ -305,7 +305,7 @@
             IF(IR.GT.0) THEN
               IF(NCSIZE.GT.1) THEN
 !               FAC TO AVOID COUNTING THE POINT SEVERAL TIMES
-!               (SEE CALL TO P_DSUM BELOW)
+!               (SEE CALL TO P_SUM BELOW)
                 MASSOU(ITRAC)=MASSOU(ITRAC)-DT*DBUS(I)*
      &                        TBUS%ADR(ITRAC)%P%R(I)*FAC(IR)
               ELSE
@@ -320,7 +320,7 @@
             IF(IR.GT.0) THEN
               IF(NCSIZE.GT.1) THEN
 !               FAC TO AVOID COUNTING THE POINT SEVERAL TIMES
-!               (SEE CALL TO P_DSUM BELOW)
+!               (SEE CALL TO P_SUM BELOW)
                 MASSOU(ITRAC)=MASSOU(ITRAC)+DT*DBUS(I)*
      &                        TBUS%ADR(ITRAC)%P%R(NBUSE+I)*FAC(IR)
               ELSE
@@ -344,7 +344,7 @@
             K  = WNODES_PROC(N)%LIST_NODES(I)
             IF(NCSIZE.GT.1) THEN
 !             FAC TO AVOID COUNTING THE POINT SEVERAL TIMES
-!             (SEE CALL TO P_DSUM BELOW)
+!             (SEE CALL TO P_SUM BELOW)
               MASSOU(ITRAC)=MASSOU(ITRAC)+DT*WNODES(K)%QN*
      &                      WNODES(K)%TRAC(ITRAC)*FAC(IR)
             ELSE
@@ -367,7 +367,7 @@
         IF(NCSIZE.GT.1.AND.
      &     (NREJET.GT.0.OR.NBUSE.GT.0.OR.
      &     (NWEIRS.GT.0.AND.TYPSEUIL.EQ.2))) THEN
-           MASSOU(ITRAC)=P_DSUM(MASSOU(ITRAC))
+          MASSOU(ITRAC)=P_SUM(MASSOU(ITRAC))
         ENDIF
 !
       ENDDO
@@ -403,7 +403,7 @@
             MASSOU(ITRAC) = MASSOU(ITRAC)
      &                  + DT*H%R(I)*TEXP%ADR(ITRAC)%P%R(I)*VOLU2D%R(I)
           ENDDO
-          IF(NCSIZE.GT.0) MASSOU(ITRAC) = P_DSUM(MASSOU(ITRAC))
+          IF(NCSIZE.GT.0) MASSOU(ITRAC) = P_SUM(MASSOU(ITRAC))
         ENDDO
       ENDIF
 !
@@ -466,7 +466,7 @@
      &                 +H%R(K)*TEXP%ADR(NTRAC)%P%R(K)*VOLU2D%R(K)
         ENDDO
         MASSOU(NTRAC)=MASSOU(NTRAC)*DT
-        IF(NCSIZE.GT.1) MASSOU(NTRAC)=P_DSUM(MASSOU(NTRAC))
+        IF(NCSIZE.GT.1) MASSOU(NTRAC)=P_SUM(MASSOU(NTRAC))
 !
       ENDIF
 !

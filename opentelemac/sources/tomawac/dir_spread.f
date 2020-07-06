@@ -1,8 +1,8 @@
-!                    *********************
-                     SUBROUTINE DIR_SPREAD
-!                    *********************
+!                   *********************
+                    SUBROUTINE DIR_SPREAD
+!                   *********************
 !
-     &( DIRSPR, F, NPLAN , NF, NPOIN2)
+     &( DIRSPR, F, NDIRE , NF, NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V7P2                                   05/06/2016
@@ -49,7 +49,7 @@
 !| DIRSPR         |<--| MEAN DIRECTIONAL SPREAD
 !| F              |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| SINMOY         |<--| WORK TABLE
 !| TAUXC          |<--| WORK TABLE
@@ -59,15 +59,15 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_TOMAWAC, ONLY : DEUPI,GRADEG, FREQ, DFREQ, TAILF,
-     &                                 COSTET, SINTET 
-!     
+     &                                 COSTET, SINTET
+!
       USE INTERFACE_TOMAWAC, EX_DIR_SPREAD => DIR_SPREAD
       IMPLICIT NONE
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    :: NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    :: NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: DIRSPR(NPOIN2)
 !
 !.....LOCAL VARIABLES
@@ -81,7 +81,7 @@
 !
 !
       SEUIL=1.D-20
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
 !
       DO IP=1,NPOIN2
         COSMOY=0.D0
@@ -96,7 +96,7 @@
           TAUXS=0.D0
           TAUXE=0.D0
           DFDTET=DFREQ(JF)*DTETAR
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             AUXC=COSTET(JP)*DFDTET
             AUXS=SINTET(JP)*DFDTET
             TAUXC=TAUXC+F(IP,JP,JF)*AUXC

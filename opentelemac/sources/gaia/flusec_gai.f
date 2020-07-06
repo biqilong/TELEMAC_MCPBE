@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE FLUSEC_GAI
-!                    *********************
+!                   *********************
+                    SUBROUTINE FLUSEC_GAI
+!                   *********************
 !
      &(GLOSEG,DIMGLO,NSEG,NPOIN,DT,MESH,UNSV2D,FLODEL,FLULIM,HZ,
      & ICLA,DOPLOT)
@@ -47,7 +47,7 @@
      &                                NUMBEROFLINES_FLUSEC2,
      &                                TIME_FLUSEC2
 !
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -296,8 +296,8 @@
 !        ENDDO
 !
 !        IF(NCSIZE.GT.1) THEN
-!            SUMBOX = P_DSUM(MASS)
-!            SUMGLOBAL = P_DSUM(MASSTOTAL)
+!            SUMBOX = P_SUM(MASS)
+!            SUMGLOBAL = P_SUM(MASSTOTAL)
 !            WRITE(6,FMT=1001) "FLUXLINE_MASSTOTAL",SUMGLOBAL,TIME_FLUSEC2,DT
 !            WRITE(6,FMT=1001) "FLUXLINE_MASSBOX  ",SUMBOX,TIME_FLUSEC2,DT
 !        ELSE
@@ -320,8 +320,8 @@
 !         PARALLEL CASE
 !         PREPARE SINGLE DATA FOR SENDING
           DO I=1,NUMBEROFLINES_FLUSEC2
-            SUMFLUX = P_DSUM(FLUX_FLUSEC2(I,ICLA))
-            SUMVOLFLUX = P_DSUM(VOLFLUX_FLUSEC2(I,ICLA))
+            SUMFLUX = P_SUM(FLUX_FLUSEC2(I,ICLA))
+            SUMVOLFLUX = P_SUM(VOLFLUX_FLUSEC2(I,ICLA))
             WRITE(LU,FMT=1000) 'FLUXLINE',I,'MYCLASS',ICLA,
      &      SUMFLUX,SUMVOLFLUX,TIME_FLUSEC2,DT
           ENDDO

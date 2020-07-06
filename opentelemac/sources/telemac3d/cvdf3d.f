@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CVDF3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE CVDF3D
+!                   *****************
 !
      &(FD,FC,FN,VISCF,SIGMAF,S0F,YAS0F,S1F,YAS1F,
      & FBORL,FBORF,FBORS,AFBORL,AFBORF,AFBORS,
@@ -243,7 +243,7 @@
       USE DECLARATIONS_TELEMAC3D, ONLY : KSCE,ISCE,BEDBOU,BEDFLU
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -400,7 +400,7 @@
             I=NBOR3%I(IP)
             LAMBDA=-FLUEXTPAR%R(I)*DT/
      &      (MAX(VOLUNPAR%R(I),1.D-10)-FLUEXTPAR%R(I)*DT)
-             FN%R(I)=FN%R(I)+LAMBDA*(FBORL%R(IP)-FN%R(I))
+            FN%R(I)=FN%R(I)+LAMBDA*(FBORL%R(IP)-FN%R(I))
 !           CORRECTION OF FLUX
 !           IN THE PROOF OF MASS-CONSERVATION, FLUEXT IS MULTIPLIED
 !           BY FN INSTEAD OF FBOR, TO INTERPRET THE ADDED MASS AS
@@ -427,7 +427,7 @@
           IF(LIFBOL%I(IPTFR).EQ.KENT .OR.
      &       LIFBOL%I(IPTFR).EQ.KENTU.OR.
      &       LIFBOL%I(IPTFR).EQ.KADH) THEN
-             FN%R(NBOR3%I(IPTFR)) = FBORL%R(IPTFR)
+            FN%R(NBOR3%I(IPTFR)) = FBORL%R(IPTFR)
           ENDIF
         ENDDO
       ENDIF
@@ -658,8 +658,8 @@
           IF(LIFBOL%I(IP).EQ.KENT .OR.
      &       LIFBOL%I(IP).EQ.KENTU.OR.
      &       LIFBOL%I(IP).EQ.KADH) THEN
-             I=NBOR3%I(IP)
-             FC%R(I) = FBORL%R(IP)
+            I=NBOR3%I(IP)
+            FC%R(I) = FBORL%R(IP)
           ENDIF
         ENDDO
       ENDIF
@@ -857,7 +857,7 @@
 !       NOW RETURNS TO REAL FLUXES, NOT FLUXES*DT
         FLUXF = FLUXF / DT
 !       PARALLEL MODE
-        IF(NCSIZE.GT.1) FLUXF = P_DSUM(FLUXF)
+        IF(NCSIZE.GT.1) FLUXF = P_SUM(FLUXF)
       ENDIF
 !
 !-----------------------------------------------------------------------

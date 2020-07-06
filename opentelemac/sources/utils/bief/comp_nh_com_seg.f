@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE COMP_NH_COM_SEG
-!                    **************************
+!                   **************************
+                    SUBROUTINE COMP_NH_COM_SEG
+!                   **************************
 !
      &(ELTSEG,DIM1ELTSEG,NH_COM_SEG,DIM1NHCOM,NB_NEIGHB_SEG,
      & NB_NEIGHB_PT_SEG,GLOSEG,DIMGLO,KNOLG,NPOIN)

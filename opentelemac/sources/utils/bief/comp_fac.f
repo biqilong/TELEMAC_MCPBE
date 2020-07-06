@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE COMP_FAC
-!                    *******************
+!                   *******************
+                    SUBROUTINE COMP_FAC
+!                   *******************
 !
      &(ELTSEG,ORISEG,IFABOR,NELEM,NPOIN,IFAC)
 !

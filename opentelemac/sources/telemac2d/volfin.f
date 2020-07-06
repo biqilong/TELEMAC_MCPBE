@@ -156,22 +156,13 @@
       USE BIEF_DEF
       USE BIEF
       USE INTERFACE_TELEMAC2D, EX_VOLFIN => VOLFIN
-      USE DECLARATIONS_TELEMAC2D, ONLY : AT,LT,BILMAS,CFLWTD,
-     &                            FCOR,DIFVIT,DTVARI,FU,FV,GRAV,
-     &                            HBOR,HN,HROPT,ITURB,KFROT,
-     &                            LIMPRO,LIMTRA,ENTET,MAXSCE,
-     &                            MAXTRA,NPOIN,NPTFR,NREJET,ISCE,NTRAC,
-     &                            OPTVF,PLUIE,PROPNU,RAIN,NSEG,
-     &                            SPHERI,TBOR,TMAX,UBOR,VBOR,CORIOL,
-     &                            ZF,NREG,TNP,PT_IN_POLY,MXPTVS,
-     &                            DIFT,GAMMA,TSCE2,DIFNU,HC,NEISEG,
-     &                            V2DPAR,ICIN,ILIMHZ,ILIMT,ILIMUV,
-     &                            SORDER,TORDER,DTINI,LEOPRD,NELEM,
-     &                            NELMAX,IKLE,X,Y,EPS_FV
+      USE DECLARATIONS_TELEMAC2D, ONLY :
+     &                            LIMPRO,NPOIN,NTRAC,
+     &                            HC,NEISEG,ICIN,SORDER,IKLE
       USE DECLARATIONS_TELEMAC, ONLY : KDDL,KDIR,KNEU
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

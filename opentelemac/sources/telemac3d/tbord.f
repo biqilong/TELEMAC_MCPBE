@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE TBORD
-!                    ****************
+!                   ****************
+                    SUBROUTINE TBORD
+!                   ****************
 !
      & (AUBORL,
      &  RUGOL,DISBOR,NELBOR,NULONE,IKLE,NELMAX2,

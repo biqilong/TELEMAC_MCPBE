@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LECBUS
-!                    *****************
+!                   *****************
+                    SUBROUTINE LECBUS
+!                   *****************
 !
      &(RELAXB,NBUSE,ENTBUS,SORBUS,LRGBUS,HAUBUS,CLPBUS,
      & ALTBUS,CSBUS,CEBUS,ANGBUS,LBUS,IFIC,MESH,
@@ -72,7 +72,7 @@
 !
       USE BIEF
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -167,10 +167,10 @@
           YSOR=0.D0
         ENDIF
         IF(NCSIZE.GT.1) THEN
-          XENT=P_DMAX(XENT)+P_DMIN(XENT)
-          YENT=P_DMAX(YENT)+P_DMIN(YENT)
-          XSOR=P_DMAX(XSOR)+P_DMIN(XSOR)
-          YSOR=P_DMAX(YSOR)+P_DMIN(YSOR)
+          XENT=P_MAX(XENT)+P_MIN(XENT)
+          YENT=P_MAX(YENT)+P_MIN(YENT)
+          XSOR=P_MAX(XSOR)+P_MIN(XSOR)
+          YSOR=P_MAX(YSOR)+P_MIN(YSOR)
         ENDIF
         IF (AABUS(N).EQ.1) THEN
           DX  = XSOR-XENT

@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE BEDLOAD_EFFPNT
-!                    *************************
+!                   *************************
+                    SUBROUTINE BEDLOAD_EFFPNT
+!                   *************************
 !
      & (MASKEL,LIQBOR,S,ZF,NPOIN,NPTFR,IELMT,KENT,
      &  BETA,PI,MSK,MESH,DZFDX,DZFDY,CTETA,STETA,

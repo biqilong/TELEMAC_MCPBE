@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE SKIP_COMMENT_LINE
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE SKIP_COMMENT_LINE
+!                   ****************************
 !
      &(IFIC, COMMENT, IERR)
 !

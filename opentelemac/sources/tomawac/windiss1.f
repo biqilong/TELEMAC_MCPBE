@@ -1,33 +1,33 @@
-!                    *****************
-                     SUBROUTINE WINDISS1
-     &  (FWX, FWY, NPOIN2, XK, NPLAN, FS,NF)
+!                   *****************
+                    SUBROUTINE WINDISS1
+!                   *****************
+     &  (FWX, FWY, NPOIN2, XK, NDIRE, FS,NF)
 !  SURFACE STRESS DUE TO WIND INPUT ENERGY AND WHITECAPPING
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| FS             |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| FWX            |<--| SURFACE STRESS DUE TO WIND ALONG X
-!| FWY            |<--| SURFACE STRESS DUE TO WIND ALONG Y 
+!| FWY            |<--| SURFACE STRESS DUE TO WIND ALONG Y
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| XK             |-->| DISCRETIZED WAVE NUMBER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!                    *****************
- 
+
       USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
-     &   TETA, BETAM, DECAL, XKAPPA, DEUPI, GRAVIT, ROAIR, ROEAU, 
+     &   TETA, BETAM, DECAL, XKAPPA, DEUPI, GRAVIT, ROAIR, ROEAU,
      &   TWOLD, USOLD, Z0OLD
 !
       IMPLICIT NONE
 !
-      INTEGER, INTENT(IN) :: NPOIN2, NPLAN,NF
-      DOUBLE PRECISION, INTENT(IN) :: FS(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN) :: NPOIN2, NDIRE,NF
+      DOUBLE PRECISION, INTENT(IN) :: FS(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN) :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: FWX(NPOIN2), FWY(NPOIN2)
 !
       DOUBLE PRECISION DTETAR, ZLOGMU, C1, CONST, SIGMA, AUX1, CPHAS
       DOUBLE PRECISION XX, USO, OMEGA, BETAWIN
       INTEGER IP, JF, JP
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       DO IP=1,NPOIN2
         FWX(IP) = 0.D0
         FWY(IP) = 0.D0
@@ -37,14 +37,14 @@
 !.....LOOP ON THE DISCRETISED FREQUENCIES
 !     """"""""""""""""""""""""""""""""""""""""""""
       DO JF=1,NF
-        
+
         CONST=C1*FREQ(JF)
         SIGMA=DEUPI*FREQ(JF)
-        AUX1=DFREQ(JF)*DTETAR        
+        AUX1=DFREQ(JF)*DTETAR
 !
 !.......LOOP ON THE DISCRETISED DIRECTIONS
 !       """"""""""""""""""""""""""""""""""""""""""""
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           DO IP=1,NPOIN2
 !.......COMPUTES THE FREQUENCIES (OMEGA AND UETOILE/CPHASE)
             CPHAS = DEUPI * FREQ(JF) / XK(IP,JF)
@@ -65,4 +65,3 @@
       ENDDO
       RETURN
       END
-      

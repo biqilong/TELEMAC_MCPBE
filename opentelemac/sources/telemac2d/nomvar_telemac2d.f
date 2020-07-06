@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE NOMVAR_TELEMAC2D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE NOMVAR_TELEMAC2D
+!                   ***************************
 !
      &(TEXTE,TEXTPR,MNEMO,NPERIAF,NTRAC,NAMETRAC,N_NAMES_PRIV,
      & NAMES_PRIVE,SECCURRENTS,NADVAR,NAMES_ADVAR)

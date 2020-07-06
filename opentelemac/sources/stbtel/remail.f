@@ -87,7 +87,7 @@
             ENDIF
           ENDDO
         ELSE
-           PTELI = .TRUE.
+          PTELI = .TRUE.
         ENDIF
       ENDDO
 !

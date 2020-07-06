@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PROXIM
-!                    *****************
+!                   *****************
+                    SUBROUTINE PROXIM
+!                   *****************
 !
      &(IP,XP,YP,X,Y,NP,NPOIN,IKLE,NELEM,NELMAX)
 !
@@ -135,7 +135,7 @@
 !       IF YES PRINTING THE COORDINATES OF THE NEAREST POINT FOUND
 !
         I=IP(K)
-        IF(NCSIZE.GT.1) I=P_IMAX(I)
+        IF(NCSIZE.GT.1) I=P_MAX(I)
         IF(I.EQ.0) THEN
 !         THE POINT IS NOT IN THE DOMAIN
           WRITE(LU,*)
@@ -148,12 +148,12 @@
           X1=XX
           Y1=YY
           IF(NCSIZE.GT.1) THEN
-            IF(DIST2.NE.P_DMIN(DIST2)) THEN
+            IF(DIST2.NE.P_MIN(DIST2)) THEN
               X1=0.D0
               Y1=0.D0
             ENDIF
-            X1=P_DMIN(X1)+P_DMAX(X1)
-            Y1=P_DMIN(Y1)+P_DMAX(Y1)
+            X1=P_MIN(X1)+P_MAX(X1)
+            Y1=P_MIN(Y1)+P_MAX(Y1)
 !           ALL PROCESSORS HAVING THE POINT MUST KNOW IT
 !           YET POINTS WITHIN A TRIANGLE IN ANOTHER PROCESSOR
 !           AND FALLEN BACK ON AN INTERFACE HAVE BEEN OVERLOOKED
@@ -165,7 +165,7 @@
           WRITE(LU,*)
           WRITE(LU,*) 'SOURCE POINT ',K,'PUT ON POINT'
           WRITE(LU,*) X1,' AND ',Y1
-          D2 = SQRT(P_DMIN(DIST2))
+          D2 = SQRT(P_MIN(DIST2))
           WRITE(LU,*) 'LOCATED AT ',D2,' METRES'
 !         LINE FEED FOR THE LISTING
           IF(K.EQ.NP) WRITE(LU,*)

@@ -1,9 +1,9 @@
-!                    *************************
-                     SUBROUTINE FRICTION_ZONES
-!                    *************************
+!                   *************************
+                    SUBROUTINE FRICTION_ZONES
+!                   *************************
 !
-     &(MESH, H, U, V, CHESTR, CHBORD, NKFROT, NDEFMA, LINDDP,
-     & LINDSP, KFRO_B, NDEF_B, LISRUG, LINDNER, VK,
+     &(MESH, H, U, V, CHESTR, CHBORD, NKFROT, NDEFMA,
+     & KFRO_B, NDEF_B, LISRUG, VEGETATION, VK,
      & KARMAN, GRAV, T1, T2, CF, CFBOR)
 !
 !***********************************************************************
@@ -44,6 +44,13 @@
 !+        V7P1
 !+   For boundaries, depth renumbered before being sent to friction_calc.
 !
+!history R.KOPMANN (BAW)
+!+        31/10/2019
+!+        V8P0
+!+   Lateral boundary roughness coefficient is not read from table
+!+   but will set in the steering file or from the boundary file
+!+   15 possible coefficients, read of vegetation law
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| CF             |<--| ADIMENSIONAL FRICTION COEFFICIENT
 !| CFBOR          |<--| ADIMENSIONAL FRICTION COEFFICIENT ON BOUNDARIES
@@ -53,9 +60,6 @@
 !| H              |-->| WATER DEPTH
 !| KARMAN         |-->| VON KARMAN CONSTANT
 !| KFRO_B         |-->| LAW OF BOTTOM FRICTION FOR BOUNDARIES
-!| LINDDP         |-->| DIAMETER OF ROUGHNESS ELEMENT IN LINDNER CASE
-!| LINDNER        |-->| IF YES, THERE IS NON-SUBMERGED VEGETATION FRICTION
-!| LINDSP         |-->| SPACING OF ROUGHNESS ELEMENT IN LINDNER CASE
 !| LISRUG         |-->| TURBULENCE REGIME (1: SMOOTH 2: ROUGH)
 !| MESH           |-->| MESH STRUCTURE
 !| NDEFMA         |-->| DEFAULT MANNING COEFFICIENT
@@ -65,13 +69,15 @@
 !| T2             |<->| WORK BIEF_OBJ STRUCTURE
 !| U              |-->| X-COMPONENT OF VELOCITY
 !| V              |-->| Y-COMPONENT OF VELOCITY
+!| VEGETATION     |-->| IF YES, THERE IS VEGETATION FRICTION
 !| VK             |-->| KINEMATIC VISCOSITY
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
       USE INTERFACE_TELEMAC2D, EX_FRICTION_ZONES => FRICTION_ZONES
 !
-      USE DECLARATIONS_TELEMAC2D, ONLY : FRICOU,NPOIN,ORBVEL
+      USE DECLARATIONS_TELEMAC2D, ONLY : FRICOU,NPOIN,ORBVEL,VEGLAW,
+     &    VCOEFF,ROEAU
 !
       IMPLICIT NONE
 !
@@ -82,10 +88,10 @@
       TYPE(BIEF_OBJ),     INTENT(IN)    :: CHESTR
       TYPE(BIEF_OBJ),     INTENT(IN)    :: CHBORD
       TYPE(BIEF_OBJ),     INTENT(IN)    :: NKFROT
-      TYPE(BIEF_OBJ),     INTENT(IN)    :: NDEFMA, LINDDP, LINDSP
+      TYPE(BIEF_OBJ),     INTENT(IN)    :: NDEFMA
       TYPE(BIEF_OBJ),     INTENT(IN)    :: KFRO_B, NDEF_B
       INTEGER,            INTENT(IN)    :: LISRUG
-      LOGICAL,            INTENT(IN)    :: LINDNER
+      LOGICAL,            INTENT(IN)    :: VEGETATION
       DOUBLE PRECISION,   INTENT(IN)    :: VK, KARMAN, GRAV
       TYPE(BIEF_OBJ),     INTENT(INOUT) :: CF, CFBOR
       TYPE(BIEF_OBJ),     INTENT(INOUT) :: T1, T2
@@ -140,17 +146,86 @@
      &       (I, I, NKFROT%I(I), NDEFMA%R(I), VK, GRAV,
      &        KARMAN, CHESTR, T1, T1, T2, CF)
 !
-! FRICTION COEFFICIENT FOR NON-SUBMERGED VEGETATION
+! FRICTION COEFFICIENT FOR VEGETATION
 ! -------------------------------------------------
-        IF(LINDNER) THEN
+        IF(VEGETATION) THEN
+        SELECT CASE (VEGLAW%I(I))
+        CASE (0) 
+!          WRITE(LU,*)'No vegetation law.'
+        CASE (1)
           CALL FRICTION_LINDNER
-     &         (T2%R(I), T1%R(I), CF%R(I), VK, GRAV,
-     &          LINDDP%R(I),LINDSP%R(I),CP)
+     &       (T2%R(I), T1%R(I), VK, GRAV,
+     &       VCOEFF%ADR(1)%P%R(I),VCOEFF%ADR(2)%P%R(I),CP)
           IF(CP.LT.-0.9D0) THEN
-            CP = 0.75D0*T1%R(I)*LINDDP%R(I) / LINDSP%R(I)**2
+            CP = 0.75D0*T1%R(I)*
+     &           VCOEFF%ADR(1)%P%R(I)/ 
+     &           VCOEFF%ADR(2)%P%R(I)/VCOEFF%ADR(2)%P%R(I)
           ENDIF
-          CF%R(I) =CF%R(I)+2.D0*CP
-        ENDIF
+          CF%R(I) =CF%R(I)+CP
+        CASE (2)
+          CALL FRICTION_JAERVELAE
+     &       (T2%R(I), T1%R(I),
+     &       VCOEFF%ADR(1)%P%R(I),VCOEFF%ADR(2)%P%R(I),
+     &       VCOEFF%ADR(3)%P%R(I),
+     &       VCOEFF%ADR(4)%P%R(I),VCOEFF%ADR(5)%P%R(I),CP)
+          CF%R(I) =CF%R(I)+CP
+        CASE (3)
+          CALL FRICTION_WHITTAKER
+     &       (T2%R(I),T1%R(I),VCOEFF%ADR(1)%P%R(I),VCOEFF%ADR(2)%P%R(I),
+     &       VCOEFF%ADR(3)%P%R(I),VCOEFF%ADR(4)%P%R(I),
+     &       VCOEFF%ADR(5)%P%R(I),VCOEFF%ADR(6)%P%R(I),ROEAU,CP)
+          CF%R(I) =CF%R(I)+CP
+        CASE (4)
+            CALL FRICTION_BAPTIST
+     &       (T1%R(I),  VCOEFF%ADR(1)%P%R(I), 
+     &       VCOEFF%ADR(2)%P%R(I), VCOEFF%ADR(3)%P%R(I),
+     &       KARMAN ,CP)
+          CF%R(I) =CF%R(I)+CP
+        CASE (5)
+          CALL FRICTION_HUTHOFF
+     &       (T1%R(I), VCOEFF%ADR(1)%P%R(I),
+     &       VCOEFF%ADR(2)%P%R(I), VCOEFF%ADR(3)%P%R(I),
+     &       VCOEFF%ADR(4)%P%R(I),CP)
+          CF%R(I) = CF%R(I)+ CP
+        CASE (6)
+          CALL FRICTION_VANVELZEN
+     &       (T1%R(I), VCOEFF%ADR(1)%P%R(I),
+     &       VCOEFF%ADR(2)%P%R(I), VCOEFF%ADR(3)%P%R(I),
+     &       KARMAN, CP)
+          CF%R(I) =CF%R(I)+ CP
+        CASE (7)
+          CALL FRICTION_LUHARNEPF
+     &       (T1%R(I), VCOEFF%ADR(1)%P%R(I),
+     &       VCOEFF%ADR(2)%P%R(I), VCOEFF%ADR(3)%P%R(I),
+     &       VCOEFF%ADR(4)%P%R(I), CP)
+          CF%R(I) =CF%R(I)+CP
+        CASE (8)
+          CALL FRICTION_VASTILA
+     &       (T2%R(I), T1%R(I),VCOEFF%ADR(1)%P%R(I),
+     &       VCOEFF%ADR(2)%P%R(I), VCOEFF%ADR(3)%P%R(I),
+     &       VCOEFF%ADR(4)%P%R(I),VCOEFF%ADR(5)%P%R(I),
+     &       VCOEFF%ADR(6)%P%R(I),VCOEFF%ADR(7)%P%R(I),
+     &       VCOEFF%ADR(8)%P%R(I),VCOEFF%ADR(9)%P%R(I),CP)
+          CF%R(I) =CF%R(I)+CP
+! ALREADY PREPARED FOR THE NEW HYBRID FORMULA
+!        CASE (9)
+!          CALL FRICTION_HYBRID
+!     &       (T2%R(I), T1%R(I), VCOEFF%ADR(1)%P%R(I),
+!     &       VCOEFF%ADR(2)%P%R(I), VCOEFF%ADR(3)%P%R(I),
+!     &       VCOEFF%ADR(4)%P%R(I), VCOEFF%ADR(5)%P%R(I),
+!     &       KARMAN,CP)
+!          CF%R(I) =CF%R(I)+CP
+        CASE DEFAULT
+!
+          WRITE(LU,2) VEGLAW%I(I)
+ 2             FORMAT(I5,' : UNKNOWN FRICTION LAW')
+        CALL PLANTE(1)
+        STOP
+        END SELECT 
+
+
+
+        ENDIF !VEGETATION
 !
       ENDDO
 !

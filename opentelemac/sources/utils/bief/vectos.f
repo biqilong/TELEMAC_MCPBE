@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VECTOS
-!                    *****************
+!                   *****************
+                    SUBROUTINE VECTOS
+!                   *****************
 !
      &(SVEC,VEC,OP,FORMUL,
      & XMUL,F,G,H,U,V,W,SF,SG,SH,SU,SV,SW,
@@ -201,7 +201,7 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC00AA(XMUL,SURFAC,NELEM,NELMAX,T(1,1),T(1,2),T(1,3))
+          CALL VC00AA(XMUL,SURFAC,NELEM,NELMAX,T(1,1),T(1,2),T(1,3))
 !
 !-----------------------------------------------------------------------
 !
@@ -209,8 +209,8 @@
 !
         ELSEIF(IELM1.EQ.12) THEN
 !
-             CALL VC00BB(XMUL,SURFAC,NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3),T(1,4))
+          CALL VC00BB(XMUL,SURFAC,NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3),T(1,4))
 !
 !
 !-----------------------------------------------------------------------
@@ -219,8 +219,8 @@
 !
         ELSEIF(IELM1.EQ.13) THEN
 !
-             CALL VC00CC(XMUL,SURFAC,NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3),T(1,4),T(1,5),T(1,6))
+          CALL VC00CC(XMUL,SURFAC,NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3),T(1,4),T(1,5),T(1,6))
 !
 !-----------------------------------------------------------------------
 !
@@ -228,7 +228,7 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC00OO(XMUL,SURFAC,NELEM,NELMAX,T(1,1),T(1,2))
+!         CALL VC00OO(XMUL,SURFAC,NELEM,NELMAX,T(1,1),T(1,2))
 !
 !-----------------------------------------------------------------------
 !
@@ -259,9 +259,9 @@
 !
         ELSEIF(IELM1.EQ.61) THEN
 !
-             CALL VC00FT(XMUL,XPT,YPT,ZPT,
-     &                   IKLBOR(1,1),IKLBOR(1,2),IKLBOR(1,3),NBOR,
-     &                   NELEB,NELEBX,T(1,1),T(1,2),T(1,3))
+          CALL VC00FT(XMUL,XPT,YPT,ZPT,
+     &                IKLBOR(1,1),IKLBOR(1,2),IKLBOR(1,3),NBOR,
+     &                NELEB,NELEBX,T(1,1),T(1,2),T(1,3))
 !
 !
 !-----------------------------------------------------------------------
@@ -308,9 +308,9 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC01AA(XMUL,SF,F,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3) )
+          CALL VC01AA(XMUL,SF,F,SURFAC,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3) )
 !
 !-----------------------------------------------------------------------
 !
@@ -319,19 +319,19 @@
 !
         ELSEIF(IELM1.EQ.61.OR.IELM1.EQ.81) THEN
 !
-           IF(FORMUL(7:7).NE.'2') THEN
+          IF(FORMUL(7:7).NE.'2') THEN
 !
-              CALL VC01FT(XMUL,SF,F,XPT,YPT,ZPT,
-     &                    IKLBOR(1,1),IKLBOR(1,2),
-     &                    IKLBOR(1,3),NBOR,
-     &                    NELEB,NELEBX,T(1,1),T(1,2),T(1,3))
-           ELSE
+            CALL VC01FT(XMUL,SF,F,XPT,YPT,ZPT,
+     &                  IKLBOR(1,1),IKLBOR(1,2),
+     &                  IKLBOR(1,3),NBOR,
+     &                  NELEB,NELEBX,T(1,1),T(1,2),T(1,3))
+          ELSE
 !
-              CALL VC01FT2(XMUL,SF,F,SG,G,XPT,YPT,ZPT,
-     &                     IKLBOR(1,1),IKLBOR(1,2),
-     &                     IKLBOR(1,3),NBOR,
-     &                     NELEB,NELEBX,T(1,1),T(1,2),T(1,3))
-           ENDIF
+            CALL VC01FT2(XMUL,SF,F,SG,G,XPT,YPT,ZPT,
+     &                   IKLBOR(1,1),IKLBOR(1,2),
+     &                   IKLBOR(1,3),NBOR,
+     &                   NELEB,NELEBX,T(1,1),T(1,2),T(1,3))
+          ENDIF
 !
 !-----------------------------------------------------------------------
 !
@@ -339,9 +339,9 @@
 !
         ELSEIF(IELM1.EQ.12) THEN
 !
-             CALL VC01BB(XMUL,SF,F,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4) )
+          CALL VC01BB(XMUL,SF,F,SURFAC,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4) )
 !
 !-----------------------------------------------------------------------
 !
@@ -349,9 +349,9 @@
 !
         ELSEIF(IELM1.EQ.1) THEN
 !
-             CALL VC01OO(XMUL,SF,F,LGSEG,
-     &                   IKLBOR(1,1),IKLBOR(1,2),NBOR,NELEB,NELEBX,
-     &                   T(1,1),T(1,2)  )
+          CALL VC01OO(XMUL,SF,F,LGSEG,
+     &                IKLBOR(1,1),IKLBOR(1,2),NBOR,NELEB,NELEBX,
+     &                T(1,1),T(1,2)  )
 !
 !-----------------------------------------------------------------------
 !
@@ -372,10 +372,10 @@
 !
         ELSEIF(IELM1.EQ.41) THEN
 !
-             CALL VC01PP(XMUL,SF,F,ZPT,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
-     &                   T(1,3),T(1,4),T(1,5),T(1,6))
+          CALL VC01PP(XMUL,SF,F,ZPT,SURFAC,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3),T(1,4),T(1,5),T(1,6))
 !
 !-----------------------------------------------------------------------
 !
@@ -383,9 +383,9 @@
 !
         ELSEIF(IELM1.EQ.31.OR.IELM1.EQ.51) THEN
 !
-             CALL VC01TT(XMUL,SF,F,XPT,YPT,ZPT,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4))
+          CALL VC01TT(XMUL,SF,F,XPT,YPT,ZPT,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4))
 !
 !-----------------------------------------------------------------------
 !
@@ -393,9 +393,9 @@
 !
         ELSEIF(IELM1.EQ.30) THEN
 !
-             CALL VC01TT0(XMUL,SF,F,XPT,YPT,ZPT,
-     &                   IKLE(:,1),IKLE(:,2),IKLE(:,3),IKLE(:,4),
-     &                   NELEM,NELMAX,VEC)
+          CALL VC01TT0(XMUL,SF,F,XPT,YPT,ZPT,
+     &                IKLE(:,1),IKLE(:,2),IKLE(:,3),IKLE(:,4),
+     &                NELEM,NELMAX,VEC)
 !
 !
 !-----------------------------------------------------------------------
@@ -463,10 +463,10 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC03AA(XMUL,SF,SG,SH,SU,SV,F,G,H,U,V,
-     &                   XEL,YEL,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3) )
+          CALL VC03AA(XMUL,SF,SG,SH,SU,SV,F,G,H,U,V,
+     &                XEL,YEL,SURFAC,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3) )
 !
 !-----------------------------------------------------------------------
 !
@@ -474,10 +474,10 @@
 !
         ELSEIF(IELM1.EQ.12) THEN
 !
-             CALL VC03BB(XMUL,SF,SG,SH,SU,SV,F,G,H,U,V,
-     &                   XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4) )
+          CALL VC03BB(XMUL,SF,SG,SH,SU,SV,F,G,H,U,V,
+     &                XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4) )
 !
 !-----------------------------------------------------------------------
 !
@@ -485,10 +485,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC03OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
-!    *                   T(1,1),T(1,2)  )
+!         CALL VC03OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
+!    &                T(1,1),T(1,2)  )
 !
 !-----------------------------------------------------------------------
 !       OTHER
@@ -524,9 +524,9 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC04AA(XMUL,SU,SV,U,V,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3),SPECAD)
+          CALL VC04AA(XMUL,SU,SV,U,V,XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3),SPECAD)
 !
 !-----------------------------------------------------------------------
 !
@@ -660,8 +660,8 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC08AA(XMUL,SF,SU,SV,F,U,V,XEL,YEL,IKLE,
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3) , FORMUL )
+          CALL VC08AA(XMUL,SF,SU,SV,F,U,V,XEL,YEL,IKLE,
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3) , FORMUL )
 !
 !-----------------------------------------------------------------------
 !
@@ -669,10 +669,10 @@
 !
         ELSEIF(IELM1.EQ.13) THEN
 !
-             CALL VC08CC(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
-     &            IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &            IKLE(1,5),IKLE(1,6),NELEM,NELMAX,
-     &            T(1,1),T(1,2),T(1,3),T(1,4),T(1,5),T(1,6),FORMUL)
+          CALL VC08CC(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
+     &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &         IKLE(1,5),IKLE(1,6),NELEM,NELMAX,
+     &         T(1,1),T(1,2),T(1,3),T(1,4),T(1,5),T(1,6),FORMUL)
 !
 !-----------------------------------------------------------------------
 !
@@ -680,9 +680,9 @@
 !
         ELSEIF(IELM1.EQ.12) THEN
 !
-             CALL VC08BB(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
-     &            IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &            NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),FORMUL)
+          CALL VC08BB(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
+     &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &         NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),FORMUL)
 !
 !-----------------------------------------------------------------------
 !
@@ -690,10 +690,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC08OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
-!    *                   T(1,1),T(1,2)  )
+!         CALL VC08OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
+!    &                T(1,1),T(1,2)  )
 !
 !
 !-----------------------------------------------------------------------
@@ -702,10 +702,10 @@
 !
         ELSEIF(IELM1.EQ.41) THEN
 !
-             CALL VC08PP(XMUL,SF,SU,SV,SW,F,U,V,W,XEL,YEL,ZPT,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
-     &                   T(1,3),T(1,4),T(1,5),T(1,6))
+          CALL VC08PP(XMUL,SF,SU,SV,SW,F,U,V,W,XEL,YEL,ZPT,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3),T(1,4),T(1,5),T(1,6))
 !
 !-----------------------------------------------------------------------
 !
@@ -713,10 +713,10 @@
 !
         ELSEIF(IELM1.EQ.31.OR.IELM1.EQ.51) THEN
 !
-             CALL VC08TT(XMUL,SF,SU,SV,SW,F,U,V,W,XPT,YPT,ZPT,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),
-     &                   T(1,3),T(1,4))
+          CALL VC08TT(XMUL,SF,SU,SV,SW,F,U,V,W,XPT,YPT,ZPT,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3),T(1,4))
 !
 !-----------------------------------------------------------------------
 !       OTHER
@@ -761,10 +761,10 @@
 !
         IF(IELM1.EQ.41) THEN
 !
-             CALL VC18PP(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
-     &                   T(1,3))
+          CALL VC18PP(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3))
 !
 !-----------------------------------------------------------------------
 !
@@ -801,9 +801,9 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC09AA(XMUL,SF,SG,SU,SV,F,G,U,V,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3) )
+          CALL VC09AA(XMUL,SF,SG,SU,SV,F,G,U,V,XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3) )
 !
 !-----------------------------------------------------------------------
 !
@@ -811,10 +811,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC09OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
-!    *                   T(1,1),T(1,2)  )
+!         CALL VC09OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
+!    &                T(1,1),T(1,2)  )
 !
 !-----------------------------------------------------------------------
 !       OTHER
@@ -847,10 +847,10 @@
 !
 !       IF(IELM1.EQ.11) THEN
 !
-!            CALL VC10AA(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
-!    *                   T(1,1)   ,T(1,2)   ,T(1,3))
+!         CALL VC10AA(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
+!    &                T(1,1)   ,T(1,2)   ,T(1,3))
 !
 !-----------------------------------------------------------------------
 !
@@ -858,8 +858,8 @@
 !
         IF(IELM1.EQ.1) THEN
 !
-             CALL VC10OO(XMUL,SF,SU,SV,F,U,V,XNOR,YNOR,LGSEG,
-     &                   IKLBOR,NBOR,NELEB,NELEBX,T(1,1),T(1,2))
+          CALL VC10OO(XMUL,SF,SU,SV,F,U,V,XNOR,YNOR,LGSEG,
+     &                IKLBOR,NBOR,NELEB,NELEBX,T(1,1),T(1,2))
 !
 !-----------------------------------------------------------------------
 !       OTHER
@@ -924,10 +924,10 @@
 !
         ELSEIF(IELM1.EQ.12) THEN
 !
-             CALL VC11BB(XMUL,SF,SG,F,G,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3),T(1,4) , ICOORD )
+          CALL VC11BB(XMUL,SF,SG,F,G,XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3),T(1,4) , ICOORD )
 !
 !-----------------------------------------------------------------------
 !
@@ -935,10 +935,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC11OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
-!    *                   T(1,1),T(1,2)  )
+!         CALL VC11OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
+!    &                T(1,1),T(1,2)  )
 !
 !-----------------------------------------------------------------------
 !
@@ -946,11 +946,11 @@
 !
         ELSEIF(IELM1.EQ.41) THEN
 !
-             CALL VC11PP(XMUL,SF,SG,F,G,
-     &                   XEL,YEL,ZPT,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
-     &                   T(1,3),T(1,4),T(1,5),T(1,6),ICOORD)
+          CALL VC11PP(XMUL,SF,SG,F,G,
+     &                XEL,YEL,ZPT,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3),T(1,4),T(1,5),T(1,6),ICOORD)
 !
 !-----------------------------------------------------------------------
 !
@@ -958,11 +958,11 @@
 !
         ELSEIF(IELM1.EQ.31.OR.IELM1.EQ.51) THEN
 !
-             CALL VC11TT(XMUL,SF,SG,F,G,
-     &                   XPT,YPT,ZPT,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),
-     &                   T(1,3),T(1,4),ICOORD)
+          CALL VC11TT(XMUL,SF,SG,F,G,
+     &                XPT,YPT,ZPT,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3),T(1,4),ICOORD)
 !
         ELSEIF(IELM1.EQ.30) THEN
 !
@@ -973,12 +973,12 @@
 ! THAT LEGO IS ALSO SET TO .FALSE. TO AVOID
 ! CALLING ASSVEC AT THE END OF THE SUBROUTINE.
 !
-             CALL VC11TT0(XMUL,SF,SG,F,G,
-     &                    XPT,YPT,ZPT,
-     &                    IKLE(1:NELEM,1),IKLE(1:NELEM,2),
-     &                    IKLE(1:NELEM,3),IKLE(1:NELEM,4),
-     &                    NELEM,MESH%NPOIN,
-     &                    VEC,ICOORD)
+          CALL VC11TT0(XMUL,SF,SG,F,G,
+     &                 XPT,YPT,ZPT,
+     &                 IKLE(1:NELEM,1),IKLE(1:NELEM,2),
+     &                 IKLE(1:NELEM,3),IKLE(1:NELEM,4),
+     &                 NELEM,MESH%NPOIN,
+     &                 VEC,ICOORD)
 !
 !
 !-----------------------------------------------------------------------
@@ -1022,9 +1022,9 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC13AA(XMUL,SF,F,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,1),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3),ICOORD)
+          CALL VC13AA(XMUL,SF,F,XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,1),
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3),ICOORD)
 !
 !-----------------------------------------------------------------------
 !
@@ -1032,9 +1032,9 @@
 !
         ELSEIF(IELM1.EQ.12) THEN
 !
-             CALL VC13BB(XMUL,SF,F,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),NELEM,
-     &                   NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),ICOORD)
+          CALL VC13BB(XMUL,SF,F,XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),NELEM,
+     &                NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),ICOORD)
 !
 !-----------------------------------------------------------------------
 !
@@ -1042,12 +1042,12 @@
 !
         ELSEIF(IELM1.EQ.13) THEN
 !
-            CALL VC13CC(XMUL,SF,F,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   IKLE(1,4),IKLE(1,5),IKLE(1,6),
-     &                   NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3),
-     &                   T(1,4),T(1,5),T(1,6),ICOORD)
+          CALL VC13CC(XMUL,SF,F,XEL,YEL,
+     &                 IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                 IKLE(1,4),IKLE(1,5),IKLE(1,6),
+     &                 NELEM,NELMAX,
+     &                 T(1,1),T(1,2),T(1,3),
+     &                 T(1,4),T(1,5),T(1,6),ICOORD)
 !
 !-----------------------------------------------------------------------
 !
@@ -1055,10 +1055,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC13OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
-!    *                   T(1,1),T(1,2)  )
+!         CALL VC13OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
+!    &                T(1,1),T(1,2)  )
 !
 !
 !
@@ -1068,10 +1068,10 @@
 !
 !       ELSEIF(IELM1.EQ.2) THEN
 !
-!            CALL VC13OC(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
-!    *                   T(1,1),T(1,2),T(1,3)  )
+!         CALL VC13OC(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
+!    &                T(1,1),T(1,2),T(1,3)  )
 !
 !
 !-----------------------------------------------------------------------
@@ -1150,9 +1150,9 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC14AA(XMUL,SU,SV,U,V,XEL,YEL,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3))
+          CALL VC14AA(XMUL,SU,SV,U,V,XEL,YEL,SURFAC,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3))
 !
 !-----------------------------------------------------------------------
 !
@@ -1160,10 +1160,10 @@
 !
 !       ELSEIF(IELM1.EQ.12) THEN
 !
-!            CALL VC14BB(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),NELEM,
-!    *                   NELMAX,T(1,1),T(1,2),T(1,3),T(1,4))
+!         CALL VC14BB(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),NELEM,
+!    &                NELMAX,T(1,1),T(1,2),T(1,3),T(1,4))
 !
 !-----------------------------------------------------------------------
 !
@@ -1171,10 +1171,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC14OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
-!    *                   T(1,1),T(1,2))
+!         CALL VC14OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,XNOR,YNOR,ZNOR,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NBOR,NELEM,NELMAX,
+!    &                T(1,1),T(1,2))
 !
 !-----------------------------------------------------------------------
 !       OTHER
@@ -1206,18 +1206,18 @@
 !       ELEMENT P1 TRIANGLE
 !
         IF(IELM1.EQ.11) THEN
-           CALL VC17AA(XMUL,SU,SV,U,V,XEL,YEL,SURFAC,
-     &                 IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
-     &                 T(1,1),T(1,2),T(1,3))
+          CALL VC17AA(XMUL,SU,SV,U,V,XEL,YEL,SURFAC,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3))
 !
 !
 !       ELEMENT P1 PRISM
 !
         ELSEIF(IELM1.EQ.41) THEN
-           CALL VC17PP(XMUL,SURFAC,SU,SV,SW,U,V,W,XEL,YEL,ZPT,
-     &                 IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                 IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
-     &                 T(1,3),T(1,4),T(1,5),T(1,6))
+          CALL VC17PP(XMUL,SURFAC,SU,SV,SW,U,V,W,XEL,YEL,ZPT,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3),T(1,4),T(1,5),T(1,6))
 
 !-----------------------------------------------------------------------
 !       ERROR ON THE ELEMENT TYPE
@@ -1277,10 +1277,10 @@
      &                IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
      &                T(1,1),T(1,2),T(1,3))
         ELSEIF(IELM1.EQ.41) THEN
-           CALL VC20PP(XMUL,SURFAC,SU,SV,SW,U,V,W,XEL,YEL,ZPT,
-     &                 IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                 IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
-     &                 T(1,3),T(1,4),T(1,5),T(1,6))
+          CALL VC20PP(XMUL,SURFAC,SU,SV,SW,U,V,W,XEL,YEL,ZPT,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                IKLE(1,5),IKLE(1,6),NELEM,NELMAX,T(1,1),T(1,2),
+     &                T(1,3),T(1,4),T(1,5),T(1,6))
 
 !-----------------------------------------------------------------------
 !       ERROR ON THE ELEMENT TYPE
@@ -1307,9 +1307,9 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC15AA(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &                   NELEM,NELMAX,T(1,1),T(1,2),T(1,3))
+          CALL VC15AA(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &                NELEM,NELMAX,T(1,1),T(1,2),T(1,3))
 !
 !-----------------------------------------------------------------------
 !
@@ -1317,10 +1317,10 @@
 !
 !       ELSEIF(IELM1.EQ.12) THEN
 !
-!            CALL VC15BB(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *            XEL,YEL,ZEL,SURFAC,
-!    *            IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-!    *            NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),FORMUL)
+!         CALL VC15BB(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &         XEL,YEL,ZEL,SURFAC,
+!    &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+!    &         NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),FORMUL)
 !
 !-----------------------------------------------------------------------
 !
@@ -1328,10 +1328,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC15OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
-!    *                   T(1,1),T(1,2)  )
+!         CALL VC15OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
+!    &                T(1,1),T(1,2)  )
 !
 !-----------------------------------------------------------------------
 !       OTHER
@@ -1364,10 +1364,10 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC16AA(XMUL,SF,SG,SU,SV,F,G,U,V,XEL,YEL,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3) )
+          CALL VC16AA(XMUL,SF,SG,SU,SV,F,G,U,V,XEL,YEL,SURFAC,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3) )
 !
 !-----------------------------------------------------------------------
 !
@@ -1375,10 +1375,10 @@
 !
 !       ELSEIF(IELM1.EQ.12) THEN
 !
-!            CALL VC16BB(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *            XEL,YEL,ZEL,SURFAC,
-!    *            IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-!    *            NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),FORMUL)
+!         CALL VC16BB(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &         XEL,YEL,ZEL,SURFAC,
+!    &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+!    &         NELEM,NELMAX,T(1,1),T(1,2),T(1,3),T(1,4),FORMUL)
 !
 !-----------------------------------------------------------------------
 !
@@ -1386,10 +1386,10 @@
 !
 !       ELSEIF(IELM1.EQ.1) THEN
 !
-!            CALL VC16OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
-!    *                   XEL,YEL,ZEL,SURFAC,
-!    *                   IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
-!    *                   T(1,1),T(1,2)  )
+!         CALL VC16OO(XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,
+!    &                XEL,YEL,ZEL,SURFAC,
+!    &                IKLE(1,1),IKLE(1,2),NELEM,NELMAX,
+!    &                T(1,1),T(1,2)  )
 !
 !
 !-----------------------------------------------------------------------
@@ -1418,10 +1418,10 @@
 !
         IF(IELM1.EQ.11) THEN
 !
-             CALL VC19AA(XMUL,SF,SG,SH,SU,SV,F,G,H,U,V,
-     &                   XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
-     &                   T(1,1),T(1,2),T(1,3),FORMUL)
+          CALL VC19AA(XMUL,SF,SG,SH,SU,SV,F,G,H,U,V,
+     &                XEL,YEL,
+     &                IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,
+     &                T(1,1),T(1,2),T(1,3),FORMUL)
 !
 !-----------------------------------------------------------------------
 !       OTHER

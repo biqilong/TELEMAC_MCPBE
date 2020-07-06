@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE OIL_ORG_CHARAC_TYPE
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE ORG_CHARAC_TYPE_OIL
+!                   ******************************
 !
      &(OIL_CHARAC)
 !
@@ -104,7 +104,7 @@
 !
 !     TERMINATE ON MPI PARTS NOT HANDLED BY COMPAD
 #  if defined COMPAD
-      WRITE(LU,*) 'OIL_ORG_CHARAC_TYPE: COMPAD MAYBE CRITICAL',
+      WRITE(LU,*) 'ORG_CHARAC_TYPE_OIL: COMPAD MAYBE CRITICAL',
      &     'MPI OPERATION'
       WRITE(LU,*) '  PLEASE CONTACT JR @ ADJOINTWARE'
       CALL PLANTE(1)
@@ -193,7 +193,7 @@
       IUB=ILB+EXTENT
 !
       IF(ILB.NE.CH_DELTA(1).OR.IUB.NE.CH_DELTA(20)) THEN
-        WRITE(LU,*) ' PARALLEL::OIL_ORG_CHARAC_TYPE:'
+        WRITE(LU,*) ' PARALLEL::ORG_CHARAC_TYPE_OIL:'
         WRITE(LU,*) ' MEMORY PROBLEM WITH THIS COMPILER: '
         WRITE(LU,*) ' ILB=',ILB,' NOT EQUAL TO CH_DELTA(1)=',
      &        CH_DELTA(1)
@@ -207,4 +207,4 @@
 !----------------------------------------------------------------------
 !
       RETURN
-      END SUBROUTINE OIL_ORG_CHARAC_TYPE
+      END SUBROUTINE ORG_CHARAC_TYPE_OIL

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SMAGOR
-!                    *****************
+!                   *****************
+                    SUBROUTINE SMAGOR
+!                   *****************
 !
      &(VISC,U,V,MESH,T1,T2,T3,T4,MSK,MASKEL,PROPNU)
 !

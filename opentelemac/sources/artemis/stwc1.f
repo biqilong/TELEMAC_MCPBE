@@ -1,6 +1,6 @@
-!                    ********************************
-                     DOUBLE PRECISION FUNCTION STWC1
-!                    ********************************
+!                   ********************************
+                    DOUBLE PRECISION FUNCTION STWC1
+!                   ********************************
 !
      &(F,DIR,SPEC,I)
 !
@@ -58,7 +58,7 @@
       INTRINSIC                     :: EXP
 !
 !-----------------------------------------------------------------------
-!     TOMAWAC SPECTRUM IS GIVEN AT DISCRETE FREQUENCIES AND DIRECTIONS 
+!     TOMAWAC SPECTRUM IS GIVEN AT DISCRETE FREQUENCIES AND DIRECTIONS
 !     THAT ARE COARSER THAN REQUIRED TO GIVE A SMOOTH ESTIMATE OF ENERGY
 !     IN SPECTRUM
 !     => REQUIRES INTERPOLATION (WITHIN RANGE) AS FOLLOWS

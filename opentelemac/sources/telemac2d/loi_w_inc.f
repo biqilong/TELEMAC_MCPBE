@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE LOI_W_INC
-!                    ********************
+!                   ********************
+                    SUBROUTINE LOI_W_INC
+!                   ********************
 !
      &(YAM,YAV,YS1,YS2,WIDTH,PHI,DEB,G)
 !

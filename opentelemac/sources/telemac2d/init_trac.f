@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE INIT_TRAC
-!                    ********************
+!                   ********************
+                    SUBROUTINE INIT_TRAC
+!                   ********************
 !
      &(T,HTN,SMTR,FLUXT,FLUHTEMP,FLUHBTEMP,MASSOU,FLUTENT,FLUTSOR,
      & FLBOR,MESH)

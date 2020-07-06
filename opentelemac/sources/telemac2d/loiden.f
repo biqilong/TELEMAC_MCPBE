@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LOIDEN
-!                    *****************
+!                   *****************
+                    SUBROUTINE LOIDEN
+!                   *****************
 !
      &(YAM,YS,PHI,DEB,G)
 !

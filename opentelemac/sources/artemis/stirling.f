@@ -86,7 +86,7 @@
 !       XO CLOSEST TO XI(2) :
 !       YO COMPUTED FROM PARABOLA USING 1ST 3 POINTS
         IF( IVP.EQ.2 ) THEN
-           YO(I) = A1 + A2*XO + A3*XO**2
+          YO(I) = A1 + A2*XO + A3*XO**2
 !
 !-----------------------------------------------------------------------
 !       XO CLOSEST TO XI(3) OR XI(NI-2) :

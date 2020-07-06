@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE TFOND
-!                    ****************
+!                   ****************
+                    SUBROUTINE TFOND
+!                   ****************
 !
      &(AUBOR,CF,U2D,V2D,U3D,V3D,W3D,KARMAN,LISRUF,PROPNU,Z,NPOIN,KFROT,
      & RUGOF,UETCAR,NONHYD,OPTBAN,HN,GRAV,IPBOT,NPLAN)

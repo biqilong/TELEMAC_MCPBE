@@ -65,7 +65,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_ISUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
       TYPE(BIEF_OBJ) :: UCONV_OIL,VCONV_OIL
@@ -99,9 +99,9 @@
 !
       CONTAINS
 !
-!                    ***********************
-                     SUBROUTINE OIL_SPILL_2D
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE OIL_SPILL_2D
+!                   ***********************
 !
 !
 !***********************************************************************
@@ -207,13 +207,13 @@
         ALLOCATE(KVOL_2D(MAX(NB_HAP_2D,1)))
         IF(NB_HAP_2D.GT.0)THEN
           READ(T2D_FILES(T2DMIG)%LU,*)
-            DO I=1,NB_HAP_2D
-             READ(T2D_FILES(T2DMIG)%LU,*) FM_HAP_2D(I),
-     &              TB_HAP_2D(I),SOLU_2D(I),KDISS_2D(I),KVOL_2D(I)
-             VERIF=VERIF+FM_HAP_2D(I)
-             WRITE(LU,*) 'HAP',I,FM_HAP_2D(I),
+          DO I=1,NB_HAP_2D
+            READ(T2D_FILES(T2DMIG)%LU,*) FM_HAP_2D(I),
      &            TB_HAP_2D(I),SOLU_2D(I),KDISS_2D(I),KVOL_2D(I)
-            END DO
+            VERIF=VERIF+FM_HAP_2D(I)
+            WRITE(LU,*) 'HAP',I,FM_HAP_2D(I),
+     &          TB_HAP_2D(I),SOLU_2D(I),KDISS_2D(I),KVOL_2D(I)
+          END DO
         END IF
 !
         IF(NB_HAP_2D.GT.0.OR.NB_COMPO_2D.GT.0)THEN
@@ -305,7 +305,7 @@
         DO I=1,UCONV%DIM1
           UCONV_OIL%R(I)=UCONV%R(I)*(1.D0+(1.D0/KARMAN)*
      &          SQRT(CF%R(I)*0.5D0))+0.036D0*WINDX%R(I)
-           VCONV_OIL%R(I)=VCONV%R(I)*(1.D0+(1.D0/KARMAN)*
+          VCONV_OIL%R(I)=VCONV%R(I)*(1.D0+(1.D0/KARMAN)*
      &          SQRT(CF%R(I)*0.5D0))+0.036D0*WINDY%R(I)
         ENDDO
       ELSE
@@ -395,9 +395,9 @@
       IF(NB_COMPO_2D.GT.0.OR.NB_HAP_2D.GT.0)THEN
         DO IFLOT=1,NFLOT
           IF(PARTICULES(IFLOT)%MASS.EQ.0.D0) THEN
-             CALL OIL_DEL_PARTICLE(PARTICULES(IFLOT)%ID,NFLOT,NFLOT_MAX,
-     &                            MESH%TYPELM,IT1%I,PARTICULES,
-     &                            NB_COMPO_2D,NB_HAP_2D)
+            CALL OIL_DEL_PARTICLE(PARTICULES(IFLOT)%ID,NFLOT,NFLOT_MAX,
+     &                           MESH%TYPELM,IT1%I,PARTICULES,
+     &                           NB_COMPO_2D,NB_HAP_2D)
           END IF
         END DO
       END IF
@@ -425,9 +425,9 @@
       RETURN
       END SUBROUTINE OIL_SPILL_2D
 !
-!                    ***********************
-                     SUBROUTINE OIL_SPILL_3D
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE OIL_SPILL_3D
+!                   ***********************
      &(LT,IELM2H,MESH2D,NFLOT_MAX,T3D_FILES,MAXLU_T3D,NPOIN2,T3DMIG,
      &UCONV,VCONV,WCONV,NFLOT,NPLAN,MESH3D,AT,DT,GRAV,CF,X,Y,Z,H,HN,
      &IELM3,NPOIN3,NELEM2,XFLOT,YFLOT,ZFLOT,SHPFLO,SHZFLO,TAGFLO,CLSFLO,
@@ -823,9 +823,9 @@
       RETURN
       END SUBROUTINE OIL_SPILL_3D
 !
-!                    **********************
-                     SUBROUTINE OIL_DERIVE
-!                    **********************
+!                   **********************
+                    SUBROUTINE OIL_DERIVE
+!                   **********************
 !
      &(U,V,W,DT,AT,X,Y,Z,IKLE,IFABOR,LT,IELM,IELMU,NDP,NPOIN,NPOIN2,
      & NELEM,NELMAX,SURDET,XFLOT,YFLOT,ZFLOT,SHPFLO,SHZFLO,TAGFLO,
@@ -1344,13 +1344,13 @@
       IF(NCSIZE.GT.1) THEN
 !
 !       WAITING ALL PROCESSORS (SO THAT NFLOT IS UPDATED FOR ALL
-!                               BEFORE CALLING P_ISUM)
+!                               BEFORE CALLING P_SUM)
 !
         CALL P_SYNC
 !
 !       PARALLEL VERSION
 !
-        NFLOTG=P_ISUM(NFLOT)
+        NFLOTG=P_SUM(NFLOT)
         IF(NFLOTG.GT.0.AND.(LT.EQ.1.OR.(LT/FLOPRD)*FLOPRD.EQ.LT)) THEN
           CALL GET_FREE_ID(ID)
 !
@@ -1657,8 +1657,8 @@
      &                PARTICULES(IFLOT)%MASS)*MW_COMPO(K)
           END DO
           DO K=1,NB_HAP
-             MW = MW + (PARTICULES(IFLOT)%HAP(K)%MASS/
-     &                 PARTICULES(IFLOT)%MASS)*MW_HAP(K)
+            MW = MW + (PARTICULES(IFLOT)%HAP(K)%MASS/
+     &                PARTICULES(IFLOT)%MASS)*MW_HAP(K)
           END DO
 !-----------------------------------------------------------------------
 !-------WIND CALCULATION (DIFFERENCE BETWEEN U SURFACE AND WIND)--------
@@ -2124,12 +2124,12 @@
 !
       IF(NFLOT.GT.0) THEN
         DO IFLOT = 1,NFLOT
-           I1=IKLE(PARTICULES(IFLOT)%ELTOIL,1)
-           I2=IKLE(PARTICULES(IFLOT)%ELTOIL,2)
-           I3=IKLE(PARTICULES(IFLOT)%ELTOIL,3)
-           T3%R(I1)=T3%R(I1)+1.D0
-           T3%R(I2)=T3%R(I2)+1.D0
-           T3%R(I3)=T3%R(I3)+1.D0
+          I1=IKLE(PARTICULES(IFLOT)%ELTOIL,1)
+          I2=IKLE(PARTICULES(IFLOT)%ELTOIL,2)
+          I3=IKLE(PARTICULES(IFLOT)%ELTOIL,3)
+          T3%R(I1)=T3%R(I1)+1.D0
+          T3%R(I2)=T3%R(I2)+1.D0
+          T3%R(I3)=T3%R(I3)+1.D0
         ENDDO
       END IF
 !
@@ -2598,7 +2598,7 @@
 !--------------------------------------------------------------------------
 !
       IF(NCSIZE.GT.1) THEN
-        TOTAL=P_IMAX(NFLOT)
+        TOTAL=P_MAX(NFLOT)
       ELSE
         TOTAL=NFLOT
       ENDIF
@@ -2615,23 +2615,23 @@
      &                '----------------------------------------'
           WRITE(LU,*) '      BALANCE OF OIL SPILL             ',
      &               '                                        '
-          DTMP1 = P_DSUM(MASSE_PART)
-          DTMP2 = P_DSUM(MASSE_INI)
+          DTMP1 = P_SUM(MASSE_PART)
+          DTMP2 = P_SUM(MASSE_INI)
           WRITE(LU,*) '    MASS OF SPILL    ',DTMP1,
      &                (DTMP1/DTMP2)*100.D0,'%'
           WRITE(LU,*) '    INITIAL MASS     ',DTMP2,100.D0,'%'
-          DTMP1 = P_DSUM(MASSE_INACT)
+          DTMP1 = P_SUM(MASSE_INACT)
           WRITE(LU,*) '    STRANDED MASS    ',DTMP1,
      &                (DTMP1/DTMP2)*100.D0,'%'
-          DTMP1 = P_DSUM(MASSE_DISS)
+          DTMP1 = P_SUM(MASSE_DISS)
           WRITE(LU,*) '    DISSOLVED MASS   ',DTMP1,
      &                (DTMP1/DTMP2)*100.D0,'%'
-          DTMP1 = P_DSUM(MASSE_EVAP)
+          DTMP1 = P_SUM(MASSE_EVAP)
           WRITE(LU,*) '   EVAPORATED MASS   ',DTMP1,
      &                (DTMP1/DTMP2)*100.D0,'%'
           WRITE(LU,*) '---------------------------------------',
      &                '---------------------------------------'
-          DTMP1 = P_DSUM(MASSE_EVAP)
+          DTMP1 = P_SUM(MASSE_EVAP)
           WRITE(LU,*) '      BALANCE SURFACE SPILL         ',DTMP1
           WRITE(LU,*) '---------------------------------------',
      &                '---------------------------------------'

@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE LAYERS_P
-!                    *******************
+!                   *******************
+                    SUBROUTINE LAYERS_P
+!                   *******************
 !
      &(PATH_PRE,FILE_PRE,JG)
 !

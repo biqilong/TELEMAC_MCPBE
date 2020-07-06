@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE MVSEG
-!                    ****************
+!                   ****************
+                    SUBROUTINE MVSEG
+!                   ****************
 !
      &(OP, X , DA,TYPDIA,XA1,XA2,
      & TYPEXT, Y,C,NPOIN,NELEM,NSEG1,NSEG2,GLOSEG1,GLOSEG2,IELM1,IELM2)

@@ -245,53 +245,53 @@
 
         IF (TAG == 'T2D') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL GET_DOUBLE_ARRAY_T2D_D(
-     &            INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL GET_DOUBLE_ARRAY_T2D_D(
+     &           INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL GET_DOUBLE_ARRAY_T2D_D(
-     &            INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL GET_DOUBLE_ARRAY_T2D_D(
+     &           INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           ENDIF
         ELSE IF (TAG == 'T3D') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL GET_DOUBLE_ARRAY_T3D_D(
-     &            INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL GET_DOUBLE_ARRAY_T3D_D(
+     &           INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL GET_DOUBLE_ARRAY_T3D_D(
-     &            INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL GET_DOUBLE_ARRAY_T3D_D(
+     &           INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           ENDIF
         ELSE IF (TAG == 'SIS') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL GET_DOUBLE_ARRAY_SIS_D(
-     &            INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL GET_DOUBLE_ARRAY_SIS_D(
+     &           INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL GET_DOUBLE_ARRAY_SIS_D(
-     &            INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL GET_DOUBLE_ARRAY_SIS_D(
+     &           INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           ENDIF
         ELSE IF (TAG == 'ART') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL GET_DOUBLE_ARRAY_ART_D(
-     &            INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL GET_DOUBLE_ARRAY_ART_D(
+     &           INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL GET_DOUBLE_ARRAY_ART_D(
-     &            INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL GET_DOUBLE_ARRAY_ART_D(
+     &           INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           ENDIF
         ELSE IF (TAG == 'WAC') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL GET_DOUBLE_ARRAY_WAC_D(
-     &            INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL GET_DOUBLE_ARRAY_WAC_D(
+     &           INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL GET_DOUBLE_ARRAY_WAC_D(
-     &            INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL GET_DOUBLE_ARRAY_WAC_D(
+     &           INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           ENDIF
         ELSE
           IERR = UNKNOWN_MODULE
@@ -328,53 +328,53 @@
 !
         IF (TAG == 'T2D') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL SET_DOUBLE_ARRAY_T2D_D(
-     &            INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL SET_DOUBLE_ARRAY_T2D_D(
+     &           INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL SET_DOUBLE_ARRAY_T2D_D(
-     &            INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL SET_DOUBLE_ARRAY_T2D_D(
+     &           INSTANCE_LIST_T2D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           END IF
         ELSE IF (TAG == 'T3D') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL SET_DOUBLE_ARRAY_T3D_D(
-     &            INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL SET_DOUBLE_ARRAY_T3D_D(
+     &           INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL SET_DOUBLE_ARRAY_T3D_D(
-     &            INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL SET_DOUBLE_ARRAY_T3D_D(
+     &           INSTANCE_LIST_T3D(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           END IF
         ELSE IF (TAG == 'SIS') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL SET_DOUBLE_ARRAY_SIS_D(
-     &            INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL SET_DOUBLE_ARRAY_SIS_D(
+     &           INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL SET_DOUBLE_ARRAY_SIS_D(
-     &            INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL SET_DOUBLE_ARRAY_SIS_D(
+     &           INSTANCE_LIST_SIS(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           END IF
         ELSE IF (TAG == 'ART') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL SET_DOUBLE_ARRAY_ART_D(
-     &            INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL SET_DOUBLE_ARRAY_ART_D(
+     &           INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL SET_DOUBLE_ARRAY_ART_D(
-     &            INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL SET_DOUBLE_ARRAY_ART_D(
+     &           INSTANCE_LIST_ART(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           END IF
         ELSE IF (TAG == 'WAC') THEN
           IF(PRESENT(BLOCK_INDEX))THEN
-             CALL SET_DOUBLE_ARRAY_WAC_D(
-     &            INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
-     &            IERR, BLOCK_INDEX)
+            CALL SET_DOUBLE_ARRAY_WAC_D(
+     &           INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
+     &           IERR, BLOCK_INDEX)
           ELSE
-             CALL SET_DOUBLE_ARRAY_WAC_D(
-     &            INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
-     &            IERR)
+            CALL SET_DOUBLE_ARRAY_WAC_D(
+     &           INSTANCE_LIST_WAC(ID), VARNAME, VALEUR, DIM1,
+     &           IERR)
           END IF
         ELSE
           IERR = UNKNOWN_MODULE
@@ -498,7 +498,6 @@
       SUBROUTINE GET_DOUBLE
      &   (ID, TAG, VARNAME, VALEUR, INDEX1, INDEX2, INDEX3, IERR)
 !
-        USE INTERFACE_PARALLEL, ONLY : P_DMIN,P_DMAX
         INTEGER,                    INTENT(IN)    :: ID
         CHARACTER(LEN=3),           INTENT(IN)    :: TAG
         CHARACTER(LEN=T2D_VAR_LEN), INTENT(IN)    :: VARNAME
@@ -702,13 +701,13 @@
 !
         INTEGER,               INTENT(IN) :: ID
         CHARACTER(LEN=3),           INTENT(IN)    :: TAG
-        CHARACTER(len=T2D_VAR_LEN), INTENT(IN)  :: VARNAME
+        CHARACTER(LEN=T2D_VAR_LEN), INTENT(IN)  :: VARNAME
         INTEGER,               INTENT(IN) :: VALUELEN
         INTEGER,               INTENT(IN) :: INDEX1
         INTEGER,               INTENT(IN) :: INDEX2
         ! Harcoded 250 forced by intel (otherwise get string does not
         ! work...)
-        CHARACTER(len=250), INTENT(OUT) :: VALEUR
+        CHARACTER(LEN=250), INTENT(OUT) :: VALEUR
         INTEGER,               INTENT(OUT) :: IERR
 !
         ! Temporary array with a good length
@@ -2282,12 +2281,12 @@
 
         CALL CHARR_OR_SUSP(ID_T2D, ID_SIS, CHARR_SUSP, IERR)
         IF(CHARR_SUSP.EQ.1.OR.CHARR_SUSP.EQ.3) THEN
-           CALL SET_VAR_SIS(ID_T2D, ID_SIS, 1, IERR)
-           CALL RUN_TIMESTEP_SIS(ID_SIS,IERR)
+          CALL SET_VAR_SIS(ID_T2D, ID_SIS, 1, IERR)
+          CALL RUN_TIMESTEP_SIS(ID_SIS,IERR)
         END IF
         IF(CHARR_SUSP.EQ.2.OR.CHARR_SUSP.EQ.3) THEN
-           CALL SET_VAR_SIS(ID_T2D, ID_SIS, 2, IERR)
-           CALL RUN_TIMESTEP_SIS(ID_SIS,IERR)
+          CALL SET_VAR_SIS(ID_T2D, ID_SIS, 2, IERR)
+          CALL RUN_TIMESTEP_SIS(ID_SIS,IERR)
         END IF
         CALL SET_VAR_T2D(ID_T2D, ID_SIS, IERR)
 
@@ -2313,11 +2312,12 @@
       !>@param[out] IFABOR Array for boundaries
       !>@param[out] KP1BOR Neigbouring boundary nodes array
       !>@param[out] NUMLIQ Array for liquid boundaries
+      !>@param[in] LISTIN If true display boundaries info
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE IDENTIFY_LIQ_BND(
      &  IKLES, DIM_MESH, NPTFR, NPOIN, NELEM2,
      &  LIUBOR, LIHBOR, NBOR, COORD,
-     &  NELBOR, IFABOR, KP1BOR, NUMLIQ)
+     &  NELBOR, IFABOR, KP1BOR, NUMLIQ, LISTIN)
 !
         USE MOD_NUMBERING_OPEN_BOUNDARIES
         USE DECLARATIONS_PARTEL
@@ -2334,6 +2334,7 @@
         INTEGER, INTENT(IN) :: LIUBOR(NPTFR), LIHBOR(NPTFR)
         INTEGER, INTENT(OUT) :: NELBOR(NPTFR),
      &    KP1BOR(NPTFR,2), IFABOR(NELEM2,3), NUMLIQ(NPTFR)
+        LOGICAL, INTENT(IN) :: LISTIN
 !
         CHARACTER(LEN=PATH_LEN) :: NAMEINP
         INTEGER, ALLOCATABLE :: IKLE(:,:)
@@ -2352,7 +2353,7 @@
         CALL NUMBERING_OPEN_BOUNDARIES(
      &      NAMEINP, IKLE, IKLES, LKP1BOR, LNUMLIQ, DIM_MESH, NPOIN,
      &      LNPTFR, NPOIN, LNELEM2, LNELBOR, LIUBOR, LIHBOR, NBOR,
-     &      LIFABOR, COORD)
+     &      LIFABOR, COORD, LISTIN)
 
         NELBOR = LNELBOR
         KP1BOR = LKP1BOR

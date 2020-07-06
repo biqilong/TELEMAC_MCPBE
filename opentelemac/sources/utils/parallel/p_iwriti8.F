@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE P_IWRITI8
-!                    ********************
+!                   ********************
+                    SUBROUTINE P_IWRITI8
+!                   ********************
 !
      &(BUFFER,NVAL,DEST,ITAG,IREQ)
 !

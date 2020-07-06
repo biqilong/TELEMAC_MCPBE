@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SPECTRE
-!                    ******************
+!                   ******************
+                    SUBROUTINE SPECTRE
+!                   ******************
 !
 !
 !***********************************************************************
@@ -49,7 +49,7 @@
       USE INTERFACE_TELEMAC2D
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMIN,P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MIN,P_MAX
       IMPLICIT NONE
 !
       DOUBLE PRECISION PI,CFX,CFY,A,B
@@ -162,8 +162,8 @@
                   B=PHAS%ADR(I)%P%R(LIST_PTS(J))
                 ENDIF
 !               AD: AVOID I/O OF ACTIVE FUNCTION RESULTS
-                TMP1 = P_DMIN(A)+P_DMAX(A)
-                TMP2 = P_DMIN(B)+P_DMAX(B)
+                TMP1 = P_MIN(A)+P_MAX(A)
+                TMP2 = P_MIN(B)+P_MAX(B)
                 WRITE(LU,100) NAME_PTS(J),TMP1, TMP2
               ELSE
                 WRITE(LU,100) NAME_PTS(J),

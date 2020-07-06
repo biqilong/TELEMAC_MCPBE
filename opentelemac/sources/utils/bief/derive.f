@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DERIVE
-!                    *****************
+!                   *****************
+                    SUBROUTINE DERIVE
+!                   *****************
 !
      &(U,V,W,DT,AT,X,Y,Z,IKLE,IFABOR,LT,IELM,IELMU,NDP,NDP2,
      & NPOIN,NPOIN2,
@@ -195,9 +195,9 @@
       INTEGER IFLOT,FRE(1),FREBUF(1),ELT,ETF
       INTEGER N1,N2,N3,N4,N5,N6,NOMB,SENS,NRK
 !
-      INTEGER ICLS, REL_ALG
+      INTEGER REL_ALG
       DOUBLE PRECISION TW0, TW1, TW2, A_ALG
-      DOUBLE PRECISION, ALLOCATABLE :: TW(:) 
+      DOUBLE PRECISION, ALLOCATABLE :: TW(:)
 !
       LOGICAL SSIGMA
 !

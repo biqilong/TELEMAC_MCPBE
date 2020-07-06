@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE INITAB
-!                    *****************
+!                   *****************
+                    SUBROUTINE INITAB
+!                   *****************
 !
      &(IBOR1,IFABOR1,NELEM2_DIM,PART)
 !
@@ -77,14 +77,14 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER IPLAN,IPOIN,IELEM2,IFREQ
+      INTEGER IDIRE,IPOIN,IELEM2,IFREQ
       DOUBLE PRECISION AUXI
 !
 !-----------------------------------------------------------------------
 !
-      DO IPLAN = 1,NPLAN
-        COSTET(IPLAN) = COS(TETA(IPLAN))
-        SINTET(IPLAN) = SIN(TETA(IPLAN))
+      DO IDIRE = 1, NDIRE
+        COSTET(IDIRE) = COS(TETA(IDIRE))
+        SINTET(IDIRE) = SIN(TETA(IDIRE))
       ENDDO
 !
       AUXI=(RAISF-1.D0)/2.D0

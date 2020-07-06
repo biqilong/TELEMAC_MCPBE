@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE KEPICL
-!                    *****************
+!                   *****************
+                    SUBROUTINE KEPICL
+!                   *****************
 !
      & (LIKBOF,LIEBOF,LIUBOF,LIKBOL,LIEBOL,LIUBOL,LIKBOS,LIEBOS,
      &  NPTFR,NPLAN,NPOIN2,KENT,KSORT,KENTU)

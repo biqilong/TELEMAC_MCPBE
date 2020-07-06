@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MURD3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE MURD3D
+!                   *****************
 !
      &(SFC,FC,FN,VOLU,VOLUN,VOLU2,SVOLU2,B,DB,XB,DIM1XB,
      & TRA01,TRA02,TRA03,STRA01,STRA02,STRA03,IKLE3,MESH2D,MESH3D,
@@ -1207,7 +1207,7 @@
 !     SAVING THE LOCAL ALFA (IN CASE OF MAXIMUM ITERATION REACHED
 !                            TO KNOW THE MOST GUILTY PROCESSOR)
       ALFALOC=ALFA
-      IF(NCSIZE.GT.1) ALFA = P_DMIN(ALFA)
+      IF(NCSIZE.GT.1) ALFA = P_MIN(ALFA)
       DTJALFA=DTJ*ALFA
 !
 !     COMPUTES VOLU AFTER AN EXTRA ALFA*DTJ
@@ -1706,9 +1706,9 @@
 !         GLOBAL NUMBERING IF THERE IS A GUILTY POINT
           IF(IGUILT.GT.0) IGUILT=MESH3D%KNOLG%I(IGUILT)
 !         ONLY THE MORE GUILTY PROCESSOR IS KEPT
-          IF(ALFALOC.NE.P_DMIN(ALFALOC)) IGUILT=0
+          IF(ALFALOC.NE.P_MIN(ALFALOC)) IGUILT=0
 !         RETRIEVING THE CORRESPONDING POINT
-          IGUILT=P_IMAX(IGUILT)
+          IGUILT=P_MAX(IGUILT)
         ENDIF
         WRITE(LU,*) 'ALFA = ',ALFA,' GUILTY POINT = ',IGUILT
         CALL PLANTE(1)

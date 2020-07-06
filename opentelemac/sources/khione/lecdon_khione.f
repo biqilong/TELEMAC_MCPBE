@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE LECDON_KHIONE
-!                    ************************
+!                   ************************
+                    SUBROUTINE LECDON_KHIONE
+!                   ************************
 !
      & (FILE_DESC,PATH,NCAR)
 !

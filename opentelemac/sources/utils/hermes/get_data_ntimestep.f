@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE GET_DATA_NTIMESTEP
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GET_DATA_NTIMESTEP
+!                   *****************************
 !
      &(FFORMAT,FID,NTIMESTEP,IERR)
 !

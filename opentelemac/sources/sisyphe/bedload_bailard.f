@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE BEDLOAD_BAILARD !
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE BEDLOAD_BAILARD !
+!                   ****************************
 !
      &(U2D,V2D,UCMOY,TOB,TOBW,THETAW,UW,FW,CF,NPOIN,PI,
      & XMVE,GRAV,DENS,XWC,ALPHAW,QSCX,QSCY,QSSX,QSSY,

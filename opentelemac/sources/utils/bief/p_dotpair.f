@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE P_DOTPAIR
-!                    *********************
+!                   *********************
+                    SUBROUTINE P_DOTPAIR
+!                   *********************
 !
      &(NPOIN,X,Y,IFAC,PAIR)
 !

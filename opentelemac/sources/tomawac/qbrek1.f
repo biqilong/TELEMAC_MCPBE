@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE QBREK1
-!                    *****************
+!                   *****************
+                    SUBROUTINE QBREK1
+!                   *****************
 !
-     & ( TSTOT , F     , FCAR  , VARIAN, NF    , NPLAN , NPOIN2)
+     & ( TSTOT , F     , FCAR  , VARIAN, NF    , NDIRE , NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   23/06/2011
@@ -55,24 +55,24 @@
 !|                |   | BREAKING WAVE HEIGHT
 !| IQBBJ          |-->| SELECTED QB COMPUTATION METHOD FOR BJ MODEL
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
 !| VARIAN         |-->| SPECTRUM VARIANCE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_TOMAWAC, ONLY : ALFABJ, GAMBJ1, GAMBJ2, IQBBJ,
-     &                 IHMBJ, DEPTH, BETABR 
+     &                 IHMBJ, DEPTH, BETABR
 
       USE INTERFACE_TOMAWAC, EX_QBREK1 => QBREK1
       IMPLICIT NONE
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)            :: NF, NPLAN, NPOIN2
-      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)            :: NF, NDIRE, NPOIN2
+      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)   :: VARIAN(NPOIN2),FCAR(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NDIRE,NF)
 !
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -116,11 +116,11 @@
 !.....TAKES THE SOURCE TERM INTO ACCOUNT
 !     """"""""""""""""""""""""""""""""
         DO IFF = 1,NF
-          DO JP = 1,NPLAN
+          DO JP = 1,NDIRE
             TSTOT(IP,JP,IFF) = TSTOT(IP,JP,IFF)+BETABR(IP)*F(IP,JP,IFF)
           ENDDO ! JP
         ENDDO ! IFF
-      ENDDO!IP 
-!     
+      ENDDO!IP
+!
       RETURN
       END

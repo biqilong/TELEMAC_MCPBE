@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE CHECKMESH
-!                    ********************
+!                   ********************
+                    SUBROUTINE CHECKMESH
+!                   ********************
 !
      &(MESH,NPOIN)
 !
@@ -53,16 +53,16 @@
       DIST2MIN=1.D20
       DO I=1,NPOIN-1
         DO J=I+1,NPOIN
-           DIST2=(X(I)-X(J))**2+(Y(I)-Y(J))**2
-           IF(DIST2.LT.DIST2MIN) THEN
-             DIST2MIN=DIST2
-             IDISTMIN=I
-             JDISTMIN=J
-           ENDIF
+          DIST2=(X(I)-X(J))**2+(Y(I)-Y(J))**2
+          IF(DIST2.LT.DIST2MIN) THEN
+            DIST2MIN=DIST2
+            IDISTMIN=I
+            JDISTMIN=J
+          ENDIF
         ENDDO
       ENDDO
       IF(NCSIZE.GT.1) THEN
-        IF(P_DMIN(DIST2MIN).EQ.DIST2MIN) THEN
+        IF(P_MIN(DIST2MIN).EQ.DIST2MIN) THEN
           IDISTMIN=MESH%KNOLG%I(IDISTMIN)
           JDISTMIN=MESH%KNOLG%I(JDISTMIN)
         ELSE
@@ -70,9 +70,9 @@
           JDISTMIN=0
           DIST2MIN=0.D0
         ENDIF
-        DIST2MIN=P_DMAX(DIST2MIN)
-        IDISTMIN=P_IMAX(IDISTMIN)
-        JDISTMIN=P_IMAX(JDISTMIN)
+        DIST2MIN=P_MAX(DIST2MIN)
+        IDISTMIN=P_MAX(IDISTMIN)
+        JDISTMIN=P_MAX(JDISTMIN)
       ENDIF
       WRITE(LU,*)
       WRITE(LU,*) 'CHECKING THE MESH'
@@ -124,7 +124,7 @@
 !
 !     THIS SUM IS CORRECT BECAUSE A POINt WITH 2 NEIGHBOURS CANNOT
 !     BELONG TO 2 SUB-DOMAINS
-      IF(NCSIZE.GT.1) OVER=P_ISUM(OVER)
+      IF(NCSIZE.GT.1) OVER=P_SUM(OVER)
 !
       IF(OVER.GT.1) THEN
         WRITE(LU,*) OVER,' OVERCONSTRAINED TRIANGLES'

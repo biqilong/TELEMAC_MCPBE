@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE FLUX_EF_VF_3D
-!                    ************************
+!                   ************************
+                    SUBROUTINE FLUX_EF_VF_3D
+!                   ************************
 !
      &(FLOW,W2D,W3D,NSEG2D,NELEM2,NELMAX2,MESH2D,INIFLO,
      & IOPT,SENS,IELM3,NPLAN,IKLE,NELMAX,KNOLG)

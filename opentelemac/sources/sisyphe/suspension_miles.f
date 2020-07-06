@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE SUSPENSION_MILES
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE SUSPENSION_MILES
+!                   ***************************
 !
      &(HN,NPOIN,HMIN,FDM,FD90,XWC,CSRATIO)
 !

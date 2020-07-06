@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE FLUSEC_SIS
-!                    *********************
+!                   *********************
+                    SUBROUTINE FLUSEC_SIS
+!                   *********************
 !
      &(GLOSEG,DIMGLO,DT,MESH,FLODEL,ICLA,DOPLOT)
 !

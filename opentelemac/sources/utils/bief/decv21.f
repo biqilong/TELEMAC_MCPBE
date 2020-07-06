@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DECV21
-!                    *****************
+!                   *****************
+                    SUBROUTINE DECV21
+!                   *****************
 !
      &(TETA,SL,ZF,IKLE,NELEM,NELMAX)
 !

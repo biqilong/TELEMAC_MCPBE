@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE GET_MESH_TITLE
-!                    *************************
+!                   *************************
+                    SUBROUTINE GET_MESH_TITLE
+!                   *************************
 !
      &(FFORMAT,FID,TITLE,IERR)
 !

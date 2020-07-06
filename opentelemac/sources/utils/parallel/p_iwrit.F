@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE P_IWRIT
-!                    ******************
+!                   ******************
+                    SUBROUTINE P_IWRIT
+!                   ******************
 !
      &(BUFFER,N,BYTES,DEST,ITAG,IREQ)
 !

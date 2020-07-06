@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE PLANE_BOTTOM
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE PLANE_BOTTOM
+!                   ***********************
 !
      &(IPBOT,Z,NPOIN2,NPLAN,SIGMAG,OPTBAN)
 !

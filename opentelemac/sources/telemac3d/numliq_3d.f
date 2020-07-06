@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE NUMLIQ_3D
-!                    ********************
+!                   ********************
+                    SUBROUTINE NUMLIQ_3D
+!                   ********************
 !
      &(NUMLIQ,NUMLIQ_ELM,NPLAN,NPTFR2,IKLBOR,NELEB,NELEBX)
 !

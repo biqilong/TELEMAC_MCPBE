@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SORTIE
-!                    *****************
+!                   *****************
+                    SUBROUTINE SORTIE
+!                   *****************
 !
      &( CHAINE , MNEMO , NBRE , SORLEO )
 !

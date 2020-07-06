@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PREADV
-!                    *****************
+!                   *****************
+                    SUBROUTINE PREADV
+!                   *****************
 !
      &(W,WS,ZPROP,ISOUSI,LT,VOLU,VOLUN)
 !

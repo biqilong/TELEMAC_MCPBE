@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE OMBORSEG
-!                    *******************
+!                   *******************
+                    SUBROUTINE OMBORSEG
+!                   *******************
 !
      &(OP,DM,XM,TYPEXM,DN,XN,TYPEXN,C,
      & NDIAG,MSEG1,MSEG2,NSEG1,NSEG2,NBOR)
@@ -91,28 +91,28 @@
         CALL OVDB( 'X=X+Y   ' , DM , DN , Z , C , NBOR, NDIAG )
 !
         IF(TYPEXN(1:1).EQ.'S') THEN
-           CALL OV('X=X+Y   ', X=XM, Y=XN, DIM1=NSEG2)
-           IF(TYPEXM(1:1).EQ.'Q') THEN
-           CALL OV('X=X+Y   ' , X=XM(DIMX+1:DIMX+NSEG2) , Y=XN,
-     &             DIM1=NSEG2)
-           ENDIF
+          CALL OV('X=X+Y   ', X=XM, Y=XN, DIM1=NSEG2)
+          IF(TYPEXM(1:1).EQ.'Q') THEN
+          CALL OV('X=X+Y   ' , X=XM(DIMX+1:DIMX+NSEG2) , Y=XN,
+     &            DIM1=NSEG2)
+          ENDIF
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
-           IF(TYPEXM(1:1).NE.'Q') THEN
-             WRITE(LU,98) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-98          FORMAT(1X,'OMBORSEG (BIEF) : TYPEXM = ',A1,
-     &       ' DOES NOT GO',/,1X,'FOR THE OPERATION : ',A8,
-     &       ' WITH TYPEXN = ',A1)
-             CALL PLANTE(1)
-             STOP
-           ENDIF
-           CALL OV('X=X+Y   ' , X=XM, Y=XN, DIM1=NSEG2)
-           CALL OV('X=X+Y   ' , X=XM(DIMX+1:DIMX+NSEG2),
-     &             Y=XN(DIMY+1:DIMY+NSEG2), DIM1=NSEG2)
+          IF(TYPEXM(1:1).NE.'Q') THEN
+            WRITE(LU,98) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+98         FORMAT(1X,'OMBORSEG (BIEF) : TYPEXM = ',A1,
+     &      ' DOES NOT GO',/,1X,'FOR THE OPERATION : ',A8,
+     &      ' WITH TYPEXN = ',A1)
+            CALL PLANTE(1)
+            STOP
+          ENDIF
+          CALL OV('X=X+Y   ' , X=XM, Y=XN, DIM1=NSEG2)
+          CALL OV('X=X+Y   ' , X=XM(DIMX+1:DIMX+NSEG2),
+     &            Y=XN(DIMY+1:DIMY+NSEG2), DIM1=NSEG2)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-11         FORMAT(1X,'OMBORSEG (BIEF) : TYPEXN UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,11) TYPEXN(1:1)
+11        FORMAT(1X,'OMBORSEG (BIEF) : TYPEXN UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------

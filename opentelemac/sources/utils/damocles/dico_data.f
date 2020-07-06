@@ -266,7 +266,6 @@
                   WRITE(*,*) 'ERROR RUBRIQUE: ',
      &                        TRIM(MYDICO(IKEY)%RUBRIQUE(LNG,I))
                   WRITE(*,*) 'IS ALSO A KEYWORD PLEASE RENAME RUBRIQUE'
-           !      CALL PLANTE(1)
                 ENDIF
               ENDIF
             ENDIF

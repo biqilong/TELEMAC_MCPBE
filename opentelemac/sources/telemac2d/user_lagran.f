@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_LAGRAN
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_LAGRAN
+!                   **********************
 !
      &(NLAG,DEBLAG,FINLAG)
 !
@@ -56,8 +56,8 @@
 !
       IF(.FALSE.) THEN
         DO ILAG=1,NLAG
-           DEBLAG(ILAG) = 1
-           FINLAG(ILAG) = 299
+          DEBLAG(ILAG) = 1
+          FINLAG(ILAG) = 299
         ENDDO ! ILAG
       ENDIF
 !

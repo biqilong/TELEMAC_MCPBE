@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT06OO
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT06OO
+!                   *****************
 !
      &(A11,A12,A22,XMUL,SF,F,LGSEG,IKLE1,IKLE2,NBOR,NELEM,NELMAX)
 !

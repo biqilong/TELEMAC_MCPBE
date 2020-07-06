@@ -1745,7 +1745,7 @@ class ptravers(MascaretFileParent):
             unit = line[10:]
             unit = unit.strip()
 
-            varname = ptravers_var_dict[var_abbr]
+            varname = ptravers_var_dict[var_abbr[:4]]
             if var_abbr == 'ZREF':
                 if layer_number == 0:
                     var_abbr = 'ZBOT'

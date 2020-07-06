@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE P_MPI_ALLTOALLV
-!                    **************************
+!                   *********************************
+                    SUBROUTINE P_MPI_ALLTOALLV_CHARAC
+!                   *********************************
 !
      &(SEND_BUFFER,NSEND,SEND_DISPL,SEND_DATYP,RECV_BUFFER,NRECV,
      & RECV_DISPL,RECV_DATYP,IERR)
@@ -83,7 +83,7 @@
       RETURN
 #else
       RECV_BUFFER(1)%MYPID=0
-      WRITE(LU,*) 'CALL OF P_MPI_ALLTOALLV VOID VERSION'
+      WRITE(LU,*) 'CALL OF P_MPI_ALLTOALLV_CHARAC VOID VERSION'
 #endif
 !
 !-----------------------------------------------------------------------

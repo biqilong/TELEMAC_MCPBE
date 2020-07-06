@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE TELEMAC3D_INIT
-!                    *************************
+!                   *************************
+                    SUBROUTINE TELEMAC3D_INIT
+!                   *************************
 !
 !***********************************************************************
 ! TELEMAC3D
@@ -32,7 +32,7 @@
       USE GOTM_COUPLING
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !-----------------------------------------------------------------------
@@ -81,6 +81,20 @@
      &  T3D_FILES(T3DGEO)%FMT,T3D_FILES(T3DGEO)%LU,
      &  KENT,KENTU,KSORT,KADH,KLOG,KINC,NUMLIQ%I,MESH2D)
       IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE LECLIM'
+!
+!-----------------------------------------------------------------------
+!
+! STORE HBOR, UBOR2D, VBOR2D IN CASE OF COUPLING WITH TOMAWACT3D
+!
+      IF(INCLUS(COUPLING,'TOMAWACT3D')) THEN
+        DO K=1,NPTFR2
+          HBORCLI%R(K) = HBOR%R(K)
+          UBORCLI%R(K) = UBOR2D%R(K)
+          VBORCLI%R(K) = VBOR2D%R(K)
+        ENDDO
+      ENDIF
+!
+!-----------------------------------------------------------------------
 !
 ! MESH ORGANISATION - 2D LEVEL
 !
@@ -198,7 +212,7 @@
         DO I=1,NPTFR2
           NFRLIQ=MAX(NFRLIQ,NUMLIQ%I(I))
         ENDDO
-        NFRLIQ=P_IMAX(NFRLIQ)
+        NFRLIQ=P_MAX(NFRLIQ)
         WRITE(LU,*) ' '
         WRITE(LU,*) 'NUMBER OF LIQUID BOUNDARIES:',NFRLIQ
         IF(NFRLIQ.GT.MAXFRO) THEN
@@ -885,6 +899,18 @@
 !     INITIAL CONDITIONS OF 3D OUTPUT FOR RESTART (NOT USED BY NOW MANDATORY)
 !
       IF(RESTART_MODE.AND.T3D_FILES(T3DRST)%NAME(1:1).NE.' ') THEN
+        CALL OS('X=0     ',X=UCONV)
+        CALL OS('X=0     ',X=VCONV)
+        CALL OS('X=0     ',X=DM1)
+        CALL OS('X=0     ',X=DHHN)
+        CALL OS('X=0     ',X=UCONVC)
+        CALL OS('X=0     ',X=VCONVC)
+        CALL OS('X=0     ',X=UD)
+        CALL OS('X=0     ',X=VD)
+        IF(NONHYD) THEN
+          CALL OS('X=0     ',X=WCONV)
+          CALL OS('X=0     ',X=WD)
+        ENDIF
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE BIEF_DESIMP RESTART MODE'
         CALL BIEF_DESIMP(T3D_FILES(T3DRST)%FMT,VARSO3,NPOIN3,
      &                   T3D_FILES(T3DRST)%LU,AT,LT,

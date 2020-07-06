@@ -67,27 +67,27 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #if defined HAVE_MPI
         IF(PARALLEL.GE.1) THEN
-           ! Partitioning method to use 1: metis
-           PMETHOD=1
-           ! Initialising mpi
-           CALL MPI_INIT(IERR)
-           ! Getting rank
-           CALL MPI_COMM_RANK(MPI_COMM_WORLD,RANK,IERR)
-           ! Getting the number of process
-           CALL MPI_COMM_SIZE(MPI_COMM_WORLD,NCSIZE,IERR)
-           COMM = MPI_COMM_WORLD
-           IF(NCSIZE.NE.PARALLEL) THEN
-             WRITE(LU,*) 'Error in number of process '
-             WRITE(LU,*) 'In file:',PARALLEL
-             WRITE(LU,*) 'From MPI:',NCSIZE
-             CALL PLANTE(1)
-             STOP
-           ENDIF
-           CALL MPI_BARRIER(COMM,IERR)
-           IF(PARALLEL.GT.1) THEN
-             CALL GET_SHORT
-             CALL SPLIT_GEO
-           ENDIF
+          ! Partitioning method to use 1: metis
+          PMETHOD=1
+          ! Initialising mpi
+          CALL MPI_INIT(IERR)
+          ! Getting rank
+          CALL MPI_COMM_RANK(MPI_COMM_WORLD,RANK,IERR)
+          ! Getting the number of process
+          CALL MPI_COMM_SIZE(MPI_COMM_WORLD,NCSIZE,IERR)
+          COMM = MPI_COMM_WORLD
+          IF(NCSIZE.NE.PARALLEL) THEN
+            WRITE(LU,*) 'Error in number of process '
+            WRITE(LU,*) 'In file:',PARALLEL
+            WRITE(LU,*) 'From MPI:',NCSIZE
+            CALL PLANTE(1)
+            STOP
+          ENDIF
+          CALL MPI_BARRIER(COMM,IERR)
+          IF(PARALLEL.GT.1) THEN
+            CALL GET_SHORT
+            CALL SPLIT_GEO
+          ENDIF
         ENDIF
 #else
         RANK = -1

@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE CHAR_GAUSS
-!                    *********************
+!                   *********************
+                    SUBROUTINE CHAR_GAUSS
+!                   *********************
 !
      &(XCONV,YCONV,ZCONV,SHP,SHZ,ELT,ETA,X,Y,IKLE,NPOIN,NELEM,NELMAX,
      & NG,NGAUSS,IELM,NPLAN,ZSTAR)

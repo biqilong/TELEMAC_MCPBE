@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE RIDE
-!                    ***************
+!                   ***************
+                    SUBROUTINE RIDE
+!                   ***************
 !
      &(KS,TW,UW,UNORM,GRAV,XMVE,XMVS,VCE,NPOIN,KSPRATIO,ACLADM)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE NOEROD
-!                    *****************
+!                   *****************
+                    SUBROUTINE NOEROD
+!                   *****************
 !
      & (H , ZF , ZR , Z , X , Y , NPOIN , CHOIX , NLISS )
 !

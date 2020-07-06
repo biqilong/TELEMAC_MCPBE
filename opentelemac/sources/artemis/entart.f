@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ENTART
-!                    *****************
+!                   *****************
+                    SUBROUTINE ENTART
+!                   *****************
 !
      &(ITITRE,X,NBR,NBRTOT,ALEMON,ALEMUL,BALAYE)
 !

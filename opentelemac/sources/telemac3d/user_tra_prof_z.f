@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE USER_TRA_PROF_Z
-!                    **************************
+!                   **************************
+                    SUBROUTINE USER_TRA_PROF_Z
+!                   **************************
 !
      &( TRA_PROF_Z, I , IPOIN2 , IPLAN , IOPT , ITRAC )
 !

@@ -1,6 +1,6 @@
-!                    ***********************
-                     INTEGER FUNCTION PRECAR
-!                    ***********************
+!                   ***********************
+                    INTEGER FUNCTION PRECAR
+!                   ***********************
 !
      &( ICOL , LIGNE , CAR1 , CAR2 , CAR3 )
 !

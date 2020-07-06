@@ -37,6 +37,18 @@
 
 #include <iostream>  // use cerr
 
+class vtkSerafinReader::vtkInternal
+{
+public:
+  vtkInternal() { }
+  vtkUnstructuredGrid *getPointer() const { return _usg.GetPointer(); }
+  void geometryHasBeenRead() { _geometry_read=true; }
+  bool hasGeometryAlreadyRead() const { return _geometry_read; }
+private:
+  bool _geometry_read = false;
+  vtkNew<vtkUnstructuredGrid> _usg;
+};
+
 /** +++++++++++++++++ Définition des méthodes de la classe FFileReader +++++++++++++++++ **/
 
 /* ******************* Constructeur *******************
@@ -282,7 +294,7 @@ int stdSerafinReader :: readMetaData ()
 //vtkCxxRevisionMacro(vtkSerafinReader, "$Revision: 0.2 $");
 vtkStandardNewMacro(vtkSerafinReader);
 
-vtkSerafinReader::vtkSerafinReader()
+vtkSerafinReader::vtkSerafinReader():Internal(nullptr)
 {
 	
 	vtkDebugMacro( << "Instanciation du lecteur Serafin");
@@ -291,7 +303,8 @@ vtkSerafinReader::vtkSerafinReader()
 	this->FileStream             = NULL;
 	this->Reader		    	= NULL;
 	this->TimeStep		= 0;
-
+        this->Internal=new vtkInternal;
+        
 	this->SetNumberOfInputPorts(0);
 };
 
@@ -301,6 +314,8 @@ vtkSerafinReader::~vtkSerafinReader()
 	{
 		this->SetFileName(0);
 	}
+        delete this->Internal;
+        
 }
 
 void vtkSerafinReader::SetTimeUnit(int value) 
@@ -441,8 +456,18 @@ int vtkSerafinReader::RequestData(vtkInformation *vtkNotUsed(request),
 		return 0;
 	}
 	
-	this->ReadFile(output, this->TimeStep);
+        cerr << "Reading Time " << this->TimeStep << endl;
+	
+	// Lecture de la geometrie
+        if(!this->Internal->hasGeometryAlreadyRead())
+          this->ReadGeometry(Internal->getPointer(), this->TimeStep);
+        Internal->geometryHasBeenRead();
+        output->ShallowCopy(Internal->getPointer());
+	
+	// Lecture des donnees
+	this->ReadData(output,  this->TimeStep);
 
+        
 	return 1;
 }
 
@@ -454,21 +479,6 @@ void vtkSerafinReader::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "Number Of Nodes: " 		<< this->Reader->GetNumberOfNodes()		<< endl;
   os << indent << "Number Of Node Fields: "     << this->Reader->GetNumberOfVars() 		<< endl;
   os << indent << "Number Of Cells: " 		<< this->Reader->GetNumberOfElement() 		<< endl;
-}
-
-void vtkSerafinReader::ReadFile(vtkUnstructuredGrid *output, int time)
-{
-	output->Reset();
-        
-        cerr << "Reading Time " << time << endl;
-	
-	// Lecture de la geometrie
-	this->ReadGeometry(output,  time);
-	
-	// Lecture des donnees
-	this->ReadData(output,  time);
-	
-	return;
 }
 
 void vtkSerafinReader::ReadGeometry(vtkUnstructuredGrid *output, int time)

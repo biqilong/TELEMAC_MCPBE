@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE ECRETE
-!                    *****************
+!                   *****************
+                    SUBROUTINE ECRETE
+!                   *****************
 !
-     &( F     , DEPTH , NPOIN2, NPLAN , NF    , PROMIN)
+     &( F     , DEPTH , NPOIN2, NDIRE , NF    , PROMIN)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   15/06/2011
@@ -38,7 +38,7 @@
 !| DEPTH          |-->| WATER DEPTH
 !| F              |<->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| PROMIN         |-->| MINIMUM VALUE OF WATER DEPTH
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,15 +48,15 @@
       IMPLICIT NONE
 !
 !
-      INTEGER, INTENT(IN)             :: NPOIN2 , NPLAN, NF
+      INTEGER, INTENT(IN)             :: NPOIN2 , NDIRE, NF
       DOUBLE PRECISION, INTENT(IN)    :: DEPTH(NPOIN2),PROMIN
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
       INTEGER  IP    , JP    , JF
 !
       DO IP=1,NPOIN2
         IF (DEPTH(IP).LT.PROMIN) THEN
           DO JF=1,NF
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               F(IP,JP,JF)=0.0D0
             ENDDO
           ENDDO

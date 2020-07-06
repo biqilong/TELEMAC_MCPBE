@@ -1,6 +1,6 @@
-!                    ***********************
-                     LOGICAL FUNCTION INPOLY
-!                    ***********************
+!                   ***********************
+                    LOGICAL FUNCTION INPOLY
+!                   ***********************
 !
      &( X , Y , XSOM , YSOM , NSOM )
 !

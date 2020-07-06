@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE MT02PP_STAR
-!                    **********************
+!                   **********************
+                    SUBROUTINE MT02PP_STAR
+!                   **********************
 !
      &(T,XM,XMUL,SF,SG,SH,F,G,H,X,Y,Z,SURFAC,IKLE,NELEM,NELMAX,INCHYD,
      & FORMUL,NPLAN)

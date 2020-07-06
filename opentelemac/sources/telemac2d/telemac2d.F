@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE TELEMAC2D
-!                    ********************
+!                   ********************
+                    SUBROUTINE TELEMAC2D
+!                   ********************
 !
      &(PASS,ATDEP,NITER,CODE,DTDEP,NEWTIME,DOPRINT,NITERORI,
      & CONVERGENCE_LEVEL)
@@ -357,7 +357,7 @@
       USE ALGAE_TRANSP
 !     DELWAQ
       USE TEL4DEL, ONLY: TEL4DELWAQ
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_IMIN,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
 !
       IMPLICIT NONE
 !
@@ -580,7 +580,7 @@
         DT=MIN(DT,DTCAS)
 !       for final time step
         IF(DUREE+AT0.GT.AT)DT= MIN(DT,DUREE+AT0-AT)
-        IF(NCSIZE.GT.1) DT=P_DMIN(DT)
+        IF(NCSIZE.GT.1) DT=P_MIN(DT)
         IF(ENTET) THEN
           WRITE(LU,79) CFLMAX,DT
 79        FORMAT(1X,'    MAXIMUM COURANT NUMBER: ',G16.7,/,1X,
@@ -1227,7 +1227,7 @@
      &  VARSOR,
      &  ALIRE,TROUVE,MAXVAR,TEXTE,
      &  CHESTR,KARMAN,NDEF,LISRUG,
-     &  DP,SP,CHBORD,CFBOR,HFROT,UNSV2D)
+     &  CHBORD,CFBOR,HFROT,UNSV2D)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM PROPAG_ADJ'
 !
       ENDIF
@@ -1306,11 +1306,11 @@
         AT = AT + DT
         IF (LT.GE.NIT.OR.AT.GT.TMAX.OR.
      &      ((TMAX-AT)/TMAX).LT.1E-15) THEN !LAST TIME STEP
-           ! Set lt as the last timestep
-           NIT = LT
-           ENTET = .TRUE.
-           CALL ENTETE(1,AT,LT)
-           TOTAL_ITER=LT
+          ! Set lt as the last timestep
+          NIT = LT
+          ENTET = .TRUE.
+          CALL ENTETE(1,AT,LT)
+          TOTAL_ITER=LT
         ENDIF
 !
       ELSE
@@ -1807,7 +1807,7 @@
         IF(NCSIZE.GT.1) THEN
           STOP2=0
           IF(ARRET1) STOP2=1
-          STOP2=P_IMAX(STOP2)
+          STOP2=P_MAX(STOP2)
           IF(STOP2.EQ.1) ARRET1=.TRUE.
         ENDIF
       ENDIF
@@ -1820,7 +1820,7 @@
         IF(NCSIZE.GT.1) THEN
           STOP2=0
           IF(ARRET2) STOP2=1
-          STOP2=P_IMIN(STOP2)
+          STOP2=P_MIN(STOP2)
           ARRET2=.NOT.(STOP2.EQ.0)
         ENDIF
       ENDIF

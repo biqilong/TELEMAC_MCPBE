@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ZSLOPE
-!                    *****************
+!                   *****************
+                    SUBROUTINE ZSLOPE
+!                   *****************
 !
      &(SLOPE,ZF,T1,T2,MSK,MASKEL,IELM,MESH)
 !
@@ -9,20 +9,20 @@
 !***********************************************************************
 !
 !brief    COMPUTES THE BOTTOM SLOPE
-!+               
+!+
 !
 !history  R. ATA (LNHE)
 !+        29/06/2016
 !+        V7P2
 !+
-! 
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| IELM           |-->| TYPE OF ELEMENT
 !| MASKEL         |-->| MASKING OF ELEMENTS
 !|                |   | =1. : NORMAL   =0. : MASKED ELEMENT
 !| MESH           |-->| MESH STRUCTURE
 !| MSK            |-->| IF YES, THERE IS MASKED ELEMENTS.
-!| SLOPE          |<->| BOTTOM SLOPE 
+!| SLOPE          |<->| BOTTOM SLOPE
 !| T1,T2          |-->| WORKING ARRAYS
 !| ZF             |-->| BOTTOM ELEVATION
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

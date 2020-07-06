@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE BEDLOAD_DIFFIN
-!                    *************************
+!                   *************************
+                    SUBROUTINE BEDLOAD_DIFFIN
+!                   *************************
 !
      &(U, V, NBOR, XNEBOR, YNEBOR, MASKEL, NELBOR, NPTFR,
      & KENT, KSORT, KLOG, KDIR, KDDL, KNEU, MSK, CLT, LITBOR,

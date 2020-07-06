@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CORRSL
-!                    *****************
+!                   *****************
+                    SUBROUTINE CORRSL
+!                   *****************
 !
      &(NEWSL,OLDSL,ZF,MESH)
 !

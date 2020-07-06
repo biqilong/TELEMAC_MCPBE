@@ -1,6 +1,6 @@
-!                    *******************************
-                     SUBROUTINE BIEF_ALLVEC_IN_BLOCK
-!                    *******************************
+!                   *******************************
+                    SUBROUTINE BIEF_ALLVEC_IN_BLOCK
+!                   *******************************
 !
      &( BLO , N , NAT , NOMGEN , IELM , NDIM , STATUT , MESH )
 !

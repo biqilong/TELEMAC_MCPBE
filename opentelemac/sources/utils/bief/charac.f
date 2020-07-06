@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CHARAC
-!                    *****************
+!                   *****************
+                    SUBROUTINE CHARAC
+!                   *****************
 !
      &( FN    , FTILD  , NOMB  , UCONV  , VCONV , WCONV  , FRCONV ,
      &  ZSTAR , FREQ   ,

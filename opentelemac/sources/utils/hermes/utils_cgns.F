@@ -2507,8 +2507,6 @@
                 SIDS_NAME(I:I) = VAR(I:I)
               ENDIF
             ENDDO
-           !WRITE(lu,*) 'No SIDS solution for ',VAR
-           !WRITE(lu,*) 'Using ',SIDS_NAME
         END SELECT
       END SUBROUTINE
 !

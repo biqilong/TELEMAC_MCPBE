@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE COMPLETE_EBE_FLUINT
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE COMPLETE_EBE_FLUINT
+!                   ******************************
 !
      &(EBE_FLUINT,NELEM2,NPLAN)
 !

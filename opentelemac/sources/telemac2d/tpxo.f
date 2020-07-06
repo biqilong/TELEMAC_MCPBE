@@ -371,9 +371,9 @@
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-!                    ******************
-                     SUBROUTINE DEF_CID
-!                    ******************
+!                   ******************
+                    SUBROUTINE DEF_CID
+!                   ******************
 !
      &( NC0, CID, IND )
 !
@@ -463,9 +463,9 @@
       RETURN
       END FUNCTION IPSHFT
 
-!                ********************************
-                 DOUBLE PRECISION FUNCTION HEIGHT
-!                ********************************
+!               ********************************
+                DOUBLE PRECISION FUNCTION HEIGHT
+!               ********************************
 !
      &( A_R,A_I,P_R,P_I,NC )
 !
@@ -519,9 +519,9 @@
       RETURN
       END FUNCTION HEIGHT
 
-!                    ******************
-                     SUBROUTINE INTERPT
-!                    ******************
+!                   ******************
+                    SUBROUTINE INTERPT
+!                   ******************
 !
      &( UV_R,UV_I,NT,N,M,MZ,TH_LIM,PH_LIM,XLAT,XLON,
      &  UV1_R,UV1_I,IERR,ZUV )
@@ -638,9 +638,9 @@
       RETURN
       END SUBROUTINE INTERPT
 
-!                    ************************
-                     SUBROUTINE INTERPT_SCHEM
-!                    ************************
+!                   ************************
+                    SUBROUTINE INTERPT_SCHEM
+!                   ************************
 !
      &( UV_R,UV_I,NT,NT2,INDW,N,M,MZ,TH_LIM,PH_LIM,XLAT,XLON,
      &  UV1_R,UV1_I,IERR,ZUV )
@@ -763,9 +763,9 @@
       RETURN
       END SUBROUTINE INTERPT_SCHEM
 
-!                    **********************
-                     SUBROUTINE BSI_WEIGHTS
-!                    **********************
+!                   **********************
+                    SUBROUTINE BSI_WEIGHTS
+!                   **********************
 !
      &(ZUVM,THETA,PHI,THETA_LIM,PHI_LIM,DX,DY,MASK,N,M,WW,IW,JW)
 !
@@ -1210,9 +1210,9 @@
       RETURN
       END FUNCTION TPXO_PTIDE_SCHEM
 
-!                    **************
-                     SUBROUTINE MKW
-!                    **************
+!                   **************
+                    SUBROUTINE MKW
+!                   **************
 !
      &( INTERP,IND,NC,WR )
 !
@@ -1265,9 +1265,9 @@
 !
       RETURN
       END SUBROUTINE MKW
-!                    ****************
-                     SUBROUTINE NODAL
-!                    ****************
+!                   ****************
+                    SUBROUTINE NODAL
+!                   ****************
 !
      &( DTIME,PU,PF )
 !
@@ -1339,9 +1339,9 @@
 !
       RETURN
       END SUBROUTINE NODAL
-!                    ********************
-                     SUBROUTINE ARGUMENTS
-!                    ********************
+!                   ********************
+                    SUBROUTINE ARGUMENTS
+!                   ********************
 !
      &(TIME1,ARG,F,U)
 !
@@ -1633,9 +1633,9 @@
       RETURN
       END SUBROUTINE ARGUMENTS
 
-!                    *****************
-                     SUBROUTINE MAKE_A
-!                    *****************
+!                   *****************
+                    SUBROUTINE MAKE_A
+!                   *****************
 !
      &( INTERP,IND,NC,TIME,PU,PF,W,A_R,A_I,L_SAL )
 !
@@ -1769,9 +1769,9 @@
       RETURN
       END SUBROUTINE MAKE_A
 !
-!                    ***********************
-                     SUBROUTINE MAKE_A_SCHEM
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE MAKE_A_SCHEM
+!                   ***********************
 !
      &( IND,NC,CID,TIME,A_R,A_I )
 !
@@ -1848,9 +1848,9 @@
       RETURN
       END SUBROUTINE MAKE_A_SCHEM
 
-!                    **********************
-                     SUBROUTINE INFER_MINOR
-!                    **********************
+!                   **********************
+                    SUBROUTINE INFER_MINOR
+!                   **********************
 !
      &( ZMAJ_R,ZMAJ_I,CID,NCON,TIME,DH,IERR )
 !
@@ -2089,9 +2089,9 @@
       END SUBROUTINE INFER_MINOR
 
 
-!                    *****************
-                     SUBROUTINE ASTROL
-!                    *****************
+!                   *****************
+                    SUBROUTINE ASTROL
+!                   *****************
 !
      &( TIME,SHPN )
 !
@@ -2167,9 +2167,9 @@
 !
       RETURN
       END SUBROUTINE ASTROL
-!                *************************
-                 INTEGER FUNCTION DATE_MJD
-!                *************************
+!               *************************
+                INTEGER FUNCTION DATE_MJD
+!               *************************
 !
      &( MM,ID,IYYY )
 !
@@ -2249,9 +2249,9 @@
       RETURN
       END FUNCTION DATE_MJD
 
-!                    *********************
-                     SUBROUTINE CONDI_TPXO
-!                    *********************
+!                   *********************
+                    SUBROUTINE CONDI_TPXO
+!                   *********************
 !
      &(NPOIN,NPTFR,NBOR,X,Y,H,U,V,LIHBOR,LIUBOR,KENT,KENTU,
      & GEOSYST,NUMZONE,T2DL93,LAMBD0,PHI0,T2D_FILES,T2DBB1,T2DBB2,
@@ -2339,7 +2339,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
-      USE INTERFACE_PARALLEL, ONLY : P_DMIN,P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MIN,P_MAX
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -2820,7 +2820,7 @@
           ENDDO
 !
           IF(NCSIZE.GT.1) THEN
-            ARGHW(K)  = P_DMAX(ARGHW(K))  + P_DMIN(ARGHW(K))
+            ARGHW(K)  = P_MAX(ARGHW(K))  + P_MIN(ARGHW(K))
           ENDIF
 !
 !          BOR2HW(K) = CMPLX( COS(ARGHW(K)), -SIN(ARGHW(K)), KIND(1.D0))
@@ -3144,9 +3144,9 @@
 !
       END SUBROUTINE CONDI_TPXO
 
-!                    *************************
-                     SUBROUTINE BORD_TIDE_TPXO
-!                    *************************
+!                   *************************
+                    SUBROUTINE BORD_TIDE_TPXO
+!                   *************************
 !
      &(ZF,NBOR,LIHBOR,LIUBOR,NPOIN,NPTFR,TEMPS,
      & NUMLIQ,KENT,KENTU,TIDALTYPE,CTIDE,MSL,CTIDEV,
@@ -3228,7 +3228,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -3709,7 +3709,7 @@
           ENDDO
 !
           IF(NCSIZE.GT.1) THEN
-            ARGHW(K)  = P_DMAX(ARGHW(K))  + P_DMIN(ARGHW(K))
+            ARGHW(K)  = P_MAX(ARGHW(K))  + P_MIN(ARGHW(K))
           ENDIF
 !
 !          BOR2HW(K) = CMPLX( COS(ARGHW(K)), -SIN(ARGHW(K)), KIND(1.D0))
@@ -4011,9 +4011,9 @@
       RETURN
       END SUBROUTINE BORD_TIDE_TPXO
 
-!                    **********************
-                     SUBROUTINE CD2MSL_TPXO
-!                    **********************
+!                   **********************
+                    SUBROUTINE CD2MSL_TPXO
+!                   **********************
 !
      &(NPOIN,X,Y,H,GEOSYST,NUMZONE,T2DL93,LAMBD0,PHI0,T2D_FILES,T2DBB1,
      & CAMPLIF,MSL)
@@ -4296,9 +4296,9 @@
 !-----------------------------------------------------------------------
 !
       END SUBROUTINE CD2MSL_TPXO
-!                    ***********************
-                     SUBROUTINE DEALLOC_TPXO
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE DEALLOC_TPXO
+!                   ***********************
 !
 !***********************************************************************
 ! TELEMAC2D   V6P2                                   16/01/2012

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC00TT
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC00TT
+!                   *****************
 !
      &(XMUL,X,Y,Z,IKLE1,IKLE2,IKLE3,IKLE4,
      & NELEM,NELMAX,W1,W2,W3,W4,FORMUL,NPOIN2,NELEM2,IELM1)

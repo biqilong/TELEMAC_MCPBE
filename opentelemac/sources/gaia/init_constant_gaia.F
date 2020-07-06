@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE INIT_CONSTANT_GAIA
-!                    ************************
+!                   ************************
+                    SUBROUTINE INIT_CONSTANT_GAIA
+!                   ************************
 !
      &(KARIM_HOLLY_YANG,KARMAN,PI)
 !

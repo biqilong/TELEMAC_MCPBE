@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE INIT_MIXTE
-!                    *********************
+!                   *********************
+                    SUBROUTINE INIT_MIXTE
+!                   *********************
 !
      &(XMVS,NPOIN,AVAIL,NSICLA,ES,ES_SABLE, ES_VASE,ELAY,NOMBLAY,
      & CONC_VASE,MS_SABLE,MS_VASE,ZF,ZR,AVA0,CONC,DEBU,MIXTE)
@@ -180,15 +180,15 @@
 !
           EST=0.D0
 !
-!          IF(NOMBLAY.GT.1) THEN
+!         IF(NOMBLAY.GT.1) THEN
 !
-           DO J=1,NOMBLAY
-              EST=EST+ES(I,J)
-              CONC(I,J) = CONC_VASE(J)
-           ENDDO
-!          ELSE
-!            EST=ES(I,1)
-!          ENDIF
+          DO J=1,NOMBLAY
+            EST=EST+ES(I,J)
+            CONC(I,J) = CONC_VASE(J)
+          ENDDO
+!         ELSE
+!           EST=ES(I,1)
+!         ENDIF
 !
           DIFF= ELAY(I) - EST
 !

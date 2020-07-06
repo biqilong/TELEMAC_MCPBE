@@ -828,47 +828,47 @@
 
       CONTAINS
 
-!                          ************************
-                           SUBROUTINE RE_INITIALIZE
-!                          ************************
+!!                          ************************
+!                           SUBROUTINE RE_INITIALIZE
+!!                          ************************
+!!
+!!***********************************************************************
+!! WAQTEL      V8P0
+!!***********************************************************************
+!!
+!!brief    Re initialize variables
+!!
+!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!!
+!!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!!
+!!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!!     AED_REAL :: FLUX_BEN(N_VARS+N_VARS_BEN)
+!!     AED_REAL :: FLUX_ATM(N_VARS+N_VARS_BEN)
+!!     TYPE (AED2_COLUMN_T) :: COLUMN(N_AED2_VARS)
 !
-!***********************************************************************
-! WAQTEL      V8P0
-!***********************************************************************
-!
-!brief    Re initialize variables
-!
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!
-!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      AED_REAL :: FLUX_BEN(N_VARS+N_VARS_BEN)
-      AED_REAL :: FLUX_ATM(N_VARS+N_VARS_BEN)
-      TYPE (AED2_COLUMN_T) :: COLUMN(N_AED2_VARS)
-
-      INTEGER COL, LEV, TOP, BOT, COUNT, NCOLS
-!
-!-----------------------------------------------------------------------
-!
-!BEGIN
-      NCOLS = UBOUND(ACTIVE, 1)
-      DO COL=1, NCOLS
-        TOP = SURF_MAP(COL)
-        BOT = BENTH_MAP(COL)
-        COUNT = TOP-BOT+1
-!!$        CALL DEFINE_COLUMN(COLUMN,COL,CC,CC_DIAG,FLUX,FLUX_ATM,FLUX_BEN)
-!! CTP TEMPORARY COMMENTED BECAUSE RE_INITIALIZE NOT CALLED
-        DO LEV=1, COUNT
-!         CALL AED2_INITIALIZE(COLUMN, LEV) !!MJ
-        ENDDO
-      ENDDO
-!
-!-----------------------------------------------------------------------
-!
-      RETURN
-      END SUBROUTINE RE_INITIALIZE
+!      INTEGER COL, LEV, TOP, BOT, COUNT, NCOLS
+!!
+!!-----------------------------------------------------------------------
+!!
+!!BEGIN
+!      NCOLS = UBOUND(ACTIVE, 1)
+!      DO COL=1, NCOLS
+!        TOP = SURF_MAP(COL)
+!        BOT = BENTH_MAP(COL)
+!        COUNT = TOP-BOT+1
+!!!$        CALL DEFINE_COLUMN(COLUMN,COL,CC,CC_DIAG,FLUX,FLUX_ATM,FLUX_BEN)
+!!! CTP TEMPORARY COMMENTED BECAUSE RE_INITIALIZE NOT CALLED
+!        DO LEV=1, COUNT
+!!         CALL AED2_INITIALIZE(COLUMN, LEV) !!MJ
+!        ENDDO
+!      ENDDO
+!!
+!!-----------------------------------------------------------------------
+!!
+!      RETURN
+!      END SUBROUTINE RE_INITIALIZE
 !
 !-----------------------------------------------------------------------
 !
@@ -1174,7 +1174,7 @@
 ! DONE ABOVE
 !      DO I=2,COUNT
 !        IF (H_AED2(I).GT.0.D0) THEN
-!          FLUX_PEL(:,I) = MAX ( -1.0*CC(:,I) , FLUX_PEL(:,I)/H_AED2(I) ) ! JVH --> 
+!          FLUX_PEL(:,I) = MAX ( -1.0*CC(:,I) , FLUX_PEL(:,I)/H_AED2(I) ) ! JVH -->
 !          FLUX_PEL(:,I) = MAX ( -1.0*CC(:,I) , FLUX_PEL(:,I) )
 !        ENDIF
 !      ENDDO

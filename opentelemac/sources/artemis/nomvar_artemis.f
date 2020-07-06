@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE NOMVAR_ARTEMIS
-!                    *************************
+!                   *************************
+                    SUBROUTINE NOMVAR_ARTEMIS
+!                   *************************
 !
      &(TEXTE,TEXTPR,MNEMO)
 !

@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE USER_INIT_COMPO_COH
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE USER_INIT_COMPO_COH
+!                   ******************************
 !
      &(ES,CONC_VASE,CONC,NPOIN,NOMBLAY,NSICLA,AVAIL,AVA0,
      & EPAI_VASE,EPAI_SABLE)

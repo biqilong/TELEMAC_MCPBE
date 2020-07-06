@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FSGRAD
-!                    *****************
+!                   *****************
+                    SUBROUTINE FSGRAD
+!                   *****************
 !
      &(GRADZS,ZFLATS,Z,ZF,IELM2H,MESH2D,MSK,MASKEL,UNSV2D,T2_01,
      & NPOIN2,OPTBAN,S)

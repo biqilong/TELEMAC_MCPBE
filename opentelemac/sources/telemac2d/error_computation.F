@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE ERROR_COMPUTATION
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE ERROR_COMPUTATION
+!                   ****************************
 !
      &(F,MESH,FINEMESH,NELMAX,NPOIN,CORRESP,RLEVELS,NLEVEL,
      & IKLE,FINEIKLE)
@@ -174,10 +174,10 @@
       ENDDO
 !
       IF(NCSIZE.GT.1) THEN
-        ERRL1  =P_DSUM(ERRL1)
-        ERRL2  =P_DSUM(ERRL2)
-        A      =P_DSUM(A)
-        ERRLINF=P_DMAX(ERRLINF)
+        ERRL1  =P_SUM(ERRL1)
+        ERRL2  =P_SUM(ERRL2)
+        A      =P_SUM(A)
+        ERRLINF=P_MAX(ERRLINF)
       ENDIF
 !
       WRITE(LU,*)'---------------------------------------------------'

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CPIK12
-!                    *****************
+!                   *****************
+                    SUBROUTINE CPIK12
+!                   *****************
 !
      &(IKLE,NELEM,NELMAX,NPOIN)
 !

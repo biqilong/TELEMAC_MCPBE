@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ASSVE1
-!                    *****************
+!                   *****************
+                    SUBROUTINE ASSVE1
+!                   *****************
 !
      &(X, IKLE,W, NELEM,NELMAX,LV,MSK,MASKEL)
 !

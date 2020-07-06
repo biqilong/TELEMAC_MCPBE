@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE PARACOI
-!                    ******************
+!                   ******************
+                    SUBROUTINE PARACOI
+!                   ******************
 !
      &(V1,V2,V3,NPOIN,ICOM,IAN,NPLAN,NB_NEIGHB,NB_NEIGHB_PT,LIST_SEND,
      & NH_COM,DIMNHCOM,BUF_SEND,BUF_RECV,DIMBUF)
@@ -91,7 +91,7 @@
       DO IL=1,NB_NEIGHB
         IKA = NB_NEIGHB_PT(IL)
         IPA = LIST_SEND(IL)
-        CALL P_IREADI(BUF_RECV(1,IL),IAN*IKA*NPLAN,
+        CALL P_READ(BUF_RECV(1:DIMBUF,IL),IAN*IKA*NPLAN,
      &                IPA,PARACOI_MSG_TAG,RECV_REQ(IL))
       ENDDO
 !
@@ -133,7 +133,7 @@
           ENDDO
         ENDIF
 !
-        CALL P_IWRITI(BUF_SEND(1,IL),IAN*IKA*NPLAN,
+        CALL P_WRITE(BUF_SEND(1:DIMBUF,IL),IAN*IKA*NPLAN,
      &                IPA,PARACOI_MSG_TAG,SEND_REQ(IL))
 !
       ENDDO

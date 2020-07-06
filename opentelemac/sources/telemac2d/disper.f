@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DISPER
-!                    *****************
+!                   *****************
+                    SUBROUTINE DISPER
+!                   *****************
 !
      &( VISC , U , V , H , CF , ELDER , PROPNU )
 !

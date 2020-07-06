@@ -46,7 +46,7 @@
                         </IntVectorProperty>
                         
                         <Hints>
-                            <ReaderFactory extensions="slf srf res r2d spe"
+                            <ReaderFactory extensions="slf srf res res3d ser r2d spe"
                             file_description="serafin files (Plugin)" />
                         </Hints>
                         

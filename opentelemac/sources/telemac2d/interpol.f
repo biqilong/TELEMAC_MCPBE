@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE INTERPOL
-!                    *******************
+!                   *******************
+                    SUBROUTINE INTERPOL
+!                   *******************
 !
      &(RO,R02,R03,JCOUT1,JCOUT2,JCOUT3)
 !

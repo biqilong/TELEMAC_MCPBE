@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FLUSED
-!                    *****************
+!                   *****************
+                    SUBROUTINE FLUSED
+!                   *****************
 !
      &(ATABOF , BTABOF ,
      & LITABF , WC      ,

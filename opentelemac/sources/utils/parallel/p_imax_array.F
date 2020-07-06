@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE P_IMAX_ARRAY
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE P_IMAX_ARRAY
+!                   ***********************
 !
      &(SEND_BUFFER, RECV_BUFFER, NCOUNT, IERR)
 !

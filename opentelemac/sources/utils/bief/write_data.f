@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE WRITE_DATA
-!                    *********************
+!                   *********************
+                    SUBROUTINE WRITE_DATA
+!                   *********************
 !
      &(FFORMAT,FILERES,NVARS,TIME,TIMESTEP,OUTVAR,NOMVAR,BVARSOR,N,MESH)
 !

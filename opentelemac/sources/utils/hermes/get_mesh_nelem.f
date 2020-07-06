@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE GET_MESH_NELEM
-!                    *************************
+!                   *************************
+                    SUBROUTINE GET_MESH_NELEM
+!                   *************************
 !
      &(FFORMAT,FID,TYP_ELEM,NELEM,IERR)
 !

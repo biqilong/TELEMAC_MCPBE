@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PREQT2
-!                    *****************
+!                   *****************
+                    SUBROUTINE PREQT2
+!                   *****************
 !
 !***********************************************************************
 ! TOMAWAC   V8P0                                   32/12/2018
@@ -36,7 +36,7 @@
       USE INTERFACE_TOMAWAC, EX_PREQT2 => PREQT2
       IMPLICIT NONE
 !
-!.....VARIABLES FROM MODULE TOMAWAC 
+!.....VARIABLES FROM MODULE TOMAWAC
 !     """""""""""""""""""""""""""""
 !| QINDI          |<--| CONFIGURATION INDEX
 !| NBD            |-->| NUMBER OF TRIAD CONFIGURATIONS
@@ -54,7 +54,7 @@
 !
 !     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
       IF(.NOT.DEJA_QT2) THEN
-        ALLOCATE(QINDI(NPLAN))
+        ALLOCATE(QINDI(NDIRE))
         DEJA_QT2=.TRUE.
       ENDIF
 !
@@ -73,7 +73,7 @@
         NBPU = NINT(AP2)  + 1
         AP2  = (BDISPB-TETA(1))/DTETA
         NBPL = NINT(AP2)
-        IF(NBPL.GT.NPLAN) THEN
+        IF(NBPL.GT.NDIRE) THEN
           NBPL = 1
           QINDI(1) = 1
           NBD  = NBPU - NBPL + 1
@@ -81,7 +81,7 @@
             QINDI(IPL)=IPL
           END DO
         ELSE
-          NB1 = NPLAN - NBPL + 1
+          NB1 = NDIRE - NBPL + 1
           NBD = NB1 + NBPU
           DO IPL = 1,NB1
             QINDI(IPL)=NBPL+IPL-1
@@ -91,6 +91,6 @@
           END DO
         ENDIF
       ENDIF
-!     
+!
       RETURN
       END

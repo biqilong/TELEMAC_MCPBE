@@ -3313,7 +3313,7 @@ contains
       MessageErreur          = ""
 
       if ( index(NomVar, 'Model.Title') > 0) then
-         Instance%TitreCas = valeur
+         Instance%TitreCas = valeur(1:255)
       else if (INDEX(NomVar,'Model.CrossSection.') > 0) then
            SET_STRING_MODELE_MASCARET = SET_STRING_PROFIL(instance%Profils(index1), NomVar, index2,&
                                          index3, bidon1, valeur, MessageErreur)
@@ -3946,9 +3946,7 @@ contains
       type(MODELE_MASCARET_T),intent(inout) :: Instance                   ! Instance du type derive dont on souhaite desalloue
       character(LEN=256),     intent(out):: MessageErreur              ! Message d'erreur
 
-      integer                            :: taille
       integer                            :: err
-      integer                            :: i
       character(LEN=256)                 :: MessageErreurType
       NULLIFIER_MODELE_MASCARET = 0
       MessageErreur          = ""

@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE BEDLOAD_FORMULA
-!                    **************************
+!                   **************************
+                    SUBROUTINE BEDLOAD_FORMULA
+!                   **************************
 !
      &(U2D,V2D,UCMOY,HN,CF,MU,TOB,TOBW,UW,TW,THETAW,FW,
      & ACLADM, UNLADM,KSP,KSR,AVA,NPOIN,ICF,HIDFAC,XMVS,XMVE,
@@ -328,8 +328,8 @@
      &       (U2D, V2D, TOB, HN, XMVE, TETAP, MU, NPOIN, DM,
      &       DENS, GRAV, DSTAR, AC, QSC, QSS)
         DO I=1,NPOIN
-           QSC%R(I)=QSC%R(I)*AVA(I)*HIDING%R(I)
-           QSS%R(I)=QSS%R(I)*AVA(I)*HIDING%R(I)
+          QSC%R(I)=QSC%R(I)*AVA(I)*HIDING%R(I)
+          QSS%R(I)=QSS%R(I)*AVA(I)*HIDING%R(I)
         ENDDO
       ! ================= !
       ! IV(ELSE) - ERROR  !

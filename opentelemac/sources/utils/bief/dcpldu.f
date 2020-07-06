@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DCPLDU
-!                    *****************
+!                   *****************
+                    SUBROUTINE DCPLDU
+!                   *****************
 !
      &(B,A,MESH,COPY,LV)
 !

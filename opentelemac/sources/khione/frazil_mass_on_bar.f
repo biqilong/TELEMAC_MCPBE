@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE FRAZIL_MASS_ON_BAR
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE FRAZIL_MASS_ON_BAR
+!                   ******************************
 !
      &    (RFR0,RFR1,DB,BAR,NBAR,ANG1,FM1,FMT)
 !

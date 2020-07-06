@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PARACO
-!                    *****************
+!                   *****************
+                    SUBROUTINE PARACO
+!                   *****************
 !
      &(V1,V2,V3,NPOIN,ICOM,IAN,NPLAN,NB_NEIGHB,NB_NEIGHB_PT,LIST_SEND,
      & NH_COM,DIMNHCOM,BUF_SEND,BUF_RECV,DIMBUF)
@@ -105,8 +105,8 @@
         IKA = NB_NEIGHB_PT(IL)
         IPA = LIST_SEND(IL)
 !       AD: DISTINGUISHING THE NUMBER OF ELEMENTS AND THEIR SIZE
-        CALL P_IREAD(BUF_RECV(1,IL),IAN*IKA*NPLAN,8,
-     &               IPA,PARACO_MSG_TAG,RECV_REQ(IL))
+        CALL P_READ(BUF_RECV(1:DIMBUF,IL),IAN*IKA*NPLAN,8,
+     &              IPA,PARACO_MSG_TAG,RECV_REQ(IL))
       ENDDO
 !
 !== SEND STEP
@@ -148,7 +148,7 @@
         ENDIF
 !
 !       AD: DISTINGUISHING THE NUMBER OF ELEMENTS AND THEIR SIZE
-        CALL P_IWRIT(BUF_SEND(1,IL),IAN*IKA*NPLAN,8,
+        CALL P_WRITE(BUF_SEND(1:DIMBUF,IL),IAN*IKA*NPLAN,8,
      &               IPA,PARACO_MSG_TAG,SEND_REQ(IL))
 !
       ENDDO

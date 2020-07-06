@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SD_NSFC
-!                    ******************
+!                 ******************
+                  SUBROUTINE SD_NSFC
+!                 ******************
 !
      &(N,R,IC,IA,JA,JLMAX,IL,JL,IJL,JUMAX,IU,JU,IJU,Q,IRA,JRA,IRAC,
      & IRL,JRL,IRU,JRU,FLAG)

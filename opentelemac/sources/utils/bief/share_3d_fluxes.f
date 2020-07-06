@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE SHARE_3D_FLUXES
-!                    **************************
+!                   **************************
+                    SUBROUTINE SHARE_3D_FLUXES
+!                   **************************
 !
      &(FLUX,NPLAN,MESH2,MESH3,OPT)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC19AA
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC19AA
+!                   *****************
 !
      &(XMUL,SF,SG,SH,SU,SV,F,G,H,U,V,
      & XEL,YEL,IKLE1,IKLE2,IKLE3,NELEM,NELMAX,W1,W2,W3,FORMUL)

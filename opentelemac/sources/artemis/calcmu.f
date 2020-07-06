@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CALCMU
-!                    *****************
+!                   *****************
+                    SUBROUTINE CALCMU
+!                   *****************
      &(ITERMU)
 !
 !
@@ -35,7 +35,6 @@
       USE BIEF
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_ARTEMIS
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX
       IMPLICIT NONE
 
       INTEGER I , ITERMU
@@ -136,7 +135,7 @@
 !             T3 COMPUTED AT ITERMU = 0
 !             IS TEMPORARILY STORED IN QB
 !
-                     QB%R(I) = T3%R(I)
+              QB%R(I) = T3%R(I)
             ELSE
               IF (QB%R(I).EQ.1.D0) THEN
                 IF (Q3.LT.0.1D0) THEN

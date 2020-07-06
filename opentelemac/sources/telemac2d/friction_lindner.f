@@ -1,11 +1,11 @@
-!                    ***************************
-                     SUBROUTINE FRICTION_LINDNER
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE FRICTION_LINDNER
+!                   ***************************
 !
-     &(VA,HA,CF,VK,G,DP,SP,CP)
+     &(VA,HA,VK,G,DP,SP,CP)
 !
 !***********************************************************************
-! TELEMAC2D   V6P1                                   21/08/2010
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    COMPUTES FRICTION COEFFICIENT FOR NON-SUBMERGED
@@ -38,6 +38,11 @@
 !+   Creation of DOXYGEN tags for automated documentation and
 !+   cross-referencing of the FORTRAN sources
 !
+!history  FREDERIK FOLKE (BAW)
+!+        07/11/2019
+!+        V8P1
+!+   Simplification of the Code 
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| CF             |-->| FRICTION COEFFICIENT FOR BOTTOM ROUGHNESS
 !| CP             |<--| FRICTION COEFFICIENT FOR NON-SUBMERGED VEGETATION
@@ -49,179 +54,166 @@
 !| VK             |-->| KINEMTIC VISCOSITY
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
+      USE INTERFACE_TELEMAC2D, EX_FRICTION_LINDNER => FRICTION_LINDNER
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION, INTENT(IN)  :: VA,HA,CF,VK,G,DP,SP
+      DOUBLE PRECISION, INTENT(IN)  :: VA,HA,VK,G,DP,SP
       DOUBLE PRECISION, INTENT(OUT) :: CP
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER,          PARAMETER :: KMAXITER = 200
-      DOUBLE PRECISION, PARAMETER :: KPRECISION = 1.0D-3
-      INTEGER                     :: CWRAV
-      INTEGER                     :: CWRMAX
-      INTEGER                     :: CWRCOUNT
-      INTEGER                     :: ANLAV
-      INTEGER                     :: ANLMAX
-      INTEGER                     :: ANLCOUNT
-      INTEGER                     :: ITERR
+      INTEGER,          PARAMETER :: KMAXITER = 10
+      DOUBLE PRECISION, PARAMETER :: KPRECISION = 1.D-3
+      INTEGER CDRAV,CDRMAX,CDRCOUNT,ANLAV,ANLMAX,ANLCOUNT,ITERR
 !
-      INTEGER :: I, J
-      INTEGER :: ICWR               ! ITERATION COUNTER: CWR
-      INTEGER :: IANL               ! ITERATION COUNTER: ANL
-      INTEGER :: REALROOTS
-      LOGICAL :: LCWR
+!     ICDR,IANL: ITERATION COUNTERS FOR CDR AND ANL
+      INTEGER I,J,ICDR,IANL,REALROOTS
+      LOGICAL LCDR
 !
-      DOUBLE PRECISION :: CW, CWR, RCWR, DCWR, ANL, ANB, RANL
-      DOUBLE PRECISION :: CWR1, CWR2, DCWR1, DCWR2
-      DOUBLE PRECISION :: LAMBDA, FR
-      DOUBLE PRECISION :: X(3), VRATIO, HRATIO
-      DOUBLE PRECISION :: ALFA, ACOF, BCOF, CCOF, DCOF
+      DOUBLE PRECISION CD, CDR, RCDR, DCDR, ANL, ANB, RANL
+      DOUBLE PRECISION CDR1, CDR2, DCDR1, DCDR2
+      DOUBLE PRECISION LAMBDA, FR
+      DOUBLE PRECISION X(3), VRATIO, HRATIO
+      DOUBLE PRECISION ALFA, ACOF, BCOF, CCOF, DCOF
+      DOUBLE PRECISION TMP1, TMP2
 !
-      DOUBLE PRECISION :: TMP1, TMP2
+!-----------------------------------------------------------------------
 !
-!=======================================================================!
-!=======================================================================!
-!                               PROGRAMME                               !
-!=======================================================================!
-!=======================================================================!
-!
-      LCWR     = .TRUE.
-      CWRAV    = 0
-      CWRMAX   = 0
-      CWRCOUNT = 0
+      LCDR     = .TRUE.
+      CDRAV    = 0
+      CDRMAX   = 0
+      CDRCOUNT = 0
       ANLAV    = 0
       ANLMAX   = 0
       ANLCOUNT = 0
       ITERR    = 0
-      IF ((DP < 1.0E-3)     .OR.(SP < 1.0E-2).OR.
-     &    (ABS(VA) < 1.0E-3).OR.(HA < 1.0E-3)     ) THEN
+      IF ((DP .LT. 1.D-3)     .OR.(SP .LT. 1.D-2).OR.
+     &    (ABS(VA) .LT. 1.D-3).OR.(HA .LT. 1.D-3)     ) THEN
         CP = 0.D0
       ELSE
         ! INITIALIZATION
         ! --------------
-        CWR   = 1.0      ! DRAG COEFFICIENT
-        ANL   = SP/2.0   ! WAKE LENGTH OF A CYLINDER
-        CWR1  = 1.0
-        CWR2  = 1.0
-        DCWR1 = 0.0
-        DCWR2 = 0.0
-        ! START OF ITERATION FOR CWR
+        CDR   = 1.D0      ! DRAG COEFFICIENT
+        ANL   = SP*0.5D0  ! WAKE LENGTH OF A CYLINDER
+        CDR1  = 1.D0
+        CDR2  = 1.D0
+        DCDR1 = 0.D0
+        DCDR2 = 0.D0
+        ! START OF ITERATION FOR CDR
         ! --------------------------
-        DO ICWR = 1, KMAXITER
+        DO ICDR = 1,KMAXITER
           ! SUPERPOSED FRICTION COEFFICIENT
           ! -------------------------------
-          LAMBDA = 8.0D0*CF  +  4.0D0*CWR*HA*DP/SP/SP
-          ! DRAG COEFFICIENT CW FOR ONE CYLINDER
+          LAMBDA = 4.D0*CDR*HA*DP/SP**2
+          ! DRAG COEFFICIENT CD FOR ONE CYLINDER
           ! ------------------------------------
-          CALL DRAGCOEFF(VA, DP, VK, CW)
+          CALL DRAGCOEFF(VA, DP, VK, CD)
           ! WAKE LENGTH OF A CYLINDER (ITERATIVE COMPUTATION)
           ! -------------------------------------------------
           DO J=1, KMAXITER
-            TMP1 = 1.0D0  +  ANL*LAMBDA/4.0D0/HA
-            TMP2 = 30.0D0/ABS(TMP1)**(1.5)
-            RANL = CW*DP*ABS(TMP2)**(1.429)
+            TMP1 = 1.D0  +  ANL*LAMBDA*0.25D0/HA
+            TMP2 = 30.D0/ABS(TMP1)**(1.5D0)
+            RANL = CD*DP*ABS(TMP2)**(1.429D0)
             ! TEST FOR CONVERGENCE
             ! --------------------
-            IF (ABS((RANL-ANL)/RANL) < KPRECISION) THEN
+            IF (ABS((RANL-ANL)/RANL) .LT. KPRECISION) THEN
               ANL  = RANL
-              IANL = -1*J
+              IANL = -J
               EXIT
             ENDIF
-            ANL = 0.5 * (RANL + ANL)
+            ANL = 0.5D0 * (RANL + ANL)
           ENDDO
-          ! STATISTICS OF CWR ITERATION
+          ! STATISTICS OF CDR ITERATION
           ! ---------------------------
-          IF ( IANL > 0 ) THEN
-            ANL = SP/2.0D0
+          IF ( IANL .GT. 0 ) THEN
+            ANL = SP*0.5D0
           ELSE
             IANL = ABS(IANL)
             ANLCOUNT = ANLCOUNT + 1
             ANLAV = IANL + ANLAV
-            IF (IANL > ANLMAX) ANLMAX = IANL
+            IF (IANL .GT. ANLMAX) ANLMAX = IANL
           ENDIF
           ! WAKE WIDTH
           ! ----------
-          ANB = 0.24 * ABS(ANL)**(0.59) * ABS(CW*DP)**(0.41)
+          ANB = 0.24D0 * ABS(ANL)**(0.59D0) * ABS(CD*DP)**(0.41D0)
           ! RATIO OF VELOCITY IN FRONT OF AND BEHIND CYLINDER
           ! -------------------------------------------------
-          VRATIO = 1.151 * ABS(ANL/SP)**(-0.483)
-     &           +   0.5 * ABS(ANB/SP)**(1.1)
+          VRATIO = 1.151D0 * ABS(ANL/SP)**(-0.483D0)
+     &           +   0.5D0 * ABS(ANB/SP)**(1.1D0)
           ! RATIO OF FLOW DEPTH
           ! -------------------
           FR = VA / SQRT( G * HA ) ! FROUDE NUMBER
           ALFA = DP / SP
-          ACOF =  FR * FR * (1.0D0 - ALFA * CWR/2.0D0)
-          BCOF = -FR * FR - (1.0D0 - ALFA) / 2.0D0
-          CCOF =  0.0D0
-          DCOF = (1.0D0 - ALFA) / 2.0D0
-          HRATIO = 1.0D0
-          IF (ABS(ACOF) < 1.0E-10) THEN
+          ACOF =  FR**2 * (1.D0 - ALFA * CDR * 0.5D0)
+          BCOF = -FR**2 - (1.D0 - ALFA) * 0.5D0
+          CCOF =  0.D0
+          DCOF = (1.D0 - ALFA) * 0.5D0
+          HRATIO = 1.D0
+          IF (ABS(ACOF) .LT. 1.D-10) THEN
             HRATIO = SQRT( -DCOF / BCOF)
           ELSE
             CALL CUBEEQUATION(ACOF, BCOF, CCOF, DCOF, REALROOTS, X)
             DO I = 1, REALROOTS
-              IF (X(I) > 0.0  .AND.  X(I) < 1.0)  THEN
+              IF (X(I) .GT. 0.D0 .AND. X(I) .LT. 1.D0)  THEN
                 HRATIO = X(I)
                 EXIT
               ENDIF
             ENDDO
           ENDIF
-          ! REVISE DRAG COEFFICIENT CWR
+          ! REVISE DRAG COEFFICIENT CDR
           ! ---------------------------
-          RCWR = 1.3124D0*CW*VRATIO + 2.0D0*(1.0D0-HRATIO)/FR/FR
+          RCDR = 1.3124D0*CD*VRATIO + 2.D0*(1.D0-HRATIO)/FR**2
           ! TEST FOR CONVERGENCE
           ! --------------------
-          IF ( ABS((RCWR-CWR)/RCWR) < KPRECISION ) THEN
-            LCWR = .FALSE.
-!           ICWR = -1/ICWR
+          IF ( ABS((RCDR-CDR)/RCDR) .LT. KPRECISION ) THEN
+            LCDR = .FALSE.
+!           ICDR = -1/ICDR
             EXIT
           ENDIF
-          ! USE PEGASUS ALGORITHM FOR CWR ITERATION
+          ! USE PEGASUS ALGORITHM FOR CDR ITERATION
           ! ---------------------------------------
-          DCWR = RCWR - CWR
-          IF ((ICWR >= 3) .AND. (DCWR1*DCWR2 < 0.0D0)) THEN
-            IF (DCWR2*DCWR < 0.0D0) THEN
-              DCWR1 = DCWR2/(DCWR2+DCWR)*DCWR1
+          DCDR = RCDR - CDR
+          IF ((ICDR .GE. 3) .AND. (DCDR1*DCDR2 .LT. 0.D0)) THEN
+            IF (DCDR2*DCDR .LT. 0.D0) THEN
+              DCDR1 = DCDR2/(DCDR2+DCDR)*DCDR1
             ELSE
-              CWR1  = CWR2
-              DCWR1 = DCWR2
+              CDR1  = CDR2
+              DCDR1 = DCDR2
             ENDIF
-            CWR2  = CWR
-            DCWR2 = DCWR
-            CWR   = CWR2 - DCWR2*(CWR2-CWR1)/(DCWR2-DCWR1)
+            CDR2  = CDR
+            DCDR2 = DCDR
+            CDR   = CDR2 - DCDR2*(CDR2-CDR1)/(DCDR2-DCDR1)
           ELSE
-            CWR1 = CWR2
-            DCWR1 = DCWR2
-            CWR2 = CWR
-            DCWR2 = DCWR
-            IF ((ICWR >= 2) .AND. (DCWR1*DCWR2 < 0.0 )) THEN
-              CWR = CWR2 - DCWR2*(CWR2-CWR1)/(DCWR2-DCWR1)
+            CDR1 = CDR2
+            DCDR1 = DCDR2
+            CDR2 = CDR
+            DCDR2 = DCDR
+            IF ((ICDR .GE. 2) .AND. (DCDR1*DCDR2 .LT. 0.D0 )) THEN
+              CDR = CDR2 - DCDR2*(CDR2-CDR1)/(DCDR2-DCDR1)
             ELSE
-              CWR = RCWR
+              CDR = RCDR
             ENDIF
           ENDIF
-        ENDDO !ICWR = 1, KMAXITER
+        ENDDO !ICDR = 1, KMAXITER
 !
-        IF (LCWR) THEN
+        IF (LCDR) THEN
           ITERR = ITERR + 1
           CP = -1.D0
         ELSE
-          ! STATISTICS OF CWR ITERATION
+          ! STATISTICS OF CDR ITERATION
           ! ---------------------------
-          ICWR = -1/ICWR ! AS THE PROGRAM RISMO2D FROM THE BAW
-          ICWR = -ICWR
-          CWRCOUNT = CWRCOUNT + 1
-          CWRAV = ICWR + CWRAV
-          IF (ICWR > CWRMAX) CWRMAX = ICWR
-          CP = LAMBDA/8.0D0 - CF
+          ICDR = -1/ICDR ! AS THE PROGRAM RISMO2D FROM THE BAW
+          ICDR = -ICDR
+          CDRCOUNT = CDRCOUNT + 1
+          CDRAV = ICDR + CDRAV
+          IF (ICDR .GT. CDRMAX) CDRMAX = ICDR
+          CP = LAMBDA*0.25D0
         ENDIF
       ENDIF
 !
-!=======================================================================!
-!=======================================================================!
+!-----------------------------------------------------------------------
 !
       RETURN
       END

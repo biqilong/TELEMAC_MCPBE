@@ -239,7 +239,7 @@ subroutine SOLVRO(                   &
    real(DOUBLE) :: M(4,NBSECT),N(4,NBSECT),ID(NBSECT,4)
    real(DOUBLE) :: FLULOD(NBSECT), FLULOG(NBSECT)
    real(DOUBLE) :: SOPRIM(2)
-   integer      :: IVIDE(NBSECT),K,IS
+   integer      :: IVIDE(NBSECT),K
    integer      :: IB,IPOS,I,CELGAU,INDIC,J,JG,JD
    integer      :: NC,NN,Nb_Point,NOEUD
    integer      :: CORRG,NSECD0,NSECDL,ITYP,retour
@@ -255,12 +255,10 @@ subroutine SOLVRO(                   &
    real(DOUBLE) :: SOTILD(2)
    real(DOUBLE) :: SOFROT(2)
    real(DOUBLE) :: COEF,DELTA
-   real(DOUBLE) :: hauteur_haute,hauteur_basse,surf_haute,surf_basse
-   integer      :: Pashaut
-   real(DOUBLE) :: CELEGA,CELEDR,T0,TE1,TE2,TE3,TE4,TE5,TE6
-   real(DOUBLE) :: DEB,V0(2),V1(2),V2(1),V3(1)
-   real(DOUBLE) :: AI(4),DI(4),IDI(4),X0(2*NBSECT),XF(2*NBSECT)
-   real(DOUBLE) :: WW1(2,NBSECT),S,S1,S2,S3,TI,SSG,SSD,ALG,ALD,ALARG
+   real(DOUBLE) :: CELEGA,CELEDR,T0
+   real(DOUBLE) :: DEB,V0(2),V1(2)
+   real(DOUBLE) :: AI(4),DI(4),IDI(4)
+   real(DOUBLE) :: WW1(2,NBSECT),S,S1,S2,S3,SSG,SSD
    !character(132) :: !arbredappel_old ! arbre d'appel precedent
    real(DOUBLE) :: DX
    real(DOUBLE) :: CE(NBSECT),ZF(NBSECT),scube1(nbsect)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ISITOK
-!                    *****************
+!                   *****************
+                    SUBROUTINE ISITOK
+!                   *****************
 !
      &(H,NPH,U,NPU,V,NPV,NTRAC,T,NPT,X,Y,BORNES,ARRET)
 !

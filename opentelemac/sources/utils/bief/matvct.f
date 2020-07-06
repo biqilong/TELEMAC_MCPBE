@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MATVCT
-!                    *****************
+!                   *****************
+                    SUBROUTINE MATVCT
+!                   *****************
 !
      &(OP, X , DA,TYPDIA,XA,TYPEXT, Y ,
      & C,IKLE,NPT,NELEM,NELMAX,W,LEGO,IELM1,IELM2,IELMX,LV,

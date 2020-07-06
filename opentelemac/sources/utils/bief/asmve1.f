@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ASMVE1
-!                    *****************
+!                   *****************
+                    SUBROUTINE ASMVE1
+!                   *****************
 !
      &(X, IKLE,W, NPOIN,NELEM,NELMAX,LV)
 !

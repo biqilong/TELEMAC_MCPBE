@@ -1,6 +1,6 @@
-!                **************************
-                 SUBROUTINE USER_BEDLOAD_QB
-!                **************************
+!               **************************
+                SUBROUTINE USER_BEDLOAD_QB
+!               **************************
      & (HN, U2D, V2D, THETAC, HOULE, HW, TW, THETAW,
      &  TOB,TOBW,TOBCW_MEAN,TOBCW_MAX, DCLA, DENS, GRAV, DSTAR, AC,
      &  XMVE, XMVS, TETAP, MU, NPOIN, QSC, QSS, CSTAEQ)

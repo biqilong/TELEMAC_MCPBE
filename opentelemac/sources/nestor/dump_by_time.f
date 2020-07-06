@@ -11,7 +11,7 @@
       USE m_TypeDefs_Nestor
       USE m_Nestor , ONLY :  F, ParallelComputing, nGrainClass, ipid
      &                      , lim_dzts
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM, P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_DSUM
 !
 #ifndef  NESTOR_INTERFACES
       USE m_Interfaces_Nestor, ONLY :  InfoMessage
@@ -71,7 +71,7 @@
 !
         ELSE  ! dumping is part of digging action
                                               !> We dig and dump each time step the same volume.
-          areaRatio =   F(A%FieldDigID)%Area  !  Thus applying to the evolution per time step (dz_ts): 
+          areaRatio =   F(A%FieldDigID)%Area  !  Thus applying to the evolution per time step (dz_ts):
      &                / F(A%FieldDumpID)%Area !      dump_dz_ts = areaRatio * dig_dz_ts
 !
           A%MaxDump_dz_ts = -A%dz_ts * areaRatio !> Here dumping is part of digging
@@ -103,7 +103,7 @@
       IF( .NOT. A%FirstTimeActive ) THEN
 !
         IF( .NOT. A%Solo ) THEN               !> We dig and dump each time step the same volume.
-          areaRatio =   F(A%FieldDigID)%Area  !  Thus applying to the evolution per time step (dz_ts): 
+          areaRatio =   F(A%FieldDigID)%Area  !  Thus applying to the evolution per time step (dz_ts):
      &                / F(A%FieldDumpID)%Area !  dump_dz_ts = areaRatio * dig_dz_ts
 !
           A%dzCL_ts(:) = -A%dz_ts * A%GrainClass(:) * areaRatio !> Change of z per time step per Grain CLass.
@@ -137,7 +137,7 @@
             DO i=1, F(n)%nNodes
               iMesh = F(n)%Node(i)     ! mesh index of field node
               dzCL_sis(iCL)%R(iMesh) =   dzCL_sis(iCL)%R(iMesh)
-     &                                 + A%dzCL_ts(iCL) 
+     &                                 + A%dzCL_ts(iCL)
             ENDDO
           ENDDO !----------------------------------------
           !mySum = mySum + A%dz_ts                           ! debug
@@ -150,7 +150,7 @@
 !
         IF(ParallelComputing) THEN
           sumInput_ts = P_DSUM(sumInput_ts)
-        ENDIF 
+        ENDIF
         A%InputDumpField = A%InputDumpField + sumInput_ts
 !
         IF( A%Solo ) THEN

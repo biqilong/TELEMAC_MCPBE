@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE HYDROMAP
-!                    *******************
+!                   *******************
+                    SUBROUTINE HYDROMAP
+!                   *******************
 !
      &(CN,X,Y,NPOIN,NCN,NBOR,KP1BOR,NPTFR)
 !

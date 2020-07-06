@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE VOISIN31
-!                    *******************
+!                   *******************
+                    SUBROUTINE VOISIN31
+!                   *******************
 !
      &(IFABOR,NELEM,NELMAX,IELM,IKLE,SIZIKL,NPOIN,NBOR,NPTFR,
      & LIHBOR,KLOG,INDPU,IKLESTR,NELEB2)
@@ -348,34 +348,34 @@
             DO ITRI = 1, NBTRI
               IF ( IKLE_TRI(ITRI,1) .EQ. M1 ) THEN
                 IF ( IKLE_TRI(ITRI,2) .EQ. M2 .AND.
-     &             IKLE_TRI(ITRI,3) .EQ. M3 ) THEN
-                   ! FOUND IT! ALL IS WELL.
-                   ! STORES THE INFORMATION IN VOIS_TRI.
-                   ! (I.E. THE ELEMENT THAT HAS ALREADY
-                   ! DEFINED THE TRIANGLE AND THE FACE)
-                   IELEM2 = VOIS_TRI(ITRI,1)
-                   IFACE2 = VOIS_TRI(ITRI,2)
-                   IF ( IELEM2 .EQ. IELEM ) THEN
-                     WRITE(LU,909) IELM
-909                  FORMAT(1X,'VOISIN: IELM=',1I6,',
-     &               NEIGHBOUR PROBLEM')
-                     CALL PLANTE(1)
-                     STOP
-                   END IF
-                   ! TO BE SURE :
-                   IF ( IELEM2 .EQ. 0 .OR.
-     &                  IFACE2 .EQ. 0 ) THEN
-                     WRITE(LU,919) IELEM2,IFACE2
-919                  FORMAT(1X,'VOISIN31:UNDEFINED TRIANGLE,
-     &               IELEM=',1I6,'IFACE=',1I6)
-                     CALL PLANTE(1)
-                     STOP
-                   END IF
-                   ! THE ELEMENT AND ITS NEIGHBOUR : STORES
-                   ! THE CONNECTION IN IFABOR.
-                   IFABOR(IELEM ,IFACE ) = IELEM2
-                   IFABOR(IELEM2,IFACE2) = IELEM
-                   FOUND = .TRUE.
+     &            IKLE_TRI(ITRI,3) .EQ. M3 ) THEN
+                  ! FOUND IT! ALL IS WELL.
+                  ! STORES THE INFORMATION IN VOIS_TRI.
+                  ! (I.E. THE ELEMENT THAT HAS ALREADY
+                  ! DEFINED THE TRIANGLE AND THE FACE)
+                  IELEM2 = VOIS_TRI(ITRI,1)
+                  IFACE2 = VOIS_TRI(ITRI,2)
+                  IF ( IELEM2 .EQ. IELEM ) THEN
+                    WRITE(LU,909) IELM
+909                 FORMAT(1X,'VOISIN: IELM=',1I6,',
+     &              NEIGHBOUR PROBLEM')
+                    CALL PLANTE(1)
+                    STOP
+                  END IF
+                  ! TO BE SURE :
+                  IF ( IELEM2 .EQ. 0 .OR.
+     &                 IFACE2 .EQ. 0 ) THEN
+                    WRITE(LU,919) IELEM2,IFACE2
+919                 FORMAT(1X,'VOISIN31:UNDEFINED TRIANGLE,
+     &              IELEM=',1I6,'IFACE=',1I6)
+                    CALL PLANTE(1)
+                    STOP
+                  END IF
+                  ! THE ELEMENT AND ITS NEIGHBOUR : STORES
+                  ! THE CONNECTION IN IFABOR.
+                  IFABOR(IELEM ,IFACE ) = IELEM2
+                  IFABOR(IELEM2,IFACE2) = IELEM
+                  FOUND = .TRUE.
                 END IF
               END IF
             END DO

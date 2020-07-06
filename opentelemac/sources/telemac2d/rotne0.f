@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ROTNE0
-!                    *****************
+!                   *****************
+                    SUBROUTINE ROTNE0
+!                   *****************
 !
      &(MESH,M1,A11,A12,A21,A22,SMU,SMV,UN,VN,H0,MSK,MASKEL,S,DT)
 !

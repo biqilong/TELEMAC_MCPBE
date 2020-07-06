@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE COMP_SEG
-!                    *******************
+!                   *******************
+                    SUBROUTINE COMP_SEG
+!                   *******************
 !
      &(NELEM,NELMAX,IELM,IKLE,GLOSEG,MAXSEG,ELTSEG,ORISEG,NSEG)
 !

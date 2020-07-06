@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE GET_MESH_NPTIR
-!                    *************************
+!                   *************************
+                    SUBROUTINE GET_MESH_NPTIR
+!                   *************************
 !
      &(FFORMAT,FID,NPTIR,IERR)
 !

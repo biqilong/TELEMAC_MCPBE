@@ -1,6 +1,6 @@
-!                    **************
-                     SUBROUTINE HVF
-!                    **************
+!                   **************
+                    SUBROUTINE HVF
+!                   **************
 !
      &(H,HN,FXMAT,UNSV2D,DT,FXBOR,SMH,YASMH,NSEG,NPOIN,NPTFR,GLOSEG,
      & SIZGLO,NBOR,OPTSOU,T7,MESH,MSK,RAIN,PLUIE)

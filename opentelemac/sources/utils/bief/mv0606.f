@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MV0606
-!                    *****************
+!                   *****************
+                    SUBROUTINE MV0606
+!                   *****************
 !
      &(OP, X , DA,TYPDIA,XA,TYPEXT, Y,C,
      & IKLE1,IKLE2,IKLE3,IKLE4,IKLE5,IKLE6,

@@ -1,6 +1,6 @@
-!                    *******************************
-                     SUBROUTINE BEDLOAD_FORMULA_GAIA
-!                    *******************************
+!                   *******************************
+                    SUBROUTINE BEDLOAD_FORMULA_GAIA
+!                   *******************************
 !
      &(U2D,V2D,UNORM,HN,CF,MU,TOB,TOBW,UW,TW,THETAW,FW,
      & ACLADM, UNLADM,KSP,KSR,RATIO_SAND,NPOIN,ICF,HIDFAC,XMVS,XMVE,
@@ -301,8 +301,8 @@
      &        AC,XMVE, XMVS, TETAP, MU, NPOIN, QSC, QSS, CSTAEQ)
 !
         DO I=1,NPOIN
-           QSC%R(I)=QSC%R(I)*RATIO_SAND(I)*HIDING%R(I)
-           QSS%R(I)=QSS%R(I)*RATIO_SAND(I)*HIDING%R(I)
+          QSC%R(I)=QSC%R(I)*RATIO_SAND(I)*HIDING%R(I)
+          QSS%R(I)=QSS%R(I)*RATIO_SAND(I)*HIDING%R(I)
         ENDDO
 !     =================
 !     IV(ELSE) - ERROR
@@ -324,7 +324,7 @@
           IF(.NOT.SUSP)THEN
 !           BEDLOAD IS TOTAL LOAD IN THIS CASE
             DO I = 1,NPOIN
-             QSC%R(I) = QSC%R(I) + QSS%R(I)
+              QSC%R(I) = QSC%R(I) + QSS%R(I)
             ENDDO
           ELSE
       WRITE(LU,*)'WARNING, WITH COHESIVE SEDIMENT IN SUSPENSION'
@@ -333,9 +333,9 @@
       WRITE(LU,*)'1- BEDLOAD OF SAND IS NOT TOTAL BEDLOAD (QSS = 0).'
       WRITE(LU,*)'2- EROSION FLUX OF SAND USED TO COMPUTE EROSION FLUX'
       WRITE(LU,*)'   OF MIXED SEDIMENT IN SUSPENSION IS EQUAL TO 0.'
-             DO I = 1,NPOIN
-                QSS%R(I) = 0.D0
-             ENDDO
+            DO I = 1,NPOIN
+              QSS%R(I) = 0.D0
+            ENDDO
           ENDIF
         ELSE
 !         NOTE JMH: IS THIS REALLY USEFUL ???

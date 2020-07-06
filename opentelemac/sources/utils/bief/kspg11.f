@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE KSPG11
-!                    *****************
+!                 *****************
+                  SUBROUTINE KSPG11
+!                 *****************
 !
      &(KX,KY,XEL,YEL,U,V,IKLE,NELEM,NELMAX,XMUL)
 !

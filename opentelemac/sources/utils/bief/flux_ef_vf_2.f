@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE FLUX_EF_VF_2
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE FLUX_EF_VF_2
+!                   ***********************
 !
      &(PHIEL,NELEM,NELMAX,IKLE,IOPT,NPOIN,FN,FI_I,FSTAR,HN,H,SU,TETA,
      & DFDT)

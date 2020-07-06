@@ -1,6 +1,6 @@
-!                ******************************
-                 SUBROUTINE INIT_TRANSPORT_GAIA
-!                ******************************
+!               ******************************
+                SUBROUTINE INIT_TRANSPORT_GAIA
+!               ******************************
 !
      &(HIDING,NSICLA,NPOIN,T1,T2,T3,T4,T5,T6,T7,T8,T9,
      & T10,T11,T12,T14,CHARR,QS_C,QSXC,QSYC,CALFA_CL,SALFA_CL,
@@ -98,7 +98,7 @@
       USE BIEF
       USE INTERFACE_GAIA, EX_INIT_TRANSPORT => INIT_TRANSPORT_GAIA
 !
-      USE DECLARATIONS_GAIA, ONLY : NOMBLAY,MPM_ARAY,MPM,NUM_ICLA_ISAND,
+      USE DECLARATIONS_GAIA, ONLY : MPM_ARAY,MPM,NUM_ICLA_ISAND,
      &                              RATIO_SAND,SANFRA,CSRATIO,NSAND
 !
       USE DECLARATIONS_SPECIAL

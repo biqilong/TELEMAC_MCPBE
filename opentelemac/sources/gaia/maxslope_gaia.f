@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE MAXSLOPE_GAIA
-!                    ************************
+!                   ************************
+                    SUBROUTINE MAXSLOPE_GAIA
+!                   ************************
 !
 !***********************************************************************
 ! GAIA
@@ -16,7 +16,7 @@
       USE INTERFACE_GAIA, EX_MAXSLOPE => MAXSLOPE_GAIA
       USE BIEF
       USE DECLARATIONS_GAIA
-      USE INTERFACE_PARALLEL, ONLY: P_DMAX
+      USE INTERFACE_PARALLEL, ONLY: P_MAX
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
@@ -187,7 +187,7 @@
         ENDDO
 !
 !       GET PARALLEL MAX TO MAKE SURE EACH PARTITION DOES THE SAME (BECAUSE THER ARE MORE PARCOM CALLS BELOW)
-        TEST_GLISS = P_DMAX(TEST_GLISS)
+        TEST_GLISS = P_MAX(TEST_GLISS)
 !
 !       IF NO SLIDING NEEDED, END OF SUBROUTINE
         IF(TEST_GLISS.LE.1.D-8) GOTO 100
@@ -303,7 +303,7 @@
             EPAI_GLISS = -QG1*UNSV2D%R(IG1)
             IF(EPAI_GLISS.GT.0.D0) THEN
 !           IF EPAI_GLISS > ES THE WHOLE LAYER WILL SLIDE. OTHERWISE ONLY A PERCENTAGE OF THE LAYER
-             POURCENTAGE_EPAI_TRANSFERT=
+              POURCENTAGE_EPAI_TRANSFERT=
      &        MAX(0.D0,MIN(1.D0,EPAI_GLISS/ES(IG1,ILAYER)))
 !
               IF(NMUD.GE.1) THEN

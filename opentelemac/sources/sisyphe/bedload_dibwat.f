@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE BEDLOAD_DIBWAT !
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE BEDLOAD_DIBWAT !
+!                   ***************************
 !
      &(U2D,V2D,UCMOY, CF, TOB, TOBW, UW, TW, FW, THETAW, NPOIN,
      & XMVE, DENS, GRAV, DM, XWC, PI, ALPHAW, T2, T3, UCW, UCN,

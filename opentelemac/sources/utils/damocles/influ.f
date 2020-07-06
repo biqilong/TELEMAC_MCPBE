@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE INFLU
-!                    ****************
+!                   ****************
+                    SUBROUTINE INFLU
+!                   ****************
 !
      &( ICOL   , LIGNE  , DEFATT , TROUVE , LUIGN , MOTCLE , SIZE,
      &  MOTIGN , LONIGN , NMAXR  , NFICDA , GESTD )
@@ -290,10 +290,10 @@
         IF (ICOLA.GE.LONGLI) THEN
           LCAR = 0
         ELSEIF (ANALYS(ICOLA+1:ICOLA+1).EQ.';') THEN
-           LCAR = 0
+          LCAR = 0
         ELSE
-           JCOLA = PRECAR(ICOLA+1,ANALYS,';',';',';')
-           LCAR = LONGLU(ANALYS(ICOLA+1:JCOLA-1))
+          JCOLA = PRECAR(ICOLA+1,ANALYS,';',';',';')
+          LCAR = LONGLU(ANALYS(ICOLA+1:JCOLA-1))
         ENDIF
         IF (LCAR.LE.0) THEN
           WRITE(LU,*)'FOR THE KEY-WORD : ', PARAM(1:LONGU)

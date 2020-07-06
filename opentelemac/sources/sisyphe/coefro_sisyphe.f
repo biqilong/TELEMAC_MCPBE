@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE COEFRO_SISYPHE
-!                    *************************
+!                   *************************
+                    SUBROUTINE COEFRO_SISYPHE
+!                   *************************
 !
      &(CF,H,KFROT,CHESTR,GRAV,NPOIN,HMIN,KARMAN)
 !
@@ -94,7 +94,7 @@
 !     ***********************
 !
         DO N=1,NPOIN
-           CF%R(N) = 2.D0 * GRAV / CHESTR%R(N)**2
+          CF%R(N) = 2.D0 * GRAV / CHESTR%R(N)**2
         ENDDO
 !
 !     ***********************
@@ -102,8 +102,8 @@
 !     ***********************
 !
         DO N=1,NPOIN
-           HC = MAX(H%R(N),HMIN)
-           CF%R(N) = 2.D0 * GRAV / CHESTR%R(N)**2 / HC**TIERS
+          HC = MAX(H%R(N),HMIN)
+          CF%R(N) = 2.D0 * GRAV / CHESTR%R(N)**2 / HC**TIERS
         ENDDO
 !
 !     ***********************
@@ -111,8 +111,8 @@
 !     ***********************
 !
         DO N=1,NPOIN
-           HC = MAX(H%R(N),HMIN)
-           CF%R(N) = 2.D0 * CHESTR%R(N)**2 * GRAV / HC**TIERS
+          HC = MAX(H%R(N),HMIN)
+          CF%R(N) = 2.D0 * CHESTR%R(N)**2 * GRAV / HC**TIERS
         ENDDO
 !
 !     ****

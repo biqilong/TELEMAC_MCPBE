@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DRAGFO
-!                    *****************
+!                   *****************
+                    SUBROUTINE DRAGFO
+!                   *****************
 !
      &(FUDRAG,FVDRAG)
 !
@@ -51,7 +51,7 @@
       USE DECLARATIONS_TELEMAC2D
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -133,7 +133,7 @@
 !
 !     IN PARALLEL THE AREA MAY BE SPLIT INTO SEVERAL SUB-DOMAINS
 !
-      IF(NCSIZE.GT.0) AIRE=P_DSUM(AIRE)
+      IF(NCSIZE.GT.0) AIRE=P_SUM(AIRE)
 !
 !     NOW PREPARING THE DIVISION
 !

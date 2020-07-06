@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE READ_FIC_FRLIQ
-!                    *************************
+!                   *************************
+                    SUBROUTINE READ_FIC_FRLIQ
+!                   *************************
 !
      &( Q , WHAT , AT , NFIC , LISTIN , FOUND )
 !

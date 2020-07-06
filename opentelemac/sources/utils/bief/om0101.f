@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OM0101
-!                    *****************
+!                   *****************
+                    SUBROUTINE OM0101
+!                   *****************
 !
      &(OP ,DM,TYPDIM,XM,TYPEXM,DN,TYPDIN,XN,TYPEXN,D,C,
      & IKLE,NELEM,NELMAX,NDIAG)
@@ -120,23 +120,23 @@
         ELSEIF(TYPDIN(1:1).EQ.'I'.OR.TYPDIN(1:1).EQ.'0') THEN
 !         NOTHING TO DO, ONLY NEEDS TO COPY TYPDIN
         ELSE
-           WRITE(LU,6) TYPDIN(1:1)
-6          FORMAT(1X,'OM0101 (BIEF) : TYPDIN UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,6) TYPDIN(1:1)
+6         FORMAT(1X,'OM0101 (BIEF) : TYPDIN UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
         TYPDIM(1:1)=TYPDIN(1:1)
 !
         IF(TYPEXN(1:1).EQ.'S') THEN
-           CALL OV('X=Y     ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
+          CALL OV('X=Y     ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
-           CALL OV('X=Y     ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
-           CALL OV('X=Y     ', X=XM(1,2), Y=XN(1,2), DIM1=NELEM)
+          CALL OV('X=Y     ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
+          CALL OV('X=Y     ', X=XM(1,2), Y=XN(1,2), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-11         FORMAT(1X,'OM0101 (BIEF) : TYPEXN UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,11) TYPEXN(1:1)
+11        FORMAT(1X,'OM0101 (BIEF) : TYPEXN UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
         TYPEXM(1:1)=TYPEXN(1:1)
 !
@@ -147,14 +147,14 @@
         CALL OV('X=CY    ', X=DM, Y=DN, C=C, DIM1=NDIAG)
 !
         IF(TYPEXN(1:1).EQ.'S') THEN
-           CALL OV('X=CY    ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
+          CALL OV('X=CY    ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
-           CALL OV('X=CY    ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
-           CALL OV('X=CY    ', X=XM(1,2), Y=XN(1,2), DIM1=NELEM)
+          CALL OV('X=CY    ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
+          CALL OV('X=CY    ', X=XM(1,2), Y=XN(1,2), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,11) TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
         TYPDIM(1:1)=TYPDIN(1:1)
@@ -171,24 +171,24 @@
         ENDIF
 !
         IF(TYPEXN(1:1).EQ.'S') THEN
-           CALL OV('X=X+CY  ', X=XM(1,1), Y=XN(1,1), C=C, DIM1=NELEM)
-           IF(TYPEXM(1:1).EQ.'Q') THEN
-             CALL OV('X=X+CY  ', X=XM(1,2), Y=XN(1,1), C=C, DIM1=NELEM)
-           ENDIF
+          CALL OV('X=X+CY  ', X=XM(1,1), Y=XN(1,1), C=C, DIM1=NELEM)
+          IF(TYPEXM(1:1).EQ.'Q') THEN
+            CALL OV('X=X+CY  ', X=XM(1,2), Y=XN(1,1), C=C, DIM1=NELEM)
+          ENDIF
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
-           IF(TYPEXM(1:1).NE.'Q') THEN
-             WRITE(LU,98) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+          IF(TYPEXM(1:1).NE.'Q') THEN
+            WRITE(LU,98) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
 98          FORMAT(1X,'OM0101 (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
-     &       /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
-             CALL PLANTE(1)
-             STOP
-           ENDIF
-           CALL OV('X=X+CY  ', X=XM(1,1), Y=XN(1,1), C=C, DIM1=NELEM)
-           CALL OV('X=X+CY  ', X=XM(1,2), Y=XN(1,2), C=C, DIM1=NELEM)
+     &      /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
+            CALL PLANTE(1)
+            STOP
+          ENDIF
+          CALL OV('X=X+CY  ', X=XM(1,1), Y=XN(1,1), C=C, DIM1=NELEM)
+          CALL OV('X=X+CY  ', X=XM(1,2), Y=XN(1,2), C=C, DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,11) TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------
@@ -199,22 +199,22 @@
         CALL OV('X=X+Y   ', X=DM, Y=DN, DIM1=NDIAG)
 !
         IF(TYPEXN(1:1).EQ.'S') THEN
-           CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
-           IF(TYPEXM(1:1).EQ.'Q') THEN
-             CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEM)
-           ENDIF
+          CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
+          IF(TYPEXM(1:1).EQ.'Q') THEN
+            CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEM)
+          ENDIF
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
-           IF(TYPEXM(1:1).NE.'Q') THEN
-             WRITE(LU,98) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-             CALL PLANTE(1)
-             STOP
-           ENDIF
-           CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
-           CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,2), DIM1=NELEM)
+          IF(TYPEXM(1:1).NE.'Q') THEN
+            WRITE(LU,98) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+            CALL PLANTE(1)
+            STOP
+          ENDIF
+          CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
+          CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,2), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,11) TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------
@@ -224,14 +224,14 @@
         CALL OV('X=Y     ', X=DM, Y=DN, DIM1=NDIAG)
 !
         IF(TYPEXN(1:1).EQ.'S') THEN
-           CALL OV('X=Y     ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
+          CALL OV('X=Y     ', X=XM(1,1), Y=XN(1,1), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
-           CALL OV( 'X=Y     ', X=XM(1,1), Y=XN(1,2), DIM1=NELEM)
-           CALL OV( 'X=Y     ', X=XM(1,2), Y=XN(1,1), DIM1=NELEM)
+          CALL OV( 'X=Y     ', X=XM(1,1), Y=XN(1,2), DIM1=NELEM)
+          CALL OV( 'X=Y     ', X=XM(1,2), Y=XN(1,1), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,11) TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
         TYPDIM(1:1)=TYPDIN(1:1)
         TYPEXM(1:1)=TYPEXN(1:1)
@@ -245,12 +245,12 @@
         CALL OV('X=X+Y   ', X=DM, Y=DN, DIM1=NDIAG)
 !
         IF(TYPEXM(1:1).EQ.'Q') THEN
-           CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,2), DIM1=NELEM)
-           CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEM)
+          CALL OV('X=X+Y   ', X=XM(1,1), Y=XN(1,2), DIM1=NELEM)
+          CALL OV('X=X+Y   ', X=XM(1,2), Y=XN(1,1), DIM1=NELEM)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,11) TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
         TYPDIM(1:1)=TYPDIN(1:1)
         TYPEXM(1:1)=TYPEXN(1:1)
@@ -371,10 +371,10 @@
         ENDDO ! IELEM
 !
         ELSEIF(TYPEXM(1:1).NE.'0') THEN
-           WRITE(LU,21) TYPEXM(1:1)
-21         FORMAT(1X,'OM0101 (BIEF) : TYPEXM UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,21) TYPEXM(1:1)
+21        FORMAT(1X,'OM0101 (BIEF) : TYPEXM UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------

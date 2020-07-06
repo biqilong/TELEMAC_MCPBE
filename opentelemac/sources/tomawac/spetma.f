@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SPETMA
-!                    *****************
+!                   *****************
+                    SUBROUTINE SPETMA
+!                   *****************
 !
      &( SPEC  , NF    , AL    , FP     , GAMMA , SIGMAA, SIGMAB,
      &  FPMIN , DEPTH  )

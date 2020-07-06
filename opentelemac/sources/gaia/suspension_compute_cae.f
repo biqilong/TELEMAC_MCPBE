@@ -1,6 +1,6 @@
-!                *********************************
-                 SUBROUTINE SUSPENSION_COMPUTE_CAE
-!                *********************************
+!               *********************************
+                SUBROUTINE SUSPENSION_COMPUTE_CAE
+!               *********************************
 !
      &(TAUP,HN,DCLA,NPOIN,CHARR,XMVE,XMVS,VCE,GRAV,
      & ZERO,ZREF,AC,CSTAEQ,QSC,ICQ,U2D,V2D,CSRATIO,DEBUG,RATIO_TOCE)

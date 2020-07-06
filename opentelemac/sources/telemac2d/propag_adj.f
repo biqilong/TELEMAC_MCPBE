@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE PROPAG_ADJ
-!                    *********************
+!                   *********************
+                    SUBROUTINE PROPAG_ADJ
+!                   *********************
 !
      &(UN,VN,HN,
      & MESH,ZF,AM1,AM2,AM3,BM1,BM2,CM1,CM2,TM1,
@@ -18,7 +18,7 @@
      & NIT,VARSOR,
      & ALIRE,TROUVE,MAXVAR,
      & TEXTE,CHESTR,KARMAN,NDEF,
-     & LISRUG,DP,SP,CHBORD,CFBOR,HFROT,UNSV2D)
+     & LISRUG,CHBORD,CFBOR,HFROT,UNSV2D)
 !
 !***********************************************************************
 ! TELEMAC2D   V6P1                                   21/08/2010
@@ -86,7 +86,6 @@
 !| CV2            |<->| RIGHT-HAND SIDE OF LINEAR SYSTEM
 !| CV3            |<->| RIGHT-HAND SIDE OF LINEAR SYSTEM
 !| DIRBOR         |<--| BLOCK WITH DIRICHLET BOUNDARY CONDITIONS
-!| DP             |-->| DIAMETER OF ROUGHNESS ELEMENT
 !| DT             |-->| TIME STEP
 !| ESTIME         |---| ???? NOT USED ()
 !| GRAV           |-->| GRAVITY
@@ -134,7 +133,6 @@
 !| SB             |---| NOT USED !!!!!!!!!!!!!!!!!!!!!!
 !| SLVPRO         |-->| SOLVER STRUCTURE FOR PROPAGATION
 !| SOLSYS         |-->| KEYWORD: 'TREATMENT OF THE LINEAR SYSTEM'
-!| SP             |-->| SPACING OF ROUGHNESS ELEMENT
 !| T1             |<->| WORK BIEF_OBJ STRUCTURE
 !| T2             |<->| WORK BIEF_OBJ STRUCTURE
 !| T3             |<->| WORK BIEF_OBJ STRUCTURE
@@ -173,7 +171,8 @@
 !
       USE BIEF
       USE INTERFACE_TELEMAC2D, EX_PROPAG_ADJ => PROPAG_ADJ
-      USE DECLARATIONS_TELEMAC2D, ONLY : KFROTL,T2D_FILES,T2DRES,LISTIN
+      USE DECLARATIONS_TELEMAC2D, ONLY : KFROTL,T2D_FILES,T2DRES,LISTIN,
+     &    FRICOU,ORBVEL
       USE INTERFACE_HERMES
 !
       USE DECLARATIONS_SPECIAL
@@ -190,7 +189,7 @@
       LOGICAL, INTENT(IN)    :: VERTIC
       DOUBLE PRECISION, INTENT(IN)    :: TETAU,TETAH
       DOUBLE PRECISION, INTENT(IN)    :: AT,DT,GRAV
-      DOUBLE PRECISION, INTENT(IN)    :: KARMAN,NDEF,DP,SP
+      DOUBLE PRECISION, INTENT(IN)    :: KARMAN,NDEF
       TYPE(SLVCFG), INTENT(INOUT)     :: SLVPRO
       TYPE(BIEF_OBJ), INTENT(IN)      :: UN,VN,HN
       TYPE(BIEF_OBJ), INTENT(IN)      :: CF,UNSV2D
@@ -299,8 +298,8 @@
 !
 !FH-FRDATA
       CALL FRICTION_UNIF(MESH,HH,UU,VV,CHESTR,KFROT,KFROTL,LISRUG,
-     &                   .FALSE.,NDEF,DP,SP,VK,KARMAN,GRAV,
-     &                   T1,T3,CHBORD,T2,CFBOR)
+     &                   .FALSE.,NDEF,VK,KARMAN,GRAV,
+     &                   T1,T3,CHBORD,T2,CFBOR,FRICOU,MESH%NPOIN,ORBVEL)
 !FH-FRDATA
 !
       CALL FRICTI(T11,T3,T4,T5,UU,VV,HH,T2,MESH,T6,T7,VERTIC,UNSV2D,

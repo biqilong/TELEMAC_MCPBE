@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SD_MDI
-!                    *****************
+!                   *****************
+                    SUBROUTINE SD_MDI
+!                   *****************
 !
      &(N,IA,JA,MAXIMUM,V,L,HEAD,LAST,NEXT,MARK,TAG,FLAG)
 !

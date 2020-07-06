@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_BND_VALUE
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_BND_VALUE
+!                   ************************
 !
      &(FFORMAT,FID,TYP_BND_ELEM,NELEBD,LIHBOR,LIUBOR,
      & LIVBOR,HBOR,UBOR,VBOR,CHBORD,TRAC,

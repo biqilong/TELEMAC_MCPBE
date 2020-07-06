@@ -24,9 +24,9 @@
 !#endif COMPAD_SYMBOLIC_LINSOLVE
 
 
-!                    *******************
-                     SUBROUTINE AD_SOLVE
-!                    *******************
+!                   *******************
+                    SUBROUTINE AD_SOLVE
+!                   *******************
 !
      &(X, A,B,TB,CFG,INFOGR,MESH,AUX)
 !
@@ -332,7 +332,7 @@
           IF ( ASSOCIATED( TGT%X ) ) THEN
             CALL AD_T1X_SET_BIEF_OBJ
      &           ( TGT%X, TWHAT, SRC%X, SWHAT, RECLVL+1 )
-           ENDIF
+          ENDIF
         ENDIF
 !
 !       FOR BLOCKS --------------------
@@ -342,7 +342,7 @@
           DO I = 1,TGT%N
             CALL AD_T1X_SET_BIEF_OBJ
      &           ( TGT%ADR(I)%P, TWHAT, SRC%ADR(I)%P, SWHAT, RECLVL+1 )
-           ENDDO
+          ENDDO
         ENDIF
 
         END SUBROUTINE AD_T1X_SET_BIEF_OBJ

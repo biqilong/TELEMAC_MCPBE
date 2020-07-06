@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE LONGITU
-!                    ******************
+!                   ******************
+                    SUBROUTINE LONGITU
+!                   ******************
 !
      &(XEL,COSLAT,IKLE,NELMAX,NELEM)
 !

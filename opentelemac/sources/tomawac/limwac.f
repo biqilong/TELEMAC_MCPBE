@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE LIMWAC
-!                    *****************
+!                   *****************
+                    SUBROUTINE LIMWAC
+!                   *****************
 !
-     &(F     , FBOR  , NPTFR , NPLAN , NF   ,  NPOIN2, 
+     &(F     , FBOR  , NPTFR , NDIRE , NF   ,  NPOIN2,
      & KENT  , PRIVE , NPRIV , IMP_FILE)
 !
 !***********************************************************************
@@ -73,7 +73,7 @@
 !| NBOR           |-->| GLOBAL NUMBER OF BOUNDARY POINTS
 !| NF             |-->| NUMBER OF FREQUENCIES
 !| NFO1           |-->| LOGICAL UNIT NUMBER OF THE USER FORMATTED FILE
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| NPRIV          |-->| NUMBER OF PRIVATE ARRAYS
 !| NPTFR          |-->| NUMBER OF BOUNDARY POINTS
@@ -100,22 +100,22 @@
      &     LIMSPE, FPMAXL, FETCHL, SIGMAL, SIGMBL, GAMMAL, FPICL ,
      &     HM0L  , APHILL, TETA1L, SPRE1L, TETA2L, SPRE2L, XLAMDL,
      &     SPEULI, VENT  , VENSTA, DEPTH , SPEC  , FRA   , FRABL ,
-     &     AT    , LT    , UV    , VV    , LIFBOR, NBOR 
-     
+     &     AT    , LT    , UV    , VV    , LIFBOR, NBOR
+
       USE DECLARATIONS_SPECIAL
       USE BND_SPECTRA
       USE BIEF_DEF, ONLY : BIEF_FILE
       IMPLICIT NONE
 !
 !
-      INTEGER, INTENT(IN)            :: NPTFR,NPLAN,NF,NPOIN2,NPRIV
+      INTEGER, INTENT(IN)            :: NPTFR,NDIRE,NF,NPOIN2,NPRIV
       INTEGER, INTENT(IN)            :: KENT
       DOUBLE PRECISION, INTENT(IN)   :: PRIVE(NPOIN2,NPRIV)
       TYPE(BIEF_FILE), INTENT(IN)    :: IMP_FILE
-      DOUBLE PRECISION, INTENT(INOUT):: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT):: FBOR(NPTFR,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: FBOR(NPTFR,NDIRE,NF)
 !
-      INTEGER IFF,IPLAN,IPTFR
+      INTEGER IFF,IDIRE,IPTFR
 !
       LOGICAL FLAG
 !
@@ -146,14 +146,14 @@
           NPB=NPTFR
         ENDIF
         IF(NPB.EQ.1) THEN
-          IF (.NOT.ALLOCATED(FB_CTE)) ALLOCATE(FB_CTE(1:NPLAN,1:NF))
+          IF (.NOT.ALLOCATED(FB_CTE)) ALLOCATE(FB_CTE(1:NDIRE,1:NF))
         ENDIF
       ENDIF
       IF (.NOT.ALLOCATED(UV2D)) ALLOCATE(UV2D(NPTFR))
 !     MEMCHECK DO NOT LIKE FOR DEFERL_BJ78
       IF (.NOT.ALLOCATED(VV2D)) ALLOCATE(VV2D(NPTFR))
       IF (.NOT.ALLOCATED(PROF)) ALLOCATE(PROF(NPTFR))
-      IF (.NOT.ALLOCATED(FB_CTE)) ALLOCATE(FB_CTE(1:NPLAN,1:NF))
+      IF (.NOT.ALLOCATED(FB_CTE)) ALLOCATE(FB_CTE(1:NDIRE,1:NF))
 !
 !     THE FIRST TIME (AND POSSIBLY SUBSEQUENTLY IF THE WIND IS NOT
 !     STATIONARY AND IF THE BOUNDARY SPECTRUM DEPENDS ON IT),
@@ -181,13 +181,13 @@
           CALL SPEINI
      &(   FBOR  ,SPEC  ,FRA   ,UV2D  ,VV2D  ,FPMAXL,FETCHL,
      &    SIGMAL,SIGMBL,GAMMAL,FPICL ,HM0L  ,APHILL,TETA1L,
-     &    SPRE1L,TETA2L,SPRE2L,XLAMDL,NPB   ,NPLAN ,NF    ,
+     &    SPRE1L,TETA2L,SPRE2L,XLAMDL,NPB   ,NDIRE ,NF    ,
      &    LIMSPE,PROF  ,FRABL )
         ELSE
           CALL SPEINI
      &(   FB_CTE,SPEC  ,FRA   ,UV2D  ,VV2D  ,FPMAXL,FETCHL,
      &    SIGMAL,SIGMBL,GAMMAL,FPICL ,HM0L  ,APHILL,TETA1L,
-     &    SPRE1L,TETA2L,SPRE2L,XLAMDL,NPB   ,NPLAN ,NF    ,
+     &    SPRE1L,TETA2L,SPRE2L,XLAMDL,NPB   ,NDIRE ,NF    ,
      &    LIMSPE,PROF  ,FRABL )
         ENDIF
 !
@@ -195,7 +195,7 @@
 !       THEY NEED TO BE IMPOSED
 !
         IF(IMP_FILE%NAME(1:1).NE.' ')THEN
-          CALL IMPOSE_BND_SPECTRA(IMP_FILE,LT,AT,FBOR,NPTFR,NPLAN,NF)
+          CALL IMPOSE_BND_SPECTRA(IMP_FILE,LT,AT,FBOR,NPTFR,NDIRE,NF)
         ENDIF
       ENDIF
 !
@@ -205,7 +205,7 @@
 !
       IF(SPEULI) THEN
         CALL USER_LIMWAC
-     &(F     , FBOR  , NPTFR , NPLAN , NF    , NPOIN2,
+     &(F     , FBOR  , NPTFR , NDIRE , NF    , NPOIN2,
      & KENT  , PRIVE , NPRIV ,  IMP_FILE)
 !
 !     ===========================================================
@@ -224,8 +224,8 @@
           DO IPTFR=1,NPTFR
             IF(LIFBOR(IPTFR).EQ.KENT) THEN
               DO IFF=1,NF
-                DO IPLAN=1,NPLAN
-                  F(NBOR(IPTFR),IPLAN,IFF)=FBOR(IPTFR,IPLAN,IFF)
+                DO IDIRE=1, NDIRE
+                  F(NBOR(IPTFR),IDIRE,IFF)=FBOR(IPTFR,IDIRE,IFF)
                 ENDDO
               ENDDO
             ENDIF
@@ -234,15 +234,15 @@
           DO IPTFR=1,NPTFR
             IF(LIFBOR(IPTFR).EQ.KENT) THEN
               DO IFF=1,NF
-                DO IPLAN=1,NPLAN
-                  F(NBOR(IPTFR),IPLAN,IFF)=FB_CTE(IPLAN,IFF)
+                DO IDIRE=1, NDIRE
+                  F(NBOR(IPTFR),IDIRE,IFF)=FB_CTE(IDIRE,IFF)
                 ENDDO
               ENDDO
             ENDIF
           ENDDO
         ENDIF
       ENDIF
-!        
+!
 !-----------------------------------------------------------------------
 !
       RETURN

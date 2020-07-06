@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE ELEBD
-!                    ****************
+!                   ****************
+                    SUBROUTINE ELEBD
+!                   ****************
 !
      &(NELBOR,NULONE,KP1BOR,IFABOR,NBOR,IKLE,SIZIKL,IKLBOR,NELEM,NELMAX,
      & NPOIN,NPTFR,IELM,LIHBOR,KLOG,ISEG,T1,T2,T3,NELEBX,

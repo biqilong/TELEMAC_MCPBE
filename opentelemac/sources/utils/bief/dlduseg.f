@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE DLDUSEG
-!                    ******************
+!                   ******************
+                    SUBROUTINE DLDUSEG
+!                   ******************
 !
      &(DB,XB,TYPDIA,XA,TYPEXA,GLOSEG,NSEG,NPOIN,COPY)
 !

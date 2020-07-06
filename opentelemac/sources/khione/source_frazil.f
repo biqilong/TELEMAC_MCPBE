@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE SOURCE_FRAZIL
-!                    ************************
+!                   ************************
+                    SUBROUTINE SOURCE_FRAZIL
+!                   ************************
 !
      &( NPOIN,TEXP,TN,HPROP,U,V,T1,S,MESH,
      &  DT,AT,MARDAT,MARTIM,LAMBD0 )

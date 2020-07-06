@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE STWC2
-!                    ****************
+!                   ****************
+                    SUBROUTINE STWC2
+!                   ****************
 !
      &(IMIN,IMAX,N,DIR2,SDIR)
 !
@@ -13,7 +13,7 @@
 !history  N.DURAND (HRW)
 !+        November 2017
 !+        V7P4
-!+   New. Wrapper around calls to STIRLING and LISSAGE, when linear 
+!+   New. Wrapper around calls to STIRLING and LISSAGE, when linear
 !+   interpolation (STWC1) is not sufficient
 !
 !history  N.DURAND (HRW)
@@ -50,7 +50,7 @@
       CALL CHECK_ALLOCATE(IERR,'STWC2:SDIR2')
 !
 !=======================================================================
-!     TOMAWAC SPECTRUM IS GIVEN AT DISCRETE FREQUENCIES AND DIRECTIONS 
+!     TOMAWAC SPECTRUM IS GIVEN AT DISCRETE FREQUENCIES AND DIRECTIONS
 !     THAT ARE COARSER THAN REQUIRED TO GIVE A SMOOTH ESTIMATE OF ENERGY
 !     IN SPECTRUM
 !     => REQUIRES INTERPOLATION (WITHIN RANGE) WITH STIRLING,
@@ -71,7 +71,7 @@
           DIR2(NDIR-IMIN+1+IDD)  = S_TOM%DIR(IDD)
           SDIR2(NDIR-IMIN+1+IDD) = SDIR(IDD)
         ENDDO
-        CALL STIRLING( NDIR-IMIN+1+IMAX, DIR2, SDIR2, 
+        CALL STIRLING( NDIR-IMIN+1+IMAX, DIR2, SDIR2,
      &                N, DTETA2, SDIR )
 !
       ELSE
@@ -79,7 +79,7 @@
           DIR2(IDD-IMIN+1)  = S_TOM%DIR(IDD)
           SDIR2(IDD-IMIN+1) = SDIR(IDD)
         ENDDO
-        CALL STIRLING( IMAX-IMIN+1, DIR2, SDIR2, 
+        CALL STIRLING( IMAX-IMIN+1, DIR2, SDIR2,
      &                N, DTETA2, SDIR )
       ENDIF
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE INIPHY
-!                    *****************
+!                   *****************
+                    SUBROUTINE INIPHY
+!                   *****************
 !
      &( XK    , CG    , B     , NPOIN2, NF   )
 !

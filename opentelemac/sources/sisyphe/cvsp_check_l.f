@@ -16,7 +16,7 @@
 !+        V6P3 / V7P2
 !
 !history  R. KOPMANN (BAW)
-!+        25/02/2019 
+!+        25/02/2019
 !+        V7P2
 !+   Removing 1/NSICLA
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,7 +80,7 @@
             AVAIL(J,K,I) = AVAIL(J,K,I) / ASUM
           END DO
           IF (LT.GT.0) THEN
-             IF(CP) WRITE(LU,*)
+            IF(CP) WRITE(LU,*)
      &          'CVSP CL: |SUM_ERR|: WARN,LT,J;K;SUM: '
      &          ,SOMETEXT,LT,JG,K,ASUM
           RET = .FALSE.

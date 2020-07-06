@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SUMVER
-!                    *****************
+!                   *****************
+                    SUBROUTINE SUMVER
+!                   *****************
 !
      &(FINT,F,NPLAN,NPTFR)
 !

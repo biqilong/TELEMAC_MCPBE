@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LOINOY
-!                    *****************
+!                   *****************
+                    SUBROUTINE LOINOY
+!                   *****************
 !
      &(YAM,YAV,YS,PHI,DEB,G)
 !

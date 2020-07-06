@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DESSED
-!                    *****************
+!                   *****************
+                    SUBROUTINE DESSED
+!                   *****************
 !
      & (NPF,S3D_IVIDE,S3D_EPAI,S3D_HDEP,S3D_TEMP,ZR,NPOIN2,
      &  S3D_NPFMAX,S3D_NCOUCH,GRAPRD,LT,S3D_DTC,S3D_TASSE,
@@ -316,22 +316,22 @@
         CALL CHECK_ALLOCATE(ERR, 'WSEB')
 ! TRUE LAYERING - ELEVATION Z
         DO IPOIN = 1, NPOIN2
-           JPLAN = 0
-           ZPLAN = ZR(IPOIN)
-           DO IPLAN = 1,S3D_NPFMAX-NPF(IPOIN)
-             JPLAN = JPLAN + 1
-             WSEB(IPOIN+(JPLAN-1)*NPOIN2) = ZPLAN
-           ENDDO
-           DO IPLAN = 1,NPF(IPOIN)-1
-             JPLAN = JPLAN + 1
-             ECOUCH=(S3D_IVIDE(IPLAN,IPOIN)+
-     &               S3D_IVIDE(IPLAN+1,IPOIN))/2.D0
-             ZPLAN = ZPLAN +
-     &             ( 1.D0+ECOUCH ) * S3D_EPAI(IPOIN,IPLAN)
-             WSEB(IPOIN+(JPLAN-1)*NPOIN2) = ZPLAN
-           ENDDO
-           WSEB(IPOIN+(S3D_NPFMAX-1)*NPOIN2) = ZPLAN +
-     &              S3D_HDEP(IPOIN)
+          JPLAN = 0
+          ZPLAN = ZR(IPOIN)
+          DO IPLAN = 1,S3D_NPFMAX-NPF(IPOIN)
+            JPLAN = JPLAN + 1
+            WSEB(IPOIN+(JPLAN-1)*NPOIN2) = ZPLAN
+          ENDDO
+          DO IPLAN = 1,NPF(IPOIN)-1
+            JPLAN = JPLAN + 1
+            ECOUCH=(S3D_IVIDE(IPLAN,IPOIN)+
+     &              S3D_IVIDE(IPLAN+1,IPOIN))/2.D0
+            ZPLAN = ZPLAN +
+     &            ( 1.D0+ECOUCH ) * S3D_EPAI(IPOIN,IPLAN)
+            WSEB(IPOIN+(JPLAN-1)*NPOIN2) = ZPLAN
+          ENDDO
+          WSEB(IPOIN+(S3D_NPFMAX-1)*NPOIN2) = ZPLAN +
+     &             S3D_HDEP(IPOIN)
         ENDDO
         CALL ADD_DATA(FMTRSED,NRSED,VARNAME(1),S3D_DTC,RECORD,.TRUE.,
      &                WSEB,NPOIN3,IERR)

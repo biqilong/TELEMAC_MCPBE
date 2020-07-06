@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE NUWAVE_P0
-!                    ********************
+!                   ********************
+                    SUBROUTINE NUWAVE_P0
+!                   ********************
 !
      &(NUWAVE,DM1,Z,DZ,IKLE,NPOIN2,NPLAN,NELEM,NELMAX,NELEM2,XMUL,IELM3,
      & X,Y,SURFAC)

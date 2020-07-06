@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE SED3D
-!                    ****************
+!                   ****************
+                    SUBROUTINE SED3D
+!                   ****************
 !
      &(S3D_MASBED, S3D_MASBED0, S3D_MASDEP,S3D_EPAI,
      & S3D_CONC,TRA02,
@@ -112,7 +112,7 @@
 !      ENDDO
 !
 !      MASSE3=FLUX*DT
-!      IF(NCSIZE.GT.1) MASSE3=P_DSUM(MASSE3)
+!      IF(NCSIZE.GT.1) MASSE3=P_SUM(MASSE3)
 !
 !=======================================================================
 !
@@ -127,7 +127,7 @@
 !      ENDDO
 !
 !      MASSE4=FLUX*DT
-!      IF(NCSIZE.GT.1) MASSE4=P_DSUM(MASSE4)
+!      IF(NCSIZE.GT.1) MASSE4=P_SUM(MASSE4)
 !
 !=======================================================================
 !

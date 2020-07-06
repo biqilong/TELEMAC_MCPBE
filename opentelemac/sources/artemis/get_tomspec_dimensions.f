@@ -1,6 +1,6 @@
-!                    *********************************
-                     SUBROUTINE GET_TOMSPEC_DIMENSIONS
-!                    *********************************
+!                   *********************************
+                    SUBROUTINE GET_TOMSPEC_DIMENSIONS
+!                   *********************************
 !
      &(NSPEC1,NDIR1,NF1)
 !
@@ -14,13 +14,13 @@
 !history  N.DURAND (HRW)
 !+        June 2014
 !+        V7P0
-!+   
+!+
 !
 !history  N.DURAND (HRW)
 !+        Feb 2017
 !+        V7P2
 !+   Revisited to use the hermes module
-!   
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| NSPEC1         |<--| NUMBER OF TOMAWAC SPECTRA IN FILE
 !| NDIR1          |<--| NUMBER OF DISCRETE DIRECTIONS
@@ -52,10 +52,10 @@
       FFORMAT = ART_FILES(WACSPE)%FMT
 !     THE SUPPORT MESH FOR TOMAWAC SPECTRA IS MADE OF QUADRANGLES
       TYP = QUADRANGLE_ELT_TYPE
-! 
+!
 !-----------------------------------------------------------------------
 !
-!     CHOSE NOT TO CALL READ_MESH_INFO HERE BECAUSE IT CONTAINS EXTRA 
+!     CHOSE NOT TO CALL READ_MESH_INFO HERE BECAUSE IT CONTAINS EXTRA
 !     INFORMATION WHICH IS NOT RELEVANT IN THIS CASE
 !     => CALLED INDIVIDUAL ROUTINES INSTEAD
 !

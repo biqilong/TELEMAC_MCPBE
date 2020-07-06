@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE WRITESELLIM
-!                    *****************
+!                   *****************
+                    SUBROUTINE WRITESELLIM
+!                   *****************
 !
      &(NLIM,LIHBOR,LIUBOR,LIVBOR,HBOR,UBOR,VBOR,
      & CHBORD,NBOR,NPMAX,NPTFR)

@@ -1,6 +1,6 @@
-!                        *****************
-                         SUBROUTINE CVSP_P
-!                        *****************
+!                       *****************
+                        SUBROUTINE CVSP_P
+!                       *****************
 !
      &(PATH_PRE,FILE_PRE,JG)
 !

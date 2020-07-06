@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE IFAB3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE IFAB3D
+!                   *****************
 !
      &(IFABOR,LIUBOF,LIUBOL,LIUBOS,KP1BOR,NELBOR,NULONE,
      & IKLE2,NELEM2,NELMAX2,NPOIN2,NPTFR,NPLAN,NETAGE,KLOG,TRANSF)

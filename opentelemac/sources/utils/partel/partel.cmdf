@@ -59,6 +59,26 @@ files: interface_hermes.f
 [parallel]
 path: <root>|sources|utils|parallel
 files: declarations_parallel.F
+  p_dmax.F
+  p_dmax_array.F
+  p_dmin.F
+  p_dread.F
+  p_dsum.F
+  p_dwrit.F
+  p_imax.F
+  p_imax_array.F
+  p_imin.F
+  p_iread.F
+  p_ireadi.F
+  p_ireadi8.F
+  p_isum.F
+  p_iwrit.F
+  p_iwriti.F
+  p_iwriti8.F
+  p_mpi_alltoallv_alg.F
+  p_mpi_alltoallv_charac.F
+  p_mpi_alltoallv_i.F
+  p_mpi_alltoallv_oil.F
   interface_parallel.f
 
 [partel]

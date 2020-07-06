@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT14TT
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT14TT
+!                   *****************
 !
      &(T,XM,LEGO,XMUL,SW,W,H,
      & X,Y,IKLE,NELEM,NELMAX,NPLAN,NPOIN2)

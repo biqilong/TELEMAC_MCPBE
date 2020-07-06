@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE FLUXPR_TELEMAC2D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE FLUXPR_TELEMAC2D
+!                   ***************************
 !
      &(NSEC,CTRLSC,FLX,VOLNEG,VOLPOS,INFO,TPS,NSEG,NCSIZE,CUMFLO)
 !
@@ -56,7 +56,7 @@
      &                                  WORK_FPR, OLD_METHOD_FPR,
      &                                  INIT_FPR, NSEO_FPR
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_DSUM,P_IMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN,P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -115,14 +115,14 @@
       DO ISEC = 1,NSEC
 !     SECTIONS ACROSS 2 SUB-DOMAINS WILL HAVE NSEG=0 OR -1
 !     AND -1 WANTED HERE FOR RELEVANT MESSAGE.
-      II=P_IMIN(NSEG(ISEC))
+      II=P_MIN(NSEG(ISEC))
 !
       IF(II.GE.0) THEN
 !
-        DTMP1 = P_DMIN(FLX(ISEC))
-        DTMP2 = P_DMAX(FLX(ISEC))
-        DTMP3 = P_DMIN(VOLNEG(ISEC))
-        DTMP4 = P_DMAX(VOLPOS(ISEC))
+        DTMP1 = P_MIN(FLX(ISEC))
+        DTMP2 = P_MAX(FLX(ISEC))
+        DTMP3 = P_MIN(VOLNEG(ISEC))
+        DTMP4 = P_MAX(VOLPOS(ISEC))
 !
         WRITE(LU,133) ISEC,CTRLSC(1+2*(ISEC-1)),
      &                CTRLSC(2+2*(ISEC-1)),
@@ -174,9 +174,9 @@
 !
           DO ISEC = 1,NSEC
 !
-            DTMP1 = P_DSUM(FLX(ISEC))
-            DTMP2 = P_DSUM(VOLNEG(ISEC))
-            DTMP3 = P_DSUM(VOLPOS(ISEC))
+            DTMP1 = P_SUM(FLX(ISEC))
+            DTMP2 = P_SUM(VOLNEG(ISEC))
+            DTMP3 = P_SUM(VOLPOS(ISEC))
 !
             WRITE(LU,233) ISEC,TRIM(CHAIN(ISEC)%DESCR),
      &                    DTMP1,DTMP2,DTMP3
@@ -219,11 +219,11 @@
             ENDIF
           ENDIF
         ENDIF
-        ! DEADLOCK WITH WRITE AND P_DSUM IN AN IMPLIED WRITE LOOP
+        ! DEADLOCK WITH WRITE AND P_SUM IN AN IMPLIED WRITE LOOP
         ! BECAUSE IT IS ONLY MASTER TO WRITE THE MESSAGE...
         IF (NCSIZE.GT.1) THEN
           DO ISEC=1,NSEC
-            WORK_FPR(ISEC) = P_DSUM(FLX(ISEC))
+            WORK_FPR(ISEC) = P_SUM(FLX(ISEC))
           END DO
           IF (IPID.EQ.0)
      &      WRITE (NSEO_FPR, FMT=FMTZON) TPS,

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MATRIX
-!                    *****************
+!                   *****************
+                    SUBROUTINE MATRIX
+!                   *****************
 !
      &(M,OP,FORMUL,IELM1,IELM2,XMUL,F,G,H,U,V,W,MESH,MSK,MASKEL)
 !

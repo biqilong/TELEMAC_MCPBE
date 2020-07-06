@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE POINT_TELEMAC2D
-!                    **************************
+!                   **************************
+                    SUBROUTINE POINT_TELEMAC2D
+!                   **************************
 !
 !***********************************************************************
 ! TELEMAC2D
@@ -886,6 +886,9 @@
 !
       CALL BIEF_ALLVEC(1,CHBORD,'CHBORD',IELBU,1,1,MESH)
 !
+      CALL ALLBLO (VCOEFF,'VCOEFF')
+!
+      CALL BIEF_ALLVEC(2,VEGLAW,'VEGLAW',IELMU,1,1,MESH)
       IF(FRICTB) THEN
         ALLOCATE(FRTAB%ADR(NZONMX))
         DO I=1,NZONMX
@@ -893,20 +896,23 @@
         ENDDO
         CALL BIEF_ALLVEC(2,KFROPT,'KFROPT',IELMU,1,1,MESH)
         CALL BIEF_ALLVEC(1,NDEFMA,'NDEFMA',IELMU,1,1,MESH)
-        IF(LINDNER) THEN
-          CALL BIEF_ALLVEC(1,LINDDP,'LINDDP',IELMU,1,1,MESH)
-          CALL BIEF_ALLVEC(1,LINDSP,'LINDSP',IELMU,1,1,MESH)
+        IF(VEGETATION) THEN
+          CALL BIEF_ALLVEC_IN_BLOCK
+     &      (VCOEFF ,15,1,'VCOEFF ',IELMU,1,1,MESH)
+!
         ELSE
-          CALL BIEF_ALLVEC(1,LINDDP,'LINDDP',0,1,0,MESH)
-          CALL BIEF_ALLVEC(1,LINDSP,'LINDSP',0,1,0,MESH)
+          CALL BIEF_ALLVEC_IN_BLOCK
+     &      (VCOEFF ,1,1,'VCOEFF ',0,1,0,MESH)
+!
         ENDIF
         CALL BIEF_ALLVEC(1,NDEF_B,'NDEF_B',IELBT,1,1,MESH)
         CALL BIEF_ALLVEC(2,KFRO_B,'KFRO_B',IELBT,1,1,MESH)
       ELSE
         CALL BIEF_ALLVEC(2,KFROPT,'KFROPT',0,1,0,MESH)
         CALL BIEF_ALLVEC(1,NDEFMA,'NDEFMA',0,1,0,MESH)
-        CALL BIEF_ALLVEC(1,LINDDP,'LINDDP',0,1,0,MESH)
-        CALL BIEF_ALLVEC(1,LINDSP,'LINDSP',0,1,0,MESH)
+          CALL BIEF_ALLVEC_IN_BLOCK
+     &      (VCOEFF ,1,1,'VCOEFF ',0,1,0,MESH)
+!
         CALL BIEF_ALLVEC(1,NDEF_B,'NDEF_B',0,1,0,MESH)
         CALL BIEF_ALLVEC(2,KFRO_B,'KFRO_B',0,1,0,MESH)
       ENDIF

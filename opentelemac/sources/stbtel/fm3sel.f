@@ -157,10 +157,10 @@
 
         IF(NPTIR.EQ.0) THEN
           DO I=1,NPOIN
-           ITRAV(I) = 0
+            ITRAV(I) = 0
           ENDDO
           DO I =1,NPTFR
-           ITRAV(NBOR(I)) = I
+            ITRAV(NBOR(I)) = I
           ENDDO
         ELSE
           ITRAV(1:NPTFR) = 0

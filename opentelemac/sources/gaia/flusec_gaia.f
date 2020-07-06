@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE FLUSEC_GAIA
-!                    *************************
+!                   *************************
+                    SUBROUTINE FLUSEC_GAIA
+!                   *************************
 !
      &(U,V,H,QSXC,QSYC,CHARR,SUSP,
      & IKLE,NELMAX,NELEM,X,Y,DT,NCP,CTRLSC,INFO,TPS)

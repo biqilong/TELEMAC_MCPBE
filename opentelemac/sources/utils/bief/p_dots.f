@@ -1,6 +1,6 @@
-!                    ********************************
-                     DOUBLE PRECISION FUNCTION P_DOTS
-!                    ********************************
+!                   ********************************
+                    DOUBLE PRECISION FUNCTION P_DOTS
+!                   ********************************
 !
      &( X , Y , MESH )
 !
@@ -64,7 +64,7 @@
       USE DECLARATIONS_TELEMAC, ONLY : MODASS
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM, P_DSUMERR
+      USE INTERFACE_PARALLEL, ONLY : P_SUM, P_DSUMERR
       IMPLICIT NONE
 !
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -179,7 +179,7 @@
 ! FINAL SUM ON ALL THE SUB-DOMAINS
 !
       IF (MODASS .EQ. 1) THEN
-        IF(NCSIZE.GT.1) P_DOTS = P_DSUM(P_DOTS)
+        IF(NCSIZE.GT.1) P_DOTS = P_SUM(P_DOTS)
       ELSEIF (MODASS .EQ. 3) THEN
         IF(NCSIZE.GT.1) P_DOTS = P_DSUMERR(PAIR)
       ENDIF

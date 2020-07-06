@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LICHEK
-!                    *****************
+!                   *****************
+                    SUBROUTINE LICHEK
+!                   *****************
 !
      &(LIMPRP,NPTFR,IKLBOR,NELEB2,NELEBX2)
 !
@@ -92,16 +92,16 @@
           IF(LIUBOF%I(IPOIN2).EQ.KLOG.OR.
      &       LIVBOF%I(IPOIN2).EQ.KLOG.OR.
      &       LIWBOF%I(IPOIN2).EQ.KLOG) THEN
-             LIUBOF%I(IPOIN2) = KLOG
-             LIVBOF%I(IPOIN2) = KLOG
-             LIWBOF%I(IPOIN2) = KLOG
+            LIUBOF%I(IPOIN2) = KLOG
+            LIVBOF%I(IPOIN2) = KLOG
+            LIWBOF%I(IPOIN2) = KLOG
           ENDIF
           IF(LIUBOS%I(IPOIN2).EQ.KLOG.OR.
      &       LIVBOS%I(IPOIN2).EQ.KLOG.OR.
      &       LIWBOS%I(IPOIN2).EQ.KLOG) THEN
-             LIUBOS%I(IPOIN2) = KLOG
-             LIVBOS%I(IPOIN2) = KLOG
-             LIWBOS%I(IPOIN2) = KLOG
+            LIUBOS%I(IPOIN2) = KLOG
+            LIVBOS%I(IPOIN2) = KLOG
+            LIWBOS%I(IPOIN2) = KLOG
           ENDIF
         ENDDO
 !
@@ -109,9 +109,9 @@
           IF(LIUBOL%I(IPTFR3).EQ.KLOG .OR.
      &       LIVBOL%I(IPTFR3).EQ.KLOG .OR.
      &       LIWBOL%I(IPTFR3).EQ.KLOG) THEN
-             LIUBOL%I(IPTFR3) = KLOG
-             LIVBOL%I(IPTFR3) = KLOG
-             LIWBOL%I(IPTFR3) = KLOG
+            LIUBOL%I(IPTFR3) = KLOG
+            LIVBOL%I(IPTFR3) = KLOG
+            LIWBOL%I(IPTFR3) = KLOG
           ENDIF
         ENDDO
 !

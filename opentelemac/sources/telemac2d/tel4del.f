@@ -29,9 +29,9 @@
 
 
       CONTAINS
-!                    *********************
-                     SUBROUTINE TEL4DELWAQ
-!                    *********************
+!                   *********************
+                    SUBROUTINE TEL4DELWAQ
+!                   *********************
 !
      &(NPOIN,NPOIN2,NSEG,IKLE,ELTSEG,GLOSEG,MAXSEG,
      & X,Y,NPTFR,LIHBOR,NBOR,NOLAY,AAT,DDT,LLT,NNIT,HNEW,HPROP,ZNEW,
@@ -556,8 +556,8 @@
 !
         DO NLAY = 1 , NOLAY-1
 !  LP 05/04/2009
-           AREAWQ( (NOLAY*(NSEG+MBND))+(NLAY-1)*NPOIN2+1 :
-     &             (NOLAY*(NSEG+MBND))+ NLAY   *NPOIN2     ) = V2DPAR
+          AREAWQ( (NOLAY*(NSEG+MBND))+(NLAY-1)*NPOIN2+1 :
+     &            (NOLAY*(NSEG+MBND))+ NLAY   *NPOIN2     ) = V2DPAR
         ENDDO
 !
         IF(TRICK) THEN
@@ -565,10 +565,10 @@
 !    *          "TIME STEP: ",DDT," SMALLER THAN ONE SECOND !"
 !          WRITE ( 4 , * )
 !    *          "SYSTEM WILL COMPUTE IN TIMESTEPS AND M3/TIMESTEP"
-           ITSTRT = 0
-           ITSTEP = 1
+          ITSTRT = 0
+          ITSTEP = 1
         ELSE
-           ITSTRT = INT(AAT)
+          ITSTRT = INT(AAT)
         ENDIF
 !
         ISTEPA=0
@@ -1132,9 +1132,9 @@
 !
       RETURN
       END SUBROUTINE TEL4DELWAQ
-!                    **************************
-                     SUBROUTINE DEALLOC_TEL4DEL
-!                    **************************
+!                   **************************
+                    SUBROUTINE DEALLOC_TEL4DEL
+!                   **************************
 !
 !***********************************************************************
 ! TELEMAC2D   V6P2                                  21/08/2010

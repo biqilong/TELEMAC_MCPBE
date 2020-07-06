@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MV0303
-!                    *****************
+!                   *****************
+                    SUBROUTINE MV0303
+!                   *****************
 !
      &(OP, X , DA,TYPDIA,XA12,XA13,XA21,XA23,XA31,XA32,
      & TYPEXT, Y,C,IKLE1,IKLE2,IKLE3,NPOIN,NELEM,W1,W2,W3
@@ -423,7 +423,7 @@
 !
         IF(TYPDIA(1:1).EQ.'Q') THEN
           IF ( MODASS .EQ.1) THEN
-             CALL OV('X=YZ    ', X=X, Y=Y, Z=DA, DIM1=NPOIN)
+            CALL OV('X=YZ    ', X=X, Y=Y, Z=DA, DIM1=NPOIN)
           ELSEIF (MODASS .EQ. 3) THEN
             CALL OV_COMP ('X=YZ    ', X , Y , DA , C  , NPOIN,
      &        X_ERR, Y_ERR , DA_ERR)

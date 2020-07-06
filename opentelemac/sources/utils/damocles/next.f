@@ -1,6 +1,6 @@
-!                    *********************
-                     INTEGER FUNCTION NEXT
-!                    *********************
+!                   *********************
+                    INTEGER FUNCTION NEXT
+!                   *********************
 !
      &( ICOL , LIGNE )
 !
@@ -86,22 +86,22 @@
 !
 !-----------------------------------------------------------------------
 !
-!          DOES NOT CONSIDER THE COMMENTED LINES:
+!       DOES NOT CONSIDER THE COMMENTED LINES:
 !
-!          IF ( LIGNE(I:I).NE.'/'.OR.I.GE.LONGLI ) THEN
-           IF (LIGNE(I:I).NE.'/') THEN
-                NEXT = I
-                GO TO 1000
-           ELSE
-                DO J = I+1 , LONGLI
-                     IF ( LIGNE(J:J).EQ.'/' ) THEN
-                          I = J
-                          GO TO 100
-                     ENDIF
-                ENDDO ! J
-                I = LONGLI
-                GO TO 100
+!       IF ( LIGNE(I:I).NE.'/'.OR.I.GE.LONGLI ) THEN
+        IF (LIGNE(I:I).NE.'/') THEN
+          NEXT = I
+          GO TO 1000
+        ELSE
+          DO J = I+1 , LONGLI
+            IF ( LIGNE(J:J).EQ.'/' ) THEN
+              I = J
+              GO TO 100
             ENDIF
+          ENDDO ! J
+          I = LONGLI
+          GO TO 100
+        ENDIF
 !
 !-----------------------------------------------------------------------
 !

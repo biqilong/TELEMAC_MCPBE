@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DESSEG
-!                    *****************
+!                   *****************
+                    SUBROUTINE DESSEG
+!                   *****************
 !
      &(X, XA,TYPEXA,B,GLOSEG,NSEG,NPOIN,DITR,COPY)
 !

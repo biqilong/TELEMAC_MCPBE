@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE COST_FUNCTION
-!                    ************************
+!                   ************************
+                    SUBROUTINE COST_FUNCTION
+!                   ************************
 !
      &(JCOUT,OPTION,MODE)
 !

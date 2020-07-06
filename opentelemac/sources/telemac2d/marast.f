@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MARAST
-!                    *****************
+!                   *****************
+                    SUBROUTINE MARAST
+!                   *****************
 !
      &(MARDAT,MARTIM,PHI0,NPOIN,AT,FU1,FV1,X,SINLAT,COSLAT,GRAV)
 !

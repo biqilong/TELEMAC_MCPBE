@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE MURD3D_POS
-!                    *********************
+!                   *********************
+                    SUBROUTINE MURD3D_POS
+!                   *********************
 !
      &(FC,FN,VOLU,VOLUN,SVOLUN,VOLU2,SVOLU2,RMASS,
      & TRA01,TRA02,TRA03,STRA01,STRA02,STRA03,MESH2,MESH3,
@@ -150,7 +150,7 @@
      &                                   BEDBOU,BEDFLU,T2_18,KSCE,ISCE
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM,P_ISUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -299,7 +299,7 @@
       DO I=1,REMAIN_SEG
         RFLUX_OLD=RFLUX_OLD+ABS(RMASS(I))
       ENDDO
-      IF(NCSIZE.GT.1) RFLUX_OLD=P_DSUM(RFLUX_OLD)
+      IF(NCSIZE.GT.1) RFLUX_OLD=P_SUM(RFLUX_OLD)
       RINIT=RFLUX_OLD
       IF(TESTING) WRITE(LU,*) 'INITIAL SUM OF ABS(FLUX)=',RINIT/DT
 !
@@ -670,9 +670,9 @@
 !
       REMAIN_TOT=REMAIN_SEG
       IF(NCSIZE.GT.1) THEN
-        RFLUX=P_DSUM(RFLUX)
+        RFLUX=P_SUM(RFLUX)
 !       WILL NOT SUM CORRECTLY IN PARALLEL, BUT ONLY TEST IF .EQ.0
-        REMAIN_TOT=P_ISUM(REMAIN_TOT)
+        REMAIN_TOT=P_SUM(REMAIN_TOT)
         IF(TESTING) THEN
           WRITE(LU,*) 'NITER=',NITER,' SUM OF ABS(FLUX)=',RFLUX/DT,
      &                ' REMAINING SEGMENTS: ',REMAIN_TOT

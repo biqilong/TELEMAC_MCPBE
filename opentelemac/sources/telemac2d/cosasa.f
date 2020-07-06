@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE COSASA
-!                    *****************
+!                   *****************
+                    SUBROUTINE COSASA
+!                   *****************
 !
      &(SIGMANU,NUMIN,NUMAX)
 !

@@ -1,6 +1,6 @@
-!                      ************************
-                       SUBROUTINE BORDER_ICOVER
-!                      ************************
+!                     ************************
+                      SUBROUTINE BORDER_ICOVER
+!                     ************************
 !
      &( U,V,TWAT, ROEAU, DT, MESH )
 !

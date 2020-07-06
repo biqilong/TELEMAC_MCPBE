@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE READ_MESH_COORD
-!                    **************************
+!                   **************************
+                    SUBROUTINE READ_MESH_COORD
+!                   **************************
 !
      &(FFORMAT,NFIC,X,Y,NPOIN,PROJECTION,LATI0,LONGI0,Z)
 !

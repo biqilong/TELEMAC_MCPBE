@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE DEALL_TELEMAC2D
-!                    **************************
+!                   **************************
+                    SUBROUTINE DEALL_TELEMAC2D
+!                   **************************
      & (FULL_DEALL)
 !
 !
@@ -239,8 +239,8 @@
 !
       CALL BIEF_DEALLOBJ(KFROPT)
       CALL BIEF_DEALLOBJ(NDEFMA)
-      CALL BIEF_DEALLOBJ(LINDDP)
-      CALL BIEF_DEALLOBJ(LINDSP)
+      CALL BIEF_DEALLOBJ(VCOEFF)
+      CALL BIEF_DEALLOBJ(VEGLAW)
       CALL BIEF_DEALLOBJ(NDEF_B)
       CALL BIEF_DEALLOBJ(KFRO_B)
       CALL BIEF_DEALLOBJ(AK    )

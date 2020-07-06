@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIFFCL
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIFFCL
+!                   *****************
 !
      &(LITBOR,TTILD,TBOR,NBOR,ICONV,NPOIN,NPTFR)
 !

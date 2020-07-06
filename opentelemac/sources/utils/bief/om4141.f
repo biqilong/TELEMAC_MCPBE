@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OM4141
-!                    *****************
+!                   *****************
+                    SUBROUTINE OM4141
+!                   *****************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,   D,C,
      & IKLE,NELEM,NELMAX,NDIAG,STOX)
@@ -164,10 +164,10 @@
         ELSEIF(TYPDIN(1:1).EQ.'I'.OR.TYPDIN(1:1).EQ.'0') THEN
 !         NOTHING TO DO, ONLY NEEDS TO COPY TYPDIN
         ELSE
-           WRITE(LU,6) TYPDIN(1:1)
-6          FORMAT(1X,'OM4141 (BIEF) : TYPDIN UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,6) TYPDIN(1:1)
+6         FORMAT(1X,'OM4141 (BIEF) : TYPDIN UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
         TYPDIM(1:1)=TYPDIN(1:1)
 !
@@ -317,7 +317,7 @@
           ENDDO ! I
           IF(TYPEXM(1:1).EQ.'Q') THEN
           DO I=1,15
-           CALL OV('X=X+Y   ', X=XM(1,I+15), Y=XN(1,I), DIM1=NELEM)
+            CALL OV('X=X+Y   ', X=XM(1,I+15), Y=XN(1,I), DIM1=NELEM)
           ENDDO ! I
           ENDIF
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
@@ -481,16 +481,16 @@
 !   DIAGONAL TERMS
 !
         IF(TYPDIM(1:1).EQ.'Q') THEN
-           CALL OV('X=XY    ', X=DM, Y=D, DIM1=NDIAG)
-           CALL OV('X=XY    ', X=DM, Y=D, DIM1=NDIAG)
+          CALL OV('X=XY    ', X=DM, Y=D, DIM1=NDIAG)
+          CALL OV('X=XY    ', X=DM, Y=D, DIM1=NDIAG)
         ELSEIF(TYPDIM(1:1).EQ.'I') THEN
-           CALL OV('X=YZ    ', X=DM, Y=D, Z=D, DIM1=NDIAG)
-           TYPDIM(1:1)='Q'
+          CALL OV('X=YZ    ', X=DM, Y=D, Z=D, DIM1=NDIAG)
+          TYPDIM(1:1)='Q'
         ELSEIF(TYPDIM(1:1).NE.'0') THEN
-           WRITE(LU,13) TYPDIM(1:1)
-13         FORMAT(1X,'OM4141 (BIEF) : TYPDIM UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,13) TYPDIM(1:1)
+13        FORMAT(1X,'OM4141 (BIEF) : TYPDIM UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !   EXTRADIAGONAL TERMS

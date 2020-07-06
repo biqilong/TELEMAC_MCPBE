@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE ASTRO
-!                    ****************
+!                   ****************
+                    SUBROUTINE ASTRO
+!                   ****************
 !
      &(YEAR,MONTH,DAY,HOUR,MINU,SEC,AT,ARL,ARS,DL,DS,AL,AS)
 !

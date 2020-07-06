@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE GRADNODT
-!                    *******************
+!                   *******************
+                    SUBROUTINE GRADNODT
+!                   *******************
 !
      &(NS,NT,NU,AIRT,AIRS,H,T,DPX,DPY,DJX,DJY,
      & DX,DY,DIFT,CVIST,CE,DTT,MESH)

@@ -87,9 +87,9 @@
 !
       CONTAINS
 !
-!                    **********************
-                     SUBROUTINE ALLOC_ALGAE
-!                    **********************
+!                   **********************
+                    SUBROUTINE ALLOC_ALGAE
+!                   **********************
 !
      &(NP_TOT,MESH,DT)
 !
@@ -202,9 +202,9 @@
       RETURN
       END SUBROUTINE ALLOC_ALGAE
 !
-!                    **********************
-                     SUBROUTINE INIT_BASSET
-!                    **********************
+!                   **********************
+                    SUBROUTINE INIT_BASSET
+!                   **********************
 !
      &(N_A,NDIM,DT)
 !
@@ -305,9 +305,9 @@
       RETURN
       END SUBROUTINE INIT_BASSET
 !
-!                    ************************
-                     SUBROUTINE INTERP_ALGAE
-!                    ************************
+!                   ************************
+                    SUBROUTINE INTERP_ALGAE
+!                   ************************
 !
      &(NP,NP_TOT,SHP_P,SHZ_P,ELT_P,U_X_AV,U_Y_AV,U_Z_AV,K_AV,EPS_AV,
      & H_FLU,NPOIN,IELM,NDP,NDP2,NPLAN,NELMAX,IKLE,W1,
@@ -434,9 +434,9 @@
       RETURN
       END SUBROUTINE INTERP_ALGAE
 !
-!                    ********************
-                     SUBROUTINE DISP_ALGAE
-!                    ********************
+!                   ********************
+                    SUBROUTINE DISP_ALGAE
+!                   ********************
 !
      & (NA_TOT,NA,NDIM,DT,AT,U_X_AV_0,U_Y_AV_0,U_Z_AV_0,K_AV_0,
      &  EPS_AV_0,H_FLU,U_X_AV,U_Y_AV,U_Z_AV,U_X_0,U_Y_0,U_Z_0,V_X_0,
@@ -1100,7 +1100,7 @@
             L22=SQRT(L21**2-COV_CAPG_I2)
           END IF
           IF(L22.EQ.0.D0)THEN
-             L22=1.D-12
+            L22=1.D-12
           END IF
 !
           CAPGAMMA_I=L21*XI_G_I+L22*XI_CAPG_I
@@ -1165,7 +1165,7 @@
 ! REDEFINE PSI
 !=======================================================================
           DO IWIN=1,NWIN
-             PSI(I_A,I_DIM,NWIN+1-IWIN+1)=PSI(I_A,I_DIM,NWIN+1-IWIN)
+            PSI(I_A,I_DIM,NWIN+1-IWIN+1)=PSI(I_A,I_DIM,NWIN+1-IWIN)
           END DO
           PSI(I_A,I_DIM,1)=((U_I_ALGAE(I_DIM)-V_I_ALGAE(I_DIM))
      &                    -(U_I_0_ALGAE(I_DIM)-V_I_0_ALGAE(I_DIM)))/DT
@@ -1215,9 +1215,9 @@
       RETURN
       END SUBROUTINE DISP_ALGAE
 !
-!                    **********************
-                     SUBROUTINE DEALLOC_ALGAE
-!                    **********************
+!                   **********************
+                    SUBROUTINE DEALLOC_ALGAE
+!                   **********************
 !
      &()
 !

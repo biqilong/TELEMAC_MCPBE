@@ -1,7 +1,7 @@
 !                       *****************
                         SUBROUTINE LIMITE
 !                       *****************
-     &( F     , FREQ  , NPOIN2, NPLAN , NF    )
+     &( F     , FREQ  , NPOIN2, NDIRE , NF    )
 !
 !***********************************************************************
 ! TOMAWAC   V7P0                                 30/07/2014
@@ -20,7 +20,7 @@
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
 !
@@ -34,9 +34,9 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
       DOUBLE PRECISION, INTENT(IN)    :: FREQ(NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -45,20 +45,20 @@
 !
 !-----------------------------------------------------------------------
 !
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       COEF=0.0081D0*GRAVIT**2/DEUPI**4
 !
-      DO IP=1,NPOIN2
-        DO JF=1,NF
+      DO IP=1, NPOIN2
+        DO JF=1, NF
           EDEF=0.0D0
-          DO JP=1,NPLAN
+          DO JP=1, NDIRE
             EDEF=EDEF+F(IP,JP,JF)
           ENDDO
           EDEF=EDEF*DTETAR
           EMAX=COEF/FREQ(JF)**5
           IF (EDEF.GT.EMAX) THEN
             REDUC=EMAX/EDEF
-            DO JP=1,NPLAN
+            DO JP=1, NDIRE
               F(IP,JP,JF)=F(IP,JP,JF)*REDUC
             ENDDO
           ENDIF

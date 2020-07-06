@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE FLUX3DLIM
-!                    ********************
+!                   ********************
+                    SUBROUTINE FLUX3DLIM
+!                   ********************
 !
      &(FLOW,FLULIM,NPLAN,NSEG2D,NPOIN2,OPT)
 !

@@ -1,6 +1,6 @@
-!                    *******************************
-                     DOUBLE PRECISION FUNCTION REALU
-!                    *******************************
+!                   *******************************
+                    DOUBLE PRECISION FUNCTION REALU
+!                   *******************************
 !
      &( ICOL , LIGNE )
 !
@@ -87,11 +87,11 @@
 !
       RSIGNE = +1.D0
       IF ( LIGNE(I1:I1).EQ.'-' ) THEN
-           RSIGNE = -1.D0
-           I1     =   NEXT ( I1+1      , LIGNE )
+        RSIGNE = -1.D0
+        I1     =   NEXT ( I1+1      , LIGNE )
       ELSE IF ( LIGNE(I1:I1).EQ.'+' ) THEN
-           RSIGNE = +1.D0
-           I1     =   NEXT ( I1+1      , LIGNE )
+        RSIGNE = +1.D0
+        I1     =   NEXT ( I1+1      , LIGNE )
       ENDIF
 !
 !     //// SEEKS THE FIRST WHITE CHARACTER FOLLOWING THE NUMBER ////

@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE INIT_COMPO_COH
-!                    *************************
+!                 *************************
+                  SUBROUTINE INIT_COMPO_COH
+!                 *************************
 !
      &(ES,CONC_VASE,CONC,NPOIN,NOMBLAY,NSICLA,AVAIL,AVA0)
 !

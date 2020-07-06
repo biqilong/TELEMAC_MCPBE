@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ENTETE
-!                    *****************
+!                   *****************
+                    SUBROUTINE ENTETE
+!                   *****************
 !
      &(IETAPE,AT,LT,ASCHEME,AORDRE)
 !

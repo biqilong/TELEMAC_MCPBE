@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE BORD3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE BORD3D
+!                   *****************
 !
      &(NFRLIQ)
 !
@@ -90,7 +90,7 @@
       USE INTERFACE_TELEMAC3D, EX_BORD3D => BORD3D
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_DMIN,P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN,P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -233,7 +233,7 @@
         ENDDO
         IF(NCSIZE.GT.1) THEN
           DO IFRLIQ=1,NFRLIQ
-            ZMIN(IFRLIQ)=P_DMIN(ZMIN(IFRLIQ))
+            ZMIN(IFRLIQ)=P_MIN(ZMIN(IFRLIQ))
           ENDDO
         ENDIF
       ENDIF
@@ -318,6 +318,10 @@
           CALL PLANTE(1)
           STOP
         ENDIF
+!     IF PRESCRIBED ELEVATION GIVEN IN BC FILE (NCOTE = 0) AND COUPLING
+!     WITH TOMAWACT3D, RECALL HBORCLI VALUES AS ADDITIONNAL WAVE EFFECT
+      ELSEIF(LIHBOR%I(K).EQ.KENT.AND.INCLUS(COUPLING,'TOMAWACT3D')) THEN
+        HBOR%R(K) = HBORCLI%R(K)
 !
       ENDIF
 !
@@ -460,6 +464,16 @@
           CALL PLANTE(1)
           STOP
         ENDIF
+!     IF PRESCRIBED VELOCITY GIVEN IN BC FILE (NVIT = 0) AND COUPLING
+!     WITH TOMAWACT3D, RECALL UBORCLI AND VBORCLI VALUES AS ADDITIONNAL
+!     WAVE EFFECT
+      ELSEIF(LIUBOL%I(K).EQ.KENTU.AND.INCLUS(COUPLING,'TOMAWACT3D'))THEN
+        DO NP=1,NPLAN
+          IBORD = (NP-1)*NPTFR2+K
+          UBORL%R(IBORD) = UBORCLI%R(K)
+          VBORL%R(IBORD) = VBORCLI%R(K)
+          WBORL%R(IBORD) = 0.D0
+        ENDDO
       ENDIF
 !
       ENDDO
@@ -588,7 +602,7 @@
 !
         IF(NCSIZE.GT.1) THEN
           DO IFRLIQ = 1 , NBEDFLO
-            BEDQAREA(IFRLIQ)=P_DSUM(BEDQAREA(IFRLIQ))
+            BEDQAREA(IFRLIQ)=P_SUM(BEDQAREA(IFRLIQ))
           ENDDO
         ENDIF
 !
@@ -614,45 +628,19 @@
 !     FOR VORTEX FORCE FORMALISM
 !
       IF(INCLUS(COUPLING,'TOMAWACT3D')) THEN
-        IF(TIDALTYPE.EQ.0) THEN
-          DO K=1,NPTFR2
-            IF((LIUBOL%I(K).EQ.KENTU.OR.LIVBOL%I(K).EQ.KENTU)
-     &           .AND.LIHBOR%I(K).EQ.KENT) THEN
-              DO NP=1,NPLAN
-                IJK=(NP-1)*NPTFR2+K
-                IPOIN2=NBOR2%I(K)
-                UBORL%R(IJK) = XNEBOR2%R(K)*US2D%R(IPOIN2)
-                VBORL%R(IJK) = YNEBOR2%R(K)*VS2D%R(IPOIN2)
-              ENDDO
-              IF(NCOTE.NE.0) THEN
-                 HBOR%R(K) = -WIP%R(NBOR2%I(K))/GRAV
-     &                     + SL3(ICOT,AT,N,INFOGR)-ZF%R(NBOR2%I(K))
-              ELSE
-                HBOR%R(K) = -WIP%R(NBOR2%I(K))/GRAV-ZF%R(NBOR2%I(K))
-              ENDIF
-            ENDIF
-          ENDDO
-        ELSE ! WE MODIFY U,V AND H SET BY TIDAL_MODEL_T3D
-          DO K=1,NPTFR2
-            IF((LIUBOL%I(K).EQ.KENTU.OR.LIVBOL%I(K).EQ.KENTU)
-     &           .AND.LIHBOR%I(K).EQ.KENT) THEN
-              DO NP=1,NPLAN
-                IJK=(NP-1)*NPTFR2+K
-                IPOIN2=NBOR2%I(K)
-                UBORL%R(IJK) = UBORL%R(IJK)+XNEBOR2%R(K)*US2D%R(IPOIN2)
-                VBORL%R(IJK) = VBORL%R(IJK)+YNEBOR2%R(K)*VS2D%R(IPOIN2)
-              ENDDO
-              IF(NCOTE.NE.0) THEN
-                HBOR%R(K) = HBOR%R(K)-WIP%R(NBOR2%I(K))/GRAV
-     &                     +SL3(ICOT,AT,N,INFOGR)-ZF%R(NBOR2%I(K))
-              ELSE
-                HBOR%R(K) = HBOR%R(K)-WIP%R(NBOR2%I(K))/GRAV
-     &                     -ZF%R(NBOR2%I(K))
-              ENDIF
-            ENDIF
-          ENDDO
+        DO K=1,NPTFR2
+          IF((LIUBOL%I(K).EQ.KENTU.OR.LIVBOL%I(K).EQ.KENTU)
+     &         .AND.LIHBOR%I(K).EQ.KENT) THEN
+            DO NP=1,NPLAN
+              IJK=(NP-1)*NPTFR2+K
+              IPOIN2=NBOR2%I(K)
+              UBORL%R(IJK) = UBORL%R(IJK)+XNEBOR2%R(K)*US2D%R(IPOIN2)
+              VBORL%R(IJK) = VBORL%R(IJK)+YNEBOR2%R(K)*VS2D%R(IPOIN2)
+            ENDDO
+            HBOR%R(K) = HBOR%R(K)-WIP%R(NBOR2%I(K))/GRAV
+          ENDIF
+        ENDDO
 
-        ENDIF
 !       MOMENTUM LOST BY WAVES DUE TO BREAKING IS ADDED
 !       AS A SURFACE STRESS
         DO IPOIN2 = 1,NPOIN2
@@ -683,15 +671,15 @@
 !
         MSK1=1
         IF(NDEBIT.GE.IFRLIQ) THEN
-          IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_IMAX(YADEB(IFRLIQ))
-           IF(YADEB(IFRLIQ).EQ.1) THEN
-           CALL DEBIMP_3D(Q3(IFRLIQ,AT,INFOGR),
-     &                    UBORL%R,VBORL%R,
-     &                    U,V,NUMLIQ%I,NUMLIQ_ELM%I,IFRLIQ,T3_02,
-     &                    NPTFR2,NETAGE,MASK_3D%ADR(MSK1)%P,
-     &                    MESH3D,EQUA,IELM2V,SVIDE,MASKTR,
-     &                    MESH3D%NELEB)
-           ENDIF
+          IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_MAX(YADEB(IFRLIQ))
+            IF(YADEB(IFRLIQ).EQ.1) THEN
+            CALL DEBIMP_3D(Q3(IFRLIQ,AT,INFOGR),
+     &                     UBORL%R,VBORL%R,
+     &                     U,V,NUMLIQ%I,NUMLIQ_ELM%I,IFRLIQ,T3_02,
+     &                     NPTFR2,NETAGE,MASK_3D%ADR(MSK1)%P,
+     &                     MESH3D,EQUA,IELM2V,SVIDE,MASKTR,
+     &                     MESH3D%NELEB)
+            ENDIF
           ELSE
           WRITE(LU,401) IFRLIQ
 401       FORMAT(1X,'BORD3D : MORE PRESCRIBED FLOWRATES',/,

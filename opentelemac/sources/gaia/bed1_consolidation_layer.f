@@ -1,6 +1,6 @@
-!            ***********************************
-             SUBROUTINE BED1_CONSOLIDATION_LAYER
-!            ***********************************
+!           ***********************************
+            SUBROUTINE BED1_CONSOLIDATION_LAYER
+!           ***********************************
 !
 !
 !***********************************************************************
@@ -194,14 +194,14 @@
               DO ISAND = 1,NSAND
                 FLUX_POS_SAND_ACTIV_LAYER(ISAND,ILAYER,IPOIN) =
      &                 FLUX_NEG_SAND_ACTIV_LAYER(ISAND,IPOIN)
-             ENDDO
+              ENDDO
             ELSE
               DO IMUD = 1,NMUD
                 FLUX_POS_MUD_ACTIV_LAYER(IMUD,ILAYER,IPOIN) =0.D0
               ENDDO
               DO ISAND = 1,NSAND
                 FLUX_POS_SAND_ACTIV_LAYER(ISAND,ILAYER,IPOIN) =0.D0
-             ENDDO
+              ENDDO
             ENDIF
           ENDDO
         ENDDO

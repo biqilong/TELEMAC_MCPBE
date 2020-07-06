@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LATITU
-!                    *****************
+!                   *****************
+                    SUBROUTINE LATITU
+!                   *****************
 !
      &(YDIST,COSLAT,SINLAT,LAMBD0,Y,NPOIN)
 !

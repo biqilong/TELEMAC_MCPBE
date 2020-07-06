@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FONVAS
-!                    *****************
+!                   *****************
+                    SUBROUTINE FONVAS
+!                   *****************
 !
      &(S3D_EPAI, S3D_CONC, S3D_HDEP,
      & S3D_FLUDP, S3D_FLUDPT, S3D_FLUER, ZF    , TA     ,
@@ -405,7 +405,7 @@
 !       fixed bug...add up the deposition flux for all partitions (S3D_MASDEP)
 !       S3D_MASDEP= S3D_MASDEP+ FLUX*DT
         MASTMP = FLUX*DT
-        IF(NCSIZE.GT.1) MASTMP=P_DSUM(MASTMP)
+        IF(NCSIZE.GT.1) MASTMP=P_SUM(MASTMP)
         S3D_MASDEP= S3D_MASDEP+ MASTMP
 !
 !=======================================================================

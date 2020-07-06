@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE QNLIN1
-!                    *****************
+!                   *****************
+                    SUBROUTINE QNLIN1
+!                   *****************
 !
-     &( TSTOT , TSDER , IANGNL, NF    , NPLAN , NPOIN2, F     ,
+     &( TSTOT , TSDER , IANGNL, NF    , NDIRE , NPOIN2, F     ,
      &  XKMOY , TAUX1 , TAUX2 , TAUX3 , TAUX4 , TAUX5 , DFINI )
 !
 !***********************************************************************
@@ -68,7 +68,7 @@
 !| F1             |-->| FIRST DISCRETIZED FREQUENCY
 !| IANGNL         |-->| ANGULAR INDICES TABLE
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| PROINF         |-->| LOGICAL INDICATING INFINITE DEPTH ASSUMPTION
 !| RAISF          |-->| FREQUENTIAL RATIO
@@ -88,12 +88,12 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NPOIN2,NPLAN,NF
-      INTEGER, INTENT(IN)             :: IANGNL(NPLAN,8)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)             :: NPOIN2,NDIRE,NF
+      INTEGER, INTENT(IN)             :: IANGNL(NDIRE,8)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XKMOY(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: TAUX1(NPOIN2),TAUX2(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: TAUX3(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: TAUX4(NPOIN2),TAUX5(NPOIN2)
@@ -212,7 +212,7 @@
 !
 !         THIRD LOOP ON THE DIRECTIONS
 !
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
 !
             JPP0 = IANGNL(JP,KAUX+1)
             JPP1 = IANGNL(JP,KAUX+2)
@@ -249,25 +249,25 @@
                 IF (JBP0.EQ.JFP0) THEN
 !
                   DO IP=1,NPOIN2
-                   TSTOT(IP,JPP0,JFP0)=TSTOT(IP,JPP0,JFP0)+TAUX2(IP)*C1
-                   TSTOT(IP,JPP1,JFP0)=TSTOT(IP,JPP1,JFP0)+TAUX2(IP)*C2
-                   TSDER(IP,JPP0,JFP0)=TSDER(IP,JPP0,JFP0)
-     &                                +TAUX5(IP)*C1SQ
-                   TSDER(IP,JPP1,JFP0)=TSDER(IP,JPP1,JFP0)
-     &                                +TAUX5(IP)*C2SQ
+                    TSTOT(IP,JPP0,JFP0)=TSTOT(IP,JPP0,JFP0)+TAUX2(IP)*C1
+                    TSTOT(IP,JPP1,JFP0)=TSTOT(IP,JPP1,JFP0)+TAUX2(IP)*C2
+                    TSDER(IP,JPP0,JFP0)=TSDER(IP,JPP0,JFP0)
+     &                                 +TAUX5(IP)*C1SQ
+                    TSDER(IP,JPP1,JFP0)=TSDER(IP,JPP1,JFP0)
+     &                                 +TAUX5(IP)*C2SQ
                   ENDDO ! IP
 !
                   IF (JBP1.EQ.JFP1) THEN
 !
                     DO IP=1,NPOIN2
-                     TSTOT(IP,JPP0,JFP1)=TSTOT(IP,JPP0,JFP1)
-     &                                  +TAUX2(IP)*C3
-                     TSTOT(IP,JPP1,JFP1)=TSTOT(IP,JPP1,JFP1)
-     &                                  +TAUX2(IP)*C4
-                     TSDER(IP,JPP0,JFP1)=TSDER(IP,JPP0,JFP1)
-     &                                  +TAUX5(IP)*C3SQ
-                     TSDER(IP,JPP1,JFP1)=TSDER(IP,JPP1,JFP1)
-     &                                  +TAUX5(IP)*C4SQ
+                      TSTOT(IP,JPP0,JFP1)=TSTOT(IP,JPP0,JFP1)
+     &                                   +TAUX2(IP)*C3
+                      TSTOT(IP,JPP1,JFP1)=TSTOT(IP,JPP1,JFP1)
+     &                                   +TAUX2(IP)*C4
+                      TSDER(IP,JPP0,JFP1)=TSDER(IP,JPP0,JFP1)
+     &                                   +TAUX5(IP)*C3SQ
+                      TSDER(IP,JPP1,JFP1)=TSDER(IP,JPP1,JFP1)
+     &                                   +TAUX5(IP)*C4SQ
                     ENDDO ! IP
 !
                   ENDIF

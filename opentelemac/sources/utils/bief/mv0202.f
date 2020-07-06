@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MV0202
-!                    *****************
+!                   *****************
+                    SUBROUTINE MV0202
+!                   *****************
 !
      &(OP, X , DA,TYPDIA,XA12,XA21,TYPEXT, Y,C,
      & IKLE1,IKLE2,NPOIN,NELEM,W1,W2)

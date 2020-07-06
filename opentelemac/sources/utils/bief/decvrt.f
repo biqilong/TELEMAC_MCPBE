@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DECVRT
-!                    *****************
+!                   *****************
+                    SUBROUTINE DECVRT
+!                   *****************
 !
      &(TETA,SL,ZF,MESH)
 !

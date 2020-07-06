@@ -229,8 +229,6 @@ subroutine  PRETRAIT                                       ( &
    integer                                        :: format_ligne
    type(ZONE_SECHE_T), dimension(:), pointer      :: ZoneSeche
    type(ZONE_FROT_T) , dimension(:), pointer      :: ZoneFrot
-   ! Utilisation Cray
-   logical                                        :: UtilisationCray
    ! Impressions - resultats
    character(LEN=255), intent(  out) :: TitreCas
    logical                                       :: impression_geo
@@ -298,8 +296,6 @@ subroutine  PRETRAIT                                       ( &
    type(ERREUR_T)                   , intent(inout) :: Erreur
    ! SCALAIRES LOCAUX
    ! ----------------
-   character(LEN=72) :: NOMDIC
-   logical           :: impression_doc
    integer           :: iext            ! compteur sur les extremites libres
    integer           :: iprof           ! Compteur sur les profils
    integer           :: iprof_inf       ! borne inf de boucle
@@ -316,7 +312,7 @@ subroutine  PRETRAIT                                       ( &
    real(DOUBLE) :: Abs_rel_controle
    real(DOUBLE) :: Abs_abs_controle
    integer      :: Bief_controle
-   integer        :: nb_casier, num_liaison, iliaison, icasier, ull, ulc
+   integer        ::  iliaison, icasier, ull, ulc
    integer        :: num_casier_origine, num_casier_fin, ilcc, nb_liaisonCC, nb_liaisonRC, jcasier
    integer, dimension(:,:), allocatable :: connect_casier
    integer        :: i,j,Nbcrue,max_nba
@@ -2223,7 +2219,7 @@ subroutine  PRETRAIT                                       ( &
          if( ( dabs(X(isect)- Profil(size(Profil(:)))%AbsAbs)) <= 0.0001_DOUBLE ) then
              iprof = size(Profil(:)) - 1
              exit
-         endif 
+         endif
          iprof = iprof + 1
       end do
       XDT(isect) = ( X(isect) - Profil(iprof)%AbsAbs ) / ( Profil(iprof + 1)%AbsAbs - Profil(iprof)%AbsAbs )
@@ -3067,7 +3063,6 @@ subroutine  PRETRAIT                                       ( &
                 &  '-------------------',/)
    10010 format ('Noyau de calcul utilise                         : ',A8)
    10020 format ('Nom du fichier des mots-cles                    : ',A)
-   10025 format ('Nom du fichier du dictionnaire                  : ',A)
    10030 format ('Nom du fichier du programme principal           : ',A)
    10035 format ('Nom du fichier des bibliotheques                : ',A)
    10037 format ('Sauvegarde du modele                            : ',A)
@@ -3099,9 +3094,6 @@ subroutine  PRETRAIT                                       ( &
    10190 format ('Duree maximale du calcul               : ',f12.1)
    10200 format ('Pas de temps variable                  : ',A3)
    10210 format ('Nombre de Courant objectif             : ',f12.3)
-   10220 format (/,'CRAY',/, &
-                &  '----',/)
-   10230 format ('Utilisation du Cray                    : ',A3)
    10300 format (/,'IMPRESSION-RESULTATS',/, &
                 &  '--------------------',/)
    10310 format ('Titre du calcul                        : ',A)

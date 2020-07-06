@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE GET_MESH_NPOIN
-!                    *************************
+!                   *************************
+                    SUBROUTINE GET_MESH_NPOIN
+!                   *************************
 !
      &(FFORMAT,FID,TYP_ELEM,NPOIN,IERR)
 !

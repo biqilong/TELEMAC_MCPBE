@@ -1,6 +1,6 @@
-!                    **********************************
-                     SUBROUTINE METEO_FROM_BINARY_FILE
-!                    **********************************
+!                   **********************************
+                    SUBROUTINE METEO_FROM_BINARY_FILE
+!                   **********************************
      &(PATMOS,WINDX,WINDY,AT,NPOIN,ATMOS,
      & ATMFILE,FILES,LISTIN,OPTWIND,WIND_SPD)
 !

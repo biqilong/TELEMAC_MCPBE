@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE PHBOR
-!                    ****************
+!                   ****************
+                    SUBROUTINE PHBOR
+!                   ****************
 !
 !
 !***********************************************************************
@@ -199,10 +199,10 @@
 ! /!\   THIS SHOULD NOT HAPPEN AGAIN BECAUSE ARTEMIS'S SPECIAL TREATMENT
 !        IF( NCSIZE.GT.1 ) THEN
 !          SDIST = MDIST
-!          MDIST = P_DMIN( MDIST )
+!          MDIST = P_MIN( MDIST )
 !          IG = 0
 !          IF( ABS(SDIST-MDIST).LT.CHOUIA ) IG = I0
-!          I0 = P_IMAX( I0 )
+!          I0 = P_MAX( I0 )
 !        ENDIF
 !
 !     ***********************************************************

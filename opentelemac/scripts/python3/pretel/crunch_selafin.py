@@ -122,7 +122,8 @@ class CrunchSelafin(AlterSelafin):
         # ~~> Sweep through time steps, saving "vari"
         vari = []
         initiate = True
-        pbar = ProgressBar(maxval=len(self.slf.tags['times'])).start()
+        if showbar:
+            pbar = ProgressBar(maxval=len(self.slf.tags['times'])).start()
         t_0 = self.slf.tags['times'][0]
         for itime in range(len(self.slf.tags['times'])):
             vrs = self.get_palues(itime)
@@ -138,8 +139,10 @@ class CrunchSelafin(AlterSelafin):
                     vari[icalc] = fct(vrs, args, t_0,
                                       self.slf.tags['times'][itime],
                                       vari[icalc])
-            pbar.update(itime)
-        pbar.finish()
+            if showbar:
+                pbar.update(itime)
+        if showbar:
+            pbar.finish()
         # ~~> Header
         self.slf.fole.update({'hook':open(file_name, 'wb')})
         self.slf.fole['name'] = file_name

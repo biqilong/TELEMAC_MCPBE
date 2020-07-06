@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE CALTETAP
-!                    *******************
+!                   *******************
+                    SUBROUTINE CALTETAP
+!                   *******************
      &(TETA,XSGBOR,YSGBOR,ADIR,NPTFR)
 !
 !

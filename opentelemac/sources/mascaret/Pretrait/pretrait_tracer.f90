@@ -46,7 +46,7 @@ subroutine PRETRAIT_Tracer( &
             Fichier_Meteo , & ! Fichier meteo
                             ! Impression des parametres et resultats
         FichierResuTracer , & ! Fichier resultats
-         FormatResuTracer , & 
+         FormatResuTracer , &
      FichierListingTracer , & ! Fichier listing
     ImpressionConcListing , & ! Logique pour les impressions
     ImpressionBilanTracer , & ! Logique pour les impressions
@@ -57,7 +57,7 @@ subroutine PRETRAIT_Tracer( &
 
 !*****************************************************************************
 ! PROGICIEL : TRACER         S.MANDELKERN - M. LUCK
-!                            F. ZAOUI                   
+!                            F. ZAOUI
 !
 ! VERSION : V8P2R0              EDF-CEREMA
 !*****************************************************************************
@@ -80,7 +80,7 @@ subroutine PRETRAIT_Tracer( &
    use M_PROFIL_T                  ! Definition du type PROFIL_T
    use M_EXTREMITE_T               ! Definition du type EXTREMITE_T
    use M_TRAITER_ERREUR_I          ! Traitement de l'errreur
-   use M_PARAMETRES_QUALITE_EAU_T  ! Donnees physiques du traceur 
+   use M_PARAMETRES_QUALITE_EAU_T  ! Donnees physiques du traceur
    use M_METEO_T                   ! Donnees Meteo
    use M_SOURCE_TRACER_T           ! Sources de traceurs
    use M_LOI_TRACER_T              ! Lois tracer
@@ -95,10 +95,10 @@ subroutine PRETRAIT_Tracer( &
    use M_MESSAGE_TRACER_C
    use Fox_dom                 ! parser XML Fortran
 
-   !.. Implicit Declarations .. 
+   !.. Implicit Declarations ..
    implicit none
 
-   !.. Gestion des mots-cles .. 
+   !.. Gestion des mots-cles ..
    type(FICHIER_T), intent(inout) :: FichierMotCle
    !.. Variables d'entree (maillage et hydraulique) ..
    integer , intent(in   ) :: Noyau        ! Noyau de calcul hydraulique
@@ -109,7 +109,7 @@ subroutine PRETRAIT_Tracer( &
    real(DOUBLE)     ,dimension(:), pointer       :: X            ! Maillage
    Type(EXTREMITE_T),dimension(:), pointer       :: Extremite
    real(DOUBLE)                  , intent(in   ) :: TempsMaximum
-   !.. Traceurs .. 
+   !.. Traceurs ..
    !
    logical                       , intent(  out) :: OptionTracer
    integer                                       :: Nbtrac
@@ -136,14 +136,13 @@ subroutine PRETRAIT_Tracer( &
    !.. Traitement des erreurs ..
    type(ERREUR_T)            , intent(inout)   :: Erreur
    ! VARIABLES LOCALES
-   ! ----------------- 
+   ! -----------------
    integer                                       :: post_processeur_tracer
    integer                       , parameter     :: POST_RUBENS  = 1
    integer                       , parameter     :: POST_OPTHYCA = 2
    logical  :: Presence_ConcIni
    logical  :: ImpressionConcIni, ImpressionLoiTracer
-   character(132)     :: arbredappel_old
-   integer  :: NbBief, NbExtLibre, ult
+   integer  :: NbExtLibre, ult
    integer  i, ib, k, retour
 
    ! FoX XML
@@ -155,7 +154,7 @@ subroutine PRETRAIT_Tracer( &
    !
    logical, allocatable :: ltab1(:),ltab2(:)
    integer, allocatable :: itab1(:),itab2(:)
-   
+
    !=========================================================================
    ! INITIALISATION
    !=========================================================================
@@ -178,8 +177,8 @@ subroutine PRETRAIT_Tracer( &
        return
    endif
    element => getDocumentElement(document)
-   !print *, 'element principal = ',getLocalName(element)        
-           
+   !print *, 'element principal = ',getLocalName(element)
+
    ! Couplage avec la qualite d'eau ? (implique 1 couplage Hydraulique / Convection Diffusion)
    champ1 => item(getElementsByTagname(document, "parametresTraceur"), 0)
    if(associated(champ1).eqv..false.) then
@@ -242,7 +241,7 @@ subroutine PRETRAIT_Tracer( &
          return
       endif
       call extractDataContent(champ3,ImpressionBilanTracer)
-      
+
       open( unit = ult , file = FichierListingTracer%Nom , access = 'SEQUENTIAL' , &
             action = 'WRITE' , form = 'FORMATTED' , iostat = RETOUR , &
             position = 'rewind' , status = 'REPLACE' )
@@ -286,7 +285,7 @@ subroutine PRETRAIT_Tracer( &
       write(ult,10630)
       !
       ! Nombre de traceurs
-      ! ------------------  
+      ! ------------------
       champ2 => item(getElementsByTagname(champ1, "nbTraceur"), 0)
       if(associated(champ2).eqv..false.) then
          print*,"Parse error => nbTraceur"
@@ -363,7 +362,7 @@ subroutine PRETRAIT_Tracer( &
          champ3 => item(getElementsByTagname(champ2, "fichMeteoTracer"), 0)
          if(associated(champ3).eqv..false.) then
             Fichier_Meteo%nom = ""
-         else    
+         else
             Fichier_Meteo%nom = getTextContent(champ3)
          endif
          call LEC_METEO( Meteo , Fichier_Meteo , Modele_Qual_Eau , Erreur )
@@ -389,7 +388,7 @@ subroutine PRETRAIT_Tracer( &
           call TRAITER_ERREUR( Erreur , 'ltab2' )
           return
       end if
-      
+
       champ2 => item(getElementsByTagname(champ1, "parametresConvectionDiffusion"), 0)
       if(associated(champ2).eqv..false.) then
          print*,"Parse error => parametresConvectionDiffusion"
@@ -410,7 +409,7 @@ subroutine PRETRAIT_Tracer( &
          return
       endif
       call extractDataContent(champ3,ltab2)
-      
+
       do ib = 1 , nbtrac
          Constrac(ib)%CONV             = ltab1(ib)
          champ3 => item(getElementsByTagname(champ2, "optionConvection"), 0)
@@ -532,7 +531,7 @@ subroutine PRETRAIT_Tracer( &
 
       write(ult,10655) FreqCouplage
 
-      ! Concentrations initiales 
+      ! Concentrations initiales
       ! ------------------------
       ! presence de concentrations initiales
       !
@@ -592,7 +591,7 @@ subroutine PRETRAIT_Tracer( &
         ImpressionLoiTracer , & ! Flag d'impression des lois tracer
         ult                 , & ! Unite logique fichier listing
         TempsMaximum        , & ! Temps maximum du calcul
-        document            , & ! Pointeur vers document XML        
+        document            , & ! Pointeur vers document XML
         Erreur                )
       if( Erreur%Numero /= 0 ) then
          return
@@ -609,7 +608,7 @@ subroutine PRETRAIT_Tracer( &
               Profil , & ! Profils geometriques
               nbtrac , & ! nb de traceurs
                  ult , & ! Unite listing
-            document , & ! Pointeur vers document XML              
+            document , & ! Pointeur vers document XML
               Erreur   & ! Erreur
                       )
       if( Erreur%Numero /= 0 ) then
@@ -638,7 +637,7 @@ subroutine PRETRAIT_Tracer( &
           call TRAITER_ERREUR( Erreur , 'itab2' )
           return
       end if
-      
+
       champ2 => item(getElementsByTagname(champ1, "parametresConditionsLimitesTraceur"), 0)
       if(associated(champ2).eqv..false.) then
          print*,"Parse error => parametresConditionsLimitesTraceur"
@@ -659,10 +658,10 @@ subroutine PRETRAIT_Tracer( &
          return
       endif
       call extractDataContent(champ3,itab2)
-      
+
       do i = 1 , NbExtlibre
 
-         Cond_Lim(i)%Type       = itab1(i) 
+         Cond_Lim(i)%Type       = itab1(i)
          Cond_Lim(i)%NumeroLoi  = itab2(i)
 
          if( Cond_Lim(i)%NumeroLoi <= 0 ) then
@@ -687,12 +686,12 @@ subroutine PRETRAIT_Tracer( &
       deallocate(ltab2)
       deallocate(itab1)
       deallocate(itab2)
-      
+
    endif PretraitTracer
 
    call destroy(document)
    call destroy(config)
-   
+
    !Erreur%arbredappel = arbredappel_old
 
    return
@@ -709,21 +708,21 @@ subroutine PRETRAIT_Tracer( &
    10690 format ('Presence de concentrations initiales        : ',A3)
 
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
-   end subroutine xerror    
-   
+
+   end subroutine xerror
+
 end subroutine PRETRAIT_Tracer

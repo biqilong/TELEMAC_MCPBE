@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE FLUSEC_SISYPHE
-!                    *************************
+!                   *************************
+                    SUBROUTINE FLUSEC_SISYPHE
+!                   *************************
 !
      &(U,V,H,QSXC,QSYC,CHARR,QSXS,QSYS,SUSP,
      & IKLE,NELMAX,NELEM,X,Y,DT,NCP,CTRLSC,INFO,TPS)

@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE LECDON_WAQTEL
-!                    ************************
+!                   ************************
+                    SUBROUTINE LECDON_WAQTEL
+!                   ************************
 !
      & (FILE_DESC,PATH,NCAR,CAS_FILE,DICO_FILE)
 !
@@ -36,7 +36,7 @@
       CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: PATH
 !     API
       CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: DICO_FILE
-      CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE      
+      CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !

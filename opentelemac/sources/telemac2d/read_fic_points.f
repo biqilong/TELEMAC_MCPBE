@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE READ_FIC_POINTS
-!                    **************************
+!                   **************************
+                    SUBROUTINE READ_FIC_POINTS
+!                   **************************
 !
      &( FFORMAT,FID, NPOIN,VALUE_PLY,X_PLY,Y_PLY, IERR )
 !

@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE TETMOY
-!                    *****************
+!                   *****************
+                    SUBROUTINE TETMOY
+!                   *****************
 !
-     &( TETAM , F     , NPLAN , NF    , NPOIN2)
+     &( TETAM , F     , NDIRE , NF    , NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   28/06/2011
@@ -46,7 +46,7 @@
 !| F              |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| SINMOY         |<->| WORK TABLE
 !| SINTET         |-->| SINE OF TETA ANGLE
@@ -56,16 +56,16 @@
 !| TETAM          |<--| DIRECTIONAL SPECTRUM MEAN DIRECTION
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI, FREQ, DFREQ, TAILF, 
-     &                                 COSTET, SINTET 
-!     
+      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI, FREQ, DFREQ, TAILF,
+     &                                 COSTET, SINTET
+!
       USE INTERFACE_TOMAWAC, EX_TETMOY => TETMOY
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)    ::  NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    ::  NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: TETAM(NPOIN2)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -76,7 +76,7 @@
 !
 !-----------------------------------------------------------------------
 !
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       SEUIL =1.D-10
 !
       DO IP=1,NPOIN2
@@ -89,20 +89,20 @@
 !
         DO JF=1,NF
 !
-           DFDTET=DFREQ(JF)*DTETAR
+          DFDTET=DFREQ(JF)*DTETAR
 !
-           TAUXC=0.D0
-           TAUXS=0.D0
+          TAUXC=0.D0
+          TAUXS=0.D0
 !
-           DO JP=1,NPLAN
-              AUXC=COSTET(JP)*DFDTET
-              AUXS=SINTET(JP)*DFDTET
-              TAUXC=TAUXC+F(IP,JP,JF)*AUXC
-              TAUXS=TAUXS+F(IP,JP,JF)*AUXS
-           ENDDO
+          DO JP=1,NDIRE
+            AUXC=COSTET(JP)*DFDTET
+            AUXS=SINTET(JP)*DFDTET
+            TAUXC=TAUXC+F(IP,JP,JF)*AUXC
+            TAUXS=TAUXS+F(IP,JP,JF)*AUXS
+          ENDDO
 !
-           COSMOY=COSMOY+TAUXC
-           SINMOY=SINMOY+TAUXS
+          COSMOY=COSMOY+TAUXC
+          SINMOY=SINMOY+TAUXS
 !
         ENDDO                   ! JF
 !
@@ -111,9 +111,9 @@
 !-----C-------------------------------------------------------------C
 !
         IF(TAILF.GT.1.D0) THEN
-           COEFT=FREQ(NF)/((TAILF-1.D0)*DFREQ(NF))
-           COSMOY=COSMOY+TAUXC*COEFT
-           SINMOY=SINMOY+TAUXS*COEFT
+          COEFT=FREQ(NF)/((TAILF-1.D0)*DFREQ(NF))
+          COSMOY=COSMOY+TAUXC*COEFT
+          SINMOY=SINMOY+TAUXS*COEFT
         ENDIF
 !
 !-----C-------------------------------------------------------------C
@@ -123,10 +123,10 @@
 !
         IF(ABS(SINMOY).LT.SEUIL.AND.
      &       ABS(COSMOY).LT.SEUIL) THEN
-           TETAM(IP) = 0.D0
+          TETAM(IP) = 0.D0
         ELSE
-           TETAM(IP)=ATAN2(SINMOY,COSMOY)
-           IF(TETAM(IP).LT.0.D0) TETAM(IP)=TETAM(IP)+DEUPI
+          TETAM(IP)=ATAN2(SINMOY,COSMOY)
+          IF(TETAM(IP).LT.0.D0) TETAM(IP)=TETAM(IP)+DEUPI
         ENDIF
       ENDDO
 !

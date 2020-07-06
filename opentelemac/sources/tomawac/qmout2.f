@@ -3,7 +3,7 @@
 !                       *****************
 !
      &( TSTOT, TSDER, F    , XK    , ENRJ , FMOY , XKMOY , USOLD,  
-     &  USNEW, NF   , NPLAN, NPOIN2, TAUX1, F_INT, BETOTO, BETOTN)
+     &  USNEW, NF   , NDIRE, NPOIN2, TAUX1, F_INT, BETOTO, BETOTN)
 !
 !**********************************************************************
 ! TOMAWAC   V6P3                                  23/06/2011
@@ -41,7 +41,7 @@
 !| XK             |-->| DISCRETIZED WAVE NUMBER
 !| XKMOY          |-->| AVERAGE WAVE NUMBER
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TAUX1          |<->| WORK TABLE
 !| TSDER          |<->| DERIVED PART OF THE SOURCE TERM CONTRIBUTION
@@ -80,15 +80,15 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
       DOUBLE PRECISION, INTENT(IN)    :: USNEW(NPOIN2),USOLD(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)    :: FMOY(NPOIN2),XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(IN)    :: ENRJ(NPOIN2),XKMOY(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: F_INT(NPOIN2),TAUX1(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: BETOTO(NPOIN2),BETOTN(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -99,9 +99,9 @@
 !
 !-----------------------------------------------------------------------
 !
-!     DTETAR = DEUPI/DBLE(NPLAN)
+!     DTETAR = DEUPI/DBLE(NDIRE)
 !     F_INT WAS DIVIDED BY DEUPI AFTER IN FORMULAS, DIVISION REMOVED
-      DTETAR = 1.D0/DBLE(NPLAN)
+      DTETAR = 1.D0/DBLE(NDIRE)
       C1     = - CMOUT5*DEUPI**9/GRAVIT**4
       C2     = - CMOUT5*DEUPI
       W = 25.D0
@@ -128,7 +128,7 @@
         DO IP=1,NPOIN2
           F_INT(IP)=F(IP,1,IFF)
         ENDDO
-        DO JP=2,NPLAN
+        DO JP=2,NDIRE
           DO IP=1,NPOIN2
             F_INT(IP)=F_INT(IP)+F(IP,JP,IFF)
           ENDDO
@@ -194,7 +194,7 @@
 !
 !       TAKES THE SOURCE TERM INTO ACCOUNT
 !
-        DO JP = 1,NPLAN
+        DO JP = 1,NDIRE
           DO IP = 1,NPOIN2
             TSTOT(IP,JP,IFF)=TSTOT(IP,JP,IFF)
      &      +(BETOTO(IP)+CIMPLI*(BETOTN(IP)-BETOTO(IP)))*F(IP,JP,IFF)

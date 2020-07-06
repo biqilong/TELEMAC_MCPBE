@@ -1,6 +1,6 @@
-!                    *******************************
-                     DOUBLE PRECISION FUNCTION EXLIM
-!                    *******************************
+!                   *******************************
+                    DOUBLE PRECISION FUNCTION EXLIM
+!                   *******************************
 !
      &(ILIM,BETA,GRI,GRIJ)
 !

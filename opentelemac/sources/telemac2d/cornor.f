@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CORNOR
-!                    *****************
+!                   *****************
+                    SUBROUTINE CORNOR
+!                   *****************
 !
      &(XNEBOR,YNEBOR,XSGBOR,YSGBOR,NPTFR,KLOG,
      & LIHBOR,T1,T2,MESH,IKLBOR,NELEB,NELEBX)

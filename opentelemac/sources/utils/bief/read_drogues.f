@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE READ_DROGUES
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE READ_DROGUES
+!                   ***********************
 !
      &( NP,NP_MAX, XP,YP,ZP,TAGP,CLSP,ELTP,SHPP,
      &  NPOIN2,NPOIN3,NELEM,NELMAX,IKLE,X,Y, T2DPLO )
@@ -38,7 +38,7 @@
 !
       USE BIEF
       USE INITIAL_DROGUES, ONLY : NDRG_TAGS
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -229,7 +229,7 @@
 !        /!\ IT IS IMPORTANT TO NOTE THAT NP .LE. IFLOT
 !
             IF( NCSIZE.GT.1 ) THEN
-              JPID = P_IMAX(JPID)
+              JPID = P_MAX(JPID)
             ENDIF
             IF( JPID.EQ.IPID ) THEN
               NP = NP + 1
@@ -248,7 +248,7 @@
         ENDIF
 !
         NDRG_TAGS = NP
-        IF( NCSIZE.GT.1 ) NDRG_TAGS = P_IMAX(NDRG_TAGS)
+        IF( NCSIZE.GT.1 ) NDRG_TAGS = P_MAX(NDRG_TAGS)
         WRITE(LU,34) NP
  34     FORMAT(1X,'READ_DROGUES:',/,I8,
      &    1X,'     DROGUES HAVE BEEN READ FROM THE',/,
@@ -266,13 +266,6 @@
       WRITE(LU,*) 'REACHED THE END OF THE DROGUES FILE'
       WRITE(LU,*) 'BEFORE FINDING THE END OF THE HEADER.'
       WRITE(LU,*) 'MAYBE THIS IS NOT A DROGUES FILE.'
-      CALL PLANTE(1)
-      STOP
- 1002 CONTINUE
-      WRITE(*,*) LIGNE
-      WRITE(LU,*) 'REACHED THE END OF THE DROGUES FILE'
-      WRITE(LU,*) 'BEFORE FINDING THE END OF THE FILE.'
-      WRITE(LU,*) 'MAYBE THIS FILE IS INCOMPLETE.'
       CALL PLANTE(1)
       STOP
  1901 CONTINUE

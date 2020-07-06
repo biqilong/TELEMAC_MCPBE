@@ -1,6 +1,6 @@
-!                      **************************
-                       SUBROUTINE SOLVE_MUMPS_PAR
-!                      **************************
+!                     **************************
+                      SUBROUTINE SOLVE_MUMPS_PAR
+!                     **************************
 !
      &(NPOIN,NSEGB,GLOSEG,MAXSEG,DA,XA,XINC,RHS,TYPEXT,KNOLG,
      & NPOIN_TOT)
@@ -59,12 +59,11 @@
       INTEGER, ALLOCATABLE :: TEMP3(:)
       INTEGER I,J,K,ERR,NBELEM,IER, IAUX, KTRI, NPOIN2, N2
 ! variables chantier logiciel ob
-      DOUBLE PRECISION :: RMIN, RMAX, RAUX, RETFIN, RETTOTAL, EPSBLR
-      INTEGER :: INIV, INPREC, NAUX, ITEST, NB_TEST, IETDEB, IETRAT,
-     &           IETMAX, IETFIN
+      DOUBLE PRECISION :: RMIN, RMAX, RAUX, EPSBLR
+      INTEGER :: INIV, INPREC, NAUX
       CHARACTER(LEN=80) :: KVERS, KSTRATEGY, KNOM, KRENUM, KPRE, KMEM,
      &                     KPOST, KACCE
-      LOGICAL :: LAUTOCORREC, LPIVOTNUM, LTRI, LPIVOTSTAT, LDEFAULT
+      LOGICAL :: LAUTOCORREC, LTRI, LPIVOTSTAT, LDEFAULT
 
 ! constantes
       RMIN=1.D-100
@@ -481,32 +480,14 @@
 !     RESOLUTION
 !     -----------
 !
-      !call system_clock(ietdeb, ietrat, ietmax)
       MUMPS_PAR%JOB = 1
       CALL DMUMPS(MUMPS_PAR)
-      !call system_clock(ietfin)
-      !retfin=real(ietfin-ietdeb)/real(ietrat)
-      !rettotal=retfin
-      !write(lu,*)'ELAPSED TIME MUMPS ANALYSIS STEP:',retfin
 !
-      !call system_clock(ietdeb, ietrat, ietmax)
       MUMPS_PAR%JOB = 2
       CALL DMUMPS(MUMPS_PAR)
-      !call system_clock(ietfin)
-      !retfin=real(ietfin-ietdeb)/real(ietrat)
-      !rettotal=rettotal+retfin
-      !write(lu,*)'ELAPSED TIME MUMPS FACTORIZATION STEP:',retfin
 !
-      !call system_clock(ietdeb, ietrat, ietmax)
       MUMPS_PAR%JOB = 3
       CALL DMUMPS(MUMPS_PAR)
-      !call system_clock(ietfin)
-      !retfin=real(ietfin-ietdeb)/real(ietrat)
-      !rettotal=rettotal+retfin
-      !write(lu,*)'ELAPSED TIME MUMPS SOLVE STEP:',retfin
-      !write(lu,*)'ELAPSED TIME MUMPS TOTAL --->:',rettotal
-!
-!
 !
       TEMP1(:)=0.0
       IF(MUMPS_PAR%MYID.EQ. 0 ) THEN

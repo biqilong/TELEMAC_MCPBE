@@ -1,6 +1,6 @@
-!                    *********************************
-                     SUBROUTINE SUSPENSION_EROSION_COH
-!                    *********************************
+!                   *********************************
+                    SUBROUTINE SUSPENSION_EROSION_COH
+!                   *********************************
 !
      &(TAUP,NPOIN,XMVS,PARTHENIADES,
      & FLUER,TOCE_VASE,NOMBLAY,DT,MS_VASE)
@@ -90,8 +90,8 @@
         DO I = 1, NPOIN
 
           IF(TAUP%R(I).GT.TOCE_VASE(1)) THEN
-!            AUX = MAX(((USTARP/VITCE)**2 - 1.D0),0.D0)
-             AUX=((TAUP%R(I)/MAX(TOCE_VASE(1),1.D-08))-1.D0)
+!           AUX = MAX(((USTARP/VITCE)**2 - 1.D0),0.D0)
+            AUX=((TAUP%R(I)/MAX(TOCE_VASE(1),1.D-08))-1.D0)
           ELSE
             AUX = 0.D0
           ENDIF

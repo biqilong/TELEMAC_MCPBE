@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CORMAR
-!                    *****************
+!                   *****************
+                    SUBROUTINE CORMAR
+!                   *****************
 !
      &( PART, UTEL, VTEL, HTEL )
 !
@@ -65,7 +65,7 @@
       USE BIEF
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_TOMAWAC
-!      
+!
       USE INTERFACE_TOMAWAC, EX_CORMAR => CORMAR
 !
       USE DECLARATIONS_SPECIAL
@@ -100,7 +100,7 @@
           FMTCOU=FMTCOF
         ENDIF
         CALL NOUDON(UC,NAMEU, 2, VC,NAMEV ,2, DEPTH,NAMEH,1, NPOIN2,
-     &              UL,FMTCOU,AT,TC1,TC2, UC1, UC2, VC1, VC2, ZM1, ZM2, 
+     &              UL,FMTCOU,AT,TC1,TC2, UC1, UC2, VC1, VC2, ZM1, ZM2,
      &              INDIC,'COURANT',NVCOU,TEXCOB,TROUVE,UNITCOB,PHASCOB)
         IF(TROUVE(3)) THEN
           CALL OV('X=Y-Z   ', X=DZHDT, Y=ZM2, Z=ZM1, DIM1=NPOIN2)

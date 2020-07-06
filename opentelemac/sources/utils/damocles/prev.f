@@ -1,6 +1,6 @@
-!                    *********************
-                     INTEGER FUNCTION PREV
-!                    *********************
+!                   *********************
+                    INTEGER FUNCTION PREV
+!                   *********************
 !
      &( ICOL , LIGNE )
 !
@@ -67,20 +67,20 @@
       IF (LIGNE(I:I).EQ.' '.OR.LIGNE(I:I).EQ.TABUL) GOTO 100
 !
 !-----------------------------------------------------------------------
-!          DOES NOT CONSIDER THE COMMENTED LINES:
+!       DOES NOT CONSIDER THE COMMENTED LINES:
 !
-           IF ( LIGNE(I:I).NE.'/' ) THEN
-                PREV = I
-                GO TO 1000
-           ELSE
-                IF ( I.LE.1 ) GO TO 1000
-                DO J = I-1 , 1 , -1
-                     IF ( LIGNE(J:J).EQ.'/' ) THEN
-                          I = J
-                          GO TO 100
-                     ENDIF
-                ENDDO ! J
-           ENDIF
+        IF ( LIGNE(I:I).NE.'/' ) THEN
+          PREV = I
+          GO TO 1000
+        ELSE
+          IF ( I.LE.1 ) GO TO 1000
+          DO J = I-1 , 1 , -1
+            IF ( LIGNE(J:J).EQ.'/' ) THEN
+              I = J
+              GO TO 100
+            ENDIF
+          ENDDO ! J
+        ENDIF
 !-----------------------------------------------------------------------
 !
  1000 CONTINUE

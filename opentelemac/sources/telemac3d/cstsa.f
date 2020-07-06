@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CSTSA
-!                    *****************
+!                   *****************
+                    SUBROUTINE CSTSA
+!                   *****************
 !
       USE DECLARATIONS_SPECIAL
       USE DECLARATIONS_TELEMAC3D, ONLY : CMU,C1,C2,SIGMANU,NUMIN,

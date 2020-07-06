@@ -49,7 +49,7 @@ subroutine LEC_LOI_INTERFACE    ( &
    use M_TRAITER_ERREUR_I    ! Traitement de l'errreur
    use M_LEC_HYDRAU_I        ! Interface de sous-programme
    use Fox_dom               ! parser XML Fortran
-   
+
   implicit none
 
 ! Arguments
@@ -65,12 +65,10 @@ subroutine LEC_LOI_INTERFACE    ( &
 
   integer :: nb_loi   ! nombre de lois
   integer :: nb_point ! nombre de points
-  integer :: nb_point_z,nb_point_q ! nombre de points
   integer :: iloi     ! compteur sur les lois
   integer :: iFichiersloi ! compteur sur les lois
 
   integer :: i        ! compteur sur les points
-  integer :: j ,k       ! compteur sur les points
   integer :: retour   ! code de retour des fonctions intrinseques
   integer :: mode_entree_loi ! type d'entree clavier/fichier
   integer :: unite_temps     ! unite de temps des lois entres par clavier
@@ -132,13 +130,13 @@ subroutine LEC_LOI_INTERFACE    ( &
   end if
 
   iFichiersloi = 1
-  
+
   champ2 => item(getElementsByTagname(champ1, "lois"), 0)
   if(associated(champ2).eqv..false.) then
      call xerror(Erreur)
      return
   endif
-  
+
   do iloi = 1, nb_loi
 
 
@@ -161,7 +159,7 @@ subroutine LEC_LOI_INTERFACE    ( &
       return
     endif
     LoiHydrau(iloi)%Nom  = getTextContent(champ4)
-      
+
     champ4 => item(getElementsByTagname(champ3, "type"), 0)
     if(associated(champ4).eqv..false.) then
       call xerror(Erreur)
@@ -682,30 +680,23 @@ subroutine LEC_LOI_INTERFACE    ( &
   10010 format ('Nombre de lois = ',i3)
   10020 format (/,'Loi ',i3,' : Nom = ',A,' Type =',i2)
   10030 format ('Mode d''entree      = ',A,' Nom du fichier = ',A)
-  10040 format ('Mode d''entree      = ',A)
-  10045 format ('Unite de temps     = ',A)
-  10050 format ('Nombre de points   = ',i3)
-  10060 format (A)
-  10070 format (i5,2f12.3)
-  10080 format (i5,3f12.3)
-  10090 format (f12.3)
 
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
-   end subroutine xerror      
-  
+
+   end subroutine xerror
+
   end subroutine LEC_LOI_INTERFACE

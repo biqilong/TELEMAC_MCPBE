@@ -1,6 +1,6 @@
-!                      **************************
-                       SUBROUTINE NAMETRAC_KHIONE
-!                      **************************
+!                     **************************
+                      SUBROUTINE NAMETRAC_KHIONE
+!                     **************************
 !
      &  (NAMETRAC,NTRAC,PROCESS)
 !
@@ -101,7 +101,7 @@
 !
 !     UNKNOWN PROCESS
 !
-      IF(.NOT.FOUND ) THEN 
+      IF(.NOT.FOUND ) THEN
         WRITE(LU,20) PROCESS
         CALL PLANTE(1)
         STOP

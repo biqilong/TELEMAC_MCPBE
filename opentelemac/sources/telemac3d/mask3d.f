@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASK3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASK3D
+!                   *****************
 !
      &(IFABOR3D,MASKEL,MASKPT,MASKBR,
      & X,Y,ZF,ZFE,H,HMIN,AT,LT,ITRA01,NELBO3,

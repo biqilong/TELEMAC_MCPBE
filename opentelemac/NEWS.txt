@@ -1,6 +1,22 @@
 Trunk
 ===========================
 
+TELEMAC-3D: velocity components + tracers values at the free surface as
+variables for graphic printouts of the 2D RESULT FILE
+
+PARALLEL: new generic function:
+Function that had the same functionalities but different argument types can now be called using the same function.
+For example instead of using p_imax, p_dmax you use p_max for both case.
+
+TELEMAC-2D: new vegetation friction laws
+
+Python: New script manip_cas.py to check/sort you steering file
+
+TELEMAC-2D: fix restart mode with tracers (T1 was missing)
+
+TELEMAC-3D: fix the overwriting of TELEMAC-3D boundary conditions when coupling
+with TOMAWACT3D
+
 TELEMAC-2D: new default values for 3 keywords:
   - TREATMENT OF THE LINEAR SOLVER = 2 (i.e. wave equation, old = 1: coupled),
   - COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED = YES,

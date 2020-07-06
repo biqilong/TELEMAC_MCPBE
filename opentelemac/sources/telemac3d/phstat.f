@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PHSTAT
-!                    *****************
+!                   *****************
+                    SUBROUTINE PHSTAT
+!                   *****************
 !
      &   (PH, DELTAR, Z, TRA01, TRA02, RHO0, GRAV,
      &    NPOIN3, NPOIN2, NPLAN )

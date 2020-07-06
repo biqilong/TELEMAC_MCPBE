@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE CHAR_WEAK
-!                    ********************
+!                   ********************
+                    SUBROUTINE CHAR_WEAK
+!                   ********************
 !
      &(FTILD,FTILD_WEAK,SURFAC,IKLE,NPOIN,NELEM,NELMAX,NG,NGAUSS,
      & MESH,T2,TB,AGGLO,IELM,NPLAN,Z,CV1,AM1,SLV,UNSV,LISTIN,SOLV)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TOPOGR
-!                    *****************
+!                   *****************
+                    SUBROUTINE TOPOGR
+!                   *****************
 !
      &(ZF,ZREF,ZFE,IKLE,IFABOR,NBOR,NELBOR,NULONE,
      & ITRA05,ITRA02,ITRA03,NELEM,NPTFR,NPOIN,MXPTVS)

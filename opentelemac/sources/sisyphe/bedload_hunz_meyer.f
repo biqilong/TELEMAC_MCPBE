@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE BEDLOAD_HUNZ_MEYER
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE BEDLOAD_HUNZ_MEYER
+!                   *****************************
 !
      &  (TOB, MU, ACLADM, UNLADM, NPOIN, DENS, XMVE, GRAV, DM, AC,
      &    TETAP, AHUNZI, ACP, HIDING, QSC)

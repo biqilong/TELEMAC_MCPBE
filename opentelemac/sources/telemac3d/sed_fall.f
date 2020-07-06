@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE SED_FALL
-!                    *******************
+!                   *******************
+                    SUBROUTINE SED_FALL
+!                   *******************
 !
      &(FC,FN,WCHU,MESH3D,DT,VOLU,NPOIN2,NPOIN3,NPLAN,T1)
 !

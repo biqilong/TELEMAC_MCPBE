@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE SD_STRSG4
-!                    ********************
+!                   ********************
+                    SUBROUTINE SD_STRSG4
+!                   ********************
 !
      &(NPOIN,NSEG,GLOSEGB,NSEGBLK,GLOSEG4)
 !

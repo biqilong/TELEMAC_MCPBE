@@ -33,8 +33,8 @@
       USE DECLARATIONS_TELEMAC2D
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_ISUM,P_DMAX,P_DMIN,
-     &                               P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM,P_MAX,P_MIN,
+     &                               P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -68,7 +68,7 @@
             ENDIF
           ENDDO
           IF(NCSIZE.GT.1) THEN
-            ZCRBR%R(I) = P_DMAX(ZCRBR%R(I))
+            ZCRBR%R(I) = P_MAX(ZCRBR%R(I))
           ENDIF
         ENDDO
       ENDIF
@@ -87,8 +87,8 @@
               ENDIF
             ENDDO
             IF(NCSIZE.GT.1) THEN
-              N = P_ISUM(N)
-              ZC = P_DSUM(ZC)
+              N = P_SUM(N)
+              ZC = P_SUM(ZC)
             ENDIF
             IF(N.GT.1) ZC = ZC/N
             IF(ZC.GT.ZDECBR%R(I)) THEN
@@ -104,7 +104,7 @@
             ENDIF
 !           CASE WHERE ONE OF THE ENDS IS NOT IN THE SUB-DOMAIN
             IF(NCSIZE.GT.1) THEN
-              ZW = P_DMAX(ZW)+P_DMIN(ZW)
+              ZW = P_MAX(ZW)+P_MIN(ZW)
             ENDIF
             IF(ZW.GT.ZDECBR%R(I)) THEN
               WRITE(LU,20) I, AT
@@ -291,8 +291,8 @@
               ENDIF
             ENDDO
             IF(NCSIZE.GT.1) THEN
-              N = P_ISUM(N)
-              ZC = P_DSUM(ZC)
+              N = P_SUM(N)
+              ZC = P_SUM(ZC)
             ENDIF
             IF(N.GT.1) ZC = ZC/N
             IF(ZC.GT.ZDECBR%R(I)) THEN
@@ -308,7 +308,7 @@
             ENDIF
 !           CASE WHERE ONE OF THE ENDS IS NOT IN THE SUB-DOMAIN
             IF(NCSIZE.GT.1) THEN
-              ZW = P_DMAX(ZW)+P_DMIN(ZW)
+              ZW = P_MAX(ZW)+P_MIN(ZW)
             ENDIF
             IF(ZW.GT.ZDECBR%R(I)) THEN
               WRITE(LU,20) I, AT

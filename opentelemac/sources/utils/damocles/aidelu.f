@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE AIDELU
-!                    *****************
+!                   *****************
+                    SUBROUTINE AIDELU
+!                   *****************
 !
      &( ICOL , LIGNE, DOC )
 !

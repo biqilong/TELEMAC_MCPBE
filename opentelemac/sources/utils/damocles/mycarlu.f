@@ -1,6 +1,6 @@
-!                    ***********************************
-                     CHARACTER(LEN=PATH_LEN) FUNCTION MYCARLU
-!                    ***********************************
+!                   ***********************************
+                    CHARACTER(LEN=PATH_LEN) FUNCTION MYCARLU
+!                   ***********************************
 !
      &( LCAR   , ICOL  , LIGNE  , EXTREM , LGVAR  )
 !

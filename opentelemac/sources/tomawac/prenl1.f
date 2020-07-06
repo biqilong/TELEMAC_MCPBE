@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE PRENL1
-!                    *****************
+!                   *****************
+                    SUBROUTINE PRENL1
+!                   *****************
 !
-     &( IANGNL, COEFNL, NPLAN , NF    , RAISF , XLAMD )
+     &( IANGNL, COEFNL, NDIRE , NF    , RAISF , XLAMD )
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   22/06/2011
@@ -58,7 +58,7 @@
 !| COEFNL         |<--| COEFFICIENTS USED FOR DIA METHOD
 !| IANGNL         |<--| ANGULAR INDICES TABLE
 !| NF             |-->| NUNMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| RAISF          |-->| FREQUENTIAL RATIO
 !| XLAMD          |-->| DIA STANDARD CONFIGURATION LAMBDA COEFFICIENT
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,8 +68,8 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """""""""""""""""""""
-      INTEGER, INTENT(IN)             ::  NPLAN , NF
-      INTEGER, INTENT(INOUT)          ::  IANGNL(NPLAN,8)
+      INTEGER, INTENT(IN)             ::  NDIRE , NF
+      INTEGER, INTENT(INOUT)          ::  IANGNL(NDIRE,8)
       DOUBLE PRECISION, INTENT(IN)    :: RAISF , XLAMD
       DOUBLE PRECISION, INTENT(INOUT) :: COEFNL(16)
 !
@@ -93,9 +93,9 @@
 !     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
       DELTA1=-DTPLUS
       DELTA2= DTMOIN
-      DO JP=1,NPLAN
-        CALL INTANG( IANGNL(JP,2) , IANGNL(JP,1) , JP , NPLAN , DELTA1)
-        CALL INTANG( IANGNL(JP,3) , IANGNL(JP,4) , JP , NPLAN , DELTA2)
+      DO JP=1,NDIRE
+        CALL INTANG( IANGNL(JP,2) , IANGNL(JP,1) , JP , NDIRE , DELTA1)
+        CALL INTANG( IANGNL(JP,3) , IANGNL(JP,4) , JP , NDIRE , DELTA2)
       ENDDO ! JP
 !
 !.....1.3 DETERMINES ANGULAR INDICES FOR THE 'IMAGE' CONFIGURATION
@@ -103,14 +103,14 @@
 !     """""""""""""""""""""""""""""""""""""""""""""""""""""
       DELTA1= DTPLUS
       DELTA2=-DTMOIN
-      DO JP=1,NPLAN
-        CALL INTANG( IANGNL(JP,5) , IANGNL(JP,6) , JP , NPLAN , DELTA1)
-        CALL INTANG( IANGNL(JP,8) , IANGNL(JP,7) , JP , NPLAN , DELTA2)
+      DO JP=1,NDIRE
+        CALL INTANG( IANGNL(JP,5) , IANGNL(JP,6) , JP , NDIRE , DELTA1)
+        CALL INTANG( IANGNL(JP,8) , IANGNL(JP,7) , JP , NDIRE , DELTA2)
       ENDDO ! JP
 !
 !.....1.4 DETERMINES COEFFICIENTS OF ANGULAR INTERPOLATION
 !     """""""""""""""""""""""""""""""""""""""""""
-      DTETAD=360.D0/DBLE(NPLAN)
+      DTETAD=360.D0/DBLE(NDIRE)
       APLUS=DTPLUS/DTETAD-DBLE(INT(DTPLUS/DTETAD))
       AMOIN=DTMOIN/DTETAD-DBLE(INT(DTMOIN/DTETAD))
 !

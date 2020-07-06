@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE PUOG1
-!                    ****************
+!                   ****************
+                    SUBROUTINE PUOG1
+!                   ****************
 !
      &(X, A,B ,DITR,MESH,COPY)
 !

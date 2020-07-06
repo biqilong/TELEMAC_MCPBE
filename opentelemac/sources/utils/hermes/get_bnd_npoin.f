@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_BND_NPOIN
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_BND_NPOIN
+!                   ************************
 !
      &(FFORMAT,FID,TYPE_BND_ELEM,NPTFR,IERR)
 !

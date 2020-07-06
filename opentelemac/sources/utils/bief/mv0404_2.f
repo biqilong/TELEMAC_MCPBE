@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE MV0404_2
-!                    *******************
+!                   *******************
+                    SUBROUTINE MV0404_2
+!                   *******************
 !
      &(OP, X , DA,TYPDIA,XA,TYPEXT, Y,C,IKLE1,IKLE2,IKLE3,IKLE4,
      & NPOIN,NELEM,W1,W2,W3,W4,DIM1XA)

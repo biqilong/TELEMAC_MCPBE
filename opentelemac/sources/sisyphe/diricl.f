@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIRICL
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIRICL
+!                   *****************
 !
      &( ZF1 , ZF , EBOR , LIEBOR , NBOR , NPOIN  , NPTFR  , KENT )
 !

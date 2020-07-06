@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE ADD_DATA
-!                    *******************
+!                   *******************
+                    SUBROUTINE ADD_DATA
+!                   *******************
 !
      &(FFORMAT,FILE_ID,VAR_NAME,TIME,RECORD,
      & FIRST_VAR,VAR_VALUE,N,IERR)

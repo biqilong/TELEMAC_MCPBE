@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE INIT_AVAI
-!                    ********************
+!                   ********************
+                    SUBROUTINE INIT_AVAI
+!                   ********************
 !
 !
 !***********************************************************************
@@ -239,7 +239,7 @@
         DO I=1,NSICLA
           VOLTOT(I) = P_DSUM(VOLTOT(I))
         ENDDO
-      ENDIF    
+      ENDIF
       VOLINI = VOLTOT
 !
       WRITE(LU,*) 'MAXIMUM INITIAL NUMBER OF LAYERS :',NMAXI

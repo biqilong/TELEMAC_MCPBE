@@ -1,6 +1,6 @@
-!                    ***********************
-                     PROGRAM GREDELSEG_AUTOP
-!                    ***********************
+!                   ***********************
+                    PROGRAM GREDELSEG_AUTOP
+!                   ***********************
 !
 !
 !***********************************************************************
@@ -631,16 +631,16 @@
             IF(LIHBORLOC(I,IPID+1).NE.2) THEN
               DO J=1,NPLAN
                 IF(FILETYPE(1:7).EQ.'SUMAREA') THEN
-                 GLOBAL_VALUE(-NODENRS(KNOLG(NBORLOC(I,IPID+1),IPID+1))
+                  GLOBAL_VALUE(-NODENRS(KNOLG(NBORLOC(I,IPID+1),IPID+1))
      &                        + NSEG2 + (NSEG2+MBND2)*(J-1)) =
      &            LOCAL_VALUE(-NODENRSLOC(NBORLOC(I,IPID+1),IPID+1)
      &                        + NSEG2LOC + (NSEG2LOC+MBNDLOC)*(J-1))
                   VERIF( -NODENRS(KNOLG(NBORLOC(I,IPID+1),IPID+1))
      &                  + NSEG2 + (NSEG2+MBND2)*(J-1)) = 1
                 ELSEIF(FILETYPE(1:7).EQ.'SUMFLOW') THEN
-                 GLOBAL_VALUE(-NODENRS(KNOLG(NBORLOC(I,IPID+1),IPID+1))
+                  GLOBAL_VALUE(-NODENRS(KNOLG(NBORLOC(I,IPID+1),IPID+1))
      &                        + NSEG2 + (NSEG2+MBND2)*(J-1)) =
-     &           GLOBAL_VALUE(-NODENRS(KNOLG(NBORLOC(I,IPID+1),IPID+1))
+     &            GLOBAL_VALUE(-NODENRS(KNOLG(NBORLOC(I,IPID+1),IPID+1))
      &                        + NSEG2 + (NSEG2+MBND2)*(J-1)) +
      &            LOCAL_VALUE(-NODENRSLOC(NBORLOC(I,IPID+1),IPID+1)
      &                        + NSEG2LOC + (NSEG2LOC+MBNDLOC)*(J-1))

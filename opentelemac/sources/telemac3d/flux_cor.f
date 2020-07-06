@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE FLUX_COR
-!                    *******************
+!                   *******************
+                    SUBROUTINE FLUX_COR
+!                   *******************
 !
      &(FC,FINSUB,FI_I,ZSTART,ZEND,DFDT,XB,DIM1XB,TETA,IKLE3,
      & MESH3,NELEM3,NELMAX,NPOIN3,IELM3,SCHCF)

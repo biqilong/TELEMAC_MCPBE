@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE P_IREADI8
-!                    ********************
+!                   ********************
+                    SUBROUTINE P_IREADI8
+!                   ********************
 !
      &(BUFFER,NVAL,SOURCE,ITAG,IREQ)
 !

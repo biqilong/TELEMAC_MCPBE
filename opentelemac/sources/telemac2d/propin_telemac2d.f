@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE PROPIN_TELEMAC2D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE PROPIN_TELEMAC2D
+!                   ***************************
 !
      &(LIMPRO,LIMDIM,MASK,LIUBOR,LIVBOR,LIHBOR,NBOR,NPTFR,
      & KENT,KENTU,KSORT,KADH,KLOG,KNEU,KDIR,KDDL,

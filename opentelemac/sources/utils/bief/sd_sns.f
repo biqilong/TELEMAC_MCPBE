@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SD_SNS
-!                    *****************
+!                   *****************
+                    SUBROUTINE SD_SNS
+!                   *****************
 !
      &(N,P,D,IJU,JU,IU,U,Z,B,TMP)
 !

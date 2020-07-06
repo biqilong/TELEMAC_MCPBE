@@ -18,13 +18,20 @@ from utils.exceptions import TelemacException
 def translate(cas):
     """
     Translating cas_file in french and english
+
+    @param cas (TelemacCas) steering file
     """
     print("\n ~> Translating {}".format(path.basename(cas.file_name)))
     cas.write_fr_gb()
 
-def sort(cas):
+def sort(cas, keep_comments):
     """
     Sorting steering file using rubriques order
+
+    @param cas (TelemacCas) steering file
+
+    @parma keep_comments (bool) If true sort will append comments from original
+    file at the end of the file
     """
 
     root, ext = path.splitext(cas.file_name)
@@ -32,11 +39,13 @@ def sort(cas):
     out_file = root + "_sorted" + ext
 
     print("\n ~> Sorting {}".format(path.basename(cas.file_name)))
-    cas.write(out_file)
+    cas.write(out_file, keep_comments=keep_comments)
 
 def check_cas(cas):
     """
     Does some check on the steering file
+
+    @param cas (TelemacCas) steering file
     """
     if cas.lang == 'fr':
         default = 'DEFAUT'
@@ -50,7 +59,7 @@ def check_cas(cas):
         data = cas.dico.data[key]
         if default in data:
             if cas.values[key] == data[default]:
-                print('{} set to default value'.format(key))
+                print('{} set to default value {}'.format(key, data[default]))
 
 def main():
     """ Main function of manip_cas.py """
@@ -78,6 +87,12 @@ def main():
              "cas_file suffixed with _sorted")
 
     parser.add_argument(
+        "--keep-comments", action="store_true",
+        dest="keep_comments", default=False,
+        help="When sorting will append all original comments "
+             "at the end of the file")
+
+    parser.add_argument(
         "cas_file",
         help="Name of the steering file to read")
 
@@ -103,7 +118,7 @@ def main():
     if args.translate:
         translate(cas)
     if args.sort:
-        sort(cas)
+        sort(cas, args.keep_comments)
 
     print('\n\nMy work is done\n\n')
     sys.exit(0)

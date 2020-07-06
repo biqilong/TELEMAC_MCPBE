@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE POINT_WAQTEL
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE POINT_WAQTEL
+!                   ***********************
 !
      &(MESH2D,IELM1,VENT,WINDX,WINDY,ATMOS,PATMOS,MESH3D,IELM3)
 !

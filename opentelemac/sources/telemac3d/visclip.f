@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE VISCLIP
-!                    ******************
+!                   ******************
+                    SUBROUTINE VISCLIP
+!                   ******************
 !
      & (VISCVI,VISCTA,H,NPLAN,NPOIN2,NTRAC,HLIM)
 !

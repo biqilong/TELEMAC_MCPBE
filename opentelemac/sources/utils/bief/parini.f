@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PARINI
-!                    *****************
+!                   *****************
+                    SUBROUTINE PARINI
+!                   *****************
 !
      &(NHP,NHM,INDPU,NPOIN2,NACHB,NPLAN,MESH,NB_NEIGHB,
      & NB_NEIGHB_SEG,NELEM2,IFAPAR,MODASS)
@@ -152,7 +152,7 @@
         DO IL=IPID-1,0,-1
           II=0
           DO I=1,NPTIR
-           DO J=2,NBMAXNSHARE
+            DO J=2,NBMAXNSHARE
               IF(NACHB(J,I).EQ.IL) THEN
                 IF(IZH.GT.NBMAXDSHARE) THEN
                   WRITE(LU,*) 'PARINI: NBMAXDSHARE TOO SMALL'

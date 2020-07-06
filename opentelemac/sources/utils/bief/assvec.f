@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ASSVEC
-!                    *****************
+!                   *****************
+                    SUBROUTINE ASSVEC
+!                   *****************
 !
      &(X, IKLE,NPOIN,NELEM,NELMAX,W,INIT,LV,MSK,MASKEL,NDP,ERRX)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DLDU11
-!                    *****************
+!                   *****************
+                    SUBROUTINE DLDU11
+!                   *****************
 !
      &(DB,XB,TYPDIA,XA,TYPEXA,IKLE,NELEM,NELMAX,NPOIN,W,COPY,LV)
 !

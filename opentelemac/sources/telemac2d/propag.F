@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PROPAG
-!                    *****************
+!                   *****************
+                    SUBROUTINE PROPAG
+!                   *****************
 !
      &(U,V,H,UCONV,VCONV,CONVV,H0,PATMOS,ATMOS,
      & HPROP,UN,VN,HN,UTILD,VTILD,HTILD,DH,DU,DV,DHN,VISC,VISC_S,FU,FV,
@@ -148,7 +148,7 @@
 !history  J-M HERVOUET (EDF LAB, LNHE)
 !+        17/04/2014
 !+        V7P0
-!+   Correction for weirs. The function P_DSUM for weirs must be called
+!+   Correction for weirs. The function P_SUM for weirs must be called
 !+   in all processors, so it must be called outside the test:
 !+   IF(MESH%NPTFR.GT0) where it was in previous versions.
 !
@@ -352,7 +352,7 @@
       USE INTERFACE_TELEMAC2D, EX_PROPAG => PROPAG
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -769,7 +769,7 @@
           IF(BILMAS) MASSES = DT * BIEF_SUM(SMH)
         ENDIF
 !       THE FOLLOWING LINE GOES IN BILAN
-!       IF (NCSIZE.GT.1) MASSES=P_DSUM (MASSES)
+!       IF (NCSIZE.GT.1) MASSES=P_SUM (MASSES)
       ENDIF
 !
 !     SAME THING WITH RAIN-EVAPORATION (LIKE OPTSOU=1)
@@ -1237,8 +1237,8 @@
             ENDIF
 !           IN PARALLEL ASSEMBLED FLUXES
             IF(NCSIZE.GT.1) THEN
-              FL1=P_DSUM(FL1)
-              FL2=P_DSUM(FL2)
+              FL1=P_SUM(FL1)
+              FL2=P_SUM(FL2)
             ENDIF
 !           MULTIPLICATION FACTOR SO THAT BOTH FLUXES ARE EQUAL
             IF(ABS(FL1).GT.1.D-4.AND.ABS(FL2).GT.1.D-4) THEN
@@ -1589,10 +1589,10 @@
             CALL OM('M=0     ', M=A23, MESH=MESH)
             CALL OM('M=0     ', M=A32, MESH=MESH)
             IF (AM2%TYPEXT.EQ.'S') THEN
-             CALL OM('M=X(M)  ', M=AM2, MESH=MESH)
+              CALL OM('M=X(M)  ', M=AM2, MESH=MESH)
             ENDIF
             IF (AM3%TYPEXT.EQ.'S') THEN
-             CALL OM('M=X(M)  ', M=AM3, MESH=MESH)
+              CALL OM('M=X(M)  ', M=AM3, MESH=MESH)
             ENDIF
           ENDIF
         ENDIF

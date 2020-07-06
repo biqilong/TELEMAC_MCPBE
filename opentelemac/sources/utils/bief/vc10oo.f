@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC10OO
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC10OO
+!                   *****************
 !
      &(XMUL,SF,SU,SV,F,U,V,XNOR,YNOR,LGSEG,
      & IKLE,NBOR,NELEM,NELMAX,W1,W2)

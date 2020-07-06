@@ -247,17 +247,10 @@ use Fox_dom                 ! parser XML Fortran
   logical                       , intent(  out)  :: RepriseCalcul
   type(FICHIER_T)               , intent(inout)  :: FichierRepriseEcr
   type(FICHIER_T)               , intent(inout)  :: FichierRepriseLec
-  logical                                        :: presence_ligne_deau
-  integer                                        :: type_entree_ligne
   type(FICHIER_T)               , intent(inout)  :: FichierLigne
-  integer                                        :: format_ligne
 
   type(ZONE_SECHE_T), dimension(:), pointer      :: ZoneSeche
   type(ZONE_FROT_T) , dimension(:),pointer       :: ZoneFrot
-
-! Utilisation Cray
-
-  logical                                        :: UtilisationCray
 
 ! Impressions - resultats
 
@@ -349,22 +342,18 @@ use Fox_dom                 ! parser XML Fortran
 ! SCALAIRES LOCAUX
 ! ----------------
 
-  logical           :: impression_doc
   integer           :: iext            ! ompteur sur les extremites libres
   integer           :: iprof           ! Compteur sur les profils
   integer           :: iprof_inf       ! borne inf de boucle
   integer           :: isect           ! Compteur sur les sections
   integer           :: retour          ! code de retour des fonctions intrinseques
-  integer           :: langue
   character(LEN=33) :: chaine_date     ! Chaine renvoyee par DATE_S
   integer           :: nb_site         ! Nombre de sites ou stocker
   integer           :: num_branche     ! Numero de branche de site ou stocker
   real(DOUBLE)      :: abscisse_rel    ! Abscisse relative du site ou stocker
   real(DOUBLE)      :: absc_abs        ! abscisse absolue correspondante
   integer           :: numero_max_loi  ! Numero de loi hydrau lu le + grand
-  logical           :: sauvegarde_modele ! flag de sauvegarde du modele
-  integer           :: ul              ! Numero d'unite d'un fichier
-  integer           :: nb_casier, num_liaison, iliaison, icasier, ull, ulc
+  integer           :: iliaison, icasier, ull, ulc
   integer           :: num_casier_origine, num_casier_fin, ilcc, nb_liaisonCC, nb_liaisonRC, jcasier
   integer, dimension(:,:), allocatable :: connect_casier
 
@@ -1638,7 +1627,7 @@ use Fox_dom                 ! parser XML Fortran
          Erreur%ft     = err_332
          Erreur%ft_c   = err_332c
          call TRAITER_ERREUR( Erreur , 'point de controle pour arret du calcul' , &
-			      Bief_controle , 1 )
+            Bief_controle , 1 )
          return
       end if
 
@@ -2460,11 +2449,8 @@ call LEC_DEVER             ( &
                &  '-------------------',/)
   10010 format ('Noyau de calcul utilise                         : ',A8)
   10020 format ('Nom du fichier des mots-cles                    : ',A)
-  10025 format ('Nom du fichier du dictionnaire                  : ',A)
   10030 format ('Nom du fichier du programme principal           : ',A)
   10035 format ('Nom du fichier des bibliotheques                : ',A)
-  10037 format ('Sauvegarde du modele                            : ',A)
-  10040 format ('Nom du fichier de sauvegarde du modele          : ',A)
   10044 format ('Presence de casier                              : ',A)
   10045 format ('Calcul auto des pertes de charge aux confluents : ',A)
   10046 format ('Perte automatique aux elargissements transcritique : ',A)
@@ -2493,10 +2479,6 @@ call LEC_DEVER             ( &
   10190 format ('Duree maximale du calcul               : ',f12.1)
   10200 format ('Pas de temps variable                  : ',A3)
   10210 format ('Nombre de Courant objectif             : ',f12.3)
-
-  10220 format (/,'CRAY',/, &
-               &  '----',/)
-  10230 format ('Utilisation du Cray                    : ',A3)
 
   10300 format (/,'IMPRESSION-RESULTATS',/, &
                &  '--------------------',/)
@@ -2527,13 +2509,6 @@ call LEC_DEVER             ( &
 
   10560 format (/,'CONDITIONS INITIALES',/, &
                &  '--------------------',/)
-  10570 format ('Reprise de calcul                        : ',A3)
-  10580 format ('Fichier de reprise en lecture            : ',A)
-
-  10590 format (/,'Presence d''une ligne d''eau initiale     : ',A3)
-  10600 format ('Mode d''entree de la ligne d''eau         : ',A)
-  10610 format ('Nom du fichier de la ligne d''eau        : ',A)
-  10620 format ('Format du fichier de la ligne d''eau     : ',A)
 
 
 

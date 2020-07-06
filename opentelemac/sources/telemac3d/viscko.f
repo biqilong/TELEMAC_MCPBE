@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VISCKO
-!                    *****************
+!                   *****************
+                    SUBROUTINE VISCKO
+!                   *****************
 !
      &(VISCVI,VISCTA,ROTAT,AK,EP,NTRAC,DNUVIH,DNUVIV,DNUTAH,DNUTAV,
      & ITURBH,ITURBV,T1,T2)

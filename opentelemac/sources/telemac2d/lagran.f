@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LAGRAN
-!                    *****************
+!                   *****************
+                    SUBROUTINE LAGRAN
+!                   *****************
 !
      &(NLAG,DEBLAG,FINLAG)
 !

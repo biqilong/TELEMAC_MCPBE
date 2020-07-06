@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE PREVERSEG
-!                    ********************
+!                   ********************
+                    SUBROUTINE PREVERSEG
+!                   ********************
 !
      &(XAUX,AD,AX,TYPDIA,TYPEXT,NPOIN,MESH,NSEG3D,TYPEMESH)
 !

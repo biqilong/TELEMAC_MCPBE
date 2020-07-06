@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LIMI3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE LIMI3D
+!                   *****************
 !
 !
 !***********************************************************************
@@ -243,10 +243,10 @@
 !     DEFAULT: NEUMANN BC'S
 !
           DO IPOIN2 = 1,NPOIN2
-             LITABS%ADR(ITRAC)%P%I(IPOIN2) = KLOG
-             TABORS%ADR(ITRAC)%P%R(IPOIN2) = 0.D0
-!            ATABOS%ADR(ITRAC)%P%R(IPOIN2) = 0.D0
-!            BTABOS%ADR(ITRAC)%P%R(IPOIN2) = 0.D0
+            LITABS%ADR(ITRAC)%P%I(IPOIN2) = KLOG
+            TABORS%ADR(ITRAC)%P%R(IPOIN2) = 0.D0
+!           ATABOS%ADR(ITRAC)%P%R(IPOIN2) = 0.D0
+!           BTABOS%ADR(ITRAC)%P%R(IPOIN2) = 0.D0
           ENDDO
           ATABOS%ADR(ITRAC)%P%TYPR='0'
           BTABOS%ADR(ITRAC)%P%TYPR='0'
@@ -293,10 +293,10 @@
 !     DEFAULT : NO GRADIENT
 !
         DO IPOIN2 = 1,NPOIN2
-           AKBORS%R(IPOIN2) = 0.D0
-           BKBORS%R(IPOIN2) = 0.D0
-           AEBORS%R(IPOIN2) = 0.D0
-           BEBORS%R(IPOIN2) = 0.D0
+          AKBORS%R(IPOIN2) = 0.D0
+          BKBORS%R(IPOIN2) = 0.D0
+          AEBORS%R(IPOIN2) = 0.D0
+          BEBORS%R(IPOIN2) = 0.D0
         ENDDO
 !
       ELSEIF(ITURBV.EQ.5.OR.ITURBV.EQ.9) THEN
@@ -316,8 +316,8 @@
           BNUBORL%R(IPTFR3) = 0.D0
         ENDDO
         DO IPOIN2 = 1,NPOIN2
-           ANUBORS%R(IPOIN2) = 0.D0
-           BNUBORS%R(IPOIN2) = 0.D0
+          ANUBORS%R(IPOIN2) = 0.D0
+          BNUBORS%R(IPOIN2) = 0.D0
         ENDDO
       ENDIF
 !

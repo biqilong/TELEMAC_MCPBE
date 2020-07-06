@@ -1,6 +1,6 @@
-!                    ************************************
-                     SUBROUTINE BYPASS_CRUSHED_POINTS_SEG
-!                    ************************************
+!                   ************************************
+                    SUBROUTINE BYPASS_CRUSHED_POINTS_SEG
+!                   ************************************
 !
      &(SVOLU,SVOLUN,FLUX,TRA01,MESH3,
      & SCHCF,NPOIN2,GLOSEG,DIMGLO,NSEG,NPLAN)

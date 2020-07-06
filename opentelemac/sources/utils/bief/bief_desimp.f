@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE BIEF_DESIMP
-!                    **********************
+!                   **********************
+                    SUBROUTINE BIEF_DESIMP
+!                   **********************
 !
      &(FORMAT_RES,VARSOR,N,NRES,AT,LT,LISPRD,LEOPRD,
      & SORLEO,SORIMP,MAXVAR,TEXTE,PTINIG,PTINIL,MESH,

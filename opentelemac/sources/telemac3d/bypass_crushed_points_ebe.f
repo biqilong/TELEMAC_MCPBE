@@ -1,6 +1,6 @@
-!                    ************************************
-                     SUBROUTINE BYPASS_CRUSHED_POINTS_EBE
-!                    ************************************
+!                   ************************************
+                    SUBROUTINE BYPASS_CRUSHED_POINTS_EBE
+!                   ************************************
 !
      &(SVOLU,SVOLUN,FLUX,TRA01,MESH3,
      & NELEM2,NELEM3,NELMAX,NPLAN,IKLE)

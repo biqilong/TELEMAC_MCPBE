@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASSED
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASSED
+!                   *****************
 !
      &(S3D_MASBED,S3D_EPAI,S3D_CONC,TRA02,NPOIN2,
      & S3D_NCOUCH,VOLU2D,
@@ -76,7 +76,7 @@
       USE BIEF
       USE INTERFACE_TELEMAC3D, EX_MASSED => MASSED
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -126,7 +126,7 @@
       DO IPOIN=1,NPOIN2
         MASSE6=MASSE6+VOLU2D(IPOIN)*TRA02(IPOIN)
       ENDDO
-      IF(NCSIZE.GT.1) MASSE6=P_DSUM(MASSE6)
+      IF(NCSIZE.GT.1) MASSE6=P_SUM(MASSE6)
       S3D_MASBED= MASSE6
 !
 !-----------------------------------------------------------------------

@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE MAXI
-!                    ***************
+!                   ***************
+                    SUBROUTINE MAXI
+!                   ***************
 !
      &( XMAX , IMAX , X , NPOIN )
 !

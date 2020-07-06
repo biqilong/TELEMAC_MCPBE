@@ -1,6 +1,6 @@
-!                   ***********************
-                     SUBROUTINE DEPOS_FX
-!                    **********************
+!                  ***********************
+                    SUBROUTINE DEPOS_FX
+!                   **********************
 !
      &(SEDP,TAUB,CSUS,TAUS,VITCHU,NPOIN)
 !

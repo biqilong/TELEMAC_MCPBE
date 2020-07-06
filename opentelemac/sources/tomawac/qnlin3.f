@@ -131,7 +131,7 @@
       DO IP=1,NPOIN2
         AUX00=0.0D0
         DO JF=1,NF
-          DO JT=1,NPLAN
+          DO JT=1,NDIRE
             IF (F2(IP,JT,JF).GT.AUX00) AUX00=F2(IP,JT,JF)
           ENDDO
         ENDDO
@@ -207,7 +207,7 @@
 !         -------------------------------------------------
 !         STARTS LOOP 3 OVER THE SPECTRUM DIRECTIONS
 !         -------------------------------------------------
-          DO JT=1,NPLAN
+          DO JT=1,NDIRE
 !
 !...........Direction indexes
 !           direct config (+delta1) (sig =1)

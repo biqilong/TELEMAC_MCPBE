@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE BIEF_ALLMAT
-!                    **********************
+!                   **********************
+                    SUBROUTINE BIEF_ALLMAT
+!                   **********************
 !
      &( MAT , NOM , IELM1 , IELM2 , CFG , TYPDIA , TYPEXT , MESH )
 !

@@ -1,6 +1,6 @@
-!                    *************
-                     SUBROUTINE OS
-!                    *************
+!                   *************
+                    SUBROUTINE OS
+!                   *************
 !
      & ( OP , X , Y , Z , C , IOPT , INFINI , ZERO )
 !

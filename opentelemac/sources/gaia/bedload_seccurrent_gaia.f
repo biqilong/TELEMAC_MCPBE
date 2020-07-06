@@ -1,6 +1,6 @@
-!                  **********************************
-                   SUBROUTINE BEDLOAD_SECCURRENT_GAIA
-!                  **********************************
+!                 **********************************
+                  SUBROUTINE BEDLOAD_SECCURRENT_GAIA
+!                 **********************************
 !
      &(IELMU,CALFA,SALFA)
 !

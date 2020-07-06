@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE AS3_1111_Q
-!                    *********************
+!                   *********************
+                    SUBROUTINE AS3_1111_Q
+!                   *********************
 !
      &(XM,NSEG1,XMT,DIM1XMT,DIM2XMT,NELMAX,NELEM,STOXMT,
      & ELTSEG1,ELTSEG2,ELTSEG3,ORISEG1,ORISEG2,ORISEG3)

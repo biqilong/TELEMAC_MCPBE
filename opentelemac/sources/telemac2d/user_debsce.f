@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_DEBSCE
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_DEBSCE
+!                   **********************
 !
      &(TIME, I, DISCE, DEBSCE)
 !

@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE SPALART_ALLMARAS
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE SPALART_ALLMARAS
+!                   ***************************
 !
      &(U,V,VISCSA,DT,NUN,NUTILD,PROPNU,IELMNU,SLVNU,
      & INFOSA, MSK, MASKEL, MASKPT, NPTFR, LIMSA, NUBOR, S, UCONV,

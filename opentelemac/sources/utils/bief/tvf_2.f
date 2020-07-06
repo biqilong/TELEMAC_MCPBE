@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE TVF_2
-!                    ****************
+!                   ****************
+                    SUBROUTINE TVF_2
+!                   ****************
 !
      &(F,FSTAR,FC,VOLU2D,UNSV2D,DT,FXBOR,FXBORPAR,FBOR,SMH,YASMH,FSCEXP,
      & NPOIN,NPTFR,NBOR,LIMTRA,KDIR,KDDL,OPTSOU,HLIN,
@@ -125,7 +125,7 @@
           ENDDO
         ELSEIF(OPTSOU.EQ.2) THEN
           DO I=1,NPOIN
-           F(I)=F(I)+DT/HLIN(I)*UNSV2D(I)*SMH(I)
+            F(I)=F(I)+DT/HLIN(I)*UNSV2D(I)*SMH(I)
      &          *(FSCEXP(I)-TETAFCOR*FSTAR(I)-(1.D0-TETAFCOR)*FC(I))
           ENDDO
         ENDIF

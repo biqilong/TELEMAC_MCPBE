@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASKTF
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASKTF
+!                   *****************
 !
      &(MASKEL,HN,HMIN,IKLE,NELEM,NPOIN)
 !

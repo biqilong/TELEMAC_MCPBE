@@ -73,7 +73,8 @@ def generate_bnd_parser(subparser):
     return subparser
 
 
-def generate_bnd(cli_file, geo_file, slf_file, bnd_file, varnames, varunits):
+def generate_bnd(cli_file, geo_file, slf_file, bnd_file, varnames, varunits,
+                 showbar=True):
     """
     @param cli_file
     @param geo_file
@@ -81,6 +82,7 @@ def generate_bnd(cli_file, geo_file, slf_file, bnd_file, varnames, varunits):
     @param bnd_file
     @param varnames
     @param varunits
+    @param showbar (boolean) If True display a showbar for the progress
     """
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -126,14 +128,17 @@ def generate_bnd(cli_file, geo_file, slf_file, bnd_file, varnames, varunits):
     print('   +> support extraction')
     # Extract triangles and weigths in 2D
     support2d = []
-    ibar = 0
-    pbar = ProgressBar(maxval=len(xys)).start()
+    if showbar:
+        ibar = 0
+        pbar = ProgressBar(maxval=len(xys)).start()
     for xyi in xys:
         support2d.append(xys_locate_mesh(xyi, slf.ikle2, slf.meshx, slf.meshy,
                                          slf.tree, slf.neighbours))
-        ibar += 1
-        pbar.update(ibar)
-    pbar.finish()
+        if showbar:
+            ibar += 1
+            pbar.update(ibar)
+    if showbar:
+        pbar.finish()
     # Extract support in 3D
     support3d = list(zip(support2d, len(xys)*[range(slf.nplan)]))
 
@@ -234,7 +239,8 @@ def generate_bnd(cli_file, geo_file, slf_file, bnd_file, varnames, varunits):
 
     # Read / Write data, one time step at a time to support large files
     print('   +> reading / writing variables')
-    pbar = ProgressBar(maxval=len(slf.tags['times'])).start()
+    if showbar:
+        pbar = ProgressBar(maxval=len(slf.tags['times'])).start()
     zeros = np.zeros((bnd.npoin3, 1), dtype=np.float)
     for itime in range(len(slf.tags['times'])):
         data = get_value_history_slf(slf.file, slf.tags, [itime], support3d,
@@ -246,8 +252,10 @@ def generate_bnd(cli_file, geo_file, slf_file, bnd_file, varnames, varunits):
                           (bnd.nvar, bnd.npoin3))
         bnd.append_core_time_slf(itime)
         bnd.append_core_vars_slf(data)
-        pbar.update(itime)
-    pbar.finish()
+        if showbar:
+            pbar.update(itime)
+    if showbar:
+        pbar.finish()
 
     # Close bnd_file
     bnd.fole['hook'].close()

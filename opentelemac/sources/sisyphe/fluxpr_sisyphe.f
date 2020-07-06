@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE FLUXPR_SISYPHE
-!                    *************************
+!                   *************************
+                    SUBROUTINE FLUXPR_SISYPHE
+!                   *************************
 !
      &(NSEC,CTRLSC,FLX,VOLNEG,VOLPOS,INFO,TPS,NSEG,NCSIZE,
      & FLXS,VOLNEGS,VOLPOSS,SUSP,FLXC,VOLNEGC,VOLPOSC,CHARR)
@@ -75,7 +75,7 @@
       USE DECLARATIONS_SISYPHE, ONLY: SIS_FILES,SISSEO,CHAIN,
      &                                INIT_FLUXPR,WORK,WORKB
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_DSUM,P_IMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN,P_DSUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -201,11 +201,11 @@
 !           SECTIONS ACROSS 2 SUB-DOMAINS WILL HAVE NSEG=0 OR -1
 !           AND -1 WANTED HERE FOR RELEVANT MESSAGE
 !
-            DTMP1 = P_DMIN(FLX(ISEC))
-            DTMP2 = P_DMAX(FLX(ISEC))
-            DTMP3 = P_DMIN(VOLNEG(ISEC))
-            DTMP4 = P_DMAX(VOLPOS(ISEC))
-            II=P_IMIN(NSEG(ISEC))
+            DTMP1 = P_MIN(FLX(ISEC))
+            DTMP2 = P_MAX(FLX(ISEC))
+            DTMP3 = P_MIN(VOLNEG(ISEC))
+            DTMP4 = P_MAX(VOLPOS(ISEC))
+            II=P_MIN(NSEG(ISEC))
             IF(II.GE.0) THEN
 !
               WRITE(LU,131) ISEC,CTRLSC(1+2*(ISEC-1)),
@@ -213,17 +213,17 @@
      &                      DTMP1+DTMP2,DTMP3,DTMP4
 !
               IF(SUSP) THEN
-                DTMP1 = P_DMIN(FLXS(ISEC))
-                DTMP2 = P_DMAX(FLXS(ISEC))
-                DTMP3 = P_DMIN(VOLNEGS(ISEC))
-                DTMP4 = P_DMAX(VOLPOSS(ISEC))
+                DTMP1 = P_MIN(FLXS(ISEC))
+                DTMP2 = P_MAX(FLXS(ISEC))
+                DTMP3 = P_MIN(VOLNEGS(ISEC))
+                DTMP4 = P_MAX(VOLPOSS(ISEC))
                 WRITE(LU,1302) DTMP1+DTMP2,DTMP3,DTMP4
               ENDIF
               IF(CHARR) THEN
-                DTMP1 = P_DMIN(FLXC(ISEC))
-                DTMP2 = P_DMAX(FLXC(ISEC))
-                DTMP3 = P_DMIN(VOLNEGC(ISEC))
-                DTMP4 = P_DMAX(VOLPOSC(ISEC))
+                DTMP1 = P_MIN(FLXC(ISEC))
+                DTMP2 = P_MAX(FLXC(ISEC))
+                DTMP3 = P_MIN(VOLNEGC(ISEC))
+                DTMP4 = P_MAX(VOLPOSC(ISEC))
                 WRITE(LU,1304) DTMP1+DTMP2,DTMP3,DTMP4
               ENDIF
 !

@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_DATA_TIME
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_DATA_TIME
+!                   ************************
 !
      &(FFORMAT,FID,RECORD,TIME,IERR)
 !

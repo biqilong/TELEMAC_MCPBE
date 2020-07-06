@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE DOUBLE_TO_INTEGER
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE DOUBLE_TO_INTEGER
+!                   ****************************
 !
      &(X,IX,N,QT,NSUM)
 !
@@ -50,8 +50,8 @@
       CALL MAXI(XMAX,I,X,N)
 !
       IF(NCSIZE.GT.1) THEN
-        XMIN=P_DMIN(XMIN)
-        XMAX=P_DMAX(XMAX)
+        XMIN=P_MIN(XMIN)
+        XMAX=P_MAX(XMAX)
       ENDIF
 !
 !     WE WANT A RANGE CENTRED ON 0, THAT CONTAINS [XMIN,XMAX]

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DECLDU
-!                    *****************
+!                   *****************
+                    SUBROUTINE DECLDU
+!                   *****************
 !
      &(B,A,MESH,COPY,LV)
 !

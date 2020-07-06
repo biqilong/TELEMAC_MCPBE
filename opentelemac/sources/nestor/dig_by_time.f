@@ -12,7 +12,7 @@
       USE m_TypeDefs_Nestor
       USE m_Nestor , ONLY :   ParallelComputing, nGrainClass, ipid
 !
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM,P_ISUM, P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_DSUM,P_ISUM
 !
 #ifndef  NESTOR_INTERFACES
       USE m_Interfaces_Nestor, ONLY :  InfoMessage
@@ -158,8 +158,8 @@
         !  on this field and it is carried out already (what depends on the
         !  internal order of execution), then it will
         !  appear here as sumInput_ts too.
-        DO iCL=1, nGrainClass    
-          DO i=1, F%nNodes       
+        DO iCL=1, nGrainClass
+          DO i=1, F%nNodes
             iM = F%Node(i)    !> mesh index of field node
             sumInput_ts =    sumInput_ts
      &                     + dzCL_sis(iCL)%R(iM) * F%NodeArea(i)
@@ -231,7 +231,7 @@
         sumInput_ts = P_DSUM( sumInput_ts )
       ENDIF
 !
-      A%InputDigField = A%InputDigField + sumInput_ts 
+      A%InputDigField = A%InputDigField + sumInput_ts
 !
       heap = SUM( heapCL(:) )  !> Total volume of dug material at current time step
 !

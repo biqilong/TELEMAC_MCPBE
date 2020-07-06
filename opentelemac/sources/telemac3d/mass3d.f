@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASS3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASS3D
+!                   *****************
 !
      &(INFO)
 !
@@ -46,7 +46,7 @@
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_TELEMAC3D
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -67,7 +67,7 @@
      &  SVIDE, SVIDE, SVIDE, MESH2D, MSK, MASKEL)
       MASSE_WATER = BIEF_SUM(T2_01)
 !
-      IF(NCSIZE.GT.1) MASSE_WATER = P_DSUM(MASSE_WATER)
+      IF(NCSIZE.GT.1) MASSE_WATER = P_SUM(MASSE_WATER)
 !
       IF(INFO.AND.LT.EQ.0) THEN
         WRITE(LU,*) 'INITIAL MASS OF WATER IN THE DOMAIN :',
@@ -105,7 +105,7 @@
 !
 !         END OF MODIFICATION BETWEEN 5.4 AND 5.5
 !
-          IF(NCSIZE.GT.1) MASSE%R(5+ITRAC) = P_DSUM(MASSE%R(5+ITRAC))
+          IF(NCSIZE.GT.1) MASSE%R(5+ITRAC) = P_SUM(MASSE%R(5+ITRAC))
 !
         ENDDO
 !

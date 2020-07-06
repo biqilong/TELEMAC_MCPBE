@@ -1,6 +1,6 @@
-!                    *****************
-                     MODULE STREAMLINE
-!                    *****************
+!                   *****************
+                    MODULE STREAMLINE
+!                   *****************
 !
 !
 !***********************************************************************
@@ -119,9 +119,8 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_PARALLEL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_ISUM,
-     &  P_SYNC, P_MPI_TYPE_FREE,P_MPI_ALLTOALL,P_MPI_ALLTOALLV,
-     &  P_MPI_ALLTOALLV_ALG,P_MPI_ALLTOALLV_OIL
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_SUM,
+     &  P_SYNC, P_MPI_TYPE_FREE,P_MPI_ALLTOALL,P_MPI_ALLTOALLV
       IMPLICIT NONE
       PRIVATE
 !
@@ -457,7 +456,7 @@
           ALLOCATE(SENDOIL(NPARAM))
           ALLOCATE(RECVOIL(NPARAM))
           ALLOCATE(HEAPOIL(NPARAM))
-          CALL OIL_ORG_CHARAC_TYPE(OIL_CHARAC) ! COMMIT THE CHARACTERISTICS TYPE FOR COMM
+          CALL ORG_CHARAC_TYPE_OIL(OIL_CHARAC) ! COMMIT THE CHARACTERISTICS TYPE FOR COMM
           RETURN
         END SUBROUTINE OIL_ORGANISE_CHARS
 
@@ -926,7 +925,7 @@
           DO I=2,NCSIZE
             RDISPLS(I) = RDISPLS(I-1)+RECVCOUNTS(I-1)
           ENDDO
-          CALL P_MPI_ALLTOALLV_ALG
+          CALL P_MPI_ALLTOALLV
      &      (SENDALG,SENDCOUNTS,SDISPLS,ALG_CHAR,
      &       RECVALG,RECVCOUNTS,RDISPLS,ALG_CHAR,
      &       IER)
@@ -963,7 +962,7 @@
           DO I=2,NCSIZE
             RDISPLS(I) = RDISPLS(I-1)+RECVCOUNTS(I-1)
           ENDDO
-          CALL P_MPI_ALLTOALLV_OIL
+          CALL P_MPI_ALLTOALLV
      &      (SENDOIL,SENDCOUNTS,SDISPLS,OIL_CHARAC,
      &       RECVOIL,RECVCOUNTS,RDISPLS,OIL_CHARAC,
      &       IER)
@@ -4314,7 +4313,7 @@
       ENDDO
 !
       IF(.NOT.ADD) THEN
-        IF(NCSIZE.GT.1) NSPMAX=P_IMAX(NSPMAX)
+        IF(NCSIZE.GT.1) NSPMAX=P_MAX(NSPMAX)
         WRITE(LU,*) 'NUMBER OF SUB-ITERATIONS :',NSPMAX
       ENDIF
 !
@@ -5040,7 +5039,7 @@
       ENDDO
 !
       IF(.NOT.ADD) THEN
-        IF(NCSIZE.GT.1) NSPMAX=P_IMAX(NSPMAX)
+        IF(NCSIZE.GT.1) NSPMAX=P_MAX(NSPMAX)
         WRITE(LU,*) 'NUMBER OF SUB-ITERATIONS :',NSPMAX
       ENDIF
 !
@@ -7077,10 +7076,10 @@
 !     PARTICLES, BECAUSE IT HAD SEEN NO PARTICLE BEFORE.
 !
 !     MOREOVER WE HAVE A SECURITY COEFFICIENT FOR CASES WHERE A SUB-DOMAIN
-!     WILL RECEIVE MORE CHARACTERISTICS THAN P_IMAX(NPLOT)
+!     WILL RECEIVE MORE CHARACTERISTICS THAN P_MAX(NPLOT)
 !
       IF(NCSIZE.GT.1) THEN
-        MAXNPLOT=INT(P_IMAX(NPLOT)*SECU)
+        MAXNPLOT=INT(P_MAX(NPLOT)*SECU)
       ELSE
         MAXNPLOT=NPLOT
       ENDIF
@@ -7359,7 +7358,7 @@
         NSEND=NCHARA
         NLOSTCHAR=NSEND
 !
-        IF(P_ISUM(NSEND).GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
+        IF(P_SUM(NSEND).GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
 !
 !         PREPARE INITIAL SENDING OF COLLECTED LOST TRACEBACKS
           CALL PREP_INITIAL_SEND(NSEND,NLOSTCHAR,NCHARA)
@@ -7387,7 +7386,7 @@
               WRITE(LU,*) 'NARRV=',NARRV
               WRITE(LU,*) 'SIZEBUF=',SIZEBUF,' IS TOO SMALL'
             ENDIF
-            ISTOP=P_ISUM(ISTOP)
+            ISTOP=P_SUM(ISTOP)
             IF(ISTOP.GT.0) THEN
               WRITE (LU,*) ' '
               WRITE(LU,*) 'MODULE STREAMLINE, SUBROUTINE SCARACT'
@@ -7397,7 +7396,7 @@
               STOP
             ENDIF
             CALL P_SYNC()
-            ISTOP2=P_ISUM(ISTOP2)
+            ISTOP2=P_SUM(ISTOP2)
             IF(ISTOP2.GT.0) THEN
               WRITE (LU,*) ' '
               WRITE(LU,*) 'MODULE STREAMLINE, SUBROUTINE SCARACT'
@@ -7572,7 +7571,7 @@
 !
           CALL HEAP_FOUND(NLOSTAGAIN,NARRV,NCHARA)
 !
-          IF(P_ISUM(NLOSTAGAIN).GT.0) THEN ! THERE ARE LOST-AGAINS SOMEWHERE
+          IF(P_SUM(NLOSTAGAIN).GT.0) THEN ! THERE ARE LOST-AGAINS SOMEWHERE
             CALL PREP_LOST_AGAIN(NSEND,NARRV) ! PREPARE SENDING LOST-AGAINS
           ELSE
             EXIT ! NO LOST-AGAIN TRACEBACKS ANYWHERE, LEAVE THESE ITERATIONS
@@ -7631,7 +7630,7 @@
           DO I=1,NPLOT
             ISUB(I)=IPID
           ENDDO
-        ENDIF ! P_ISUM(NSEND).GT.0
+        ENDIF ! P_SUM(NSEND).GT.0
         CALL RE_INITIALISE_CHARS(NSEND,NLOSTCHAR,NLOSTAGAIN,NARRV) ! DEALLOCATING
 !
       ENDIF ! NCSIZE.GT.1
@@ -7649,9 +7648,9 @@
 !
       RETURN
       END SUBROUTINE SCARACT
-!                    **********************
-                     SUBROUTINE BIEF_INTERP
-!                    **********************
+!                   **********************
+                    SUBROUTINE BIEF_INTERP
+!                   **********************
 !
      &( U , UTILD , SHP , NDP , SHZ , ETA , SHF , FRE , ELT , NP ,
      &  NPOIN2 , NPLAN , IELM , IKLE , NELMAX , PERIO , YA4D )
@@ -8212,7 +8211,7 @@
         NSEND=NCHARA
         NLOSTCHAR=NSEND
 !
-        IF(P_ISUM(NSEND).GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
+        IF(P_SUM(NSEND).GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
 !
 !         PREPARE INITIAL SENDING OF COLLECTED LOST TRACEBACKS
 !         BASICALLY HEAPCHAR IS COPIED TO SENDCHAR...
@@ -8237,7 +8236,7 @@
             ISTOP2=1
             WRITE(LU,*) 'SIZEBUF=',SIZEBUF,' NCHDIM=',NCHDIM
           ENDIF
-          ISTOP=P_ISUM(ISTOP)
+          ISTOP=P_SUM(ISTOP)
           IF(ISTOP.GT.0) THEN
             WRITE(LU,*) 'POST_INTERP'
             WRITE(LU,*) 'TOO MANY LOST TRACEBACKS IN ',ISTOP,
@@ -8245,7 +8244,7 @@
             CALL PLANTE(1)
             STOP
           ENDIF
-          ISTOP2=P_ISUM(ISTOP2)
+          ISTOP2=P_SUM(ISTOP2)
           IF(ISTOP2.GT.0) THEN
             WRITE(LU,*) 'POST_INTERP'
             WRITE(LU,*) 'SIZE OF BUFFER SIZEBUF TOO SMALL IN ',
@@ -8536,7 +8535,7 @@
       NSEND=NCHARA
       NLOSTCHAR=NSEND
 !
-      NSENDG=P_ISUM(NSEND)
+      NSENDG=P_SUM(NSEND)
 !
       IF(NSENDG.GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
 !
@@ -8553,7 +8552,7 @@
 !       COMPUTE THE NUMBER OF SET OF DATA ARRIVED
 !
         NARRV = SUM(RECVCOUNTS)
-        NARRVG= P_ISUM(NARRV)
+        NARRVG= P_SUM(NARRV)
 !
         IF(NSENDG.NE.NARRVG) THEN
           WRITE(LU,*) 'TOTAL SENT = ',NSENDG,' TOTAL RECEIVED = ',NARRVG
@@ -8566,7 +8565,7 @@
           ISTOP=1
           WRITE(LU,*) 'NARRV=',NARRV,' NCHDIM=',NCHDIM
         ENDIF
-        ISTOP=P_ISUM(ISTOP)
+        ISTOP=P_SUM(ISTOP)
         IF(ISTOP.GT.0) THEN
           WRITE(LU,*) 'SEND_PARTICLES'
           WRITE(LU,*) 'TOO MANY LOST TRACEBACKS IN ',ISTOP,
@@ -8628,9 +8627,9 @@
 !
       RETURN
       END SUBROUTINE SEND_PARTICLES
-!                    ***********************
-                     SUBROUTINE ADD_PARTICLE
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE ADD_PARTICLE
+!                   ***********************
 !
      &(X,Y,Z,TAG,CLS,NFLOT,NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,CLSFLO,
      &SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH,NPLAN,SHP1,SHP2,SHP3,SHZ,ELT,ETA)
@@ -8788,7 +8787,7 @@
 !
         IF(NCSIZE.GT.1) THEN
           OLDTOT=NFLOT
-          OLDTOT=P_ISUM(OLDTOT)
+          OLDTOT=P_SUM(OLDTOT)
         ENDIF
 !
 !       POINT TO BE LOCATED HERE
@@ -8893,12 +8892,12 @@
 40      CONTINUE
 !
 !       CHECKING THAT A PARTICLE IS NOT ADDED TO SEVERAL SUBDOMAINS
-!       BECAUSE OF P_ISUM, WILL WORK ONLY IF ADD_PARTICLE CALLED BY ALL
+!       BECAUSE OF P_SUM, WILL WORK ONLY IF ADD_PARTICLE CALLED BY ALL
 !       SUBDOMAINS... WHICH IS THE CASE SO FAR WITH
 !
         IF(NCSIZE.GT.1) THEN
           NEWTOT=NFLOT
-          NEWTOT=P_ISUM(NEWTOT)
+          NEWTOT=P_SUM(NEWTOT)
           IF(NEWTOT.EQ.OLDTOT) THEN
             WRITE(LU,*) 'PARTICLE ',TAG,' IN NONE OF THE SUB-DOMAINS'
             CALL PLANTE(1)
@@ -8917,9 +8916,9 @@
 !
       RETURN
       END SUBROUTINE ADD_PARTICLE
-!                    ***********************
-                     SUBROUTINE DEL_PARTICLE
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE DEL_PARTICLE
+!                   ***********************
 !
      &(TAG,NFLOT,NFLOT_MAX,XFLOT,YFLOT,ZFLOT,TAGFLO,CLSFLO,
      & SHPFLO,SHZFLO,ELTFLO,ETAFLO,IELM,DX,DY,DZ,ISUB,
@@ -9239,7 +9238,7 @@
       NSEND=NCHARA
       NLOSTCHAR=NSEND
 !
-      NSENDG=P_ISUM(NSEND)
+      NSENDG=P_SUM(NSEND)
 !
       IF(NSENDG.GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
 !
@@ -9256,7 +9255,7 @@
 !       COMPUTE THE NUMBER OF SET OF DATA ARRIVED
 !
         NARRV = SUM(RECVCOUNTS)
-        NARRVG= P_ISUM(NARRV)
+        NARRVG= P_SUM(NARRV)
 !
         IF(NSENDG.NE.NARRVG) THEN
           WRITE(LU,*) 'TOTAL SENT = ',NSENDG,' TOTAL RECEIVED = ',NARRVG
@@ -9269,7 +9268,7 @@
           ISTOP=1
           WRITE(LU,*) 'NARRV=',NARRV,' NCHDIM=',NCHDIM
         ENDIF
-        ISTOP=P_ISUM(ISTOP)
+        ISTOP=P_SUM(ISTOP)
         IF(ISTOP.GT.0) THEN
           WRITE(LU,*) 'SEND_INFO_ALG'
           WRITE(LU,*) 'TOO MANY LOST TRACEBACKS IN ',ISTOP,
@@ -9334,9 +9333,9 @@
 !
       RETURN
       END SUBROUTINE SEND_INFO_ALG
-!                    ***********************
-                     SUBROUTINE DEL_INFO_ALG
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE DEL_INFO_ALG
+!                   ***********************
 !
      &(TAG,NFLOT,NFLOT_MAX,IELM,TAGFLO,CLSFLO,FLAGFLO,V_X,V_Y,V_Z,
      & U_X,U_Y,U_Z,U_X_AV,U_Y_AV,U_Z_AV,K_AV,EPS_AV,H_FLU,NWIN,NDIR,PSI)
@@ -9607,7 +9606,7 @@
       NSEND=NCHARA
       NLOSTCHAR=NSEND
 !
-      NSENDG=P_ISUM(NSEND)
+      NSENDG=P_SUM(NSEND)
 !
       IF(NSENDG.GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
 !
@@ -9624,7 +9623,7 @@
 !       COMPUTE THE NUMBER OF SET OF DATA ARRIVED
 !
         NARRV = SUM(RECVCOUNTS)
-        NARRVG= P_ISUM(NARRV)
+        NARRVG= P_SUM(NARRV)
 !
         IF(NSENDG.NE.NARRVG) THEN
           WRITE(LU,*) 'TOTAL SENT = ',NSENDG,' TOTAL RECEIVED = ',NARRVG
@@ -9637,7 +9636,7 @@
           ISTOP=1
           WRITE(LU,*) 'NARRV=',NARRV,' NCHDIM=',NCHDIM
         ENDIF
-        ISTOP=P_ISUM(ISTOP)
+        ISTOP=P_SUM(ISTOP)
         IF(ISTOP.GT.0) THEN
           WRITE(LU,*) 'SEND_PARTICLES'
           WRITE(LU,*) 'TOO MANY LOST TRACEBACKS IN ',ISTOP,
@@ -9844,7 +9843,7 @@
       NSEND=NCHARA
       NLOSTCHAR=NSEND
 !
-      NSENDG=P_ISUM(NSEND)
+      NSENDG=P_SUM(NSEND)
 !
       IF(NSENDG.GT.0) THEN ! THERE ARE LOST TRACEBACKS SOMEWHERE
 !
@@ -9861,7 +9860,7 @@
 !       COMPUTE THE NUMBER OF SET OF DATA ARRIVED
 !
         NARRV = SUM(RECVCOUNTS)
-        NARRVG= P_ISUM(NARRV)
+        NARRVG= P_SUM(NARRV)
 !
         IF(NSENDG.NE.NARRVG) THEN
           WRITE(LU,*) 'TOTAL SENT = ',NSENDG,' TOTAL RECEIVED = ',NARRVG
@@ -9874,7 +9873,7 @@
           ISTOP=1
           WRITE(LU,*) 'NARRV=',NARRV,' NCHDIM=',NCHDIM
         ENDIF
-        ISTOP=P_ISUM(ISTOP)
+        ISTOP=P_SUM(ISTOP)
         IF(ISTOP.GT.0) THEN
           WRITE(LU,*) 'SEND_PARTICLES'
           WRITE(LU,*) 'TOO MANY LOST TRACEBACKS IN ',ISTOP,
@@ -9929,9 +9928,9 @@
 !
       RETURN
       END SUBROUTINE OIL_SEND_INFO
-!                    ***************************
-                     SUBROUTINE OIL_DEL_PARTICLE
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE OIL_DEL_PARTICLE
+!                   ***************************
 !
      &(TAG,NFLOT,NFLOT_MAX,IELM,ISUB,PARTICULES,NB_COMPO,NB_HAP)
 !

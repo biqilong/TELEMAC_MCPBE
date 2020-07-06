@@ -57,10 +57,8 @@ subroutine LEC_LOI    ( &
    ! Variables locales
    integer :: nb_loi   ! nombre de lois
    integer :: nb_point ! nombre de points
-   integer :: nb_point_z,nb_point_q ! nombre de points
    integer :: iloi     ! compteur sur les lois
    integer :: i        ! compteur sur les points
-   integer :: j ,k       ! compteur sur les points
    integer :: retour   ! code de retour des fonctions intrinseques
    integer :: mode_entree_loi ! type d'entree clavier/fichier
    integer :: unite_temps     ! unite de temps des lois entres par clavier
@@ -295,13 +293,6 @@ subroutine LEC_LOI    ( &
   10010 format ('Nombre de lois = ',i3)
   10020 format (/,'Loi ',i3,' : Nom = ',A,' Type =',i2)
   10030 format ('Mode d''entree      = ',A,' Nom du fichier = ',A)
-  10040 format ('Mode d''entree      = ',A)
-  10045 format ('Unite de temps     = ',A)
-  10050 format ('Nombre de points   = ',i3)
-  10060 format (A)
-  10070 format (i5,2f12.3)
-  10080 format (i5,3f12.3)
-  10090 format (f12.3)
 
    contains
 

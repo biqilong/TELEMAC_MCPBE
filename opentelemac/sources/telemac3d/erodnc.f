@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ERODNC
-!                    *****************
+!                   *****************
+                    SUBROUTINE ERODNC
+!                   *****************
 !
      &(S3D_CFDEP, S3D_WCS, S3D_HDEP , S3D_FLUER, TOB   , DT    ,
      & NPOIN2 , NPOIN3 , S3D_AC , S3D_RHOS, RHO0  , HN ,

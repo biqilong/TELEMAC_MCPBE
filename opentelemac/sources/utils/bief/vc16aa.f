@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC16AA
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC16AA
+!                   *****************
 !
      &( XMUL,SF,SG,SU,SV,F,G,U,V,
      &  XEL,YEL,SURFAC,

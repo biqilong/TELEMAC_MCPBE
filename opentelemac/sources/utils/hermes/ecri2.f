@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE ECRI2
-!                    ****************
+!                   ****************
+                    SUBROUTINE ECRI2
+!                   ****************
 !
      &(X , I , C , NVAL , TYPE , CANAL , STD , ISTAT)
 !

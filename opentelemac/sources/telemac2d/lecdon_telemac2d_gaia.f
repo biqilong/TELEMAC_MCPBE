@@ -1,6 +1,6 @@
-!                    *********************************
-                     SUBROUTINE LECDON_TELEMAC2D_GAIA
-!                    *********************************
+!                   *********************************
+                    SUBROUTINE LECDON_TELEMAC2D_GAIA
+!                   *********************************
 !
      &(MOTCAR,FILE_DESC,PATH,NCAR,CAS_FILE,DICO_FILE)
 !

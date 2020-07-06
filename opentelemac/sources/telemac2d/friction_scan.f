@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE FRICTION_SCAN
-!                    ************************
+!                   ************************
+                    SUBROUTINE FRICTION_SCAN
+!                   ************************
 !
      &(NCOF,NOMCOF,TYP,LINE)
 !

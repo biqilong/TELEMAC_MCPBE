@@ -1,6 +1,6 @@
-!                    *****************
-                   SUBROUTINE CALCUW_GAIA
-!                    *****************
+!                 *****************
+                  SUBROUTINE CALCUW_GAIA
+!                 *****************
 !
      & ( UW, H, HW, TW, GRAV ,NPOIN, TYPE_HOULE)
 !
@@ -93,7 +93,7 @@
             URMS=(0.25D0/(1+A*T**2)**3)*HW(I)/TN
             UW(I)= DSQRT(2.D0)*URMS
           ELSE
-           UW(I)=0.D0
+            UW(I)=0.D0
           ENDIF
         ENDDO
       ELSE

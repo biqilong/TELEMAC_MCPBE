@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE GET_BND_CONNECTIVITY
-!                    ***********************
+!                   **********************
+                    SUBROUTINE GET_BND_CONNECTIVITY
+!                   **********************
 !
      &(FFORMAT,FID,TYP_BND_ELEM,NELEBD,NDP,IKLE_BND,IERR)
 !

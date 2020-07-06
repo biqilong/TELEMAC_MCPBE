@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE INFCEL
-!                    *****************
+!                   *****************
+                    SUBROUTINE INFCEL
+!                   *****************
 !
      &(XX,YY,NUBO,VNOIN,NPOIN,NELEM,NSEG,CMI,AIRST,
      & GLOSEG,COORD_G,ELTSEG,ORISEG,IFABOR)

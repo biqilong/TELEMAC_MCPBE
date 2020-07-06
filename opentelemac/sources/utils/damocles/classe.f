@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CLASSE
-!                    *****************
+!                   *****************
+                    SUBROUTINE CLASSE
+!                   *****************
 !
      &(DIMENS , SIZE   , MOTCLE , UTINDX , NMAX   ,
      & OFFSET , ADRESS , INDIC  , LUIGN  ,

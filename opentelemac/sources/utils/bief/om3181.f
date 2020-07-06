@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OM3181
-!                    *****************
+!                   *****************
+                    SUBROUTINE OM3181
+!                   *****************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,   C,
      & NULONE,NELBOR,NBOR,NELMAX,SIZDN,NELEB)
@@ -148,136 +148,136 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-           IF(NCSIZE.GT.1) THEN
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             IF(IEL.GT.0) THEN
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 4)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 5)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 6)
-             ENDIF
-           ENDDO
-           ELSE
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 4)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 5)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 6)
-           ENDDO
-           ENDIF
+          IF(NCSIZE.GT.1) THEN
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            IF(IEL.GT.0) THEN
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 4)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 5)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 6)
+            ENDIF
+          ENDDO
+          ELSE
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 4)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 5)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 6)
+          ENDDO
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           IF(NCSIZE.GT.1) THEN
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             IF(IEL.GT.0) THEN
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
-             ENDIF
-           ENDDO
-           ELSE
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
-           ENDDO
-           ENDIF
+          IF(NCSIZE.GT.1) THEN
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            IF(IEL.GT.0) THEN
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
+            ENDIF
+          ENDDO
+          ELSE
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
+          ENDDO
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           IF(NCSIZE.GT.1) THEN
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             IF(IEL.GT.0) THEN
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVSYM(NUL1,NUL2) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVSYM(NUL1,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVSYM(NUL2,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
-             ENDIF
-           ENDDO
-           ELSE
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVSYM(NUL1,NUL2) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVSYM(NUL1,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVSYM(NUL2,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
-           ENDDO
-           ENDIF
+          IF(NCSIZE.GT.1) THEN
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            IF(IEL.GT.0) THEN
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVSYM(NUL1,NUL2) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVSYM(NUL1,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVSYM(NUL2,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
+            ENDIF
+          ENDDO
+          ELSE
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVSYM(NUL1,NUL2) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVSYM(NUL1,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVSYM(NUL2,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
+          ENDDO
+          ENDIF
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-99         FORMAT(1X,'OM3181 (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
-     &       /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+99        FORMAT(1X,'OM3181 (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
+     &      /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------
@@ -288,134 +288,134 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-           IF(NCSIZE.GT.1) THEN
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             IF(IEL.GT.0) THEN
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 4)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 5)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 6)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
-             ENDIF
-           ENDDO
-           ELSE
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 4)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 5)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 6)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
-           ENDDO
-           ENDIF
+          IF(NCSIZE.GT.1) THEN
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            IF(IEL.GT.0) THEN
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 4)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 5)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 6)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
+            ENDIF
+          ENDDO
+          ELSE
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 4)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 5)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 6)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
+          ENDDO
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           IF(NCSIZE.GT.1) THEN
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             IF(IEL.GT.0) THEN
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
-             ENDIF
-           ENDDO
-           ELSE
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVNSY(NUL1,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL1,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL2,NUL3) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
-             XM( IEL , CONVNSY(NUL2,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
-             XM( IEL , CONVNSY(NUL3,NUL1) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
-             XM( IEL , CONVNSY(NUL3,NUL2) ) =
-     &       XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
-           ENDDO
-           ENDIF
+          IF(NCSIZE.GT.1) THEN
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            IF(IEL.GT.0) THEN
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
+            ENDIF
+          ENDDO
+          ELSE
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVNSY(NUL1,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL1,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL2,NUL3) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL3) ) + XN(K, 3)
+            XM( IEL , CONVNSY(NUL2,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL2,NUL1) ) + XN(K, 1)
+            XM( IEL , CONVNSY(NUL3,NUL1) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL1) ) + XN(K, 2)
+            XM( IEL , CONVNSY(NUL3,NUL2) ) =
+     &      XM( IEL , CONVNSY(NUL3,NUL2) ) + XN(K, 3)
+          ENDDO
+          ENDIF
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           IF(NCSIZE.GT.1) THEN
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             IF(IEL.GT.0) THEN
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVSYM(NUL1,NUL2) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVSYM(NUL1,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVSYM(NUL2,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
-             ENDIF
-           ENDDO
-           ELSE
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             NUL1=NULONE(K)
-             NUL2=NULONE(K+NELEB)
-             NUL3=NULONE(K+2*NELEB)
-             XM( IEL , CONVSYM(NUL1,NUL2) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
-             XM( IEL , CONVSYM(NUL1,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
-             XM( IEL , CONVSYM(NUL2,NUL3) ) =
-     &       XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
-           ENDDO
-           ENDIF
+          IF(NCSIZE.GT.1) THEN
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            IF(IEL.GT.0) THEN
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVSYM(NUL1,NUL2) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVSYM(NUL1,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVSYM(NUL2,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
+            ENDIF
+          ENDDO
+          ELSE
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            NUL1=NULONE(K)
+            NUL2=NULONE(K+NELEB)
+            NUL3=NULONE(K+2*NELEB)
+            XM( IEL , CONVSYM(NUL1,NUL2) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL2) ) + XN(K, 1)
+            XM( IEL , CONVSYM(NUL1,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL1,NUL3) ) + XN(K, 2)
+            XM( IEL , CONVSYM(NUL2,NUL3) ) =
+     &      XM( IEL , CONVSYM(NUL2,NUL3) ) + XN(K, 3)
+          ENDDO
+          ENDIF
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------

@@ -28,7 +28,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER IREC, K, IPLAN, IFREQ, IP
+      INTEGER IREC, K, IDIRE, IFREQ, IP
       DOUBLE PRECISION :: LAMBD0
       DOUBLE PRECISION VITVEN,VITMIN
 !
@@ -74,7 +74,7 @@
 !
 !     3D IFABOR
 !
-      CALL IFABTOM(MESH3D%IFABOR%I,NELEM2,NPLAN-1)
+      CALL IFABTOM(MESH3D%IFABOR%I,NELEM2,NDIRE-1)
 !
 !-----------------------------------------------------------------------
 !
@@ -188,8 +188,8 @@
 !-----------------------------------------------------------------------
 !     INITIALISES TETA
 !     BY DEFAULT THE DIRECTIONS OF PROPAGATION ARE EVENLY DISTRIBUTED
-      DO IPLAN = 1,NPLAN+1
-        TETA(IPLAN) = (IPLAN-1)*DEUPI/NPLAN
+      DO IDIRE = 1,NDIRE+1
+        TETA(IDIRE) = (IDIRE-1)*DEUPI/NDIRE
       ENDDO
 !
 !-----------------------------------------------------------------------
@@ -227,7 +227,7 @@
 !
       IF(SUIT) THEN
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE LECSUI'
-        CALL LECSUI(F, NPLAN, NF, NPOIN2,
+        CALL LECSUI(F, NDIRE, NF, NPOIN2,
      &              VENT,COUSTA.OR.PART.EQ.WAC_CPL_INIT ,
      &              LUPRE,FMTPRE, MAREE.OR.PART.EQ.WAC_CPL_INIT,TSDER)
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE LECSUI'
@@ -270,7 +270,7 @@
 !
       IF(STRIF.EQ.1) THEN
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE PRENL1'
-        CALL PRENL1( IANGNL, COEFNL, NPLAN , NF , RAISF , XLAMD )
+        CALL PRENL1( IANGNL, COEFNL, NDIRE , NF , RAISF , XLAMD )
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PRENL1'
 !
 !.....MDIA method (Tolman, 2004)
@@ -288,7 +288,7 @@
 !
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE PRENL2'
         DO K=1,MDIA
-          CALL PRENL2(IANMDI(1,1,K),COEMDI(1,K),NPLAN,NF,RAISF,
+          CALL PRENL2(IANMDI(1,1,K),COEMDI(1,K),NDIRE,NF,RAISF,
      &                XLAMDI(K),XMUMDI(K))
         ENDDO
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PRENL2'
@@ -385,7 +385,7 @@
 !=====C============================================================
       IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE LIMWAC'
       CALL LIMWAC
-     &(F   , FBOR , NPTFR,  NPLAN,    NF, NPOIN2,
+     &(F   , FBOR , NPTFR,  NDIRE,    NF, NPOIN2,
      & KENT, PRIVE,  NPRIV,  WAC_FILES(IMPSPE))
       IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE LIMWAC'
 !
@@ -403,7 +403,7 @@
 !
       IF(.NOT.PROINF) THEN
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE ECRETE'
-        IF (ECRET) CALL ECRETE(F, DEPTH, NPOIN2, NPLAN, NF, PROMIN)
+        IF (ECRET) CALL ECRETE(F, DEPTH, NPOIN2, NDIRE, NF, PROMIN)
 !   SHOULD THINK OT THAT ....
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE ECRETE'
       ENDIF
@@ -455,7 +455,7 @@
 !
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE ECRSPE'
         IREC = (LT - GRADEB)    ! Should be 0
-        CALL ECRSPE(F,     NPLAN , NF  , NPOIN2, IREC, TSDER, NOLEO,
+        CALL ECRSPE(F,     NDIRE , NF  , NPOIN2, IREC, TSDER, NOLEO,
      &              NPLEO, DEBRES, DATE, TIME, MESH%KNOLG%I ,MESH)
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE ECRSPE'
       ENDIF
@@ -472,7 +472,7 @@
 !       3 VARIABLES THAT WILL BE TRANSMITTED TO SISYPHE OR GAIA
 !       ALL THIS IF BLOCK ADAPTED FROM DUMP2D
 !       MEAN DIRECTION
-        CALL TETMOY(CPL_WAC_DATA%DIRMOY_TEL%R, F, NPLAN, NF, NPOIN2)
+        CALL TETMOY(CPL_WAC_DATA%DIRMOY_TEL%R, F, NDIRE, NF, NPOIN2)
         IF(TRIGO) THEN
           DO IP=1,NPOIN2
             CPL_WAC_DATA%DIRMOY_TEL%R(IP) =
@@ -485,12 +485,12 @@
           ENDDO
         ENDIF
 !       SIGNIFICANT WAVE HEIGHT
-        CALL TOTNRJ(TRA37, F, NF,NPLAN,NPOIN2)
+        CALL TOTNRJ(TRA37, F, NF,NDIRE,NPOIN2)
         DO IP=1,NPOIN2
           CPL_WAC_DATA%HM0_TEL%R(IP)=4.D0*SQRT(TRA37(IP))
         ENDDO
 !       TPR5
-        CALL FPREAD(CPL_WAC_DATA%TPR5_TEL%R, F, NF, NPLAN,
+        CALL FPREAD(CPL_WAC_DATA%TPR5_TEL%R, F, NF, NDIRE,
      &              NPOIN2, 5.D0)
         DO IP=1,NPOIN2
           CPL_WAC_DATA%TPR5_TEL%R(IP)=
@@ -513,7 +513,7 @@
         CALL PREPRO
      & ( STSDER, STSTOT, IKLE2,  IBOR, ELT, ETA, FRE,
      &   XK,  CG,  ITR01, NPOIN3, NPOIN2, NELEM2,
-     &   NPLAN,  NF, COURAN.OR.PART.EQ.WAC_CPL_INIT)
+     &   NDIRE,  NF, COURAN.OR.PART.EQ.WAC_CPL_INIT)
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PREPRO 1'
 !
       ENDIF

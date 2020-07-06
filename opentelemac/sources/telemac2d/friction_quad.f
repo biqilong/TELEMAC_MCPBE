@@ -1,12 +1,12 @@
-!                    ************************
-                     SUBROUTINE FRICTION_QUAD
-!                    ************************
+!                   ************************
+                    SUBROUTINE FRICTION_QUAD
+!                   ************************
 !
-     &(IKLE, NELEM, NELMAX, LINDNER, NKFROT, CHESTR, NDEFMA,
-     & LINDDP, LINDSP)
+     &(IKLE, NELEM, NELMAX, VEGETATION, NKFROT, CHESTR, NDEFMA, VCOEFF,
+     & VEGLAW)
 !
 !***********************************************************************
-! TELEMAC2D   V6P1                                   21/08/2010
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    COMPUTES THE FRICTION VECTOR FOR THE QUADRATIC ELEMENT.
@@ -33,17 +33,22 @@
 !+   Creation of DOXYGEN tags for automated documentation and
 !+   cross-referencing of the FORTRAN sources
 !
+!history  R. KOPMANN (BAW)
+!+        19/11/2019
+!+        V8P2
+!+   Adaption to multiple vegetation laws
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| CHESTR         |<->| FRICTION COEFFICIENTS
 !| IKLE           |-->| CONNECTIVITY TABLE.
-!| LINDDP         |<--| DIAMETER OF ROUGHNESS ELEMENT IN LINDNER CASE
-!| LINDNER        |-->| IF YES, THERE IS NON-SUBMERGED VEGETATION FRICTION
-!| LINDSP         |<--| SPACING OF ROUGHNESS ELEMENT IN LINDNER CASE
-!| NDEFMA         |<--| DEFAULT MANNING COEFFICIENT
+!| NDEFMA         |<->| DEFAULT MANNING COEFFICIENT
 !| NELEM          |-->| NUMBER OF ELEMENTS
 !| NELMAX         |-->| MAXIMUM NUMBER OF ELEMENTS
 !| NKFROT         |<->| LAW OF BOTTOM FRICTION FOR EVERY POINT
 !| NPOIN          |-->| NUMBER OF POINTS
+!| VCOEFF         |<->| COEFFICIENTS FOR VEGETATION LAW, UP TO 15
+!| VEGETATION     |-->| IF YES, THERE IS VEGETATION FRICTION
+!| VEGLAW         |<->| VEGETATION LAW
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
@@ -54,19 +59,15 @@
 !
       INTEGER,        INTENT(IN)    :: NELEM,NELMAX
       INTEGER,        INTENT(IN)    :: IKLE(NELMAX,6)
-      LOGICAL,        INTENT(IN)    :: LINDNER
+      LOGICAL,        INTENT(IN)    :: VEGETATION
       TYPE(BIEF_OBJ), INTENT(INOUT) :: NKFROT,CHESTR,NDEFMA
-      TYPE(BIEF_OBJ), INTENT(INOUT) :: LINDDP,LINDSP
+      TYPE(BIEF_OBJ), INTENT(INOUT) :: VCOEFF,VEGLAW
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER :: IELEM
+      INTEGER IELEM,K
 !
-!=======================================================================!
-!=======================================================================!
-!                               PROGRAMME                               !
-!=======================================================================!
-!=======================================================================!
+!-----------------------------------------------------------------------
 !
 ! IF THE 11 NODES HAVE THE SAME FRICTION LAW, INTERPOLATION A LA CG1113
 ! FOR THE VALUES AT 13 ADDITIONAL NODES IN THE MIDDLE OF THE EDGES
@@ -94,10 +95,14 @@
      &      0.5D0*(CHESTR%R(IKLE(IELEM,1))+CHESTR%R(IKLE(IELEM,2)))
           NDEFMA%R(IKLE(IELEM,4)) =
      &      0.5D0*(NDEFMA%R(IKLE(IELEM,1))+NDEFMA%R(IKLE(IELEM,2)))
+          IF(.NOT.VEGETATION) 
+     &       VEGLAW%I(IKLE(IELEM,4)) = VEGLAW%I(IKLE(IELEM,1))
         ELSE
           NKFROT%I(IKLE(IELEM,4)) = NKFROT%I(IKLE(IELEM,1))
           CHESTR%R(IKLE(IELEM,4)) = CHESTR%R(IKLE(IELEM,1))
           NDEFMA%R(IKLE(IELEM,4)) = NDEFMA%R(IKLE(IELEM,1))
+          IF(.NOT.VEGETATION)
+     &       VEGLAW%I(IKLE(IELEM,4)) = VEGLAW%I(IKLE(IELEM,1))
         ENDIF
         IF(NKFROT%I(IKLE(IELEM,2)).EQ.NKFROT%I(IKLE(IELEM,3))) THEN
           NKFROT%I(IKLE(IELEM,5)) = NKFROT%I(IKLE(IELEM,2))
@@ -105,10 +110,14 @@
      &      0.5D0*(CHESTR%R(IKLE(IELEM,2))+CHESTR%R(IKLE(IELEM,3)))
           NDEFMA%R(IKLE(IELEM,5)) =
      &      0.5D0*(NDEFMA%R(IKLE(IELEM,2))+NDEFMA%R(IKLE(IELEM,3)))
+          IF(.NOT.VEGETATION)
+     &       VEGLAW%I(IKLE(IELEM,5)) = VEGLAW%I(IKLE(IELEM,2))
         ELSE
           NKFROT%I(IKLE(IELEM,5)) = NKFROT%I(IKLE(IELEM,2))
           CHESTR%R(IKLE(IELEM,5)) = CHESTR%R(IKLE(IELEM,2))
           NDEFMA%R(IKLE(IELEM,5)) = NDEFMA%R(IKLE(IELEM,2))
+          IF(.NOT.VEGETATION)
+     &       VEGLAW%I(IKLE(IELEM,5)) = VEGLAW%I(IKLE(IELEM,2))
         ENDIF
         IF(NKFROT%I(IKLE(IELEM,3)).EQ.NKFROT%I(IKLE(IELEM,1))) THEN
           NKFROT%I(IKLE(IELEM,6)) = NKFROT%I(IKLE(IELEM,3))
@@ -116,47 +125,65 @@
      &      0.5D0*(CHESTR%R(IKLE(IELEM,3))+CHESTR%R(IKLE(IELEM,1)))
           NDEFMA%R(IKLE(IELEM,6)) =
      &      0.5D0*(NDEFMA%R(IKLE(IELEM,3))+NDEFMA%R(IKLE(IELEM,1)))
+          IF(.NOT.VEGETATION)
+     &       VEGLAW%I(IKLE(IELEM,6)) = VEGLAW%I(IKLE(IELEM,3))
         ELSE
           NKFROT%I(IKLE(IELEM,6)) = NKFROT%I(IKLE(IELEM,3))
           CHESTR%R(IKLE(IELEM,6)) = CHESTR%R(IKLE(IELEM,3))
           NDEFMA%R(IKLE(IELEM,6)) = NDEFMA%R(IKLE(IELEM,3))
+          IF(.NOT.VEGETATION)
+     &       VEGLAW%I(IKLE(IELEM,6)) = VEGLAW%I(IKLE(IELEM,3))
         ENDIF
       ENDDO
-      ! THIS RARE CASE SEPARATELY
-      IF (LINDNER) THEN
+      ! FOR VEGETATION
+      IF(VEGETATION) THEN
         DO IELEM = 1,NELEM
-          IF (NKFROT%I(IKLE(IELEM,1)).EQ.NKFROT%I(IKLE(IELEM,2))) THEN
-            LINDDP%R(IKLE(IELEM,4)) =
-     &        0.5D0*(LINDDP%R(IKLE(IELEM,1))+LINDDP%R(IKLE(IELEM,2)))
-            LINDSP%R(IKLE(IELEM,4)) =
-     &        0.5D0*(LINDSP%I(IKLE(IELEM,1))+LINDSP%R(IKLE(IELEM,2)))
+          IF(VEGLAW%I(IKLE(IELEM,1)).EQ.VEGLAW%I(IKLE(IELEM,2))) THEN
+            VEGLAW%I(IKLE(IELEM,4)) = VEGLAW%I(IKLE(IELEM,1))
+            DO K = 1,15
+              VCOEFF%ADR(K)%P%R(IKLE(IELEM,4)) =
+     &          0.5D0*(VCOEFF%ADR(K)%P%R(IKLE(IELEM,1)) +
+     &                 VCOEFF%ADR(K)%P%R(IKLE(IELEM,2)))
+            ENDDO
           ELSE
-            LINDDP%R(IKLE(IELEM,4)) = LINDDP%R(IKLE(IELEM,1))
-            LINDSP%R(IKLE(IELEM,4)) = LINDSP%R(IKLE(IELEM,1))
+            VEGLAW%I(IKLE(IELEM,4)) = VEGLAW%I(IKLE(IELEM,1))
+            DO K = 1,15
+              VCOEFF%ADR(K)%P%R(IKLE(IELEM,4)) =
+     &          VCOEFF%ADR(K)%P%R(IKLE(IELEM,1))
+            ENDDO
           ENDIF
-          IF (NKFROT%I(IKLE(IELEM,2)).EQ.NKFROT%I(IKLE(IELEM,3))) THEN
-            LINDDP%R(IKLE(IELEM,5)) =
-     &        0.5D0*(LINDDP%R(IKLE(IELEM,2))+LINDDP%R(IKLE(IELEM,3)))
-            LINDSP%R(IKLE(IELEM,5)) =
-     &        0.5D0*(LINDSP%I(IKLE(IELEM,2))+LINDSP%R(IKLE(IELEM,3)))
+          IF(VEGLAW%I(IKLE(IELEM,2)).EQ.VEGLAW%I(IKLE(IELEM,3))) THEN
+            VEGLAW%I(IKLE(IELEM,5)) = VEGLAW%I(IKLE(IELEM,2))
+            DO K = 1,15
+              VCOEFF%ADR(K)%P%R(IKLE(IELEM,5)) =
+     &          0.5D0*(VCOEFF%ADR(K)%P%R(IKLE(IELEM,2)) +
+     &                 VCOEFF%ADR(K)%P%R(IKLE(IELEM,3)))
+            ENDDO
           ELSE
-            LINDDP%R(IKLE(IELEM,5)) = LINDDP%R(IKLE(IELEM,2))
-            LINDSP%R(IKLE(IELEM,5)) = LINDSP%R(IKLE(IELEM,2))
+            VEGLAW%I(IKLE(IELEM,5)) = VEGLAW%I(IKLE(IELEM,2))
+            DO K = 1,15
+              VCOEFF%ADR(K)%P%R(IKLE(IELEM,5)) =
+     &          VCOEFF%ADR(K)%P%R(IKLE(IELEM,2))
+            ENDDO
           ENDIF
-          IF (NKFROT%I(IKLE(IELEM,3)).EQ.NKFROT%I(IKLE(IELEM,1))) THEN
-            LINDDP%R(IKLE(IELEM,6)) =
-     &        0.5D0*(LINDDP%R(IKLE(IELEM,3))+LINDDP%R(IKLE(IELEM,1)))
-            LINDSP%R(IKLE(IELEM,6)) =
-     &        0.5D0*(LINDSP%I(IKLE(IELEM,3))+LINDSP%R(IKLE(IELEM,1)))
+          IF(VEGLAW%I(IKLE(IELEM,3)).EQ.VEGLAW%I(IKLE(IELEM,1))) THEN
+            VEGLAW%I(IKLE(IELEM,6)) = VEGLAW%I(IKLE(IELEM,3))
+            DO K = 1,15
+              VCOEFF%ADR(K)%P%R(IKLE(IELEM,6)) =
+     &          0.5D0*(VCOEFF%ADR(K)%P%R(IKLE(IELEM,3)) +
+     &                 VCOEFF%ADR(K)%P%R(IKLE(IELEM,1)))
+            ENDDO
           ELSE
-            LINDDP%R(IKLE(IELEM,6)) = LINDDP%R(IKLE(IELEM,3))
-            LINDSP%R(IKLE(IELEM,6)) = LINDSP%R(IKLE(IELEM,3))
+            VEGLAW%I(IKLE(IELEM,6)) = VEGLAW%I(IKLE(IELEM,3))
+            DO K = 1,15
+              VCOEFF%ADR(K)%P%R(IKLE(IELEM,6)) =
+     &          VCOEFF%ADR(K)%P%R(IKLE(IELEM,3))
+            ENDDO
           ENDIF
         ENDDO
       ENDIF
 !
-!=======================================================================!
-!=======================================================================!
+!-----------------------------------------------------------------------
 !
       RETURN
-      END SUBROUTINE FRICTION_QUAD
+      END SUBROUTINE

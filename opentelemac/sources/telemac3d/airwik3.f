@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE AIRWIK3
-!                    ******************
+!                   ******************
+                    SUBROUTINE AIRWIK3
+!                   ******************
 !
      & (LIHBOR,U,V,XNEBOR,YNEBOR,NBOR,NPTFR,NPLAN,NPOIN2,KLOG)
 !

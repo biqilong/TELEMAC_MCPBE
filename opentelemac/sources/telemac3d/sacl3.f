@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SACL3
-!                    *****************
+!                   *****************
+                    SUBROUTINE SACL3
+!                   *****************
 !
      &(NUBORF,LINUBOF,
      & NUBORL,LINUBOL,LIUBOL,

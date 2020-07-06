@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE USER_T3D_DEBSCE
-!                    **************************
+!                   **************************
+                    SUBROUTINE USER_T3D_DEBSCE
+!                   **************************
 !
      &( T3D_DEBSCE, TIME , I , DISCE )
 !

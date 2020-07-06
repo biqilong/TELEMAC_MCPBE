@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PRECD1
-!                    *****************
+!                   *****************
+                    SUBROUTINE PRECD1
+!                   *****************
 !
      &(X,A,B,D,MESH,PRECON,PREXSM,DIADON)
 !

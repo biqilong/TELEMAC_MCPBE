@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_BND_IPOBO
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_BND_IPOBO
+!                   ************************
 !
      &(FFORMAT,FID,NPOIN,NELEBD,TYP_BND_ELEM,IPOBO,IERR)
 !

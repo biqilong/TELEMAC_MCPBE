@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PERALE
-!                    *****************
+!                   *****************
+                    SUBROUTINE PERALE
+!                   *****************
 !
      &(PALE,GAMMA,PERPIC,NPALE,PMIN,PMAX)
 !

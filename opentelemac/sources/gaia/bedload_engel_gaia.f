@@ -1,6 +1,6 @@
-!                *****************************
-                 SUBROUTINE BEDLOAD_ENGEL_GAIA
-!                *****************************
+!               *****************************
+                SUBROUTINE BEDLOAD_ENGEL_GAIA
+!               *****************************
 !
      &(TOB,CF,DENS,GRAV,DCLA,XMVE,TETA,QSC,XMVS)
 !

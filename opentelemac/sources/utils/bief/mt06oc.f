@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT06OC
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT06OC
+!                   *****************
 !
      &(A11,A12,A13,A22,A23,A33,
      & XMUL,SF,F,LGSEG,IKLE1,IKLE2,IKLE3,NBOR,NELEM,NELMAX)

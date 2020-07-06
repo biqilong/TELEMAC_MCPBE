@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OM5111
-!                    *****************
+!                   *****************
+                    SUBROUTINE OM5111
+!                   *****************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,
      & SIZDN,SZMDN,SIZXN,NETAGE, NELMAX3D)
@@ -115,50 +115,50 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-!          XM(K,1,1,  )  K : TRIANGLE NUMBER
-!                        1 : T1 TETRAHEDRON, ONE SIDE OF WHICH IS AT THE BOTTOM
-!                        1 : 1ST LAYER, THAT AT THE BOTTOM
+!         XM(K,1,1,  )  K : TRIANGLE NUMBER
+!                       1 : T1 TETRAHEDRON, ONE SIDE OF WHICH IS AT THE BOTTOM
+!                       1 : 1ST LAYER, THAT AT THE BOTTOM
 !
-           DO K = 1 , SIZXN
-             XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
-             XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
-             XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
-             XM(K,1,1,07) = XM(K,1,1,07) + XN(K,4)
-             XM(K,1,1,08) = XM(K,1,1,08) + XN(K,5)
-             XM(K,1,1,10) = XM(K,1,1,10) + XN(K,6)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
+            XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
+            XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
+            XM(K,1,1,07) = XM(K,1,1,07) + XN(K,4)
+            XM(K,1,1,08) = XM(K,1,1,08) + XN(K,5)
+            XM(K,1,1,10) = XM(K,1,1,10) + XN(K,6)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
-             XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
-             XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
-             XM(K,1,1,07) = XM(K,1,1,07) + XN(K,1)
-             XM(K,1,1,08) = XM(K,1,1,08) + XN(K,2)
-             XM(K,1,1,10) = XM(K,1,1,10) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
+            XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
+            XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
+            XM(K,1,1,07) = XM(K,1,1,07) + XN(K,1)
+            XM(K,1,1,08) = XM(K,1,1,08) + XN(K,2)
+            XM(K,1,1,10) = XM(K,1,1,10) + XN(K,3)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
-             XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
-             XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
+            XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
+            XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
+          ENDDO
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-99         FORMAT(1X,'OM5111 (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
-     &       /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+99        FORMAT(1X,'OM5111 (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
+     &      /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------
@@ -169,44 +169,44 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,1,1,01) = XM(K,1,1,01) + XN(K,4)
-             XM(K,1,1,02) = XM(K,1,1,02) + XN(K,5)
-             XM(K,1,1,04) = XM(K,1,1,04) + XN(K,6)
-             XM(K,1,1,07) = XM(K,1,1,07) + XN(K,1)
-             XM(K,1,1,08) = XM(K,1,1,08) + XN(K,2)
-             XM(K,1,1,10) = XM(K,1,1,10) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,1,1,01) = XM(K,1,1,01) + XN(K,4)
+            XM(K,1,1,02) = XM(K,1,1,02) + XN(K,5)
+            XM(K,1,1,04) = XM(K,1,1,04) + XN(K,6)
+            XM(K,1,1,07) = XM(K,1,1,07) + XN(K,1)
+            XM(K,1,1,08) = XM(K,1,1,08) + XN(K,2)
+            XM(K,1,1,10) = XM(K,1,1,10) + XN(K,3)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
-             XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
-             XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
-             XM(K,1,1,07) = XM(K,1,1,07) + XN(K,1)
-             XM(K,1,1,08) = XM(K,1,1,08) + XN(K,2)
-             XM(K,1,1,10) = XM(K,1,1,10) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
+            XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
+            XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
+            XM(K,1,1,07) = XM(K,1,1,07) + XN(K,1)
+            XM(K,1,1,08) = XM(K,1,1,08) + XN(K,2)
+            XM(K,1,1,10) = XM(K,1,1,10) + XN(K,3)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
-             XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
-             XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,1,1,01) = XM(K,1,1,01) + XN(K,1)
+            XM(K,1,1,02) = XM(K,1,1,02) + XN(K,2)
+            XM(K,1,1,04) = XM(K,1,1,04) + XN(K,3)
+          ENDDO
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------
@@ -217,48 +217,48 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-!          XM(K,1,1,  )  K      : TRIANGLE NUMBER
-!                        2      : T2 TETRAHEDRON, ONE SIDE OF WHICH IS AT THE SURFACE
-!                        NETAGE : LAST LAYER, THAT AT THE SURFACE
+!         XM(K,1,1,  )  K      : TRIANGLE NUMBER
+!                       2      : T2 TETRAHEDRON, ONE SIDE OF WHICH IS AT THE SURFACE
+!                       NETAGE : LAST LAYER, THAT AT THE SURFACE
 !
-           DO K = 1 , SIZXN
-             XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
-             XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
-             XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,3)
-             XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,4)
-             XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,5)
-             XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,6)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
+            XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
+            XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,3)
+            XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,4)
+            XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,5)
+            XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,6)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
-             XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
-             XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,3)
-             XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,1)
-             XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,2)
-             XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
+            XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
+            XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,3)
+            XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,1)
+            XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,2)
+            XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
-             XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
-             XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
+            XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
+            XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
+          ENDDO
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------
@@ -269,44 +269,44 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,4)
-             XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,5)
-             XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,6)
-             XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,1)
-             XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,2)
-             XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,4)
+            XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,5)
+            XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,6)
+            XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,1)
+            XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,2)
+            XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
-             XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
-             XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,3)
-             XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,1)
-             XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,2)
-             XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
+            XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
+            XM(K,2,NETAGE,10) = XM(K,2,NETAGE,10) + XN(K,3)
+            XM(K,2,NETAGE,08) = XM(K,2,NETAGE,08) + XN(K,1)
+            XM(K,2,NETAGE,07) = XM(K,2,NETAGE,07) + XN(K,2)
+            XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           DO K = 1 , SIZXN
-             XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
-             XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
-             XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
-           ENDDO
+          DO K = 1 , SIZXN
+            XM(K,2,NETAGE,02) = XM(K,2,NETAGE,02) + XN(K,1)
+            XM(K,2,NETAGE,01) = XM(K,2,NETAGE,01) + XN(K,2)
+            XM(K,2,NETAGE,04) = XM(K,2,NETAGE,04) + XN(K,3)
+          ENDDO
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------

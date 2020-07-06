@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE WRITE_HEADER
-!                    *************************
+!                   *************************
+                    SUBROUTINE WRITE_HEADER
+!                   *************************
 !
      &(FFORMAT,NRES,TITLE,NVAR,NOMVAR,OUTVAR)
 !

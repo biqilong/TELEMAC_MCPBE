@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT08TT
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT08TT
+!                   *****************
 !
      &( T,XM,XMUL,X,Y,SF,F,IKLE,NELEM,NELMAX)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE COSAKE
-!                    *****************
+!                   *****************
+                    SUBROUTINE COSAKE
+!                   *****************
 !
      &(KARMAN,CMU,C1,C2,SIGMAK,SIGMAE,ESTAR,SCHMIT,KMIN,KMAX,EMIN,EMAX)
 !

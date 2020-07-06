@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CPIK13
-!                    *****************
+!                   *****************
+                    SUBROUTINE CPIK13
+!                   *****************
 !
      &(IKLE,IKLBOR,ELTSEG,NBOR,NELBOR,NULONE,NELEM,NELMAX,NPOIN,NPTFR,
      & NELEB,NELEBX)

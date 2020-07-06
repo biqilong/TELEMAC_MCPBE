@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE SECOND_ORDER
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE SECOND_ORDER
+!                   ***********************
 !
      &(DSZ0,BETA,T1,T2,T3,T4,T5,LOGFR,UA,DJX,DJY,DX,DY,CE,DT,CORR_I,
      & CORR_J,CORR_HL,CORR_HR,CORR_UL,CORR_UR,CORR_VL,CORR_VR,CORR_ZL,
@@ -43,15 +43,15 @@
 !
       USE BIEF
       USE DECLARATIONS_TELEMAC2D, ONLY: DSH_FC,DSU_FC,DSV_FC,LT,NPOIN,
-     &                            DSP_FC,DSM_FC,DSZ_FC,CORR_FC,NELMAX,
+     &                            DSP_FC,DSM_FC,DSZ_FC,CORR_FC,
      &                            DTLL_FC,GRADI_FC,GRADJ_FC,NELEM,NSEG,
      &                            GRADIJ_FC,GRADJI_FC,DEJA_FC,IKLE,
      &                            NPTFR,ILIMHZ,
-     &                            ILIMUV,X,Y,V2DPAR,ZF,PROPNU,GRAV,
+     &                            ILIMUV,X,Y,V2DPAR,ZF,GRAV,
      &                            CFLWTD,MESH,EPS_FV
       USE DECLARATIONS_TELEMAC, ONLY: KDIR,KNEU
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MIN
       USE INTERFACE_TELEMAC2D, EX_SECOND_ORDER => SECOND_ORDER
       USE BIEF_DEF
 !
@@ -438,8 +438,8 @@
             PROD_SCAL= ((X(NUBO2)-X(NUBO1))*VNOIN(1,NSG)+
      &                  (Y(NUBO2)-Y(NUBO1))*VNOIN(2,NSG))
             IF(PROD_SCAL.LT.0.D0)THEN
-             NUBO1 = NUBO(2,NSG)
-             NUBO2 = NUBO(1,NSG)
+              NUBO1 = NUBO(2,NSG)
+              NUBO2 = NUBO(1,NSG)
             ENDIF
 !
             ZF1  = ZF%R(NUBO1)
@@ -557,7 +557,7 @@
             DTLL_FC(NUBO2) = MIN (DTL,DTLL_FC(NUBO2))
             DT          = MIN(DT, DTL)
 ! PARALLEL: TAKE MIN DT OF ALL SUBDOMAINS
-!          IF(NCSIZE.GT.1)DT = P_DMIN(DT) !WILL BE PLACED AT THE END (SEE BELOW)
+!          IF(NCSIZE.GT.1)DT = P_MIN(DT) !WILL BE PLACED AT THE END (SEE BELOW)
 !
 !
 1234        CONTINUE
@@ -594,7 +594,7 @@
       ENDIF
 
 !     FOR PARALLELISME
-      IF(NCSIZE.GT.1) DT=P_DMIN(DT)
+      IF(NCSIZE.GT.1) DT=P_MIN(DT)
 !
       DEALLOCATE(YESNO)
 !

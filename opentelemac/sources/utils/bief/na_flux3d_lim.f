@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE NA_FLUX3D_LIM
-!                    ************************
+!                   ************************
+                    SUBROUTINE NA_FLUX3D_LIM
+!                   ************************
 !
      &(W,FLULIM,NSEG2D,NELEM,NELMAX,NELEM2,NELMAX2,ELTSEG)
 !

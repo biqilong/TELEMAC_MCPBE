@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE DAMOC
-!                    ****************
+!                   ****************
+                    SUBROUTINE DAMOC
+!                   ****************
 !
      &( ADRESS , DIMENS , NMAX   , DOC    , LLNG   , LLU    ,
      &  MOTINT , MOTREA , MOTLOG , MOTCAR , MOTATT ,
@@ -538,13 +538,13 @@
 ! COMING FROM THE PRECEDING WORD, SORTS IT BEFORE READING THE FOLLOWING
 ! SINCE ALL THE INFORMATION ON THE PRECEDING WORD IS AVAILABLE
 !
-           IF (NBMOT.GT.1 .AND. (.NOT.(VUMOT)) ) THEN
-             IF (INDX.GT.NMAXR(NTYP)) NMAXR(NTYP)=INDX
-             CALL CLASSE(DIMENS,TAILLE,MOTCLE,UTINDX,NMAX,
-     &                   OFFSET,ADRESS,INDIC,LUIGN,
-     &                   MOTINT,MOTREA,MOTLOG,MOTCAR,MOTATT ,
-     &                   DEFCAR,DEFINT,DEFLOG,DEFREA,DEFATT )
-           ENDIF
+            IF (NBMOT.GT.1 .AND. (.NOT.(VUMOT)) ) THEN
+              IF (INDX.GT.NMAXR(NTYP)) NMAXR(NTYP)=INDX
+              CALL CLASSE(DIMENS,TAILLE,MOTCLE,UTINDX,NMAX,
+     &                    OFFSET,ADRESS,INDIC,LUIGN,
+     &                    MOTINT,MOTREA,MOTLOG,MOTCAR,MOTATT ,
+     &                    DEFCAR,DEFINT,DEFLOG,DEFREA,DEFATT )
+            ENDIF
 !
 ! SIGNALS THAT THIS NEW KEYWORD WAS ALREADY ENCOUNTERED IN ANOTHER LANGUAGE
             IF (.NOT.(VUMOT)) VUMOT=.TRUE.
@@ -557,8 +557,8 @@
               PARAM=PARAM2(1:MIN(72,LONGU))
             ELSE
 ! READS THE NAME OF A NON-REQUESTED LANGUAGE (NOT USED)
-                 NULCAR = CARLU(LCAR,ICOL,LIGNE,QUOTE,MOTCLE,TAILLE,
-     &                          MOTIGN,LONIGN,NMAXR,NFICDA,LEN(NULCAR))
+              NULCAR = CARLU(LCAR,ICOL,LIGNE,QUOTE,MOTCLE,TAILLE,
+     &                       MOTIGN,LONIGN,NMAXR,NFICDA,LEN(NULCAR))
             ENDIF
 !
             ICOL = NEXT(ICOL+1,LIGNE)

@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE INIT_CONSTANT
-!                    ************************
+!                   ************************
+                    SUBROUTINE INIT_CONSTANT
+!                   ************************
 !
      &(KARIM_HOLLY_YANG,KARMAN,PI)
 !

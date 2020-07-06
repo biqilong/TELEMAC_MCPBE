@@ -1,6 +1,6 @@
-!                  ******************************
-                   SUBROUTINE BEDLOAD_BIJKER_GAIA
-!                  ******************************
+!                 ******************************
+                  SUBROUTINE BEDLOAD_BIJKER_GAIA
+!                 ******************************
 !
      &  (TOBW,TOB,MU,KSP,KSR,HN,NPOIN,DCLA,DENS,XMVE,GRAV,XWC,
      &   KARMAN,ZERO,T4,T7,T8,T9,QSC,QSS,BIJK,HOULE,XMVS)

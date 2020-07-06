@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE LECDON_SISYPHE
-!                    *************************
+!                   *************************
+                    SUBROUTINE LECDON_SISYPHE
+!                   *************************
 !
      &(MOTCAR,FILE_DESC,PATH,NCAR,CODE,CAS_FILE,DICO_FILE)
 !

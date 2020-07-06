@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE REMONT
-!                    *****************
+!                   *****************
+                    SUBROUTINE REMONT
+!                   *****************
 !
      &(X, XA,TYPEXA,B,IKLE,NELEM,NELMAX,NPOIN,IELM,DITR,COPY,LV)
 !

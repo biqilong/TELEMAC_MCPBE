@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE P_LSUM
-!                    *****************
+!                   *****************
+                    SUBROUTINE P_LSUM
+!                   *****************
 !
      &(BUFFER_LENGTH,LBUFFER)
 !

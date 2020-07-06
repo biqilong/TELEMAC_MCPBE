@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE ELEB3DT
-!                    ******************
+!                   ******************
+                    SUBROUTINE ELEB3DT
+!                   ******************
 !
      &(IKLE3,NBOR,NELBOR,NELBOR2D,IKLBOR,NELEB,NELEBX,NULONE,
      & NELEM2,NPOIN2,NPLAN,NETAGE,NPTFR,IKLBOR2D,NELEB2D,NELEBX2D)

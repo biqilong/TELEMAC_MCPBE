@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE P_MPI_ALLTOALLV_I
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE P_MPI_ALLTOALLV_I
+!                   ****************************
 !
      &(SEND_BUFFER,NSEND,SEND_DISPL,SEND_DATYP,RECV_BUFFER,NRECV,
      & RECV_DISPL,RECV_DATYP,IERR)

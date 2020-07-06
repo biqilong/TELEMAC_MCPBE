@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE EXTMSK
-!                    *****************
+!                   *****************
+                    SUBROUTINE EXTMSK
+!                   *****************
 !
      &(MASKBR,MASK,NETAGE,NELEB)
 !

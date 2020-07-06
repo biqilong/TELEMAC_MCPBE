@@ -47,7 +47,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_ISUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -66,8 +66,8 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER           ID, LUFLO,LUBLO, I,IPROC,IFLOT, NFLOTG
-      INTEGER           I1,I2,I3
+      INTEGER           ID, LUFLO,LUBLO, IPROC,IFLOT, NFLOTG
+      INTEGER           I1,I2
       INTEGER           IFRAME, NFLOT_START, NFLOTG_START
       DOUBLE PRECISION  V1
       LOGICAL           YESITDOES
@@ -172,14 +172,14 @@
       IF( NCSIZE.GT.1 ) THEN
 !
 !       WAITING ALL PROCESSORS (SO THAT NFLOT IS UPDATED FOR ALL
-!                               BEFORE CALLING P_ISUM)
+!                               BEFORE CALLING P_SUM)
 !
 !        CALL P_SYNC
 !
 !       1) PARALLEL WRITE UP
 !
         NFLOTG = NFLOT
-        NFLOTG = P_ISUM(NFLOT)
+        NFLOTG = P_SUM(NFLOT)
         IF( NFLOTG.GT.0 ) THEN
 !
 !         ONE TIME STEP OF THE TECPLOT FILE

@@ -1,10 +1,10 @@
-!                    *****************
-                     SUBROUTINE SPEINI
-!                    *****************
+!                   *****************
+                    SUBROUTINE SPEINI
+!                   *****************
 !
      &( F     , SPEC  , FRA   , UV    , VV    , FREMAX, FETCH , SIGMAA,
      &  SIGMAB, GAMMA , FPIC  , HM0   , ALPHIL, TETA1 , SPRED1, TETA2 ,
-     &  SPRED2, XLAMDA, NPOIN2, NPLAN , NF    , INISPE, DEPTH ,
+     &  SPRED2, XLAMDA, NPOIN2, NDIRE , NF    , INISPE, DEPTH ,
      &  FRABI )
 !
 !***********************************************************************
@@ -67,7 +67,7 @@
 !| HM0            |-->| INITIAL SIGNIFICANT WAVE HEIGHT
 !| INISPE         |-->| TYPE OF INITIAL DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| SIGMAA         |-->| INITIAL VALUE OF SIGMA FOR JONSWAP SPECTRUM
 !|                |   | (F<FP)
@@ -94,7 +94,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)    ::  NPOIN2, NPLAN , NF    , INISPE, FRABI
+      INTEGER, INTENT(IN)    ::  NPOIN2, NDIRE , NF    , INISPE, FRABI
       DOUBLE PRECISION, INTENT(IN)    :: FREMAX, FETCH , SIGMAA
       DOUBLE PRECISION, INTENT(IN)    :: SIGMAB, GAMMA
       DOUBLE PRECISION, INTENT(IN)    :: FPIC  , HM0   , ALPHIL, TETA1
@@ -102,8 +102,8 @@
       DOUBLE PRECISION, INTENT(IN)    :: SPRED2, XLAMDA
       DOUBLE PRECISION, INTENT(IN)    :: UV(*) , VV(*)
       DOUBLE PRECISION, INTENT(IN)    :: DEPTH(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: FRA(NPLAN), SPEC(NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: FRA(NDIRE), SPEC(NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -117,7 +117,7 @@
 !      DOUBLE PRECISION SMAX
 !      SMAX=35
 !
-      NPOIN4= NPOIN2*NPLAN*NF
+      NPOIN4= NPOIN2*NDIRE*NF
       UVMIN = 1.D-6
       COEFA = 2.84D0
       COEFB = 0.033D0
@@ -135,7 +135,7 @@
 !     ===========================================================
 !
       IF(INISPE.EQ.0) THEN
-! 
+!
         CALL OV('X=C     ', X=F, C=0.D0, DIM1=NPOIN4)
 !
 !     ==/ INISPE = 1 /===========================================
@@ -172,23 +172,23 @@
             TET2=0.D0
             XLAM=1.D0
             IF(FRABI.EQ.2) THEN
-              CALL FSPRD2(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD2(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ELSEIF(FRABI.EQ.3) THEN
-              CALL FSPRD3(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD3(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ELSEIF(FRABI.EQ.1) THEN
-              CALL FSPRD1(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD1(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ENDIF
 !
 !           COMPUTES THE DIRECTIONAL SPECTRUM
 !
             IF (FRABI.LE.3) THEN
               DO JF=1,NF
-                DO JP=1,NPLAN
+                DO JP=1,NDIRE
                   F(IP,JP,JF)=SPEC(JF)*FRA(JP)
                 ENDDO
               ENDDO
             ELSEIF(FRABI.EQ.4) THEN
-! DIRECTION DEPENDS ON FREQUENCY              
+! DIRECTION DEPENDS ON FREQUENCY
               DO JF=1,NF
                 IF(FREQ(JF).LT.FPIC) THEN
                   COEF1=SMAX*(FREQ(JF)/FPIC)**(5.0D0)
@@ -197,7 +197,7 @@
                   COEF1=SMAX*(FREQ(JF)/FPIC)**(-2.5D0)
                   DELT = 0.5D0/DELFRA(COEF1)
                 ENDIF
-                DO JP=1,NPLAN
+                DO JP=1,NDIRE
                   DTETA = TETA(JP)-TETA1
                   ARGUM = ABS(COS(0.5D0*(DTETA)))
                   FRA(JP)=DELT*ARGUM**(2.D0*COEF1)
@@ -210,7 +210,7 @@
             ENDIF
           ELSE
             DO JF=1,NF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 F(IP,JP,JF)=0.D0
               ENDDO
             ENDDO
@@ -260,23 +260,23 @@
           TET2=0.D0
           XLAM=1.D0
           IF(FRABI.EQ.2) THEN
-            CALL FSPRD2(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD2(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.3) THEN
-            CALL FSPRD3(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD3(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.1) THEN
-            CALL FSPRD1(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD1(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ENDIF
 !
 !         COMPUTES THE DIRECTIONAL SPECTRUM
 !
           IF(FRABI.LE.3) THEN
             DO JF=1,NF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 F(IP,JP,JF)=SPEC(JF)*FRA(JP)
               ENDDO
             ENDDO
           ELSEIF(FRABI.EQ.4) THEN
-! DIRECTION DEPENDS ON FREQUENCY              
+! DIRECTION DEPENDS ON FREQUENCY
             DO JF=1,NF
               IF(FREQ(JF).LT.FPIC) THEN
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(5.0D0)
@@ -285,7 +285,7 @@
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(-2.5D0)
                 DELT = 0.5D0/DELFRA(COEF1)
               ENDIF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 DTETA = TETA(JP)-TETA1
                 ARGUM = ABS(COS(0.5D0*(DTETA)))
                 FRA(JP)=DELT*ARGUM**(2.D0*COEF1)
@@ -329,23 +329,23 @@
             TET2=0.D0
             XLAM=1.D0
             IF(FRABI.EQ.2) THEN
-              CALL FSPRD2(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD2(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ELSEIF(FRABI.EQ.3) THEN
-              CALL FSPRD3(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD3(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ELSEIF(FRABI.EQ.1) THEN
-              CALL FSPRD1(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD1(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ENDIF
 !
 !           COMPUTES THE DIRECTIONAL SPECTRUM
 !
             IF(FRABI.LE.3) THEN
               DO JF=1,NF
-                DO JP=1,NPLAN
+                DO JP=1,NDIRE
                   F(IP,JP,JF)=SPEC(JF)*FRA(JP)
                 ENDDO
               ENDDO
             ELSEIF(FRABI.EQ.4) THEN
-! DIRECTION DEPENDS ON FREQUENCY              
+! DIRECTION DEPENDS ON FREQUENCY
               DO JF=1,NF
                 IF(FREQ(JF).LT.FPIC) THEN
                   COEF1=SMAX*(FREQ(JF)/FPIC)**(5.0D0)
@@ -354,7 +354,7 @@
                   COEF1=SMAX*(FREQ(JF)/FPIC)**(-2.5D0)
                   DELT = 0.5D0/DELFRA(COEF1)
                 ENDIF
-                DO JP=1,NPLAN
+                DO JP=1,NDIRE
                   DTETA = TETA(JP)-TETA1
                   ARGUM = ABS(COS(0.5D0*(DTETA)))
                   FRA(JP)=DELT*ARGUM**(2.D0*COEF1)
@@ -367,7 +367,7 @@
             ENDIF
           ELSE
             DO JF=1,NF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 F(IP,JP,JF)=0.D0
               ENDDO
             ENDDO
@@ -402,11 +402,11 @@
           TET2=TETA2
           XLAM=XLAMDA
           IF(FRABI.EQ.2) THEN
-            CALL FSPRD2(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD2(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.3) THEN
-            CALL FSPRD3(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD3(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.1) THEN
-            CALL FSPRD1(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD1(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ENDIF
 !
 !         COMPUTES THE DIRECTIONAL SPECTRUM
@@ -414,12 +414,12 @@
 
           IF(FRABI.LE.3) THEN
             DO JF=1,NF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 F(IP,JP,JF)=SPEC(JF)*FRA(JP)
               ENDDO
             ENDDO
           ELSEIF(FRABI.EQ.4) THEN
-! DIRECTION DEPENDS ON FREQUENCY              
+! DIRECTION DEPENDS ON FREQUENCY
             DO JF=1,NF
               IF(FREQ(JF).LT.FPIC) THEN
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(5.0D0)
@@ -428,7 +428,7 @@
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(-2.5D0)
                 DELT = 0.5D0/DELFRA(COEF1)
               ENDIF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 DTETA = TETA(JP)-TETA1
                 ARGUM = ABS(COS(0.5D0*(DTETA)))
                 FRA(JP)=DELT*ARGUM**(2.D0*COEF1)
@@ -439,7 +439,7 @@
             WRITE(LU,*)'WRONG VALUE FOR ANGULAR DISTRIBUTION FUNCTION'
             CALL PLANTE(1)
           ENDIF
-!     
+!
         ENDDO ! IP
 !
 !     ==/ INISPE = 5 /===========================================
@@ -475,23 +475,23 @@
             TET2=0.D0
             XLAM=1.D0
             IF(FRABI.EQ.2) THEN
-              CALL FSPRD2(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD2(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ELSEIF(FRABI.EQ.3) THEN
-              CALL FSPRD3(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD3(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ELSEIF(FRABI.EQ.1) THEN
-              CALL FSPRD1(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+              CALL FSPRD1(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
             ENDIF
 !
 !           COMPUTES THE DIRECTIONAL SPECTRUM
 !
-            IF(FRABI.LE.3) THEN 
+            IF(FRABI.LE.3) THEN
               DO JF=1,NF
-                DO JP=1,NPLAN
+                DO JP=1,NDIRE
                   F(IP,JP,JF)=SPEC(JF)*FRA(JP)
                 ENDDO
               ENDDO
             ELSEIF(FRABI.EQ.4) THEN
-! DIRECTION DEPENDS ON FREQUENCY              
+! DIRECTION DEPENDS ON FREQUENCY
               DO JF=1,NF
                 IF(FREQ(JF).LT.FPIC) THEN
                   COEF1=SMAX*(FREQ(JF)/FPIC)**(5.0D0)
@@ -500,7 +500,7 @@
                   COEF1=SMAX*(FREQ(JF)/FPIC)**(-2.5D0)
                   DELT = 0.5D0/DELFRA(COEF1)
                 ENDIF
-                DO JP=1,NPLAN
+                DO JP=1,NDIRE
                   DTETA = TETA(JP)-TETA1
                   ARGUM = ABS(COS(0.5D0*(DTETA)))
                   FRA(JP)=DELT*ARGUM**(2.D0*COEF1)
@@ -512,11 +512,11 @@
               CALL PLANTE(1)
             ENDIF
           ELSE
-             DO JF=1,NF
-                DO JP=1,NPLAN
-                   F(IP,JP,JF)=0.D0
-                ENDDO
-             ENDDO
+            DO JF=1,NF
+              DO JP=1,NDIRE
+                F(IP,JP,JF)=0.D0
+              ENDDO
+            ENDDO
           ENDIF
 !
         ENDDO ! IP
@@ -551,24 +551,24 @@
           TET2=TETA2
           XLAM=XLAMDA
           IF(FRABI.EQ.2) THEN
-            CALL FSPRD2(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD2(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.3) THEN
-            CALL FSPRD3(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD3(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.1) THEN
-            CALL FSPRD1(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD1(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ENDIF
 
 !
 !         COMPUTES THE DIRECTIONAL SPECTRUM
 !
-          IF(FRABI.LE.3) THEN 
+          IF(FRABI.LE.3) THEN
             DO JF=1,NF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 F(IP,JP,JF)=SPEC(JF)*FRA(JP)
               ENDDO
             ENDDO
           ELSEIF(FRABI.EQ.4) THEN
-! DIRECTION DEPENDS ON FREQUENCY              
+! DIRECTION DEPENDS ON FREQUENCY
             DO JF=1,NF
               IF(FREQ(JF).LT.FPIC) THEN
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(5.0D0)
@@ -577,7 +577,7 @@
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(-2.5D0)
                 DELT = 0.5D0/DELFRA(COEF1)
               ENDIF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 DTETA = TETA(JP)-TETA1
                 ARGUM = ABS(COS(0.5D0*(DTETA)))
                 FRA(JP)=DELT*ARGUM**(2.D0*COEF1)
@@ -588,7 +588,7 @@
             WRITE(LU,*)'WRONG VALUE FOR ANGULAR DISTRIBUTION FUNCTION'
             CALL PLANTE(1)
           ENDIF
-!     
+!
         ENDDO ! IP
 !
 !     ==/ INISPE = 7 /===========================================
@@ -622,23 +622,23 @@
           TET2=TETA2
           XLAM=XLAMDA
           IF(FRABI.EQ.2) THEN
-            CALL FSPRD2(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD2(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.3) THEN
-            CALL FSPRD3(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD3(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ELSEIF(FRABI.EQ.1) THEN
-            CALL FSPRD1(FRA,NPLAN,SPR1,TET1,SPR2,TET2,XLAM)
+            CALL FSPRD1(FRA,NDIRE,SPR1,TET1,SPR2,TET2,XLAM)
           ENDIF
 !
 !         COMPUTES THE THE DIRECTIONAL SPECTRUM
 !
           IF(FRABI.LE.3) THEN
             DO JF=1,NF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 F(IP,JP,JF)=SPEC(JF)*FRA(JP)
               ENDDO
             ENDDO
           ELSEIF(FRABI.EQ.4) THEN
-! DIRECTION DEPENDS ON FREQUENCY              
+! DIRECTION DEPENDS ON FREQUENCY
             DO JF=1,NF
               IF(FREQ(JF).LT.FPIC) THEN
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(5.0D0)
@@ -647,7 +647,7 @@
                 COEF1=SMAX*(FREQ(JF)/FPIC)**(-2.5D0)
                 DELT = 0.5D0/DELFRA(COEF1)
               ENDIF
-              DO JP=1,NPLAN
+              DO JP=1,NDIRE
                 DTETA = TETA(JP)-TETA1
                 ARGUM = ABS(COS(0.5D0*(DTETA)))
                 FRA(JP)=DELT*ARGUM**(2.D0*COEF1)
@@ -658,7 +658,7 @@
             WRITE(LU,*)'WRONG VALUE FOR ANGULAR DISTRIBUTION FUNCTION'
             CALL PLANTE(1)
           ENDIF
-!     
+!
         ENDDO ! IP
 !
       ELSE

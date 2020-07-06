@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE SOULSBYFLOC3D
-!                    ************************
+!                   ************************
+                    SUBROUTINE SOULSBYFLOC3D
+!                   ************************
 !
      &(WCHU, FC, MESH3, NPOIN2, NPOIN3, NPLAN, HN, UETCAR)
 !

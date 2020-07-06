@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE NORMAB
-!                    *****************
+!                   *****************
+                    SUBROUTINE NORMAB
+!                   *****************
 !
      &(XNEBOR,YNEBOR,XSGBOR,YSGBOR,DISBOR,SURFAC,NELMAX,
      & NELBOR,NULONE,LGSEG,NPTFR,MESH,XEL,YEL,IKLBOR,NELEBX,NELEB)

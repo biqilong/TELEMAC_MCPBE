@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE WPOWER
-!                    *****************
+!                   *****************
+                    SUBROUTINE WPOWER
+!                   *****************
 !
-     &( F     , CG    , NF    , NPLAN , NPOIN2)
+     &( F     , CG    , NF    , NDIRE , NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   29/06/2011
@@ -51,7 +51,7 @@
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| GRAVIT         |-->| GRAVITY ACCELERATION
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| POWER          |<--| WAVE POWER PER METER ALONG WAVE CREST
 !| ROEAU          |-->| WATER DENSITY
@@ -66,8 +66,8 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    ::          NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    ::          NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: CG(NPOIN2,NF)
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -75,7 +75,7 @@
       DOUBLE PRECISION AUX1  , DTETAR, ROGER
 !
 !
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       ROGER=ROEAU*GRAVIT/1000.D0
       DO IP=1,NPOIN2
         POWER(IP)=0.D0
@@ -86,7 +86,7 @@
 !-----C-------------------------------------------------------C
       DO JF=1,NF
         AUX1=DFREQ(JF)*DTETAR
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           DO IP=1,NPOIN2
             POWER(IP) = POWER(IP) + F(IP,JP,JF)*CG(IP,JF)*AUX1
           ENDDO
@@ -99,7 +99,7 @@
 !
       IF(TAILF.GT.1.D0) THEN
         AUX1=DTETAR*GRAVIT/(2.D0*DEUPI*TAILF)
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           DO IP=1,NPOIN2
             POWER(IP)=POWER(IP) + F(IP,JP,NF)*AUX1
           ENDDO

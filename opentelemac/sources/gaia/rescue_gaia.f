@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE RESCUE_GAIA
-!                    **********************
+!                   **********************
+                    SUBROUTINE RESCUE_GAIA
+!                   **********************
 !
      &(H,S,ZF,ZR,ES,HW,TW,THETAW,NPOIN,NOMBLAY,
      & TROUVE,ALIRE,PASS,ICF,LISTI,MAXVAR)

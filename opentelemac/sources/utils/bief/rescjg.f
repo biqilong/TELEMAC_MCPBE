@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE RESCJG
-!                    *****************
+!                 *****************
+                  SUBROUTINE RESCJG
+!                 *****************
 !
      &(X, A,B , MESH,D,AD,AG,G,R, CFG,INFOGR,AUX)
 !
@@ -319,9 +319,9 @@
       IF(INFOGR) THEN
         TESTL = SQRT( RMRM / XL )
         IF (RELAT) THEN
-           WRITE(LU,104) M,TESTL
+          WRITE(LU,104) M,TESTL
         ELSE
-           WRITE(LU,204) M,TESTL
+          WRITE(LU,204) M,TESTL
         ENDIF
       ENDIF
       GO TO 1000
@@ -333,9 +333,9 @@
       IF(INFOGR) THEN
         TESTL = SQRT( RMRM / XL )
         IF (RELAT) THEN
-           WRITE(LU,102) M,TESTL
+          WRITE(LU,102) M,TESTL
         ELSE
-           WRITE(LU,202) M,TESTL
+          WRITE(LU,202) M,TESTL
         ENDIF
       ENDIF
 !

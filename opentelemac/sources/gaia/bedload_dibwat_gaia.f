@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE BEDLOAD_DIBWAT_GAIA
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE BEDLOAD_DIBWAT_GAIA
+!                   ******************************
 !
      &(U2D,V2D,UNORM, CF, TOB, TOBW, UW, TW, FW, THETAW, NPOIN,
      & XMVE, DENS, GRAV, DCLA, XWC, PI, ALPHAW, T2, T3, UCW, UCN,

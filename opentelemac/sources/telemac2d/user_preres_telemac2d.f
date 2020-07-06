@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE USER_PRERES_TELEMAC2D
-!                    ********************************
+!                   ********************************
+                    SUBROUTINE USER_PRERES_TELEMAC2D
+!                   ********************************
 !
 !***********************************************************************
 ! TELEMAC2D
@@ -20,7 +20,7 @@
 
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

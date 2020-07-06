@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FILTER
-!                    *****************
+!                   *****************
+                    SUBROUTINE FILTER
+!                   *****************
 !
      &(VEC,BLDMAT,T1,T2,
      & A,FORMUL,

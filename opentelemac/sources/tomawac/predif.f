@@ -3,7 +3,7 @@
 !                       *****************
 !
      &(CX    , CY    , IKLE2 , IFABOR, ELT   , ETA   , XK    ,
-     & CG    , ITR01 , NPOIN3, NPOIN2, NELEM2, NPLAN , NF    ,
+     & CG    , ITR01 , NPOIN3, NPOIN2, NELEM2, NDIRE , NF    ,
      & COURAN, F     , RX    , RY    , RXX   , RYY   , NEIGB )
 !
 !***********************************************************************
@@ -52,9 +52,9 @@
 !| NEIGB          |-->| NEIGHBOUR POINTS FOR MESHFREE METHOD
 !| NELEM2         |-->| NUMBER OF ELEMENTS IN 2D MESH
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
-!| NPOIN3         |-->| NPOIN2*NPLAN
+!| NPOIN3         |-->| NPOIN2*NDIRE
 !| RX             |-->| ARRAY USED IN THE MESHFREE TECHNIQUE
 !| RXX            |-->| ARRAY USED IN THE MESHFREE TECHNIQUE
 !| RY             |-->| ARRAY USED IN THE MESHFREE TECHNIQUE
@@ -79,7 +79,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER,INTENT(IN)    :: NPOIN3,NPOIN2,NELEM2,NPLAN,NF
+      INTEGER,INTENT(IN)    :: NPOIN3,NPOIN2,NELEM2,NDIRE,NF
       INTEGER,INTENT(IN)    :: IKLE2(NELEM2,3)
       INTEGER,INTENT(IN)    :: NEIGB(NPOIN2,MAXNSP)
       INTEGER,INTENT(INOUT) :: IFABOR(NELEM2,7)
@@ -89,7 +89,7 @@
       DOUBLE PRECISION,INTENT(IN) :: RXX(MAXNSP,NPOIN2)
       DOUBLE PRECISION,INTENT(IN) :: RYY(MAXNSP,NPOIN2)
       DOUBLE PRECISION,INTENT(IN) :: XK(NPOIN2,NF),CG(NPOIN2,NF)
-      DOUBLE PRECISION,INTENT(IN) :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION,INTENT(IN) :: F(NPOIN2,NDIRE,NF)
       LOGICAL,INTENT(IN) :: COURAN
       TYPE(BIEF_OBJ), INTENT(INOUT) :: CX,CY
 !
@@ -113,12 +113,12 @@
 !         COMPUTES THE ADVECTION FIELD
 !
           CALL CONWAC
-     &(CX%R, CY%R, SCT%R, XK, CG, NPOIN2, NPLAN, IFF, NF)
+     &(CX%R, CY%R, SCT%R, XK, CG, NPOIN2, NDIRE, IFF, NF)
 !
 !         MODIFIESS THE ADVECTION FIELD WITH DIFFRACTION
 !
           CALL DIFFRAC
-     &  (CX%R, CY%R, SCT%R, XK, CG, NPOIN2, NPLAN, IFF, NF,
+     &  (CX%R, CY%R, SCT%R, XK, CG, NPOIN2, NDIRE, IFF, NF,
      &   F, RX, RY, RXX, RYY, NEIGB)
 !
           DO IEL=1,NELEM2
@@ -144,7 +144,7 @@
           ENDIF
           CALL CHARAC(SSHZ%ADR(IFF)%P,SSHZ%ADR(IFF)%P,0,
      &                CX,CY,SCT,SCT,STETA,STETA,DT,MESH3D%IFABOR,IELM3,
-     &                NPOIN2,NPLAN,1,1,.FALSE.,SSHP1%ADR(IFF)%P,
+     &                NPOIN2,NDIRE,1,1,.FALSE.,SSHP1%ADR(IFF)%P,
      &                SSHZ%ADR(IFF)%P,SSHZ%ADR(IFF)%P,TB,
      &                ELT(1,IFF),ETA(1,IFF),ETA(1,IFF),ITR01,
      &                ISUB((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB),

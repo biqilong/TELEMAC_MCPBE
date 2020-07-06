@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE CORRECTION_DEPTH_2D
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE CORRECTION_DEPTH_2D
+!                   ******************************
 !
      &(GLOSEG,DIMGLO,YAFLODEL,YASMH,YAFLULIM,YAFLULIMEBE)
 !

@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE SATUR_O2
-!                    *******************
+!                   *******************
+                    SUBROUTINE SATUR_O2
+!                   *******************
 !
      &(SATO2,FORMCS,WATTEMP,EPS)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT06PP
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT06PP
+!                   *****************
 !
      &( T,XM,XMUL,SF,F,Z,SURFAC,IKLE,NELEM,NELMAX)
 !

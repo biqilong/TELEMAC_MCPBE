@@ -164,10 +164,10 @@
           IKINIT(IELEM,I) = IKLES(I,IELEM)
         ENDDO
         IF (FUSION) THEN
-           DO IELEM = NELEM1+1,NELEM
-             IKLE  (IELEM,I) = IKLES(I,IELEM) + NPOIN1
-             IKINIT(IELEM,I) = IKLES(I,IELEM) + NPOIN1
-           ENDDO
+          DO IELEM = NELEM1+1,NELEM
+            IKLE  (IELEM,I) = IKLES(I,IELEM) + NPOIN1
+            IKINIT(IELEM,I) = IKLES(I,IELEM) + NPOIN1
+          ENDDO
         ENDIF
       ENDDO
 !

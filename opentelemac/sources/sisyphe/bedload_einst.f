@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE BEDLOAD_EINST
-!                    ************************
+!                   ************************
+                    SUBROUTINE BEDLOAD_EINST
+!                   ************************
 !
      &(TETAP, NPOIN, DENS, GRAV, DM, DSTAR, QSC)
 !

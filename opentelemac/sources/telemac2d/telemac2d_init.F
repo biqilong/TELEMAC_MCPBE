@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE TELEMAC2D_INIT
-!                    **************************
+!                   **************************
+                    SUBROUTINE TELEMAC2D_INIT
+!                   **************************
 !
      &(CODE)
 !
@@ -30,7 +30,7 @@
       USE ALGAE_TRANSP
 !     DELWAQ
       USE TEL4DEL, ONLY: TEL4DELWAQ
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_ISUM
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -106,9 +106,9 @@
         DO ITRAC=2,NTRAC
           DO I=1,NPTFR
             LITBOR%ADR(ITRAC)%P%I(I)=LITBOR%ADR(1)%P%I(I)
-              TBOR%ADR(ITRAC)%P%R(I)=  TBOR%ADR(1)%P%R(I)
-             ATBOR%ADR(ITRAC)%P%R(I)= ATBOR%ADR(1)%P%R(I)
-             BTBOR%ADR(ITRAC)%P%R(I)= BTBOR%ADR(1)%P%R(I)
+            TBOR%ADR(ITRAC)%P%R(I)=  TBOR%ADR(1)%P%R(I)
+            ATBOR%ADR(ITRAC)%P%R(I)= ATBOR%ADR(1)%P%R(I)
+            BTBOR%ADR(ITRAC)%P%R(I)= BTBOR%ADR(1)%P%R(I)
           ENDDO
         ENDDO
       ENDIF
@@ -320,7 +320,7 @@
         DO I=1,NPTFR
           NFRLIQ=MAX(NFRLIQ,NUMLIQ%I(I))
         ENDDO
-        NFRLIQ=P_IMAX(NFRLIQ)
+        NFRLIQ=P_MAX(NFRLIQ)
         WRITE(LU,*) ' '
         WRITE(LU,*) 'NUMBER OF LIQUID BOUNDARIES:',NFRLIQ
         IF(NFRLIQ.GT.MAXFRO) THEN
@@ -827,8 +827,8 @@
             IF(II.NE.0)THEN
               XSCE(I)=X(II)
               YSCE(I)=Y(II)
-             ENDIF
-           ENDDO
+            ENDIF
+          ENDDO
         ELSEIF(T2D_FILES(T2DSDN)%NAME(1:1).NE.' ') THEN
           IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING READ_SOURCE_DATA'
           CALL READ_SOURCE_DATA(T2D_FILES(T2DSDN)%LU,NREG)
@@ -862,7 +862,7 @@
                 STOP
               ENDIF
             ELSE
-              SUM_TNP=P_ISUM(TNP(IREG))
+              SUM_TNP=P_SUM(TNP(IREG))
               IF(SUM_TNP.EQ.0) THEN
                 WRITE(LU,28)IREG
                 CALL PLANTE(1)

@@ -70,7 +70,7 @@
      &                      .AND.INST_T2D%SIS%PERCOU.NE.1) THEN
           INST_T2D%LEOPRD_CHARR=INST_T2D%SIS%NIT+INST_T2D%SIS%PERCOU
         ELSE
-           INST_T2D%LEOPRD_CHARR=INST_T2D%SIS%LEOPRD
+          INST_T2D%LEOPRD_CHARR=INST_T2D%SIS%LEOPRD
         ENDIF
 
         INST_T2D%SUSP1=INST_T2D%SUSP_SIS
@@ -79,16 +79,16 @@
      &                   .AND.(INST_T2D%SIS%PERCOU*(INST_T2D%SIS%LT
      &                         /INST_T2D%SIS%PERCOU).EQ.INST_T2D%SIS%LT
      &                        ))) THEN
-           CHARR_SUSP = 1
-           YES_CHARR = .TRUE.
+          CHARR_SUSP = 1
+          YES_CHARR = .TRUE.
         END IF
 
         IF(INST_T2D%SUSP_SIS.AND.INST_T2D%SIS%PERCOU.NE.1) THEN
-           IF (YES_CHARR) THEN
-              CHARR_SUSP = 3
-           ELSE
-              CHARR_SUSP = 2
-           END IF
+          IF (YES_CHARR) THEN
+            CHARR_SUSP = 3
+          ELSE
+            CHARR_SUSP = 2
+          END IF
         END IF
       END SUBROUTINE CHARR_OR_SUSP_CPL
 

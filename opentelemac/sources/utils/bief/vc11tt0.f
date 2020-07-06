@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE VC11TT0
-!                    ******************
+!                   ******************
+                    SUBROUTINE VC11TT0
+!                   ******************
 !
      &( XMUL,SF,SG,F,G,X,Y,Z,IKLE1,IKLE2,IKLE3,IKLE4,NELEM,NPOIN,
      &  W,ICOORD)
@@ -99,13 +99,13 @@
 !
 ! LOCAL VARIABLES
 !
-      INTEGER          :: IELEM,IELMF,IELMG  ! ELEMENT TYPES
-      DOUBLE PRECISION :: F1,F2,F3,F4        ! THE 4 VALUES OF F AT THE
-                                             ! NODES OF AN ELEMENT
-      DOUBLE PRECISION :: X2,X3,X4,Y2,Y3,Y4  ! DELTA_X, DELTA_Y
-      DOUBLE PRECISION :: X1, Y1             ! COORD OF THE FIRST NODE
-      INTEGER          :: I1,I2,I3,I4        ! THE NUMBERS OF THE NODES
-                                             ! OF AN ELEMENT
+      INTEGER          :: IELEM,IELMF,IELMG ! ELEMENT TYPES
+      DOUBLE PRECISION :: F1,F2,F3,F4       ! THE 4 VALUES OF F AT THE
+                                            ! NODES OF AN ELEMENT
+      DOUBLE PRECISION :: X2,X3,X4,Y2,Y3,Y4 ! DELTA_X, DELTA_Y
+      DOUBLE PRECISION :: X1, Y1            ! COORD OF THE FIRST NODE
+      INTEGER          :: I1,I2,I3,I4       ! THE NUMBERS OF THE NODES
+                                            ! OF AN ELEMENT
 !
       DOUBLE PRECISION, DIMENSION(:), POINTER :: PX, PY ! POINTER TO
                                                         ! THE COORD

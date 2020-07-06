@@ -1,11 +1,11 @@
-!                    ********************
-                     SUBROUTINE TELEMAC3D
-!                    ********************
+!                   ********************
+                    SUBROUTINE TELEMAC3D
+!                   ********************
 !
      &(PASS, NIT_ORI)
 !
 !***********************************************************************
-! TELEMAC3D   V8P0
+! TELEMAC3D   V8P2
 !***********************************************************************
 !
 !brief
@@ -316,7 +316,7 @@
         DO I=ADR_TRAC,ADR_TRAC+NTRAC-1
           ALIRE3D(I)=1
         ENDDO
-        DO I=39,38+NTRAC
+        DO I=ADR_TRAC_2D,ADR_TRAC_2D+NTRAC-1
           ALIRE2D(I)=1
         ENDDO
 !
@@ -675,10 +675,10 @@
 !
         ELSE
 !
-           WRITE(LU,*) ' '
-           WRITE(LU,*) 'SEDI3D : ERROR ON SEDIMENT KEY WORD'
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,*) ' '
+          WRITE(LU,*) 'SEDI3D : ERROR ON SEDIMENT KEY WORD'
+          CALL PLANTE(1)
+          STOP
 !
         ENDIF
 
@@ -972,17 +972,17 @@
       IF(INCLUS(COUPLING,'TOMAWACT3D')) THEN
 !       ADD THE NEW TERMS ASSOCIATED WITH THE USTOKES AND VSTOKES
 !       INTEGRATED OVER DEPTH
-        CALL OS ('X=YZ     ',X=DUS2D,Y=US2D,Z=H)    
+        CALL OS ('X=YZ     ',X=DUS2D,Y=US2D,Z=H)
         CALL VECTOR(DUS2DX,'=','GRADF          X',IELMH,1.D0,DUS2D,
      &              SVIDE,SVIDE,SVIDE,SVIDE,SVIDE,MESH2D,.FALSE.,MASKEL,
      &              ASSPAR=.TRUE.)
-! 
+!
         CALL OS ('X=YZ     ',X=DVS2D,Y=VS2D,Z=H)
         CALL VECTOR(DVS2DY,'=','GRADF          Y',IELMH,1.D0,DVS2D,
      &              SVIDE,SVIDE,SVIDE,SVIDE,SVIDE,MESH2D,.FALSE.,MASKEL,
      &              ASSPAR=.TRUE.)
 !
-        CALL OS('X=X-Y      ',X=SMH,Y=DUS2DX)     
+        CALL OS('X=X-Y      ',X=SMH,Y=DUS2DX)
         CALL OS('X=X-Y      ',X=SMH,Y=DVS2DY)
       ENDIF
 !     RESTORES Z
@@ -1736,9 +1736,9 @@
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE GOTM_COUPLING_STEP'
       ENDIF
 !
-      IF(INCLUS(COUPLING,'TOMAWACT3D')) THEN 
+      IF(INCLUS(COUPLING,'TOMAWACT3D')) THEN
 !       ADDING VERTICAL MIXING DUE TO WAVES
-        CALL OS('X=X+Y   ',X=VISCVI%ADR(3)%P,Y=FDK)  
+        CALL OS('X=X+Y   ',X=VISCVI%ADR(3)%P,Y=FDK)
       ENDIF
 !
       IF(OPTBAN.EQ.1) THEN

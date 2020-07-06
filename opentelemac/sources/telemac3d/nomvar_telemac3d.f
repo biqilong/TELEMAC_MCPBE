@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE NOMVAR_TELEMAC3D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE NOMVAR_TELEMAC3D
+!                   ***************************
 !
      &(TEXT3,TEXTP3,MNEMO,NTRAC,MAXTRA,NAMETRAC,ADR_TRAC)
 !

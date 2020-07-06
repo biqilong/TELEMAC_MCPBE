@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE TRANSF_ZCHAR
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE TRANSF_ZCHAR
+!                   ***********************
 !
      &(TRANSF,ZCHAR,ZSTAR,TRANSF_PLANE,NPLAN)
 !

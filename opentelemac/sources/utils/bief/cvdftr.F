@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CVDFTR
-!                    *****************
+!                   *****************
+                    SUBROUTINE CVDFTR
+!                   *****************
 !
      &(F,FTILD,FN,FSCEXP,DIFT,ICONVF,CONV,
      & H,HN,HPROP,UCONV,VCONV,DM1,ZCONV,SOLSYS,
@@ -632,17 +632,17 @@
       IF(DIFT) THEN
 !
         IF(OPDTRA.EQ.2) THEN
-!             SAVES THE DIFFUSION
-              CALL OS('X=Y     ',X=VISC_S,Y=VISC)
-!             MULTIPLIES THE DIFFUSION BY HPROP
-           CALL OV_2('X=XY    ',VISC%R,1,HPR%R,1,HPR%R,1,C,
-     &                          VISC%MAXDIM1,VISC%DIM1)
-           IF(VISC%DIM2.EQ.3) THEN
-           CALL OV_2('X=XY    ',VISC%R,2,HPR%R,1,HPR%R,1,C,
-     &                          VISC%MAXDIM1,VISC%DIM1)
-           CALL OV_2('X=XY    ',VISC%R,3,HPR%R,1,HPR%R,1,C,
-     &                          VISC%MAXDIM1,VISC%DIM1)
-           ENDIF
+!         SAVES THE DIFFUSION
+          CALL OS('X=Y     ',X=VISC_S,Y=VISC)
+!         MULTIPLIES THE DIFFUSION BY HPROP
+          CALL OV_2('X=XY    ',VISC%R,1,HPR%R,1,HPR%R,1,C,
+     &                         VISC%MAXDIM1,VISC%DIM1)
+          IF(VISC%DIM2.EQ.3) THEN
+          CALL OV_2('X=XY    ',VISC%R,2,HPR%R,1,HPR%R,1,C,
+     &                         VISC%MAXDIM1,VISC%DIM1)
+          CALL OV_2('X=XY    ',VISC%R,3,HPR%R,1,HPR%R,1,C,
+     &                         VISC%MAXDIM1,VISC%DIM1)
+          ENDIF
         ENDIF
 !
 !       COMPUTES THE DIFFUSION MATRIX (OPTION WITH MONOTONICITY)
@@ -853,7 +853,7 @@
           DO I=1,SMI%DIM1
             C = C + DT*SMI%R(I)*F%R(I)*VOLU2D%R(I)
           ENDDO
-          IF(NCSIZE.GT.1) C=P_DSUM(C)
+          IF(NCSIZE.GT.1) C=P_SUM(C)
           MASSOU=MASSOU+C
         ENDIF
       ENDIF

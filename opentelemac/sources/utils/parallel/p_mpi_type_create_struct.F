@@ -1,6 +1,6 @@
-!                    ***********************************
-                     SUBROUTINE P_MPI_TYPE_CREATE_STRUCT
-!                    ***********************************
+!                   ***********************************
+                    SUBROUTINE P_MPI_TYPE_CREATE_STRUCT
+!                   ***********************************
 !
      &(NBLOCK,NELEM,DISPL,ELEM_TYPE,NEW_DATATYPE,IERR)
 !

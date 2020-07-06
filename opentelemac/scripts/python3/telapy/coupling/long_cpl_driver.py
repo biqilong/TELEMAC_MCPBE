@@ -279,7 +279,6 @@ class LongCplDriver:
         my_study.fill_working_dir()
         my_study.ncsize = self.param['nb_proc_2D']
         my_study.generate_mpi_files()
-        my_study.partionning(False)
 
         #
         # ~~~ Test the consistence between the last time

@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE BUSE
-!                    ***************
+!                   ***************
+                    SUBROUTINE BUSE
+!                   ***************
 !
      &(RELAXB,NBUSE,ENTBUS,SORBUS,GRAV,
      & H,ZF,DBUS,LRGBUS,HAUBUS,CLPBUS,
@@ -104,7 +104,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -187,10 +187,10 @@
         ENDIF
 !       CASE WHERE ONE OF THE ENDS IS NOT IN THE SUB-DOMAIN
         IF(NCSIZE.GT.1) THEN
-          S1=P_DMAX(S1)+P_DMIN(S1)
-          S2=P_DMAX(S2)+P_DMIN(S2)
-          QMAX1=P_DMAX(QMAX1)+P_DMIN(QMAX1)
-          QMAX2=P_DMAX(QMAX2)+P_DMIN(QMAX2)
+          S1=P_MAX(S1)+P_MIN(S1)
+          S2=P_MAX(S2)+P_MIN(S2)
+          QMAX1=P_MAX(QMAX1)+P_MIN(QMAX1)
+          QMAX2=P_MAX(QMAX2)+P_MIN(QMAX2)
         ENDIF
 !
 !       COEFFICIENTS FOR COMPUTATION OF PRESSURE LOSS
@@ -577,8 +577,8 @@
             VBUS(1,N) = 0.D0
           ENDIF
           IF(NCSIZE.GT.1) THEN
-            UBUS(1,N) = P_DMAX(UBUS(1,N))+P_DMIN(UBUS(1,N))
-            VBUS(1,N) = P_DMAX(VBUS(1,N))+P_DMIN(VBUS(1,N))
+            UBUS(1,N) = P_MAX(UBUS(1,N))+P_MIN(UBUS(1,N))
+            VBUS(1,N) = P_MAX(VBUS(1,N))+P_MIN(VBUS(1,N))
           ENDIF
         ELSEIF(DBUS(N).LT.0.D0) THEN
           UBUS(1,N) = (COS(D1)*DBUS(N)/SECBUS(N)) * COS(ANGBUS(N,1))
@@ -596,8 +596,8 @@
             VBUS(2,N) = 0.D0
           ENDIF
           IF(NCSIZE.GT.1) THEN
-            UBUS(2,N) = P_DMAX(UBUS(2,N))+P_DMIN(UBUS(2,N))
-            VBUS(2,N) = P_DMAX(VBUS(2,N))+P_DMIN(VBUS(2,N))
+            UBUS(2,N) = P_MAX(UBUS(2,N))+P_MIN(UBUS(2,N))
+            VBUS(2,N) = P_MAX(VBUS(2,N))+P_MIN(VBUS(2,N))
           ENDIF
         ELSEIF(DBUS(N).EQ.0.D0) THEN
           UBUS(1,N) = 0.D0
@@ -605,10 +605,10 @@
           UBUS(2,N) = 0.D0
           VBUS(2,N) = 0.D0
           IF(NCSIZE.GT.1) THEN
-            UBUS(1,N) = P_DMAX(UBUS(1,N))+P_DMIN(UBUS(1,N))
-            VBUS(1,N) = P_DMAX(VBUS(1,N))+P_DMIN(VBUS(1,N))
-            UBUS(2,N) = P_DMAX(UBUS(2,N))+P_DMIN(UBUS(2,N))
-            VBUS(2,N) = P_DMAX(VBUS(2,N))+P_DMIN(VBUS(2,N))
+            UBUS(1,N) = P_MAX(UBUS(1,N))+P_MIN(UBUS(1,N))
+            VBUS(1,N) = P_MAX(VBUS(1,N))+P_MIN(VBUS(1,N))
+            UBUS(2,N) = P_MAX(UBUS(2,N))+P_MIN(UBUS(2,N))
+            VBUS(2,N) = P_MAX(VBUS(2,N))+P_MIN(VBUS(2,N))
           ENDIF
         ENDIF
 !
@@ -653,11 +653,11 @@
             ENDIF
             IF(NCSIZE.GT.1) THEN
               TBUS%ADR(ITRAC)%P%R(NBUSE+N)=
-     &          P_DMAX(TBUS%ADR(ITRAC)%P%R(NBUSE+N))
-     &         +P_DMIN(TBUS%ADR(ITRAC)%P%R(NBUSE+N))
+     &          P_MAX(TBUS%ADR(ITRAC)%P%R(NBUSE+N))
+     &         +P_MIN(TBUS%ADR(ITRAC)%P%R(NBUSE+N))
               TBUS%ADR(ITRAC)%P%R(N)      =
-     &          P_DMAX(TBUS%ADR(ITRAC)%P%R(N))
-     &         +P_DMIN(TBUS%ADR(ITRAC)%P%R(N))
+     &          P_MAX(TBUS%ADR(ITRAC)%P%R(N))
+     &         +P_MIN(TBUS%ADR(ITRAC)%P%R(N))
             ENDIF
           ENDDO
         ENDIF

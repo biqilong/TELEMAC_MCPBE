@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE P_IREAD
-!                    ******************
+!                   ******************
+                    SUBROUTINE P_IREAD
+!                   ******************
      &(BUFFER,N,BYTES,SOURCE,ITAG,IREQ)
 !
 !

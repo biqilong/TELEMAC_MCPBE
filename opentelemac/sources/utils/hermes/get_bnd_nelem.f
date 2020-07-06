@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_BND_NELEM
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_BND_NELEM
+!                   ************************
 !
      &(FFORMAT,FID,TYPE_BND_ELEM,NELEM,IERR)
 !

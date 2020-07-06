@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE BEDLOAD_ENGEL_CC
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE BEDLOAD_ENGEL_CC
+!                   ***************************
 !
      &(TETAP,CF,NPOIN,GRAV,DM,DENS,TETA,QSC)
 !
@@ -47,8 +47,8 @@
 !history  P.TASSI (EDF-LNHE)
 !+        10/01/2018
 !+        V7P3
-!+ Correction of the coefficient of the Engelund and Hansen formula                     
-!+ (thanks to Alexander Breugem)                     
+!+ Correction of the coefficient of the Engelund and Hansen formula
+!+ (thanks to Alexander Breugem)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| CF             |-->| QUADRATIC FRICTION COEFFICIENT

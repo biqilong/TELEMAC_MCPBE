@@ -2,7 +2,7 @@
                         SUBROUTINE QWINDL
 !                       *****************
 !
-     &( TSTOT , USOLD , USNEW , TWOLD , TWNEW , NF    , NPLAN ,
+     &( TSTOT , USOLD , USNEW , TWOLD , TWNEW , NF    , NDIRE ,
      &  NPOIN2, USN   , USO   , FPMO  , FPMN )
 !
 !**********************************************************************
@@ -45,7 +45,7 @@
 !| FPMN           |<->| WORK TABLE
 !| FPMO           |<->| WORK TABLE
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSDER          |<->| DERIVED PART OF THE SOURCE TERM CONTRIBUTION
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
@@ -71,13 +71,13 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
       DOUBLE PRECISION, INTENT(INOUT) :: FPMO(NPOIN2),FPMN(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)    :: TWOLD(NPOIN2),TWNEW(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)    :: USNEW(NPOIN2),USOLD(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: USO(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: USN(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: USO(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: USN(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -99,7 +99,7 @@
 !     ARRAYS DEPENDING ONLY ON POINTS AND DIRECTIONS
 !     COULD BE OPTIMISED MORE BY DECOMPOSING THE COS...
 !
-      DO JP=1,NPLAN
+      DO JP=1,NDIRE
         DIREC=TETA(JP)
         DO IP=1,NPOIN2
           USO(IP,JP)=C1*(MAX(USOLD(IP)*COS(DIREC-TWOLD(IP)),0.D0))**4
@@ -111,7 +111,7 @@
 !
       DO JF=1,NF
         SURFREQ4=1.D0/FREQ(JF)**4
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           DO IP=1,NPOIN2
             ALPHAO=USO(IP,JP)*EXP( -FPMO(IP)*SURFREQ4 )
             ALPHAN=USN(IP,JP)*EXP( -FPMN(IP)*SURFREQ4 )

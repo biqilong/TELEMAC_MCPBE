@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_MESH_DATE
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_MESH_DATE
+!                   ************************
 !
      &(FFORMAT,FID,DATE,IERR)
 !

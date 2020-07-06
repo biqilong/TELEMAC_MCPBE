@@ -48,9 +48,9 @@
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-!                    *****************
-                     SUBROUTINE SOLRAD
-!                    *****************
+!                   *****************
+                    SUBROUTINE SOLRAD
+!                   *****************
 !
      &(RAY_SOL,NEBU,MARDAT,MARTIM,AT,LATITUDE,LONGITUDE)
 !
@@ -218,9 +218,9 @@
       RETURN
       END SUBROUTINE SOLRAD
 
-!                        *********************
-                         INTEGER FUNCTION LEAP
-!                        *********************
+!                       *********************
+                        INTEGER FUNCTION LEAP
+!                       *********************
 !
      &(IYEAR)
 !
@@ -328,9 +328,9 @@
       RETURN
       END FUNCTION DAYNUM
 
-!                    *******************
-                     SUBROUTINE SHORTRAD
-!                    *******************
+!                   *******************
+                    SUBROUTINE SHORTRAD
+!                   *******************
 !
      &(TREEL,TAIR,NEBU,HREL,RAY_ATM,RAY_EAU)
 !
@@ -447,9 +447,9 @@
       RETURN
       END SUBROUTINE SHORTRAD
 
-!                    ****************
-                     SUBROUTINE EVAPO
-!                    ****************
+!                   ****************
+                    SUBROUTINE EVAPO
+!                   ****************
 !
      &(TREEL,TAIR,W2,PATM,HREL,RO,FLUX_EVAP,FLUX_SENS,DEBEVAP,B)
 !

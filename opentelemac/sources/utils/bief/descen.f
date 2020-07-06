@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DESCEN
-!                    *****************
+!                   *****************
+                    SUBROUTINE DESCEN
+!                   *****************
 !
      &(X, XA,TYPEXA,B,IKLE,NELEM,NELMAX,NPOIN,IELM,DITR,COPY,LV)
 !

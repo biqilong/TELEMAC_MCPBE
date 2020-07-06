@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE CLOSE_MESH
-!                    ********************
+!                   ********************
+                    SUBROUTINE CLOSE_MESH
+!                   ********************
 !
      &(FFORMAT,FILE_ID,IERR,MESH_NUMBER)
 !

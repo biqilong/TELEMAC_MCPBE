@@ -1,6 +1,6 @@
-!                    *******************************
-                     DOUBLE PRECISION FUNCTION TSLOC
-!                    *******************************
+!                   *******************************
+                    DOUBLE PRECISION FUNCTION TSLOC
+!                   *******************************
 !
      & (YEAR,MONTH,DAY,HOUR,MINU,SEC,AT)
 !

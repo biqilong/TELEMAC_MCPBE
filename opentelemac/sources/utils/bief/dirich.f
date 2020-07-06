@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIRICH
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIRICH
+!                   *****************
 !
      &(F, S, SM , FBOR,LIMDIR,WORK,MESH,KDIR,MSK,MASKPT)
 !

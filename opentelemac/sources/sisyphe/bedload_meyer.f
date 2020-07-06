@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE BEDLOAD_MEYER
-!                    ************************
+!                   ************************
+                    SUBROUTINE BEDLOAD_MEYER
+!                   ************************
 !
      &(TETAP,HIDING,HIDFAC,DENS,GRAV,DM,AC,ACP,QSC,SLOPEFF,COEFPN)
 !

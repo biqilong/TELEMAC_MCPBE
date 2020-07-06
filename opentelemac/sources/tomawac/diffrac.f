@@ -2,7 +2,7 @@
                         SUBROUTINE DIFFRAC
 !                       ******************
 !
-     &( CX    , CY    , CT    , XK    , CG    , NPOIN2, NPLAN ,
+     &( CX    , CY    , CT    , XK    , CG    , NPOIN2, NDIRE ,
      &  IFF   , NF    , F     , RX    , RY    , RXX   , RYY   , NEIGB )
 !
 !***********************************************************************
@@ -60,7 +60,7 @@
 !| NBOR           |-->| GLOBAL NUMBER OF BOUNDARY POINTS
 !| NEIGB          |-->| NEIGHBOUR POINTS FOR MESHFREE METHOD
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| NPTFR          |-->| NUMBER OF BOUNDARY POINTS
 !| PROINF         |-->| LOGICAL INDICATING INFINITE DEPTH ASSUMPTION
@@ -76,7 +76,7 @@
 !
       USE BIEF
       USE DECLARATIONS_TOMAWAC, ONLY : DEUPI,ST1,ST0,IELM2,SA,MESH,
-     &     FREQ  , COSTET, SINTET,  DFREQ, SPHE, PROINF, NBOR, NPTFR,  
+     &     FREQ  , COSTET, SINTET,  DFREQ, SPHE, PROINF, NBOR, NPTFR,
      &                                 SCCG,SDELTA,SXKONPT,SDDX,SDDY,
      &                                 SQRDELTA,SQRCCG,FRDK,FRDA,SCDA,
      &     L_DELTA,DEJA_DIFFRAC,
@@ -89,13 +89,13 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN) :: NF,NPLAN,NPOIN2,IFF
+      INTEGER, INTENT(IN) :: NF,NDIRE,NPOIN2,IFF
       INTEGER, INTENT(IN) :: NEIGB(NPOIN2,MAXNSP)
-      DOUBLE PRECISION, INTENT(INOUT) :: CX(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: CY(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: CT(NPOIN2,NPLAN)
+      DOUBLE PRECISION, INTENT(INOUT) :: CX(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: CY(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: CT(NPOIN2,NDIRE)
       DOUBLE PRECISION, INTENT(IN)    :: CG(NPOIN2,NF),XK(NPOIN2,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: RX(MAXNSP,NPOIN2)
       DOUBLE PRECISION, INTENT(IN)    :: RY(MAXNSP,NPOIN2)
       DOUBLE PRECISION, INTENT(IN)    :: RXX(MAXNSP,NPOIN2)
@@ -167,13 +167,13 @@
 !
 !     LOOP OVER THE DIRECTIONS
 !
-      DO IP = 1,NPLAN
+      DO IP = 1,NDIRE
 !
 !       COMPUTATION OF LOCAL AMPLITUDES OF DIRECTIONAL SPECTRA
 !
         DO IPOIN = 1,NPOIN2
           AMPLI(IPOIN) = SQRT(2.D0*F(IPOIN,IP,IFF)*DFREQ(IFF)
-     &         *DEUPI/NPLAN)
+     &         *DEUPI/NDIRE)
           IF(DIFFRA.EQ.2)THEN
             AMPLI(IPOIN)=AMPLI(IPOIN)*XK(IPOIN,IFF)*SQRCCG(IPOIN)
           ENDIF
@@ -302,37 +302,37 @@
 !       Calculating Delta=div/A
 !
         DO IPOIN = 1,NPOIN2
-            L_DELTA(IPOIN)=.TRUE.
-            IF(F(IPOIN,IP,IFF).LE.F2DIFM) THEN
-              SDELTA%R(IPOIN) = 0.D0
-              L_DELTA(IPOIN)=.FALSE.
-              SQRDELTA(IPOIN) =1.D0
+          L_DELTA(IPOIN)=.TRUE.
+          IF(F(IPOIN,IP,IFF).LE.F2DIFM) THEN
+            SDELTA%R(IPOIN) = 0.D0
+            L_DELTA(IPOIN)=.FALSE.
+            SQRDELTA(IPOIN) =1.D0
+          ELSE
+!           DIFFRA=1 - Mean Slope Equation model
+!           DIFFRA=2 - Revised Mean Slope Equation model
+            IF(DIFFRA.EQ.1) THEN
+              SDELTA%R(IPOIN)=DIV(IPOIN)*SXKONPT%R(IPOIN)/
+     &                     (SCCG%R(IPOIN)*AMPLI(IPOIN))
             ELSE
-!             DIFFRA=1 - Mean Slope Equation model
-!             DIFFRA=2 - Revised Mean Slope Equation model
-              IF(DIFFRA.EQ.1) THEN
-                SDELTA%R(IPOIN)=DIV(IPOIN)*SXKONPT%R(IPOIN)/
-     &                       (SCCG%R(IPOIN)*AMPLI(IPOIN))
-              ELSE
-                SDELTA%R(IPOIN)=(DIV(IPOIN)/AMPLI(IPOIN))
-              ENDIF
+              SDELTA%R(IPOIN)=(DIV(IPOIN)/AMPLI(IPOIN))
+            ENDIF
 !
-              IF(SDELTA%R(IPOIN).LE.-1.D0) THEN
-!               TODO: JMH: discutable !!!!!!
-                SQRDELTA(IPOIN) =1.D0
-                L_DELTA(IPOIN)=.FALSE.
-                SDELTA%R(IPOIN)= 0.D0
-              ELSE
-                SQRDELTA(IPOIN) = SQRT(1.D0+SDELTA%R(IPOIN))
-                L_DELTA(IPOIN)=.TRUE.
-              ENDIF
-!             TODO: JMH: discutable !!!!!
-              IF(SQRDELTA(IPOIN).LE.F2DIFM) THEN
-                SQRDELTA(IPOIN) =1.D0
-                L_DELTA(IPOIN)=.FALSE.
-                SDELTA%R(IPOIN)= 0.D0
-              ENDIF
-           ENDIF
+            IF(SDELTA%R(IPOIN).LE.-1.D0) THEN
+!             TODO: JMH: discutable !!!!!!
+              SQRDELTA(IPOIN) =1.D0
+              L_DELTA(IPOIN)=.FALSE.
+              SDELTA%R(IPOIN)= 0.D0
+            ELSE
+              SQRDELTA(IPOIN) = SQRT(1.D0+SDELTA%R(IPOIN))
+              L_DELTA(IPOIN)=.TRUE.
+            ENDIF
+!           TODO: JMH: discutable !!!!!
+            IF(SQRDELTA(IPOIN).LE.F2DIFM) THEN
+              SQRDELTA(IPOIN) =1.D0
+              L_DELTA(IPOIN)=.FALSE.
+              SDELTA%R(IPOIN)= 0.D0
+            ENDIF
+          ENDIF
         ENDDO
 !
         DO I = 1,NPTFR

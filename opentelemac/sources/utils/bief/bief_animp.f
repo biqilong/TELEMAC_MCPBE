@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE BIEF_ANIMP
-!                    *********************
+!                   *********************
+                    SUBROUTINE BIEF_ANIMP
+!                   *********************
 
      &(FORMAT_RES,VARNIM,N,NRES,AT,LT,LDIR,TEXTANIM,NPALE)
 !

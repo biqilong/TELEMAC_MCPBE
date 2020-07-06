@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE OPASS
-!                    ****************
+!                   ****************
+                    SUBROUTINE OPASS
+!                   ****************
 !
      &(OP,X,W,IW,Y,IY,LIMVOI,MXPTVS,NPMAX)
 !
@@ -81,14 +81,14 @@
       IF(LIMVOI(1,1).GT.0) THEN
 !       THIS CASE IS NOT POSSIBLE IN THEORY
         DO I = LIMVOI(1,1) , LIMVOI(1,2)
-           X(I) = W(IW(I,1))*Y(IY(I,1))
+          X(I) = W(IW(I,1))*Y(IY(I,1))
         ENDDO
       ENDIF
 !
       IF(LIMVOI(2,1).GT.0) THEN
 !       THIS CASE ONLY EXISTS IF THERE ARE OVERSTRESSED TRIANGLES
         DO I = LIMVOI(2,1) , LIMVOI(2,2)
-           X(I) = W(IW(I,1))*Y(IY(I,1)) + W(IW(I,2))*Y(IY(I,2))
+          X(I) = W(IW(I,1))*Y(IY(I,1)) + W(IW(I,2))*Y(IY(I,2))
         ENDDO
       ENDIF
 !

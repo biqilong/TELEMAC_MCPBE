@@ -1,6 +1,6 @@
-!                    **************
-                     SUBROUTINE CMD
-!                    **************
+!                   **************
+                    SUBROUTINE CMD
+!                   **************
 !
      &(ICOL   , LIGNE  , ADRESS , DIMENS , TROUVE , MOTCLE , NMOT2 ,
      & MOTINT , MOTREA , MOTLOG , MOTCAR , MOTATT , INDIC  , SIZE ,

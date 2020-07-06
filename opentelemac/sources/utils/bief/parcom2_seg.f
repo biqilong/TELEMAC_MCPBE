@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE PARCOM2_SEG
-!                    **********************
+!                   **********************
+                    SUBROUTINE PARCOM2_SEG
+!                   **********************
 !
      &( X1 , X2 , X3 , NSEG , NPLAN , ICOM , IAN , MESH , OPT , IELM )
 !

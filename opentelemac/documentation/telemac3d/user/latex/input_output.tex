@@ -37,7 +37,10 @@ for the validation process,
 \item The stage-discharge curves file, which contains the information on the
 imposed values at liquid boundaries in case of height / flow rate law,
 
-\item The sources file, which contains the information regarding the sources.
+\item The sources file, which contains the information regarding the sources,
+
+\item The binary boundary data file, which contains boundary conditions data
+varying in time and space.
 \end{itemize}
 
 The output files are:
@@ -419,7 +422,42 @@ See section \ref{sec:srcfile} for a complete description of this file.
 The file name is specified with the keyword: \telkey{SOURCES FILE}.
 
 
-\section{The 3d result file}
+\section{The binary boundary data file}
+
+This binary file enables the user to specify boundary conditions data (e.g.
+elevations, horizontal components of velocity, tracer values) which
+may vary in time and space.
+
+See the Python script \telfile{converter.py} in the scripts/python3 directory
+with the positional argument generate\_bnd.
+It may help to generate such a file from a global model which will be
+interpolated on a geometry file for every liquid node given by the boundary
+conditions file.
+
+The name of this file is given by the keyword \telkey{BINARY BOUNDARY DATA FILE}
+and its format is specified by the keyword
+\telkey{BINARY BOUNDARY DATA FILE FORMAT} (default value: 'SERAFIN '),
+see subsection \ref{sec:binfile}.
+
+\begin{WarningBlock}{Caution:}
+To use the \telkey{BINARY BOUNDARY DATA FILE}, some keywords have to be added
+in the steering file:
+\begin{itemize}
+\item \telkey{PRESCRIBED ELEVATIONS} with at least as many values as the
+number of liquid boundaries if the \telkey{BINARY BOUNDARY DATA FILE} contains
+elevations at the boundaries,
+\item \telkey{PRESCRIBED VELOCITIES} with as at least many values as the
+number of liquid boundaries if the \telkey{BINARY BOUNDARY DATA FILE} contains
+horizontal components of velocity at the boundaries.
+Moreover, the two velocity components $U$ and $V$ must both exist in the file,
+\item \telkey{PRESCRIBED TRACERS VALUES} with at least as many values as the
+number of liquid boundaries times the number of tracer(s) if the
+\telkey{BINARY BOUNDARY DATA FILE} contains tracer(s) values at the boundaries,
+\end{itemize}
+\end{WarningBlock}
+
+
+\section{The 3D result file}
 \label{sec:3dres}
 It is the file into which \telemac{3D} stores the information during the
 computation. It is a SERAFIN-formatted file (refer to Appendix
@@ -512,7 +550,7 @@ Using the private arrays requires updating the keyword \telkey{NUMBER OF
 PRIVATE ARRAYS} in order to perform the required memory allocations (see
 section \ref{sec:privarray}).
 
-\section{The 2d result file}
+\section{The 2D result file}
 
 It is the file into which \telemac{3D} stores the specifically two-dimensional
 data during the computation (such as the free surface, the depth-averaged
@@ -614,7 +652,22 @@ ${2}^{\rm{nd}}$ one\dots ),
 
 %\item L courant number,
 
-\item TAIR  air temperature ($^{\circ}$C).
+\item TAIR  air temperature ($^{\circ}$C),
+
+\item USURF surface velocity along $x$ axis (m/s),
+
+\item VSURF surface velocity along $y$ axis (m/s),
+
+\item WSURF surface velocity along $z$ axis (m/s),
+
+\item MSURF magnitude of surface velocity (m/s),
+
+\item TASURFi concentrations for tracers at the surface,
+$i$ is the tracer number,
+
+\item TASURF* concentrations for tracers at the surface from 1 to 9,
+
+\item TASURF** concentrations for tracers at the surface from 10 to 99.
 \end{itemize}
 
 That file name is provided by means of the keyword: \telkey{2D RESULT FILE} and
@@ -624,6 +677,12 @@ Stored variables by default are `U, V, H, B'.
 Using the private arrays requires updating the keyword \telkey{NUMBER OF 2D
 PRIVATE ARRAYS} in order to perform the required memory allocations (see
 section \ref{sec:privarray}).
+
+If the user is only interested in the values of velocities at the surface and/or
+tracer values at the surface rather than the whole 3D domain,
+he/she can save them in the \telkey{2D RESULT FILE} with the dedicated variables
+with SURF suffix.
+That enables to save memory in the \telkey{3D RESULT FILE}.
 
 \section{Results in longitude-latitude}
 If the geometry file is given in longitude-latitude, the result files

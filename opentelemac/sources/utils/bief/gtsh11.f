@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GTSH11
-!                    *****************
+!                   *****************
+                    SUBROUTINE GTSH11
+!                   *****************
 !
      &(SHP,ELT,IKLE,ELTCAR,NPOIN,NELEM,NELMAX,NSEG,QUAB,QUAD)
 !

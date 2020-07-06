@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE FOND
-!                    ***************
+!                   ***************
+                    SUBROUTINE FOND
+!                   ***************
 !
      &(ZF  ,X,Y,NPOIN,NFON,NBOR,KP1BOR,NPTFR)
 !

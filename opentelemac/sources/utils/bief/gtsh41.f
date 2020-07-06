@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GTSH41
-!                    *****************
+!                   *****************
+                    SUBROUTINE GTSH41
+!                   *****************
 !
      &(SHP,SHZ,SHF,WS,FS,ELT,ETA,FRE,IKLE,ELTCAR,
      & NPOIN2,NELMAX2,NPLAN,JF,NF,YA4D)

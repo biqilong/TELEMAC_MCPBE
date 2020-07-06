@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE HLOC
-!                    ***************
+!                   ***************
+                    SUBROUTINE HLOC
+!                   ***************
 !
      &(NPOIN,NSEG,NELEM,NUBO,VNOCL,AIRS,DTHAUT,MESH,ELTSEG,IFABOR)
 !

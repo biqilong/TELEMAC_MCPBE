@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE USER_UTIMP
-!                    *********************
+!                   *********************
+                    SUBROUTINE USER_UTIMP
+!                   *********************
 !
      & (GRADEBL,GRAPRDL,LISDEBL,LISPRDL)
 !

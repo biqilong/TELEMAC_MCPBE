@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE P_ISUM_ARRAY
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE P_ISUM_ARRAY
+!                   ***********************
 !
      &(SEND_BUFFER, RECV_BUFFER, NCOUNT, IERR)
 !

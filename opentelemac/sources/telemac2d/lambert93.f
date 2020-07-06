@@ -1,6 +1,6 @@
-!                          ****************
-                           MODULE LAMBERT93
-!                          ****************
+!                         ****************
+                          MODULE LAMBERT93
+!                         ****************
 !
 !***********************************************************************
 ! TELEMAC2D   V7P3
@@ -40,9 +40,9 @@
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-!                      ************************
-                       SUBROUTINE READ_GR3DF97A
-!                      ************************
+!                     ************************
+                      SUBROUTINE READ_GR3DF97A
+!                     ************************
 !
      &(NL93)
 !
@@ -101,9 +101,9 @@
 !
       RETURN
       END SUBROUTINE
-!                    ***************************
-                     SUBROUTINE DEALLOC_GR3DF97A
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE DEALLOC_GR3DF97A
+!                   ***************************
 !
 !
 !***********************************************************************
@@ -188,10 +188,10 @@
       M = NINT((E_LONG-W_LONG) / LONG_INC) + 1 ! NUMBER OF MERIDIANS
       N = NINT((N_LAT -S_LAT ) / LAT_INC ) + 1 ! NUMBER OF PARALLELS
 
-      ISW = INT((LONW-W_LONG) / LONG_INC) + 1  ! NUMBER OF THE MERIDIAN
-                                               ! (SE CORNER) [1,M]
-      JSW = INT((LATN-S_LAT ) / LAT_INC ) + 1  ! NUMBER OF THE PARALLEL
-                                               ! (SE CORNER) [1,N]
+      ISW = INT((LONW-W_LONG) / LONG_INC) + 1 ! NUMBER OF THE MERIDIAN
+                                              ! (SE CORNER) [1,M]
+      JSW = INT((LATN-S_LAT ) / LAT_INC ) + 1 ! NUMBER OF THE PARALLEL
+                                              ! (SE CORNER) [1,N]
 
       IRSW = (ISW-1)*N + JSW ! NUMBER OF RECORDING SW
       IRSE = IRSW + N        ! NUMBER OF RECORDING SE

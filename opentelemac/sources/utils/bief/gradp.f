@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE GRADP
-!                    ****************
+!                   ****************
+                    SUBROUTINE GRADP
+!                   ****************
 !
      &(NS,NT,IKLE,AIRT,X,Y,DPX,DPY)
 !

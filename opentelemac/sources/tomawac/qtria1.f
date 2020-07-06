@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE QTRIA1
-!                    *****************
+!                   *****************
+                    SUBROUTINE QTRIA1
+!                   *****************
 !
-     &( F     , XK    , NF    , NPLAN , NPOIN2, TSTOT , FTOT  , FMOY  )
+     &( F     , XK    , NF    , NDIRE , NPOIN2, TSTOT , FTOT  , FMOY  )
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   27/06/2011
@@ -42,7 +42,7 @@
 !| FTOT           |-->| SPECTRUM VARIANCE
 !| GRAVIT         |-->| GRAVITY ACCELERATION
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| RFMLTA         |-->| COEFFICIENT OF LTA TRIAD INTERACTION MODEL
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
@@ -57,18 +57,18 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    ::  NF, NPLAN, NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    ::  NF, NDIRE, NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(IN)    :: FTOT(NPOIN2) , FMOY(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
 !
-!.....VARIABLES FROM MODULE TOMAWAC 
+!.....VARIABLES FROM MODULE TOMAWAC
 !     """""""""""""""""""""""""""""
 !| ALFLTA         |-->| COEFFICIENT ALPHA OF LTA TRIAD INTERACTION MODEL
 !| RFMLTA         |-->| COEFFICIENT OF LTA TRIAD INTERACTION MODEL
 !| RAISF          |-->| FREQUENTIAL RATIO
-!      
+!
 !
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -141,7 +141,7 @@
 !              RPS2 = CPH*CGR*RPP(XKPS2,CPHS2,XKP,OMP,D)**2
 !<JR @ ADJOINTWARE
 !
-              DO IPL=1,NPLAN
+              DO IPL=1,NDIRE
                 EPS2=(1.D0-RIND)*F(IPO,IPL,IIND)+RIND*F(IPO,IPL,IIND+1)
                 SPLUS = ALFLTA*RPS2*BIF*(EPS2-2.D0*F(IPO,IPL,IFF))*EPS2
                 IF(SPLUS.LT.0.D0) SPLUS = 0.D0
@@ -174,7 +174,7 @@
 !              RP    = CPH2P*CGR2P*RPP(XKP,CPH,XK2P,OM2P,D)**2
 !<JR @ ADJOINTWARE
 !
-              DO IPL=1,NPLAN
+              DO IPL=1,NDIRE
                 E2P = (1.D0-RIND)*F(IPO,IPL,IIND)+RIND*F(IPO,IPL,IIND+1)
                 SMOIN = 2.D0*ALFLTA*RP*BIF*F(IPO,IPL,IFF)
      &                *(F(IPO,IPL,IFF)-2.D0*E2P)

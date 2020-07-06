@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CHGDIS
-!                    *****************
+!                   *****************
+                    SUBROUTINE CHGDIS
+!                   *****************
 !
      &(X,OLDELT,NEWELT,MESH)
 !

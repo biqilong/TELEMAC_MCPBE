@@ -1,6 +1,6 @@
-!                    ********************************
-                     DOUBLE PRECISION FUNCTION KERBOU
-!                    ********************************
+!                   ********************************
+                    DOUBLE PRECISION FUNCTION KERBOU
+!                   ********************************
 !
      &( XK1   , XK2   , FREQ1  , FREQ2  , DEPTH , TETA1 , TETA2 )
 !

@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE BEDLOAD_MEYER_GAIA
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE BEDLOAD_MEYER_GAIA
+!                   *****************************
 !
      &(TETAP,HIDING,HIDFAC,DENS,GRAV,DCLA,AC,ACP,QSC,SLOPEFF,COEFPN,
      & XMVS)

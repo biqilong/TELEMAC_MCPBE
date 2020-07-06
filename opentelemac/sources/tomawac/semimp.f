@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE SEMIMP
-!                    *****************
+!                   *****************
+                    SUBROUTINE SEMIMP
+!                   *****************
 !
-     & (F    , CF   ,  XK   ,  NF   , NPLAN, NPOIN2, 
+     & (F    , CF   ,  XK   ,  NF   , NDIRE, NPOIN2,
      &  IANGNL,TSTOT,  TSDER,  TOLD , TNEW,  Z0NEW, TWNEW,
      &  TAUX1, TAUX2,  TAUX3,  TAUX4, TAUX5, TAUX6, TAUX7,
      &  MDIA,  IANMDI, COEMDI, FBOR)
@@ -101,7 +101,7 @@
 !| MDIA           |-->| NUMBER OF CONFIGURATIONS FOR MDIA METHOD
 !| NBOR           |-->| GLOBAL NUMBER OF BOUNDARY POINTS
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| NPTFR          |-->| NUMBER OF BOUNDARY POINTS
 !| TAUX1          |<->| WORK TABLE
@@ -184,23 +184,23 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN) :: NPOIN2,NPLAN,NF, IANGNL(*)
+      INTEGER, INTENT(IN) :: NPOIN2,NDIRE,NF, IANGNL(*)
       DOUBLE PRECISION, INTENT(INOUT) :: Z0NEW(NPOIN2), TWNEW(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: TAUX1(NPOIN2), TAUX2(NPOIN2),
      &                                   TAUX3(NPOIN2), TAUX4(NPOIN2),
      &                                   TAUX5(NPOIN2), TAUX6(NPOIN2),
      &                                   TAUX7(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TOLD(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: TNEW(NPOIN2,NPLAN)
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TOLD(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: TNEW(NPOIN2,NDIRE)
       DOUBLE PRECISION, INTENT(INOUT) :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(IN) :: CF(*)
 !....MDIA method declarations
       INTEGER, INTENT(IN) :: MDIA, IANMDI(*)
       DOUBLE PRECISION, INTENT(IN) ::  COEMDI(*)
-      DOUBLE PRECISION, INTENT(IN)   :: FBOR(NPTFR,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(IN)   :: FBOR(NPTFR,NDIRE,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -232,7 +232,7 @@
 !       -----------------------------------------------
 !
         IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE TOTNRJ'
-        CALL TOTNRJ(VARIAN, F, NF, NPLAN, NPOIN2)
+        CALL TOTNRJ(VARIAN, F, NF, NDIRE, NPOIN2)
         IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE TOTNRJ'
 !
 !       0.2 COMPUTES THE CORRECTION COEFFICIENT ON THE SPECTRUM
@@ -248,7 +248,7 @@
 !       --------------------------
 !
         DO IFF=1,NF
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             DO IP=1,NPOIN2
               F(IP,JP,IFF)=F(IP,JP,IFF)*TAUX1(IP)
             ENDDO
@@ -364,7 +364,7 @@
 !       -----------------------------------------------
 !
         IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE TOTNRJ'
-        CALL TOTNRJ(VARIAN, F, NF, NPLAN, NPOIN2)
+        CALL TOTNRJ(VARIAN, F, NF, NDIRE, NPOIN2)
         IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE TOTNRJ'
 !
         IF (CBAJ.EQ.0) THEN
@@ -373,13 +373,13 @@
 !       -----------------------------------------------
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREMOY'
-          CALL FREMOY(FMOY, F, NF, NPLAN, NPOIN2)
+          CALL FREMOY(FMOY, F, NF, NDIRE, NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREMOY'
 !
 !       3.3 COMPUTES THE MEAN WAVE NUMBER OF THE SPECTRUM
 !       -------------------------------------------------
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE KMOYEN'
-          CALL KMOYEN (XKMOY, XK , F, NF, NPLAN, NPOIN2,
+          CALL KMOYEN (XKMOY, XK , F, NF, NDIRE, NPOIN2,
      &         TAUX1 , TAUX2 , TAUX3 )
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE KMOYEN'
         ELSEIF (CBAJ.EQ.1) THEN
@@ -388,13 +388,13 @@
 !       -----------------------------------------------
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREM01'
-          CALL FREM01 (FMOY, F, NF, NPLAN, NPOIN2)
+          CALL FREM01 (FMOY, F, NF, NDIRE, NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREM01'
 !
 !       3.3 COMPUTES THE MEAN WAVE NUMBER OF THE SPECTRUM
 !       -------------------------------------------------
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE KMOYE2'
-          CALL KMOYE2(XKMOY, XK, F, NF, NPLAN , NPOIN2,
+          CALL KMOYE2(XKMOY, XK, F, NF, NDIRE , NPOIN2,
      &         TAUX1 , TAUX2 , TAUX3 )
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE KMOYE2'
         ELSE
@@ -410,7 +410,7 @@
 !       4.1 INITIALISES THE ARRAYS FOR THE SOURCE TERMS
 !       ----------------------------------------------------
         DO IFF=1,NF
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             DO IP=1,NPOIN2
               TSTOT(IP,JP,IFF)=0.D0
               TSDER(IP,JP,IFF)=0.D0
@@ -426,25 +426,25 @@
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QWIND1'
             CALL QWIND1
      &( TSTOT , TSDER , F     , XK    , USOLD , USNEW , TWOLD , TWNEW ,
-     &  Z0OLD , Z0NEW , NF    , NPLAN , NPOIN2, TOLD  , TNEW  ,
+     &  Z0OLD , Z0NEW , NF    , NDIRE , NPOIN2, TOLD  , TNEW  ,
      &  TAUX2 , TAUX3 , TAUX4 , TAUX5 , TAUX6 , TAUX7 )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QWIND1'
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE STRESS'
             CALL STRESS
      &( TAUWAV, TSTOT , F     , USNEW , TWNEW , Z0NEW ,
-     &  NPOIN2, NPLAN , NF    , TAUX1 , TAUX2 , TAUX3 )
+     &  NPOIN2, NDIRE , NF    , TAUX1 , TAUX2 , TAUX3 )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE STRESS'
           ELSEIF(SVENT.EQ.2) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QWIND2'
             CALL QWIND2
      &( TSTOT , TSDER , F     , XK    , USOLD , USNEW , TWOLD , TWNEW ,
-     &  NF    , NPLAN , NPOIN2, T3_01%R,T3_02%R )
+     &  NF    , NDIRE , NPOIN2, T3_01%R,T3_02%R )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QWIND2'
           ELSEIF(SVENT.EQ.3) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QWIND3'
             CALL QWIND3
      &( TSTOT , TSDER , F     , XK    , USOLD , USNEW , TWOLD , TWNEW ,
-     &  NF    , NPLAN , NPOIN2, TAUX1 , TAUX2 , TAUX3 , TAUX4 )
+     &  NF    , NDIRE , NPOIN2, TAUX1 , TAUX2 , TAUX3 , TAUX4 )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QWIND3'
 !
           ENDIF
@@ -454,7 +454,7 @@
 !
           IF(LVENT.EQ.1) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QWINDL'
-            CALL QWINDL(TSTOT, USOLD, USNEW, TWOLD, TWNEW, NF, NPLAN,
+            CALL QWINDL(TSTOT, USOLD, USNEW, TWOLD, TWNEW, NF, NDIRE,
      &                  NPOIN2, T3_01%R, T3_02%R, TAUX5, TAUX6)
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QWINDL'
           ENDIF
@@ -469,34 +469,34 @@
 
         IF (CBAJ.EQ.1) THEN
 ! Calculation pf mean frequency fmean_WS put in the  tabular TAUX7
-           SEUILF = 1.D-20
-           DO IP=1,NPOIN2
-              TAUX1(IP) = 0.0D0
-              TAUX2(IP) = 0.0D0
-           ENDDO
+          SEUILF = 1.D-20
+          DO IP=1,NPOIN2
+            TAUX1(IP) = 0.0D0
+            TAUX2(IP) = 0.0D0
+          ENDDO
 !
-           DO IFF=1,NF
-              AUX3=DEUPI/DBLE(NPLAN)*DFREQ(IFF)
-              AUX4=AUX3/FREQ(IFF)
-              DO JP=1,NPLAN
-                 DO IP=1,NPOIN2
-                    CPHAS=DEUPI*FREQ(IFF)/XK(IP,IFF)
-                    AUXI=28.0D0/CPHAS*USNEW(IP)*COS(TETA(JP)-TWNEW(IP))
-                    IF ((TSTOT(IP,JP,IFF).GT.0).OR.(AUXI.GE.1.0D0)) THEN
-                       TAUX1(IP) = TAUX1(IP) + F(IP,JP,IFF)*AUX3
-                       TAUX2(IP) = TAUX2(IP) + F(IP,JP,IFF)*AUX4
-                    ENDIF
-                 ENDDO
+          DO IFF=1,NF
+            AUX3=DEUPI/DBLE(NDIRE)*DFREQ(IFF)
+            AUX4=AUX3/FREQ(IFF)
+            DO JP=1,NDIRE
+              DO IP=1,NPOIN2
+                CPHAS=DEUPI*FREQ(IFF)/XK(IP,IFF)
+                AUXI=28.0D0/CPHAS*USNEW(IP)*COS(TETA(JP)-TWNEW(IP))
+                IF ((TSTOT(IP,JP,IFF).GT.0).OR.(AUXI.GE.1.0D0)) THEN
+                  TAUX1(IP) = TAUX1(IP) + F(IP,JP,IFF)*AUX3
+                  TAUX2(IP) = TAUX2(IP) + F(IP,JP,IFF)*AUX4
+                ENDIF
               ENDDO
-           ENDDO
+            ENDDO
+          ENDDO
 !
-           DO IP=1,NPOIN2
-              IF (TAUX1(IP).LT.SEUILF) THEN
-                 TAUX7(IP) = SEUILF
-              ELSE
-                 TAUX7(IP) = TAUX1(IP)/TAUX2(IP)
-              ENDIF
-           ENDDO
+          DO IP=1,NPOIN2
+            IF (TAUX1(IP).LT.SEUILF) THEN
+              TAUX7(IP) = SEUILF
+            ELSE
+              TAUX7(IP) = TAUX1(IP)/TAUX2(IP)
+            ENDIF
+          ENDDO
         ENDIF
 
 !       4.3 NON-LINEAR INTERACTIONS BETWEEN QUADRUPLETS
@@ -505,7 +505,7 @@
         IF(STRIF.EQ.1) THEN
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QNLIN1'
-          CALL QNLIN1(TSTOT, TSDER, IANGNL, NF, NPLAN, NPOIN2,
+          CALL QNLIN1(TSTOT, TSDER, IANGNL, NF, NDIRE, NPOIN2,
      &                F, XKMOY, TAUX1, TAUX2, TAUX3, TAUX4, TAUX5,TAUX6)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QNLIN1'
 !
@@ -523,15 +523,15 @@
 !         alls MDIA method
           DO K=1,MDIA
             CALL QNLIN2
-     &( TSTOT , TSDER , IANMDI((K-1)*NPLAN*16+1:K*NPLAN*16) ,
-     &  COEMDI((K-1)*32+1:K*32) , NF    , NPLAN,
+     &( TSTOT , TSDER , IANMDI((K-1)*NDIRE*16+1:K*NDIRE*16) ,
+     &  COEMDI((K-1)*32+1:K*32) , NF    , NDIRE,
      &  NPOIN2, F   , XKMOY , TAUX1 , TAUX2 , XCCMDI(K))
           ENDDO
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QNLIN2'
 !....calls GQM method
         ELSEIF (STRIF.EQ.3) THEN
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QNLIN3'
-          CALL QNLIN3(TSTOT , TSDER , F     ,NPOIN2, NPLAN , NF )
+          CALL QNLIN3(TSTOT , TSDER , F     ,NPOIN2, NDIRE , NF )
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QNLIN3'
         ENDIF
 !
@@ -543,7 +543,7 @@
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QMOUT1'
           CALL QMOUT1
      &( TSTOT, TSDER, F     , XK    , VARIAN, FMOY, XKMOY,
-     &  NF    , NPLAN , NPOIN2, TAUX1 )
+     &  NF    , NDIRE , NPOIN2, TAUX1 )
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QMOUT1'
 !
         ELSEIF(SMOUT.EQ.2) THEN
@@ -551,7 +551,7 @@
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QMOUT2'
           CALL QMOUT2
      &( TSTOT , TSDER , F     , XK    , VARIAN, FMOY  , XKMOY , USOLD ,
-     &  USNEW , NF    , NPLAN , NPOIN2, TAUX1 , TAUX2 , TAUX5 , TAUX6 )
+     &  USNEW , NF    , NDIRE , NPOIN2, TAUX1 , TAUX2 , TAUX5 , TAUX6 )
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QMOUT2'
 !
         ENDIF
@@ -560,10 +560,10 @@
 !       -------------------------------
 !
         IF(SFROT.EQ.1.AND..NOT.PROINF) THEN
-           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QFROT1'
-           CALL QFROT1
-     &( TSTOT , TSDER , F     , XK    , NF    ,NPLAN , NPOIN2)
-           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QFROT1'
+          IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QFROT1'
+          CALL QFROT1
+     &( TSTOT , TSDER , F     , XK    , NF    ,NDIRE , NPOIN2)
+          IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QFROT1'
         ELSEIF(SFROT.NE.0) THEN
           WRITE(LU,*) 'OPTION FOR BOTTOM FRICTION DISSIPATION'
           WRITE(LU,*) 'UNKNOWN: SFROT=',SFROT
@@ -614,7 +614,7 @@
             STOP
           ENDIF
           IF(LIMIT.NE.0) THEN
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               DO IP=1,NPOIN2
                 AUX1=MAX(1.D0-DTSI*TSDER(IP,JP,IFF)*CIMPLI,1.D0)
                 AUX2=DTSI*TSTOT(IP,JP,IFF)/AUX1
@@ -624,7 +624,7 @@
               ENDDO
             ENDDO
           ELSE
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               DO IP=1,NPOIN2
                 AUX1=MAX(1.D0-DTSI*TSDER(IP,JP,IFF)*CIMPLI,1.D0)
                 AUX2=DTSI*TSTOT(IP,JP,IFF)/AUX1
@@ -643,7 +643,7 @@
 !       ----------------------------------------------
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREMOY'
-          CALL FREMOY(FMOY, F, NF, NPLAN, NPOIN2)
+          CALL FREMOY(FMOY, F, NF, NDIRE, NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREMOY'
 !
           AUX1=GRAVIT/(7.D0*DEUPI*FREQ(1))
@@ -652,47 +652,47 @@
 !
 !     IF CBAJ and loop inversed 6.2 and 6.3 written twice with a different formula for FM2
           IF(CBAJ.EQ.0) THEN
-             DO IP=1,NPOIN2
+            DO IP=1,NPOIN2
 !
 !       6.2 COMPUTES THE LAST FREQUENCY OF THE DISCRETISED SPECTRUM.
 !           THIS FREQUENCY IS THE MAXIMUM OF (FM1=4.*FPM ; FM2=2.5*FMOY).
 !           ITS INDEX IS MFMAX.
 !       -------------------------------------------------------------
 !
-                FM1 =AUX1/MAX(USNEW(IP),1.D-90)
-                FM2 =AUX2*FMOY(IP)
-                MF1=INT(AUX3*LOG10(FM1)+1.D0)
-                MF2=INT(AUX3*LOG10(FM2)+1.D0)
-                MFMAX=MAX(MIN(MAX(MF1,MF2),NF),1)
+              FM1 =AUX1/MAX(USNEW(IP),1.D-90)
+              FM2 =AUX2*FMOY(IP)
+              MF1=INT(AUX3*LOG10(FM1)+1.D0)
+              MF2=INT(AUX3*LOG10(FM2)+1.D0)
+              MFMAX=MAX(MIN(MAX(MF1,MF2),NF),1)
 !
 !       6.3 MODIFIES THE HIGH FREQUENCY PART OF THE SPECTRUM
 !           A DECREASE IN F**(-TAILF) IS IMPOSED BEYOND
 !           FREQ(MFMAX).  (TAILF=5 IN WAM-CYCLE 4)
 !       -------------------------------------------------------------
 !
-                DO IFF=MFMAX+1,NF
-                   AUX4=(FREQ(MFMAX)/FREQ(IFF))**TAILF
-                   DO JP=1,NPLAN
-                      F(IP,JP,IFF)=AUX4*F(IP,JP,MFMAX)
-                   ENDDO
+              DO IFF=MFMAX+1,NF
+                AUX4=(FREQ(MFMAX)/FREQ(IFF))**TAILF
+                DO JP=1,NDIRE
+                  F(IP,JP,IFF)=AUX4*F(IP,JP,MFMAX)
                 ENDDO
-             ENDDO
+              ENDDO
+            ENDDO
 
           ELSE
-             DO IP=1,NPOIN2
-                FM1 =AUX1/MAX(USNEW(IP),1.D-90)
-                FM2 =AUX2*TAUX7(IP)
-                MF1=INT(AUX3*LOG10(FM1)+1.D0)
-                MF2=INT(AUX3*LOG10(FM2)+1.D0)
-                MFMAX=MAX(MIN(MAX(MF1,MF2),NF),1)
-                DO IFF=MFMAX+1,NF
-                   AUX4=(FREQ(MFMAX)/FREQ(IFF))**TAILF
-                   DO JP=1,NPLAN
-                      F(IP,JP,IFF)=AUX4*F(IP,JP,MFMAX)
-                   ENDDO
+            DO IP=1,NPOIN2
+              FM1 =AUX1/MAX(USNEW(IP),1.D-90)
+              FM2 =AUX2*TAUX7(IP)
+              MF1=INT(AUX3*LOG10(FM1)+1.D0)
+              MF2=INT(AUX3*LOG10(FM2)+1.D0)
+              MFMAX=MAX(MIN(MAX(MF1,MF2),NF),1)
+              DO IFF=MFMAX+1,NF
+                AUX4=(FREQ(MFMAX)/FREQ(IFF))**TAILF
+                DO JP=1,NDIRE
+                  F(IP,JP,IFF)=AUX4*F(IP,JP,MFMAX)
                 ENDDO
+              ENDDO
 !
-             ENDDO
+            ENDDO
           ENDIF
         ELSEIF(DIAGHF.GE.2) THEN
           WRITE(LU,*) 'OPTION FOR DIAGNOSTIC TAIL'
@@ -725,7 +725,7 @@
 !             - - - - - - - - - - - -
               IF (CBAJ.EQ.1) THEN
                 IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREMOY'
-                CALL FREMOY(TAUX3, F, NF, NPLAN, NPOIN2 )
+                CALL FREMOY(TAUX3, F, NF, NDIRE, NPOIN2 )
                 IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREMOY'
               ELSE
                 DO IP=1,NPOIN2
@@ -738,7 +738,7 @@
 !             MEAN FREQUENCY F01
 !             - - - - - - - - - - -
               IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREM01'
-              CALL FREM01( TAUX3, F, NF, NPLAN, NPOIN2)
+              CALL FREM01( TAUX3, F, NF, NDIRE, NPOIN2)
               IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREM01'
 
             ELSE IF (IFCAR.EQ.3) THEN
@@ -746,7 +746,7 @@
 !             MEAN FREQUENCY F02
 !             - - - - - - - - - - -
               IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREM02'
-              CALL FREM02( TAUX3, F, NF, NPLAN, NPOIN2)
+              CALL FREM02( TAUX3, F, NF, NDIRE, NPOIN2)
               IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREM02'
 
             ELSE IF (IFCAR.EQ.4) THEN
@@ -754,7 +754,7 @@
 !             PEAK FREQUENCY (DISCRETE FREQUENCY WITH MAX VARIANCE)
 !             - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
               IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREPIC'
-              CALL FREPIC( TAUX3, F, NF, NPLAN, NPOIN2)
+              CALL FREPIC( TAUX3, F, NF, NDIRE, NPOIN2)
               IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREPIC'
 
             ELSE IF (IFCAR.EQ.5) THEN
@@ -762,7 +762,7 @@
 !             PEAK FREQUENCY (READ WITH EXPONENT 5)
 !             - - - - - - - - - - - - - - - - - - - - - - - - - -
               IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FPREAD'
-              CALL FPREAD( TAUX3, F, NF, NPLAN, NPOIN2, 5.D0)
+              CALL FPREAD( TAUX3, F, NF, NDIRE, NPOIN2, 5.D0)
               IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FPREAD'
 
             ELSE IF (IFCAR.EQ.6) THEN
@@ -770,7 +770,7 @@
 !             PEAK FREQUENCY (READ WITH EXPONENT 8)
 !             - - - - - - - - - - - - - - - - - - - - - - - - - -
               IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FPREAD'
-              CALL FPREAD( TAUX3, F, NF, NPLAN, NPOIN2, 8.D0)
+              CALL FPREAD( TAUX3, F, NF, NDIRE, NPOIN2, 8.D0)
               IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FPREAD'
 
             ELSE
@@ -792,7 +792,7 @@
 !         7.2 INITIALISES THE ARRAYS FOR THE SOURCE-TERMS
 !         ----------------------------------------------------
           DO IFF=1,NF
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               DO IP=1,NPOIN2
                 TSTOT(IP,JP,IFF)=0.D0
               ENDDO
@@ -803,7 +803,7 @@
 !         --------------------------------------------
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE TOTNRJ'
-          CALL TOTNRJ(VARIAN, F, NF, NPLAN, NPOIN2)
+          CALL TOTNRJ(VARIAN, F, NF, NDIRE, NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE TOTNRJ'
 !
 !
@@ -817,7 +817,7 @@
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QBREK1'
           CALL QBREK1
-     & ( TSTOT , F     , TAUX3 , VARIAN, NF    , NPLAN , NPOIN2)
+     & ( TSTOT , F     , TAUX3 , VARIAN, NF    , NDIRE , NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QBREK1'
 !
 !
@@ -828,7 +828,7 @@
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QBREK2'
           CALL QBREK2
-     & ( TSTOT , F     , TAUX3 , VARIAN, NF    , NPLAN ,
+     & ( TSTOT , F     , TAUX3 , VARIAN, NF    , NDIRE ,
      &   NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QBREK2'
 !
@@ -840,7 +840,7 @@
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QBREK3'
           CALL QBREK3
-     &( TSTOT , F     , TAUX3 , VARIAN, NF    , NPLAN ,
+     &( TSTOT , F     , TAUX3 , VARIAN, NF    , NDIRE ,
      &  NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QBREK3'
 !
@@ -852,7 +852,7 @@
 !
           IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QBREK4'
           CALL QBREK4
-     &( TSTOT , F     ,TAUX3,VARIAN, NF    , NPLAN , NPOIN2)
+     &( TSTOT , F     ,TAUX3,VARIAN, NF    , NDIRE , NPOIN2)
           IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QBREK4'
 !
           ELSEIF(SBREK.NE.0) THEN
@@ -866,17 +866,17 @@
 !       -----------------------------------------------------------
           IF(STRIA.EQ.1) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE FREMOY'
-            CALL FREMOY( FMOY, F, NF, NPLAN, NPOIN2)
+            CALL FREMOY( FMOY, F, NF, NDIRE, NPOIN2)
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE FREMOY'
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QTRIA1'
             CALL QTRIA1
-     &( F     , XK    , NF    , NPLAN , NPOIN2, TSTOT , VARIAN, FMOY  )
+     &( F     , XK    , NF    , NDIRE , NPOIN2, TSTOT , VARIAN, FMOY  )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QTRIA1'
 !
           ELSEIF(STRIA.EQ.2) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QTRIA2'
             CALL QTRIA2
-     &( F     , XK    , NF    , NPLAN , NPOIN2, TSTOT )
+     &( F     , XK    , NF    , NDIRE , NPOIN2, TSTOT )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QTRIA2'
           ENDIF
 !
@@ -887,7 +887,7 @@
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QDSCUR'
             CALL QDSCUR
      &( TSTOT , TSDER , F     , CF    , XK    , USOLD , USNEW ,
-     &  NF    , NPLAN , NPOIN2, TAUX2 ,T3_01%R,T3_02%R)
+     &  NF    , NDIRE , NPOIN2, TAUX2 ,T3_01%R,T3_02%R)
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QDSCUR'
           ENDIF
 !
@@ -899,7 +899,7 @@
           IF(VEGETATION) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QVEG'
             CALL QVEG( TSTOT, TSDER, F, VARIAN, FMOY, XKMOY, NF,
-     &                   NPLAN  ,NPOIN2   )
+     &                   NDIRE  ,NPOIN2   )
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QVEG'
           ENDIF
 !======================================================================
@@ -910,7 +910,7 @@
           IF(POROUS) THEN
             IF(DEBUG.EQ.2) WRITE(LU,*) '     APPEL DE QPOROS'
             CALL QPOROS( TSTOT , TSDER , F , CG, LT, XK,
-     &                   NF    , NPLAN  , NPOIN2, AMORP)
+     &                   NF    , NDIRE  , NPOIN2, AMORP)
             IF(DEBUG.EQ.2) WRITE(LU,*) '     RETOUR DE QPOROS'
           ENDIF
 !
@@ -924,7 +924,7 @@
 !         ---------------------------------------------------------
 !
         DO IFF=1,NF
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             DO IP=1,NPOIN2
               F(IP,JP,IFF)=MAX(F(IP,JP,IFF)+DTN*TSTOT(IP,JP,IFF),0.D0)
             ENDDO
@@ -958,7 +958,7 @@
           DO IPTFR=1,NPTFR
             IF(LIFBOR(IPTFR).EQ.KENT) THEN
               DO IFF=1,NF
-                DO IP=1,NPLAN
+                DO IP=1,NDIRE
                   F(NBOR(IPTFR),IP,IFF)=FBOR(IPTFR,IP,IFF)
                 ENDDO
               ENDDO

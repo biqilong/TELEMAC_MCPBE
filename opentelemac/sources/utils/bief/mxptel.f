@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MXPTEL
-!                    *****************
+!                   *****************
+                    SUBROUTINE MXPTEL
+!                   *****************
 !
      &(MXPTVS,MXELVS,IKLES,IELM,NPOIN,NELEM,NDP,IPOBO,LISTIN)
 !
@@ -110,8 +110,8 @@
 !-----------------------------------------------------------------------
 !
       IF(NCSIZE.GT.1) THEN
-        MXPTVS=P_IMAX(MXPTVS)
-        MXELVS=P_IMAX(MXELVS)
+        MXPTVS=P_MAX(MXPTVS)
+        MXELVS=P_MAX(MXELVS)
       ENDIF
 !
 !-----------------------------------------------------------------------

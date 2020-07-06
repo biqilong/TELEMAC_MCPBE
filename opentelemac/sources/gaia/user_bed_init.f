@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE USER_BED_INIT
-!                    ************************
+!                   ************************
+                    SUBROUTINE USER_BED_INIT
+!                   ************************
 !
      &(NUMSTRAT,NPOIN,NSICLA,ESTRATUM,RATIO_INIT)
 !

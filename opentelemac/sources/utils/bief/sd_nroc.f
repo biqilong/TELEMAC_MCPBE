@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SD_NROC
-!                    ******************
+!                   ******************
+                    SUBROUTINE SD_NROC
+!                   ******************
 !
      &(N, IC, IA, JA, A, JAR, AR, P, FLAG)
 !

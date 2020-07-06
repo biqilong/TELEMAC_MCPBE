@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FLUX3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE FLUX3D
+!                   *****************
 !
      &(FLUINT,FLUEXT,FLUEXTPAR,UCONV,VCONV,TRA02,
      & NPLAN,IELM3,IELM2V,SVIDE,MESH3,

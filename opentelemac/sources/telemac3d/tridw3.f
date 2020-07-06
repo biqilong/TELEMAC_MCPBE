@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TRIDW3
-!                    *****************
+!                   *****************
+                    SUBROUTINE TRIDW3
+!                   *****************
 !
      &(WSCONV,FLUVER,SUMFLU,ERROR,PRESSURE,COR_INT,COR_VER,
      & VOLU,VOLUN,U,UCONV,VCONV,WCONV,DT,NPOIN3,

@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE GET_DATA_VALUE
-!                    *************************
+!                   *************************
+                    SUBROUTINE GET_DATA_VALUE
+!                   *************************
 !
      &(FFORMAT,FID,RECORD,VAR_NAME,RES_VALUE,N,IERR)
 !

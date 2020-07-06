@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE ECRSPE
-!                    *****************
+!                   *****************
+                    SUBROUTINE ECRSPE
+!                   *****************
 !
-     &( F     , NPLAN , NF    , NPOIN2, LT ,    AUXIL ,
+     &( F     , NDIRE , NF    , NPOIN2, LT ,    AUXIL ,
      &  NOLEO , NLEO  , DEBRES, DATE  , TIME  , KNOLG , MESH)
 !
 !***********************************************************************
@@ -90,7 +90,7 @@
 !| NK             |-->| DUMMY VARIABLE
 !| NLEO           |-->| NUMBER OF SPECTRUM PRINTOUT POINTS
 !| NOLEO          |-->| INDEX ARRAY OF SPECTRUM PRINTOUT POINTS
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TIME           |-->| START TIME
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,17 +102,17 @@
      &    TITCAS, AT, LUSPE, NAMSPE, LULEO, FMTLEO, NAMLEO
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_ISUM
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_SUM
       IMPLICIT NONE
 !
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NPOIN2,NLEO,NF,NPLAN, LT
+      INTEGER, INTENT(IN)             :: NPOIN2,NLEO,NF,NDIRE, LT
       INTEGER, INTENT(IN)             :: KNOLG(*),  NOLEO(NLEO)
       INTEGER, INTENT(IN)             :: DATE(3),TIME(3)
-      DOUBLE PRECISION, INTENT(INOUT) :: AUXIL(NPLAN,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: AUXIL(NDIRE,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       LOGICAL, INTENT(IN)             :: DEBRES
       TYPE(BIEF_MESH), INTENT(INOUT)  :: MESH
 !
@@ -139,15 +139,15 @@
 !
 !-----------------------------------------------------------------------
 !
-      DTETAR=DEUPI/DBLE(NPLAN)
-      NPSPE=NF*NPLAN
-      NELEM=(NF-1)*NPLAN
+      DTETAR=DEUPI/DBLE(NDIRE)
+      NPSPE=NF*NDIRE
+      NELEM=(NF-1)*NDIRE
 !     SORLEO = .FALSE.
       DO ILEO=1,NLEO
         KAMP1=NOLEO(ILEO)
         IF(NCSIZE.GT.1) THEN
           IF(KAMP1.GT.0) KAMP1=KNOLG(NOLEO(ILEO))
-          KAMP1=P_IMAX(KAMP1)
+          KAMP1=P_MAX(KAMP1)
         ENDIF
         KAMP2=MOD(KAMP1,100000)
         KAMP3=MOD(KAMP2,10000)
@@ -198,10 +198,10 @@
           ALLOCATE(MESHF%Y)
           ALLOCATE(MESHF%NPTFR)
           ALLOCATE(MESHF%NBOR)
-          ALLOCATE(MESHF%NBOR%I(2*NPLAN))
+          ALLOCATE(MESHF%NBOR%I(2*NDIRE))
           ALLOCATE(MESHF%DIM1)
           ALLOCATE(MESHF%KNOLG)
-          ALLOCATE(MESHF%KNOLG%I(NPLAN*NF))
+          ALLOCATE(MESHF%KNOLG%I(NDIRE*NF))
 !
 !
           MESHF%NAME = 'MESH'
@@ -211,34 +211,34 @@
           MESHF%DIM1   = 2
           II=0
           DO JF=1,NF-1
-            DO K=1,NPLAN
+            DO K=1,NDIRE
               II=II+1
-              MESHF%IKLE%I(II)=MOD(II,NPLAN)+1+(JF-1)*NPLAN
+              MESHF%IKLE%I(II)=MOD(II,NDIRE)+1+(JF-1)*NDIRE
             ENDDO
           ENDDO
           DO II=1,NELEM
             MESHF%IKLE%I(II+NELEM)=II
-            MESHF%IKLE%I(II+2*NELEM)=II+NPLAN
-            MESHF%IKLE%I(II+3*NELEM)=MESHF%IKLE%I(II)+NPLAN
+            MESHF%IKLE%I(II+2*NELEM)=II+NDIRE
+            MESHF%IKLE%I(II+3*NELEM)=MESHF%IKLE%I(II)+NDIRE
           ENDDO
 !
 !       WRITES OUT THE ARRAYS X AND Y
 !
-          ALLOCATE(MESHF%X%R(NPLAN*NF))
-          ALLOCATE(MESHF%Y%R(NPLAN*NF))
-          MESHF%NPTFR = 2*NPLAN
+          ALLOCATE(MESHF%X%R(NDIRE*NF))
+          ALLOCATE(MESHF%Y%R(NDIRE*NF))
+          MESHF%NPTFR = 2*NDIRE
           DO JF=1,NF
-            DO II=1,NPLAN
-              MESHF%X%R(II+NPLAN*(JF-1))=FREQ(JF)*SIN(TETA(II))
-              MESHF%Y%R(II+NPLAN*(JF-1))=FREQ(JF)*COS(TETA(II))
+            DO II=1,NDIRE
+              MESHF%X%R(II+NDIRE*(JF-1))=FREQ(JF)*SIN(TETA(II))
+              MESHF%Y%R(II+NDIRE*(JF-1))=FREQ(JF)*COS(TETA(II))
             ENDDO
           ENDDO
           MESHF%NBOR%I=0
-          DO II = 1,NPLAN
+          DO II = 1,NDIRE
             MESHF%NBOR%I(II) = II
           ENDDO
-          DO II = NPLAN+1,2*NPLAN
-            MESHF%NBOR%I(II)=NPLAN+1+NPSPE-II
+          DO II = NDIRE+1,2*NDIRE
+            MESHF%NBOR%I(II)=NDIRE+1+NPSPE-II
           ENDDO
           MESHF%KNOLG%I = 0
           ALLOCATE(MESHF%NDS(0:81,7))
@@ -318,12 +318,12 @@
 !
         DO ILEO=1,NLEO
           II=NOLEO(ILEO)
-          II_ALL=P_ISUM(II)
+          II_ALL=P_SUM(II)
           IF(II.GT.0) THEN
             IF((MESH%ELTCAR%I(II).NE.0).OR.
      &          (II.EQ.II_ALL)) THEN
               DO JF=1,NF
-                DO K=1,NPLAN
+                DO K=1,NDIRE
                   AUXIL(K,JF)=F(II,K,JF)
                 ENDDO
               ENDDO
@@ -353,7 +353,7 @@
               CLOSE(ID,STATUS='DELETE')
               DO JF=1,NF
                 F_INTF(ILEO,JF)=0.D0
-                DO K=1,NPLAN
+                DO K=1,NDIRE
                   F_INTF(ILEO,JF)=F_INTF(ILEO,JF)+AUXIL(K,JF)*DTETAR
                 ENDDO
               ENDDO
@@ -371,7 +371,7 @@
           DO ILEO=1,NLEO
             II=NOLEO(ILEO)
             DO JF=1,NF
-              DO K=1,NPLAN
+              DO K=1,NDIRE
                 AUXIL(K,JF)=F(II,K,JF)
               ENDDO
             ENDDO
@@ -385,7 +385,7 @@
             II=NOLEO(ILEO)
             DO JF=1,NF
               F_INTF(ILEO,JF)=0.D0
-              DO K=1,NPLAN
+              DO K=1,NDIRE
                 F_INTF(ILEO,JF)=F_INTF(ILEO,JF)+F(II,K,JF)*DTETAR
               ENDDO
               IF(ABS(F_INTF(ILEO,JF)).LT.1.D-90) F_INTF(ILEO,JF)=0.D0

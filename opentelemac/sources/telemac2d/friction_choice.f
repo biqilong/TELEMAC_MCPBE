@@ -1,11 +1,11 @@
-!                    **************************
-                     SUBROUTINE FRICTION_CHOICE
-!                    **************************
+!                   **************************
+                    SUBROUTINE FRICTION_CHOICE
+!                   **************************
 !
      &(FRICTION_PASS)
 !
 !***********************************************************************
-! TELEMAC2D   V7P2
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    MAIN SUBROUTINE FOR FRICTION COMPUTATION.
@@ -57,48 +57,43 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER                     :: I
+      INTEGER I
       DOUBLE PRECISION, PARAMETER :: VK = 1.D-6
 !
-!======================================================================!
-!======================================================================!
-!                               PROGRAMME                              !
-!======================================================================!
-!======================================================================!
+!-----------------------------------------------------------------------
 !
 ! INITIALIZATION
 ! --------------
 !
-      IF(DEBUG.GT.0)WRITE(LU,*)'IN FRICTION_CHOICE-INIT STEP'
-      IF(FRICTION_PASS == 0) THEN
+      IF(DEBUG.GT.0) WRITE(LU,*)'IN FRICTION_CHOICE-INIT STEP'
+      IF(FRICTION_PASS.EQ.0) THEN
 !
 ! ZONES INITIALIZATION
 ! --------------------
 !
-        IF (FRICTB) THEN
+        IF(FRICTB) THEN
           CALL FRICTION_INIT
           CALL STRCHE
 ! FH : FOR QUASI-BUBBLE
 ! FH : 2004/03/01
 !JAJ FOR QUADRATIC ELEMENTS
 ! =>
-          IF (CF%ELM /= H%ELM) THEN
-            IF(CF%ELM==12 .AND. H%ELM==11) THEN
+          IF(CF%ELM.NE.H%ELM) THEN
+            IF(CF%ELM.EQ.12 .AND. H%ELM.EQ.11) THEN
               CALL FRICTION_BUBBLE
-     &            (IKLE, NPOIN, NELEM, NELMAX, LINDNER, NKFROT,
-     &             CHESTR, NDEFMA, LINDDP, LINDSP)
-            ELSEIF (CF%ELM==13 .AND. H%ELM==11) THEN
+     &            (IKLE, NPOIN, NELEM, NELMAX, VEGETATION, NKFROT,
+     &             CHESTR, NDEFMA, VCOEFF, VEGLAW)
+            ELSEIF(CF%ELM.EQ.13 .AND. H%ELM.EQ.11) THEN
               CALL FRICTION_QUAD
-     &            (IKLE%I, NELEM, NELMAX, LINDNER, NKFROT,
-     &             CHESTR, NDEFMA, LINDDP, LINDSP)
-!              WRITE (LU,*)
+     &            (IKLE%I, NELEM, NELMAX, VEGETATION, NKFROT,
+     &             CHESTR, NDEFMA, VCOEFF, VEGLAW)
+!              WRITE(LU,*)
 !     &         'FRICTION_CHOICE::QUADRATIC ELEMENTS NOT IMPLEMENTED.'
 !              CALL PLANTE(1)
             ELSE
-              WRITE (LU,*)
+              WRITE(LU,*)
      &         'FRICTION_CHOICE::DISCRETISATION NOT IMPLEMENTED.'
-              WRITE (LU,*)
-     &         'CF%ELM, H%ELM: ',CF%ELM, H%ELM
+              WRITE(LU,*) 'CF%ELM, H%ELM: ',CF%ELM, H%ELM
               CALL PLANTE(1)
             ENDIF
           ENDIF
@@ -141,30 +136,28 @@
 !     -----------
 !
       ELSE
-
 !
         ! FRICTION BY ZONES
         ! -----------------
-        IF (FRICTB) THEN
-        IF(DEBUG.GT.0)WRITE(LU,*)'FRICTION_CHOICE-START FRICTION ZONES'
+        IF(FRICTB) THEN
+        IF(DEBUG.GT.0) WRITE(LU,*)'FRICTION_CHOICE-START FRICTION ZONES'
 ! FH : FOR QUASI-BUBBLE
 ! FH : 2004/03/01
 !JAJ FOR QUADRATIC ELEMENTS
 ! =>
-          IF (CF%ELM /= H%ELM) THEN
-            IF (CF%ELM==12 .AND. H%ELM==11) THEN
+          IF(CF%ELM.NE.H%ELM) THEN
+            IF(CF%ELM.EQ.12 .AND. H%ELM.EQ.11) THEN
               CALL FRICTION_BUBBLE
-     &            (IKLE, NPOIN, NELEM, NELMAX, LINDNER, NKFROT,
-     &             CHESTR, NDEFMA, LINDDP, LINDSP)
-            ELSE IF (CF%ELM==13 .AND. H%ELM==11) THEN
+     &            (IKLE, NPOIN, NELEM, NELMAX, VEGETATION, NKFROT,
+     &             CHESTR, NDEFMA, VCOEFF, VEGLAW)
+            ELSEIF(CF%ELM.EQ.13 .AND. H%ELM.EQ.11) THEN
               CALL FRICTION_QUAD
-     &            (IKLE%I, NELEM, NELMAX, LINDNER, NKFROT,
-     &             CHESTR, NDEFMA, LINDDP, LINDSP)
+     &            (IKLE%I, NELEM, NELMAX, VEGETATION, NKFROT,
+     &             CHESTR, NDEFMA, VCOEFF, VEGLAW)
             ELSE
-              WRITE (LU,*)
+              WRITE(LU,*)
      &         'FRICTION_CHOICE::DISCRETISATION NOT IMPLEMENTED.'
-              WRITE (LU,*)
-     &         'CF%ELM, H%ELM: ',CF%ELM, H%ELM
+              WRITE(LU,*) 'CF%ELM, H%ELM: ',CF%ELM, H%ELM
               CALL PLANTE(1)
               STOP
             ENDIF
@@ -172,8 +165,8 @@
 !
           CALL FRICTION_ZONES
      &         (MESH, H, U, V, CHESTR, CHBORD, NKFROT, NDEFMA,
-     &          LINDDP, LINDSP, KFRO_B, NDEF_B, LISRUG,
-     &          LINDNER, VK, KARMAN, GRAV, T1, T2, CF, CFBOR)
+     &          KFRO_B, NDEF_B, LISRUG,
+     &          VEGETATION, VK, KARMAN, GRAV, T1, T2, CF, CFBOR)
 ! <=
 !JAJ FOR QUADRATIC ELEMENTS
 ! FH : 2004/03/01
@@ -183,19 +176,17 @@
         ! UNIFORM FRICTION
         ! ----------------
         ELSE
-          IF(DEBUG.GT.0)WRITE(LU,*)'IN FRICTION_CHOICE-CALLING UNIF'
+          IF(DEBUG.GT.0) WRITE(LU,*)'IN FRICTION_CHOICE-CALLING UNIF'
           CALL FRICTION_UNIF
      &         (MESH,H,U,V,CHESTR,KFROT,KFROTL, LISRUG,
-     &          LINDNER, NDEF, DP, SP, VK, KARMAN, GRAV, T1,
-     &          T2, CHBORD, CF, CFBOR)
+     &          VEGETATION, NDEF, VK, KARMAN, GRAV, T1,
+     &          T2, CHBORD, CF, CFBOR, FRICOU, NPOIN, ORBVEL)
 !
-          IF(DEBUG.GT.0)WRITE(LU,*)'IN FRICTION_CHOICE-BACK FROM UNIF'
+          IF(DEBUG.GT.0) WRITE(LU,*)'IN FRICTION_CHOICE-BACK FROM UNIF'
         ENDIF
       ENDIF
 !
-!======================================================================!
-!======================================================================!
+!-----------------------------------------------------------------------
 !
       RETURN
       END
-

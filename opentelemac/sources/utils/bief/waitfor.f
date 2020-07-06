@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE WAITFOR
-!                    ******************
+!                   ******************
+                    SUBROUTINE WAITFOR
+!                   ******************
 !
      & (DOSSIER,FICHIER)
 !

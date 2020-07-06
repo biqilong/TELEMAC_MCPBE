@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE OPEN_BND
-!                    ********************
+!                   ********************
+                    SUBROUTINE OPEN_BND
+!                   ********************
 !
      &(FFORMAT,FILE_NAME,FILE_ID,OPENMODE,IERR,MESH_NUMBER)
 !

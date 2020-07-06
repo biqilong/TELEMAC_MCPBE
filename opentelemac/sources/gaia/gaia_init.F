@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE GAIA_INIT
-!                    ********************
+!                   ********************
+                    SUBROUTINE GAIA_INIT
+!                   ********************
 !
      &(GRAFCOUNT,LISTCOUNT,TELNIT,U_TEL,V_TEL,H_TEL,ZF_TEL,UETCAR,
      & DELTAR,CF_TEL,KS_TEL,CODE,U3D,V3D,T_TEL,DT_TEL,CHARR_TEL,
@@ -43,7 +43,7 @@
       USE INTERFACE_HERMES
       USE DECLARATIONS_SPECIAL
 !
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -119,7 +119,7 @@
 !       READS CS (CONCENTRATION) FROM THE PREVIOUS COMPUTATION FILE
         IF(SUSP) THEN
           DO I=1,NSICLA
-           ALIRE(NVAR_CS+I)=1
+            ALIRE(NVAR_CS+I)=1
           ENDDO
         ENDIF
 !       READS THE LAYER THICKNESSES
@@ -206,7 +206,7 @@
         DO I=1,NPTFR
           NFRLIQ=MAX(NFRLIQ,NUMLIQ%I(I))
         ENDDO
-        NFRLIQ=P_IMAX(NFRLIQ)
+        NFRLIQ=P_MAX(NFRLIQ)
         WRITE(LU,*) ' '
         WRITE(LU,*) 'LIQUID BOUNDARIES:',NFRLIQ
 !       NFRLIQ CHECKED (NFRSOL NOT USED IN PARALLEL)
@@ -565,7 +565,7 @@
         ENDIF
         IF(NCSIZE.GT.1) THEN
           DO ICLA=1,NSICLA
-            MASS0ACT(ICLA) = P_DSUM(MASS0ACT(ICLA))
+            MASS0ACT(ICLA) = P_SUM(MASS0ACT(ICLA))
           ENDDO
         ENDIF
       ENDIF

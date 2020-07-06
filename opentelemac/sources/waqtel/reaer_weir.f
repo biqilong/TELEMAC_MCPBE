@@ -1,6 +1,6 @@
+!                  **********************
+                    SUBROUTINE REAER_WEIR
 !                   **********************
-                     SUBROUTINE REAER_WEIR
-!                    **********************
 !
      &(FORMRS,H1,H2,ABRS,WATTEMP,EPS,O2SATU,TRUP,TN,IND_O2,IR)
 !
@@ -91,7 +91,7 @@
           CALL PLANTE(1)
           STOP
         ENDIF
-        IF(NCSIZE.GT.1)TRDO = P_DMIN(TRDO)+P_DMAX(TRDO)
+        IF(NCSIZE.GT.1)TRDO = P_MIN(TRDO)+P_MAX(TRDO)
 !       O2 PROCESS
         TN%ADR(IND_O2)%P%R(IR)=TRDO
       ENDIF

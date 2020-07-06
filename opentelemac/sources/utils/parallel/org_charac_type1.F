@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE ORG_CHARAC_TYPE1
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE ORG_CHARAC_TYPE1
+!                   ***************************
 !
      &(NOMB,CHARACTERISTIC)
 !

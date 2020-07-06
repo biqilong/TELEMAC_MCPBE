@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE LAYER
-!                    ****************
+!                   ****************
+                    SUBROUTINE LAYER
+!                   ****************
 !
      &(ZFCL_W,NLAYER,ZR,ZF,ESTRAT,ELAY,MASBAS,ACLADM,NSICLA,NPOIN,
      & ELAY0,VOLTOT,ES,AVAIL,CONST_ALAYER,ESTRATNEW,NLAYNEW)
@@ -357,10 +357,10 @@
               AVAIL(J,1,I) = (AVAIL(J,1,I) * (ELAY0-EVOL)
      &                     + ZFCL_W%ADR(I)%P%R(J) )/ELAY0
               IF(AVAIL(J,1,I).GT.1.D0+ZERO.OR.
-     &           AVAIL(J,1,I).LT.-ZERO) THEN
-                 WRITE(LU,*) 'ERROR IN LAYER CASE 5'
-                 CALL PLANTE(1)
-                 STOP
+     &          AVAIL(J,1,I).LT.-ZERO) THEN
+                WRITE(LU,*) 'ERROR IN LAYER CASE 5'
+                CALL PLANTE(1)
+                STOP
               ENDIF
             ENDDO
 !

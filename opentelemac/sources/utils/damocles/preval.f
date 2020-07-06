@@ -1,6 +1,6 @@
-!                    ***********************
-                     INTEGER FUNCTION PREVAL
-!                    ***********************
+!                   ***********************
+                    INTEGER FUNCTION PREVAL
+!                   ***********************
 !
      &( ICOL , LIGNE , CAR1 , CAR2 , CAR3 )
 !
@@ -67,23 +67,23 @@
       IF (LIGNE(I:I).NE.CAR1.AND.LIGNE(I:I).NE.CAR2.AND.
      &    LIGNE(I:I).NE.CAR3) THEN
 !-----------------------------------------------------------------------
-!          DOES NOT CONSIDER THE COMMENTED LINES:
+!       DOES NOT CONSIDER THE COMMENTED LINES:
 !
-           IF ( I.GE.LONGLI ) GO TO 1000
-           IF ( LIGNE(I:I).EQ.'/' ) THEN
-                DO J = I+1 , LONGLI
-                     IF ( LIGNE(J:J).EQ.'/' ) THEN
-                          I = J
-                          GO TO 100
-                     ENDIF
-                ENDDO ! J
-                GO TO 1000
-!-----------------------------------------------------------------------
-           ELSE
-                GO TO 100
-           ENDIF
+        IF ( I.GE.LONGLI ) GO TO 1000
+        IF ( LIGNE(I:I).EQ.'/' ) THEN
+          DO J = I+1 , LONGLI
+            IF ( LIGNE(J:J).EQ.'/' ) THEN
+              I = J
+              GO TO 100
+            ENDIF
+          ENDDO ! J
+          GO TO 1000
+!--------------------------------------------------------------------
+        ELSE
+          GO TO 100
+        ENDIF
       ELSE
-           PREVAL = I
+        PREVAL = I
       ENDIF
 !
 1000  CONTINUE

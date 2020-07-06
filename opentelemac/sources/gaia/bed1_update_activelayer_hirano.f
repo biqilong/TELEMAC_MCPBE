@@ -10,7 +10,7 @@
 !!        layer underneath. This is possible and needed only if there
 !!        is no consolidation. The algorithm is based on the classical
 !!        active layer formulation of Hirano, improved to consider
-!!        cases involving sand, mud or sand-mud mixtures.                  
+!!        cases involving sand, mud or sand-mud mixtures.
 !!
 !!        This subroutine updates mass_sand and mass_mud using their mass
 !!        flux.
@@ -76,7 +76,7 @@
 !         LOWER LAYER
           IF(NMUD.GE.1) THEN
             DO IMUD = 1,NMUD
-             FLUX_MASS_MUD(IMUD,1,IPOIN)= -(THICK_TRANSFER/ES(IPOIN,1))
+              FLUX_MASS_MUD(IMUD,1,IPOIN)= -(THICK_TRANSFER/ES(IPOIN,1))
      &       *MASS_MUD(IMUD,1,IPOIN)
               FLUX_MASS_MUD(IMUD,2,IPOIN)=+(THICK_TRANSFER/ES(IPOIN,1))
      &       *MASS_MUD(IMUD,1,IPOIN)
@@ -223,9 +223,9 @@
         DO IPOIN=1,NPOIN
           DO ILAYER=1,NOMBLAY
             DO ISAND=1,NSAND
-                 MASS_SAND(ISAND,ILAYER,IPOIN)=
-     &                  MASS_SAND(ISAND,ILAYER,IPOIN)
-     &                  +FLUX_MASS_SAND(ISAND,ILAYER,IPOIN)
+              MASS_SAND(ISAND,ILAYER,IPOIN)=
+     &               MASS_SAND(ISAND,ILAYER,IPOIN)
+     &               +FLUX_MASS_SAND(ISAND,ILAYER,IPOIN)
             ENDDO
           ENDDO
         ENDDO

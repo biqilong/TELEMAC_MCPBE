@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE READ_SUBMIT
-!                    **********************
+!                   **********************
+                    SUBROUTINE READ_SUBMIT
+!                   **********************
 !
      &(FILES,NFILES,SUBMIT,NMOT)
 !

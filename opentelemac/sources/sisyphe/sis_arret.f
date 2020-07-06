@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE SIS_ARRET !
-!                    **********************
+!                   **********************
+                    SUBROUTINE SIS_ARRET !
+!                   **********************
 !
      &(ESM,EMAX,HN,VARSOR,NPOIN,MN,NRES,FMTRES,MAXVAR,AT0,RC,
      & TEXTE,SORLEO,SORIMP,T1,T2)

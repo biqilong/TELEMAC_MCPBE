@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TWCAL2
-!                    *****************
+!                   *****************
+                    SUBROUTINE TWCAL2
+!                   *****************
 !
 !***********************************************************************
 ! ARTEMIS   V7P4                                     Nov 2017
@@ -31,7 +31,7 @@
       USE DECLARATIONS_ARTEMIS
       USE DECLARATIONS_TELEMAC, ONLY : KINC,KSORT
       USE INTERFACE_ARTEMIS, ONLY : STWC1
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -116,7 +116,7 @@
         ENDDO
 !
       ENDDO ! ISPEC = 1,NSPEC
-      IF(DEBUG.GT.0) 
+      IF(DEBUG.GT.0)
      &    WRITE(LU,*) '< TWCAL2: SDIRTWC COMPUTED FOR 1 TO ',NSPEC
 !
 !-----------------------------------------------------------------------
@@ -166,7 +166,7 @@
 !-----------------------------------------------------------------------
 !
           IF(DEBUG.GT.0 .AND. PRINTMSG.EQ.1) THEN
-            WRITE(LU,*) 
+            WRITE(LU,*)
             WRITE(LU,*) '> TWCAL2: ',
      &      'STARTS INTERPOLATION OF DIR. DISTRIBUTION TO ARTEMIS NODES'
           ENDIF
@@ -183,7 +183,7 @@
           CALL STWC2( IMIN,IMAX,NPASD+1,DIR_ART,SDIR )
           DTETA2 = DIR_ART(2)-DIR_ART(1)
 !
-          IF(DEBUG.GT.0 .AND. PRINTMSG.EQ.1) 
+          IF(DEBUG.GT.0 .AND. PRINTMSG.EQ.1)
      &     WRITE(LU,*) '< TWCAL2: INTERPOLATION TO ARTEMIS NODES ENDED'
 !
 !-----------------------------------------------------------------------
@@ -254,11 +254,11 @@
             IDALE = (I+1)/2
             BDALE%ADR(IDALE)%P%R(IPTFR)=
      &               FLOAT(IDTWC(I+1)-1)*DTETA2+DIR_ART(IDDMINART)
-            IF(BDALE%ADR(IDALE)%P%R(IPTFR).GT.DIR_ART(NPASD+1)) 
+            IF(BDALE%ADR(IDALE)%P%R(IPTFR).GT.DIR_ART(NPASD+1))
      &        BDALE%ADR(IDALE)%P%R(IPTFR)=
      &        BDALE%ADR(IDALE)%P%R(IPTFR)-DIR_ART(NPASD+1)+DIR_ART(1)
-! 
-            IF(BDALE%ADR(IDALE)%P%R(IPTFR).GT.180D0) 
+!
+            IF(BDALE%ADR(IDALE)%P%R(IPTFR).GT.180D0)
      &        BDALE%ADR(IDALE)%P%R(IPTFR)=
      &        BDALE%ADR(IDALE)%P%R(IPTFR)-360.D0
           ENDDO
@@ -267,7 +267,7 @@
 !
 !-----------------------------------------------------------------------
 !
-      IF(DEBUG.GT.0 .AND. PRINTMSG.EQ.1) 
+      IF(DEBUG.GT.0 .AND. PRINTMSG.EQ.1)
      &  WRITE(LU,*) '< TWCAL2: SPECTRUM DISCRETISATION ENDED'
 !
       ENDDO ! IPTFR = 1 , NPTFR
@@ -277,12 +277,12 @@
 !
 !-----------------------------------------------------------------------
 !
-!     FINDS BOUNDARY NODE CLOSEST TO REFERENCE POINT 
+!     FINDS BOUNDARY NODE CLOSEST TO REFERENCE POINT
 !    (USED FOR PRINTOUTS ONLY IN ARTEMIS.F)
 !
       IPTFR_REF = 0
       IF (NPTFR.GT.0) CALL TWCCLOSEST
-      IF (NCSIZE.GT.1) IPTFR_REF = P_IMAX(IPTFR_REF)
+      IF (NCSIZE.GT.1) IPTFR_REF = P_MAX(IPTFR_REF)
       IF(DEBUG.GT.0)
      &      WRITE(LU,*) 'CLOSEST: REFERENCE BOUNDARY POINT:',IPTFR_REF
 !

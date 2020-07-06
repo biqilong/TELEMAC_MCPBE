@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE BEDLOAD_VANRIJN
-!                    **************************
+!                   **************************
+                    SUBROUTINE BEDLOAD_VANRIJN
+!                   **************************
 !
      &(TETAP,NPOIN, DM, DENS, GRAV, DSTAR, AC, QSC)
 !

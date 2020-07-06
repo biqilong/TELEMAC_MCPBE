@@ -140,7 +140,7 @@
 !
       IF(NC2DH.GE.1) THEN
         DO K = 1,NPOIN2
-           IPOBO(K) = 0
+          IPOBO(K) = 0
         ENDDO
         CALL PRE2DH(X,Y,IKLES,IPOBO,NPOIN2,NELEM2,NC2DH,NHOR,
      &     TITCAS,HOR_FMT,NVA3,TEXTLU)

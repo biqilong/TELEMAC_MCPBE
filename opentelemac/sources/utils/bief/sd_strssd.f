@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE SD_STRSSD
-!                    ********************
+!                   ********************
+                    SUBROUTINE SD_STRSSD
+!                   ********************
 !
      &(NPBLK,NSEGBLK,GLOSEG1,GLOSEG2,IN,IP,ISEGIP,IW)
 !

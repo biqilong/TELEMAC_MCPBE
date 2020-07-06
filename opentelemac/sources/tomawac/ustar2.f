@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE USTAR2
-!                    *****************
+!                   *****************
+                    SUBROUTINE USTAR2
+!                   *****************
 !
      &( USTAR, NPOIN2)
 !
@@ -48,7 +48,7 @@
 !| VV             |-->| WIND VELOCITY ALONG Y AT THE MESH POINTS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_TOMAWAC, ONLY : UV, VV               
+      USE DECLARATIONS_TOMAWAC, ONLY : UV, VV
       USE INTERFACE_TOMAWAC, EX_USTAR2 => USTAR2
       IMPLICIT NONE
 !

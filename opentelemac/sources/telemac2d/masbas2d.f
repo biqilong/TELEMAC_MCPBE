@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE MASBAS2D
-!                    *******************
+!                   *******************
+                    SUBROUTINE MASBAS2D
+!                   *******************
 !
      &(VOLU2D,V2DPAR,UNSV2D,IELM,MESH,MSK,MASKEL,T1,S)
 !

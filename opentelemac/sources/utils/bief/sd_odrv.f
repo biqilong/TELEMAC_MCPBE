@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SD_ODRV
-!                    ******************
+!                   ******************
+                    SUBROUTINE SD_ODRV
+!                   ******************
 !
      &(N,IA,JA,A,P,IP,NSP,ISP,PATH,FLAG)
 !

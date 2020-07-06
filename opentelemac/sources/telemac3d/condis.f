@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CONDIS
-!                    *****************
+!                   *****************
+                    SUBROUTINE CONDIS
+!                   *****************
 !
      &(S3D_IVIDE, S3D_EPAI, S3D_TREST, S3D_CONC, S3D_TEMP  , S3D_HDEP  ,
      & ZR      , ZF    , X     , Y     , NPOIN2    ,

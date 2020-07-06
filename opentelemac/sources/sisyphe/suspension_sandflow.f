@@ -1,6 +1,6 @@
-!                    ***************************************
-                     SUBROUTINE SUSPENSION_SANDFLOW
-!                    ***************************************
+!                   ***************************************
+                    SUBROUTINE SUSPENSION_SANDFLOW
+!                   ***************************************
 !
      &  (FDM, FD90, NPOIN, GRAV,
      &   XMVE, XMVS, ZERO, CSTAEQ,HN,U2D,V2D,CSRATIO)

@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE CONWAC
-!                    *****************
+!                   *****************
+                    SUBROUTINE CONWAC
+!                   *****************
 !
-     &( CX, CY, CT, XK, CG, NPOIN2, NPLAN , JF    , NF    )
+     &( CX, CY, CT, XK, CG, NPOIN2, NDIRE , JF    , NF    )
 !
 !***********************************************************************
 ! TOMAWAC   V6P3                                   14/068/2011
@@ -37,7 +37,7 @@
 !history  J-M HERVOUET (EDF-LNHE)
 !+        27/11/2012
 !+        V6P3
-!+   Optimisation (loops on NPOIN2 and NPLAN swapped to get smaller
+!+   Optimisation (loops on NPOIN2 and NDIRE swapped to get smaller
 !+   strides, work array TRA01 differently used, etc.).
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,7 +50,7 @@
 !| DZX            |-->| SEA BOTTOM SLOPE ALONG Y
 !| JF             |-->| INDEX OF THE FREQUENCX
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| PROINF         |-->| LOGICAL INDICATING INFINITE DEPTH ASSUMPTION
 !| PROMIN         |-->| MINIMUM VALUE OF WATER DEPTH
@@ -61,8 +61,8 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_TOMAWAC, ONLY : GRADEG,DEUPI,SR,GRAVIT, PROINF,
-     &                    SPHE, PROMIN, DEPTH, COSTET, SINTET, FREQ, 
-     & COSF  , TGF   , DZX   , DZY, TRA01   
+     &                    SPHE, PROMIN, DEPTH, COSTET, SINTET, FREQ,
+     & COSF  , TGF   , DZX   , DZY, TRA01
 !
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_TOMAWAC, EX_CONWAC => CONWAC
@@ -71,11 +71,11 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2,JF
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2,JF
       DOUBLE PRECISION, INTENT(IN)    :: CG(NPOIN2,NF),XK(NPOIN2,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: CY(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: CX(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: CT(NPOIN2,NPLAN)
+      DOUBLE PRECISION, INTENT(INOUT) :: CY(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: CX(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: CT(NPOIN2,NDIRE)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -96,7 +96,7 @@
 !       ... AND IN CARTESIAN COORDINATE SYSTEM
 !       ----------------------------------------------------------------
 !
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             TR1=GSQP/FREQ(JF)*COSTET(JP)
             TR2=GSQP/FREQ(JF)*SINTET(JP)
             DO IP=1,NPOIN2
@@ -112,7 +112,7 @@
 !       ... AND IN SPHERICAL COORDINATE SYSTEM
 !       ----------------------------------------------------------------
 !
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             TR1=GSQP/FREQ(JF)*COSTET(JP)
             TR2=GSQP/FREQ(JF)*SINTET(JP)
             DO IP=1,NPOIN2
@@ -147,7 +147,7 @@
 !       ... AND IN CARTESIAN COORDINATE SYSTEM
 !       ----------------------------------------------------------------
 !
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             DO IP=1,NPOIN2
               IF(DEPTH(IP).GT.PROMIN) THEN
                 DDDN=-SINTET(JP)*DZY(IP)+COSTET(JP)*DZX(IP)
@@ -168,7 +168,7 @@
 !       ... AND IN SPHERICAL COORDINATE SYSTEM
 !       ----------------------------------------------------------------
 !
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             DO IP=1,NPOIN2
               IF(DEPTH(IP).GT.PROMIN) THEN
                 SRCF=SR/COSF(IP)

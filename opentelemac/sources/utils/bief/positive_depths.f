@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE POSITIVE_DEPTHS
-!                    **************************
+!                   **************************
+                    SUBROUTINE POSITIVE_DEPTHS
+!                   **************************
 !
      &(T1,T2,T3,T4,H,HN,MESH,FLODEL,COMPUTE_FLODEL,FLBOR,DT,
      & UNSV2D,NPOIN,GLOSEG1,GLOSEG2,NBOR,NPTFR,

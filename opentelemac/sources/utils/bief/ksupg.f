@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE KSUPG
-!                    ****************
+!                   ****************
+                    SUBROUTINE KSUPG
+!                   ****************
 !
      &(KX,KY,XMUL,U,V,MESH)
 !

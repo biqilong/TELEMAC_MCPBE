@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DRIALG
-!                    *****************
+!                   *****************
+                    SUBROUTINE DRIALG
+!                   *****************
 !
      & (FRV, FRT, RI, NPOIN3)
 !

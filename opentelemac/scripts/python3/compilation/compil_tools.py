@@ -27,7 +27,7 @@ from config import CFGS
 # _____                  ___________________________________________
 # ____/ General Toolbox /__________________________________________/
 #
-LIST_LIBS = ['api', \
+LIST_LIBS = {'api':['api', \
     'telemac3d', \
     'telemac2d', \
     'sisyphe', \
@@ -45,7 +45,12 @@ LIST_LIBS = ['api', \
     'utils|damocles', \
     'utils|special', \
     'mascaret', \
-            ]
+            ],
+             'hermes':[\
+    'utils|hermes', \
+    'utils|special', \
+    ]
+            }
 
 
 
@@ -172,6 +177,7 @@ def create_obj_files(oname, oprog, odict, mes, tasks, bypass, homeres, verbose):
 
     cmd = cmd.replace('<mods>', mods)
     cmd = cmd.replace('<f95name>', path.join(odict['path'], oname))
+    cmd = cmd.replace('<objname>', path.join(odict['path'], obj_file))
     cmd = cmd.replace('<config>', obj_dir).replace('<root>', cfg['root'])
 
     if verbose:
@@ -685,10 +691,11 @@ def get_api_incs_flags():
 
     return incs_flags
 
-def get_api_ld_flags(static):
+def get_api_ld_flags(api_name, static):
     """
     Retuns the string for ld_flags for api
 
+    @param api_name Name of api (hermes ot api)
     @param static If true libraries are considered static
 
     @returns the string
@@ -708,7 +715,7 @@ def get_api_ld_flags(static):
 
     lib_ext = cfg['sfx_lib']
     # Adding list of libraries
-    for lib_name in LIST_LIBS:
+    for lib_name in LIST_LIBS[api_name]:
         if lib_name == 'mascaret':
             if not path.exists(path.join(lib_dir, 'libmascaret'+lib_ext)):
                 continue
@@ -801,7 +808,7 @@ def copy_src_api(api_dir, src_list, src_dir):
 
     # Copying libraries
     dyn_ext = cfg['sfx_lib']
-    for lib in LIST_LIBS:
+    for lib in LIST_LIBS['api']:
         lib_name = lib.split('|')[-1]
         lib_name_tel = 'lib'+lib_name+'4api'+dyn_ext
         # Mascaret is not named the same
@@ -998,7 +1005,6 @@ def compile_api_files(silent, static=False, hermes_only=False):
         skip_source += 'set_double_array_'+short+\
                        '_d set_integer_array_'+short+'_d '
 
-    ld_flags = get_api_ld_flags(static)
     api_dir = path.join(cfg['root'], 'builds', cfgname, 'wrap_api')
     compiler = cfg.get('pyd_compiler', '')
     if 'pyd_fcompiler' not in cfg:
@@ -1010,11 +1016,13 @@ def compile_api_files(silent, static=False, hermes_only=False):
 
     if not hermes_only:
         print("    ~> Compiling Modules api")
+        ld_flags = get_api_ld_flags('api', static)
         compile_api_f2py('api', api_dir, source_api, skip_source, ld_flags,
                          f2py_name, fcompiler, compiler, silent,
                          f2py_opt=f2py_opt)
 
     print("    ~> Compiling hermes api")
+    ld_flags = get_api_ld_flags('hermes', static)
     compile_api_f2py('hermes', api_dir, source_hermes, '',
                      ld_flags, f2py_name, fcompiler, compiler, silent)
 

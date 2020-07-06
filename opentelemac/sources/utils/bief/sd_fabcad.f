@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE SD_FABCAD
-!                    ********************
+!                   ********************
+                    SUBROUTINE SD_FABCAD
+!                   ********************
 !
      &(NPBLK,NSEGBLK,IN,IP,ISEGIP,
      & INDTRI,ISTRI,INX,IPX,ACTRI,XA1,XA2,DA,AC)

@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE USER_TR3
-!                    *******************
+!                   *******************
+                    SUBROUTINE USER_TR3
+!                   *******************
 !
      &( TR3, I , ITRAC , N , TIME , ENTET )
 !

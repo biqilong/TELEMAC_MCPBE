@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT01OO
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT01OO
+!                   *****************
 !
      &(A11,A12,A22,XMUL,LGSEG,NELEM,NELMAX)
 !

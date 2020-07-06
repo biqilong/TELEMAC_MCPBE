@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE BED1_SUSPENSION_DEPOSIT
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE BED1_SUSPENSION_DEPOSIT
+!                   *****************************
 !
      &(CODE)
 !
@@ -47,22 +47,22 @@
             DO IPOIN=1,NPOIN
 !
               IF(HIRANO)THEN
-                 IF(LAYER_DEPOSIT_MUD.EQ.1)THEN
-!           TOTAL MASS MUD AND CONCENTRATION OF MUD IN THE ACTIVE LAYER BEFORE UPDATE
-                   CONC_MUD_ACTIV_LAYER(IPOIN)=
-     &                MAX(CONC_MUD(1,IPOIN),CONC_MUD(2,IPOIN))
-                   MASS_MUD_ACTIV_LAYER(IPOIN)= 0.D0
-                   DO I = 1,NMUD
-                      MASS_MUD_ACTIV_LAYER(IPOIN)=
-     &                     MASS_MUD_ACTIV_LAYER(IPOIN)+
-     &                     MASS_MUD(I,1,IPOIN)
-                   ENDDO
-                 ELSE
-                   WRITE(LU,*)'LAYER DEPOSIT MUST BE EGAL',
-     &                          'TO 1 WITH HIRANO'
-                   CALL PLANTE(1)
-                   STOP
-                 ENDIF
+                IF(LAYER_DEPOSIT_MUD.EQ.1)THEN
+!                 TOTAL MASS MUD AND CONCENTRATION OF MUD IN THE ACTIVE LAYER BEFORE UPDATE
+                  CONC_MUD_ACTIV_LAYER(IPOIN)=
+     &               MAX(CONC_MUD(1,IPOIN),CONC_MUD(2,IPOIN))
+                  MASS_MUD_ACTIV_LAYER(IPOIN)= 0.D0
+                  DO I = 1,NMUD
+                    MASS_MUD_ACTIV_LAYER(IPOIN)=
+     &                    MASS_MUD_ACTIV_LAYER(IPOIN)+
+     &                    MASS_MUD(I,1,IPOIN)
+                  ENDDO
+                ELSE
+                  WRITE(LU,*)'LAYER DEPOSIT MUST BE EGAL',
+     &                         'TO 1 WITH HIRANO'
+                  CALL PLANTE(1)
+                  STOP
+                ENDIF
               ENDIF
 !
 !             MASS EVOLUTION DUE TO SUSPENSION

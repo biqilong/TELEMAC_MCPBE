@@ -57,13 +57,13 @@ subroutine LEC_CASIER( &
    type(CASIER_T) , dimension(:)     , pointer       :: Casier
    type(ERREUR_T)                    , intent(inout) :: Erreur
    type(FICHIER_T)                   , intent(inout) :: FichierGeomCasier
-   type(Node), pointer, intent(in)                   :: document 
+   type(Node), pointer, intent(in)                   :: document
 
    !.. Variables locales ..
-   integer :: nombre_casier, icasier, icote, option_calcul
+   integer :: nombre_casier, icasier, option_calcul
    integer :: retour          ! code de retour des fonctions intrinseques
    integer :: option_planim
-   type(Node), pointer :: champ1,champ2,champ3
+   type(Node), pointer :: champ1,champ2
    integer, allocatable :: itab(:)
    real(double), allocatable :: rtab(:)
    !character(132) :: arbredappel_old
@@ -119,7 +119,7 @@ subroutine LEC_CASIER( &
        call TRAITER_ERREUR( Erreur , 'itab' )
        return
    end if
-   
+
    allocate( rtab(nombre_casier) , STAT = retour )
    if( retour /= 0 ) then
        Erreur%Numero = 5
@@ -128,7 +128,7 @@ subroutine LEC_CASIER( &
        call TRAITER_ERREUR( Erreur , 'rtab' )
        return
    end if
-   
+
    champ2 => item(getElementsByTagname(champ1, "cotesInitiale"), 0)
    if(associated(champ2).eqv..false.) then
          print*,"Parse error => cotesInitiale"
@@ -136,7 +136,7 @@ subroutine LEC_CASIER( &
          return
    endif
    call extractDataContent(champ2,rtab)
-   
+
    do icasier = 1 , nombre_casier
       ! Initialisation des pointeurs pour l'API
       nullify(Casier(icasier)%LiaisonCC)
@@ -156,7 +156,7 @@ subroutine LEC_CASIER( &
    endif
    call extractDataContent(champ2,itab)
    option_planim = itab(1)
-   
+
    if( option_planim == AUTOMATIQUE ) then
       champ2 => item(getElementsByTagname(champ1, "optionCalcul"), 0)
       if(associated(champ2).eqv..false.) then
@@ -175,19 +175,19 @@ subroutine LEC_CASIER( &
          call xerror(Erreur)
          return
    endif
-      call extractDataContent(champ2,rtab) 
-       
+      call extractDataContent(champ2,rtab)
+
       champ2 => item(getElementsByTagname(champ1, "nbCotesPlanimetrage"), 0)
       if(associated(champ2).eqv..false.) then
          print*,"Parse error => nbCotesPlanimetrage"
          call xerror(Erreur)
          return
       endif
-      call extractDataContent(champ2,itab) 
-      
+      call extractDataContent(champ2,itab)
+
       do icasier = 1, size( Casier )
 
-         Casier(icasier)%PasPlanim = rtab(icasier) 
+         Casier(icasier)%PasPlanim = rtab(icasier)
          if( Casier(icasier)%PasPlanim <= 0._DOUBLE ) then
             Erreur%Numero = 902
             Erreur%ft     = err_902
@@ -275,28 +275,28 @@ subroutine LEC_CASIER( &
 
    deallocate(itab)
    deallocate(rtab)
-   
+
    !.. Fin des traitements ..
    !Erreur%arbredappel = !arbredappel_old
 
    return
-   
+
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
+
    end subroutine xerror
 
 end subroutine LEC_CASIER

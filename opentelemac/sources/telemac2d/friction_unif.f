@@ -1,12 +1,12 @@
-!                    ************************
-                     SUBROUTINE FRICTION_UNIF
-!                    ************************
+!                   ************************
+                    SUBROUTINE FRICTION_UNIF
+!                   ************************
 !
-     &(MESH,H,U,V,CHESTR,KFROT,KFROTL,LISRUG,LINDNER,
-     & NDEF,DP,SP,VK,KARMAN,GRAV,T1,T2,CHBORD,CF,CFBOR)
+     &(MESH,H,U,V,CHESTR,KFROT,KFROTL,LISRUG,VEGETATION,
+     & NDEF,VK,KARMAN,GRAV,T1,T2,CHBORD,CF,CFBOR,FRICOU,NPOIN,ORBVEL)
 !
 !***********************************************************************
-! TELEMAC2D   V7P1
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    COMPUTES FRICTION FOR EACH NODE WHEN THERE IS ONLY
@@ -51,28 +51,27 @@
 !| CFBORD         |<--| ADIMENSIONAL FRICTION COEFFICIENT ON BOUNDARIES
 !| CHBORD         |-->| DEFAULT'S MANNING ON BOUNDARY
 !| CHESTR         |-->| FRICTION COEFFICIENTS
-!| DP             |-->| DIAMETER OF ROUGHNESS ELEMENT
+!| FRICOU         |-->| IF YES, WAVE FRICTION ENHANCEMENT IS ACCOUNTED
 !| GRAV           |-->| GRAVITY
 !| H              |-->| WATER DEPTH
 !| KARMAN         |-->| VON KARMAN CONSTANT
 !| KFROT          |-->| LAW OF BOTTOM FRICTION
-!| LINDNER        |-->| IF YES, THERE IS NON-SUBMERGED VEGETATION FRICTION
 !| LISRUG         |-->| TURBULENCE REGIME (1: SMOOTH 2: ROUGH)
 !| MESH           |-->| MESH STRUCTURE
 !| NDEF           |-->| DEFAULT'S MANNING
-!| SP             |-->| SPACING OF ROUGHNESS ELEMENT
+!| NPOIN          |-->| NUMBER OF NODES
+!| ORBVEL         |-->| WAVE ORBITAL VELOCITY
 !| T1             |<->| WORK ARRAY IN A BIEF_OBJ STRUCTURE
 !| T2             |<->| WORK ARRAY IN A BIEF_OBJ STRUCTURE
 !| U              |-->| X-COMPONENT OF VELOCITY
 !| V              |-->| Y-COMPONENT OF VELOCITY
+!| VEGETATION     |-->| IF YES, THERE IS VEGETATION FRICTION
 !| VK             |-->| KINEMATIC VISCOSITY
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_TELEMAC2D, EX_FRICTION_UNIF => FRICTION_UNIF
 !
       USE BIEF
-!
-      USE DECLARATIONS_TELEMAC2D, ONLY : FRICOU,NPOIN, ORBVEL
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -81,25 +80,20 @@
 !
       TYPE(BIEF_MESH),  INTENT(IN)      :: MESH
       TYPE(BIEF_OBJ),   INTENT(IN)      :: H,U,V,CHESTR,CHBORD
-      INTEGER,          INTENT(IN)      :: KFROT,KFROTL,LISRUG
-      LOGICAL,          INTENT(IN)      :: LINDNER
-      DOUBLE PRECISION, INTENT(IN)      :: NDEF,DP,SP
+      INTEGER,          INTENT(IN)      :: KFROT,KFROTL,LISRUG,NPOIN
+      LOGICAL,          INTENT(IN)      :: FRICOU,VEGETATION
+      DOUBLE PRECISION, INTENT(IN)      :: NDEF
       DOUBLE PRECISION, INTENT(IN)      :: VK,KARMAN,GRAV
 !
       TYPE(BIEF_OBJ),   INTENT(INOUT)   :: T1,T2
-      TYPE(BIEF_OBJ),   INTENT(INOUT)   :: CF,CFBOR
+      TYPE(BIEF_OBJ),   INTENT(INOUT)   :: CF,CFBOR,ORBVEL
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER          :: IELMC,IELMH,I,J
-      DOUBLE PRECISION :: CP
+      INTEGER IELMC,IELMH,I,J
       DOUBLE PRECISION, PARAMETER :: MINH=1.D-4
 !
-!=======================================================================
-!=======================================================================
-!                               PROGRAMME
-!=======================================================================
-!=======================================================================
+!-----------------------------------------------------------------------
 !
 ! =======================================
 ! INITIALIZATION AND DISCRETIZATION CHECK
@@ -112,7 +106,7 @@
 !
 ! SAME DISCRETIZATION FOR WATER DEPTH AND FRICTION COEFFICIENT IF NEEDED
 !
-      IF (KFROT.NE.0.AND.KFROT.NE.2) THEN
+      IF(KFROT.NE.0.AND.KFROT.NE.2) THEN
 !
 ! MAXIMUM BETWEEN WATER DEPTH AND MINH
 !
@@ -126,7 +120,7 @@
 ! RESULTANT VELOCITY IN T2
 !
       IF(KFROT .EQ.1.OR.KFROT .EQ.6.OR.KFROT .EQ.7.OR.
-     &   KFROTL.EQ.1.OR.KFROTL.EQ.6.OR.KFROTL.EQ.7 ) THEN
+     &   KFROTL.EQ.1.OR.KFROTL.EQ.6.OR.KFROTL.EQ.7) THEN
         CALL CPSTVC(CF,T2)
         CALL OS('X=N(Y,Z)', X=T2, Y=U, Z=V)
         CALL OS('X=+(Y,C)', X=T2, Y=T2, C=1.D-6)
@@ -141,28 +135,25 @@
       CALL FRICTION_CALC(1, CF%DIM1, KFROT, NDEF, VK, GRAV,
      &                   KARMAN, CHESTR, T1, T1, T2, CF)
 !
-!     FRICTION COEFFICIENT FOR NON-SUBMERGED VEGETATION
+!     FRICTION COEFFICIENT FOR VEGETATION
 !
-      IF(LINDNER) THEN
-!
-        DO I = 1, CF%DIM1
-          CALL FRICTION_LINDNER(T2%R(I),T1%R(I),CF%R(I),
-     &                          VK,GRAV,DP,SP,CP)
-          IF(CP.LT.-0.9D0) THEN
-            CP = 0.75D0*T1%R(I)*DP/(SP**2)
-          ENDIF
-          CF%R(I) = (CF%R(I)+2.D0*CP)
-        ENDDO
+      IF(VEGETATION) THEN
+        WRITE(LU,*) 'FOR VEGETATION FRICTION YOU NEED:'
+        WRITE(LU,*) 'FRICTION DATA=YES'
+        WRITE(LU,*) 'ZONES FILE OR FRIC_ID IN GEOMETRY FILE'
+        WRITE(LU,*) 'FRICTION DATA FILE'
+        CALL PLANTE(1)
+        STOP
       ENDIF
 !
 !     WAVE INDUCED FRICTION ENHANCMENT (OCONNOR AND YOO, 1988)
 !
-      IF(FRICOU)THEN
+      IF(FRICOU) THEN
         CALL CPSTVC(CF,T2)
         CALL OS('X=N(Y,Z)', X=T2,  Y=U, Z=V)
         CALL OS('X=+(Y,C)', X=T2, Y=T2, C=1.D-6)
         DO I=1,NPOIN
-          CF%R(I)=CF%R(I)*(1.D0 + 0.72D0*ORBVEL%R(I)/T2%R(I))
+          CF%R(I) = CF%R(I)*(1.D0 + 0.72D0*ORBVEL%R(I)/T2%R(I))
         ENDDO
       ENDIF
 !
@@ -183,9 +174,7 @@
      &                     T2,CFBOR)
       ENDIF
 !
-!=======================================================================
-!=======================================================================
+!-----------------------------------------------------------------------
 !
       RETURN
       END
-

@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE WALLDIST
-!                    *******************
+!                   *******************
+                    SUBROUTINE WALLDIST
+!                   *******************
      &(W_DIST,T11,T12,T13,T14,T15,FLBOR,TB,AM1,AM2,S,
      & LIUBOR,IELMNU,NPTFR,MESH)
 
@@ -136,7 +136,7 @@
         ENDIF
       ENDDO
       IF(NCSIZE.GT.0)THEN
-        IERR = P_ISUM(IERR)
+        IERR = P_SUM(IERR)
       ENDIF
 !
       IF(IERR.NE.0)THEN

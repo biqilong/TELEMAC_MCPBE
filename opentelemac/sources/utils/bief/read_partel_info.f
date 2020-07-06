@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE READ_PARTEL_INFO
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE READ_PARTEL_INFO
+!                   ***************************
 !
      &(CODE,NPTFR,NUMLIQ,BOUNDARY_COLOUR,MESH)
 !

@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE VITFON
-!                    *****************
+!                   *****************
+                    SUBROUTINE VITFON
+!                   *****************
 !
-     &(VIFOND, F, XK , NF    , NPOIN2, NPLAN )
+     &(VIFOND, F, XK , NF    , NPOIN2, NDIRE )
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   29/06/2011
@@ -39,7 +39,7 @@
 !| DFREQ          |-->| FREQUENCY STEPS BETWEEN DISCRETIZED FREQUENCIES
 !| F              |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| UWBM           |<--| MAXIMUM ORBITAL VELOCITY NEAR THE BOTTOM
 !| XK             |-->| DISCRETIZED WAVE NUMBER
@@ -52,8 +52,8 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: VIFOND(NPOIN2)
 !
@@ -64,7 +64,7 @@
 !
 !-----------------------------------------------------------------------
 !
-      DTETAR=DEUPI/FLOAT(NPLAN)
+      DTETAR=DEUPI/FLOAT(NDIRE)
 !
       DO IP = 1,NPOIN2
         VIFOND(IP) = 0.D0
@@ -72,12 +72,12 @@
 !     SUMS UP THE DISCRETISED PART OF THE SPECTRUM
 !
         DO JF = 1,NF
-           COEF=2.D0*GRAVIT*DFREQ(JF)*DTETAR
-           DEUKD = MIN(2.D0*DEPTH(IP)*XK(IP,JF),7.D2)
-           BETAA = COEF*XK(IP,JF)/SINH(DEUKD)
-           DO JP = 1,NPLAN
-              VIFOND(IP) = VIFOND(IP) + F(IP,JP,JF)*BETAA
-           ENDDO
+          COEF=2.D0*GRAVIT*DFREQ(JF)*DTETAR
+          DEUKD = MIN(2.D0*DEPTH(IP)*XK(IP,JF),7.D2)
+          BETAA = COEF*XK(IP,JF)/SINH(DEUKD)
+          DO JP = 1,NDIRE
+            VIFOND(IP) = VIFOND(IP) + F(IP,JP,JF)*BETAA
+          ENDDO
         ENDDO
 !
         IF (VIFOND(IP).GE.0) THEN
@@ -85,7 +85,7 @@
         ELSE
           WRITE(*,*) 'VITESSE NEGATIVE'
           CALL PLANTE(0)
-        ENDIF   
+        ENDIF
       ENDDO
 !
 !-----------------------------------------------------------------------

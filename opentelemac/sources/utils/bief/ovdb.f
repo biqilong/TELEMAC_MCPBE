@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE OVDB
-!                    ***************
+!                   ***************
+                    SUBROUTINE OVDB
+!                   ***************
 !
      & ( OP , X , Y , Z , C , NBOR , NPTFR )
 !

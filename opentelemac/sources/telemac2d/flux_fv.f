@@ -35,9 +35,9 @@
       USE BIEF_DEF
       USE BIEF
       USE DECLARATIONS_TELEMAC2D, ONLY : PTINIG,BNDCIN,NPOIN,NPTFR,
-     &                            MESH,NELEM,NSEG,SORDER,NTRAC,HROPT,
-     &                            ICIN,LT,GRAV,X,Y,ZF,TMAX,HBOR,UBOR,
-     &                            VBOR,AT,CFLWTD
+     &                            MESH,NELEM,NSEG,SORDER,
+     &                            ICIN,LT,TMAX,
+     &                            AT
       USE DECLARATIONS_TELEMAC,ONLY: KDIR,KNEU
       USE INTERFACE_TELEMAC2D, EX_FLUX_FV => FLUX_FV
 !

@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE AS3_4141_Q
-!                    *********************
+!                   *********************
+                    SUBROUTINE AS3_4141_Q
+!                   *********************
 !
      &(XM,NSEG1,XMT,DIM1XMT,DIM2XMT,STOXMT,NELMAX,NELEM,ELTSEG,ORISEG)
 !

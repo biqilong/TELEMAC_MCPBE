@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PROSOU
-!                    *****************
+!                   *****************
+                    SUBROUTINE PROSOU
+!                   *****************
 !
      &(FU,FV,SMH,    UN,VN,HN,GRAV,
      & FAIR,WINDX,WINDY,VENT,HWIND,CORIOL,FCOR,

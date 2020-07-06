@@ -1,9 +1,9 @@
-!                    *****************
-                     SUBROUTINE PREPRO
-!                    *****************
+!                   *****************
+                    SUBROUTINE PREPRO
+!                   *****************
 !
      &( CX    , CY    , IKLE2 , IFABOR, ELT   , ETA   , FRE   ,
-     &  XK    , CG    , ITR01 , NPOIN3, NPOIN2, NELEM2, NPLAN ,
+     &  XK    , CG    , ITR01 , NPOIN3, NPOIN2, NELEM2, NDIRE ,
      &  NF    , COURAN)
 !
 !***********************************************************************
@@ -64,9 +64,9 @@
 !| MESH3D         |-->| 3D MESH
 !| NELEM2         |-->| NUMBER OF ELEMENTS IN 2D MESH
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
-!| NPOIN3         |-->| NPOIN2*NPLAN
+!| NPOIN3         |-->| NPOIN2*NDIRE
 !| SHF            |<->| BARYCENTRIC COORDINATES ALONG F OF THE
 !|                |   | NODES IN THEIR ASSOCIATED FREQUENCIES "FRE"
 !| SHP            |<->| BARYCENTRIC COORDINATES OF THE NODES IN
@@ -88,7 +88,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)    :: NPOIN3,NPOIN2,NELEM2,NPLAN,NF
+      INTEGER, INTENT(IN)    :: NPOIN3,NPOIN2,NELEM2,NDIRE,NF
       DOUBLE PRECISION, INTENT(IN) :: XK(NPOIN2,NF),CG(NPOIN2,NF)
       INTEGER, INTENT(INOUT) :: ELT(NPOIN3,NF),ETA(NPOIN3,NF)
       INTEGER, INTENT(INOUT) :: FRE(*)
@@ -121,7 +121,7 @@
 !      COMPUTES THE ADVECTION FIELD
 !
           CALL CONWAC
-     &( CX%R, CY%R, SCT%R, XK, CG, NPOIN2, NPLAN, JF, NF)
+     &( CX%R, CY%R, SCT%R, XK, CG, NPOIN2, NDIRE, JF, NF)
 !
 !      ----------------------------------------------------------------
 !
@@ -151,7 +151,7 @@
           TMP_ISUB = SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB)
           CALL CHARAC(SSHZ%ADR(JF)%P,SSHZ%ADR(JF)%P,0,
      &            CX,CY,SCT,SCT,STETA,STETA,DT,MESH3D%IFABOR,IELM3,
-     &            NPOIN2,NPLAN,1,1,.FALSE.,SSHP1%ADR(JF)%P,
+     &            NPOIN2,NDIRE,1,1,.FALSE.,SSHP1%ADR(JF)%P,
      &            SSHZ%ADR(JF)%P,SSHZ%ADR(JF)%P,TB,
      &            ELT(1:NPOIN3,JF),ETA(1:NPOIN3,JF),ETA(1:NPOIN3,JF),
      &            ITR01(1:NPOIN3,1),
@@ -178,7 +178,7 @@
 !
         DO JF=1,NF
 !
-          CALL CONW4D(CX%R,CY%R,SCT%R,SCF%R, XK,CG,NPOIN2,NPLAN,
+          CALL CONW4D(CX%R,CY%R,SCT%R,SCF%R, XK,CG,NPOIN2,NDIRE,
      &                JF,NF)
 !
         ENDDO
@@ -204,7 +204,7 @@
           TMP_ISUB = SISUB%I((JF_ISUB-1)*SIZ_ISUB+1:JF_ISUB*SIZ_ISUB)
           CALL CHARAC(SSHZ%ADR(JF)%P,SSHZ%ADR(JF)%P,0,
      &                CX,CY,SCT,SCF,STETA,SFR,DT,MESH3D%IFABOR,IELM3,
-     &                NPOIN2,NPLAN,JF,NF,.FALSE.,SSHP1%ADR(JF)%P,
+     &                NPOIN2,NDIRE,JF,NF,.FALSE.,SSHP1%ADR(JF)%P,
      &                SSHZ%ADR(JF)%P,SSHF%ADR(JF)%P,TB,
      &                ELT(1:NPOIN3,JF),ETA(1:NPOIN3,JF),
      &                FRE((JF_FRE-1)*SIZ_FRE+1:JF_FRE*SIZ_FRE),

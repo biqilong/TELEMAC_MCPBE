@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC00CC
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC00CC
+!                   *****************
 !
      &(XMUL,SURFAC,NELEM,NELMAX,W1,W2,W3,W4,W5,W6)
 !

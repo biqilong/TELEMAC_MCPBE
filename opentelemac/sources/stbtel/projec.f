@@ -87,7 +87,7 @@
         IF (NBFOND.NE.0) WRITE(LU,4000)
 !
         DO I = 1,NBFOND
-           WRITE(LU,4100) I,FOND(I),I,NP(I)
+          WRITE(LU,4100) I,FOND(I),I,NP(I)
         ENDDO
       ENDIF
 !
@@ -107,15 +107,15 @@
 !
       DO I=1,NPOIN
         IF(ZF(I).LT.-0.9D6) THEN
-           DIST = 1.D12
-           DO IVOIS = 1 , NPOIN
-              DIST2 = ( X(I)-X(IVOIS) )**2 + ( Y(I)-Y(IVOIS) )**2
-              IF(DIST2.LT.DIST.AND.ZF(IVOIS).GT.-0.9D6) THEN
-                 DIST = DIST2
-                 ZF(I) = ZF(IVOIS)
-              ENDIF
-           ENDDO
-           WRITE(LU,4200) I,X(I),Y(I),ZF(I)
+          DIST = 1.D12
+          DO IVOIS = 1 , NPOIN
+            DIST2 = ( X(I)-X(IVOIS) )**2 + ( Y(I)-Y(IVOIS) )**2
+            IF(DIST2.LT.DIST.AND.ZF(IVOIS).GT.-0.9D6) THEN
+              DIST = DIST2
+              ZF(I) = ZF(IVOIS)
+            ENDIF
+          ENDDO
+          WRITE(LU,4200) I,X(I),Y(I),ZF(I)
         ENDIF
       ENDDO
 !

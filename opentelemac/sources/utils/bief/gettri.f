@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GETTRI
-!                    *****************
+!                   *****************
+                    SUBROUTINE GETTRI
+!                   *****************
 !
      &(M,MDIFF,TETA,MESH3D,NPLAN,NPOIN2,NSEG2D,IELM3,NELEM2)
 !

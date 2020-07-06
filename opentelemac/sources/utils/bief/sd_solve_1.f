@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE SD_SOLVE_1
-!                    *********************
+!                   *********************
+                    SUBROUTINE SD_SOLVE_1
+!                   *********************
 !
      &(NPOIN,NSEGB,GLOSEG,MAXSEG,DA,XA,XINC,RHS,INFOGR,TYPEXT)
 !

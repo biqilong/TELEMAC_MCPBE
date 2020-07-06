@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE DRICV
-!                    ****************
+!                   ****************
+                    SUBROUTINE DRICV
+!                   ****************
 !
      & (FRI,FRT,RI,NPOIN3)
 !

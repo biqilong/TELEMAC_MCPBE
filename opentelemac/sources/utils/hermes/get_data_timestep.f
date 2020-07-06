@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE GET_DATA_TIMESTEP
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE GET_DATA_TIMESTEP
+!                   ****************************
 !
      &(FFORMAT,FID,RECORD,TIME,IERR)
 !

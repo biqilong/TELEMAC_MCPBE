@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LECSNG
-!                    *****************
+!                   *****************
+                    SUBROUTINE LECSNG
+!                   *****************
 !
      &(IOPTAN,IFIC)
 !

@@ -155,10 +155,10 @@
 !
 ! LECTURE FICHIER SINUSX SIMPLE PRECISION PUIS -> DOUBLE PRECISION
 !
-             READ (NFOND(I),*) XSP,YSP,ZSP
-             XRELV(NPT) = DBLE(XSP)
-             YRELV(NPT) = DBLE(YSP)
-             ZRELV(NPT) = DBLE(ZSP)
+            READ (NFOND(I),*) XSP,YSP,ZSP
+            XRELV(NPT) = DBLE(XSP)
+            YRELV(NPT) = DBLE(YSP)
+            ZRELV(NPT) = DBLE(ZSP)
 !
           ENDIF
           GOTO 30

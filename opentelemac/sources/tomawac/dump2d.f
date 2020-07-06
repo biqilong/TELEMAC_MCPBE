@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DUMP2D
-!                    *****************
+!                   *****************
+                    SUBROUTINE DUMP2D
+!                   *****************
 !
      &(  XF1 , NP1 )
 !
@@ -48,7 +48,7 @@
 !+   Use of work arrays optimised.
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NP1            |-->| NPOIN2.NPLAN.NF
+!| NP1            |-->| NPOIN2.NDIRE.NF
 !| XF1            |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -88,13 +88,13 @@
 !     ------------------------------- DIRECTIONAL DIR_SPREADING
 !
       IF(SORLEO(4)) THEN
-        CALL DIR_SPREAD( TRA31, XF1, NPLAN, NF, NPOIN2)
+        CALL DIR_SPREAD( TRA31, XF1, NDIRE, NF, NPOIN2)
       ENDIF
 !
 !     ------------------------------- MEAN DIRECTION
 !
       IF(SORLEO(3)) THEN
-        CALL TETMOY( TRA32, XF1, NPLAN, NF  , NPOIN2)
+        CALL TETMOY( TRA32, XF1, NDIRE, NF  , NPOIN2)
         IF(TRIGO) THEN
           DO IP=1,NPOIN2
             TRA32(IP)=(PISUR2-TRA32(IP))*GRADEG
@@ -109,7 +109,7 @@
 !     ------------------------------- MEAN FREQUENCY FMOY
 !
       IF(SORLEO(18).OR.SORLEO(28)) THEN
-        CALL FREMOY( FMOY, XF1, NF, NPLAN, NPOIN2)
+        CALL FREMOY( FMOY, XF1, NF, NDIRE, NPOIN2)
         IF(SORLEO(28)) THEN
           DO IP=1,NPOIN2
             PTMOY(IP)=1.D0/MIN(MAX(FMOY(IP),FMIN),FMAX)
@@ -120,7 +120,7 @@
 !     ------------------------------- MEAN FREQUENCY FM01
 !
       IF(SORLEO(19).OR.SORLEO(29)) THEN
-        CALL FREM01( TRA34, XF1,  NF, NPLAN, NPOIN2)
+        CALL FREM01( TRA34, XF1,  NF, NDIRE, NPOIN2)
         IF (SORLEO(29)) THEN
           DO IP=1,NPOIN2
             PTM01(IP)=1.D0/MIN(MAX(TRA34(IP),FMIN),FMAX)
@@ -131,7 +131,7 @@
 !     ------------------------------- MEAN FREQUENCY FM02
 !
       IF (SORLEO(20).OR.SORLEO(30)) THEN
-        CALL FREM02( TRA35, XF1, NF, NPLAN, NPOIN2)
+        CALL FREM02( TRA35, XF1, NF, NDIRE, NPOIN2)
         IF (SORLEO(30)) THEN
           DO IP=1,NPOIN2
             PTM02(IP)=1.D0/MIN(MAX(TRA35(IP),FMIN),FMAX)
@@ -142,7 +142,7 @@
 !     ------------------------------- DISCRETE PEAK FREQUENCY
 !
       IF (SORLEO(21).OR.SORLEO(31)) THEN
-        CALL FREPIC( TRA36, XF1,  NF, NPLAN, NPOIN2)
+        CALL FREPIC( TRA36, XF1,  NF, NDIRE, NPOIN2)
         IF (SORLEO(31)) THEN
           DO IP=1,NPOIN2
             PPTPD(IP)=1.D0/MIN(MAX(TRA36(IP),FMIN),FMAX)
@@ -153,7 +153,7 @@
 !     ------------------------------- PEAK FREQUENCY (READ 5TH ORDER)
 !
       IF (SORLEO(22).OR.SORLEO(32)) THEN
-        CALL FPREAD( FREA5, XF1, NF, NPLAN, NPOIN2, 5.D0 )
+        CALL FPREAD( FREA5, XF1, NF, NDIRE, NPOIN2, 5.D0 )
         IF (SORLEO(32)) THEN
           DO IP=1,NPOIN2
             PREA5(IP)=1.D0/MIN(MAX(FREA5(IP),FMIN),FMAX)
@@ -164,7 +164,7 @@
 !     ------------------------------- PEAK FREQUENCY (READ 8TH ORDER)
 !
       IF (SORLEO(23).OR.SORLEO(33)) THEN
-        CALL FPREAD( FREA8, XF1, NF, NPLAN, NPOIN2, 8.D0  )
+        CALL FPREAD( FREA8, XF1, NF, NDIRE, NPOIN2, 8.D0  )
         IF (SORLEO(33)) THEN
           DO IP=1,NPOIN2
             PREA8(IP)=1.D0/MIN(MAX(FREA8(IP),FMIN),FMAX)
@@ -192,14 +192,14 @@
 !
       IF(.NOT.PROINF) THEN
         IF(SORLEO(16)) THEN
-          CALL VITFON(VIFOND,XF1, XK, NF, NPOIN2, NPLAN)
+          CALL VITFON(VIFOND,XF1, XK, NF, NPOIN2, NDIRE)
         ENDIF
       ENDIF
 !
 !     ------------------------------- VARIANCE
 !
       IF(SORLEO(1).OR.SORLEO(2)) THEN
-        CALL TOTNRJ( VARIAN, XF1, NF, NPLAN, NPOIN2)
+        CALL TOTNRJ( VARIAN, XF1, NF, NDIRE, NPOIN2)
 !
 !     ------------------------------- SIGNIFICANT WAVE HEIGHT
 !
@@ -217,7 +217,7 @@
 !     ------------------------------- POWER PER UNIT LENGTH
 !
       IF(SORLEO(34)) THEN
-        CALL WPOWER(XF1, CG, NF, NPLAN, NPOIN2)
+        CALL WPOWER(XF1, CG, NF, NDIRE, NPOIN2)
       ENDIF
 !
 !     ------------------------------- USER FUNCTION

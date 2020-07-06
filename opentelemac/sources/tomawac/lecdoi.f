@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LECDOI
-!                    *****************
+!                   *****************
+                    SUBROUTINE LECDOI
+!                   *****************
 !
      &(F1,NAME1,MODE1, F2,NAME2,MODE2,F3,NAME3,MODE3,
      & NPOIN2,NDON,FFORMAT,AT,TV1,TV2,

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC21AA
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC21AA
+!                   *****************
 !
      &( XMUL,SU,SV,U,V,XEL,YEL,SURFAC,IKLE1,IKLE2,IKLE3,NELEM,NELMAX,
      &  W1,W2,W3)

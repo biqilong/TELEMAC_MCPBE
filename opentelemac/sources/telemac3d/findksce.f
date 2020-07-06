@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE FINDKSCE
-!                    *******************
+!                   *******************
+                    SUBROUTINE FINDKSCE
+!                   *******************
 !
      &(NPOIN2,NPLAN,Z,NSCE,ISCE,ZSCE,KSCE,INFO)
 !

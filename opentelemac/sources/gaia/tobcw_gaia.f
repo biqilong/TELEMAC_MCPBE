@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE TOBCW_GAIA
-!                    *********************
+!                   *********************
+                    SUBROUTINE TOBCW_GAIA
+!                   *********************
 !
      & (TOB, TOBW, THETAC, THETAW, TOBCW_MEAN, TOBCW_MAX, NPOIN)
 !

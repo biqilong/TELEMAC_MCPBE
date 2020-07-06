@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE GRADZ
-!                    ****************
+!                   ****************
+                    SUBROUTINE GRADZ
+!                   ****************
 !
      &(IKLE,NUBO,CMI,DPX,DPY,DSZ,BETA,AIRST,DXIZ,DYIZ,DSP,DSM,CORR)
 !
@@ -74,7 +74,7 @@
       INTEGER IS,I1,I2,I3,JT,J,NSG,NUBO1,NUBO2,ILIM,I
       DOUBLE PRECISION AIRJ,DXTZ,DYTZ,AIX,AIY,AJX,AJY,FACT,TEMPOR
       DOUBLE PRECISION GRADI,GRADJ,GRIJ,GRJI,AMDS,DSH
-      DOUBLE PRECISION, ALLOCATABLE :: TMP_X1(:), TMP_X2(:), TMP_X3(:)
+      DOUBLE PRECISION, ALLOCATABLE :: TMP_X1(:), TMP_X2(:)
 !
 !-----------------------------------------------------------------------
 !

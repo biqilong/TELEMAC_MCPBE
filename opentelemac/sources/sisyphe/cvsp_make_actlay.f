@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE CVSP_MAKE_ACTLAY
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE CVSP_MAKE_ACTLAY
+!                   ***************************
 !
 !
 !***********************************************************************
@@ -98,12 +98,12 @@
         ES(J,1) = NEW_ALT
         SUMES = ES(J,1)
         DO K=2,NOMBLAY-1
-           IF ((ZSPACE-SUMES).GE.ELAY0) THEN
-              ES(J,K) = ELAY0
-           ELSE
-              ES(J,K) = ZSPACE-SUMES
-           ENDIF
-           SUMES = SUMES + ES(J,K)
+          IF ((ZSPACE-SUMES).GE.ELAY0) THEN
+            ES(J,K) = ELAY0
+          ELSE
+            ES(J,K) = ZSPACE-SUMES
+          ENDIF
+          SUMES = SUMES + ES(J,K)
         END DO
         ES(J,NOMBLAY) = ZSPACE-SUMES
         SUMES = SUMES + ES(J,NOMBLAY)
@@ -120,39 +120,39 @@
 !-----------------------------------------------------------------------
         SUMES = 0.D0
         DO K=1,NOMBLAY
-           SUMES = SUMES + ES(J,K)
-           IF (ES(J,K).GT.0.D0) THEN
-              !DEPTH COORDINATES OF NEW ES: Z_HIGH & Z_LOW
-              IF (K == 1) THEN
-                 Z_HIGH = PRO_D(J,PRO_MAX(J),1)
-              ELSE
-                 Z_HIGH = -SUMES + PRO_D(J,PRO_MAX(J),1) + ES(J,K)
-              ENDIF
-              Z_LOW =  Z_HIGH - ES(J,K)
-              !FETCH IT
-              TEMP = CVSP_INTEGRATE_VOLUME(J,1,Z_HIGH,Z_LOW,T1%R)
-              !ASSIGN IT
-              ASUM = 0.D0
-              DO I=1,NSICLA
-                 AVAIL(J,K,I) = T1%R(I) / (Z_HIGH-Z_LOW)
-                 ASUM = AVAIL(J,K,I) + ASUM
-              ENDDO
+          SUMES = SUMES + ES(J,K)
+          IF (ES(J,K).GT.0.D0) THEN
+            !DEPTH COORDINATES OF NEW ES: Z_HIGH & Z_LOW
+            IF (K == 1) THEN
+              Z_HIGH = PRO_D(J,PRO_MAX(J),1)
+            ELSE
+              Z_HIGH = -SUMES + PRO_D(J,PRO_MAX(J),1) + ES(J,K)
+            ENDIF
+            Z_LOW =  Z_HIGH - ES(J,K)
+            !FETCH IT
+            TEMP = CVSP_INTEGRATE_VOLUME(J,1,Z_HIGH,Z_LOW,T1%R)
+            !ASSIGN IT
+            ASUM = 0.D0
+            DO I=1,NSICLA
+              AVAIL(J,K,I) = T1%R(I) / (Z_HIGH-Z_LOW)
+              ASUM = AVAIL(J,K,I) + ASUM
+            ENDDO
 !
 ! DEBUG
-              IF (ABS(ASUM-1.D0).GT.1.0D-7.AND.ASUM.GT.0.D0.AND.CP) THEN
-                 WRITE(LU,*)'ERR in MAKE_ACTLAY',ES(J,1),ES(J,2),
-     &                      ES(J,3),SUMES,ZSPACE,ZF%R(J),ZR%R(J)
-                 WRITE(LU,*)'ASUM in MAKE_ACTLAY',J,K,ASUM, Z_HIGH,
-     &                       Z_LOW
-                 DO I=1,NSICLA
-                    WRITE(LU,*)' AVAIL,T1',I, AVAIL(J,K,I), T1%R(I)
-                 ENDDO
-              ENDIF
-           ELSE !DUMMY VALUES FOR EMPTY LAYERS!!!
-                DO I=1,NSICLA
-                  AVAIL(J,K,I) = 0.D0
-                ENDDO
-           ENDIF
+            IF (ABS(ASUM-1.D0).GT.1.0D-7.AND.ASUM.GT.0.D0.AND.CP) THEN
+              WRITE(LU,*)'ERR in MAKE_ACTLAY',ES(J,1),ES(J,2),
+     &                   ES(J,3),SUMES,ZSPACE,ZF%R(J),ZR%R(J)
+              WRITE(LU,*)'ASUM in MAKE_ACTLAY',J,K,ASUM, Z_HIGH,
+     &                    Z_LOW
+              DO I=1,NSICLA
+                WRITE(LU,*)' AVAIL,T1',I, AVAIL(J,K,I), T1%R(I)
+              ENDDO
+            ENDIF
+          ELSE !DUMMY VALUES FOR EMPTY LAYERS!!!
+            DO I=1,NSICLA
+              AVAIL(J,K,I) = 0.D0
+            ENDDO
+          ENDIF
         ENDDO
         ELAY%R(J) = ES(J,1)
         ESTRAT%R(J) = ES(J,2)

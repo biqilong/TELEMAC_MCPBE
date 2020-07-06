@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DERLAG
-!                    *****************
+!                   *****************
+                    SUBROUTINE DERLAG
+!                   *****************
 !
      &(U,V,DT,X,Y,LT,IELM,IELMU,NDP,NPOIN,NELEM,NELMAX,XLAG,YLAG,DX,DY,
      & NSP,SHPLAG,DEBLAG,FINLAG,ELTLAG,NLAG,RESUX,RESUY,ISPDONE,MESH)

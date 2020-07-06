@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CQUEUE
-!                    *****************
+!                   *****************
+                    SUBROUTINE CQUEUE
+!                   *****************
 !
      &( JFRE  , JBIS  , COEF1 )
 !

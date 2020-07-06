@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SPEJON
-!                    *****************
+!                   *****************
+                    SUBROUTINE SPEJON
+!                   *****************
 !
      &( SPEC  , NF    , AL    , FP     , GAMMA , SIGMAA, SIGMAB,
      &  FPMIN )
@@ -55,7 +55,7 @@
 !     """"""""""""""""""""
       INTEGER, INTENT(IN)    :: NF
       DOUBLE PRECISION, INTENT(IN)    :: SIGMAA, SIGMAB, GAMMA, FPMIN
-      DOUBLE PRECISION, INTENT(IN)    :: FP    , AL 
+      DOUBLE PRECISION, INTENT(IN)    :: FP    , AL
       DOUBLE PRECISION, INTENT(INOUT) :: SPEC(NF)
 !
 !.....LOCAL VARIABLES

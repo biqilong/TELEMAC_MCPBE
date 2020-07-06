@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE IMPR
-!                    ***************
+!                   ***************
+                    SUBROUTINE IMPR
+!                   ***************
 !
      &(LISPRD,LT,AT,ISITS,ICOD)
 !

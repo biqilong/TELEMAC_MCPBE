@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE INTERPMETEO2
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE INTERPMETEO2
+!                   ***********************
 !
      &(WW,WINDX,WINDY,TAIR,PATM,NEBU,RAINFALL,PVAP,RAY3,AT,NFO)
 !

@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE CONW4D
-!                    *****************
+!                   *****************
+                    SUBROUTINE CONW4D
+!                   *****************
 !
-     &(CX,CY,CT,CF,XK,CG, NPOIN2,NPLAN,JF,NF)
+     &(CX,CY,CT,CF,XK,CG, NPOIN2,NDIRE,JF,NF)
 !
 !***********************************************************************
 ! TOMAWAC   V7P1
@@ -39,7 +39,7 @@
 !history  J-M HERVOUET (EDF-LNHE)
 !+        27/11/2012
 !+        V6P3
-!+   Optimisation (loops on NPOIN2 and NPLAN swapped to get smaller
+!+   Optimisation (loops on NPOIN2 and NDIRE swapped to get smaller
 !+   strides, work array TRA01 differently used, etc.)
 !
 !history  J-M HERVOUET (EDF-LNHE)
@@ -74,7 +74,7 @@
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| JF             |-->| INDEX OF THE FREQUENCY
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| PROINF         |-->| LOGICAL INDICATING INFINITE DEPTH ASSUMPTION
 !| SINTET         |-->| SINE OF TETA ANGLE
@@ -85,7 +85,7 @@
 !| XK             |-->| DISCRETIZED WAVE NUMBER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI,USDPI,SR,GRADEG,GRAVIT, 
+      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI,USDPI,SR,GRADEG,GRAVIT,
      &PROINF, SPHE, COSF,TGF,DEPTH,DZHDT,DZY,DZX,FREQ,COSTET,SINTET,
      &               UC,     VC,    DUX,  DUY,   DVX, DVY, TRA01
 !
@@ -96,12 +96,12 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2,JF
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2,JF
 !
-      DOUBLE PRECISION, INTENT(INOUT) :: CX(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: CY(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: CT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: CF(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: CX(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: CY(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: CT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: CF(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: CG(NPOIN2,NF),XK(NPOIN2,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -126,7 +126,7 @@
 !
         IF(.NOT.SPHE) THEN
 !
-          DO IP=1,NPLAN
+          DO IP=1,NDIRE
             TR1=GSQP/FREQ(JF)*COSTET(IP)
             TR2=GSQP/FREQ(JF)*SINTET(IP)
             DO IPOIN=1,NPOIN2
@@ -151,7 +151,7 @@
 !
         ELSE
 !
-          DO IP=1,NPLAN
+          DO IP=1,NDIRE
             TR1=GSQP/FREQ(JF)*COSTET(IP)
             TR2=GSQP/FREQ(JF)*SINTET(IP)
             DO IPOIN=1,NPOIN2
@@ -194,7 +194,7 @@
             ENDIF
           ENDDO
 !
-          DO IP=1,NPLAN
+          DO IP=1,NDIRE
             DO IPOIN=1,NPOIN2
               DDDN=-SINTET(IP)*DZY(IPOIN)+COSTET(IP)*DZX(IPOIN)
               CY(IPOIN,IP,JF)=CG(IPOIN,JF)*COSTET(IP)
@@ -212,7 +212,7 @@
             ENDIF
           ENDDO
 !
-          DO IP=1,NPLAN
+          DO IP=1,NDIRE
             DO IPOIN=1,NPOIN2
               LSDUDN= SINTET(IP)*
      &             (-COSTET(IP)*DVY(IPOIN)-SINTET(IP)*DUY(IPOIN))
@@ -246,15 +246,15 @@
             ENDIF
           ENDDO
 !
-          DO IP=1,NPLAN
+          DO IP=1,NDIRE
             DO IPOIN=1,NPOIN2
-             SRCF=SR/COSF(IPOIN)
-             TFSR=TGF(IPOIN)*SR
-             DDDN=-SINTET(IP)*DZY(IPOIN)*SR+COSTET(IP)*DZX(IPOIN)*SRCF
-             CY(IPOIN,IP,JF)=(CG(IPOIN,JF)*COSTET(IP))*SR*GRADEG
-             CX(IPOIN,IP,JF)=(CG(IPOIN,JF)*SINTET(IP))*SRCF*GRADEG
-             CT(IPOIN,IP,JF)=CG(IPOIN,JF)*SINTET(IP)*TFSR
-     &                                  -TRA01(IPOIN)*DDDN*GRADEG
+              SRCF=SR/COSF(IPOIN)
+              TFSR=TGF(IPOIN)*SR
+              DDDN=-SINTET(IP)*DZY(IPOIN)*SR+COSTET(IP)*DZX(IPOIN)*SRCF
+              CY(IPOIN,IP,JF)=(CG(IPOIN,JF)*COSTET(IP))*SR*GRADEG
+              CX(IPOIN,IP,JF)=(CG(IPOIN,JF)*SINTET(IP))*SRCF*GRADEG
+              CT(IPOIN,IP,JF)=CG(IPOIN,JF)*SINTET(IP)*TFSR
+     &                                   -TRA01(IPOIN)*DDDN*GRADEG
             ENDDO
           ENDDO
 !
@@ -267,7 +267,7 @@
             ENDIF
           ENDDO
 !
-          DO IP=1,NPLAN
+          DO IP=1,NDIRE
             DO IPOIN=1,NPOIN2
               SRCF=SR/COSF(IPOIN)
               LSDUDN= SINTET(IP)*SR*

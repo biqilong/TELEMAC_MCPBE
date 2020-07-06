@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FDNRST
-!                    *****************
+!                   *****************
+                    SUBROUTINE FDNRST
+!                   *****************
 !
      &(IFRM,ITO,X,Y,NODENRS,NPOIN2,IFRM1,ITOP1)
 !

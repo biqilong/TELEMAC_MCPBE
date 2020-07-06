@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OM2121
-!                    *****************
+!                   *****************
+                    SUBROUTINE OM2121
+!                   *****************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,   D,C,
      & IKLE,NELEM,NELMAX,NDIAG)
@@ -129,10 +129,10 @@
         ELSEIF(TYPDIN(1:1).EQ.'I'.OR.TYPDIN(1:1).EQ.'0') THEN
 !         NOTHING TO DO, ONLY NEEDS TO COPY TYPDIN
         ELSE
-           WRITE(LU,6) TYPDIN(1:1)
-6          FORMAT(1X,'OM2121 (BIEF) : TYPDIN UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,6) TYPDIN(1:1)
+6         FORMAT(1X,'OM2121 (BIEF) : TYPDIN UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
         TYPDIM(1:1)=TYPDIN(1:1)
 !
@@ -294,9 +294,9 @@
             CALL OV('X=X+Y   ', X=XM(1,I), Y=XN(1,I), DIM1=NELEM)
           ENDDO ! I
           IF(TYPEXM(1:1).EQ.'Q') THEN
-           DO I=1,6
-            CALL OV('X=X+Y   ', X=XM(1,I+6), Y=XN(1,I), DIM1=NELEM)
-           ENDDO ! I
+            DO I=1,6
+              CALL OV('X=X+Y   ', X=XM(1,I+6), Y=XN(1,I), DIM1=NELEM)
+            ENDDO ! I
           ENDIF
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
           IF(TYPEXM(1:1).NE.'Q') THEN
@@ -330,7 +330,7 @@
           DO I=1,6
             CALL OV('X=X+Y   ', X=XM(1,I), Y=XN(1,I+6), DIM1=NELEM)
             CALL OV('X=X+Y   ', X=XM(1,I+6), Y=XN(1,I  ), DIM1=NELEM)
-           ENDDO ! I
+          ENDDO ! I
         ELSE
           WRITE(LU,40) TYPEXN(1:1)
           CALL PLANTE(1)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GESTIO
-!                    *****************
+!                   *****************
+                    SUBROUTINE GESTIO
+!                   *****************
 !
      &(U,V,C,T,AK,EP,VISCSA,UTILD,VTILD,CTILD,TTILD,AKTILD,EPTILD,
      & NUTILD,TRAC,PROPA,CONVV,ITURB,IETAPE)
@@ -113,9 +113,9 @@
 !
             IF(.NOT.PROPA) THEN
 !
-                   CALL OS( 'X=Y     ' , X=U , Y=UTILD )
-                   CALL OS( 'X=Y     ' , X=V , Y=VTILD )
-                   CALL OS( 'X=Y     ' , X=C , Y=CTILD )
+              CALL OS( 'X=Y     ' , X=U , Y=UTILD )
+              CALL OS( 'X=Y     ' , X=V , Y=VTILD )
+              CALL OS( 'X=Y     ' , X=C , Y=CTILD )
 !
             ENDIF
 !

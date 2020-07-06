@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE READ_DATASET
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE READ_DATASET
+!                   ***********************
 !
      &(FFORMAT,FID,VARSOR,NPOIN,RECORD,AT,VAR_LIST,TROUVE,ALIRE,LISTIN,
      & LASTRECORD,MAXVAR)
@@ -169,11 +169,11 @@
                 TROUVE(L) = 1
               ENDIF
 !             COPIES BOTTOM AND FREE SURFACE
-             CALL OV('X=Y     ', X=VARSOR%ADR(L)%P%R, Y=WD, DIM1=NPOIN2)
-             CALL OV('X=Y     ',
-     &               X=VARSOR%ADR(L)%P%R(NPOIN-NPOIN2+1:NPOIN),
-     &               Y=WD(NPOIN_PREV-NPOIN2+1:NPOIN_PREV),
-     &               DIM1=NPOIN2)
+              CALL OV('X=Y     ', X=VARSOR%ADR(L)%P%R, Y=WD,DIM1=NPOIN2)
+              CALL OV('X=Y     ',
+     &                X=VARSOR%ADR(L)%P%R(NPOIN-NPOIN2+1:NPOIN),
+     &                Y=WD(NPOIN_PREV-NPOIN2+1:NPOIN_PREV),
+     &                DIM1=NPOIN2)
 !             INTERPOLATES OTHER PLANES
               IF(NPLAN.GT.2) THEN
                 DO IPLAN=2,NPLAN-1

@@ -192,7 +192,6 @@ def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
         if path.exists(tmp_file_name):
             if not is_newer(tmp_file_name, file_name) == 1:
                 # ~~> further check are necessary depending on file type
-                # TODO: Remove that ?
                 if file_type[0:7] == 'SELAFIN' or \
                         file_type[0:5] == 'PARAL':
                     # ~~> check if all files are there
@@ -214,7 +213,6 @@ def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
                                                  .replace('PARAL', 'DONE')
                         continue
                 elif submit[0:3] == 'CAS':
-                    # TODO: Adapt that
                     #    > force the copying of the CAS file for some reason
                     print('     re-copying: ' + tmp_file_name)
                     put_file_content(tmp_file_name, cas.steering_file)
@@ -223,7 +221,7 @@ def process_lit(cas, cas_dir, ncsize, tmp_dir, use_link):
                     #    > you have passed all checks
                     #      you can ignore that file
                     print('        ignoring: ' + path.basename(file_name) +
-                          ' ' + tmp_file_name)
+                          ' ' + hide_root(tmp_file_name))
                     continue
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # ~~> files are otherwise copied (or linked)
@@ -627,15 +625,17 @@ def process_executable(working_dir, pbin, plib, pobj, system,
         user_files.extend(tmp)
         # Looping on ordered fortran files
         for f90 in user_files:
+            obj_name = path.splitext(f90)[0]+system['sfx_obj']
             print('         compiling: '+path.basename(f90), end='')
-            tail, code = mes.run_cmd(obj_cmd.replace('<f95name>', f90),
+            tail, code = mes.run_cmd(obj_cmd.replace('<f95name>', f90)\
+                                            .replace('<objname>', obj_name),
                                      False)
             if code != 0:
                 raise TelemacException(
                     'Could not compile your FORTRAN (runcode=' +
                     str(code)+').\n        '+tail)
             print(' ... completed')
-            objs.append(path.splitext(f90)[0]+system['sfx_obj'])
+            objs.append(obj_name)
         # ~~ default command line for linkage into an executable
         cmdx_file = path.join(plib, code_name+'.cmdx')
         if not path.exists(cmdx_file):

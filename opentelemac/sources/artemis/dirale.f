@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIRALE
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIRALE
+!                   *****************
 !
      &(DALE,EXPOS,TETAH,TETMIN,TETMAX,NDALE)
 !

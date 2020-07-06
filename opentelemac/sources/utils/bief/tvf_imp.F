@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE TVF_IMP
-!                    ******************
+!                   ******************
+                    SUBROUTINE TVF_IMP
+!                   ******************
 !
      &(F,FC,FXMAT,FXMATPAR,
      & DT,FXBOR,HNP1MT,FBOR,SMH,YASMH,FSCEXP,
@@ -158,8 +158,8 @@
         FMAX=MAX(FMAX,TRAIN)
       ENDIF
       IF(NCSIZE.GT.1) THEN
-        FMIN=P_DMIN(FMIN)
-        FMAX=P_DMAX(FMAX)
+        FMIN=P_MIN(FMIN)
+        FMAX=P_MAX(FMAX)
       ENDIF
 !
 !-----------------------------------------------------------------------

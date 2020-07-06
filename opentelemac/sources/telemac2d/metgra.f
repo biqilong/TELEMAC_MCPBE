@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE METGRA
-!                    *****************
+!                   *****************
+                    SUBROUTINE METGRA
+!                   *****************
 !
      &(RO,GRADJ,GRADJN,JCOUT1,DESC,NPARAM,OPTID,RSTART,R02,R03)
 !
@@ -110,7 +110,7 @@
 !
         DENOM=0.D0
         DO I=1,NPARAM
-           DENOM=DENOM+GRADJ%R(I)*DESC%R(I)
+          DENOM=DENOM+GRADJ%R(I)*DESC%R(I)
         ENDDO
         R03 = - JCOUT1/DENOM
         RO =R03

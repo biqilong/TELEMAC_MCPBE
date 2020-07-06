@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE COEFMAT
-!                    ******************
+!                   ******************
+                    SUBROUTINE COEFMAT
+!                   ******************
 !
      &(PERIAF,DT,M,AM,NPERIAF)
 !

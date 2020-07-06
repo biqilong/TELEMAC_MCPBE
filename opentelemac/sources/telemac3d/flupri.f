@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FLUPRI
-!                    *****************
+!                   *****************
+                    SUBROUTINE FLUPRI
+!                   *****************
 !
      &( VEC,XMUL,U,V,W,X,Y,Z,IKLE,
      &  NELMAX,NELEM2D,NPOIN2,NPOIN3,T1,T2,T3)

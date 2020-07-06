@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE CHECK
-!                    ****************
+!                   ****************
+                    SUBROUTINE CHECK
+!                   ****************
 !
      &(IKLE2,NBOR,NELBOR,IKLBOR,NELEB,NELEBX,IKLE3,NELBO3,NULONE,
      & DIM1NUL,DIM2NUL,NBOR3,NELMAX2,NPTFR,NELMAX,NPTFR3,INFO)

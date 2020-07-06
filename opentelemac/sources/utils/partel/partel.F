@@ -1,6 +1,6 @@
-!                        *****************
-                         SUBROUTINE PARTEL
-!                        *****************
+!                       *****************
+                        SUBROUTINE PARTEL
+!                       *****************
      &     (NAMEINP, NAMECLI, NPARTS, PMETHOD, FFORMAT,
      &      NAMESEC, NAMEZFI, NAMESEU)
 !
@@ -449,7 +449,7 @@
 !
       CALL NUMBERING_OPEN_BOUNDARIES(NAMEINP, IKLE, IKLES, KP1BOR,
      &                   NUMLIQ, DIM_MESH, NPOIN2, NPTFR, NPOIN, NELEM2,
-     &                   NELBOR, LIUBOR, LIHBOR, NBOR, IFABOR, F)
+     &                   NELBOR, LIUBOR, LIHBOR, NBOR, IFABOR, F,.TRUE.)
 !
 !======================================================================
 ! PARTITIONING
@@ -690,7 +690,7 @@
           HALO=.FALSE.
           IFALOC(:)=IFABOR(EF,:)
           WHERE (IFALOC .GT. 0)
-             IFALOC=EPART(IFALOC)
+            IFALOC=EPART(IFALOC)
           END WHERE
           HALO=ANY(IFALOC .GT. 0 .AND. IFALOC .NE. I)
           IF(HALO) THEN

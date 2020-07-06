@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CONDIW
-!                    *****************
+!                   *****************
+                    SUBROUTINE CONDIW
+!                   *****************
 !
      &( PART, UTEL, VTEL, HTEL )
 !
@@ -157,8 +157,8 @@
         IF(.NOT.TROUVE(3)) THEN
         IF(NAMMAF(1:1).EQ.' '.AND.NAMMAB(1:1).EQ.' ') THEN
           IF(NAMCOF.NE.' '.OR.NAMCOB.NE.' ') THEN
-             CALL ANAMAR
-             WRITE(LU,*)
+            CALL ANAMAR
+            WRITE(LU,*)
      &      '==> INITIALISATION OF TIDAL WATER LEVEL IN ANAMAR'
           ENDIF
         ELSE
@@ -187,13 +187,13 @@
 !
       IF(COUSTA) THEN
         IF(NAMCOF(1:1).EQ.' '.AND.NAMCOB(1:1).EQ.' ') THEN
-           CALL ANACOS
-           WRITE(LU,*)' '
-           WRITE(LU,*)'USE OF CURRENT VELOCITIES'
-           WRITE(LU,*)
-     &     'BUT NO CURRENT FILE (NEITHER TELEMAC DATA FILE)'
-           WRITE(LU,*)
-     &     '==> INITIALISATION OF CURRENT VELOCITIES IN ANACOS'
+          CALL ANACOS
+          WRITE(LU,*)' '
+          WRITE(LU,*)'USE OF CURRENT VELOCITIES'
+          WRITE(LU,*)
+     &    'BUT NO CURRENT FILE (NEITHER TELEMAC DATA FILE)'
+          WRITE(LU,*)
+     &    '==> INITIALISATION OF CURRENT VELOCITIES IN ANACOS'
         ELSE
           IF(NAMCOF(1:1).NE.' ') THEN
             UL=LUCOF
@@ -203,7 +203,7 @@
             FFORMAT=FMTCOB
           ENDIF
 !     HERE DEPTH POSSIBLY READ AS THIRD VARIABLE
-          CALL LECDON(UC, NAMEU, 2, VC, NAMEV, 2, DEPTH, NAMEH, 1, 
+          CALL LECDON(UC, NAMEU, 2, VC, NAMEV, 2, DEPTH, NAMEH, 1,
      &         NPOIN2, UL, FFORMAT, INDIC, 'COURANT', TEXCOB,
      &         TROUVE)
         ENDIF
@@ -250,7 +250,7 @@
             CALL LECDOI(UV, NAMEWX,2,
      &                  VV, NAMEWY,2,
      &                  VV, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',0,
-     &                  NPOIN2, UL, FFORMAT, 
+     &                  NPOIN2, UL, FFORMAT,
      &                  AT,TV1,TV2, UV1, UV2, VV1, VV2,
      &                  VV1, VV2, INDIV, 'VENT   ', NVWIN, TEXVEB,
      &                  TROUVE, UNITVEB, PHASVEB)
@@ -264,17 +264,17 @@
 !
       IF((INISPE.EQ.1.OR.INISPE.EQ.3.OR.INISPE.EQ.5).AND..NOT.VENT) THEN
 !       SPECTRUM is NULL
-        CALL SPEINI(F, TRA01(1:NF), TRA01(NF+1:NF+NPLAN),
+        CALL SPEINI(F, TRA01(1:NF), TRA01(NF+1:NF+NDIRE),
      &              UV, VV,
      &              FREMAX, FETCH, SIGMAA, SIGMAB, GAMMA, FPIC, HM0,
      &              ALPHIL, TETA1, SPRED1, TETA2, SPRED2, XLAMDA,NPOIN2,
-     &              NPLAN, NF, 0, DEPTH, FRABI)
+     &              NDIRE, NF, 0, DEPTH, FRABI)
       ELSE
-        CALL SPEINI(F, TRA01(1:NF), TRA01(NF+1:NF+NPLAN),
-     &              UV, VV, 
+        CALL SPEINI(F, TRA01(1:NF), TRA01(NF+1:NF+NDIRE),
+     &              UV, VV,
      &              FREMAX, FETCH, SIGMAA, SIGMAB, GAMMA, FPIC, HM0,
      &              ALPHIL,TETA1,SPRED1,TETA2,SPRED2,XLAMDA,NPOIN2,
-     &              NPLAN, NF, INISPE, DEPTH, FRABI)
+     &              NDIRE, NF, INISPE, DEPTH, FRABI)
       ENDIF
 !
 !-----------------------------------------------------------------------

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE UPWIND
-!                    *****************
+!                   *****************
+                    SUBROUTINE UPWIND
+!                   *****************
 !
      &(M,WCC,DELTA,MESH2D,MESH3D,NPLAN)
 !

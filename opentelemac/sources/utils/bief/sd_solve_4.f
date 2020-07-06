@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE SD_SOLVE_4
-!                    *********************
+!                   *********************
+                    SUBROUTINE SD_SOLVE_4
+!                   *********************
 !
      &(NPOIN,NSEGB,GLOSEGB,DAB1,DAB2,DAB3,DAB4,XAB1,XAB2,XAB3,XAB4,
      & XX1,XX2,CVB1,CVB2,INFOGR,TYPEXT1,TYPEXT2,TYPEXT3,TYPEXT4)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VISTUR
-!                    *****************
+!                   *****************
+                    SUBROUTINE VISTUR
+!                   *****************
 !
      &(VISC,AK,EP,NPOIN,CMU,PROPNU)
 !

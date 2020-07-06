@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE BEDLOAD_EFFPNT_GAIA
-!                    ******************************
+!                 ******************************
+                  SUBROUTINE BEDLOAD_EFFPNT_GAIA
+!                 ******************************
 !
      & (MASKEL,LIQBOR,S,ZF,NPOIN,NPTFR,IELMT,KENT,
      &  BETA,PI,MSK,MESH,DZFDX,DZFDY,CTETA,STETA,

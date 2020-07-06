@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PTEL31
-!                    *****************
+!                   *****************
+                    SUBROUTINE PTEL31
+!                   *****************
 !
      &(XEL,X,IKLE,NELMAX,NELEM)
 !

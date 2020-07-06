@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FLUSRC
-!                    *****************
+!                   *****************
+                    SUBROUTINE FLUSRC
+!                   *****************
 !
      &(IEL1,IEL2,ISEGIN,VNOIN,W,HDZ1,HDZ2,HDXZ1,HDYZ1,HDXZ2,HDYZ2,EPS)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PREDIV
-!                    *****************
+!                   *****************
+                    SUBROUTINE PREDIV
+!                   *****************
 !
      & ( PD, UP, VP, WP, INFO , BC , OPT, DIRSUR, DIRBOT, DIRLAT)
 !

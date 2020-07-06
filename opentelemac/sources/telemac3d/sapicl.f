@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SAPICL
-!                    *****************
+!                   *****************
+                    SUBROUTINE SAPICL
+!                   *****************
 !
      & (LINUBOF,LIUBOF,LINUBOL,LIUBOL,LINUBOS,
      &  NPTFR,NPLAN,NPOIN2,KENT,KSORT)

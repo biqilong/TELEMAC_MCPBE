@@ -1,6 +1,6 @@
-!                    *******************************
-                     SUBROUTINE SUSPENSION_LISTING !
-!                    *******************************
+!                   *******************************
+                    SUBROUTINE SUSPENSION_LISTING !
+!                   *******************************
 !
      &(MESH,CST,ZFCL_S,UCONV,VCONV,MASKEL,IELMT,DT,MSK,T1)
 !
@@ -56,7 +56,7 @@
      &    EX_SUSPENSION_LISTING => SUSPENSION_LISTING
       USE BIEF
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MIN,P_MAX
       IMPLICIT NONE
 !
       ! 2/ GLOBAL VARIABLES
@@ -82,13 +82,13 @@
 !
       CALL MAXI(XMAX,IMAX,CST%R,MESH%NPOIN)
       IF(NCSIZE.GT.1) THEN
-        XMA=P_DMAX(XMAX)
+        XMA=P_MAX(XMAX)
         IF(XMAX.EQ.XMA) THEN
           IMA=MESH%KNOLG%I(IMAX)
         ELSE
           IMA=0
         ENDIF
-        IMA=P_IMAX(IMA)
+        IMA=P_MAX(IMA)
       ELSE
         IMA=IMAX
         XMA=XMAX
@@ -96,13 +96,13 @@
       WRITE(LU,510) XMA, IMA
       CALL MINI(XMAX, IMAX, CST%R, MESH%NPOIN)
       IF(NCSIZE.GT.1) THEN
-        XMA=P_DMIN(XMAX)
+        XMA=P_MIN(XMAX)
         IF(XMAX.EQ.XMA) THEN
           IMA=MESH%KNOLG%I(IMAX)
         ELSE
           IMA=0
         ENDIF
-        IMA=P_IMAX(IMA)
+        IMA=P_MAX(IMA)
       ELSE
         IMA=IMAX
         XMA=XMAX
@@ -110,13 +110,13 @@
       WRITE(LU,511) XMA, IMA
       CALL MAXI(XMAX, IMAX, ZFCL_S%R, MESH%NPOIN)
       IF(NCSIZE.GT.1) THEN
-        XMA=P_DMAX(XMAX)
+        XMA=P_MAX(XMAX)
         IF(XMAX.EQ.XMA) THEN
           IMA=MESH%KNOLG%I(IMAX)
         ELSE
           IMA=0
         ENDIF
-        IMA=P_IMAX(IMA)
+        IMA=P_MAX(IMA)
       ELSE
         IMA=IMAX
         XMA=XMAX
@@ -124,13 +124,13 @@
       WRITE(LU,512) XMA, IMA
       CALL MINI(XMAX, IMAX, ZFCL_S%R, MESH%NPOIN)
       IF(NCSIZE.GT.1) THEN
-        XMA=P_DMIN(XMAX)
+        XMA=P_MIN(XMAX)
         IF(XMAX.EQ.XMA) THEN
           IMA=MESH%KNOLG%I(IMAX)
         ELSE
           IMA=0
         ENDIF
-        IMA=P_IMAX(IMA)
+        IMA=P_MAX(IMA)
       ELSE
         IMA=IMAX
         XMA=XMAX
@@ -140,13 +140,13 @@
       CALL CFLPSI(T1, UCONV, VCONV, DT, IELMT, MESH, MSK, MASKEL)
       CALL MAXI(XMAX, IMAX, T1%R, MESH%NPOIN)
       IF(NCSIZE.GT.1) THEN
-        XMA=P_DMAX(XMAX)
+        XMA=P_MAX(XMAX)
         IF(XMAX.EQ.XMA) THEN
           IMA=MESH%KNOLG%I(IMAX)
         ELSE
           IMA=0
         ENDIF
-        IMA=P_IMAX(IMA)
+        IMA=P_MAX(IMA)
       ELSE
         IMA=IMAX
         XMA=XMAX

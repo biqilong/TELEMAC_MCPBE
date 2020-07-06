@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SOUKEP
-!                    *****************
+!                   *****************
+                    SUBROUTINE SOUKEP
+!                   *****************
 !
      &(CV1,CV2,S1K,S1E,U,V,W,DELTAR,RI,
      & DUDX,DUDY,DUDZ,DVDX,DVDY,DVDZ,DWDX,DWDY,DWDZ,DTADZ,

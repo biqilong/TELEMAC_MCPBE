@@ -1,6 +1,6 @@
-!                  ****************************
-                   SUBROUTINE BEDLOAD_MAIN_GAIA
-!                  ****************************
+!                 ****************************
+                  SUBROUTINE BEDLOAD_MAIN_GAIA
+!                 ****************************
 !
      &(ACLADM,KSP,KSR, V2DPAR,UNSV2D,CF,EBOR,FW,HN,LIQBOR,
      & MASK, MASKEL, MASKPT, QBOR, U2D,
@@ -143,11 +143,11 @@
      &              NUM_ICLA_IMUD,MASS_MUD,MASS_SAND_ACTIVE_LAYER,
      &              MASS_SAND_MASKED, EVCL_M_TOT_SAND,
      &              RATIO_EVOL_TOT_SAND,MOFAC_BED,MUDB,F_MUDB,
-     &              NESTOR,XKV0,VOLU2D,ZFCL_C,MASSNESTOR,
+     &              NESTOR,XKV0,VOLU2D,MASSNESTOR,
      &              NMUD,NUM_ISAND_ICLA,NUM_IMUD_ICLA,
      &              SANFRA
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY: P_DSUM
+      USE INTERFACE_PARALLEL, ONLY: P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -360,7 +360,7 @@
         ENDIF
         IF(NCSIZE.GT.1) THEN
           DO ICLA=1,NSICLA
-            MASSNESTOR(ICLA) = P_DSUM(MASSNESTOR(ICLA))
+            MASSNESTOR(ICLA) = P_SUM(MASSNESTOR(ICLA))
           ENDDO
         ENDIF
 !
@@ -387,7 +387,7 @@
         ENDIF
         IF(NCSIZE.GT.0) THEN
           DO ICLA = 1,NSICLA
-            T8%R(ICLA) = P_DSUM(T8%R(ICLA))
+            T8%R(ICLA) = P_SUM(T8%R(ICLA))
             MASSNESTOR(ICLA) = T8%R(ICLA) - MASSNESTOR(ICLA)
           END DO
         ENDIF

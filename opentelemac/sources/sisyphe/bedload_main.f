@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE BEDLOAD_MAIN
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE BEDLOAD_MAIN
+!                   ***********************
 !
      &(ACLADM,KSP,KSR, V2DPAR,UNSV2D,CF,EBOR,FW,HN,LIQBOR,
      & MASK, MASKEL, MASKPT, QBOR, U2D,
@@ -383,10 +383,10 @@
         IF(.NOT.SEDCO(I)) THEN
           CALL OS('X=X+Y   ', X=QS_C, Y=QSCL_C%ADR(I)%P)
           CALL OS('X=X+Y   ', X=ZF_C, Y=ZFCL_C%ADR(I)%P)
-           CALL OS('X=X+YZ  ', X=QSXC, Y=QSCL_C%ADR(I)%P,
-     &                               Z=CALFA_CL%ADR(I)%P)
-           CALL OS('X=X+YZ  ', X=QSYC, Y=QSCL_C%ADR(I)%P,
-     &                               Z=SALFA_CL%ADR(I)%P)
+          CALL OS('X=X+YZ  ', X=QSXC, Y=QSCL_C%ADR(I)%P,
+     &                              Z=CALFA_CL%ADR(I)%P)
+          CALL OS('X=X+YZ  ', X=QSYC, Y=QSCL_C%ADR(I)%P,
+     &                              Z=SALFA_CL%ADR(I)%P)
 
         ENDIF
       ENDDO

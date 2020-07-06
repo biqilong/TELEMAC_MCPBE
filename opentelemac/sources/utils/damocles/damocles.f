@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE DAMOCLES
-!                    *******************
+!                   *******************
+                    SUBROUTINE DAMOCLES
+!                   *******************
 !
      &( ADRESS , DIMENS , NMAX   , DOC    , LLNG , LLU ,
      &  MOTINT , MOTREA , MOTLOG , MOTCAR ,

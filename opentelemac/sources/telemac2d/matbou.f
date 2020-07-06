@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MATBOU
-!                    *****************
+!                   *****************
+                    SUBROUTINE MATBOU
+!                   *****************
 !
      &(MESH,M1,M2,A11,A12,A21,A22,SMU,SMV,VR,VS,H0,MSK,MASKEL,S)
 !

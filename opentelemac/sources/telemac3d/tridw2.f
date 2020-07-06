@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TRIDW2
-!                    *****************
+!                   *****************
+                    SUBROUTINE TRIDW2
+!                   *****************
 !
      &(WSCONV,VOLU,VOLUN,SEM2D,FLUINT,FLUEXT,SOURCES,NSCE,NETAGE,NPOIN2,
      & DT,UNSV2D,MESH2D,OPTSOU)

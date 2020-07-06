@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ASSEX3
-!                    *****************
+!                   *****************
+                    SUBROUTINE ASSEX3
+!                   *****************
 !
      &(XM,STO,NAME,IELM1,IELM2,TYPEXT,XMT,DIM1XMT,DIM2XMT,STOXMT,
      & MESH,NELMAX,ELTSEG,ORISEG)

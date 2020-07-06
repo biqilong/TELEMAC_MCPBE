@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VENUTI
-!                    *****************
+!                   *****************
+                    SUBROUTINE VENUTI
+!                   *****************
 !
      &(NVEN,FMTVEN)
 !

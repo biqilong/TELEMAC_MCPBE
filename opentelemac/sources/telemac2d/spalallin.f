@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE SPALALLIN
-!                    ********************
+!                   ********************
+                    SUBROUTINE SPALALLIN
+!                   ********************
      &(LIMSA, LIUBOR, NPTFR, KENT, KENTU, KSORT,
      & KADH, KLOG, KINC, KNEU, KDIR)
 !

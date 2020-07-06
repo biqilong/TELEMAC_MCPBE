@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PREDES
-!                    *****************
+!                   *****************
+                    SUBROUTINE PREDES
+!                   *****************
 !
      &(LLT,AAT,YAGOUT,CODE)
 !

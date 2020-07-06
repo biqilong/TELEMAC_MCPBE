@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE ELEBD31
-!                    ******************
+!                   ******************
+                    SUBROUTINE ELEBD31
+!                   ******************
 !
      &(NELBOR,NULONE,IKLBOR,IFABOR,NBOR,IKLE,
      & NELEM,NELEB,NELMAX,NPOIN,NPTFR,IELM)

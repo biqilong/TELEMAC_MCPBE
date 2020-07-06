@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE CVSP_RM_FRACTION
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE CVSP_RM_FRACTION
+!                   ***************************
 !
      &(J,I,DZFCL)
 !
@@ -28,7 +28,7 @@
 !+   Update
 !
 !history  R. KOPMANN (BAW)
-!+        25/02/2019 
+!+        25/02/2019
 !+        V7P2
 !+   Removing 1/NSICLA
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -264,7 +264,7 @@
           ENDIF
           IF (REST1.GT.ZERO) THEN
             PRO_F(J,KK,II) = PRO_F(J,KK,II)/ REST1 ! NORMALIZE FRACTION
-          ELSE    
+          ELSE
             PRO_F(J,KK,II) = 0.D0       ! IN CASE OF ALMOST TOTAL LOSS
           ENDIF
         ENDDO

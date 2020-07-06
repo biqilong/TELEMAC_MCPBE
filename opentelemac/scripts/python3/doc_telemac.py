@@ -17,6 +17,28 @@ from utils.files import get_file_content
 from utils.exceptions import TelemacException
 from config import add_config_argument, update_config, CFGS
 
+MODULE_LIST = ['artemis',
+               'stbtel',
+               'sisyphe',
+               'postel3d',
+               'telemac2d',
+               'telemac3d',
+               'tomawac',
+               'waqtel',
+               'telapy',
+               'mascaret',
+               'gaia',
+               'nestor',
+               'khione',
+               'coupling']
+
+MISC_LIST = ['developer_guide',
+             'software_quality_plan',
+             'TelemacDocTemplate',
+             'git_guide',
+             'doxydocs',
+             'doxypydocs',
+             'notebooks']
 
 # _____             ________________________________________________
 # ____/ MAIN CALL  /_______________________________________________/
@@ -455,12 +477,14 @@ use the options --validation/reference/user/release/theory to compile only one
     parser.add_argument(
         "-m", "--modules",
         dest="modules", default='',
-        help="specify the list modules (, separated), default is all of them")
+        help="specify the list modules (, separated), default is all of them "+
+             "from {"+",".join(MODULE_LIST)+"}")
     parser.add_argument(
         "-M", "--misc",
         dest="misc", default='',
         help="specify the list of misc documentation (, separated) to compile, "
-             "default is all of them")
+             "default is all of them "+
+             "from {"+",".join(MISC_LIST)+"}")
     parser.add_argument(
         "--validation", action="store_true",
         dest="validation", default=False,
@@ -513,20 +537,21 @@ use the options --validation/reference/user/release/theory to compile only one
     # By default everything if something is defined compiling only that
     if options.modules != '':
         module_list = options.modules.split(',')
+        for module in module_list:
+            if module not in MODULE_LIST:
+                raise TelemacException("{} is not in list of modules ({})".format(module, ",".join(MODULE_LIST)))
     else:
         # all modules
-        module_list = ['artemis', 'stbtel', 'sisyphe', 'postel3d',
-                       'telemac2d', 'telemac3d', 'tomawac', 'waqtel',
-                       'telapy', 'mascaret', 'gaia', 'nestor', 'khione',
-                       'coupling']
+        module_list = MODULE_LIST
     if options.misc != '':
         misc_list = options.misc.split(',')
+        for misc in misc_list:
+            if misc not in MISC_LIST:
+                raise TelemacException("{} is not in list of misc ({})".format(misc, ",".join(MISC_LIST)))
         module_list = []
     else:
         # all docs
-        misc_list = ['developer_guide', 'software_quality_plan',
-                     'TelemacDocTemplate', 'git_guide',
-                     'doxypydocs', 'notebooks']
+        misc_list = MISC_LIST
         # If a module was specified or a specific documentation for modules
         # not compiling Misc documentation
         if options.modules != '' or not doall:

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CALDIR
-!                    *****************
+!                   *****************
+                    SUBROUTINE CALDIR
+!                   *****************
 !
 !
 !***********************************************************************
@@ -126,9 +126,9 @@
           D1 = XU1*XU1 + XV1*XV1
           D2 = XU2*XU2 + XV2*XV2
           IF (D2.GT.D1) THEN
-             TETA01 = TETA01 + PISUR2
-             XU1    = XU2
-             XV1    = XV2
+            TETA01 = TETA01 + PISUR2
+            XU1    = XU2
+            XV1    = XV2
           ENDIF
           WT0    = TETA01 + PHI1
           ALPHA0 = ATAN2( XV1,XU1 )

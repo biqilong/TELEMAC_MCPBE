@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE SD_FABSG4
-!                    ********************
+!                   ********************
+                    SUBROUTINE SD_FABSG4
+!                   ********************
 !
      &(NPOIN,NSEG,DAB1,DAB2,DAB3,DAB4,XAB1,XAB2,XAB3,XAB4,
      & NPBLK,NSEGBLK,DA,XA,TYPEXT1,TYPEXT2,TYPEXT3,TYPEXT4)

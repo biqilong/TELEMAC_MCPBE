@@ -1,6 +1,6 @@
-!                    *******************************
-                     SUBROUTINE SUSPENSION_BILAN_COH
-!                    *******************************
+!                   *******************************
+                    SUBROUTINE SUSPENSION_BILAN_COH
+!                   *******************************
 !
      &(MESH,CST,HN,MASKEL,IELMT,ITRA,LT,NIT,DT,
      & XMVS,MS_VASE, NOMBLAY,NPOIN,

@@ -1,36 +1,36 @@
-!                    *****************
-                     SUBROUTINE MOUDISS2
-     &  (FWX, FWY, NPOIN2, XK, NPLAN, FS,NF, TAUX1, F_INT)
+!                   *****************
+                    SUBROUTINE MOUDISS2
+!                   *****************
+     &  (FWX, FWY, NPOIN2, XK, NDIRE, FS,NF, TAUX1, F_INT)
 !  SURFACE STRESS DUE TO WIND INPUT ENERGY AND WHITECAPPING
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| FS             |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| FWX            |<--| SURFACE STRESS DUE TO WIND ALONG X
-!| FWY            |<--| SURFACE STRESS DUE TO WIND ALONG Y 
+!| FWY            |<--| SURFACE STRESS DUE TO WIND ALONG Y
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| XK             |-->| DISCRETIZED WAVE NUMBER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!                    *****************
- 
+
       USE DECLARATIONS_TOMAWAC, ONLY : FREQ, DFREQ, SINTET, COSTET,
      & DEUPI, CMOUT3,CMOUT4, CMOUT5, CMOUT6, VARIAN, FMOY, XKMOY,
      & DEPTH, USOLD, PROINF, GRAVIT
 !
       IMPLICIT NONE
 !
-      INTEGER, INTENT(IN) :: NPOIN2, NPLAN,NF
-      DOUBLE PRECISION, INTENT(IN) :: FS(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN) :: NPOIN2, NDIRE,NF
+      DOUBLE PRECISION, INTENT(IN) :: FS(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN) :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: FWX(NPOIN2), FWY(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: F_INT(NPOIN2),TAUX1(NPOIN2)
-!     
+!
       DOUBLE PRECISION DTETAR, SIGMA, AUX, BETAMOU, AUX1
       DOUBLE PRECISION W, SURDEUPIFREQ, SQBSCMOUT4, SURCMOUT4
       DOUBLE PRECISION PO, P0O, KD, DEUKD
       DOUBLE PRECISION CG1, CPHAS, C3, C2, C1, BETAO, BETA, B
       INTEGER IP, JF, JP
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       C1 = - CMOUT5*DEUPI**9/GRAVIT**4
       C2 = - CMOUT5*DEUPI
       W = 25.D0
@@ -49,11 +49,11 @@
       DO JF=1,NF
         SIGMA=DEUPI*FREQ(JF)
         SURDEUPIFREQ=1.D0/(DEUPI*FREQ(JF))
-        AUX1=DFREQ(JF)*DTETAR        
+        AUX1=DFREQ(JF)*DTETAR
         DO IP=1,NPOIN2
           F_INT(IP)=FS(IP,1,JF)
         ENDDO
-        DO JP=2,NPLAN
+        DO JP=2,NDIRE
           DO IP=1,NPOIN2
             F_INT(IP)=F_INT(IP)+FS(IP,JP,JF)
           ENDDO
@@ -77,8 +77,8 @@
             C3 = -CMOUT3*SQRT(GRAVIT*XK(IP,JF))
             BETAO = C3*SQBSCMOUT4**P0O
             BETAMOU = BETA+PO*(BETAO-BETA)
-            
-            DO JP=1,NPLAN
+
+            DO JP=1,NDIRE
               FWX(IP)=FWX(IP)+((XK(IP,JF)/SIGMA)*SINTET(JP)
      &             *BETAMOU*FS(IP,JP,JF))*AUX1
               FWY(IP)=FWY(IP)+((XK(IP,JF)/SIGMA)*COSTET(JP)
@@ -107,7 +107,7 @@
             PO = 0.5D0*(1.D0+TANH(10.D0*(SQBSCMOUT4-1.D0)))
             BETAMOU=BETA+PO*(BETAO-BETA)
 
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               FWX(IP)=FWX(IP)+((XK(IP,JF)/SIGMA)*SINTET(JP)
      &             *BETAMOU*FS(IP,JP,JF))*AUX1
               FWY(IP)=FWY(IP)+((XK(IP,JF)/SIGMA)*COSTET(JP)
@@ -118,4 +118,3 @@
       ENDDO
       RETURN
       END
-      

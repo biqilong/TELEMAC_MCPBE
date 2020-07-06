@@ -1,6 +1,6 @@
-!                    ***********
-                     MODULE BIEF
-!                    ***********
+!                   ***********
+                    MODULE BIEF
+!                   ***********
 !
 !
 !***********************************************************************
@@ -1021,10 +1021,10 @@
 !
         SUBROUTINE DCPLDU(B,A,MESH,COPY,LV)
           USE BIEF_DEF
-           IMPLICIT NONE
+          IMPLICIT NONE
           TYPE(BIEF_OBJ) , INTENT(INOUT) :: B
-           TYPE(BIEF_OBJ) , INTENT(IN)    :: A
-           TYPE(BIEF_MESH), INTENT(INOUT) :: MESH
+          TYPE(BIEF_OBJ) , INTENT(IN)    :: A
+          TYPE(BIEF_MESH), INTENT(INOUT) :: MESH
           LOGICAL        , INTENT(IN)    :: COPY
           INTEGER        , INTENT(IN)    :: LV
         END SUBROUTINE

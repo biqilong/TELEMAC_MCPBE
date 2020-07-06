@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE COEFRO_GAIA
-!                    **********************
+!                   **********************
+                    SUBROUTINE COEFRO_GAIA
+!                   **********************
 !
      &(CF,H,KS,NPOIN,KARMAN)
 !

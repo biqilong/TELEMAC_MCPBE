@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CLTRAC
-!                    *****************
+!                   *****************
+                    SUBROUTINE CLTRAC
+!                   *****************
 !
      &(NWEIRS,NPSING,NDGA1,NDGB1,ZF,ZDIG,H,T,NBOR,LITBOR,TBOR,NTRAC)
 !
@@ -69,7 +69,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -116,10 +116,10 @@
           ENDIF
 !
           IF(NCSIZE.GT.1) THEN
-            Z1=P_DMAX(MAX(Z1,0.D0))-P_DMIN(MAX(-Z1,0.D0))
-            Z2=P_DMAX(MAX(Z2,0.D0))-P_DMIN(MAX(-Z2,0.D0))
-            T1=P_DMAX(MAX(T1,0.D0))-P_DMIN(MAX(-T1,0.D0))
-            T2=P_DMAX(MAX(T2,0.D0))-P_DMIN(MAX(-T2,0.D0))
+            Z1=P_MAX(MAX(Z1,0.D0))-P_MIN(MAX(-Z1,0.D0))
+            Z2=P_MAX(MAX(Z2,0.D0))-P_MIN(MAX(-Z2,0.D0))
+            T1=P_MAX(MAX(T1,0.D0))-P_MIN(MAX(-T1,0.D0))
+            T2=P_MAX(MAX(T2,0.D0))-P_MIN(MAX(-T2,0.D0))
           ENDIF
 !
 !         POINT 1

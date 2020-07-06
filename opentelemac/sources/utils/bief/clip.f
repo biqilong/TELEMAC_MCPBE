@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE CLIP
-!                    ***************
+!                   ***************
+                    SUBROUTINE CLIP
+!                   ***************
 !
      &(F,XMIN,CLPMIN,XMAX,CLPMAX,NPOIN)
 !

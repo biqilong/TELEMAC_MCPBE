@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE BEDLOAD_ENGEL
-!                    ************************
+!                   ************************
+                    SUBROUTINE BEDLOAD_ENGEL
+!                   ************************
 !
      &(TOB,CF,DENS,GRAV,DM,XMVE,QSC)
 !

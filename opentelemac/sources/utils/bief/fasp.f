@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE FASP
-!                    ***************
+!                   ***************
+                    SUBROUTINE FASP
+!                   ***************
 !
      &(X,Y,ZF,NPOIN,XRELV,YRELV,ZRELV,NP,NBOR,KP1BOR,NPTFR,DM)
 !
@@ -101,39 +101,39 @@
 ! ->QUADRANT 1 :
           IF( DIFX.LE.0.D0.AND.DIFY.LE.0.D0) THEN
             IF(DIST.LE.DIST1)THEN
-                 X1=XRELV(N)
-                 Y1=YRELV(N)
-                 DIST1=DIST
-                 ZCADR1=ZRELV(N)
-                 OK1 = .TRUE.
+              X1=XRELV(N)
+              Y1=YRELV(N)
+              DIST1=DIST
+              ZCADR1=ZRELV(N)
+              OK1 = .TRUE.
             ENDIF
 ! ->QUADRANT 2 :
         ELSE IF( DIFX.GE.0.D0.AND.DIFY.LE.0.D0) THEN
-           IF(DIST.LE.DIST2)THEN
-                X2=XRELV(N)
-                Y2=YRELV(N)
-                DIST2=DIST
-                ZCADR2=ZRELV(N)
-                OK2 = .TRUE.
-           ENDIF
+          IF(DIST.LE.DIST2)THEN
+            X2=XRELV(N)
+            Y2=YRELV(N)
+            DIST2=DIST
+            ZCADR2=ZRELV(N)
+            OK2 = .TRUE.
+          ENDIF
 ! ->QUADRANT 3 :
         ELSE IF( DIFX.GE.0.D0.AND.DIFY.GE.0.D0) THEN
-           IF(DIST.LE.DIST3)THEN
-                X3=XRELV(N)
-                Y3=YRELV(N)
-                DIST3=DIST
-                ZCADR3=ZRELV(N)
-                OK3 = .TRUE.
-           ENDIF
+          IF(DIST.LE.DIST3)THEN
+            X3=XRELV(N)
+            Y3=YRELV(N)
+            DIST3=DIST
+            ZCADR3=ZRELV(N)
+            OK3 = .TRUE.
+          ENDIF
 ! ->QUADRANT 4 :
         ELSE IF( DIFX.LE.0.D0.AND.DIFY.GE.0.D0) THEN
-           IF(DIST.LE.DIST4)THEN
-                X4=XRELV(N)
-                Y4=YRELV(N)
-                DIST4=DIST
-                ZCADR4=ZRELV(N)
-                OK4 = .TRUE.
-           ENDIF
+          IF(DIST.LE.DIST4)THEN
+            X4=XRELV(N)
+            Y4=YRELV(N)
+            DIST4=DIST
+            ZCADR4=ZRELV(N)
+            OK4 = .TRUE.
+          ENDIF
         ENDIF
       ENDDO ! N
 !

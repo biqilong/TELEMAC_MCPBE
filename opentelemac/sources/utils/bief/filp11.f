@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FILP11
-!                    *****************
+!                   *****************
+                    SUBROUTINE FILP11
+!                   *****************
 !
      &( F , C , XSOM , YSOM , NSOM , X , Y , NPOIN )
 !

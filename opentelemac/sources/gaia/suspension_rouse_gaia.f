@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE SUSPENSION_ROUSE_GAIA
-!                    ********************************
+!                   ********************************
+                    SUBROUTINE SUSPENSION_ROUSE_GAIA
+!                   ********************************
 !
      &(USTAR,HN,NPOIN,KARMAN,ZERO,XWC,ZREF,CSRATIO)
 !

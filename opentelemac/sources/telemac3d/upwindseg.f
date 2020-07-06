@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE UPWINDSEG
-!                    ********************
+!                   ********************
+                    SUBROUTINE UPWINDSEG
+!                   ********************
 !
      &(D,X,IKLE,NELMAX,NELEM2,SURFAC,NPLAN,WCC,NSEG2D,NSEG3D,EXT,
      & DELTA)

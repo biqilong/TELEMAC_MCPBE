@@ -82,10 +82,6 @@ protected:
 	int RequestInformation	(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 	int RequestData		(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
 
-	// Cette fonction permet de lire les données d'un fichier selon qu'elles soient 'inscrites' au niveau des éléments ou des points . 
-	// De plus , elle appelle la méthode de lecture de la géométrie du maillage .
-	void ReadFile		 (vtkUnstructuredGrid *output, int time);
-
 	// Lecture de la géométrie du maillage
 	void ReadGeometry	 (vtkUnstructuredGrid *output, int time);
 
@@ -98,6 +94,9 @@ protected:
 	int TimeStep;
 
 	stdSerafinReader* Reader; /** /!\ Instance de lecture du fichier Serafin **/
+
+        class vtkInternal;
+        vtkInternal *Internal;
 
 private:
 	vtkSerafinReader(const vtkSerafinReader&);	// Pas implÃ©mentÃ©

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASKAB
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASKAB
+!                   *****************
 !
      &(HN , Q , QU , QV , NPOIN)
 !

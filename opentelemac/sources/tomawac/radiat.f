@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE RADIAT
-!                    *****************
+!                   *****************
+                    SUBROUTINE RADIAT
+!                   *****************
 !
      &     ( FX1    , FY1, XK1   ,FS, CG1,
      &  CGSUC1,DSXXDX, DSXYDX, DSXYDY, DSYYDY)
@@ -53,11 +53,11 @@
 !+        V7P0
 !+   Cancellation of radiation stresses below a given depth hmin.
 !
-!history T. Fouquet (made by C Raoul) 
+!history T. Fouquet (made by C Raoul)
 !        01/02/2018
 !        V7P3
 !        Forces calculated in spherical coordinates
-!                     
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| CG1            |-->| DISCRETIZED GROUP VELOCITY
 !| CGSUC1         |<--| WORK TABLE
@@ -84,7 +84,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION, INTENT(IN)    :: FS(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: FS(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: CG1(NPOIN2,NF),XK1(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: CGSUC1(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: FX1(NPOIN2),FY1(NPOIN2)
@@ -105,7 +105,7 @@
 !
       HMIN=0.1D0
 !
-      DTETAR=DEUPI/NPLAN
+      DTETAR=DEUPI/NDIRE
 !
       DO IP=1,NPOIN2
         SXX(IP) = 0.D0
@@ -125,12 +125,12 @@
 !     COMPUTES THE RADIATION STRESSES INTEGRATED OVER THE SPECTRUM
 !     SUMS UP THE DISCRETISED PART OF THE SPECTRUM
 !
-      DO JP=1,NPLAN
+      DO JP=1,NDIRE
         COCO=COSTET(JP)**2
         SISI=SINTET(JP)**2
         SICO=SINTET(JP)*COSTET(JP)
         DO JF=1,NF
-          COEF=GRAVIT*DFREQ(JF)*DTETAR          
+          COEF=GRAVIT*DFREQ(JF)*DTETAR
           DO IP=1,NPOIN2
             COEF2=COEF*FS(IP,JP,JF)
             SXX(IP)=SXX(IP)+(CGSUC1(IP,JF)*(1.D0+SISI)-0.5D0)*COEF2
@@ -202,8 +202,8 @@
 !.............................. ! SPHERICAL COORDINATE SYSTEM !
 !                               +-----------------------------+
         DO IP=1,NPOIN2
-           TRA31(IP)=1.0D0/COSF(IP)
-        ENDDO   
+          TRA31(IP)=1.0D0/COSF(IP)
+        ENDDO
         CALL OV('X=CYZ    ',X=DSXXDX, Y=DSXXDX, Z=TRA31, C=SR,
      &          DIM1=NPOIN2)
         CALL OV('X=CYZ    ',X=DSXYDX, Y=DSXYDX, Z=TRA31, C=SR,

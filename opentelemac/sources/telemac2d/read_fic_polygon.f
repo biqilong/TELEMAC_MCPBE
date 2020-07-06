@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE READ_FIC_POLYGON
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE READ_FIC_POLYGON
+!                   ***************************
 !
      &( FFORMAT,FID, NPOLY,NPOIN_PLY,VALUE_PLY,X_PLY,Y_PLY, IERR )
 !
@@ -48,7 +48,7 @@
       CHARACTER(LEN=SIZELIGN) :: LIGNE
 !
       INTEGER          IVALUE,I,NPOIN,ILINE
-      DOUBLE PRECISION RVALUE,XVALUE,YVALUE
+      DOUBLE PRECISION RVALUE
 !
       DOUBLE PRECISION, PARAMETER :: CHOUIA = 1.D-9
 !

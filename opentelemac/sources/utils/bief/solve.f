@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE SOLVE
-!                    ****************
+!                   ****************
+                    SUBROUTINE SOLVE
+!                   ****************
 !
      &(X, A,B,TB,CFG,INFOGR,MESH,AUX)
 !
@@ -145,7 +145,7 @@
       USE DECLARATIONS_TELEMAC, ONLY : TBB, BB, BX, FIRST_SOLVE
       USE DECLARATIONS_SPECIAL
 !
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -317,7 +317,7 @@
           DO I=1,MESH%NPOIN
             NPOIN_TOT=MAX(MESH%KNOLG%I(I),NPOIN_TOT)
           ENDDO
-          NPOIN_TOT=P_IMAX(NPOIN_TOT)
+          NPOIN_TOT=P_MAX(NPOIN_TOT)
         ELSE
           NPOIN_TOT=MESH%NPOIN
         ENDIF

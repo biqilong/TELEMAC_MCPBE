@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE UPDATE_DATA_MESH
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE UPDATE_DATA_MESH
+!                   ***************************
 !
      &(FFORMAT,FILE_ID,TIME,RECORD,NB_DIM_MESH,NPOIN,COORD,IERR)
 !

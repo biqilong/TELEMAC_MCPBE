@@ -1,7 +1,6 @@
-!
-!                    ***************************
-                     SUBROUTINE CVSP_CHECK_ANYTHING
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE CVSP_CHECK_ANYTHING
+!                   ***************************
 !
 !
 !***********************************************************************
@@ -45,11 +44,11 @@
       DO J=1,NPOIN
 
         DO K=1,NOMBLAY
-           RET =  CVSP_CHECK_L(J,K,'Anything Hirano: ')
+          RET =  CVSP_CHECK_L(J,K,'Anything Hirano: ')
         ENDDO
 
         DO K=1,PRO_MAX(J)
-           RET =  CVSP_CHECK_F(J,K,'Anything CVSM: ')
+          RET =  CVSP_CHECK_F(J,K,'Anything CVSM: ')
         ENDDO
 
         CALL CVSP_CHECK_STEADY(J)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VITCHU
-!                    *****************
+!                   *****************
+                    SUBROUTINE VITCHU
+!                   *****************
 !
      &(S3D_WCHU,S3D_WCHU0,U,V,S3D_TURBA,
      & S3D_TURBB,TRAV1,TRAV2,TRAV3,S,MESH3D,IELM3,NPOIN2,NPOIN3,NPLAN,

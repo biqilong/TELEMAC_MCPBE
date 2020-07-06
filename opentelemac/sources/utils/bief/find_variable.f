@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE FIND_VARIABLE
-!                    ************************
+!                   ************************
+                    SUBROUTINE FIND_VARIABLE
+!                   ************************
 !
      &(FFORMAT,FID,VAR_NAME,RES,N,IERR,TIME,EPS_TIME,RECORD,TIME_RECORD)
 !

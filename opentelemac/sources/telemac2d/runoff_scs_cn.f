@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE RUNOFF_SCS_CN
-!                    ************************
+!                   ************************
+                    SUBROUTINE RUNOFF_SCS_CN
+!                   ************************
 !
 !
      & (PLUIE,ACCFA,ACCIA,ACCROFF,ACCROF_OLD,RAIN_MPS,AMC,CN,ZF,ZFSLOP,

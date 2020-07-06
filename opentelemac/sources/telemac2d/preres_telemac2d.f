@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE PRERES_TELEMAC2D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE PRERES_TELEMAC2D
+!                   ***************************
 !
 !***********************************************************************
 ! TELEMAC2D
@@ -77,7 +77,7 @@
       USE INTERFACE_TELEMAC2D
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -324,7 +324,7 @@
 !                             IELM
         CALL CFLPSI(T9,U,V,DT,11,MESH,MSK,MASKEL)
         CALL MAXI(XMAX,IMAX,T9%R,NPOIN)
-        IF(NCSIZE.GT.1) XMAX = P_DMAX(XMAX)
+        IF(NCSIZE.GT.1) XMAX = P_MAX(XMAX)
         WRITE(LU,79) XMAX
 79      FORMAT(1X,'PRERES: MAXIMUM COURANT NUMBER: ',G16.7)
       ENDIF
@@ -400,9 +400,9 @@
                 HHH = 0.D0
                 IF(LIST_PTS(N).GT.0) HHH=VARSOR%ADR(I)%P%R(LIST_PTS(N))
                 HIH = HHH
-                HIH = P_DMIN(HIH)
+                HIH = P_MIN(HIH)
                 HAH = HHH
-                HAH = P_DMAX(HAH)
+                HAH = P_MAX(HAH)
                 WRITE(LU,*) NAME_PTS(N),' : ',HIH+HAH
               ELSE
                 WRITE(LU,*) NAME_PTS(N),' : ',
@@ -425,9 +425,9 @@
                     HHH=VARSOR%ADR(I)%P%R(LIST_PTS(N))
                   ENDIF
                   HIH = HHH
-                  HIH = P_DMIN(HIH)
+                  HIH = P_MIN(HIH)
                   HAH = HHH
-                  HAH = P_DMAX(HAH)
+                  HAH = P_MAX(HAH)
                   IF(IPID.EQ.0) THEN
                     WRITE(T2D_FILES(T2DRFO)%LU,*) NAME_PTS(N),' : '
      &                      ,HIH+HAH

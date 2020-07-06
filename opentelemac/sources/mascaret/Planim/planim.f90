@@ -148,12 +148,7 @@ subroutine  PLANIM         ( &
    real(DOUBLE) :: Hp     ! PU2017: Tirant d'eau pour chaque cote de planimetrage
    real(DOUBLE) :: Smtp   ! PU2017: Surface mouillee pour chaque cote de planimetrage
    real(DOUBLE) :: Pmc, Pm0    ! PU2017: Perimetre mouille cumul
-   real(DOUBLE) :: Z0, Z1, Zp ! PU2017: Cote de planimetrage temporaire
    !real(DOUBLE) :: Zold   ! PU2017: Cote du point bas a l'iteration precedente
-   real(DOUBLE) :: XG, XD ! PU2017: Abscisse rive gauche, rive droite d'un chenal
-   real(DOUBLE) :: XG0, XD0 ! PU2017: Abscisse rive gauche, rive droite d'un chenal
-   integer :: N, Nmin, Nmax, Nold ! PU2017: Indices pour recherche dichotomique
-   integer :: Ncpt
    !integer      :: dz     ! PU2017: Signe de la pente pour chaque profil transverse
    real(DOUBLE), dimension(:), allocatable :: DZP  ! PU2017: Tableau pas de planimetrage
    integer :: ok = 0

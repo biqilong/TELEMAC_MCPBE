@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC13BB
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC13BB
+!                   *****************
 !
      &(XMUL,SF,F,XEL,YEL,
      & IKLE1,IKLE2,IKLE3,IKLE4,NELEM,NELMAX,W1,W2,W3,W4,ICOORD)

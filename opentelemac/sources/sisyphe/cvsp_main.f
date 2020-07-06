@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE CVSP_MAIN
-!                    ********************
+!                   ********************
+                    SUBROUTINE CVSP_MAIN
+!                   ********************
 !
      &(ZFCL_W,ZF,NSICLA,NPOIN)
 !
@@ -48,7 +48,7 @@
       USE INTERFACE_SISYPHE
       USE DECLARATIONS_SISYPHE, ONLY: CVSMOUTPUT,CVSM_OUT,CVSM_OUT_FULL,
      &                                PRO_D,PRO_MAX,PRO_MAX_MAX,PERCOU,
-     &                                HN,LT,DT,MESH,Z,PRO_F,ZERO,ZR
+     &                                HN,LT,DT,MESH,Z,PRO_F,ZR
 !
       USE DECLARATIONS_SPECIAL
       USE CVSP_OUTPUTFILES, ONLY: CP
@@ -68,7 +68,7 @@
 !
       LOGICAL RET
       INTEGER I,J,K,ARRET,ARRET2
-      DOUBLE PRECISION DZFCL,EVL,AT,DELTA,KORR,SUMF
+      DOUBLE PRECISION DZFCL,EVL,AT,DELTA,SUMF
       INTEGER KK,PROMAX
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -93,9 +93,9 @@
 !-----------------------------------------------------------------------
       DO J=1,NPOIN
         IF(Z%R(J)-ZF%R(J).LT.0.D0) THEN
-           IF(CP) WRITE(LU,*) 'UHM_Z.LT.ZF_BEF ',AT,Z%R(J),ZF%R(J),
-     &                 HN%R(J),(Z%R(J)-ZF%R(J))-HN%R(J)
-           CALL CVSP_P('./','Z_', J)
+          IF(CP) WRITE(LU,*) 'UHM_Z.LT.ZF_BEF ',AT,Z%R(J),ZF%R(J),
+     &                HN%R(J),(Z%R(J)-ZF%R(J))-HN%R(J)
+          CALL CVSP_P('./','Z_', J)
         ENDIF
       ENDDO
 !
@@ -156,7 +156,7 @@
               !CHECK
               DO K = 1, PRO_MAX(J)
                 IF(CVSP_CHECK_F(J,K,' EVL<0:       ').EQV..FALSE.)THEN
-                   IF(CP) WRITE(LU,*)'--> CVSP CF Case: ',IAMCASE
+                  IF(CP) WRITE(LU,*)'--> CVSP CF Case: ',IAMCASE
                 ENDIF
               ENDDO
           ENDIF! EVL < 0
@@ -164,21 +164,21 @@
 !
 ! REMOVING EMPTY SECTIONS
         DO K=2,PRO_MAX(J)
-           PROMAX = PRO_MAX(J)
-           SUMF = 0.D0
-           DO I=1,NSICLA
-             SUMF = SUMF + PRO_F(J,K,I)
-           END DO
-           IF(SUMF.EQ.0.D0) THEN
-              PROMAX = PROMAX - 1
-              DO KK=K,PROMAX
-                DO I=1,NSICLA
-                  PRO_D(J,KK,I) = PRO_D(J,KK+1,I)
-                  PRO_F(J,KK,I) = PRO_F(J,KK+1,I)
-                END DO
+          PROMAX = PRO_MAX(J)
+          SUMF = 0.D0
+          DO I=1,NSICLA
+            SUMF = SUMF + PRO_F(J,K,I)
+          END DO
+          IF(SUMF.EQ.0.D0) THEN
+            PROMAX = PROMAX - 1
+            DO KK=K,PROMAX
+              DO I=1,NSICLA
+                PRO_D(J,KK,I) = PRO_D(J,KK+1,I)
+                PRO_F(J,KK,I) = PRO_F(J,KK+1,I)
               END DO
-           ENDIF
-           IF(PROMAX.EQ.K) GOTO 999
+            END DO
+          ENDIF
+          IF(PROMAX.EQ.K) GOTO 999
         END DO !K=2,PRO_MAX(J)
 999     PRO_MAX(J) = PROMAX
 
@@ -212,7 +212,7 @@
 ! bottom most layer could be higher than second top most layer
 ! -> deleting last layer
           IF(PRO_D(J,2,1).LT.PRO_D(J,1,1)) THEN
-           WRITE(LU,*) 'Problem bottom',PRO_D(J,2,1),PRO_D(J,1,1),
+            WRITE(LU,*) 'Problem bottom',PRO_D(J,2,1),PRO_D(J,1,1),
      & PRO_MAX(J)
             DO I=1,NSICLA
               DO K=PRO_MAX(J),2,-1
@@ -270,7 +270,7 @@
           IF(CP)WRITE(LU,*) 'UHM_Z.LT.ZF ', I,AT,Z%R(J),ZF%R(J),
      &         HN%R(J),(Z%R(J)-ZF%R(J))-HN%R(J)
           CALL CVSP_P('./','Z_', J)
-           STOP
+          STOP
         END IF
       ENDDO
 !
@@ -281,7 +281,7 @@
       IF((CVSM_OUT).OR.(CVSP_DB(-1,-1).EQV..TRUE.)) THEN
         DO KK = 1,100
           IF (CVSMOUTPUT(KK).GT.0) THEN
-           CALL LAYERS_P('./','Pnt_', CVSMOUTPUT(KK))
+            CALL LAYERS_P('./','Pnt_', CVSMOUTPUT(KK))
           ENDIF
         ENDDO
       END IF

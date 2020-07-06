@@ -1,6 +1,6 @@
-!            ********************************
-             SUBROUTINE BED1_SUSPENSION_ERODE
-!            ********************************
+!           ********************************
+            SUBROUTINE BED1_SUSPENSION_ERODE
+!           ********************************
 !
 !***********************************************************************
 ! GAIA
@@ -52,9 +52,9 @@
               PARTHENIADES(1,IPOIN)=PARTHENIADES(2,IPOIN)
             ELSEIF(CONC_MUD(1,IPOIN).GE.
      &                CONC_MUD(NOMBLAY,IPOIN))THEN
-                    CONC_MUD(1,IPOIN)=CONC_MUD(NOMBLAY,IPOIN)
-                    TOCE_MUD(1,IPOIN)=TOCE_MUD(NOMBLAY,IPOIN)
-                 PARTHENIADES(1,IPOIN)=PARTHENIADES(NOMBLAY,IPOIN)
+              CONC_MUD(1,IPOIN)=CONC_MUD(NOMBLAY,IPOIN)
+              TOCE_MUD(1,IPOIN)=TOCE_MUD(NOMBLAY,IPOIN)
+              PARTHENIADES(1,IPOIN)=PARTHENIADES(NOMBLAY,IPOIN)
             ELSE
               DO ILAYER=2,NOMBLAY
                 IF(CONC_MUD_ACTIV_LAYER(IPOIN).LE.
@@ -86,63 +86,63 @@
 !
         DO ILAYER = 1,NOMBLAY
 !
-           DO ISAND = 1,NSAND_VIRTUAL
+          DO ISAND = 1,NSAND_VIRTUAL
 !           TOCE_SAND(ISAND,IPOIN) IS COMPUTED IN INIT_SEDIMENT_GAIA
 !>          @todo AJOUTER LE HIDING FACTOR SUR tOC POUR COHERENCE AVEC BEDLOAD!
 !           CE N'EST PAS FAIT ACTUELLMENT DANS SISYPHE POUR LA SUSPENSION
-              DO IPOIN=1,NPOIN
-                 IF(RATIO_MUD_SAND(ILAYER,IPOIN).LE.0.3D0)THEN
-                   TOCE_MIX(ISAND,ILAYER,IPOIN)= TOCE_SAND(ISAND,IPOIN)
-                 RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)= 1.D0
-                 ELSEIF(RATIO_MUD_SAND(ILAYER,IPOIN).GE.0.5D0)THEN
-                   TOCE_MIX(ISAND,ILAYER,IPOIN) = TOCE_MUD(ILAYER,IPOIN)
+            DO IPOIN=1,NPOIN
+              IF(RATIO_MUD_SAND(ILAYER,IPOIN).LE.0.3D0)THEN
+                TOCE_MIX(ISAND,ILAYER,IPOIN)= TOCE_SAND(ISAND,IPOIN)
+              RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)= 1.D0
+              ELSEIF(RATIO_MUD_SAND(ILAYER,IPOIN).GE.0.5D0)THEN
+                TOCE_MIX(ISAND,ILAYER,IPOIN) = TOCE_MUD(ILAYER,IPOIN)
 !
-                   IF(NSAND.NE.0)THEN
-                     RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)=
-     &                    1.D0
-!-------------not use in this case and Fix at 1
-                   ENDIF
-!
-                 ELSE
-                   TOCE_MIX(ISAND,ILAYER,IPOIN) =
-     &               (RATIO_MUD_SAND(ILAYER,IPOIN)-0.3D0)/(0.5D0-0.3D0)
-     &              *(TOCE_MUD(ILAYER,IPOIN) - TOCE_SAND(ISAND,IPOIN))
-     &              + TOCE_SAND(ISAND,IPOIN)
-!
-                   RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)=
-     &              TOCE_MIX(ISAND,ILAYER,IPOIN)/TOCE_SAND(ISAND,IPOIN)
-                 ENDIF
-!!!!!!!!!!!!!!warning RATIO_TOCE IS NOT SAVE WITH NOMBLAY
-              ENDDO !END LOOP NPOIN
-            ENDDO !END LOOP NSAND_VIRTUAL
-!
-            DO ISAND = 1,NSAND
-             IF(NSAND.NE.0)THEN
-                IF(SUSP_SAND)THEN
-!         COMPUTE EQUILIBRIUM CONCENTRATION FOR EACH LAYER!! IT IS NOT NECESSARY FOR EACH POINT
-!         CAN BE OPTIMIZED IF NO LOOP ON NPOIN IN COMPUTE CAE
-                    CALL SUSPENSION_COMPUTE_CAE(TAUP,HN,
-     &              DCLA(NUM_ISAND_ICLA(ISAND)),NPOIN,CHARR,
-     &              XMVE,XMVS0(NUM_ISAND_ICLA(ISAND)),VCE,GRAV,
-     &              ZERO,ZREF,AC(NUM_ISAND_ICLA(ISAND)),
-     &              CSTAEQ%ADR(NUM_ISAND_ICLA(ISAND))%P,
-     &              QSCL_C%ADR(NUM_ISAND_ICLA(ISAND))%P,
-     &              ICQ,U2D,V2D,CSRATIO,DEBUG,
-     &              RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P)
-                 ELSE
-                    DO IPOIN=1,NPOIN
-                      CSTAEQ%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)=0.D0
-                    ENDDO
+                IF(NSAND.NE.0)THEN
+                  RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)=
+     &                 1.D0
+!-----------not use in this case and Fix at 1
                 ENDIF
 !
+              ELSE
+                TOCE_MIX(ISAND,ILAYER,IPOIN) =
+     &            (RATIO_MUD_SAND(ILAYER,IPOIN)-0.3D0)/(0.5D0-0.3D0)
+     &           *(TOCE_MUD(ILAYER,IPOIN) - TOCE_SAND(ISAND,IPOIN))
+     &           + TOCE_SAND(ISAND,IPOIN)
+!
+                RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)=
+     &           TOCE_MIX(ISAND,ILAYER,IPOIN)/TOCE_SAND(ISAND,IPOIN)
               ENDIF
-!!!!!!!!!!!!!!warning CSTAEQ IS NOT SAVE WITH NOMBLAY
-!!!!!!!!!!!!!!for this time:
-             DO IPOIN=1,NPOIN
-                CAE_ILAY(ISAND,ILAYER,IPOIN) =
-     &             CSTAEQ%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)
-             ENDDO
-            ENDDO !END LOOP NSAND
+!!!!!!!!!!!!warning RATIO_TOCE IS NOT SAVE WITH NOMBLAY
+            ENDDO !END LOOP NPOIN
+          ENDDO !END LOOP NSAND_VIRTUAL
+!
+          DO ISAND = 1,NSAND
+            IF(NSAND.NE.0)THEN
+              IF(SUSP_SAND)THEN
+!                COMPUTE EQUILIBRIUM CONCENTRATION FOR EACH LAYER!! IT IS NOT NECESSARY FOR EACH POINT
+!                 CAN BE OPTIMIZED IF NO LOOP ON NPOIN IN COMPUTE CAE
+                CALL SUSPENSION_COMPUTE_CAE(TAUP,HN,
+     &          DCLA(NUM_ISAND_ICLA(ISAND)),NPOIN,CHARR,
+     &          XMVE,XMVS0(NUM_ISAND_ICLA(ISAND)),VCE,GRAV,
+     &          ZERO,ZREF,AC(NUM_ISAND_ICLA(ISAND)),
+     &          CSTAEQ%ADR(NUM_ISAND_ICLA(ISAND))%P,
+     &          QSCL_C%ADR(NUM_ISAND_ICLA(ISAND))%P,
+     &          ICQ,U2D,V2D,CSRATIO,DEBUG,
+     &          RATIO_TOCE%ADR(NUM_ISAND_ICLA(ISAND))%P)
+              ELSE
+                DO IPOIN=1,NPOIN
+                  CSTAEQ%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)=0.D0
+                ENDDO
+              ENDIF
+!
+            ENDIF
+!!!!!!!!!!!!!warning CSTAEQ IS NOT SAVE WITH NOMBLAY
+!!!!!!!!!!!!!for this time:
+            DO IPOIN=1,NPOIN
+              CAE_ILAY(ISAND,ILAYER,IPOIN) =
+     &           CSTAEQ%ADR(NUM_ISAND_ICLA(ISAND))%P%R(IPOIN)
+            ENDDO
+          ENDDO !END LOOP NSAND
         ENDDO  !END LOOP NOMBLAY
 !
 !!!!!!!STRAT EROSION

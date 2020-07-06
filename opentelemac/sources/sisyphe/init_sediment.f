@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE INIT_SEDIMENT
-!                    ************************
+!                   ************************
+                    SUBROUTINE INIT_SEDIMENT
+!                   ************************
 !
      &(NSICLA,ELAY,ZF,ZR,NPOIN,AVAIL,FRACSED_GF,AVA0,
      & LGRAFED,CALWC,XMVS,XMVE,GRAV,VCE,XWC,FDM,
@@ -171,7 +171,7 @@
           ENDDO
         ENDIF
 !
-!     COMPUTES THE INITIAL VOLUME OF SEDIMENTS 
+!     COMPUTES THE INITIAL VOLUME OF SEDIMENTS
         VOLTOT(1)=0.D0
         DO J=1,NPOIN
             VOLTOT(1) = VOLTOT(1) + ELAY%R(J)*VOLU2D%R(J)
@@ -181,7 +181,7 @@
         ENDIF
         VOLINI(1) = VOLTOT(1)
 !     INITIALISING VOLUMES
-        RMASCL = 0.D0        
+        RMASCL = 0.D0
         VCUMUCL = 0.D0
         VOLNESTORCL = 0.D0
 !

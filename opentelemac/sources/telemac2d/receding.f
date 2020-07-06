@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE RECEDING
-!                    *******************
+!                   *******************
+                    SUBROUTINE RECEDING
+!                   *******************
 !
      &(H,ZF,HREC,V2DPAR,IKLE,NPOIN,NELEM,NELMAX,DELTAH,HITS,
      & MESH,W1,YAFLODEL,FLODEL,DT)

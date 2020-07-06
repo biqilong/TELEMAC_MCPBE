@@ -110,7 +110,7 @@
           IF (NBPB.EQ.0) THEN
             NBPB = 1
             NUMPB(NBPB) = TRAV1(I,1)
-           ELSE
+          ELSE
             EXIST = .FALSE.
             DO J=1,NBPB
               IF (NUMPB(J).EQ.TRAV1(I,1)) EXIST = .TRUE.
@@ -130,7 +130,7 @@
           IF (NBPB.EQ.0) THEN
             NBPB = 1
             NUMPB(NBPB) = TRAV1(I,2)
-           ELSE
+          ELSE
             EXIST = .FALSE.
             DO J=1,NBPB
               IF (NUMPB(J).EQ.TRAV1(I,2)) EXIST = .TRUE.

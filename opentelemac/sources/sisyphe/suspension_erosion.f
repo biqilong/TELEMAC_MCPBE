@@ -1,6 +1,6 @@
-!                  *****************************
-                   SUBROUTINE SUSPENSION_EROSION
-!                  *****************************
+!                 *****************************
+                  SUBROUTINE SUSPENSION_EROSION
+!                 *****************************
 !
      &(TAUP,HN,FDM,FD90,AVA,NPOIN,CHARR,XMVE,XMVS,VCE,GRAV,XWC,
      & ZERO,ZREF,AC,FLUER,CSTAEQ,QSC,ICQ,U2D,V2D,CSRATIO,DEBUG)

@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE T3D_STRESS
-!                    *********************
+!                   *********************
+                    SUBROUTINE T3D_STRESS
+!                   *********************
 !
      &(SEM3D,OP,T2,T3,BFBORL,BFBORF,BFBORS,NPOIN2,NPOIN3,MESH2D,
      & MESH3D,IELM2H,IELM2V,SV,MSK,MASKBR,MASKEL,IPBOT,SIGMAG,

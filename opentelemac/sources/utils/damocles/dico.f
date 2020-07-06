@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE DICO
-!                    ***************
+!                   ***************
+                    SUBROUTINE DICO
+!                   ***************
 !
      &( ITYP   , NUMERO , ILONG  , CHAINE , MOTCLE , MOTPRO ,
      &  LONPRO , SIZE   , UTINDX , LANGUE , AIDLNG , MOTIGN , NIGN   ,

@@ -1,6 +1,6 @@
-!                    ******************
-                     MODULE BND_SPECTRA
-!                    ******************
+!                   ******************
+                    MODULE BND_SPECTRA
+!                   ******************
 !
 !
 !***********************************************************************
@@ -70,11 +70,11 @@
       CONTAINS
 !***********************************************************************
 
-!                    *****************************
-                     SUBROUTINE IMPOSE_BND_SPECTRA
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE IMPOSE_BND_SPECTRA
+!                   *****************************
 !
-     &     (IMP_FILE,LT,AT,FBOR,NPTFR,NPLAN,NF)
+     &     (IMP_FILE,LT,AT,FBOR,NPTFR,NDIRE,NF)
 !
 !***********************************************************************
 !     TOMAWAC   V7P3                                   23/02/2017
@@ -94,7 +94,7 @@
 !| AT             |-->| COMPUTATION TIME
 !| FBOR           |<->| SPECTRAL VARIANCE DENSITY AT THE BOUNDARIES
 !| NPTFR          |-->| NUMBER OF BOUNDARY POINTS
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NF             |-->| NUMBER OF FREQUENCIES
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -112,16 +112,16 @@
       TYPE(BIEF_FILE), INTENT(IN)    :: IMP_FILE
       INTEGER, INTENT(IN)            :: LT
       DOUBLE PRECISION, INTENT(IN)   :: AT
-      INTEGER, INTENT(IN)            :: NPTFR,NPLAN,NF
-      DOUBLE PRECISION, INTENT(INOUT):: FBOR(NPTFR,NPLAN,NF)
+      INTEGER, INTENT(IN)            :: NPTFR,NDIRE,NF
+      DOUBLE PRECISION, INTENT(INOUT):: FBOR(NPTFR,NDIRE,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER IPTFR, ISPE, IPOIN, IPLAN, IFF,ITMP
+      INTEGER IPTFR, ISPE, IPOIN, IDIR, IFF,ITMP
       DOUBLE PRECISION DIST_SPE,DIST
       DOUBLE PRECISION COEFT
       DOUBLE PRECISION FCL1,FCL2
-      INTEGER BC_NF,BC_NPLAN,ITRAV
+      INTEGER BC_NF,BC_NDIRE,ITRAV
       DOUBLE PRECISION BC_F1,BC_F2,BC_RAISF
       DOUBLE PRECISION F_TEMP
       DOUBLE PRECISION, PARAMETER :: EPS = 1.D-6
@@ -228,7 +228,7 @@
 ! 5/ CHECK THAT THE MESH READ HAS THE SAME THE FREQUENCIES AND
 !    DIRECTIONS AS IN THE SIMULATION
         BC_NF=0
-        BC_NPLAN=0
+        BC_NDIRE=0
         BC_F1=10.D10
         BC_F2=10.D10
         BC_RAISF=0.D0
@@ -245,7 +245,7 @@
           ENDIF
         END DO
         BC_RAISF=BC_F2/BC_F1
-        BC_NPLAN=BC_NPOIN/BC_NF
+        BC_NDIRE=BC_NPOIN/BC_NF
         IF(ABS(BC_F1-F1).GT.1.D-6) THEN
           WRITE(LU,*)'*********************************************'
           WRITE(LU,*)'THE MINIMAL FREQUENCY OF THE SPECTRA READ'
@@ -278,13 +278,13 @@
           CALL PLANTE(1)
           STOP
         ENDIF
-        IF(BC_NPLAN.NE.NPLAN) THEN
+        IF(BC_NDIRE.NE.NDIRE) THEN
           WRITE(LU,*)'*********************************************'
           WRITE(LU,*)'THE NUMBER OF DIRECTIONS OF THE SPECTRA READ'
           WRITE(LU,*)'IS NOT EQUAL TO THE NUMBER OF DIRECTIONS OF THE'
           WRITE(LU,*)'SIMULATION.'
-          WRITE(LU,*)'- NUMBER OF DIRECTIONS OF THE SIMULATION:',NPLAN
-          WRITE(LU,*)'- NUMBER OF DIRECTIONS READ:',BC_NPLAN
+          WRITE(LU,*)'- NUMBER OF DIRECTIONS OF THE SIMULATION:',NDIRE
+          WRITE(LU,*)'- NUMBER OF DIRECTIONS READ:',BC_NDIRE
           WRITE(LU,*)'*********************************************'
           CALL PLANTE(1)
           STOP
@@ -303,10 +303,10 @@
         NPTFR_LOC  = 0
         ALLOCATE(IND_PTFR(NPTFR))
         DO IPTFR=1,NPTFR
-           IF(LIFBOR(IPTFR).EQ.KENT)THEN
-              NPTFR_LOC = NPTFR_LOC+1
-              IND_PTFR(NPTFR_LOC) = IPTFR
-           ENDIF
+          IF(LIFBOR(IPTFR).EQ.KENT)THEN
+            NPTFR_LOC = NPTFR_LOC+1
+            IND_PTFR(NPTFR_LOC) = IPTFR
+          ENDIF
         ENDDO
 
 
@@ -320,21 +320,21 @@
         ALLOCATE(BC_ALL2(BC_NPOIN,NPTFR_LOC))
 
 ! 8/ READ FIRST TIME
-          DO IPTFR=1,NPTFR_LOC
-            ITMP = IND_PTFR(IPTFR)
-            ! READ DATA BEFORE
-            CALL GET_DATA_VALUE(IMP_FILE%FMT,IMP_FILE%LU,
-     &         RECORD1,BC_VARLIST(BC_CORR(ITMP)),BC_VAL,BC_NPOIN,IERR)
-            DO IPOIN = 1,BC_NPOIN
-              BC_ALL1(IPOIN,IPTFR)= BC_VAL(IPOIN)
-            ENDDO
-             ! READ DATA AFTER
-            CALL GET_DATA_VALUE(IMP_FILE%FMT,IMP_FILE%LU,
-     &         RECORD2,BC_VARLIST(BC_CORR(ITMP)),BC_VAL,BC_NPOIN,IERR)
-            DO IPOIN = 1,BC_NPOIN
-              BC_ALL2(IPOIN,IPTFR)= BC_VAL(IPOIN)
-            ENDDO
+        DO IPTFR=1,NPTFR_LOC
+          ITMP = IND_PTFR(IPTFR)
+          ! READ DATA BEFORE
+          CALL GET_DATA_VALUE(IMP_FILE%FMT,IMP_FILE%LU,
+     &       RECORD1,BC_VARLIST(BC_CORR(ITMP)),BC_VAL,BC_NPOIN,IERR)
+          DO IPOIN = 1,BC_NPOIN
+            BC_ALL1(IPOIN,IPTFR)= BC_VAL(IPOIN)
           ENDDO
+          ! READ DATA AFTER
+          CALL GET_DATA_VALUE(IMP_FILE%FMT,IMP_FILE%LU,
+     &       RECORD2,BC_VARLIST(BC_CORR(ITMP)),BC_VAL,BC_NPOIN,IERR)
+          DO IPOIN = 1,BC_NPOIN
+            BC_ALL2(IPOIN,IPTFR)= BC_VAL(IPOIN)
+          ENDDO
+        ENDDO
 
 
 !-----------------------------------------------------------------------
@@ -390,20 +390,20 @@
               ENDDO
             ENDDO
         ELSE
-           ! COPY DATA
-           RECORD1 = RECORD2
-           DO IPOIN = 1,BC_NPOIN
-             BC_ALL2(IPOIN,IPTFR)= BC_VAL(IPOIN)
-           ENDDO
+          ! COPY DATA
+          RECORD1 = RECORD2
+          DO IPOIN = 1,BC_NPOIN
+            BC_ALL2(IPOIN,IPTFR)= BC_VAL(IPOIN)
+          ENDDO
         ENDIF
         ! UPDATE NEW TIME
         DO IPTFR=1,NPTFR_LOC
-            ITMP = IND_PTFR(IPTFR)
-            CALL GET_DATA_VALUE(IMP_FILE%FMT,IMP_FILE%LU,
-     &         RECORD2,BC_VARLIST(BC_CORR(ITMP)),BC_VAL,BC_NPOIN,IERR)
-            DO IPOIN = 1,BC_NPOIN
-              BC_ALL2(IPOIN,IPTFR)= BC_VAL(IPOIN)
-            ENDDO
+          ITMP = IND_PTFR(IPTFR)
+          CALL GET_DATA_VALUE(IMP_FILE%FMT,IMP_FILE%LU,
+     &       RECORD2,BC_VARLIST(BC_CORR(ITMP)),BC_VAL,BC_NPOIN,IERR)
+          DO IPOIN = 1,BC_NPOIN
+            BC_ALL2(IPOIN,IPTFR)= BC_VAL(IPOIN)
+          ENDDO
         ENDDO
       ENDIF
 !
@@ -412,12 +412,12 @@
         !TODO; USE BETTER INTERPOLATION
       DO IPTFR=1,NPTFR_LOC
           ITMP = IND_PTFR(IPTFR)
-          DO IPLAN=1,NPLAN
+          DO IDIR=1,NDIRE
             DO IFF=1,NF
-              IPOIN=(IPLAN+NPLAN*(IFF-1))
+              IPOIN=(IDIR+NDIRE*(IFF-1))
               FCL1=BC_ALL1(IPOIN,IPTFR)
               FCL2=BC_ALL2(IPOIN,IPTFR)
-              FBOR(ITMP,IPLAN,IFF)=FCL1+(FCL2-FCL1)*COEFT
+              FBOR(ITMP,IDIR,IFF)=FCL1+(FCL2-FCL1)*COEFT
             ENDDO
           ENDDO
       ENDDO

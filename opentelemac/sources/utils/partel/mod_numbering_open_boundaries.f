@@ -15,7 +15,7 @@
 !***********************************************************************
      & (NAMEINP, IKLE, IKLES,
      &  KP1BOR, NUMLIQ, DIM_MESH, NPOIN2, NPTFR, NPOIN, NELEM2,
-     &  NELBOR, LIUBOR, LIHBOR, NBOR, IFABOR, F)
+     &  NELBOR, LIUBOR, LIHBOR, NBOR, IFABOR, F, LISTIN)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| NAMEINP        |<--| Name of the geometry file
@@ -34,6 +34,7 @@
 !| NBOR           |<->| Boundary numbering array
 !| IFABOR         |-->| Array for boundaries
 !| F              |<--| Coordinates
+!| LISTIN         |<--| If True display front2 listin
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
         USE DECLARATIONS_PARTEL
@@ -53,6 +54,7 @@
         INTEGER, INTENT(IN) :: IKLES(NELEM2*3)
         INTEGER, INTENT(IN) :: LIUBOR(NPTFR), LIHBOR(NPTFR)
         CHARACTER(LEN=PATH_LEN), INTENT(IN) :: NAMEINP
+        LOGICAL, INTENT(IN) :: LISTIN
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -140,7 +142,7 @@
      &           (NFRLIQ,
      &           LIHBOR,LIUBOR,F(:,1),F(:,2),
      &           NBOR,KP1BOR(1:NPTFR,1),DEJAVU,NPOIN2,NPTFR,
-     &           2,.TRUE.,NUMLIQ,MAXFRO)
+     &           2,LISTIN,NUMLIQ,MAXFRO)
         ENDIF
 !
         DEALLOCATE (DEJAVU)

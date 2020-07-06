@@ -378,7 +378,6 @@ program HOMERE_MASCARET
    logical :: imp_avancement ! flag pour impression dans le fichier de controle
    real(DOUBLE)   , dimension(:), pointer    :: DPDZ1 => null()
    real(DOUBLE)   , dimension(:), pointer    :: DPDZ2 => null()
-   real(DOUBLE)   , dimension(:), pointer    :: VOLSM => null()
    real (DOUBLE)                             :: DTImpression
    real (DOUBLE)                             :: POURC,XN1,XN2
    real(DOUBLE)                              :: avancement !arrondi de l'avancement du calcul
@@ -392,11 +391,10 @@ program HOMERE_MASCARET
    integer :: phase_post
    integer :: phase_post_imp
    integer :: phase_stock
-   integer :: FormatResu1
    integer :: ul
    integer :: nb_pas
    integer :: i,j,l,m, nb_Bief,nbap
-   real    :: T0,T1,T2
+   real    :: T0,T1
    type(FICHIER_T) :: FichierCas
    type(FICHIER_T) :: FichierControle
    ! Casiers
@@ -407,7 +405,7 @@ program HOMERE_MASCARET
    type(FICHIER_T) :: FichierListingCasier, FichierListingLiaison, &
                       FichierResultatCasier, FichierResultatLiaison, FichierGeomCasier
    real(DOUBLE) ::  abs_abs
-   integer :: UniteListingCasier, iapport
+   integer :: UniteListingCasier
    logical :: Impression
    integer :: phase_clpluie
    integer :: phase_post_casier
@@ -423,8 +421,6 @@ program HOMERE_MASCARET
    integer                                :: FreqCouplage
    real(DOUBLE)                           :: DT_trac  ! pas de temps Tracer
    real (DOUBLE) ,dimension(:,:), pointer :: Ctraceur => null() ! Concentration du traceur no i
-   real (DOUBLE) ,dimension(:,:), pointer :: S => null()        ! Sources internes du traceur
-   real (DOUBLE) ,dimension(:,:), pointer :: RNU => null()      ! terme source implicite
    real(DOUBLE)  , dimension(:), pointer  :: QT => null()       ! Debit total (Q1+Q2)
    real(DOUBLE)  , dimension(:), pointer  :: ST => null()       ! Surface mouillee totale (S1+S2)
    real(DOUBLE)  , dimension(:), pointer  :: BT => null()       ! Largeur totale (B1+B2)
@@ -432,7 +428,6 @@ program HOMERE_MASCARET
    real(DOUBLE)  , dimension(:), pointer  :: ST_ANT => null()   ! Surface mouillee totale au pas de temps anterieur
    real(DOUBLE)  , dimension(:), pointer  :: BT_ANT => null()   ! Largeur totale au pas de temps anterieur
    integer                                :: Modele_Qual_Eau
-   real (DOUBLE) ,dimension(:)  , pointer :: CLAM , CLAV => null()
    Type(FICHIER_T)                        :: FichierListingTracer
    Type(FICHIER_T)                        :: FichierResuTracer
    Type(FICHIER_T)                        :: FichierConcInit
@@ -558,11 +553,6 @@ program HOMERE_MASCARET
    integer             :: NbProfCourlis
    integer             :: NbCouche
    integer             :: NbPts, NbPtmax
-
-   ! PU2016: utile pour l'affichage du temps courant
-   character           :: CR = char(13)
-   real(DOUBLE)        :: tc1, tc2, tcal1, tcal2
-   real(DOUBLE)        :: Tlim = 0.
 
    NbPts = 0
 !--TAPENADE

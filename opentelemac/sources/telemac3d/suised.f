@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SUISED
-!                    *****************
+!                   *****************
+                    SUBROUTINE SUISED
+!                   *****************
 !
      &(S3D_EPAI,S3D_HDEP,ZR,ZF,T2,NPOIN2,S3D_NCOUCH,S3D_ITASS,
      & NSUIS,FFORMAT)

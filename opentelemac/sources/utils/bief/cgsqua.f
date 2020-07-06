@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CGSQUA
-!                    *****************
+!                   *****************
+                    SUBROUTINE CGSQUA
+!                   *****************
 !
      &(X,A,B,MESH, G,G0,P,K,H,AHPK,CFG,INFOGR)
 !

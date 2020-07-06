@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE AIRWIK2
-!                    ******************
+!                   ******************
+                    SUBROUTINE AIRWIK2
+!                   ******************
 !
      &(LIHBOR,UBORF,VBORF,WBORF,LIUBOF,LIVBOF,LIWBOF,UBORL,VBORL,WBORL,
      & LIUBOL,LIVBOL,LIWBOL,
@@ -142,18 +142,18 @@
 !
       DO IPLAN=1,NPLAN
         DO IPTFR=1,NPTFR
-           IF (LIUBOL(IPTFR,IPLAN).EQ.KENT.OR.
-     &         LIUBOL(IPTFR,IPLAN).EQ.KDEB)
-     &          U(NBOR(IPTFR),IPLAN) = UBORL(IPTFR,IPLAN)
-           IF (LIVBOL(IPTFR,IPLAN).EQ.KENT.OR.
-     &         LIVBOL(IPTFR,IPLAN).EQ.KDEB)
-     &          V(NBOR(IPTFR),IPLAN) = VBORL(IPTFR,IPLAN)
-           IF (LIWBOL(IPTFR,IPLAN).EQ.KENT.OR.
-     &         LIWBOL(IPTFR,IPLAN).EQ.KDEB)
-     &          W(NBOR(IPTFR),IPLAN) = WBORL(IPTFR,IPLAN)
-           IF(LIUBOL(IPTFR,IPLAN).EQ.KADH) U(NBOR(IPTFR),IPLAN) = 0.D0
-           IF(LIVBOL(IPTFR,IPLAN).EQ.KADH) V(NBOR(IPTFR),IPLAN) = 0.D0
-           IF(LIWBOL(IPTFR,IPLAN).EQ.KADH) W(NBOR(IPTFR),IPLAN) = 0.D0
+          IF (LIUBOL(IPTFR,IPLAN).EQ.KENT.OR.
+     &        LIUBOL(IPTFR,IPLAN).EQ.KDEB)
+     &         U(NBOR(IPTFR),IPLAN) = UBORL(IPTFR,IPLAN)
+          IF (LIVBOL(IPTFR,IPLAN).EQ.KENT.OR.
+     &        LIVBOL(IPTFR,IPLAN).EQ.KDEB)
+     &         V(NBOR(IPTFR),IPLAN) = VBORL(IPTFR,IPLAN)
+          IF (LIWBOL(IPTFR,IPLAN).EQ.KENT.OR.
+     &        LIWBOL(IPTFR,IPLAN).EQ.KDEB)
+     &         W(NBOR(IPTFR),IPLAN) = WBORL(IPTFR,IPLAN)
+          IF(LIUBOL(IPTFR,IPLAN).EQ.KADH) U(NBOR(IPTFR),IPLAN) = 0.D0
+          IF(LIVBOL(IPTFR,IPLAN).EQ.KADH) V(NBOR(IPTFR),IPLAN) = 0.D0
+          IF(LIWBOL(IPTFR,IPLAN).EQ.KADH) W(NBOR(IPTFR),IPLAN) = 0.D0
         ENDDO
       ENDDO
 !

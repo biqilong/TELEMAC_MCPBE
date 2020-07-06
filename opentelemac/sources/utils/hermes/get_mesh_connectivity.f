@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE GET_MESH_CONNECTIVITY
-!                    ********************************
+!                   ********************************
+                    SUBROUTINE GET_MESH_CONNECTIVITY
+!                   ********************************
 !
      &(FFORMAT,FID,TYP_ELEM,IKLE,NELEM,NDP,IERR)
 !

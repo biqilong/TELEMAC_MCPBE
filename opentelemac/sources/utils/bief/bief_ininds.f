@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE BIEF_ININDS
-!                    **********************
+!                   **********************
+                    SUBROUTINE BIEF_ININDS
+!                   **********************
 !
      &(NPOIN,NPTFR,NELEM,NPMAX,NPTFX,NELMAX,NPLAN,NSEGBOR,NDS,NELEB)
 !

@@ -1,6 +1,6 @@
-!                    *******************************
-                     SUBROUTINE BEDLOAD_BAILARD_GAIA
-!                    *******************************
+!                   *******************************
+                    SUBROUTINE BEDLOAD_BAILARD_GAIA
+!                   *******************************
 !
      &(U2D,V2D,UNORM,TOB,TOBW,THETAW,UW,FW,CF,NPOIN,PI,
      & XMVE,GRAV,DENS,XWC,ALPHAW,QSCX,QSCY,QSSX,QSSY,

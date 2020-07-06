@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE POROS
-!                    ****************
+!                   ****************
+                    SUBROUTINE POROS
+!                   ****************
 !
      &(TETA,ZF,HN,MESH)
 !

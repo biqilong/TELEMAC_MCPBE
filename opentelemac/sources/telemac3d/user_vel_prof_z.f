@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE USER_VEL_PROF_Z
-!                    **************************
+!                   **************************
+                    SUBROUTINE USER_VEL_PROF_Z
+!                   **************************
 !
      &( VEL_PROF_Z, I , IPOIN2 , IPLAN , IOPT)
 !

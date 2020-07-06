@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE SOURCE_WAQ
-!                    **********************
+!                 **********************
+                  SUBROUTINE SOURCE_WAQ
+!                 **********************
 !
      &(NPOIN3,NPOIN2,TEXP,TIMP,TN,HPROP,U,V,CF,
      & T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12, T2_1,T2_2,T2_3,

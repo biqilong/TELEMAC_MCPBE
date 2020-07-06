@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GTSH31
-!                    *****************
+!                   *****************
+                    SUBROUTINE GTSH31
+!                   *****************
 !
      &(SHP,ELT,IKLE,ELTCAR,NPOIN,NELMAX)
 !

@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE FLUX_EF_VF
-!                    *********************
+!                   *********************
+                    SUBROUTINE FLUX_EF_VF
+!                   *********************
 !
      &(FLOW,PHIEL,NSEG,NELEM,NELMAX,ELTSEG,ORISEG,IKLE,INIFLO,IOPT,FN,
      & YAFLULIM,FLULIM,YAFLULIMEBE,FLULIMEBE)

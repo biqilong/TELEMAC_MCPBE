@@ -24,7 +24,7 @@
       USE BIEF_DEF
       USE INTERFACE_TELEMAC2D, EX_HYD_FV => HYD_FV
       USE DECLARATIONS_TELEMAC2D, ONLY: NPOIN,NSEG,NELEM,HROPT,NTRAC,
-     &                            ICIN,ZF,X,Y,GRAV,DT,MESH,EPS_FV,
+     &                            ICIN,ZF,X,Y,GRAV,MESH,EPS_FV,
      &                            CORR_I,CORR_J,CORR_ZL,CORR_ZR,CORR_UL,
      &                            CORR_UR,CORR_VL,CORR_VR,CORR_HL,
      &                            CORR_HR

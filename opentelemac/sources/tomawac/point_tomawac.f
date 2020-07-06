@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE POINT_TOMAWAC
-!                    ************************
+!                   ************************
+                    SUBROUTINE POINT_TOMAWAC
+!                   ************************
 !
 !
 !***********************************************************************
@@ -58,7 +58,7 @@
       USE DECLARATIONS_TOMAWAC
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !
@@ -89,7 +89,7 @@
 !     ALLOCATES THE 3D MESH STRUCTURE
 !
       CALL ALMESH(MESH3D,'MESH3D',IELM3,SPHE,CFG, FMTGEO, LUGEO,
-     &            EQUA,0,NPLAN=NPLAN)
+     &            EQUA,0,NPLAN=NDIRE)
 !
 !     ALIAS FOR CERTAIN COMPONENTS OF MESH
 !
@@ -109,12 +109,12 @@
 !
       IELBT = IELBOR(IELM2,1)
 !
-      NPOIN3=NPOIN2*NPLAN
+      NPOIN3=NPOIN2*NDIRE
 !
 !-----------------------------------------------------------------------
 !
       IF(NCSIZE.GT.1) THEN
-        CALL BIEF_ALLVEC(2,IKLE_EXT,'IK_EXT',P_IMAX(NELEM2),3,0,MESH)
+        CALL BIEF_ALLVEC(2,IKLE_EXT,'IK_EXT',P_MAX(NELEM2),3,0,MESH)
       ELSE
 !       HERE POINTING IKLE_EXT%I ON IKLE2 WOULD WORK ALSO...
         CALL BIEF_ALLVEC(2,IKLE_EXT,'IK_EXT',NELEM2,3,0,MESH)
@@ -144,7 +144,7 @@
 !
 !     ARRAY OF DIRECTIONAL SPREADING FUNCTION VALUES
 !
-      CALL BIEF_ALLVEC(1,SFRA,'SFRA  ',NPLAN , 1 , 0 ,MESH)
+      CALL BIEF_ALLVEC(1,SFRA,'SFRA  ',NDIRE , 1 , 0 ,MESH)
       FRA    =>SFRA%R
 !
 !     "PHYSICAL" VARIABLES OF SIZE NPOIN3
@@ -172,7 +172,7 @@
 !
 !     FOR THE BOUNDARY CONDITIONS
 !
-      CALL BIEF_ALLVEC(1,SFBOR,'SFBOR ',IELBT, NPLAN*NF , 2 ,MESH)
+      CALL BIEF_ALLVEC(1,SFBOR,'SFBOR ',IELBT, NDIRE*NF , 2 ,MESH)
 !
 !     ARRAYS FOR NON-LINEAR INTERACTIONS
 !
@@ -342,9 +342,9 @@
 !
 !     ARRAYS WITH THE RELATIVE POSITIONS OF THE DIRECTION PLANES,
 !     AND WITH THE COS AND SIN TETA
-      CALL BIEF_ALLVEC(1,STETA,'STETA ',NPLAN+1 , 1 , 0 ,MESH)
-      CALL BIEF_ALLVEC(1,SCOSTE,'SCOSTE',NPLAN , 1 , 0 ,MESH)
-      CALL BIEF_ALLVEC(1,SSINTE,'SSINTE',NPLAN , 1 , 0 ,MESH)
+      CALL BIEF_ALLVEC(1,STETA,'STETA ',NDIRE+1 , 1 , 0 ,MESH)
+      CALL BIEF_ALLVEC(1,SCOSTE,'SCOSTE',NDIRE , 1 , 0 ,MESH)
+      CALL BIEF_ALLVEC(1,SSINTE,'SSINTE',NDIRE , 1 , 0 ,MESH)
       TETA     =>STETA%R
       COSTET   =>SCOSTE%R
       SINTET   =>SSINTE%R
@@ -678,7 +678,7 @@
       LIFBOR  => SLIFBR%I
       IBOR    => SIBOR%I
       BOUNDARY_COLOUR => SBOUNDARY_COLOUR%I
-      
+
 !
 ! FOOT OF THE CHARACTERISTICS
 !
@@ -723,7 +723,7 @@
 !.....NON-LINEAR INTERACTIONS
 !
       IF(STRIF.EQ.1) THEN
-        CALL BIEF_ALLVEC(2,SIAGNL,'SIAGNL',8*NPLAN,1,0,MESH)
+        CALL BIEF_ALLVEC(2,SIAGNL,'SIAGNL',8*NDIRE,1,0,MESH)
       ELSE
         CALL BIEF_ALLVEC(2,SIAGNL,'SIAGNL',1,1,0,MESH)
       ENDIF
@@ -735,7 +735,7 @@
       IF(STRIF.EQ.2) THEN
         ALLOCATE(XLAMDI(1:MDIA))
         ALLOCATE(XMUMDI(1:MDIA))
-        ALLOCATE(IANMDI(1:NPLAN,1:16,1:MDIA))
+        ALLOCATE(IANMDI(1:NDIRE,1:16,1:MDIA))
         ALLOCATE(COEMDI(1:32,1:MDIA))
       ELSE
         ALLOCATE(XLAMDI(1))
@@ -893,7 +893,7 @@
 
 !
 !-----------------------------------------------------------------------
-      ELSEIF (.NOT.INCLUS(COUPLING,'TOMAWAC') ) THEN 
+      ELSEIF (.NOT.INCLUS(COUPLING,'TOMAWAC') ) THEN
       ! Dummy association for stand alone tomawac
         CPL_WAC_DATA%U_TEL => SZF
         CPL_WAC_DATA%V_TEL => SZF

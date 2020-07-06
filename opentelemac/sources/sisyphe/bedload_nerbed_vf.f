@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE BEDLOAD_NERBED_VF !
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE BEDLOAD_NERBED_VF !
+!                   ******************************
 !
      &(MESH,LIEBOR,KSORT,ELAY,V2DPAR,QSX,QSY,AVA,NPOIN,NSEG,NPTFR,
      & DT,QS,T1,T2,T3,BREACH,CSF_SABLE,NUBO,VNOIN)

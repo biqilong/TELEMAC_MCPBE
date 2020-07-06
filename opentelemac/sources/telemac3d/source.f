@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SOURCE
-!                    *****************
+!                   *****************
+                    SUBROUTINE SOURCE
+!                   *****************
 !
      & (S0U,S0V,S0W,S1U,S1V,S1W,
      &  UN3,VN3,WSN3,WN3,

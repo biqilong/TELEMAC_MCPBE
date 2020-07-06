@@ -51,7 +51,7 @@
       USE DECLARATIONS_TELEMAC2D, ONLY: NPOIN,NPTFR,HBOR,UBOR,VBOR,GRAV,
      &                            CFLWTD,MESH,NTRAC,EPS_FV
       USE DECLARATIONS_TELEMAC, ONLY: KDIR,KNEU
-      USE INTERFACE_PARALLEL, ONLY : P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -371,7 +371,7 @@
 !
         ENDDO
       ENDIF
-      IF(NCSIZE.GT.1)DT=P_DMIN(DT)
+      IF(NCSIZE.GT.1)DT=P_MIN(DT)
 !
 !-----------------------------------------------------------------------
 !

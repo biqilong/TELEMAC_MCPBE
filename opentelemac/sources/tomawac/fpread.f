@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE FPREAD
-!                    *****************
+!                   *****************
+                    SUBROUTINE FPREAD
+!                   *****************
 !
-     &( FREAD, F, NF, NPLAN, NPOIN2, EXPO)
+     &( FREAD, F, NF, NDIRE, NPOIN2, EXPO)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   15/06/2011
@@ -45,7 +45,7 @@
 !| F              |---| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| FREAD          |<--| PEAK FREQUENCY (READ METHOD)
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -56,8 +56,8 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER,          INTENT(IN) :: NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION, INTENT(IN) :: EXPO  , F(NPOIN2,NPLAN,NF)
+      INTEGER,          INTENT(IN) :: NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION, INTENT(IN) :: EXPO  , F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: FREAD(NPOIN2)
 !
 !.....LOCAL VARIABLES
@@ -67,7 +67,7 @@
 !
 !
       SEUIL =1.D-20
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       DO IP = 1,NPOIN2
         FREAD(IP)=0.D0
         DENOM=0.D0
@@ -80,7 +80,7 @@
 !.......INTEGRATES WRT DIRECTIONS TO GET E(F)
 !       """""""""""""""""""""""""""""""""""""""""""""""""
           E = 0.D0
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             E = E + F(IP,JP,JF)*DTETAR
           ENDDO               ! JP
 !

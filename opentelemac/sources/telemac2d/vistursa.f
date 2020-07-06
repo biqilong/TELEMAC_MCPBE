@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE VISTURSA
-!                    *******************
+!                   *******************
+                    SUBROUTINE VISTURSA
+!                   *******************
 !
      &(VISC, VISCSA,NPOIN,PROPNU)
 !

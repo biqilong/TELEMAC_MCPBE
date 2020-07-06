@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE GAIA_BALANCE
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE GAIA_BALANCE
+!                   ***********************
      &(ZF_TEL)
 !
 !***********************************************************************
@@ -20,7 +20,7 @@
       USE INTERFACE_HERMES
       USE DECLARATIONS_SPECIAL
 !
-      USE INTERFACE_PARALLEL, ONLY: P_DMAX,P_DMIN,P_IMAX,P_DSUM
+      USE INTERFACE_PARALLEL, ONLY: P_MIN,P_MAX,P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -80,7 +80,7 @@
           SUM_EVOL_MM = SUM_EVOL_MM + EVOL_MM%R(I)*VOLU2D%R(I)
         ENDDO
         IF(NCSIZE.GT.1) THEN
-          SUM_EVOL_MM = P_DSUM(SUM_EVOL_MM)
+          SUM_EVOL_MM = P_SUM(SUM_EVOL_MM)
         ENDIF
         WRITE(LU,111) SUM_EVOL_MM
 111     FORMAT(5X,'MASS EVOLUTION DUE TO SLIDING =',G16.7,'(KG)')
@@ -138,13 +138,13 @@
         WRITE(LU,*)
         CALL MAXI(XMAX,IMAX,T1%R,NPOIN)
         IF(NCSIZE.GT.1) THEN
-          XMA=P_DMAX(XMAX)
+          XMA=P_MAX(XMAX)
           IF(XMAX.EQ.XMA) THEN
             IMA=MESH%KNOLG%I(IMAX)
           ELSE
             IMA=0
           ENDIF
-          IMA=P_IMAX(IMA)
+          IMA=P_MAX(IMA)
         ELSE
           IMA=IMAX
           XMA=XMAX
@@ -153,13 +153,13 @@
 372     FORMAT(' MAXIMAL EVOLUTION (M)    : ',G16.7,' NODE  :',I6)
         CALL MINI(XMIN,IMIN,T1%R,NPOIN)
         IF(NCSIZE.GT.1) THEN
-          XMI=P_DMIN(XMIN)
+          XMI=P_MIN(XMIN)
           IF(XMIN.EQ.XMI) THEN
             IMI=MESH%KNOLG%I(IMIN)
           ELSE
             IMI=0
           ENDIF
-          IMI=P_IMAX(IMI)
+          IMI=P_MAX(IMI)
         ELSE
           IMI=IMIN
           XMI=XMIN
@@ -181,13 +181,13 @@
       IF(ENTET) THEN
         CALL MAXI(XMAX,IMAX,CUMBE%R,NPOIN)
         IF(NCSIZE.GT.1) THEN
-          XMA=P_DMAX(XMAX)
+          XMA=P_MAX(XMAX)
           IF(XMAX.EQ.XMA) THEN
             IMA=MESH%KNOLG%I(IMAX)
           ELSE
             IMA=0
           ENDIF
-          IMA=P_IMAX(IMA)
+          IMA=P_MAX(IMA)
         ELSE
           IMA=IMAX
           XMA=XMAX
@@ -196,13 +196,13 @@
 882     FORMAT(' TOTAL MAXIMAL EVOLUTION  : ',G16.7,' NODE  :',I6)
         CALL MINI(XMIN,IMIN,CUMBE%R,NPOIN)
         IF(NCSIZE.GT.1) THEN
-          XMI=P_DMIN(XMIN)
+          XMI=P_MIN(XMIN)
           IF(XMIN.EQ.XMI) THEN
             IMI=MESH%KNOLG%I(IMIN)
           ELSE
             IMI=0
           ENDIF
-          IMI=P_IMAX(IMI)
+          IMI=P_MAX(IMI)
         ELSE
           IMI=IMIN
           XMI=XMIN

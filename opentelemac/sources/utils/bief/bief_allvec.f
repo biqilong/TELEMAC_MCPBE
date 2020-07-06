@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE BIEF_ALLVEC
-!                    **********************
+!                   **********************
+                    SUBROUTINE BIEF_ALLVEC
+!                   **********************
 !
      &( NAT , VEC , NOM , IELM , DIM2 , STATUT , MESH )
 !

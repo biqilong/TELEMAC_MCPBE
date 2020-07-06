@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE KEPSCL
-!                    *****************
+!                   *****************
+                    SUBROUTINE KEPSCL
+!                   *****************
 !
      &(KBOR,EBOR,CF,DISBOR,
      & UN,VN,HN,LIMKEP,LIUBOR,NBOR,NPTFR,

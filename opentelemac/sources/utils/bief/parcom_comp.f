@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PARCOM_COMP
-!                    *****************
+!                   *****************
+                    SUBROUTINE PARCOM_COMP
+!                   *****************
 !
      &( X ,ERRX, ICOM , MESH)
 !

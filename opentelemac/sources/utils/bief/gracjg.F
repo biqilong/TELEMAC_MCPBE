@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GRACJG
-!                    *****************
+!                   *****************
+                    SUBROUTINE GRACJG
+!                   *****************
 !
      &(X, A,B , MESH, D,AD,G,R, CFG,INFOGR,AUX)
 !
@@ -136,7 +136,7 @@
         T1V_NOD = DCO_T1V_GET_NOD()
 !        WRITE(LU,*) 'T1V  NOD  :: ',t1V_NOD
         DO I=1, T1V_NOD
-           CALL DCO_T1V_SET( X%ADR(1)%P%R, 0.D0, 1, I )
+          CALL DCO_T1V_SET( X%ADR(1)%P%R, 0.D0, 1, I )
         END DO
 #  endif
       END IF
@@ -401,9 +401,9 @@
 !     IF(INFOGR) THEN
         TESTL = SQRT( RMRM / XL )
         IF (RELAT) THEN
-           WRITE(LU,104) M,TESTL
+          WRITE(LU,104) M,TESTL
         ELSE
-           WRITE(LU,204) M,TESTL
+          WRITE(LU,204) M,TESTL
         ENDIF
 !     ENDIF
       GO TO 1000
@@ -415,9 +415,9 @@
       IF(INFOGR) THEN
         TESTL = SQRT( RMRM / XL )
         IF (RELAT) THEN
-           WRITE(LU,102) M,TESTL
+          WRITE(LU,102) M,TESTL
         ELSE
-           WRITE(LU,202) M,TESTL
+          WRITE(LU,202) M,TESTL
         ENDIF
       ENDIF
 !

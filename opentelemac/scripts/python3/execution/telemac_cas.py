@@ -56,6 +56,7 @@ class TelemacCas():
                 raise TelemacException(
                 "File does not exists:\n{}".format(file_name))
         # TODO: Add identification of the module
+        self.comments = []
         self.values = {}
         self.lang = ''
         self.in_files = {}
@@ -106,10 +107,21 @@ class TelemacCas():
                        .replace('"', "'")\
                        .replace("''", '"')
             proc = re.match(KEY_COMMENT, line+'/')
+            ini_line = line
             line = proc.group('before').strip() + ' '
             proc = re.match(EMPTY_LINE, line)
             if not proc:
                 core.append(line)
+            else:
+                # Save usefull comments (i.e. with text in it)
+                useless = True
+                for char in ini_line:
+                    if char not in ['/', '*', '-', ' ', '+']:
+                        useless = False
+                        break
+                if not useless:
+                    self.comments.append(ini_line)
+
 
         # Creates a one line of the cleaned up steering
         cas_stream = (' '.join(core))
@@ -270,11 +282,10 @@ class TelemacCas():
                 if 'ECR' in key_data['SUBMIT']:
                     self.out_files[key] = key_data['SUBMIT']
 
-    def write(self, cas_file):
+    def write(self, cas_file, keep_comments=False):
         """
         Write content of class in ascii for into a file
         """
-        # TODO: fancier write using rubrique
         # Name of current rubriques
         rubs = ['', '', '']
         # Numerotation of current rubrique
@@ -331,6 +342,8 @@ class TelemacCas():
                             string = "{} =\n{}\n".format(real_key,
                                                          format72(repr(val)))
                             f.write(string)
+            if keep_comments:
+                f.write('\n'.join(self.comments))
 
     def write_fr_gb(self, output_dir=''):
         """

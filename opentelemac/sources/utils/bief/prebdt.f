@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PREBDT
-!                    *****************
+!                   *****************
+                    SUBROUTINE PREBDT
+!                   *****************
 !
      &(X,A,B,D,MESH,PREXSM,DIADON,S)
 !

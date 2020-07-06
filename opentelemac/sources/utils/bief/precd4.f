@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PRECD4
-!                    *****************
+!                   *****************
+                    SUBROUTINE PRECD4
+!                   *****************
 !
      &(X1,X2,A11,A12,A21,A22,
      & B1,B2,D1,D2,MESH,PRECON,PREXSM,DIADON)

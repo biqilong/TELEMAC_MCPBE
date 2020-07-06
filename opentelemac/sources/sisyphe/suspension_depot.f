@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE SUSPENSION_DEPOT
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE SUSPENSION_DEPOT
+!                   ***************************
 !
      &(TOB,HN, NPOIN, HMIN,XWC,VITCD,ZERO,KARMAN,
      & FDM,FD90,XMVE,T1,T2,ZREF,FLUDPT,DEBUG,SEDCO)

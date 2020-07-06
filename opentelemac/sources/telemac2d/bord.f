@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE BORD
-!                    ***************
+!                   ***************
+                    SUBROUTINE BORD
+!                   ***************
 !
      &(HBOR,UBOR,VBOR,TBOR,U,V,H,
      & ZF,NBOR,TRA05,TRA06,LIHBOR,LIUBOR,LITBOR,
@@ -111,7 +111,7 @@
      &                                  TIDALTYPE
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -164,7 +164,7 @@
         ENDDO
         IF(NCSIZE.GT.1) THEN
           DO IFR=1,NFRLIQ
-            ZMIN(IFR)=P_DMIN(ZMIN(IFR))
+            ZMIN(IFR)=P_MIN(ZMIN(IFR))
           ENDDO
         ENDIF
       ENDIF
@@ -360,7 +360,7 @@
 !           BOUNDARY, IN SPITE OF THE FACT THAT THE MASKS ARE MADE IN
 !           PROPIN BEFORE THE CALL TO BORD
 !
-            IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_IMAX(YADEB(IFRLIQ))
+            IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_MAX(YADEB(IFRLIQ))
             IF(YADEB(IFRLIQ).EQ.1) THEN
               IF(STA_DIS_CURVES(IFRLIQ).EQ.2) THEN
                 QIMP=DIS_STA_CUR(IFRLIQ,PTS_CURVES(IFRLIQ),QZ,NFRLIQ,

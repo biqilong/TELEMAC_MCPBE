@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE USER_TRSCE
-!                    *********************
+!                   *********************
+                    SUBROUTINE USER_TRSCE
+!                   *********************
 !
      &(TIME, I, ITRAC, TRSCE)
 !

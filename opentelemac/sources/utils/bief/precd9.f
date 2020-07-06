@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PRECD9
-!                    *****************
+!                   *****************
+                    SUBROUTINE PRECD9
+!                   *****************
 !
      &(X1,X2,X3,A11,A12,A13,A21,A22,A23,A31,A32,A33,
      & B1,B2,B3,D1,D2,D3,MESH,PRECON,PREXSM,DIADON)

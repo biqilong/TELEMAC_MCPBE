@@ -11,7 +11,7 @@
       USE m_TypeDefs_Nestor
       USE m_Nestor , ONLY :  F, ParallelComputing, nGrainClass, ipid
      &                      , lim_dzts
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM, P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_DSUM, P_MAX
 !
 #ifndef  NESTOR_INTERFACES
       USE m_Interfaces_Nestor, ONLY :  ErrMsgAndStop
@@ -45,8 +45,8 @@
       SRname%s = "Dump_by_Time_Planar" ! subroutine name
 !
       n = A%FieldDumpID
-      
-      
+
+
 !      __________________________________________________________
       !                                                        __|
       !                                                     __|
@@ -54,7 +54,7 @@
 !
         A%Solo = .FALSE.
         IF( A%ActionTypeStr(1:12) == 'Dump_by_time') THEN !> If Dump_by_Time_Planar is not part
-                                                          !  of other actions we have to do 
+                                                          !  of other actions we have to do
                                                           !  some additional initialization
           A%Solo    = .TRUE.
           A%State   = 1                                   !> 1 = Action currently active
@@ -64,7 +64,7 @@
                                                       !  steps (nts) to fulfil the Action
           IF( A%nts < 1 ) Call ErrMsgAndStop( " "
      &    ,"reason:  period for this action is too short "
-     &    ," ","occured in action number:", m, SRname, ipid ) 
+     &    ," ","occured in action number:", m, SRname, ipid )
         ENDIF !( A%ActionTypeStr(1:12) == 'Dump_by_time')
 !
 !
@@ -94,7 +94,7 @@
 !
         IF( A%Solo ) THEN
           CALL Calculate_PlanarLevel( F(n),  A%DumpVolume, 1 )!> 1 => dump;  the result is total F(n)%dz(:)
-        ELSE                                                     
+        ELSE
           CALL Calculate_PlanarLevel( F(n), -A%DigVolume,  1 )!> 1 => dump;  the result is total F(n)%dz(:)
                                                               !  A%DigVolume because we want to
                                                               !  dump the volume which is to dig
@@ -122,7 +122,7 @@
 !
         maxDump_dz_ts =  MAXVAL( F(n)%dz )
         IF( ParallelComputing )
-     &  maxDump_dz_ts = P_DMAX( maxDump_dz_ts )
+     &  maxDump_dz_ts = P_MAX( maxDump_dz_ts )
 !
         IF( maxDump_dz_ts > lim_dzts ) THEN
           WRITE(rCh,'(F16.8)') maxDump_dz_ts  !> convert real value to string and then
@@ -190,7 +190,7 @@
         IF(ParallelComputing) THEN
           dumpSum     = P_DSUM(dumpSum)
           sumInput_ts = P_DSUM(sumInput_ts)
-        ENDIF 
+        ENDIF
         A%InputDumpField = A%InputDumpField + sumInput_ts
         A%DumpVolume     = A%DumpVolume - dumpSum
 !

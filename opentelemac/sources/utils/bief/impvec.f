@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE IMPVEC
-!                    *****************
+!                   *****************
+                    SUBROUTINE IMPVEC
+!                   *****************
 !
      &(VEC,NOM,NPOIN)
 !

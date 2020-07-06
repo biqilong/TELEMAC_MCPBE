@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC15AA
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC15AA
+!                   *****************
 !
      &( XMUL,SF,SU,SV,F,U,V,
      &  XEL,YEL,

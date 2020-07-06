@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE MAKE_ELTCAR
-!                    **********************
+!                   **********************
+                    SUBROUTINE MAKE_ELTCAR
+!                   **********************
 !
      &(ELTCAR,IFAC,
      & IKLE,NPOIN2,NELEM2,NELMAX,KNOLG,ISCORE,MESH,NPLAN,IELM)

@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE BED1_UPDATE
-!                    *********************
+!                   *********************
+                    SUBROUTINE BED1_UPDATE
+!                   *********************
 !
      &(ZR,ZF,VOLU2D)
 !
@@ -24,7 +24,7 @@
      & NPOIN,MASSTOT,NUM_ICLA_IMUD,NUM_ICLA_ISAND,NSICLA,
      & NUM_ISAND_ICLA
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -141,10 +141,10 @@
             DO IMUD = 1,NMUD
               IF (IMUD.NE.NMUD)THEN
                 IF(MASS_MUD_TOT(ILAYER,IPOIN).GE.MIN_SED_MASS_COMP)THEN
-                   RATIO_MUD(IMUD,ILAYER,IPOIN) =
-     &             MIN(1.D0,MASS_MUD(IMUD,ILAYER,IPOIN)
-     &             / MASS_MUD_TOT(ILAYER,IPOIN))
-                   TOT = TOT + RATIO_MUD(IMUD,ILAYER,IPOIN)
+                  RATIO_MUD(IMUD,ILAYER,IPOIN) =
+     &            MIN(1.D0,MASS_MUD(IMUD,ILAYER,IPOIN)
+     &            / MASS_MUD_TOT(ILAYER,IPOIN))
+                  TOT = TOT + RATIO_MUD(IMUD,ILAYER,IPOIN)
                 ELSE
                   RATIO_MUD(IMUD,ILAYER,IPOIN) = 0.D0
                 ENDIF
@@ -201,24 +201,24 @@
         DO ILAYER = 1,NOMBLAY
 
           DO IPOIN = 1,NPOIN
-           XMVS_LAY=0.D0
-           DO ISAND = 1,NSAND ! AVERAGE DENSITY OF SAND FOR THE LAYER
-            XMVS_LAY=XMVS_LAY+
-     &      RATIO_SAND(ISAND,ILAYER,IPOIN)*XMVS0(NUM_ISAND_ICLA(ISAND))
-           ENDDO
-!         TERM REPRESENTS THE DIFFERENCE BETWEEN MUD VOLUME AND VOID VOLUME
-           TERM=0.D0
-           IF(NMUD.GT.0) THEN
-            TERM=RATIO_MUD_SAND(ILAYER,IPOIN)/CONC_MUD(ILAYER,IPOIN)-
-     &      (XKV0(ILAYER)*(1.D0-RATIO_MUD_SAND(ILAYER,IPOIN)))/
-     &      (XMVS_LAY*(1.D0-XKV0(ILAYER)))
-           ENDIF
-           DISCR=MAX(0.D0,TERM)
-!          IF DISCR IS POSITIVE IT MEANS THAT MUD VOLUME IS LARGER THAN VOID VOLUME
-!          IF DISCR IS NEGATIVE, THE VOID VOLUME IS NOT COMPLETELY FILLED BY MUD
-           ES(IPOIN,ILAYER)=MASS_MIX_TOT(ILAYER,IPOIN)*
-     &     ((1.D0-RATIO_MUD_SAND(ILAYER,IPOIN))/
-     &     (XMVS_LAY*(1.D0-XKV0(ILAYER)))+ DISCR)
+            XMVS_LAY=0.D0
+            DO ISAND = 1,NSAND ! AVERAGE DENSITY OF SAND FOR THE LAYER
+              XMVS_LAY=XMVS_LAY+
+     &       RATIO_SAND(ISAND,ILAYER,IPOIN)*XMVS0(NUM_ISAND_ICLA(ISAND))
+            ENDDO
+!         TTERM REPRESENTS THE DIFFERENCE BETWEEN MUD VOLUME AND VOID VOLUME
+            TERM=0.D0
+            IF(NMUD.GT.0) THEN
+              TERM=RATIO_MUD_SAND(ILAYER,IPOIN)/CONC_MUD(ILAYER,IPOIN)-
+     &       (XKV0(ILAYER)*(1.D0-RATIO_MUD_SAND(ILAYER,IPOIN)))/
+     &       (XMVS_LAY*(1.D0-XKV0(ILAYER)))
+            ENDIF
+            DISCR=MAX(0.D0,TERM)
+!           IF DISCR IS POSITIVE IT MEANS THAT MUD VOLUME IS LARGER THAN VOID VOLUME
+!           IF DISCR IS NEGATIVE, THE VOID VOLUME IS NOT COMPLETELY FILLED BY MUD
+            ES(IPOIN,ILAYER)=MASS_MIX_TOT(ILAYER,IPOIN)*
+     &      ((1.D0-RATIO_MUD_SAND(ILAYER,IPOIN))/
+     &      (XMVS_LAY*(1.D0-XKV0(ILAYER)))+ DISCR)
           ENDDO
         ENDDO
       ENDIF
@@ -263,7 +263,7 @@
 !
       IF(NCSIZE.GT.1) THEN
         DO I=1,NSICLA
-          MASSTOT(I)=P_DSUM(MASSTOT(I))
+          MASSTOT(I)=P_SUM(MASSTOT(I))
         ENDDO
       ENDIF
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

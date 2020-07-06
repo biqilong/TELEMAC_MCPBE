@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE PREPARE_ADVECTION
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE PREPARE_ADVECTION
+!                   ****************************
 !
      & (FN,S0F,FBORL,LIFBOL,FLUXF,
      &  SCHCF,CALFLU,MESH3D,MASKEL,NPTFR3,VOLUNPAR,FLUEXT,FLUEXTPAR,
@@ -178,7 +178,7 @@
           IF(LIFBOL%I(IPTFR).EQ.KENT .OR.
      &       LIFBOL%I(IPTFR).EQ.KENTU.OR.
      &       LIFBOL%I(IPTFR).EQ.KADH) THEN
-             FN%R(NBOR3%I(IPTFR)) = FBORL%R(IPTFR)
+            FN%R(NBOR3%I(IPTFR)) = FBORL%R(IPTFR)
           ENDIF
         ENDDO
       ENDIF

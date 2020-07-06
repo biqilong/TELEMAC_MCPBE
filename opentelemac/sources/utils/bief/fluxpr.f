@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FLUXPR
-!                    *****************
+!                   *****************
+                    SUBROUTINE FLUXPR
+!                   *****************
 !
      &(NSEC,CTRLSC,FLX,VOLNEG,VOLPOS,INFO,TPS,NSEG,NCSIZE,CUMFLO)
 !
@@ -52,7 +52,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_IMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -97,15 +97,15 @@
         DO ISEC = 1,NSEC
 !         SECTIONS ACROSS 2 SUB-DOMAINS WILL HAVE NSEG=0 OR -1
 !         AND -1 WANTED HERE FOR RELEVANT MESSAGE
-          II=P_IMIN(NSEG(ISEC))
+          II=P_MIN(NSEG(ISEC))
 !
           IF(II.GE.0) THEN
 !
             WRITE(LU,133) ISEC,CTRLSC(1+2*(ISEC-1)),
      &                    CTRLSC(2+2*(ISEC-1)),
-     &                    P_DMIN(FLX(ISEC))+P_DMAX(FLX(ISEC)),
-     &                    P_DMIN(VOLNEG(ISEC)),
-     &                    P_DMAX(VOLPOS(ISEC))
+     &                    P_MIN(FLX(ISEC))+P_MAX(FLX(ISEC)),
+     &                    P_MIN(VOLNEG(ISEC)),
+     &                    P_MAX(VOLPOS(ISEC))
 !
           ELSE
 !

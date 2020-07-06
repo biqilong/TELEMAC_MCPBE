@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE IFABTOM
-!                    ******************
+!                   ******************
+                    SUBROUTINE IFABTOM
+!                   ******************
 !
      &(IFABOR,NELEM2,NETAGE)
 !

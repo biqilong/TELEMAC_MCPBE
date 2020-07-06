@@ -1,6 +1,6 @@
-!                    *********************************
-                     CHARACTER(LEN=PATH_LEN) FUNCTION CARLU
-!                    *********************************
+!                   *********************************
+                    CHARACTER(LEN=PATH_LEN) FUNCTION CARLU
+!                   *********************************
 !
      &( LCAR   , ICOL  , LIGNE  , EXTREM , MOTCLE , SIZE , MOTIGN ,
      &  LONIGN , NMAXR , NFICDA , LGVAR  )

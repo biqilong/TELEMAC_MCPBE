@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE STEADY
-!                    *****************
+!                   *****************
+                    SUBROUTINE STEADY
+!                   *****************
 !
      &(H1,H2,NPH,U1,U2,NPU,V1,V2,NPV,NTRAC,T1,T2,NPT,CRIPER,ARRET)
 !

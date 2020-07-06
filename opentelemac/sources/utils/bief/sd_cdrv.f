@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SD_CDRV
-!                    ******************
+!                   ******************
+                    SUBROUTINE SD_CDRV
+!                   ******************
 !
      &(N, R,C,IC, IA,JA,A, B, Z, NSP,ISP,RSP,ESP, PATH, FLAG)
 !

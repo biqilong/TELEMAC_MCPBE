@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE BEDLOAD_INTERACT
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE BEDLOAD_INTERACT
+!                   ***************************
 !
      &(UCMOY,TOBW,TOB,ALPHAW,FW,CF,UW,NPOIN,XMVE,FCW)
 !

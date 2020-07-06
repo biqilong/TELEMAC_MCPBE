@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE VC11AA2
-!                    ******************
+!                   ******************
+                    SUBROUTINE VC11AA2
+!                   ******************
 !
      &(XMUL,SF,SG,SH,F,G,H,XEL,YEL,
      & IKLE1,IKLE2,IKLE3,NELEM,NELMAX,W1,W2,W3,ICOORD)

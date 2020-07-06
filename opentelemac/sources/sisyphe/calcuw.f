@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CALCUW
-!                    *****************
+!                   *****************
+                    SUBROUTINE CALCUW
+!                   *****************
 !
      & ( UW, H, HW, TW, GRAV ,NPOIN)
 !

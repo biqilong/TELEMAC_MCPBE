@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE P_ALLGATHERV_I
-!                    *************************
+!                   *************************
+                    SUBROUTINE P_ALLGATHERV_I
+!                   *************************
 !
      &(SEND_BUFFER, SEND_COUNT, RECV_BUFFER,
      & RECV_COUNT, DISPLS, IERR)

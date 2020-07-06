@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CGSTAB
-!                    *****************
+!                   *****************
+                    SUBROUTINE CGSTAB
+!                   *****************
 !
      &(X, A,B , MESH, P,Q,R,S,T,V, CFG,INFOGR,AUX)
 !

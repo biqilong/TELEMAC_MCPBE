@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE NOMVAR_SISYPHE
-!                    *************************
+!                   *************************
+                    SUBROUTINE NOMVAR_SISYPHE
+!                   *************************
 !
      &(TEXTE,TEXTPR,MNEMO,NSICLA,UNITE,MAXVAR,NPRIV,NOMBLAY,
      & N_NAMES_PRIV,NAMES_PRIVE,NADVAR,NAMES_ADVAR)

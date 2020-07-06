@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE CONLIT_GAIA
-!                    **********************
+!                   **********************
+                    SUBROUTINE CONLIT_GAIA
+!                   **********************
 !
 !***********************************************************************
 ! GAIA
@@ -18,10 +18,10 @@
       USE DECLARATIONS_TELEMAC
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
-      INTEGER I,K,IFRLIQ,IRANK,ISAND
+      INTEGER I,K,IFRLIQ,ISAND
       INTEGER YADEB(MAXFRO)
 !
       DOUBLE PRECISION, EXTERNAL :: CGL_GAIA
@@ -102,7 +102,7 @@
 !
       IF(NFRLIQ.GT.0) THEN
         DO IFRLIQ=1,NFRLIQ
-          IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_IMAX(YADEB(IFRLIQ))
+          IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_MAX(YADEB(IFRLIQ))
           IF(YADEB(IFRLIQ).EQ.1) THEN
 !
 !         READING BOUNDARY CONDITION FILE WITH SOLID DISCHARGE

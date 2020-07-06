@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC2D   V7P0                                   20/03/2014
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    DEFINES FRICTION ZONES (BY NODE).
@@ -41,6 +41,11 @@
 !+   Zones file now written in local numbering. Plus checking of point
 !+   numbers added by JMH and 2 trailing temporary arrays removed.
 !
+!history R KOPMANN (BAW)
+!+        12/11/2019
+!+        V8P2
+!+   Reading FRIC_ID from geometry file if there.
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -51,38 +56,65 @@
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
-!------------------------------------------------------------------------
+!-----------------------------------------------------------------------
 !
-      INTEGER            :: I,K,IVAL2,NFILE
+      INTEGER I,K,IVAL2,NFILE,RECORD,IERR
       CHARACTER(LEN=PATH_LEN) :: NOMFILE
+      DOUBLE PRECISION BID
+      LOGICAL NOBFR
 !
-!=======================================================================!
-!=======================================================================!
-!                               PROGRAMME                               !
-!=======================================================================!
-!=======================================================================!
+!-----------------------------------------------------------------------
+!
+! READING FRIC_ID FROM GEOMETRY FILE IF FRICTION DATA=YES
+      RECORD = 0
+      BID = 0.D0
+      NOBFR = .FALSE.
+!
+      IF(FRICTB) THEN
+        CALL FIND_VARIABLE(T2D_FILES(T2DGEO)%FMT,T2D_FILES(T2DGEO)%LU,
+     &                     'FRIC_ID         ',T1%R, MESH%NPOIN,IERR,
+     &                     RECORD=RECORD,TIME_RECORD=BID)
+        IF(IERR.EQ.0) THEN
+          WRITE(LU,6)
+ 6        FORMAT(1X,'FRICTION_USER: FRICTION ID  READ IN THE ',/,
+     &            1X,'GEOMETRY FILE')
+          NOBFR = .TRUE.
+!
+! COPIYNG FRICTION ID IN KFROPT
+          DO I = 1,NPOIN
+            KFROPT%I(I) = NINT(T1%R(I))
+          END DO
+        ELSE
+          WRITE(LU,7)
+ 7        FORMAT(1X,'FRICTION_USER : FRICTION ID  NOT FOUND IN THE',/,
+     &           1X,'GEOMETRY FILE')
+        ENDIF
+      ENDIF
 !
       NFILE   = T2D_FILES(T2DZFI)%LU
       NOMFILE = T2D_FILES(T2DZFI)%NAME
 !
-!     Reading File (which is now written in local numbering)
+!     READING FILE WITH FRICTION IDS (WHICH IS NOW WRITTEN IN LOCAL
+!     NUMBERING)
 !
-      DO K=1,NPOIN
-        READ(NFILE,*,END=997,ERR=998) I, IVAL2
-        IF(K.EQ.I) THEN
-          KFROPT%I(I) = IVAL2
-        ELSE
-        WRITE(LU,*) 'ERROR IN THE ZONES FILE: ',NOMFILE
-          WRITE(LU,*) 'POINT ',K,' EXPECTED, POINT ',I,' FOUND'
-          CALL PLANTE(1)
-          STOP
-        ENDIF
-      ENDDO
+      IF(.NOT.NOBFR) THEN
+        DO K=1,NPOIN
+          READ(NFILE,*,END=997,ERR=998) I, IVAL2
+          IF(K.EQ.I) THEN
+            KFROPT%I(I) = IVAL2
+          ELSE
+          WRITE(LU,*) 'ERROR IN THE ZONES FILE: ',NOMFILE
+            WRITE(LU,*) 'POINT ',K,' EXPECTED, POINT ',I,' FOUND'
+            CALL PLANTE(1)
+            STOP
+          ENDIF
+        ENDDO
+      ENDIF !NOBFR
       GOTO 997
 !
-!---------------------------------------------------------------------
+!-----------------------------------------------------------------------
 !             ERROR WHEN READING
-!---------------------------------------------------------------------
+!-----------------------------------------------------------------------
 !
 998   CONTINUE
       WRITE(LU,*) 'FORMATTED DATA FILE : ',NOMFILE
@@ -94,8 +126,7 @@
 !
 997   CONTINUE
 !
-!=======================================================================
-!=======================================================================
+!-----------------------------------------------------------------------
 !
       RETURN
       END

@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE PREVEREBE
-!                    ********************
+!                   ********************
+                    SUBROUTINE PREVEREBE
+!                   ********************
 !
      &(XAUX,AX,TYPDIA,TYPEXT,IKLE,NPOIN,NELEM,NELMAX,MESH,TYPEMESH)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DLDU21
-!                    *****************
+!                   *****************
+                    SUBROUTINE DLDU21
+!                   *****************
 !
      &(DB,XB,TYPDIA,XA,TYPEXA,IKLE,NELEM,NELMAX,NPOIN,W,COPY,LV)
 !
@@ -121,53 +121,53 @@
 ! MATRIX TO FACTORISE (SYMMETRICAL WITH 1S ON THE DIAGONAL)
 !
 ! LINE 1
-!          A11 = 1.D0
-           A12 = XA(IELEM,1)
-           A13 = XA(IELEM,2)
-           A14 = XA(IELEM,3)
+!         A11 = 1.D0
+          A12 = XA(IELEM,1)
+          A13 = XA(IELEM,2)
+          A14 = XA(IELEM,3)
 ! LINE 2
-           A22 = 1.D0
-           A23 = XA(IELEM,4)
-           A24 = XA(IELEM,5)
+          A22 = 1.D0
+          A23 = XA(IELEM,4)
+          A24 = XA(IELEM,5)
 ! LINE 3
-           A33 = 1.D0
-           A34 = XA(IELEM,6)
+          A33 = 1.D0
+          A34 = XA(IELEM,6)
 ! LINE 4
-           A44 = 1.D0
+          A44 = 1.D0
 !
 ! CROUT L*U FACTORISATION
 !
-           ALFA21 = A12
-           ALFA31 = A13
-           ALFA41 = A14
+          ALFA21 = A12
+          ALFA31 = A13
+          ALFA41 = A14
 !
-           BETA12 =  A12
-           BETA22 =  A22 - ALFA21*BETA12
-           ALFA32 = (A23 - ALFA31*BETA12)/BETA22
-           ALFA42 = (A24 - ALFA41*BETA12)/BETA22
+          BETA12 =  A12
+          BETA22 =  A22 - ALFA21*BETA12
+          ALFA32 = (A23 - ALFA31*BETA12)/BETA22
+          ALFA42 = (A24 - ALFA41*BETA12)/BETA22
 !
-           BETA13 =  A13
-           BETA23 =  A23 - ALFA21*BETA13
-           BETA33 =  A33 - ALFA31*BETA13 - ALFA32*BETA23
-           ALFA43 = (A34 - ALFA41*BETA13 - ALFA42*BETA23)/BETA33
+          BETA13 =  A13
+          BETA23 =  A23 - ALFA21*BETA13
+          BETA33 =  A33 - ALFA31*BETA13 - ALFA32*BETA23
+          ALFA43 = (A34 - ALFA41*BETA13 - ALFA42*BETA23)/BETA33
 !
-           BETA14 =  A14
-           BETA24 =  A24 - ALFA21*BETA14
-           BETA34 =  A34 - ALFA31*BETA14 - ALFA32*BETA24
-           BETA44 =  A44 - ALFA41*BETA14 - ALFA42*BETA24 - ALFA43*BETA34
+          BETA14 =  A14
+          BETA24 =  A24 - ALFA21*BETA14
+          BETA34 =  A34 - ALFA31*BETA14 - ALFA32*BETA24
+          BETA44 =  A44 - ALFA41*BETA14 - ALFA42*BETA24 - ALFA43*BETA34
 !
 ! STORES IN XB AND W2,...,W4
 !
-           XB(IELEM,1 ) = ALFA21
-           XB(IELEM,2 ) = ALFA31
-           XB(IELEM,3 ) = ALFA41
-           XB(IELEM,4 ) = ALFA32
-           XB(IELEM,5 ) = ALFA42
-           XB(IELEM,6 ) = ALFA43
+          XB(IELEM,1 ) = ALFA21
+          XB(IELEM,2 ) = ALFA31
+          XB(IELEM,3 ) = ALFA41
+          XB(IELEM,4 ) = ALFA32
+          XB(IELEM,5 ) = ALFA42
+          XB(IELEM,6 ) = ALFA43
 !
-           W(IELEM,2)    = BETA22
-           W(IELEM,3)    = BETA33
-           W(IELEM,4)    = BETA44
+          W(IELEM,2)    = BETA22
+          W(IELEM,3)    = BETA33
+          W(IELEM,4)    = BETA44
 !
         ENDDO ! IELEM
 !
@@ -181,66 +181,66 @@
 !
 ! MATRIX TO FACTORISE (WITH 1S ON THE DIAGONAL)
 !
-!          A11 = 1.D0
-           A22 = 1.D0
-           A33 = 1.D0
-           A44 = 1.D0
+!         A11 = 1.D0
+          A22 = 1.D0
+          A33 = 1.D0
+          A44 = 1.D0
 !
-           A12 = XA(IELEM,1 )
-           A13 = XA(IELEM,2 )
-           A14 = XA(IELEM,3 )
-           A23 = XA(IELEM,4 )
-           A24 = XA(IELEM,5 )
-           A34 = XA(IELEM,6 )
+          A12 = XA(IELEM,1 )
+          A13 = XA(IELEM,2 )
+          A14 = XA(IELEM,3 )
+          A23 = XA(IELEM,4 )
+          A24 = XA(IELEM,5 )
+          A34 = XA(IELEM,6 )
 !
-           A21 = XA(IELEM,7 )
-           A31 = XA(IELEM,8 )
-           A41 = XA(IELEM,9 )
-           A32 = XA(IELEM,10)
-           A42 = XA(IELEM,11)
-           A43 = XA(IELEM,12)
+          A21 = XA(IELEM,7 )
+          A31 = XA(IELEM,8 )
+          A41 = XA(IELEM,9 )
+          A32 = XA(IELEM,10)
+          A42 = XA(IELEM,11)
+          A43 = XA(IELEM,12)
 !
 ! CROUT L*U FACTORISATION
 !
-           ALFA21 = A21
-           ALFA31 = A31
-           ALFA41 = A41
+          ALFA21 = A21
+          ALFA31 = A31
+          ALFA41 = A41
 !
-           BETA12 =  A12
-           BETA22 =  A22 - ALFA21*BETA12
-           ALFA32 = (A32 - ALFA31*BETA12)/BETA22
-           ALFA42 = (A42 - ALFA41*BETA12)/BETA22
+          BETA12 =  A12
+          BETA22 =  A22 - ALFA21*BETA12
+          ALFA32 = (A32 - ALFA31*BETA12)/BETA22
+          ALFA42 = (A42 - ALFA41*BETA12)/BETA22
 !
-           BETA13 =  A13
-           BETA23 =  A23 - ALFA21*BETA13
-           BETA33 =  A33 - ALFA31*BETA13 - ALFA32*BETA23
-           ALFA43 = (A43 - ALFA41*BETA13 - ALFA42*BETA23)/BETA33
+          BETA13 =  A13
+          BETA23 =  A23 - ALFA21*BETA13
+          BETA33 =  A33 - ALFA31*BETA13 - ALFA32*BETA23
+          ALFA43 = (A43 - ALFA41*BETA13 - ALFA42*BETA23)/BETA33
 !
-           BETA14 =  A14
-           BETA24 =  A24 - ALFA21*BETA14
-           BETA34 =  A34 - ALFA31*BETA14 - ALFA32*BETA24
-           BETA44 =  A44 - ALFA41*BETA14 - ALFA42*BETA24 - ALFA43*BETA34
+          BETA14 =  A14
+          BETA24 =  A24 - ALFA21*BETA14
+          BETA34 =  A34 - ALFA31*BETA14 - ALFA32*BETA24
+          BETA44 =  A44 - ALFA41*BETA14 - ALFA42*BETA24 - ALFA43*BETA34
 !
 ! STORES IN XB AND W2,...,W4
 ! L D U FACTORISATION AT THE SAME TIME
 !
-           XB(IELEM,1 ) = BETA12
-           XB(IELEM,2 ) = BETA13
-           XB(IELEM,3 ) = BETA14
-           XB(IELEM,4 ) = BETA23/BETA22
-           XB(IELEM,5 ) = BETA24/BETA22
-           XB(IELEM,6 ) = BETA34/BETA33
+          XB(IELEM,1 ) = BETA12
+          XB(IELEM,2 ) = BETA13
+          XB(IELEM,3 ) = BETA14
+          XB(IELEM,4 ) = BETA23/BETA22
+          XB(IELEM,5 ) = BETA24/BETA22
+          XB(IELEM,6 ) = BETA34/BETA33
 !
-           XB(IELEM,07) = ALFA21
-           XB(IELEM,08) = ALFA31
-           XB(IELEM,09) = ALFA41
-           XB(IELEM,10) = ALFA32
-           XB(IELEM,11) = ALFA42
-           XB(IELEM,12) = ALFA43
+          XB(IELEM,07) = ALFA21
+          XB(IELEM,08) = ALFA31
+          XB(IELEM,09) = ALFA41
+          XB(IELEM,10) = ALFA32
+          XB(IELEM,11) = ALFA42
+          XB(IELEM,12) = ALFA43
 !
-           W(IELEM,2)    = BETA22
-           W(IELEM,3)    = BETA33
-           W(IELEM,4)    = BETA44
+          W(IELEM,2)    = BETA22
+          W(IELEM,3)    = BETA33
+          W(IELEM,4)    = BETA44
 !
         ENDDO ! IELEM
 !

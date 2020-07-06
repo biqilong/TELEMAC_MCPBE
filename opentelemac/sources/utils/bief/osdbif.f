@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OSDBIF
-!                    *****************
+!                   *****************
+                    SUBROUTINE OSDBIF
+!                   *****************
 !
      & ( OP , X , Y , INDIC , CRITER , MESH )
 !

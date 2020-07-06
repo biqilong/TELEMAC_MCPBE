@@ -1,7 +1,6 @@
-
-!                    *************************************
-                     SUBROUTINE BEDLOAD_WILCOCK_CROWE_GAIA
-!                    *************************************
+!                   *************************************
+                    SUBROUTINE BEDLOAD_WILCOCK_CROWE_GAIA
+!                   *************************************
 !
      &(TOB, MU, ACLADM, DCLA, RATIO_SAND, GRAV, XMVE, XMVS, SANFRA, QSC,
      & AC, ACP, SLOPEFF,COEFPN)

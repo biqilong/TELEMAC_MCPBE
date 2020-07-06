@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE RESCUE
-!                    *****************
+!                   *****************
+                    SUBROUTINE RESCUE
+!                   *****************
 !
      &(U,V,H,S,ZF,T,TRAC0,NTRAC,ITURB,NPOIN,AKEP,TROUVE)
 !
@@ -114,7 +114,7 @@
 !
 !         CLIP WATER DEPTH IN CASE OF NEGATIVE VALUES
 !
-           CALL OV('X=+(Y,C)', X=H, Y=H, C=0.D0,DIM1=NPOIN)
+          CALL OV('X=+(Y,C)', X=H, Y=H, C=0.D0,DIM1=NPOIN)
 !
         ELSE
           WRITE(LU,421)
@@ -130,7 +130,7 @@
 !
       IF(NTRAC.GT.0) THEN
         DO ITRAC=1,NTRAC
-          IF(TROUVE(34+ITRAC).EQ.0) THEN
+          IF(TROUVE(35+ITRAC).EQ.0) THEN
             WRITE(LU,901)
 901         FORMAT(1X,'RESCUE : PREVIOUS CALCULATION WITHOUT TRACER',
      &           /,1X,'         WE FIX IT TO TRAC0')

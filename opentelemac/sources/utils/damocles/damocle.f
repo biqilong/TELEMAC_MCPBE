@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE DAMOCLE
-!                    ******************
+!                   ******************
+                    SUBROUTINE DAMOCLE
+!                   ******************
 !
      &( ADRESS , DIMENS , NMAX   , DOC    , LLNG , LLU ,
      &  MOTINT , MOTREA , MOTLOG , MOTCAR ,

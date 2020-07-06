@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE RAY_EFFECT
-!                    **********************
+!                   **********************
+                    SUBROUTINE RAY_EFFECT
+!                   **********************
 !
      &(SECCHI,TRR,NPOIN,MEXT,I0,IK,KPE,EFF,H,T1,T2)
 !

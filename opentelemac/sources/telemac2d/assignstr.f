@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE ASSIGNSTR
-!                    ********************
+!                   ********************
+                    SUBROUTINE ASSIGNSTR
+!                   ********************
 !
      &(CHESTR,SETSTR,PZONE,NZONE,NPOIN)
 !
@@ -60,9 +60,9 @@
 !
       IF(NZONE.GT.0) THEN
         DO J=1,NZONE
-           DO I=1,NPOIN
-              IF (PZONE(I).EQ.J) CHESTR%R(I)=SETSTR%R(J)
-           ENDDO
+          DO I=1,NPOIN
+            IF (PZONE(I).EQ.J) CHESTR%R(I)=SETSTR%R(J)
+          ENDDO
         ENDDO
       ELSE
         CALL OS('X=Y     ',X=CHESTR,Y=SETSTR)

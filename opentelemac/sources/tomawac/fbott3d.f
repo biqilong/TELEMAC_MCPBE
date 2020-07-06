@@ -1,6 +1,6 @@
 !#######################################################################
                         SUBROUTINE FBOTT3D
-     &  (FBX, FBY, FS, NPOIN2, XK, NPLAN, NF)
+     &  (FBX, FBY, FS, NPOIN2, XK, NDIRE, NF)
 !
 !     WAVE DISSIPATION DUE TO BOTTOM FRICTION
 !
@@ -9,7 +9,7 @@
 !| FBY            |<--| WAVE DISSIPATION ALONG Y 
 !| FS             |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| XK             |-->| DISCRETIZED WAVE NUMBER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,8 +23,8 @@
       
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    :: NPOIN2, NPLAN,NF
-      DOUBLE PRECISION, INTENT(IN)    :: FS(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    :: NPOIN2, NDIRE,NF
+      DOUBLE PRECISION, INTENT(IN)    :: FS(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT)    :: FBX(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT)    :: FBY(NPOIN2)  
@@ -38,7 +38,7 @@
 
       DOUBLE PRECISION COEF , DEUKD
 !
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       DO IP=1,NPOIN2
         FBX(IP) = 0.D0
         FBY(IP) = 0.D0
@@ -48,7 +48,7 @@
       DO JF=1,NF
         SIGMA=DEUPI*FREQ(JF)
         AUX1=DFREQ(JF)*DTETAR        
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           DO IP=1,NPOIN2
             DEUKD = MIN(2.D0*DEPTH(IP)*XK(IP,JF),7.D2)
             BETAMJ = COEF*XK(IP,JF)/SINH(DEUKD)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIFF3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIFF3D
+!                   *****************
 !
      &(FD,FC,FN,VISCF,SIGMAF,S0F,YAS0F,S1F,YAS1F,
      & FBORL,FBORF,FBORS,AFBORL,AFBORF,AFBORS,

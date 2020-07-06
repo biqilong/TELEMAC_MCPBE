@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CLSEDI
-!                    *****************
+!                   *****************
+                    SUBROUTINE CLSEDI
+!                   *****************
 !
      &( ATABOF , BTABOF  ,
      &  WC     ,

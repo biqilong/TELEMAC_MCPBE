@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE QFROT1
-!                    *****************
+!                   *****************
+                    SUBROUTINE QFROT1
+!                   *****************
 !
-     &( TSTOT , TSDER , F     , XK    , NF    , NPLAN , NPOIN2)
+     &( TSTOT , TSDER , F     , XK    , NF    , NDIRE , NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   23/06/2011
@@ -52,7 +52,7 @@
 !| DEPTH          |-->| WATER DEPTH
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| NF             |-->| NOMBRE DE FREQUENCES DE DISCRETISATION
-!| NPLAN          |-->| NOMBRE DE DIRECTIONS DE DISCRETISATION
+!| NDIRE          |-->| NOMBRE DE DIRECTIONS DE DISCRETISATION
 !| NPOIN2         |-->| NOMBRE DE POINTS DU MAILLAGE SPATIAL
 !| TSDER          |<->| DERIVED PART OF THE SOURCE TERM CONTRIBUTION
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
@@ -65,11 +65,11 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    ::  NF , NPLAN , NPOIN2
+      INTEGER, INTENT(IN)    ::  NF , NDIRE , NPOIN2
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
 !
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -88,7 +88,7 @@
         DO IP=1,NPOIN2
           DEUKD = MIN(2.D0*DEPTH(IP)*XK(IP,JF),7.D2)
           BETA = COEF*XK(IP,JF)/SINH(DEUKD)
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             TSTOT(IP,JP,JF) = TSTOT(IP,JP,JF)+BETA*F(IP,JP,JF)
             TSDER(IP,JP,JF) = TSDER(IP,JP,JF)+BETA
           ENDDO

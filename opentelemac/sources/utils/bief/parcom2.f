@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE PARCOM2
-!                    ******************
+!                   ******************
+                    SUBROUTINE PARCOM2
+!                   ******************
 !
      &( X1 , X2 , X3 , NPOIN , NPLAN , ICOM , IAN , MESH )
 !

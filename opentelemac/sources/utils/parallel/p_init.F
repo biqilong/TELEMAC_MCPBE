@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE P_INIT
-!                    *****************
+!                   *****************
+                    SUBROUTINE P_INIT
+!                   *****************
 !
      &(CHAINE,NCAR,IPID,NCSIZE)
 !

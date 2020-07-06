@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE FLUXPR_GAIA
-!                    *************************
+!                   *************************
+                    SUBROUTINE FLUXPR_GAIA
+!                   *************************
 !
      &(NSEC,CTRLSC,FLX,VOLNEG,VOLPOS,INFO,TPS,NSEG,NCSIZE,
      & FLXS,VOLNEGS,VOLPOSS,SUSP,FLXC,VOLNEGC,VOLPOSC,CHARR)
@@ -40,7 +40,7 @@
       USE DECLARATIONS_GAIA, ONLY: GAI_FILES,GAISEO,CHAIN,
      &                                INIT_FLUXPR,WORK,WORKB
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_DSUM,P_IMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN,P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -169,12 +169,12 @@
 !           AND -1 WANTED HERE FOR RELEVANT MESSAGE
 !
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-            DTMP1 = P_DMIN(FLX(ISEC))
-            DTMP2 = P_DMAX(FLX(ISEC))
-            DTMP3 = P_DMIN(VOLNEG(ISEC))
-            DTMP4 = P_DMAX(VOLPOS(ISEC))
+            DTMP1 = P_MIN(FLX(ISEC))
+            DTMP2 = P_MAX(FLX(ISEC))
+            DTMP3 = P_MIN(VOLNEG(ISEC))
+            DTMP4 = P_MAX(VOLPOS(ISEC))
 !##<JR @ ADJOINTWARE
-            II=P_IMIN(NSEG(ISEC))
+            II=P_MIN(NSEG(ISEC))
             IF(II.GE.0) THEN
 !
               WRITE(LU,131) ISEC,CTRLSC(1+2*(ISEC-1)),
@@ -183,19 +183,19 @@
 !
               IF(SUSP) THEN
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-                DTMP1 = P_DMIN(FLXS(ISEC))
-                DTMP2 = P_DMAX(FLXS(ISEC))
-                DTMP3 = P_DMIN(VOLNEGS(ISEC))
-                DTMP4 = P_DMAX(VOLPOSS(ISEC))
+                DTMP1 = P_MIN(FLXS(ISEC))
+                DTMP2 = P_MAX(FLXS(ISEC))
+                DTMP3 = P_MIN(VOLNEGS(ISEC))
+                DTMP4 = P_MAX(VOLPOSS(ISEC))
 !##<JR @ ADJOINTWARE
                 WRITE(LU,1302) DTMP1+DTMP2,DTMP3,DTMP4
               ENDIF
               IF(CHARR) THEN
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-                DTMP1 = P_DMIN(FLXC(ISEC))
-                DTMP2 = P_DMAX(FLXC(ISEC))
-                DTMP3 = P_DMIN(VOLNEGC(ISEC))
-                DTMP4 = P_DMAX(VOLPOSC(ISEC))
+                DTMP1 = P_MIN(FLXC(ISEC))
+                DTMP2 = P_MAX(FLXC(ISEC))
+                DTMP3 = P_MIN(VOLNEGC(ISEC))
+                DTMP4 = P_MAX(VOLPOSC(ISEC))
 !##<JR @ ADJOINTWARE
                 WRITE(LU,1304) DTMP1+DTMP2,DTMP3,DTMP4
               ENDIF
@@ -229,9 +229,9 @@
 !
           IF(NCSIZE.GT.1) THEN
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-            DTMP1 = P_DSUM(FLX(ISEC))
-            DTMP2 = P_DSUM(VOLNEG(ISEC))
-            DTMP3 = P_DSUM(VOLPOS(ISEC))
+            DTMP1 = P_SUM(FLX(ISEC))
+            DTMP2 = P_SUM(VOLNEG(ISEC))
+            DTMP3 = P_SUM(VOLPOS(ISEC))
 !##<JR @ ADJOINTWARE
             WRITE(LU,231) ISEC,TRIM(CHAIN(ISEC)%DESCR),
      &                                 DTMP1,DTMP2,DTMP3
@@ -247,9 +247,9 @@
           IF(SUSP) THEN
             IF(NCSIZE.GT.1) THEN
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-              DTMP1 = P_DSUM(FLXS(ISEC))
-              DTMP2 = P_DSUM(VOLNEGS(ISEC))
-              DTMP3 = P_DSUM(VOLPOSS(ISEC))
+              DTMP1 = P_SUM(FLXS(ISEC))
+              DTMP2 = P_SUM(VOLNEGS(ISEC))
+              DTMP3 = P_SUM(VOLPOSS(ISEC))
 !##<JR @ ADJOINTWARE
               WRITE(LU,2302) DTMP1,DTMP2,DTMP3
             ELSE
@@ -265,9 +265,9 @@
           IF(CHARR) THEN
             IF(NCSIZE.GT.1) THEN
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-              DTMP1 = P_DSUM(FLXC(ISEC))
-              DTMP2 = P_DSUM(VOLNEGC(ISEC))
-              DTMP3 = P_DSUM(VOLPOSC(ISEC))
+              DTMP1 = P_SUM(FLXC(ISEC))
+              DTMP2 = P_SUM(VOLNEGC(ISEC))
+              DTMP3 = P_SUM(VOLPOSC(ISEC))
 !##<JR @ ADJOINTWARE
               WRITE(LU,2304) DTMP1,DTMP2,DTMP3
             ELSE
@@ -294,7 +294,7 @@
           IF(NCSIZE.GT.1) THEN
             DO ISEC=1,NSEC
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-              DTMP1 = P_DSUM(FLXC(ISEC))
+              DTMP1 = P_SUM(FLXC(ISEC))
               WORK(ISEC) = DTMP1
 !##<JR @ ADJOINTWARE
             ENDDO
@@ -313,7 +313,7 @@
           IF(NCSIZE.GT.1) THEN
             DO ISEC=1,NSEC
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-              DTMP1 = P_DSUM(FLXS(ISEC))
+              DTMP1 = P_SUM(FLXS(ISEC))
               WORK(ISEC) = DTMP1
 !##<JR @ ADJOINTWARE
             ENDDO
@@ -332,9 +332,9 @@
           IF(NCSIZE.GT.1) THEN
             DO ISEC=1,NSEC
 !##>JR @ ADJOINTWARE: ALGORITHMIC DIFFERENTIATION
-              DTMP1 = P_DSUM(FLXC(ISEC))
+              DTMP1 = P_SUM(FLXC(ISEC))
               WORK(ISEC) = DTMP1
-              DTMP2 = P_DSUM(FLXS(ISEC))
+              DTMP2 = P_SUM(FLXS(ISEC))
               WORKB(ISEC)= DTMP2
 !##<JR @ ADJOINTWARE
             ENDDO

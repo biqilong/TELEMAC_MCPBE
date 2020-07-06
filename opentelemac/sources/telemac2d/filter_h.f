@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE FILTER_H
-!                    *******************
+!                   *******************
+                    SUBROUTINE FILTER_H
+!                   *******************
 !
      &(VEC,T1,MESH,MSK,MASKEL,N,FLODEL,YAFLODEL,DT,W1,UNSV2D)
 !

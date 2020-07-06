@@ -22,13 +22,14 @@
       USE DECLARATIONS_GAIA, ONLY: NESTOR,NPOIN,IELMH_GAI
      &                            ,GAI_FILES,SINACT,SINPOL
      &                            ,SINREF,SINRST
-     &                            ,ZF, HN, T13, T14
-     &                            ,MESH, MSK, MASKEL
+     &                            ,ZF, HN
+!    &                            , MSK, MASKEL, T13, T14
+     &                            ,MESH
      &                            ,LT, DT, AT0
      &                            ,MARDAT, MARTIM
      &                            ,ZFCL_C, AVAIL
      &                            ,ZRL
-     &                            ,ZR, NSICLA
+     &                            , NSICLA
      &                            ,MOFAC, ES
      &                            ,EVCL_MB      !     evolution of mass of each sand class for laver-1 [ kg/m**2 ]
      &                            ,MASS_SAND    !     mass of each sand class for each laver           [ kg/m**2 ]

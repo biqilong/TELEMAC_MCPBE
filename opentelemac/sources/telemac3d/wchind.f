@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE WCHIND
-!                    *****************
+!                   *****************
+                    SUBROUTINE WCHIND
+!                   *****************
 !
      &(WCHU,C,CINI,CGEL,NPOIN3,HIND_TYPE)
 !

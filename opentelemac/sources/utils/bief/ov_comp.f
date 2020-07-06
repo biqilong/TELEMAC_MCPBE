@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE OV_COMP
-!                    ******************
+!                   ******************
+                    SUBROUTINE OV_COMP
+!                   ******************
 !
      & ( OP , X , Y , Z , C , NPOIN,
      &   X_ERR , Y_ERR , Z_ERR)
@@ -287,7 +287,7 @@
         CASE('CXY   ')
 !
         DO I=1,NPOIN
-           X(I) = C * X(I) * Y(I)
+          X(I) = C * X(I) * Y(I)
         ENDDO
 !
 !-----------------------------------------------------------------------
@@ -391,7 +391,7 @@
         CASE('CY    ')
 !
         DO I=1,NPOIN
-           CALL TWOPROD(C,Y(I),X(I),ERROR)
+          CALL TWOPROD(C,Y(I),X(I),ERROR)
           IF (PRESENT (X_ERR) .AND. PRESENT (Y_ERR)) THEN
             X_ERR(I)=(C * Y_ERR(I))
             X_ERR(I)=X_ERR(I)+ERROR

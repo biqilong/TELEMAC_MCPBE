@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE GET_DATA_VAR_LIST2
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GET_DATA_VAR_LIST2
+!                   *****************************
 !
      &(FFORMAT,FID,NVAR,VARLIST2,UNITLIST2,IERR)
 !

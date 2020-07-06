@@ -46,7 +46,7 @@ done
 #
 # Indent errors
 #
-grep -ER -n $2 '^(\ ){9}[^\ ]|^(\ ){7}[^\ ]|^(\ ){15}[^\ ]' $1 --include=*.[fF] > $INDENT
+grep -ER -n $2 '^(\ ){6}([ ]{2})*[ ][^\ ]' $1 --include=*.[fF] > $INDENT
 #
 # Comments error
 #

@@ -272,6 +272,7 @@ def run_validation_python_slurm(cfg, options, report, xcpts):
         # Waiting time between each check in second
         wait_time = 10
 
+        start_time = time.time()
         time.sleep(60)
 
     while actual_len != 0:
@@ -303,6 +304,11 @@ def run_validation_python_slurm(cfg, options, report, xcpts):
         prev_len = actual_len
         actual_len = len(jobs)
 
+    elapsed_time = time.time() - start_time
+    time_str = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
+
+    print("Waited {} for jobs to complete".format(time_str))
+
     # Adding run times to the report
     for py_file, run_time in run_times.items():
         # Getting absolute name but same as in jobs
@@ -324,9 +330,18 @@ def run_validation_python_slurm(cfg, options, report, xcpts):
     # Building new list of files (without the ones that crashed)
     new_list_files = []
     for py_file in run_list_files:
-        failed = crashed['timeout'] + crashed['failed']
+        # Extract folder of validation from script name (minus estension)
+        py_folder, _ = path.splitext(py_file)
+        failed_action = crashed['timeout'] + crashed['failed']
 
-        if py_file in failed:
+        # Chekc if that folder is in one of the cases that crashed
+        failed = False
+        for action in failed_action:
+            if py_folder + sep in action:
+                failed = True
+                break
+        # If it is next file
+        if failed:
             continue
 
         new_list_files.append(py_file)
@@ -544,8 +559,9 @@ def run_validation_notebooks(options, report, xcpts):
         for nb_file in list(nb_files):
             for exclude in options.nb_exclude.split(','):
                 if nb_file.endswith(exclude+".ipynb"):
-                    print("  ~> Excluding: ", nb_file)
-                    nb_files.remove(nb_file)
+                    if nb_file in nb_files:
+                        print("  ~> Excluding: ", nb_file)
+                        nb_files.remove(nb_file)
 
     # Run notebook validation
     n_nb = len(nb_files)

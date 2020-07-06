@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE RELAXMU
-!                    *****************
+!                   *****************
+                    SUBROUTINE RELAXMU
+!                   *****************
      &(ECRHMU,MODHMU,ITERMU)
 !
 !
@@ -33,7 +33,7 @@
       USE DECLARATIONS_ARTEMIS
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
       INTEGER I,ITERMU
@@ -80,8 +80,8 @@
       ENDIF
 !
       IF (NCSIZE .GT. 1) THEN
-        ECRHMU = P_DMAX(ECRHMU)
-        MODHMU = P_DMAX(MODHMU)
+        ECRHMU = P_MAX(ECRHMU)
+        MODHMU = P_MAX(MODHMU)
       END IF
       WRITE(LU,*) 'DIFF. BETWEEN TWO
      &             SUB-ITERATIONS (%) ',

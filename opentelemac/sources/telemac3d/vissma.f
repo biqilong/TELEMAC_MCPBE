@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VISSMA
-!                    *****************
+!                   *****************
+                    SUBROUTINE VISSMA
+!                   *****************
 !
      &(VISCVI,VISCTA,DNUTAH,DNUVIH,DNUVIV,DNUTAV,
      & U,V,W,TRAV1,TRAV2,TRAV3,TRAV4,TRAV5,TRAV6,

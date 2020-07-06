@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE BORD_TIDE_MISC
-!                    *************************
+!                   *************************
+                    SUBROUTINE BORD_TIDE_MISC
+!                   *************************
 !
      &(ZF,NBOR,LIHBOR,LIUBOR,NPOIN,NPTFR,TEMPS,DT,
      & NUMLIQ,KENT,KENTU,TIDALTYPE,CTIDE,MSL,

@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE MESH_PROP
-!                    ********************
+!                   ********************
+                    SUBROUTINE MESH_PROP
+!                   ********************
 !
      &(HPROP,HN,H,PROLIN,HAULIN,TETA,NSOUSI,ZPROP,
      & IPBOT,NPOIN2,NPLAN,OPTBAN,SIGMAG,OPT_HNEG,

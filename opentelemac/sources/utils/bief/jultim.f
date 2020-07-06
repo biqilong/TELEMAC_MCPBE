@@ -1,6 +1,6 @@
-!                    ********************************
-                     DOUBLE PRECISION FUNCTION JULTIM
-!                    ********************************
+!                   ********************************
+                    DOUBLE PRECISION FUNCTION JULTIM
+!                   ********************************
 !
      &(YEAR,MONTH,DAY,HOUR,MINU,SEC,AT)
 !

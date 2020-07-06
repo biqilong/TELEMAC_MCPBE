@@ -43,7 +43,7 @@ subroutine LEC_RESEAU    ( &
 
 ! *********************************************************************
 ! PROGICIEL : MASCARET       S. MANDELKERN
-!                            F. ZAOUI                         
+!                            F. ZAOUI
 !
 ! VERSION : V8P2R0              EDF-CEREMA
 ! *********************************************************************
@@ -100,7 +100,6 @@ subroutine LEC_RESEAU    ( &
    integer :: inoeud ! compteur sur les noeud
    integer :: iext   ! compteur sur les extremites
    integer :: i      ! compteur
-   integer :: int    !
    integer :: retour ! code de retour des fonctions intrinseques
    logical :: test_loi ! test si au moins une extremite est reliee a une loi hydrau
    type(Node), pointer :: champ1,champ2,champ3,champ4,champ5
@@ -165,7 +164,7 @@ subroutine LEC_RESEAU    ( &
       return
    endif
    call extractDataContent(champ3,NbExtLibre)
-   
+
    if(.not.associated(ExtDebBief)) allocate( ExtDebBief(NbBief) , STAT = retour )
    if( retour /= 0 ) then
       Erreur%Numero = 5
@@ -318,7 +317,7 @@ subroutine LEC_RESEAU    ( &
       return
    endif
    call extractDataContent(champ3,AbscRelExtFinBief)
-   
+
    do ibief = 1 , NbBief
 
       if( AbscRelExtDebBief(ibief) < (Profil(ProfDebBief(ibief))%AbsRel-EPS4) &
@@ -428,7 +427,7 @@ subroutine LEC_RESEAU    ( &
                return
             endif
             call extractDataContent(champ5,ExtNoeud(:,inoeud))
-            
+
             if( ExtNoeud(i,inoeud) < 0 ) then
                Erreur%Numero = 351
                Erreur%ft     = err_351
@@ -514,7 +513,7 @@ subroutine LEC_RESEAU    ( &
       return
    endif
    call extractDataContent(champ3,NumExtLibre)
-   
+
    ! Types des extremites libres
    champ3 => item(getElementsByTagname(champ2, "typeCond"), 0)
    if(associated(champ3).eqv..false.) then
@@ -523,7 +522,7 @@ subroutine LEC_RESEAU    ( &
       return
    endif
    call extractDataContent(champ3,Extremite%Type)
-   
+
    ! Numeros des lois des extremites libres ! ne sert pas pour Connect
    champ3 => item(getElementsByTagname(champ2, "numLoi"), 0)
    if(associated(champ3).eqv..false.) then
@@ -532,7 +531,7 @@ subroutine LEC_RESEAU    ( &
       return
    endif
    call extractDataContent(champ3, Extremite%NumeroLoi)
-   
+
    do iext = 1 , NbExtLibre
       ! Numeros des extremites libres
       if( NumExtLibre(iext) < 0 ) then
@@ -557,7 +556,7 @@ subroutine LEC_RESEAU    ( &
          return
       endif
       Extremite(iext)%Nom = getTextContent(champ4)
-      
+
       ! Types des extremites libres
       if( Extremite(iext)%Type < 1 .or. Extremite(iext)%Type > CONDITION_TYPE_NB_MAX ) then
          Erreur%Numero = 331
@@ -784,21 +783,21 @@ subroutine LEC_RESEAU    ( &
    10070 format (i3,' Numero d''extremite = ',i3,' Type de condition = ',i3,' Numero de loi =',i3)
 
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
-   end subroutine xerror         
-   
+
+   end subroutine xerror
+
 end subroutine LEC_RESEAU

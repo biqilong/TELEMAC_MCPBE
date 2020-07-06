@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE POINT_ARTEMIS
-!                    ************************
+!                   ************************
+                    SUBROUTINE POINT_ARTEMIS
+!                   ************************
 !
 !
 !***********************************************************************
@@ -445,20 +445,20 @@
 !
         IF (CHAINTWC.GE.1 .AND. ART_FILES(WACSPE)%NAME(1:1).NE.' ') THEN
 !
-!          READS THE INPUT SPECTRAL FILE WITHOUT RECORDING ANYTHING
-!          TO GET NSPEC,NDIR,NF
-           CALL GET_TOMSPEC_DIMENSIONS(NSPEC,NDIR,NF)
+!         READS THE INPUT SPECTRAL FILE WITHOUT RECORDING ANYTHING
+!         TO GET NSPEC,NDIR,NF
+          CALL GET_TOMSPEC_DIMENSIONS(NSPEC,NDIR,NF)
 !
-!       ALLOCATES STRUCTURE FOR TOMAWAC OUTER SPECTRA
-           CALL ALLSPEC(S_TOM,'S_TOM ')
+!         ALLOCATES STRUCTURE FOR TOMAWAC OUTER SPECTRA
+          CALL ALLSPEC(S_TOM,'S_TOM ')
         ENDIF
 !
 !       SPATIALLY VARYING DIRECTIONS ALONG THE BOUNDARY WITH NESTING OPTION 2
 !
         IF (CHAINTWC.EQ.2) THEN
-           CALL ALLBLO( BDALE, 'DALE  ' )
-           CALL BIEF_ALLVEC_IN_BLOCK( BDALE, NDALE, 1, 'DALDIR', IELMB,
-     &                            1,2,MESH)
+          CALL ALLBLO( BDALE, 'DALE  ' )
+          CALL BIEF_ALLVEC_IN_BLOCK( BDALE, NDALE, 1, 'DALDIR', IELMB,
+     &                              1,2,MESH)
         ENDIF
 !
       ENDIF  !(ALEMUL)

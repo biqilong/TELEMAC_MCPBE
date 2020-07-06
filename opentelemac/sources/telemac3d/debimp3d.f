@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE DEBIMP3D
-!                    *******************
+!                   *******************
+                    SUBROUTINE DEBIMP3D
+!                   *******************
 !
      &(Q,UBOR,VBOR,WBOR,U,V,H,NUMLIQ,IFRLIQ,
      & T3_01,T3_02,T3_03,
@@ -88,7 +88,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -170,7 +170,7 @@
 !
       Q1 = - BIEF_SUM(T3_02)
 !
-      IF(NCSIZE.GT.1) Q1=P_DSUM(Q1)
+      IF(NCSIZE.GT.1) Q1=P_SUM(Q1)
 !
 !  ZERO FLOW: WARNING MESSAGE
 !

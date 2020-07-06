@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE TOTNRJ
-!                    *****************
+!                   *****************
+                    SUBROUTINE TOTNRJ
+!                   *****************
 !
-     &(VARIAN, F, NF, NPLAN, NPOIN2)
+     &(VARIAN, F, NF, NDIRE, NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   28/06/2011
@@ -44,7 +44,7 @@
 !| F              |---| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TAILF          |-->| SPECTRUM QUEUE FACTOR
 !| VARIAN         |<--| SPECTRUM VARIANCE
@@ -57,8 +57,8 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    ::          NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    ::          NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: VARIAN(NPOIN2)
 !
 !.....LOCAL VARIABLES
@@ -67,7 +67,7 @@
       DOUBLE PRECISION AUX1  , DTETAR
 !
 !
-      DTETAR=DEUPI/FLOAT(NPLAN)
+      DTETAR=DEUPI/FLOAT(NDIRE)
       DO IP = 1,NPOIN2
         VARIAN(IP) = 0.D0
       ENDDO
@@ -78,7 +78,7 @@
 !
       DO JF = 1,NF-1
         AUX1=DFREQ(JF)*DTETAR
-        DO JP = 1,NPLAN
+        DO JP = 1,NDIRE
           DO IP=1,NPOIN2
             VARIAN(IP) = VARIAN(IP) + F(IP,JP,JF)*AUX1
           ENDDO ! IP
@@ -94,7 +94,7 @@
       ELSE
         AUX1=DTETAR*DFREQ(NF)
       ENDIF
-      DO JP = 1,NPLAN
+      DO JP = 1,NDIRE
         DO IP=1,NPOIN2
           VARIAN(IP) = VARIAN(IP) + F(IP,JP,NF)*AUX1
         ENDDO ! IP

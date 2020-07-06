@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE T3D_READ_FIC_CURVES
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE T3D_READ_FIC_CURVES
+!                   ******************************
 !
      &(NFIC,NFRLIQ,STA_DIS_CURVES,PTS_CURVES)
 !

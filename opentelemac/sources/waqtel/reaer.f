@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE REAER
-!                    ****************
+!                   ****************
+                    SUBROUTINE REAER
+!                   ****************
 !
      &(FORMK2,K2,K22,NPOIN2,NPLAN,UN,VN,H,EPS)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE KEPCL3
-!                    *****************
+!                   *****************
+                    SUBROUTINE KEPCL3
+!                   *****************
 !
      &(KBORF,EBORF,LIKBOF,LIEBOF,
      & KBORL,EBORL,LIKBOL,LIEBOL,LIUBOL,

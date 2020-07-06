@@ -1,6 +1,6 @@
-!                    ********************************
-                     DOUBLE PRECISION FUNCTION DEBSCE
-!                    ********************************
+!                   ********************************
+                    DOUBLE PRECISION FUNCTION DEBSCE
+!                   ********************************
 !
      &( TIME , I , DISCE )
 !

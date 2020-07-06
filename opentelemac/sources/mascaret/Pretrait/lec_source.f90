@@ -25,13 +25,13 @@ subroutine LEC_SOURCE( &
               Profil , & ! Profils geometriques
               nbtrac , & ! nb de traceurs
         UniteListing , & ! Unite logique fichier listing
-            document , & ! Pointeur vers document XML              
+            document , & ! Pointeur vers document XML
               Erreur   & ! Erreur
                      )
 
 !*****************************************************************************
 ! PROGICIEL : TRACER         M. LUCK
-!                            F. ZAOUI                     
+!                            F. ZAOUI
 !
 ! VERSION : V8P2R0              EDF-CEREMA
 !*****************************************************************************
@@ -51,7 +51,7 @@ subroutine LEC_SOURCE( &
    use M_ABS_ABS_S           ! Calcul de l'abscisse absolue
    use M_XINDIC_S            ! Calc de l'indice corresp a une absc
    use Fox_dom               ! parser XML Fortran
-   
+
    implicit none
 
    ! Arguments
@@ -63,7 +63,7 @@ subroutine LEC_SOURCE( &
    type(PROFIL_T)       , dimension(:), intent(in   ) :: Profil
    integer                            , intent(in   ) :: nbtrac
    integer                            , intent(in   ) :: UniteListing
-   type(Node), pointer, intent(in)                    :: document   
+   type(Node), pointer, intent(in)                    :: document
    type(ERREUR_T)                     , intent(inout) :: Erreur
    ! Variables locales
    real(DOUBLE) :: abs_abs     ! abscisse absolue de l'apport
@@ -73,7 +73,7 @@ subroutine LEC_SOURCE( &
    integer      :: i           ! compteur sur les sources
    integer      :: retour      ! code de retour des fonctions intrinseques
    integer      :: num_branche ! numero de branche de la source
-   integer      :: j,k,nb_prof,nb_bief
+   integer      :: j,nb_prof,nb_bief
    integer      , dimension(size(Connect%OrigineBief))   :: ProfDebBief
    integer      , dimension(size(Connect%OrigineBief))   :: ProfFinBief
    real(DOUBLE) , dimension(size(Connect%OrigineBief))   :: AbscRelExtDebBief
@@ -81,7 +81,6 @@ subroutine LEC_SOURCE( &
    type(Node), pointer :: champ1,champ2,champ3,champ4
    integer, allocatable :: itab1(:),itab2(:),itab3(:)
    real(double), allocatable :: rtab1(:),rtab2(:)
-   character(132) :: arbredappel_old
 
    !========================= Instructions ===========================
    ! INITIALISATION
@@ -134,7 +133,7 @@ subroutine LEC_SOURCE( &
       return
    endif
    call extractDataContent(champ3,nb_Sources)
-   
+
    if( nb_Sources > 0 ) then
 
       if(.not.associated(Source_tracer)) allocate( Source_tracer(nb_sources) , STAT = Retour )
@@ -179,7 +178,7 @@ subroutine LEC_SOURCE( &
          call TRAITER_ERREUR( Erreur , 'rtab2' )
          return
       end if
-      
+
       champ3 => item(getElementsByTagname(champ2, "typeSources"), 0)
       if(associated(champ3).eqv..false.) then
          print*,"Parse error => typeSources"
@@ -215,14 +214,14 @@ subroutine LEC_SOURCE( &
          return
       endif
       call extractDataContent(champ3,rtab2)
-      
+
       champ3 => item(getElementsByTagname(champ2, "noms"), 0)
       if(associated(champ3).eqv..false.) then
          print*,"Parse error => noms"
          call xerror(Erreur)
          return
       endif
-      
+
       do i = 1 , nb_Sources
 
          champ4 => item(getElementsByTagname(champ3, "string"), i-1)
@@ -339,7 +338,7 @@ subroutine LEC_SOURCE( &
       deallocate(itab3)
       deallocate(rtab1)
       deallocate(rtab2)
-      
+
       !-----------------
       ! Si pas de source
       !-----------------
@@ -359,23 +358,23 @@ subroutine LEC_SOURCE( &
    !Erreur%Arbredappel = arbredappel_old
 
    return
-   
+
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
-   end subroutine xerror         
-   
+
+   end subroutine xerror
+
 end subroutine LEC_SOURCE

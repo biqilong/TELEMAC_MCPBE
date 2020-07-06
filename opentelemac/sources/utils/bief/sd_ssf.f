@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SD_SSF
-!                    *****************
+!                   *****************
+                    SUBROUTINE SD_SSF
+!                   *****************
 !
      &(N,P,IP,IA,JA,IJU,JU,IU,JUMAX,Q,MARK,JL,FLAG)
 !

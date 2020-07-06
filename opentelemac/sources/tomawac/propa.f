@@ -1,9 +1,9 @@
-!                    ****************
-                     SUBROUTINE PROPA
-!                    ****************
+!                   ****************
+                    SUBROUTINE PROPA
+!                   ****************
 !
      &(F,     B,  ELT,    ETA,   FRE,   NPOIN3, NPOIN2,
-     & NPLAN, NF, COURAN, TRA01)
+     & NDIRE, NF, COURAN, TRA01)
 !
 !***********************************************************************
 ! TOMAWAC   V7P0
@@ -56,9 +56,9 @@
 !| IKLE_EXT       |-->| TRANSITION BETWEEN LOCAL AND GLOBAL NUMBERING
 !|                |   | OF THE 2D MESH (IN AN EXTENDED FORM)
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
-!| NPOIN3         |-->| NPOIN2*NPLAN
+!| NPOIN3         |-->| NPOIN2*NDIRE
 !| SHF            |-->| BARYCENTRIC COORDINATES ALONG F OF THE
 !|                |   | NODES IN THEIR ASSOCIATED FREQUENCIES "FRE"
 !| SHP            |-->| BARYCENTRIC COORDINATES OF THE NODES IN
@@ -80,9 +80,9 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN) :: NPOIN3,NPOIN2,NPLAN,NF
+      INTEGER, INTENT(IN) :: NPOIN3,NPOIN2,NDIRE,NF
 !
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: B(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: TRA01(NPOIN3,NF)
       INTEGER, INTENT(INOUT) :: ELT(NPOIN3,NF),ETA(NPOIN3,NF)
@@ -91,7 +91,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER IFF,I,I3,IPLAN
+      INTEGER IFF,I,I3,IDIRE
       INTEGER :: SIZ_ISUB, SIZ_FRE, JF_ISUB, JF_FRE
       INTEGER, ALLOCATABLE :: TMP_ISUB(:)
 !
@@ -102,10 +102,10 @@
 !
       IF(COURAN) THEN
         DO IFF=1,NF
-          DO IPLAN=1,NPLAN
+          DO IDIRE=1,NDIRE
             DO I=1,NPOIN2
-              I3=I+(IPLAN-1)*NPOIN2+(IFF-1)*NPOIN3
-              STSTOT%R(I3)=F(I,IPLAN,IFF)*B(I,IFF)
+              I3=I+(IDIRE-1)*NPOIN2+(IFF-1)*NPOIN3
+              STSTOT%R(I3)=F(I,IDIRE,IFF)*B(I,IFF)
             ENDDO
           ENDDO
         ENDDO
@@ -118,10 +118,10 @@
 !       COPY OF F*B INTO T3_01=TRA02 ?
 !
         IF(.NOT.COURAN) THEN
-          DO IPLAN=1,NPLAN
+          DO IDIRE=1,NDIRE
             DO I=1,NPOIN2
-              I3=I+(IPLAN-1)*NPOIN2
-              STSTOT%R(I3)=F(I,IPLAN,IFF)*B(I,IFF)
+              I3=I+(IDIRE-1)*NPOIN2
+              STSTOT%R(I3)=F(I,IDIRE,IFF)*B(I,IFF)
             ENDDO
           ENDDO
         ENDIF
@@ -149,7 +149,7 @@
      &                   NPOIN2,ELT(1,IFF),ETA(1,IFF),
      &                   FRE((JF_FRE-1)*SIZ_FRE+1:JF_FRE*SIZ_FRE),
      &                   TMP_ISUB,
-     &                   3,NPLAN,41,NPOIN3,
+     &                   3,NDIRE,41,NPOIN3,
      &                   NPOIN2,TRA01,TRA01(1,4),
      &                   T3_01%R,ITR01(1:NPOIN3),
      &                   ITR01(NPOIN3+1:2*NPOIN3),
@@ -165,11 +165,11 @@
 !
 !       FINAL COMPUTATION OF F
 !
-        DO IPLAN=1,NPLAN
+        DO IDIRE=1,NDIRE
           DO I=1,NPOIN2
-            I3=I+(IPLAN-1)*NPOIN2
+            I3=I+(IDIRE-1)*NPOIN2
 !           MAX(..,0.D0) SEEMS NECESSARY, WHERE F BECOMES < 0 ??
-            F(I,IPLAN,IFF)=MAX(T3_02%R(I3)/B(I,IFF),0.D0)
+            F(I,IDIRE,IFF)=MAX(T3_02%R(I3)/B(I,IFF),0.D0)
           ENDDO
         ENDDO
 !

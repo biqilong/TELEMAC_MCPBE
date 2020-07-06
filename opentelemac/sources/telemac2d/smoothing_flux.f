@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE SMOOTHING_FLUX
-!                    *************************
+!                   *************************
+                    SUBROUTINE SMOOTHING_FLUX
+!                   *************************
 !
      &(XMUL,SF,F,SURFAC,IKLE1,IKLE2,IKLE3,NELEM,NELMAX,W)
 !

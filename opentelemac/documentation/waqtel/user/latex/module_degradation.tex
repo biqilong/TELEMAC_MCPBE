@@ -1,14 +1,36 @@
 \chapter{Degradation law}
 
-\waqtel simulates the evolution of one or several tracer(s)
-over time from an initial condition according to a degradation law
-that is assumed to be of 1$^{\rm{st}}$ order (i.e. a tracer decrease).
+%\waqtel simulates the evolution of one or several tracer(s)
+%over time from an initial condition according to a degradation law
+%that is assumed to be of 1$^{\rm{st}}$ order (i.e. a tracer decrease).
+
+\waqtel can simulate usual laws for bacterial degradation with
+$T_{90}$ coefficient(s):
+time(s) required for 90\% of the initial bacterial population to disappear
+or also described as the time for bacterial or viral concentration to decrease
+by one log unit (hence the 2.3 coefficient below).
+It is expressed in hours.
+
+In other words, it simulates the evolution of tracer(s) $C$ over time from
+initial condition(s) according to a degradation law assumed to be of
+1$^{\rm{st}}$ order (i.e. a tracer decrease) with constant(s) of tracer kinetic
+degradation equal to $\frac{2.3}{T_{90}}$:
+
+\begin{equation}
+  F([C]) = -\frac{2.3}{T_{90}} [C],
+\end{equation}
+
+with $T_{90}$ coefficient(s) described above, in hours.
+\\
 
 The user can decide whether a tracer follows such a law
 with the keyword \telkey{LAW OF TRACERS DEGRADATION},
 and the values 0 if no degradation or 1 if a decrease law
-is applied (default = 0).
+of kind bactoriological is applied (default = 0).
+Thus, this keyword has to contain as many values as the number of tracers.
 
-Its constant of tracer kinetic degradation $k_1$ can be specified
+%Its constant of tracer kinetic degradation $k_1$ can be specified
+%The 90~\% mortality time $T_{90}$ can be specified
+The $T_{90}$ coefficient(s) can be specified
 with the keyword \telkey{COEFFICIENT 1 FOR LAW OF TRACERS DEGRADATION}
-(one per tracer, expressed in d$^{-1}$).
+(one per tracer, expressed in hours).

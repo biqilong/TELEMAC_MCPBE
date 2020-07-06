@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE BORD_TIDAL_BC
-!                    ************************
+!                   ************************
+                    SUBROUTINE BORD_TIDAL_BC
+!                   ************************
 !
      &(NBOR,LIHBOR,LIUBOR,NPTFR,
      & KENT,KENTU,MESH,GEOSYST,NUMZONE,NL93,LAMBD0,PHI0,TIDALTYPE,

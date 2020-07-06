@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE REMSEG
-!                    *****************
+!                   *****************
+                    SUBROUTINE REMSEG
+!                   *****************
 !
      &(X, XA,TYPEXA,B,GLOSEG,NSEG,NPOIN,DITR,COPY)
 !

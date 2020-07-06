@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE CALCG
-!                    ****************
+!                   ****************
+                    SUBROUTINE CALCG
+!                   ****************
 !
      & (TRAV2,TRAV3,UETCAR,NPOIN2,NPLAN)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GODWN1
-!                    *****************
+!                   *****************
+                    SUBROUTINE GODWN1
+!                   *****************
 !
      &(X, A,B ,DITR,MESH,COPY)
 !

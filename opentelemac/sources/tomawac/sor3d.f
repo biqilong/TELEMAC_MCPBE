@@ -1,8 +1,8 @@
-!                    ****************
-                     SUBROUTINE SOR3D
-!                    ****************
+!                   ****************
+                    SUBROUTINE SOR3D
+!                   ****************
 !
-     &(F,NPLAN,NF,NPOIN2,VENT,COURAN,MAREE,TITRE,TRA01,MESH3D)
+     &(F,NDIRE,NF,NPOIN2,VENT,COURAN,MAREE,TITRE,TRA01,MESH3D)
 !
 !***********************************************************************
 ! TOMAWAC   V6P3                                   28/06/2011
@@ -51,11 +51,11 @@
 !| MAREE          |-->| LOGICAL INDICATING CONSIDERATION OF TIDE
 !| MESH3D         |-->| MESH STRUCTURE IN 3D (I.E. INCLUDING DIRECTIONS)
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| NR3D           |-->| LOGICAL UNIT NUMBER OF GLOBAL RESULT FILE
 !| TITRE          |-->| TITLE
-!| TRA01          |-->| DOUBLE PRECISION WORK TABLE OF SIZE NPOIN2*NPLAN
+!| TRA01          |-->| DOUBLE PRECISION WORK TABLE OF SIZE NPOIN2*NDIRE
 !| VENT           |-->| INDICATES IF WIND IS TAKEN INTO ACCOUNT
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -69,9 +69,9 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TRA01(NPOIN2*NPLAN)
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TRA01(NPOIN2*NDIRE)
       LOGICAL, INTENT(IN)             :: COURAN,VENT,MAREE
       CHARACTER(LEN=80), INTENT(IN)   :: TITRE
       TYPE(BIEF_MESH), INTENT(IN)     :: MESH3D
@@ -135,7 +135,7 @@
       CALL WRITE_MESH(FMTRBI,     ! RESULTS FILE FORMAT
      &                LURBI,       ! LU FOR RESULTS FILE
      &                MESH3D,
-     &                NPLAN,      ! NUMBER OF PLANES
+     &                NDIRE,      ! NUMBER OF PLANES
      &                DATE,       ! START DATE
      &                TIME,       ! START TIME
      &                STRA31,STRA32,
@@ -151,7 +151,7 @@
 !
       DO IIF=1,NF
         CALL ADD_DATA(FMTRBI,LURBI,TEXTE(IIF),AT,0,IIF.EQ.1,F(1,1,IIF),
-     &                NPOIN2*NPLAN,ISTAT)
+     &                NPOIN2*NDIRE,ISTAT)
       ENDDO
 !
 !     WRITES DEPTH
@@ -166,17 +166,17 @@
 !     THIS IS NECESSARY TO HAVE A REAL SERAFIN FORMAT
 !
       CALL ADD_DATA(FMTRBI,LURBI,TEXTE(NF+1),AT,0,.FALSE.,TRA01,
-     &                NPOIN2*NPLAN,ISTAT)
+     &                NPOIN2*NDIRE,ISTAT)
 !
 !     WRITES U,V,UV,VV (IF HAS TO)
 !
-      IF(VENT.AND.NPLAN.LT.4) THEN
-        WRITE(LU,*) 'SOR3D: NPLAN MUST BE GREATER THAN 3'
+      IF(VENT.AND.NDIRE.LT.4) THEN
+        WRITE(LU,*) 'SOR3D: NDIRE MUST BE GREATER THAN 3'
         CALL PLANTE(1)
         STOP
       ENDIF
-      IF(COURAN.AND.NPLAN.LT.2) THEN
-        WRITE(LU,*) 'SOR3D: NPLAN MUST BE GREATER THAN 1'
+      IF(COURAN.AND.NDIRE.LT.2) THEN
+        WRITE(LU,*) 'SOR3D: NDIRE MUST BE GREATER THAN 1'
         CALL PLANTE(1)
         STOP
       ENDIF
@@ -197,7 +197,7 @@
 !
       IF(COURAN.OR.VENT) THEN
         CALL ADD_DATA(FMTRBI,LURBI,TEXTE(NF+2),AT,0,.FALSE.,TRA01,
-     &                NPOIN2*NPLAN,ISTAT)
+     &                NPOIN2*NDIRE,ISTAT)
       ENDIF
 !
 !-----------------------------------------------------------------------

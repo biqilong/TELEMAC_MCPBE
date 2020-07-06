@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE CPIKLE2
-!                    ******************
+!                   ******************
+                    SUBROUTINE CPIKLE2
+!                   ******************
 !
      &(IKLE3,KLEI3,IKLES,NELEM2,NELMAX2,NPOIN2,NPLAN)
 !

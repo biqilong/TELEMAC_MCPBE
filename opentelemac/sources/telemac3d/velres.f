@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VELRES
-!                    *****************
+!                   *****************
+                    SUBROUTINE VELRES
+!                   *****************
 !
      &(U,V,W,DP,PX,PY,PZ,MSK,MASKEL,MESH3D,S,IELM3,OPTBAN,
      & UNSVOL,DO_UNSVOL,NPOIN3,NPOIN2,SIGMAG,IPBOT,AGGLOH,KSORT,NPTFR3,

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PREBOR
-!                    *****************
+!                   *****************
+                    SUBROUTINE PREBOR
+!                   *****************
 !
      &(HBOR,UBOR,VBOR,TBOR,U,V,H,HN,T,NBOR,NPOIN,NPTFR,NTRAC,NFRLIQ,
      & FRTYPE,NUMLIQ)

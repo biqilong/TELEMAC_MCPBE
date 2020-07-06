@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE AS3_1212_S
-!                    *********************
+!                   *********************
+                    SUBROUTINE AS3_1212_S
+!                   *********************
 !
      &(XM,NSEG11,NSEG12,XMT,NELMAX,NELEM,ELTSEG1,ELTSEG2,ELTSEG3,
      &                                   ELTSEG4,ELTSEG5,ELTSEG6)

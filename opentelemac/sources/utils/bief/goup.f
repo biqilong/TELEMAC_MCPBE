@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE GOUP
-!                    ***************
+!                   ***************
+                    SUBROUTINE GOUP
+!                   ***************
 !
      &(X, A,B ,DITR,MESH,COPY)
 !

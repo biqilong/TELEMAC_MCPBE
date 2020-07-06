@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE BEDLOAD_INTERACT_GAIA
-!                    ********************************
+!                   ********************************
+                    SUBROUTINE BEDLOAD_INTERACT_GAIA
+!                   ********************************
 !
      &(UCMOY,TOBW,TOB,ALPHAW,FW,CF,UW,NPOIN,XMVE,FCW)
 !

@@ -25,7 +25,7 @@
 !
       USE m_TypeDefs_Nestor, ONLY : R8
 !
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
 !
 !
 #ifndef  NESTOR_INTERFACES
@@ -81,7 +81,7 @@
 !
       IF( NCSIZE  >   1 ) THEN
         !maxIndex = MAXVAL( MESH%KNOLG%I(:) )
-        npoin_SisGlobal = P_IMAX( maxIndex )
+        npoin_SisGlobal = P_MAX( maxIndex )
       ELSE
         npoin_SisGlobal = NPOIN
       ENDIF

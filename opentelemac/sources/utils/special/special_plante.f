@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE SPECIAL_PLANTE
-!                    *************************
+!                   *************************
+                    SUBROUTINE SPECIAL_PLANTE
+!                   *************************
 !
      &(IVAL,NCSIZE,LNG,LU)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT04PP
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT04PP
+!                   *****************
 !
      &( T,XM,XMUL,SU,SV,SW,U,V,X,Y,Z,SURFAC,IKLE,NELEM,NELMAX,FORMUL)
 !

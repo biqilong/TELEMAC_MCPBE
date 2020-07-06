@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE READ_FIC_CONC
-!                    ************************
+!                   ************************
+                    SUBROUTINE READ_FIC_CONC
+!                   ************************
 !
      &(CGL , WHAT , AT , NFIC , FOUND )
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE USTAR1
-!                    *****************
+!                   *****************
+                    SUBROUTINE USTAR1
+!                   *****************
 !
      &( USTAR , Z0    , TAUWAV,  NPOIN2)
 !

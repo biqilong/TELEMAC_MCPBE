@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE USER_FLOT
-!                    ********************
+!                   ********************
+                    SUBROUTINE USER_FLOT
+!                   ********************
 !
      &(XFLOT,YFLOT,NFLOT,NFLOT_MAX,X,Y,IKLE,NELEM,NELMAX,NPOIN,
      & TAGFLO,CLSFLO,SHPFLO,ELTFLO,MESH,LT,NIT,AT)

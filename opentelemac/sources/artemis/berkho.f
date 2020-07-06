@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE BERKHO
-!                    *****************
+!                   *****************
+                    SUBROUTINE BERKHO
+!                   *****************
 !
      &(LF)
 !
@@ -149,7 +149,7 @@
       USE INTERFACE_ARTEMIS, EX_BERKHO => BERKHO
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
       INTEGER, INTENT(IN) :: LF
@@ -899,8 +899,8 @@
 !
 !      MAX ERROR FOR N PROC
         IF (NCSIZE.GT.1) THEN
-          ERREURT = P_DMAX(ERREURT)
-          ERREUR1 = P_DMAX(ERREUR1)
+          ERREURT = P_MAX(ERREURT)
+          ERREUR1 = P_MAX(ERREUR1)
         END IF
 !
 !      ----------------------------------------------------

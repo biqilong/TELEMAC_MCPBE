@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE SET_HEADER
-!                    *******************
+!                   *******************
+                    SUBROUTINE SET_HEADER
+!                   *******************
 !
      &(FFORMAT,FILE_ID,TITLE,NVAR,VAR_NAME,IERR)
 !

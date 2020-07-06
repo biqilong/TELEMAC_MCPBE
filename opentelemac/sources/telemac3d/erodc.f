@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE ERODC
-!                    ****************
+!                   ****************
+                    SUBROUTINE ERODC
+!                   ****************
 !
      &( S3D_CONC, S3D_EPAI, S3D_FLUER, TOB    ,
      &  S3D_MPART, DT     , NPOIN2 , S3D_NCOUCH,S3D_TOCE, HN, HMIN,

@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE SOURCE_MOMENT
-!                    ************************
+!                   ************************
+                    SUBROUTINE SOURCE_MOMENT
+!                   ************************
 !
      &(UA,YASMO)
 !
@@ -41,8 +41,8 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER IS
-      DOUBLE PRECISION AKAP,STRIC2,SM1,SM2,GDT,DETER
-      DOUBLE PRECISION A,A2SUR4,ASUR2,FOURSUR3,PI,WROT,AUX
+      DOUBLE PRECISION AKAP,SM1,SM2,GDT,DETER
+      DOUBLE PRECISION A,A2SUR4,ASUR2,FOURSUR3,PI,WROT
 !
 !-----------------------------------------------------------------------
 !

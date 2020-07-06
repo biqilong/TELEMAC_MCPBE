@@ -1,6 +1,6 @@
-!                        ************************
-                         LOGICAL FUNCTION CVSP_DB
-!                        ************************
+!                       ************************
+                        LOGICAL FUNCTION CVSP_DB
+!                       ************************
 !
      &(J_GLOBAL, TIMESTAMP)
 !

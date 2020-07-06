@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE BIL3D
-!                    ****************
+!                   ****************
+                    SUBROUTINE BIL3D
+!                   ****************
 !
      &(LT,NIT,IKLBORL,NPTFR,NETAG)
 !
@@ -72,11 +72,10 @@
       USE BIEF
       USE INTERFACE_TELEMAC3D, EX_BIL3D => BIL3D
       USE DECLARATIONS_TELEMAC
-      USE DECLARATIONS_GAIA, ONLY: NSUSP_TEL
       USE DECLARATIONS_TELEMAC3D, EX_LT => LT, EX_NIT => NIT
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -113,7 +112,7 @@
         ENDIF
         IF(NCSIZE.GT.1) THEN
           DO I=1,NFRLIQ
-            FLUX_BOUNDARIES(I)=P_DSUM(FLUX_BOUNDARIES(I))
+            FLUX_BOUNDARIES(I)=P_SUM(FLUX_BOUNDARIES(I))
           ENDDO
         ENDIF
       ENDIF
@@ -140,7 +139,7 @@
         DO I=1,NPOIN2
           FLURAIN=FLURAIN+PLUIE%R(I)
         ENDDO
-        IF(NCSIZE.GT.1) FLURAIN = P_DSUM(FLURAIN)
+        IF(NCSIZE.GT.1) FLURAIN = P_SUM(FLURAIN)
         FLUXTOTAL=FLUXTOTAL-FLURAIN
       ENDIF
 !
@@ -191,7 +190,7 @@
      &                           TA%ADR(ITRAC)%P%R(I)
             ENDDO
             IF(NCSIZE.GT.1) THEN
-              FLUS1(5+ITRAC) = P_DSUM(FLUS1(5+ITRAC))
+              FLUS1(5+ITRAC) = P_SUM(FLUS1(5+ITRAC))
             ENDIF
           ENDIF
           FLUS0(5+ITRAC) = 0.D0
@@ -201,7 +200,7 @@
      &                        +S0TA%ADR(ITRAC)%P%R(I)*VOLU%R(I)
             ENDDO
             IF(NCSIZE.GT.1) THEN
-              FLUS0(5+ITRAC) = P_DSUM(FLUS0(5+ITRAC))
+              FLUS0(5+ITRAC) = P_SUM(FLUS0(5+ITRAC))
             ENDIF
           ENDIF
         ENDDO
@@ -235,13 +234,13 @@
      &            *TA%ADR(ITRAC)%P%R(IPBOT%I(I)*NPOIN2+I)
                 ENDIF
               ENDDO
-             ELSE
+            ELSE
               DO I=1,NPOIN2
                 FLUDI(5+ITRAC) = FLUDI(5+ITRAC)
      &          + ATABOF%ADR(ITRAC)%P%R(I)*VOLU2D%R(I)
      &                             *TA%ADR(ITRAC)%P%R(I)
               ENDDO
-             ENDIF
+            ENDIF
           ENDIF
 !
           IF(ATABOS%ADR(ITRAC)%P%TYPR.NE.'0') THEN
@@ -332,7 +331,7 @@
 !
           ENDDO
 !
-          IF(NCSIZE.GT.1) FLUDI(5+ITRAC) = P_DSUM(FLUDI(5+ITRAC))
+          IF(NCSIZE.GT.1) FLUDI(5+ITRAC) = P_SUM(FLUDI(5+ITRAC))
 !
         ENDDO
 !

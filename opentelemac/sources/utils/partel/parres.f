@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE PARRES
-!                    *****************
+!                   *****************
+                    SUBROUTINE PARRES
+!                   *****************
      & (NAMEGEO, NAMEINP, NPARTS, GEOFORMAT, INPFORMAT)
 !
 !

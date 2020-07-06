@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE GETTRIEBE
-!                    ********************
+!                   ********************
+                    SUBROUTINE GETTRIEBE
+!                   ********************
 !
      &(XAUX,AD,AX,TETA,IKLE,NPOIN,NELEM,NELMAX,MESH,IELM3,NELEM2,NPLAN,
      & KNOLG)

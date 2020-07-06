@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SISYPHE
-!                    ******************
+!                   ******************
+                    SUBROUTINE SISYPHE
+!                   ******************
 !
      &(PART,LOOPCOUNT,GRAFCOUNT,LISTCOUNT,TELNIT,
      & U_TEL,V_TEL,H_TEL,HN_TEL,ZF_TEL,UETCAR,CF_TEL,KS_TEL,
@@ -211,7 +211,7 @@
       USE INTERFACE_HERMES
       USE DECLARATIONS_SPECIAL
 !
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN,P_MAX
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -332,7 +332,7 @@
 !         READS CS (CONCENTRATION) FROM THE PREVIOUS COMPUTATION FILE
           IF(SUSP) THEN
             DO I=1,NSICLA
-             ALIRE(23+(NOMBLAY+1)*NSICLA+I)=1
+              ALIRE(23+(NOMBLAY+1)*NSICLA+I)=1
             ENDDO
           ENDIF
 !         READS THE LAYER THICKNESSES
@@ -427,7 +427,7 @@
           DO I=1,NPTFR
             NFRLIQ=MAX(NFRLIQ,NUMLIQ%I(I))
           ENDDO
-          NFRLIQ=P_IMAX(NFRLIQ)
+          NFRLIQ=P_MAX(NFRLIQ)
           WRITE(LU,*) ' '
           WRITE(LU,*) 'LIQUID BOUNDARIES:',NFRLIQ
 !         NFRLIQ CHECKED (NFRSOL NOT USED IN PARALLEL)
@@ -1106,11 +1106,11 @@
 !         LOOP ON THE RECORDS (IF PERMA NIDT=1)
 !         ------------------------------
 111       IF(PART.EQ.3.AND.CODE(1:7).NE.'TELEMAC') THEN
-             DEBUT=API_ITER
-             FIN=MIN(API_ITER,NIDT) !LIMITED BY HYDRO FILE LAST ITERATION
+            DEBUT=API_ITER
+            FIN=MIN(API_ITER,NIDT) !LIMITED BY HYDRO FILE LAST ITERATION
           ELSE
-             DEBUT=1
-             FIN=NIDT
+            DEBUT=1
+            FIN=NIDT
           ENDIF
           DO MT = DEBUT, FIN
 !          DO MT = 1, NIDT
@@ -1599,12 +1599,9 @@
 !
 !       UPDATES ZF (ELAY HAS BEEN UPDATED IN TASSEMENT)
 !
-! mak:
         IF(.NOT.STAT_MODE) THEN
-           CALL OS('X=X+Y   ',X=ZF,Y=T3)
+          CALL OS('X=X+Y   ',X=ZF,Y=T3)
         ENDIF
-! end mak
-!        CALL OS('X=X+Y   ',X=ZF,Y=T3)
 !
       ENDIF
 !
@@ -1770,13 +1767,13 @@
           WRITE(LU,*)
           CALL MAXI(XMAX,IMAX,E%R,NPOIN)
           IF(NCSIZE.GT.1) THEN
-            XMA=P_DMAX(XMAX)
+            XMA=P_MAX(XMAX)
             IF(XMAX.EQ.XMA) THEN
               IMA=MESH%KNOLG%I(IMAX)
             ELSE
               IMA=0
             ENDIF
-            IMA=P_IMAX(IMA)
+            IMA=P_MAX(IMA)
           ELSE
             IMA=IMAX
             XMA=XMAX
@@ -1785,13 +1782,13 @@
 372       FORMAT(' MAXIMAL EVOLUTION        : ',G16.7,' NODE  : ',I6)
           CALL MINI(XMIN,IMIN,E%R,NPOIN)
           IF(NCSIZE.GT.1) THEN
-            XMI=P_DMIN(XMIN)
+            XMI=P_MIN(XMIN)
             IF(XMIN.EQ.XMI) THEN
               IMI=MESH%KNOLG%I(IMIN)
             ELSE
               IMI=0
             ENDIF
-            IMI=P_IMAX(IMI)
+            IMI=P_MAX(IMI)
           ELSE
             IMI=IMIN
             XMI=XMIN
@@ -1823,13 +1820,13 @@
         IF(ENTET) THEN
           CALL MAXI(XMAX,IMAX,ESOMT%R,NPOIN)
           IF(NCSIZE.GT.1) THEN
-            XMA=P_DMAX(XMAX)
+            XMA=P_MAX(XMAX)
             IF(XMAX.EQ.XMA) THEN
               IMA=MESH%KNOLG%I(IMAX)
             ELSE
               IMA=0
             ENDIF
-            IMA=P_IMAX(IMA)
+            IMA=P_MAX(IMA)
           ELSE
             IMA=IMAX
             XMA=XMAX
@@ -1838,13 +1835,13 @@
 882       FORMAT(' TOTAL MAXIMAL EVOLUTION  : ',G16.7,' NODE  : ',I6)
           CALL MINI(XMIN,IMIN,ESOMT%R,NPOIN)
           IF(NCSIZE.GT.1) THEN
-            XMI=P_DMIN(XMIN)
+            XMI=P_MIN(XMIN)
             IF(XMIN.EQ.XMI) THEN
               IMI=MESH%KNOLG%I(IMIN)
             ELSE
               IMI=0
             ENDIF
-            IMI=P_IMAX(IMI)
+            IMI=P_MAX(IMI)
           ELSE
             IMI=IMIN
             XMI=XMIN

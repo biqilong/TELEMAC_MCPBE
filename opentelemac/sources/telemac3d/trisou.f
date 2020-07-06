@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TRISOU
-!                    *****************
+!                   *****************
+                    SUBROUTINE TRISOU
+!                   *****************
 !
      & (CV1, CV2, SCV1, SCV2, UN3, VN3, X, Y, Z, ZS,
      &  DELTAR,MESH3,FCOR,CORIOL,NTRAC,AT,SURFAC,
@@ -339,83 +339,83 @@
 !
         BYELEMENT: DO IELEM3 = 1 , NELEM3
 !
-           I1 = IKLE3(IELEM3,1)
-           I2 = IKLE3(IELEM3,2)
-           I3 = IKLE3(IELEM3,3)
-           I4 = IKLE3(IELEM3,4)
-           I5 = IKLE3(IELEM3,5)
-           I6 = IKLE3(IELEM3,6)
+          I1 = IKLE3(IELEM3,1)
+          I2 = IKLE3(IELEM3,2)
+          I3 = IKLE3(IELEM3,3)
+          I4 = IKLE3(IELEM3,4)
+          I5 = IKLE3(IELEM3,5)
+          I6 = IKLE3(IELEM3,6)
 !
-           DX1 = X(I3) - X(I2)
-           DX2 = X(I1) - X(I3)
-           DX3 = X(I2) - X(I1)
-           DY1 = Y(I2) - Y(I3)
-           DY2 = Y(I3) - Y(I1)
-           DY3 = Y(I1) - Y(I2)
+          DX1 = X(I3) - X(I2)
+          DX2 = X(I1) - X(I3)
+          DX3 = X(I2) - X(I1)
+          DY1 = Y(I2) - Y(I3)
+          DY2 = Y(I3) - Y(I1)
+          DY3 = Y(I1) - Y(I2)
 !
-           DR1 = DELTAR%R(I4) - DELTAR%R(I1)
-           DR2 = DELTAR%R(I5) - DELTAR%R(I2)
-           DR3 = DELTAR%R(I6) - DELTAR%R(I3)
-           DZ1 = ZS(I4) - ZS(I1)
-           DZ2 = ZS(I5) - ZS(I2)
-           DZ3 = ZS(I6) - ZS(I3)
-           DZ123 = DZ1 + DZ2 + DZ3
+          DR1 = DELTAR%R(I4) - DELTAR%R(I1)
+          DR2 = DELTAR%R(I5) - DELTAR%R(I2)
+          DR3 = DELTAR%R(I6) - DELTAR%R(I3)
+          DZ1 = ZS(I4) - ZS(I1)
+          DZ2 = ZS(I5) - ZS(I2)
+          DZ3 = ZS(I6) - ZS(I3)
+          DZ123 = DZ1 + DZ2 + DZ3
 !
-           SZ1 = ZS(I4) + ZS(I1)
-           SZ2 = ZS(I5) + ZS(I2)
-           SZ3 = ZS(I6) + ZS(I3)
-           SR1 = DELTAR%R(I4) + DELTAR%R(I1)
-           SR2 = DELTAR%R(I5) + DELTAR%R(I2)
-           SR3 = DELTAR%R(I6) + DELTAR%R(I3)
+          SZ1 = ZS(I4) + ZS(I1)
+          SZ2 = ZS(I5) + ZS(I2)
+          SZ3 = ZS(I6) + ZS(I3)
+          SR1 = DELTAR%R(I4) + DELTAR%R(I1)
+          SR2 = DELTAR%R(I5) + DELTAR%R(I2)
+          SR3 = DELTAR%R(I6) + DELTAR%R(I3)
 !
-           IF(MAX(ZS(I1),ZS(I2),ZS(I3)).GT.
-     &        MIN(ZS(I4),ZS(I5),ZS(I6)).AND.INCHYD) THEN
-              DR1 = 0.D0
-              DR2 = 0.D0
-              DR3 = 0.D0
-              SR1 = 0.D0
-              SR2 = 0.D0
-              SR3 = 0.D0
-           ENDIF
+          IF(MAX(ZS(I1),ZS(I2),ZS(I3)).GT.
+     &       MIN(ZS(I4),ZS(I5),ZS(I6)).AND.INCHYD) THEN
+            DR1 = 0.D0
+            DR2 = 0.D0
+            DR3 = 0.D0
+            SR1 = 0.D0
+            SR2 = 0.D0
+            SR3 = 0.D0
+          ENDIF
 !
-           DZSUDX = SZ1 * DY1 + SZ2 * DY2 + SZ3 * DY3
-           DZSUDY = SZ1 * DX1 + SZ2 * DX2 + SZ3 * DX3
-           DRSUDX = SR1 * DY1 + SR2 * DY2 + SR3 * DY3
-           DRSUDY = SR1 * DX1 + SR2 * DX2 + SR3 * DX3
+          DZSUDX = SZ1 * DY1 + SZ2 * DY2 + SZ3 * DY3
+          DZSUDY = SZ1 * DX1 + SZ2 * DX2 + SZ3 * DX3
+          DRSUDX = SR1 * DY1 + SR2 * DY2 + SR3 * DY3
+          DRSUDY = SR1 * DX1 + SR2 * DX2 + SR3 * DX3
 !
-           W1(IELEM3,1) = DR1 * DZSUDX - DZ1 * DRSUDX
-           W1(IELEM3,2) = DR2 * DZSUDX - DZ2 * DRSUDX
-           W1(IELEM3,3) = DR3 * DZSUDX - DZ3 * DRSUDX
-           W2(IELEM3,1) = DR1 * DZSUDY - DZ1 * DRSUDY
-           W2(IELEM3,2) = DR2 * DZSUDY - DZ2 * DRSUDY
-           W2(IELEM3,3) = DR3 * DZSUDY - DZ3 * DRSUDY
-           W3(IELEM3,1) = DZ1 + DZ123
-           W3(IELEM3,2) = DZ2 + DZ123
-           W3(IELEM3,3) = DZ3 + DZ123
+          W1(IELEM3,1) = DR1 * DZSUDX - DZ1 * DRSUDX
+          W1(IELEM3,2) = DR2 * DZSUDX - DZ2 * DRSUDX
+          W1(IELEM3,3) = DR3 * DZSUDX - DZ3 * DRSUDX
+          W2(IELEM3,1) = DR1 * DZSUDY - DZ1 * DRSUDY
+          W2(IELEM3,2) = DR2 * DZSUDY - DZ2 * DRSUDY
+          W2(IELEM3,3) = DR3 * DZSUDY - DZ3 * DRSUDY
+          W3(IELEM3,1) = DZ1 + DZ123
+          W3(IELEM3,2) = DZ2 + DZ123
+          W3(IELEM3,3) = DZ3 + DZ123
 !
         END DO BYELEMENT
 !
         IF (NETAGE.NE.1) THEN
 !
-           BYETAGE: DO IETAGE = NETAGE-1 , 1 , -1
-              I2 = NELEM2*IETAGE + 1
-              I1 = I2 - NELEM2
-              CALL OV('X=X+Y   ', X=W1(I1,1), Y=W1(I2,1), DIM1=NELEM2)
-              CALL OV('X=X+Y   ', X=W1(I1,2), Y=W1(I2,2), DIM1=NELEM2)
-              CALL OV('X=X+Y   ', X=W1(I1,3), Y=W1(I2,3), DIM1=NELEM2)
-              CALL OV('X=X+Y   ', X=W2(I1,1), Y=W2(I2,1), DIM1=NELEM2)
-              CALL OV('X=X+Y   ', X=W2(I1,2), Y=W2(I2,2), DIM1=NELEM2)
-              CALL OV('X=X+Y   ', X=W2(I1,3), Y=W2(I2,3), DIM1=NELEM2)
-           END DO BYETAGE
+          BYETAGE: DO IETAGE = NETAGE-1 , 1 , -1
+            I2 = NELEM2*IETAGE + 1
+            I1 = I2 - NELEM2
+            CALL OV('X=X+Y   ', X=W1(I1,1), Y=W1(I2,1), DIM1=NELEM2)
+            CALL OV('X=X+Y   ', X=W1(I1,2), Y=W1(I2,2), DIM1=NELEM2)
+            CALL OV('X=X+Y   ', X=W1(I1,3), Y=W1(I2,3), DIM1=NELEM2)
+            CALL OV('X=X+Y   ', X=W2(I1,1), Y=W2(I2,1), DIM1=NELEM2)
+            CALL OV('X=X+Y   ', X=W2(I1,2), Y=W2(I2,2), DIM1=NELEM2)
+            CALL OV('X=X+Y   ', X=W2(I1,3), Y=W2(I2,3), DIM1=NELEM2)
+          END DO BYETAGE
 !
-           I2 = NELEM2 + 1
-           I1 = NELEM3 - NELEM2
-           CALL OV('X=Y     ', X=W1(1,4), Y=W1(I2,1), DIM1=I1)
-           CALL OV('X=Y     ', X=W1(1,5), Y=W1(I2,2), DIM1=I1)
-           CALL OV('X=Y     ', X=W1(1,6), Y=W1(I2,3), DIM1=I1)
-           CALL OV('X=Y     ', X=W2(1,4), Y=W2(I2,1), DIM1=I1)
-           CALL OV('X=Y     ', X=W2(1,5), Y=W2(I2,2), DIM1=I1)
-           CALL OV('X=Y     ', X=W2(1,6), Y=W2(I2,3), DIM1=I1)
+          I2 = NELEM2 + 1
+          I1 = NELEM3 - NELEM2
+          CALL OV('X=Y     ', X=W1(1,4), Y=W1(I2,1), DIM1=I1)
+          CALL OV('X=Y     ', X=W1(1,5), Y=W1(I2,2), DIM1=I1)
+          CALL OV('X=Y     ', X=W1(1,6), Y=W1(I2,3), DIM1=I1)
+          CALL OV('X=Y     ', X=W2(1,4), Y=W2(I2,1), DIM1=I1)
+          CALL OV('X=Y     ', X=W2(1,5), Y=W2(I2,2), DIM1=I1)
+          CALL OV('X=Y     ', X=W2(1,6), Y=W2(I2,3), DIM1=I1)
 !
         ENDIF
 !
@@ -738,4 +738,3 @@
 !
       RETURN
       END
-

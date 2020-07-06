@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE ALGAE_DEATH
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE ALGAE_DEATH
+!                   ***********************
 !
      &(ALD,MP,CMOR,TRR,TRESP,GT,TOX,NPOIN )
 !
@@ -8,7 +8,7 @@
 ! TELEMAC2D   V7P1
 !***********************************************************************
 !
-!brief    COMPUTES THE DISAPPEARANCE RATE OF ALGAE 
+!brief    COMPUTES THE DISAPPEARANCE RATE OF ALGAE
 !
 !history  R. ATA (LNHE)
 !+        02/09/2015

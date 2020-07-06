@@ -1,6 +1,6 @@
-!                    *******************************
-                     SUBROUTINE COMPUTE_SETTLING_VEL
-!                    *******************************
+!                   *******************************
+                    SUBROUTINE COMPUTE_SETTLING_VEL
+!                   *******************************
 !
      &(WCHU,U,V,TRAV1,TRAV2,TRAV3,S,MESH3D, IELM3,
      & NPOIN2,NPOIN3,NPLAN,MSK,MASKEL,UETCAR,TA,HN)

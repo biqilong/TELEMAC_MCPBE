@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FILPOL
-!                    *****************
+!                   *****************
+                    SUBROUTINE FILPOL
+!                   *****************
 !
      &( F , C , XSOM , YSOM , NSOM , MESH )
 !

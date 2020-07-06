@@ -64,10 +64,9 @@ SUBROUTINE BISSN1( &
    !     variables locales
    !
    Real(DOUBLE)                     :: FK(4) , EK(4) , IBD(4) , NORM
-   Real(DOUBLE)                     :: DET(4) , YD(4) , ZD(4) , XD(4) , IDET(4)
+   Real(DOUBLE)                     :: DET(4) , YD(4) , ZD(4) , IDET(4)
    ! Array used for Memory optimization (from intel debug)
    Real(DOUBLE)                     :: TMP1(4) , TMP2(4)
-   INTEGER                          :: KJ , KJM1 , KMJ
    Integer                          :: KM1 , K , J , KM2
 
    KM1 = KM - 1
@@ -184,8 +183,6 @@ SUBROUTINE BISSN1( &
    TMP1(1:2) = X(1:,K)
    CALL PROMVT( TMP1 , IBD , ZD , 2 )
    X(1:,K) = TMP1(1:2)
-
-   60 CONTINUE
 
    IF( K.GT.1 ) GO TO 50
 

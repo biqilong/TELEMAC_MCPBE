@@ -950,7 +950,14 @@ CHOIX =
 'US="vitesse de frottement (m/s)"';
 'MAXZ="valeur maximum de la cote de l eau au cours du calcul (m)"';
 'TMXZ="temps correspondant a ce niveau maximum (s)"';
-'TAIR="temperature de l air (degre C)"'
+'TAIR="temperature de l air (degre C)"';
+'USURF="vitesse en surface suivant l axe des x (m/s)"';
+'VSURF="vitesse en surface suivant l axe des y (m/s)"';
+'WSURF="vitesse en surface suivant l axe des z (m/s)"';
+'MSURF="norme de la vitesse en surface (m/s)"';
+'TASURFi="TAi conc des traceurs en surface, i numero du traceur"';
+'TASURF*="TA concentrations des traceurs en surface de 1 a 9"';
+'TASURF**="TA concentrations des traceurs en surface de 10 a 99"'
 CHOIX1 =
 'U="depth averaged velocity along x axis (m/s)"';
 'V="depth averaged velocity along y axis (m/s)"';
@@ -985,7 +992,14 @@ CHOIX1 =
 'US="friction velocity (m/s)"';
 'MAXZ="maximum value of the free surface elevation (m)"';
 'TMXZ="time corresponding to this maximum elevation (s)"';
-'TAIR="air temperature (degree C)"'
+'TAIR="air temperature (degree C)"';
+'USURF="surface velocity along x axis (m/s)"';
+'VSURF="surface velocity along y axis (m/s)"';
+'WSURF="surface velocity along z axis (m/s)"';
+'MSURF="magnitude of velocity at the surface (m/s)"';
+'TASURFi="TAi conc for tracers at the surface, i is the tracer number"';
+'TASURF*="TA concentrations for tracers at the surface from 1 to 9"';
+'TASURF**="TA concentrations for tracers at the surface from 10 to 99"'
 APPARENCE =
 'DYNLIST'
 RUBRIQUE =
@@ -1034,7 +1048,14 @@ Les possibilites offertes sont les suivantes :
 \item US : vitesse de frottement (m/s) ;
 \item MAXZ : valeur maximum de la cote de l eau au cours du calcul (m) ;
 \item TMXZ : temps correspondant a ce niveau maximum (s) ;
-\item TAIR : temperature de l air ($^{\circ}$C).
+\item TAIR : temperature de l air ($^{\circ}$C) ;
+\item USURF : vitesse en surface suivant l''axe des x (m/s) ;
+\item VSURF : vitesse en surface suivant l''axe des y (m/s) ;
+\item WSURF : vitesse en surface suivant l''axe des z (m/s) ;
+\item MSURF : norme de la vitesse en surface (m/s) ;
+\item TASURFi : TAi conc des traceurs en surface, i numero du traceur ;
+\item TASURF* : TA concentrations des traceurs en surface de 1 a 9 ;
+\item TASURF** : TA concentrations des traceurs en surface de 10 a 99.
 \end{itemize}'
 AIDE1 =
 'Names of variables that may be written in the
@@ -1077,7 +1098,15 @@ possibilities are the following:
 \item MAXZ: maximum value of the free surface
 elevation during the computation (m),
 \item TMXZ: time corresponding to this maximum elevation (s),
-\item TAIR: air temperature ($^{\circ}$C).
+\item TAIR: air temperature ($^{\circ}$C),
+\item USURF: velocity along x axis at the surface (m/s),
+\item VSURF: velocity along y axis at the surface (m/s),
+\item WSURF: velocity along z axis at the surface (m/s),
+\item MSURF: magnitude of velocity at the surface (m/s),
+\item TASURFi: TAi conc for tracers at the surface, i is the tracer
+number,
+\item TASURF*: TA conc for tracers at the surface from 1 to 9,
+\item TASURF**: TA conc for tracers at the surface from 10 to 99.
 \end{itemize}'
 /
 NOM = 'PERIODE POUR LES SORTIES GRAPHIQUES'
@@ -1599,8 +1628,8 @@ NOM1 = 'RESTART FILE FORMAT'
 TYPE = STRING
 INDEX = 84
 TAILLE = 1
-DEFAUT = 'SERAFIN '
-DEFAUT1 = 'SERAFIN '
+DEFAUT = 'SERAFIND'
+DEFAUT1 = 'SERAFIND'
 MNEMO = 'T3D\_FILES(T3DRST)\%FMT'
 CHOIX =
 'SERAFIN ';

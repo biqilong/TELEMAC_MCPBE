@@ -1,13 +1,13 @@
-!                    ***************************
-                     SUBROUTINE LECDON_TELEMAC3D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE LECDON_TELEMAC3D
+!                   ***************************
 !
      &(MOTCAR,FILE_DESC,PATH,NCAR,
      & CAS_FILE,DICO_FILE,
      & GAIA_CAS_FILE,GAIA_DICO_FILE)
 !
 !***********************************************************************
-! TELEMAC3D   V7P2
+! TELEMAC3D   V8P2
 !***********************************************************************
 !
 !brief    READS THE STEERING FILE USING DAMOCLES.
@@ -2192,7 +2192,7 @@
 !     FOR 2D
 !
       CALL NOMVAR_2D_IN_3D(TEXTE,TEXTPR,MNEMO,NTRAC,MAXTRA,NAMETRAC,
-     &                     N_NAMES_PRIV2D,NAMES_PRIVE2D)
+     &                     N_NAMES_PRIV2D,NAMES_PRIVE2D,ADR_TRAC_2D)
       CALL SORTIE(SORT2D , MNEMO , MAXVAR , SORG2D )
 !     OUTPUTS WHICH ARE NOT RELEVANT OR NOT PROGRAMMED
       SORG2D( 9) = .FALSE.
@@ -2211,8 +2211,8 @@
         SORG2D(33) = .FALSE.
         SORG2D(34) = .FALSE.
         SORG2D(37) = .FALSE.
-        SORG2D(38+NTRAC+S3D_NCOUCH)=.FALSE.
-        SORG2D(39+NTRAC+S3D_NCOUCH)=.FALSE.
+        SORG2D(ADR_TRAC_2D+2*NTRAC+S3D_NCOUCH-1)=.FALSE.
+        SORG2D(ADR_TRAC_2D+2*NTRAC+S3D_NCOUCH)  =.FALSE.
       ENDIF
       IF(.NOT.VENT) THEN
         SORG2D(16) = .FALSE.
@@ -2258,7 +2258,7 @@
 !     UCONV,VCONV,WCONV,DM1
       SOREST(14)=.TRUE.
       SOREST(15)=.TRUE.
-      SOREST(16)=.TRUE.
+      IF(NONHYD) SOREST(16)=.TRUE.
       SOREST(18)=.TRUE.
 !     DH AND HN IN A SINGLE 3D ARRAY
       SOREST(19)=.TRUE.
@@ -2269,7 +2269,7 @@
 !     UD,VD,WD
       SOREST(22)=.TRUE.
       SOREST(23)=.TRUE.
-      SOREST(24)=.TRUE.
+      IF(NONHYD) SOREST(24)=.TRUE.
 !     TRACERS
       IF(NTRAC.GT.0) THEN
         DO I=1,NTRAC

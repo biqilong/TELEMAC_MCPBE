@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE COEFRO
-!                    *****************
+!                   *****************
+                    SUBROUTINE COEFRO
+!                   *****************
 !
      &(CF,H,U,V,KARMAN,KFROT,CHESTR,GRAV,MESH,T1,YAFV)
 !

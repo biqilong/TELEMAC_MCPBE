@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MW0303
-!                    *****************
+!                   *****************
+                    SUBROUTINE MW0303
+!                   *****************
 !
      &(OP, X , DA,TYPDIA,XAS,TYPEXT, Y,C,
      & IKLEM1,DIMIKM,LIMVOI,MXPTVS,NPMAX,NPOIN,TRAV)

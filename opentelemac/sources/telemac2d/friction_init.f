@@ -1,17 +1,16 @@
-!                    ************************
-                     SUBROUTINE FRICTION_INIT
-!                    ************************
+!                   ************************
+                    SUBROUTINE FRICTION_INIT
+!                   ************************
 !
 !
 !***********************************************************************
-! TELEMAC2D   V6P1                                   21/08/2010
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    COMPUTES FRICTION BY ZONE INITIALISATION.
 !
 !history  F. HUVELIN
 !+        20/04/2004
-!+
 !+
 !
 !history  J-M HERVOUET (LNHE)
@@ -31,6 +30,15 @@
 !+   Creation of DOXYGEN tags for automated documentation and
 !+   cross-referencing of the FORTRAN sources
 !
+!history R.KOPMANN (BAW)
+!+        31/10/2019
+!+        V8P2
+!+   Lateral boundary roughness coefficient is not read from table
+!+   but will set in the steering file or from the boundary file
+!+   if vegetation is not used
+!+   should be changed in future to use variable roughness coefficients
+!+   even with vegetation
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -43,20 +51,16 @@
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
-      !2/ LOCAL VARIABLES
-      !------------------
-      INTEGER :: I, J, K
-      LOGICAL :: FRICTION_ERR
+!-----------------------------------------------------------------------
 !
-!=======================================================================!
-!=======================================================================!
-!                               PROGRAMME                               !
-!=======================================================================!
-!=======================================================================!
+      INTEGER I, J, K
+      LOGICAL FRICTION_ERR
+!
+!-----------------------------------------------------------------------
 !
       CALL FRICTION_READ(T2D_FILES(T2DCOF)%LU,
-     &                   NZONMX,ITURB,LISRUG,LINDNER,
-     &                   T2D_FILES(T2DCOF)%NAME,NZONES,FRTAB)
+     &                   NZONMX,ITURB,LISRUG,VEGETATION,
+     &                   T2D_FILES(T2DCOF)%NAME,NZONES,FRTAB,KFROTL,SB)
 !
       ! INITIALIZATION (ALL ELEMENTS WITH -1
       ! IN ORDER TO CHECK AFTER USER INITIALIZATION)
@@ -130,19 +134,22 @@
       ! VECTOR INITIALIZATION : WHOLE DOMAIN
       ! (FOR QUASI_BUBBLE, SEE FRICTION_CHOICE.F : CALL FRICTION_BUBBLE)
       ! ----------------------------------------------------------------
-      IF (LINDNER) THEN
+      IF(VEGETATION) THEN
         DO I = 1, NPOIN
-          CHESTR%R(I) = FRTAB%ADR(KFROPT%I(I))%P%RCOEF(1)
-          NDEFMA%R(I) = FRTAB%ADR(KFROPT%I(I))%P%NDEF (1)
-          NKFROT%I(I) = FRTAB%ADR(KFROPT%I(I))%P%RTYPE(1)
-          LINDDP%R(I) = FRTAB%ADR(KFROPT%I(I))%P%DP
-          LINDSP%R(I) = FRTAB%ADR(KFROPT%I(I))%P%SP
+          CHESTR%R(I) = FRTAB%ADR(KFROPT%I(I))%P%RCOEF
+          NDEFMA%R(I) = FRTAB%ADR(KFROPT%I(I))%P%NDEF
+          NKFROT%I(I) = FRTAB%ADR(KFROPT%I(I))%P%RTYPE
+          DO J = 1,15
+            VCOEFF%ADR(J)%P%R(I) = FRTAB%ADR(KFROPT%I(I))%P%VCOEF(J)
+          ENDDO
+          VEGLAW%I(I) = FRTAB%ADR(KFROPT%I(I))%P%VTYPE
         ENDDO
       ELSE
         DO I = 1, NPOIN
-          CHESTR%R(I) = FRTAB%ADR(KFROPT%I(I))%P%RCOEF(1)
-          NDEFMA%R(I) = FRTAB%ADR(KFROPT%I(I))%P%NDEF (1)
-          NKFROT%I(I) = FRTAB%ADR(KFROPT%I(I))%P%RTYPE(1)
+          CHESTR%R(I) = FRTAB%ADR(KFROPT%I(I))%P%RCOEF
+          NDEFMA%R(I) = FRTAB%ADR(KFROPT%I(I))%P%NDEF
+          NKFROT%I(I) = FRTAB%ADR(KFROPT%I(I))%P%RTYPE
+          VEGLAW%I(I) = FRTAB%ADR(KFROPT%I(I))%P%VTYPE
         ENDDO
       ENDIF
 !
@@ -151,9 +158,11 @@
       IF(LISRUG.EQ.2) THEN
         DO J = 1, MESH%NPTFR
           I = MESH%NBOR%I(J)
-          CHBORD%R(J) = FRTAB%ADR(KFROPT%I(I))%P%RCOEF(2)
-          NDEF_B%R(J) = FRTAB%ADR(KFROPT%I(I))%P%NDEF (2)
-          KFRO_B%I(J) = FRTAB%ADR(KFROPT%I(I))%P%RTYPE(2)
+! TODO: CHECK IF CHBORD COULD BE READ FROM THE BOUNDARY CONDITIONS FILE,
+! HERE ONLY ONE VALUE POSSIBLE
+          CHBORD%R(J) = SB
+          NDEF_B%R(J) = 1
+          KFRO_B%I(J) = KFROTL
         ENDDO
       ENDIF
 !
@@ -165,11 +174,10 @@
       ! -----------------------------------------
       KFROT = 0
       DO I =1, NZONES
-        IF(FRTAB%ADR(I)%P%RTYPE(1).NE.0) KFROT = KFROT + 1
+        IF(FRTAB%ADR(I)%P%RTYPE.NE.0) KFROT = KFROT + 1
       ENDDO
 !
-!=======================================================================!
-!=======================================================================!
+!-----------------------------------------------------------------------
 !
       RETURN
-      END SUBROUTINE FRICTION_INIT
+      END SUBROUTINE

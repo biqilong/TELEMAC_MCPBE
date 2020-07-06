@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SOLAUX
-!                    *****************
+!                   *****************
+                    SUBROUTINE SOLAUX
+!                   *****************
 !
      &(IPT, TB,TBB,ITB,ITBB,S)
 !

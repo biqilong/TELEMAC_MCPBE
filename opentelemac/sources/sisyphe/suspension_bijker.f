@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE SUSPENSION_BIJKER
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE SUSPENSION_BIJKER
+!                   ****************************
 !
      &(TAUP,NPOIN,CHARR,QSC,ZREF,ZERO,CSTAEQ,XMVE)
 !

@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE GAIA_CONSOLIDATION
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GAIA_CONSOLIDATION
+!                   *****************************
 !
 !***********************************************************************
 ! GAIA
@@ -19,7 +19,6 @@
       USE INTERFACE_HERMES
       USE DECLARATIONS_SPECIAL
 !
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_IMAX
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

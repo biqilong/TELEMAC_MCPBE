@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE COMPLIM
-!                    ******************
+!                   ******************
+                    SUBROUTINE COMPLIM
+!                   ******************
 !
      &(LIUBOR,LIVBOR,LITBOR,UBOR,VBOR,TBOR,
      & AUBOR,ATBOR,BTBOR,NPTFR,TRAC,

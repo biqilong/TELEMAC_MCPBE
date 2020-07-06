@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE READ_MESH_INFO
-!                    *************************
+!                   *************************
+                    SUBROUTINE READ_MESH_INFO
+!                   *************************
 !
      &(FFORMAT,NFIC,TITLE,NVAR,NPOIN,TYP_ELEM,NELEM,NPTFR,NPTIR,
      & NDP,NPLAN,TYP_BND_ELEM,NELEBD)

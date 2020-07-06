@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE P_DMAX_ARRAY
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE P_DMAX_ARRAY
+!                   ***********************
 !
      &(MYPART, N, VALUES)
 !
@@ -49,7 +49,7 @@
 #  endif
 !
       IF(IER.NE.0) THEN
-        WRITE(LU,*) 'P_DMAX: ERROR IN MPI_ALLREDUCE'
+        WRITE(LU,*) 'P_DMAX_ARRAY: ERROR IN MPI_ALLREDUCE'
         WRITE(LU,*) 'MPI ERROR ',IER
         CALL PLANTE(1)
         STOP

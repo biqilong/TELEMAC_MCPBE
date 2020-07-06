@@ -1,6 +1,6 @@
-!                **********************************
-                 SUBROUTINE SUSPENSION_FREDSOE_GAIA
-!                **********************************
+!               **********************************
+                SUBROUTINE SUSPENSION_FREDSOE_GAIA
+!               **********************************
 !
      &(DCLA,TAUP,NPOIN,GRAV,XMVE,XMVS,AC,CSTAEQ,RATIO_TOCE)
 !

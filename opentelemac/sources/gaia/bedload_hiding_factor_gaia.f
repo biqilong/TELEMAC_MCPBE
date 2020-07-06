@@ -1,6 +1,6 @@
-!                *************************************
-                 SUBROUTINE BEDLOAD_HIDING_FACTOR_GAIA
-!                *************************************
+!               *************************************
+                SUBROUTINE BEDLOAD_HIDING_FACTOR_GAIA
+!               *************************************
 !
      &(ACLADM, HIDFAC, NPOIN, HIDI, DCLA, K_H_Y, HIDING)
 !

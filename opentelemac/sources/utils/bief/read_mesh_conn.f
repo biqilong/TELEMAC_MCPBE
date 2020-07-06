@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE READ_MESH_CONN
-!                    *************************
+!                   *************************
+                    SUBROUTINE READ_MESH_CONN
+!                   *************************
 !
      &(FFORMAT,NFIC,NPOIN,TYP_ELEM,NELEM,NDP,TYP_BND_ELEM,NELEBD,IKLE,
      &  IPOBO)

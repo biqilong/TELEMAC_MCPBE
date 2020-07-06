@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC20PP
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC20PP
+!                   *****************
 !
      &( XMUL,SURFAC,SU,SV,SW,U,V,W,X,Y,Z,
      &  IKLE1,IKLE2,IKLE3,IKLE4,IKLE5,IKLE6,NELEM,NELMAX,

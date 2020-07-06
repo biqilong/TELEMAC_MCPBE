@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FRONT2
-!                    *****************
+!                   *****************
+                    SUBROUTINE FRONT2
+!                   *****************
 !
      &(NFRLIQ,LIHBOR,LIUBOR,
      & X,Y,NBOR,KP1BOR,DEJAVU,NPOIN,NPTFR,KLOG,LISTIN,NUMLIQ,MAXFRO)

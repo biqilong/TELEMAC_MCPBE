@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OM1311
-!                    *****************
+!                   *****************
+                    SUBROUTINE OM1311
+!                   *****************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,   D,C,
      & IKLE,NELEM,NELMAX,NDIAG)
@@ -127,10 +127,10 @@
         ELSEIF(TYPDIN(1:1).EQ.'I'.OR.TYPDIN(1:1).EQ.'0') THEN
 !         NOTHING TO DO, ONLY NEEDS TO COPY TYPDIN
         ELSE
-           WRITE(LU,6) TYPDIN(1:1)
-6          FORMAT(1X,'OM1311 (BIEF) : TYPDIN UNKNOWN :',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,6) TYPDIN(1:1)
+6         FORMAT(1X,'OM1311 (BIEF) : TYPDIN UNKNOWN :',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
         TYPDIM(1:1)=TYPDIN(1:1)
 !

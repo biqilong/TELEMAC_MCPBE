@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE CVSP_INIT
-!                    ********************
+!                   ********************
+                    SUBROUTINE CVSP_INIT
+!                   ********************
 !
 !***********************************************************************
 ! SISYPHE   V7P2                                   16/05/2017
@@ -70,24 +70,24 @@
 !-----------------------------------------------------------------------
 !
         DO M=1,NLAYER%I(J)
-           IF (ABS(ES(J,M)).GT.0.D0) THEN
-              L = L - 1
-              DO I=1,NSICLA
-                 PRO_D(J,L,I) = ZF%R(J) - DEPTH
-                 PRO_F(J,L,I) = AVAIL(J,M,I)
-              ENDDO
-              DEPTH = DEPTH + ES(J,M)
-              L = L - 1
-              DO I=1,NSICLA
-                PRO_D(J,L,I) = ZF%R(J) - DEPTH
-                IF(M==NLAYER%I(J)) THEN
-                  PRO_F(J,L,I) = AVAIL(J,M,I)
-                ELSE
-                  PRO_F(J,L,I) = AVAIL(J,M+1,I)
-                ENDIF
-             ENDDO
-             RET =  CVSP_CHECK_F(J,L,'FromLay:  ')
-           ENDIF
+          IF (ABS(ES(J,M)).GT.0.D0) THEN
+            L = L - 1
+            DO I=1,NSICLA
+              PRO_D(J,L,I) = ZF%R(J) - DEPTH
+              PRO_F(J,L,I) = AVAIL(J,M,I)
+            ENDDO
+            DEPTH = DEPTH + ES(J,M)
+            L = L - 1
+            DO I=1,NSICLA
+              PRO_D(J,L,I) = ZF%R(J) - DEPTH
+              IF(M==NLAYER%I(J)) THEN
+                PRO_F(J,L,I) = AVAIL(J,M,I)
+              ELSE
+                PRO_F(J,L,I) = AVAIL(J,M+1,I)
+              ENDIF
+            ENDDO
+            RET =  CVSP_CHECK_F(J,L,'FromLay:  ')
+          ENDIF
         ENDDO
 
 !-----------------------------------------------------------------------

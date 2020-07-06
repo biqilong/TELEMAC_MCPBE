@@ -1,6 +1,6 @@
-!                    ************************************
-                     DOUBLE PRECISION FUNCTION TRA_PROF_Z
-!                    ************************************
+!                   ************************************
+                    DOUBLE PRECISION FUNCTION TRA_PROF_Z
+!                   ************************************
 !
      &( I , IPOIN2 , IPLAN , IOPT , ITRAC )
 !

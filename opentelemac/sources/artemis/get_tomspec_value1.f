@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE GET_TOMSPEC_VALUE1
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GET_TOMSPEC_VALUE1
+!                   *****************************
 !
      &(SPEC)
 !
@@ -12,17 +12,17 @@
 !
 !history  N.DURAND (HRW)
 !+        09/03/2001
-!+        
+!+
 !+   Original version
 !
 !history  T.ELLAM (HRW)
 !+        13/03/2002
-!+        
+!+
 !+   Modified to read in serafin format.spe
 !
 !history  N.DURAND (HRW)
 !+        June 2014
-!+        
+!+
 !+   Streamlined for V7P0
 !
 !history  N.DURAND (HRW)
@@ -85,7 +85,7 @@
       FFORMAT = ART_FILES(WACSPE)%FMT
 !     THE SUPPORT MESH FOR TOMAWAC SPECTRA IS MADE OF QUADRANGLES
       TYP = QUADRANGLE_ELT_TYPE
-! 
+!
 !-----------------------------------------------------------------------
 !
 !     ONLY ONE TOMAWAC SPECTRUM IS ALLOWED WHEN NESTING OPTION 1
@@ -98,7 +98,7 @@
      &         ART_FILES(WACSPE)%NAME,
      &         'ONLY THE FIRST VARIABLE IN THE FILE WILL BE READ'
       ENDIF
-! 
+!
 !-----------------------------------------------------------------------
 !
 !     NODE NUMBER FOR EACH SPECTRUM/POINT IN SPEC
@@ -162,10 +162,10 @@
         SPEC%DIR(IDD)=STOCK(I)
       ENDDO
       SPEC%DIR(NDIR+1)=SPEC%DIR(1)+360.D0
-! 
+!
 !-----------------------------------------------------------------------
 !
-!     ENERGY DENSITIES FOR 1ST SPECTRUM/POINT IN SPEC ( HENCE ADR(1) ), 
+!     ENERGY DENSITIES FOR 1ST SPECTRUM/POINT IN SPEC ( HENCE ADR(1) ),
 !     AND FOR RECORD TPSTWC
 !
       CALL GET_DATA_TIMESTEP(FFORMAT,NFIC,RECORD,TPSTWC,IERR)
@@ -177,7 +177,7 @@
 !
       DO IFF=1,NF
         DO IDD=1,NDIR
-           SPEC%ADR(1)%SOUTER(IFF,IDD) = X1((IFF-1)*NDIR+IDD)
+          SPEC%ADR(1)%SOUTER(IFF,IDD) = X1((IFF-1)*NDIR+IDD)
         ENDDO
 !       CLOSING THE LOOP
         SPEC%ADR(1)%SOUTER(IFF,NDIR+1) = SPEC%ADR(1)%SOUTER(IFF,1)

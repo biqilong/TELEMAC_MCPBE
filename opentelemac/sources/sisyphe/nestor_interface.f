@@ -39,7 +39,7 @@
      &                                ,MARDAT, MARTIM
      &                                ,ZFCL_C,AVAIL
      &                                ,ZRL
-     &                                ,ZR, NSICLA
+     &                                ,NSICLA
      &                                ,MOFAC, DT, NSOUS, ES
 !
       USE DECLARATIONS_SPECIAL

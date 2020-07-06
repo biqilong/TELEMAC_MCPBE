@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE KEPSIN
-!                    *****************
+!                   *****************
+                    SUBROUTINE KEPSIN
+!                   *****************
 !
      &(LIMKEP,LIUBOR,NPTFR,KENT,KENTU,KSORT,KADH,KLOG,KINC,KNEU,KDIR)
 !

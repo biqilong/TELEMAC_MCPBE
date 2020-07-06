@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VECLEN
-!                    *****************
+!                   *****************
+                    SUBROUTINE VECLEN
+!                   *****************
 !
      & (LV,NDP,IKLE,NELEM,NELMAX,NPOIN,V)
 !

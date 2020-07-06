@@ -1,6 +1,6 @@
-!                    *************************************
-                     DOUBLE PRECISION FUNCTION STA_DIS_CUR
-!                    *************************************
+!                   *************************************
+                    DOUBLE PRECISION FUNCTION STA_DIS_CUR
+!                   *************************************
 !
      &(IFRLIQ,FLUX,PTS,QZ,NFRLIQ,ZN)
 !

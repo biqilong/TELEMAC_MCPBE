@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE ART_READ_BIN_FRLIQ
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE ART_READ_BIN_FRLIQ
+!                   *****************************
 !
      &(NOM)
 !
@@ -8,7 +8,7 @@
 ! TELEMAC2D   V8P0                                          Dec 2018
 !***********************************************************************
 !
-!brief    READS A BINARY LIQUID BOUNDARY FILE AND EXTRACTS HM0 VALUES 
+!brief    READS A BINARY LIQUID BOUNDARY FILE AND EXTRACTS HM0 VALUES
 !+        FOR THE REQUIRED TIME
 !+        ASSUMES THAT IPOBO (BND) HAS THE GLOBAL NODE NUMBER WHETHER
 !+        SIMULATION IS IN SERIAL OR PARALLEL MODE
@@ -54,7 +54,7 @@
 !
 !-----------------------------------------------------------------------
 !
-!     PARAMETERS OUTPUT TO THE TOMAWAC RESULT FILE 
+!     PARAMETERS OUTPUT TO THE TOMAWAC RESULT FILE
 !     AND PRESENT IN THE BINARY BOUNDARY FILE
 !
       CALL GET_DATA_NVAR(FFORMAT,NFIC,WACNVAR,IERR)
@@ -72,7 +72,7 @@
 !
       CALL GET_MESH_NPOIN(FFORMAT,NFIC,TYP,WACNPOIN,IERR)
       CALL CHECK_CALL(IERR,'READ_BIN_FRLIQ:GET_MESH_NPOIN')
-! 
+!
 !-----------------------------------------------------------------------
 !
 !       HM0 AT RECORD TPSTWC

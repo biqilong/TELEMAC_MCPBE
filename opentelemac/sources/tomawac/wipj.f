@@ -1,12 +1,12 @@
 !#######################################################################
-      SUBROUTINE WIPJ (  WIP, FS, NPOIN2, XK, WIPDX, WIPDY,NPLAN,NF)
+      SUBROUTINE WIPJ (  WIP, FS, NPOIN2, XK, WIPDX, WIPDY,NDIRE,NF)
 !     Calculating the wave induced pressure and gradients
 !     WIP = Wave Induced Pressure      
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| FS             |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| WIP            |<--| WAVE INDUCED PRESSURE 
 !| WIPDX          |<--| DERIVATIVE OF WIP ALONG X 
@@ -23,8 +23,8 @@
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
 
-      INTEGER, INTENT(IN)    :: NPOIN2,NPLAN,NF
-      DOUBLE PRECISION, INTENT(IN)    :: FS(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    :: NPOIN2,NDIRE,NF
+      DOUBLE PRECISION, INTENT(IN)    :: FS(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: WIP(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: WIPDX(NPOIN2)
@@ -34,14 +34,14 @@
       INTEGER  JP    , JF    , IP
       DOUBLE PRECISION DTETAR, COEF, C
       
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
       DO IP=1,NPOIN2
         WIP(IP) = 0.D0
       ENDDO
          
       DO JF=1,NF
         COEF=GRAVIT*DFREQ(JF)*DTETAR
-        DO JP=1,NPLAN  
+        DO JP=1,NDIRE  
           DO IP=1,NPOIN2
             WIP(IP)=WIP(IP)+((XK(IP,JF)*FS(IP,JP,JF))
      &  /(SINH(2.D0*(XK(IP,JF)*DEPTH(IP)))))*COEF

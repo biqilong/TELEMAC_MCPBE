@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE LECSUI
-!                    *****************
+!                   *****************
+                    SUBROUTINE LECSUI
+!                   *****************
 !
-     &(F,NPLAN,NF,NPOIN2,VENT, COURAN,NPRE,FFORMAT,MAREE,TRA01)
+     &(F,NDIRE,NF,NPOIN2,VENT, COURAN,NPRE,FFORMAT,MAREE,TRA01)
 !
 !***********************************************************************
 ! TOMAWAC   V7P1
@@ -52,10 +52,10 @@
 !| F              |<--| DIRECTIONAL SPECTRUM
 !| MAREE          |-->| LOGICAL INDICATING CONSIDERATION OF TIDE
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| NPRE           |-->| LOIGCAL UNIT NUMBER OF PREVIOUS COMPUTATION FILE
-!| TRA01          |<--| DOUBLE PRECISION WORK TABLE OF SIZE NPOIN2*NPLAN
+!| TRA01          |<--| DOUBLE PRECISION WORK TABLE OF SIZE NPOIN2*NDIRE
 !| VENT           |-->| LOGICAL INDICATING IF THERE IS A WIND
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -64,16 +64,16 @@
 !
       USE DECLARATIONS_SPECIAL
       USE DECLARATIONS_TOMAWAC, ONLY : NAMVEB, NAMVEF,
-     & AT, TV1, TV2, TC1, TC2, TM1, TM2, ZM1 ,ZM2, DEPTH, DZHDT, 
+     & AT, TV1, TV2, TC1, TC2, TM1, TM2, ZM1 ,ZM2, DEPTH, DZHDT,
      & UC, VC, UV, VV,  UV1, VV1, UV2, VV2, UC1, VC1, UC2, VC2
       IMPLICIT NONE
 !
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NPRE,NF,NPLAN,NPOIN2
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TRA01(NPOIN2*NPLAN)
+      INTEGER, INTENT(IN)             :: NPRE,NF,NDIRE,NPOIN2
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TRA01(NPOIN2*NDIRE)
       LOGICAL, INTENT(IN)             :: COURAN,VENT,MAREE
       CHARACTER(LEN=8), INTENT(IN)    :: FFORMAT
 !
@@ -92,15 +92,15 @@
       CALL READ_MESH_INFO(FFORMAT,NPRE,CAR,NVAR,NPOIN,TYP_ELEM,
      &                    NELEM,NPTFR,NPTIR2,NDP,NPL)
 !
-      IF(NPL.NE.NPLAN) THEN
+      IF(NPL.NE.NDIRE) THEN
         WRITE(LU,*) 'LECSUI: BAD NUMBER OF PLANES IN THE PREVIOUS'
         WRITE(LU,*) '        COMPUTATION FILE : ',NPL,' FOUND'
-        WRITE(LU,*) '                           ',NPLAN,' EXPECTED'
+        WRITE(LU,*) '                           ',NDIRE,' EXPECTED'
         CALL PLANTE(1)
         STOP
       ENDIF
 !
-      IF(NPOIN.NE.NPLAN*NPOIN2) THEN
+      IF(NPOIN.NE.NDIRE*NPOIN2) THEN
         WRITE(LU,*)'LECSUI: BAD NUMBER OF POINTS IN THE PREVIOUS'
         WRITE(LU,*)'        COMPUTATION FILE : ',NPOIN,' FOUND'
         WRITE(LU,*)'                           ',NPOIN2,' EXPECTED'

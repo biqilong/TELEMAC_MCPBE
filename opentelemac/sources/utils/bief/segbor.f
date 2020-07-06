@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SEGBOR
-!                    *****************
+!                   *****************
+                    SUBROUTINE SEGBOR
+!                   *****************
 !
      &(NSEGBOR,IKLES,NELEM,NPOIN)
 !

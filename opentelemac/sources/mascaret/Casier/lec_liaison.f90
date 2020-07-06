@@ -23,7 +23,7 @@ subroutine LEC_LIAISON( &
                         Profil      , &  ! Profils geometriques
                         ProfDebBief , &  ! Premiers profils des biefs
                         ProfFinBief , &  ! Derniers profils des biefs
-                        document    , &  ! Pointeur vers document XML    
+                        document    , &  ! Pointeur vers document XML
                         Erreur )         ! erreur
 
 ! ******************************************************************
@@ -61,7 +61,7 @@ subroutine LEC_LIAISON( &
    type(LIAISON_T) , dimension(:) , pointer       :: Liaison
    integer , dimension(:,:)       , intent(inout) :: Connect
    type(ERREUR_T)                 , intent(inout) :: Erreur
-   type(Node), pointer, intent(in)                   :: document 
+   type(Node), pointer, intent(in)                   :: document
    real(DOUBLE) , dimension(:) ,    intent(in   ) :: X
    type(PROFIL_T) , dimension(:) , pointer        :: Profil
    integer        , dimension(:) , pointer        :: ProfDebBief
@@ -263,7 +263,7 @@ subroutine LEC_LIAISON( &
        call TRAITER_ERREUR( Erreur , 'rtab11' )
        return
    end if
-   
+
    champ3 => item(getElementsByTagname(champ2, "types"), 0)
    if(associated(champ3).eqv..false.) then
       print*,"Parse error => types"
@@ -383,10 +383,10 @@ subroutine LEC_LIAISON( &
       return
    endif
    call extractDataContent(champ3,rtab11)
-   
+
    do iliaison = 1 , nombre_liaison
 
-      Liaison(iliaison)%TypeLiaison = itab1(iliaison) 
+      Liaison(iliaison)%TypeLiaison = itab1(iliaison)
       if( ( Liaison(iliaison)%TypeLiaison <= 0 ) .or. &
           ( Liaison(iliaison)%TypeLiaison > LIAISON_TYPE_NB_MAX ) ) then
          Erreur%Numero = 907
@@ -462,7 +462,7 @@ subroutine LEC_LIAISON( &
 
          case( LIAISON_TYPE_CASIER_CASIER )
 
-            num_casier_origine = itab5(iliaison) 
+            num_casier_origine = itab5(iliaison)
             num_casier_fin     = itab6(iliaison)
             if( ( num_casier_origine <= 0 ) .or. ( num_casier_origine > nb_casier ) ) then
                Erreur%Numero = 909
@@ -492,7 +492,7 @@ subroutine LEC_LIAISON( &
 
          case( LIAISON_TYPE_SEUIL )
 
-            Liaison(iliaison)%Largeur = rtab2(iliaison) 
+            Liaison(iliaison)%Largeur = rtab2(iliaison)
             if( Liaison(iliaison)%Largeur <= 0) then
                Erreur%Numero = 911
                Erreur%ft   = err_911
@@ -501,7 +501,7 @@ subroutine LEC_LIAISON( &
                return
             end if
 
-            Liaison(iliaison)%Cote = rtab3(iliaison) 
+            Liaison(iliaison)%Cote = rtab3(iliaison)
             if( Liaison(iliaison)%Cote <= 0 ) then
                Erreur%Numero = 911
                Erreur%ft     = err_911
@@ -583,7 +583,7 @@ subroutine LEC_LIAISON( &
 
          case( LIAISON_TYPE_CHENAL )
 
-            Liaison(iliaison)%Longueur = rtab6(iliaison) 
+            Liaison(iliaison)%Longueur = rtab6(iliaison)
             if( Liaison(iliaison)%Longueur <= 0 ) then
                Erreur%Numero = 911
                Erreur%ft   = err_911
@@ -666,7 +666,7 @@ subroutine LEC_LIAISON( &
 
          case( LIAISON_TYPE_ORIFICE )
 
-            Liaison(iliaison)%Largeur = rtab2(iliaison) 
+            Liaison(iliaison)%Largeur = rtab2(iliaison)
             if( Liaison(iliaison)%Largeur <= 0 ) then
                Erreur%Numero = 911
                Erreur%ft     = err_911
@@ -711,7 +711,7 @@ subroutine LEC_LIAISON( &
                return
             end if
 
-            Liaison(iliaison)%TypeOrifice = rtab11(iliaison)
+            Liaison(iliaison)%TypeOrifice = int(rtab11(iliaison))
             if( ( Liaison(iliaison)%TypeOrifice <= 0 ) .or. &
                 ( Liaison(iliaison)%TypeOrifice > 3 ) ) then
                 Erreur%Numero = 911
@@ -756,27 +756,27 @@ subroutine LEC_LIAISON( &
    deallocate(rtab9)
    deallocate(rtab10)
    deallocate(rtab11)
-   
+
    !Erreur%arbredappel = !arbredappel_old
 
    return
-   
+
    contains
-   
+
    subroutine xerror(Erreur)
-       
+
        use M_MESSAGE_C
        use M_ERREUR_T            ! Type ERREUR_T
-       
+
        type(ERREUR_T)                   , intent(inout) :: Erreur
-       
+
        Erreur%Numero = 704
        Erreur%ft     = err_704
        Erreur%ft_c   = err_704c
        call TRAITER_ERREUR( Erreur )
-       
+
        return
-        
+
    end subroutine xerror
 
 end subroutine LEC_LIAISON

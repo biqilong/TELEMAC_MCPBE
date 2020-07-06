@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE ASSEG_3D
-!                    *******************
+!                   *******************
+                    SUBROUTINE ASSEG_3D
+!                   *******************
 !
      &(FLOW,F,NPOIN3,NPLAN,NSEG2D,GLOSEG,SIZGLO,INIFLO)
 !

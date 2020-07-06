@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE WRITE_MESH
-!                    *********************
+!                   *********************
+                    SUBROUTINE WRITE_MESH
+!                   *********************
 !
      &(FFORMAT,NFILE,MESH,NPLAN,DATE,TIME,T1,T2,
      & PARALL,NPTIR,NGEO,GEOFORMAT,LATLONG)
@@ -129,7 +129,7 @@
 !
       IF(YESLL.AND.PRESENT(GEOFORMAT).AND.PRESENT(NGEO))THEN
         NDIM=MESH%DIM1
-        NPOIN=MESH%NPOIN
+        NPOIN=MESH%NPOIN/NPLAN
         CALL CPSTVC(MESH%X,T1)
         CALL CPSTVC(MESH%X,T2)
 !       GET X COORDINATE

@@ -1,6 +1,6 @@
-!                    *******************************
-                     SUBROUTINE POSITIVE_DEPTHS_ERIA
-!                    *******************************
+!                   *******************************
+                    SUBROUTINE POSITIVE_DEPTHS_ERIA
+!                   *******************************
 !
      &(T1,T2,T3,T4,H,HN,MESH,FLODEL,COMPUTE_FLODEL,FLBOR,DT,
      & UNSV2D,NPOIN,GLOSEG1,GLOSEG2,NBOR,NPTFR,
@@ -138,8 +138,8 @@
           CINIT=MIN(CINIT,HN%R(I))
         ENDDO
         IF(NCSIZE.GT.1) THEN
-          C=P_DMIN(C)
-          CINIT=P_DMIN(CINIT)
+          C=P_MIN(C)
+          CINIT=P_MIN(CINIT)
         ENDIF
         WRITE(LU,*) 'AVANT TRAITEMENT HAUTEURS NEGATIVES, H MIN=',C
         WRITE(LU,*) 'AVANT TRAITEMENT HAUTEURS NEGATIVES, HN MIN=',CINIT
@@ -150,8 +150,8 @@
             C    =C    +H%R(I) *MESH%IFAC%I(I)/UNSV2D%R(I)
             CINIT=CINIT+HN%R(I)*MESH%IFAC%I(I)/UNSV2D%R(I)
           ENDDO
-          C    =P_DSUM(C    )
-          CINIT=P_DSUM(CINIT)
+          C    =P_SUM(C    )
+          CINIT=P_SUM(CINIT)
         ELSE
           DO I=1,NPOIN
             C    =C    +H%R(I) /UNSV2D%R(I)
@@ -276,7 +276,7 @@
      &             +ABS(FLOPOINT(IR,2))
      &             +ABS(FLOPOINT(IR,3))
       ENDDO
-      IF(NCSIZE.GT.1) CPREV=P_DSUM(CPREV)
+      IF(NCSIZE.GT.1) CPREV=P_SUM(CPREV)
       IF(TESTING) WRITE(LU,*) 'INITIAL SUM OF FLUXES=',CPREV
       CINIT=CPREV
 !
@@ -504,7 +504,7 @@
       DO I=1,H%DIM1
         H%R(I)=MAX(H%R(I),0.D0)
       ENDDO
-      IF(NCSIZE.GT.1) C=P_DSUM(C)
+      IF(NCSIZE.GT.1) C=P_SUM(C)
       IF(TESTING) WRITE(LU,*) 'FLUX NON PRIS EN COMPTE=',C
 !
 !     STOP CRITERION
@@ -586,14 +586,14 @@
         DO I=1,NPOIN
           C=MIN(C,H%R(I))
         ENDDO
-        IF(NCSIZE.GT.1) C=P_DMIN(C)
+        IF(NCSIZE.GT.1) C=P_MIN(C)
         WRITE(LU,*) 'APRES TRAITEMENT HAUTEURS NEGATIVES, HMIN=',C
         C=0.D0
         IF(NCSIZE.GT.1) THEN
           DO I=1,NPOIN
             C=C+H%R(I)*MESH%IFAC%I(I)/UNSV2D%R(I)
           ENDDO
-          C=P_DSUM(C)
+          C=P_SUM(C)
         ELSE
           DO I=1,NPOIN
             C=C+H%R(I)/UNSV2D%R(I)

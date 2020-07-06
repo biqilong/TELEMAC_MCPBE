@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE CONDIM_SISYPHE
-!                    *************************
+!                   *************************
+                    SUBROUTINE CONDIM_SISYPHE
+!                   *************************
 !
      & (U      , V       , QU    , QV   , H    , ZF , Z ,
      &  ESOMT  , THETAWR ,  Q    , HWR  , TWR  ,

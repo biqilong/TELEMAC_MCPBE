@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE GET_MESH_NPLAN
-!                    *************************
+!                   *************************
+                    SUBROUTINE GET_MESH_NPLAN
+!                   *************************
 !
      &(FFORMAT,FID,NPLAN,IERR)
 !

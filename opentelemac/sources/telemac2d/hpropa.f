@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE HPROPA
-!                    *****************
+!                   *****************
+                    SUBROUTINE HPROPA
+!                   *****************
 !
      &(HPROP ,HN,H,PROLIN,HAULIN,TETA,NSOUSI)
 !

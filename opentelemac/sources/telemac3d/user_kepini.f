@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_KEPINI
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_KEPINI
+!                   **********************
 !
      &(AK,EP,U,V,Z,ZF,NPOIN2,NPLAN,DNUVIH,DNUVIV,KARMAN,CMU,KMIN,EMIN)
 !

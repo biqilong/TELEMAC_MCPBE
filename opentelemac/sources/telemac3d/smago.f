@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE SMAGO
-!                    ****************
+!                   ****************
+                    SUBROUTINE SMAGO
+!                   ****************
 !
      &(U,V,T1,T2,T3,T4,NUSMAG,MESH3,IELM3,MSK,MASKEL)
 !
@@ -107,14 +107,14 @@
      &            1.D0,V,V,V,V,V,V,MESH3,MSK,MASKEL)
 !
 !     FOR PARALLEL CASES
-! 
+!
       IF(NCSIZE.GT.1)THEN
         CALL PARCOM(T1,2,MESH3)
         CALL PARCOM(T2,2,MESH3)
         CALL PARCOM(T3,2,MESH3)
         CALL PARCOM(T4,2,MESH3)
       ENDIF
-!   
+!
       DO I=1,NUSMAG%DIM1
         NUSMAG%R(I)=CS2*
      &  SQRT(2.D0*(T1%R(I)**2+T4%R(I)**2)+(T2%R(I)+T3%R(I))**2)

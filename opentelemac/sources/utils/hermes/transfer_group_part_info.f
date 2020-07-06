@@ -1,6 +1,6 @@
-!                    ***********************************
-                     SUBROUTINE TRANSFER_GROUP_PART_INFO
-!                    ***********************************
+!                   ***********************************
+                    SUBROUTINE TRANSFER_GROUP_PART_INFO
+!                   ***********************************
 !
      &(FFORMAT,SOURCE_ID, DEST_ID,
      & TYP_BND_ELEM, IKLE_BND_DEST, NELEBD_DEST,

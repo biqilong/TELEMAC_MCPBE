@@ -199,7 +199,7 @@
       CASE (5)
         CVSP_ALT = 0.D0
         IF (TAUC.GT.0) THEN
-           CVSP_ALT = D90 / (1.D0-PON) * TAUB/TAUC
+          CVSP_ALT = D90 / (1.D0-PON) * TAUB/TAUC
         ENDIF
 !-----------------------------------------------------------------------
 ! SISYPHE

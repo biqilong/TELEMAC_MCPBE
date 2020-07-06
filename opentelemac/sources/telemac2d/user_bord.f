@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE USER_BORD
-!                    ********************
+!                   ********************
+                    SUBROUTINE USER_BORD
+!                   ********************
 !
      &(HBOR,UBOR,VBOR,TBOR,U,V,H,
      & ZF,NBOR,TRA05,TRA06,LIHBOR,LIUBOR,LITBOR,
@@ -67,7 +67,7 @@
      &                                  TIDALTYPE,BOUNDARY_COLOUR
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

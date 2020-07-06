@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE MINI
-!                    ***************
+!                   ***************
+                    SUBROUTINE MINI
+!                   ***************
 !
      &( XMIN , IMIN , X , NPOIN )
 !

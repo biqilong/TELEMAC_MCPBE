@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CVTRVF
-!                    *****************
+!                   *****************
+                    SUBROUTINE CVTRVF
+!                   *****************
 !
      &(F,FN,FSCEXP,H,HN,HPROP,UCONV,VCONV,DM1,ZCONV,SOLSYS,
      & SM,SMH,YASMH,SMI,YASMI,FBOR,MASKTR,MESH,
@@ -576,7 +576,7 @@
       ENDIF
 !
 !
-      IF(NCSIZE.GT.1) DDT=P_DMIN(DDT)
+      IF(NCSIZE.GT.1) DDT=P_MIN(DDT)
       DDT=MIN(DDT,DT_REMAIN)
 !
 !     CASE OF ADAPTIVE IMPLICIT N OR PSI SCHEME
@@ -925,7 +925,7 @@
 !     UPDATING MASSOU
 !
       IF(NCSIZE.GT.1) THEN
-        MASSOU=MASSOU+P_DSUM(ADMASS)
+        MASSOU=MASSOU+P_SUM(ADMASS)
       ELSE
         MASSOU=MASSOU+ADMASS
       ENDIF

@@ -219,13 +219,13 @@
         XNC = 0.D0
         DO I=1,NPOIN
           IF(H%R(I).GT.EPS_FV) THEN
-           W1=SQRT((QU(I)/H%R(I))**2+(QV(I)/H%R(I))**2)+
-     &        SQRT(GRAV*H%R(I))
-           IF(W1.GE.XNC) XNC = W1
-           IF(W1.GE.50.D0) THEN
-             QU(I) = 0.D0
-             QV(I) = 0.D0
-           ENDIF
+            W1=SQRT((QU(I)/H%R(I))**2+(QV(I)/H%R(I))**2)+
+     &         SQRT(GRAV*H%R(I))
+            IF(W1.GE.XNC) XNC = W1
+            IF(W1.GE.50.D0) THEN
+              QU(I) = 0.D0
+              QV(I) = 0.D0
+            ENDIF
           ENDIF
         ENDDO
 !

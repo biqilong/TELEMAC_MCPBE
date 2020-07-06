@@ -2,7 +2,7 @@
 !******************************************************************
 ! THAT MODULE CONTAINS THE SUBROUTINES NEEDED TO EXCHANGE VALUES OF VARIABLE
 ! BETWEEN TWO MODULES (TILL NOW TELEMAC2D AND TOMAWAC) WHEN THEY DEAL
-! WITH DIFFERENT MESH.     
+! WITH DIFFERENT MESH.
 ! ASSUMPTIONS:
 ! SAME NUMBER OF PROCESSES ON BOTH COUPLED MODELS
 !******************************************************************
@@ -25,7 +25,7 @@
 
         ! LIST WITH FOR EACH PROCESS
         ! LOCAL NODE ID WHERE TO PUT DATA THAT IS RECEIVED
-        ! THIRD DIMENSION IS USED TO HAVE INFLUENCE OF MULTIPLE POINTS. 
+        ! THIRD DIMENSION IS USED TO HAVE INFLUENCE OF MULTIPLE POINTS.
         ! E.G. FOR INTERPOLATION
         INTEGER, POINTER, DIMENSION(:,:,:)   :: RECV_MAP
 
@@ -69,11 +69,11 @@
 
       TYPE (COUPLE_DATA_TYPE), ALLOCATABLE, DIMENSION(:) :: CPLD
       INTEGER :: NRCOUPLE
-! MAXIMUM OF MODULES COUPLING 2 ARE NEEDED FOR THE MOMENT       
+! MAXIMUM OF MODULES COUPLING 2 ARE NEEDED FOR THE MOMENT
       INTEGER, PARAMETER :: MAXCOUPLE = 4
-! MAXIMUM OF VARIABLES TO EXCHANGE      
+! MAXIMUM OF VARIABLES TO EXCHANGE
       INTEGER, PARAMETER :: MAXVAR    = 10
-! MAXIMUM OF POINTS TO INTERPOLATE ON A POINT ON THE OTHER MESH. 
+! MAXIMUM OF POINTS TO INTERPOLATE ON A POINT ON THE OTHER MESH.
       INTEGER, PARAMETER :: MAXNPP    = 20
 
       LOGICAL :: DO_COUPLE = .FALSE.
@@ -85,10 +85,10 @@
      &    SEND_COUPLE, RECEIVE_COUPLE, END_COUPLE, DO_COUPLE
 
       CONTAINS
-      
-!                    **********************
-                     SUBROUTINE INIT_COUPLE
-!                    **********************
+
+!                   **********************
+                    SUBROUTINE INIT_COUPLE
+!                   **********************
      &()
 !
 !***********************************************************************
@@ -120,10 +120,10 @@
 !
       RETURN
       END SUBROUTINE
-      
-!                    **********************
-                     SUBROUTINE  ADD_SENDER
-!                    **********************
+
+!                   **********************
+                    SUBROUTINE  ADD_SENDER
+!                   **********************
      &(MESH_SEND,CID)
 !
 !***********************************************************************
@@ -202,7 +202,7 @@
         ENDIF
         ITAG = IPID+IPROC*NCSIZE
         IREQ = IREQ+1
-        CALL P_IWRITI(CPLD(CID)%SEND_KNOLG,NPOIN,
+        CALL P_WRITE(CPLD(CID)%SEND_KNOLG,NPOIN,
      &      IPROC,ITAG,CPLD(CID)%REQLIST(IREQ))
       ENDDO
 
@@ -211,9 +211,9 @@
 
 !-----------------------------------------------------------------------
 !
-!                    ***********************
-                     SUBROUTINE READ_RECV
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE READ_RECV
+!                   ***********************
      &        (FILE_RECV,RECV_VAR,CID,NPOIN,SEND_NODE,NPP)
 !
 !***********************************************************************
@@ -239,7 +239,7 @@
       INTEGER         ,  INTENT(IN) :: CID, NPOIN
       TYPE(BIEF_FILE) ,  INTENT(IN) :: FILE_RECV
       CHARACTER(LEN=16), INTENT(IN) :: RECV_VAR
-      DOUBLE PRECISION,  INTENT(OUT), DIMENSION(:,:), ALLOCATABLE :: 
+      DOUBLE PRECISION,  INTENT(OUT), DIMENSION(:,:), ALLOCATABLE ::
      & SEND_NODE
       INTEGER,  INTENT(INOUT) :: NPP
       CHARACTER(LEN=2)  :: STRI
@@ -347,9 +347,9 @@
 !
 !-----------------------------------------------------------------------
 !
-!                    ***********************
-                     SUBROUTINE ADD_RECEIVER
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE ADD_RECEIVER
+!                   ***********************
      &         (MESH_RECV,FILE_RECV,RECV_VAR,CID)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -415,7 +415,7 @@
         IF (IPROC.NE.IPID) THEN
           ITAG = IPID*NCSIZE+IPROC
           !DEFACTO BLOCKING RECEIVE
-          CALL  P_IREADI(TMP_KNOLG,NP,
+          CALL  P_READ(TMP_KNOLG,NP,
      &         IPROC,ITAG,CPLD(CID)%REQLIST(1))
           CALL P_WAIT_PARACO(CPLD(CID)%REQLIST(1:1),1)
         ELSE
@@ -545,7 +545,7 @@
           IF (IPROC.NE.IPID) THEN
             IREQ = IREQ + 1
             ITAG = IPID+IPROC*NCSIZE
-            CALL  P_IWRITI(LOC_SEND_MAP(1:NP,IPROC+1),
+            CALL  P_WRITE(LOC_SEND_MAP(1:NP,IPROC+1),
      &           NP,IPROC,ITAG,CPLD(CID)%REQLIST(IREQ))
           ENDIF
         ENDIF
@@ -559,7 +559,7 @@
           IF (IPROC.NE.IPID) THEN
             IREQ = IREQ + 1
             ITAG = IPROC+IPID*NCSIZE
-            CALL  P_IREADI(CPLD(CID)%SEND_MAP(1:NP,IPROC+1),NP,
+            CALL  P_READ(CPLD(CID)%SEND_MAP(1:NP,IPROC+1),NP,
      &           IPROC,ITAG,CPLD(CID)%REQLIST(IREQ))
           ELSE
             ! LOCAL COPY
@@ -601,7 +601,7 @@
       ENDIF
 
       !DEALLOCATE DATA THAT IS NOT NEEDED ANYMORE
-      
+
       DEALLOCATE (CPLD(CID)%SEND_NPOIN,STAT=IERR)
       CALL CHECK_ALLOCATE(IERR,'DEAL:SEND_NPOIN')
 
@@ -677,9 +677,9 @@
       END SUBROUTINE
 
 
-!                    **********************
-                     SUBROUTINE SEND_COUPLE
-!                    **********************
+!                   **********************
+                    SUBROUTINE SEND_COUPLE
+!                   **********************
      &(CID,NPOIN,NVAR,VARCOUPLE)
 !
 !BRIEF    .
@@ -714,7 +714,7 @@
         WRITE (LU,*) 'TOO MANY VARIABLES'
         CALL PLANTE(1)
       ENDIF
-      
+
 !     ALREADY RECEIVE THE DATA TO OPTIMIZE MPI COMMUNICATION
 !     THE REAL RECEIVE WILL BE FINISHED BY THE MPI_WAIT CALL
       IP  = 0
@@ -728,7 +728,7 @@
             !RECEIVE DATA   (NON-BLOCKING)
             IP  = IP + 1
             ITAG = (IPROC-1)+IPID*NCSIZE
-            CALL  P_IREAD(CPLD(CID)%RECV_BUF(1:NPV,IPB),NPV,8,IPROC-1,
+            CALL  P_READ(CPLD(CID)%RECV_BUF(1:NPV,IPB),NPV,8,IPROC-1,
      &               ITAG,CPLD(CID)%REQLIST(IP))
           ENDIF
         ENDIF
@@ -739,7 +739,7 @@
       IREQ = 0
 !     ADD DATA TO SEND STRUCTURE
       IP = 0
-      NOERR = 0  
+      NOERR = 0
       DO IPROC=1,NCSIZE
         I = 1
         NP = CPLD(CID)%POIN2SEND(IPROC)
@@ -771,12 +771,12 @@
           IF (IPROC-1.NE.IPID) THEN
             ITAG = (IPROC-1)*NCSIZE+IPID
             IREQ = IREQ+1
-            CALL  P_IWRIT(CPLD(CID)%SEND_BUF(1:NP,IP),
+            CALL  P_WRITE(CPLD(CID)%SEND_BUF(1:NP,IP),
      &           NP,8,IPROC-1,ITAG,DUMMY)
           ELSE
             ! COPY DATA ON THE SAME PROCESSOR
             ITMP = COUNT(CPLD(CID)%POIN2RECV(1:IPROC).GT.0)
-            CPLD(CID)%RECV_BUF(1:NP,ITMP) = 
+            CPLD(CID)%RECV_BUF(1:NP,ITMP) =
      &             CPLD(CID)%SEND_BUF(1:NP,IP)
           ENDIF
         ENDIF
@@ -795,9 +795,9 @@
 !
 !-----------------------------------------------------------------------
 !
-!                    *************************************
-                             SUBROUTINE RECEIVE_COUPLE
-!                    *************************************
+!                   *************************************
+                            SUBROUTINE RECEIVE_COUPLE
+!                   *************************************
      &               (CID,NPOIN,NVAR,VARCOUPLE,DEFAULT_VAL)
 !
 !BRIEF    .
@@ -807,7 +807,7 @@
 !>@param[in]     NVAR        NUMBER OF VARIABLES
 !>@param[in]     CID         COUPLE ID
 !>@param[in/out] VARCOUPLE   STRUCTURE WITH VARIABLES TO BE SEND
-!>@param[in]     DEFAULT_VAL DEFAULT VALUE (IF NOT 0)                                
+!>@param[in]     DEFAULT_VAL DEFAULT VALUE (IF NOT 0)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
@@ -815,7 +815,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER         ,INTENT(IN   ) :: NPOIN, CID, NVAR
-      DOUBLE PRECISION, INTENT(IN), DIMENSION(NVAR), OPTIONAL :: 
+      DOUBLE PRECISION, INTENT(IN), DIMENSION(NVAR), OPTIONAL ::
      &   DEFAULT_VAL
       TYPE (BIEF_OBJ), INTENT(INOUT) :: VARCOUPLE
 
@@ -910,10 +910,10 @@
       RETURN
       END SUBROUTINE
 
-!                    *********************
-                     SUBROUTINE END_COUPLE
-!                    *********************
-!     
+!                   *********************
+                    SUBROUTINE END_COUPLE
+!                   *********************
+!
 !BRIEF  DEALLOCATE VARIABLE NEEDED FOR COUPLING
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -964,7 +964,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       IMPLICIT NONE
-      
+
       CHARACTER (LEN=*), INTENT(IN) :: DEBUG_STRING
       INTEGER, OPTIONAL, INTENT(IN) :: DEBUG_INT
       WRITE (LU,*) ''

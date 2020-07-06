@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE THOMPS
-!                    *****************
+!                   *****************
+                    SUBROUTINE THOMPS
+!                   *****************
 !
      &(HBOR,UBOR,VBOR,TBOR,U,V,H,T,ZF,X,Y,NBOR,FRTYPE,C,
      & UCONV,VCONV,XCONV,YCONV,LIHBOR,LIUBOR,LIVBOR,

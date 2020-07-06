@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FONSTR
-!                    *****************
+!                   *****************
+                    SUBROUTINE FONSTR
+!                   *****************
 !
      &(H,ZF,Z,CHESTR,NGEO,FFORMAT,NFON,NOMFON,MESH,FFON,LISTIN,
      & N_NAMES_PRIV,NAMES_PRIVE,PRIVE)

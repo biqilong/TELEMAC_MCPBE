@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_BORD3D
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_BORD3D
+!                   **********************
 !
 !
 !***********************************************************************
@@ -56,8 +56,8 @@
 !     &                 U_MF2
 !      DOUBLE PRECISION FROUD,TEMP0,TEMP1
 !!
-!      INTEGER  P_IMAX
-!      EXTERNAL P_IMAX
+!      INTEGER  P_MAX
+!      EXTERNAL P_MAX
 !
 !-----------------------------------------------------------------------
 !
@@ -240,7 +240,7 @@
 !      IF(NDEBIT.NE.0) THEN
 !        MSK1=1
 !        IF(NDEBIT.GE.IFRLIQ) THEN
-!          IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_IMAX(YADEB(IFRLIQ))
+!          IF(NCSIZE.GT.1) YADEB(IFRLIQ)=P_MAX(YADEB(IFRLIQ))
 !          IF(YADEB(IFRLIQ).EQ.1) THEN
 !            CALL DEBIMP_3D(Q3(IFRLIQ,AT,INFOGR),
 !     &                     UBORL%R,VBORL%R,

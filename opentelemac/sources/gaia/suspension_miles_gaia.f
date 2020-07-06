@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE SUSPENSION_MILES_GAIA
-!                    ********************************
+!                   ********************************
+                    SUBROUTINE SUSPENSION_MILES_GAIA
+!                   ********************************
 !
      &(HN,NPOIN,HMIN,FDM,FD90,XWC,CSRATIO)
 !

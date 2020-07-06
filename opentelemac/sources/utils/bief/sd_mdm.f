@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SD_MDM
-!                    *****************
+!                   *****************
+                    SUBROUTINE SD_MDM
+!                   *****************
 !
      &(VK,TAIL,V,L,LAST,NEXT,MARK)
 !

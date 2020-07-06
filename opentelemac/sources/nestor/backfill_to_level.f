@@ -12,7 +12,7 @@
       USE m_Nestor , ONLY :  ParallelComputing, nGrainClass, ipid
      &                      , lim_dzts
 !
-      USE INTERFACE_PARALLEL, ONLY : P_ISUM, P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_ISUM, P_MAX
 !
 #ifndef NESTOR_INTERFACES
       USE m_Interfaces_Nestor, ONLY :  InfoMessage
@@ -51,25 +51,25 @@
       !                                                        __|
       IF( A%FirstTimeActive )  THEN  !________________________|
 !
-        A%State = 1     !> 1 = Action currently active 
+        A%State = 1     !> 1 = Action currently active
 !
-        IF(  A%ReferenceLevel(1:8) == 'WATERLVL') THEN 
-          ALLOCATE( F%refZ( F%nNodes ), stat=status) 
+        IF(  A%ReferenceLevel(1:8) == 'WATERLVL') THEN
+          ALLOCATE( F%refZ( F%nNodes ), stat=status)
           F%refZ(:) = 9999.9D0
           CALL Set_RefLevel_by_Waterlevel( F, A, m )   ! the result is F%refZ(:)
         ELSE IF(  A%ReferenceLevel(1:8) == 'SECTIONS') THEN
-          ALLOCATE( F%refZ( F%nNodes ), stat=status) 
-          ALLOCATE( F%km(   F%nNodes ), stat=status) 
+          ALLOCATE( F%refZ( F%nNodes ), stat=status)
+          ALLOCATE( F%km(   F%nNodes ), stat=status)
           F%refZ(:) = 9999.9D0
           F%km(:)   = 9999.9D0
           CALL Set_RefLevel_by_Profiles( F )   ! the result is F%refZ(:)
         ENDIF
 !
-        ALLOCATE( F%NodeToDump( F%nNodes ), stat=status) 
-        F%NodeToDump(:) = .FALSE. ! initialisation 
+        ALLOCATE( F%NodeToDump( F%nNodes ), stat=status)
+        F%NodeToDump(:) = .FALSE. ! initialisation
 !
         F%nNodeToDump   = 0
-        DO i=1, F%nNodes         ! mark nodes to dig 
+        DO i=1, F%nNodes         ! mark nodes to dig
           iMesh = F%Node(i)      ! mesh index of field node
           IF( z_sis(iMesh) < (F%refZ(i) - A%CritDepth) ) THEN
             F%NodeToDump(i) = .TRUE.
@@ -92,7 +92,7 @@
 !
           A%MaxDump_dz_ts =  MAXVAL( F%dz(:) )
           IF( ParallelComputing )
-     &    A%MaxDump_dz_ts = P_DMAX( A%MaxDump_dz_ts )
+     &    A%MaxDump_dz_ts = P_MAX( A%MaxDump_dz_ts )
 !
           A%tsCount = 0
 !
@@ -101,7 +101,7 @@
 !                                           ______________________________________________________
         IF( A%DumpRate > 0.0D0 ) THEN      ! The backfilling is controlled by the DumpRate        |
           A%MaxDump_dz_ts = dt_ts * A%DumpRate         !> max hight to fill during one time step
-        ENDIF ! The backfilling is controlled by the DumpRate 
+        ENDIF ! The backfilling is controlled by the DumpRate
 !
         CALL InfoMessage( A, m, time )
 !

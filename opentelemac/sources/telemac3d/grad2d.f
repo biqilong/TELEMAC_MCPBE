@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GRAD2D
-!                    *****************
+!                   *****************
+                    SUBROUTINE GRAD2D
+!                   *****************
 !
      &(DFDX,DFDY,FU,NPLAN,S,UNSV2D,FU2,FU3,FU4,IELM2,MESH2D,MSK,MASKEL)
 !

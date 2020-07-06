@@ -1,6 +1,6 @@
-!                    ************************
-                     PROGRAM IDENTIFY_LIQ_BND
-!                    ************************
+!                   ************************
+                    PROGRAM IDENTIFY_LIQ_BND
+!                   ************************
 !
 !
 !***********************************************************************
@@ -267,7 +267,7 @@
       CALL NUMBERING_OPEN_BOUNDARIES
      & (NAMEGEO, IKLE, IKLES,
      &  KP1BOR, NUMLIQ, DIM_MESH, NPOIN2, NPTFR, NPOIN, NELEM2,
-     &  NELBOR, LIUBOR, LIHBOR, NBOR, IFABOR, F)
+     &  NELBOR, LIUBOR, LIHBOR, NBOR, IFABOR, F, .TRUE.)
 
       ! Closing the files
       CALL CLOSE_BND(FFORMAT,NINP,IERR)

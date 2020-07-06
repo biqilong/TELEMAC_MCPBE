@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE TVF_IMP_3D
-!                    *********************
+!                   *********************
+                    SUBROUTINE TVF_IMP_3D
+!                   *********************
 !
      &(F,FC,FXMAT,FXMATPAR,DT,VOLUNP1MT,NSEG3,NPOIN3,FLUEXT,FLUEXTPAR,
      & NPTFR3,NBOR3,SIZGLO,GLOSEG,
@@ -130,8 +130,8 @@
         FMAX=MAX(FMAX,TRAIN)
       ENDIF
       IF(NCSIZE.GT.1) THEN
-        FMIN=P_DMIN(FMIN)
-        FMAX=P_DMAX(FMAX)
+        FMIN=P_MIN(FMIN)
+        FMAX=P_MAX(FMAX)
       ENDIF
 !
 !     IF RISK OF EVAPORATION, ARBITRARY GLOBAL MAXIMUM

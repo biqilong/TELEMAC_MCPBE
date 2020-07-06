@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE OM1101
-!                    *****************
+!                   *****************
+                    SUBROUTINE OM1101
+!                   *****************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,   C,
      & NULONE,NELBOR,NBOR,NELMAX,NDIAG,NPTFR,NELEBX,NELEB)
@@ -145,44 +145,44 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             XM( IEL , CORNSY(NULONE(K),1) ) =
-     &       XM( IEL , CORNSY(NULONE(K),1) ) + XN(K)
-             XM( IEL , CORNSY(NULONE(K),2) ) =
-     &       XM( IEL , CORNSY(NULONE(K),2) ) + XN(K+NELEBX)
-           ENDDO
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            XM( IEL , CORNSY(NULONE(K),1) ) =
+     &      XM( IEL , CORNSY(NULONE(K),1) ) + XN(K)
+            XM( IEL , CORNSY(NULONE(K),2) ) =
+     &      XM( IEL , CORNSY(NULONE(K),2) ) + XN(K+NELEBX)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE M CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             XM( IEL , CORNSY(NULONE(K),1) ) =
-     &       XM( IEL , CORNSY(NULONE(K),1) ) + XN(K)
-             XM( IEL , CORNSY(NULONE(K),2) ) =
-     &       XM( IEL , CORNSY(NULONE(K),2) ) + XN(K)
-           ENDDO
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            XM( IEL , CORNSY(NULONE(K),1) ) =
+     &      XM( IEL , CORNSY(NULONE(K),1) ) + XN(K)
+            XM( IEL , CORNSY(NULONE(K),2) ) =
+     &      XM( IEL , CORNSY(NULONE(K),2) ) + XN(K)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             XM( IEL , CORSYM(NULONE(K)) ) =
-     &       XM( IEL , CORSYM(NULONE(K)) ) + XN(K)
-           ENDDO
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            XM( IEL , CORSYM(NULONE(K)) ) =
+     &      XM( IEL , CORSYM(NULONE(K)) ) + XN(K)
+          ENDDO
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-99         FORMAT(1X,'OM1101 (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
-     &       /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+99        FORMAT(1X,'OM1101 (BIEF) : TYPEXM = ',A1,' DOES NOT GO',
+     &      /,1X,'FOR THE OPERATION : ',A8,' WITH TYPEXN = ',A1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------
@@ -193,42 +193,42 @@
 !
         IF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'Q') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE NONSYMMETRICAL
 !
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             XM( IEL , CORNSY(NULONE(K),1) ) =
-     &       XM( IEL , CORNSY(NULONE(K),1) ) + XN(K+NELEBX)
-             XM( IEL , CORNSY(NULONE(K),2) ) =
-     &       XM( IEL , CORNSY(NULONE(K),2) ) + XN(K)
-           ENDDO
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            XM( IEL , CORNSY(NULONE(K),1) ) =
+     &      XM( IEL , CORNSY(NULONE(K),1) ) + XN(K+NELEBX)
+            XM( IEL , CORNSY(NULONE(K),2) ) =
+     &      XM( IEL , CORNSY(NULONE(K),2) ) + XN(K)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'Q'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE N CAN BE ANYTHING AND N IS SYMMETRICAL
+!         CASE WHERE N CAN BE ANYTHING AND N IS SYMMETRICAL
 !
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             XM( IEL , CORNSY(NULONE(K),1) ) =
-     &       XM( IEL , CORNSY(NULONE(K),1) ) + XN(K)
-             XM( IEL , CORNSY(NULONE(K),2) ) =
-     &       XM( IEL , CORNSY(NULONE(K),2) ) + XN(K)
-           ENDDO
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            XM( IEL , CORNSY(NULONE(K),1) ) =
+     &      XM( IEL , CORNSY(NULONE(K),1) ) + XN(K)
+            XM( IEL , CORNSY(NULONE(K),2) ) =
+     &      XM( IEL , CORNSY(NULONE(K),2) ) + XN(K)
+          ENDDO
 !
         ELSEIF(TYPEXM(1:1).EQ.'S'.AND.TYPEXN(1:1).EQ.'S') THEN
 !
-!          CASE WHERE BOTH MATRICES ARE SYMMETRICAL
+!         CASE WHERE BOTH MATRICES ARE SYMMETRICAL
 !
-           DO K = 1 , NELEB
-             IEL = NELBOR(K)
-             XM( IEL , CORSYM(NULONE(K)) ) =
-     &       XM( IEL , CORSYM(NULONE(K)) ) + XN(K)
-           ENDDO
+          DO K = 1 , NELEB
+            IEL = NELBOR(K)
+            XM( IEL , CORSYM(NULONE(K)) ) =
+     &      XM( IEL , CORSYM(NULONE(K)) ) + XN(K)
+          ENDDO
 !
         ELSE
-           WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,99) TYPEXM(1:1),OP(1:8),TYPEXN(1:1)
+          CALL PLANTE(1)
+          STOP
         ENDIF
 !
 !-----------------------------------------------------------------------

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE GEOELT
-!                    *****************
+!                   *****************
+                    SUBROUTINE GEOELT
+!                   *****************
 !
      &(SURDET,SURFAC,XEL,YEL,NELEM,NELMAX,IELM)
 !

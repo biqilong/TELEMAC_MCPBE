@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE P_MPI_TYPE_GET_EXTENT
-!                    ********************************
+!                   ********************************
+                    SUBROUTINE P_MPI_TYPE_GET_EXTENT
+!                   ********************************
 !
      &(DATATYPE,LOWER_BOUND,EXTENT,IERR)
 !

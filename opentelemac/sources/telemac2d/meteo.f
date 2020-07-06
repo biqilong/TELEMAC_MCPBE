@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE METEO
-!                    ****************
+!                   ****************
+                    SUBROUTINE METEO
+!                   ****************
 !
      &(PATMOS,WINDX,WINDY,FUAIR,FVAIR,AT,LT,NPOIN,VENT,ATMOS,
      & ATMFILEA,ATMFILEB,FILES,LISTIN,

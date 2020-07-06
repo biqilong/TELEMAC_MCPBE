@@ -1,6 +1,6 @@
-!                    *******************
-                     PROGRAM PARTEL_PARA
-!                    *******************
+!                   *******************
+                    PROGRAM PARTEL_PARA
+!                   *******************
 !
 !***********************************************************************
 ! PARALLEL   V6P2                                   20/02/2012
@@ -86,7 +86,7 @@
       USE DECLARATIONS_PARALLEL
       USE DECLARATIONS_SPECIAL
       USE BIEF, ONLY : BIEF_NCSIZE => NCSIZE, NBMAXNSHARE, IPID, FRONT2
-      USE INTERFACE_PARALLEL, ONLY : P_TIME
+      USE INTERFACE_PARALLEL, ONLY : P_TIME, P_MAX_ARRAY
       IMPLICIT NONE
 !
       ! MAX PARTITION NUMBER [00000..99999]
@@ -894,7 +894,7 @@
       NB_INTER_GLOB=0
       ! IF (IPID. EQ. 0) WRITE(89,*) SORT
       ! CUT=0
-      CALL P_IMAX_ARRAY(SORT,CUT,NPOIN2,IER)
+      CALL P_MAX_ARRAY(SORT,CUT,NPOIN2,IER)
 !
       DO J=1,NPOIN2
         IF (CUT(J) .NE. 0) THEN

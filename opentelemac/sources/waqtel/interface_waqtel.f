@@ -1,6 +1,6 @@
-!                    ***********************
-                     MODULE INTERFACE_WAQTEL
-!                    ***********************
+!                   ***********************
+                    MODULE INTERFACE_WAQTEL
+!                   ***********************
 !
 !
 !***********************************************************************
@@ -276,7 +276,7 @@
         INTEGER, INTENT(IN)               :: NCAR
         CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: PATH
         CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: DICO_FILE
-        CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE          
+        CHARACTER(LEN=PATH_LEN), INTENT(IN)    :: CAS_FILE
         END SUBROUTINE
       END INTERFACE
 !

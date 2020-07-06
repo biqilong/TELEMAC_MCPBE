@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SOUSA
-!                    *****************
+!                   *****************
+                    SUBROUTINE SOUSA
+!                   *****************
 !
      &(S0NU,S1NU,U,V,W,ROTAN,STRAIN,TRNU,
      & NU,NPOIN3,MSK,MASKEL,MESH3D,IELM3,S,WDIST,

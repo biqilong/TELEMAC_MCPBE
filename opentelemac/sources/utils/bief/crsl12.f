@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CRSL12
-!                    *****************
+!                   *****************
+                    SUBROUTINE CRSL12
+!                   *****************
 !
      &(NEWSL,OLDSL,ZF,IKLE,NELEM,NELMAX)
 !

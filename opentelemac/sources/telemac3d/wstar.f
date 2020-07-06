@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE WSTAR
-!                    ****************
+!                   ****************
+                    SUBROUTINE WSTAR
+!                   ****************
 !
      & (WS,HWSTAR,Z,NPOIN2,NPLAN)
 !

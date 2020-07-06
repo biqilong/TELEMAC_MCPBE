@@ -38,6 +38,7 @@
       USE DECLARATIONS_TELEMAC, ONLY:COUPLING
       USE DECLARATIONS_GAIA, ONLY:FLUDPT,FLUDP,NSUSP_TEL
       USE INTERFACE_TELEMAC2D, EX_FV_BALANCE => FV_BALANCE
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
 !
       IMPLICIT NONE
       LOGICAL, INTENT(IN) :: YASMH
@@ -49,8 +50,6 @@
       TYPE(BIEF_OBJ) , INTENT(INOUT)  :: T,FLUXT_OLD,TN
 !
       INTEGER :: I, ITRAC, ISUSP
-      DOUBLE PRECISION P_DSUM
-      EXTERNAL         P_DSUM
 !
 !-----------------------------------------------------------------------
 !  COMPUTES VOLUME ADDED BY SOURCES
@@ -67,10 +66,10 @@
         ENDIF
 !       RAIN AND EVAPORATION
         IF(RAIN)THEN
-           CALL VECTOR(T6,'=','MASVEC          ',PLUIE%ELM,
-     &                 1.D0,PLUIE,PLUIE,PLUIE,PLUIE,PLUIE,PLUIE,MESH,
-     &                 MSK,MASKEL)
-           MASS_RAIN =BIEF_SUM(T6)
+          CALL VECTOR(T6,'=','MASVEC          ',PLUIE%ELM,
+     &                1.D0,PLUIE,PLUIE,PLUIE,PLUIE,PLUIE,PLUIE,MESH,
+     &                MSK,MASKEL)
+          MASS_RAIN =BIEF_SUM(T6)
         ENDIF
         MASSES = DT*(MASSES + MASS_RAIN)
       ENDIF
@@ -129,7 +128,7 @@
      &              Y=FLUDP%ADR(ISUSP)%P,C=0.D0)
           ENDIF
 !
-          IF(NCSIZE.GT.1)MASSOU(ITRAC)=P_DSUM(MASSOU(ITRAC))
+          IF(NCSIZE.GT.1)MASSOU(ITRAC)=P_SUM(MASSOU(ITRAC))
 !
         ENDDO
       ENDIF

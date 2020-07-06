@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MATVEC
-!                    *****************
+!                   *****************
+                    SUBROUTINE MATVEC
+!                   *****************
 !
      &( OP , X , A , Y , C , MESH , LEGO )
 !
@@ -294,10 +294,10 @@
           ELSEIF(OP(3:8).EQ.'X+CTAY') THEN
             CALL OS('X=X+CY  ', X=X, Y=MESH%T, C=C)
           ELSE
-           WRITE(LU,3001) OP
-3001       FORMAT(1X,'MATVEC (BIEF) : UNKNOWN OPERATION : ',A8)
-           CALL PLANTE(1)
-           STOP
+            WRITE(LU,3001) OP
+3001        FORMAT(1X,'MATVEC (BIEF) : UNKNOWN OPERATION : ',A8)
+            CALL PLANTE(1)
+            STOP
           ENDIF
 !
         ELSE

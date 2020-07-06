@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE GAIA_PREPARE_STEP
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE GAIA_PREPARE_STEP
+!                   ****************************
      &(H_TEL, U_TEL, V_TEL, CF_TEL, CHARR_TEL, CODE, DELTAR, DT_TEL,
      & HW_TEL, KS_TEL, LISTCOUNT, LOOPCOUNT, SUSP_TEL,
      & T_TEL, THETAW_TEL, TW_TEL, UETCAR, UW_TEL, ZF_TEL)

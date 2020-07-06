@@ -66,13 +66,15 @@ class Mascaret():
         self.logger.debug('LD_LIBRARY_PATH: {}'.format(ld_library))
         self.logger.info('Loading {}...'.format(libmascaret))
         if sys.platform.startswith('linux') \
-           or sys.platform.startswith('darwin'):
+           or sys.platform.startswith('darwin') \
+           or sys.platform.startswith('cygwin'):
             try:
                 self.libmascaret = ctypes.CDLL(libmascaret)
             except Exception as tbe:
-                self.logger.exception("Unable to load: mascaret.so. Check the "
+                
+                self.logger.exception("Unable to load: {}. Check the "
                                       "environment variable LIBMASCARET: {}"
-                                      .format(tbe))
+                                      .format(libmascaret, tbe))
                 raise SystemExit
             else:
                 self.logger.info('Library loaded.')
@@ -94,9 +96,13 @@ class Mascaret():
             i_log = logging.CRITICAL
         logging.basicConfig(level=i_log)
         self.logger.info('Using MascaretApi')
-        # Load the library libmascaret.so
-        libmascaret = 'libmascaret.so'
-        self.load_mascaret(libmascaret)
+        # Load the library libmascaret.(so|dll)
+        try:
+            libmascaret = 'libmascaret.so'
+            self.load_mascaret(libmascaret)
+        except SystemExit:
+            libmascaret = 'libmascaret.dll'
+            self.load_mascaret(libmascaret)
         self.iprint = 0
         self.id_masc = None
 

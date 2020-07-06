@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE SPALALLCL
-!                    ********************
+!                   ********************
+                    SUBROUTINE SPALALLCL
+!                   ********************
      &(NUBOR, LIMSA, LIUBOR, NPTFR,NUMIN,
      &  KDIR, KENT, KENTU, KADH, KLOG)
 !
@@ -82,7 +82,7 @@
 !
 !           WALL
 !
-             NUBOR(K)=NUMIN
+            NUBOR(K)=NUMIN
           ELSE
             WRITE(LU, 501) K, LIUBOR(K)
 501         FORMAT(1X,'SPALALLCL: BOUNDARY POINT ',1I6,

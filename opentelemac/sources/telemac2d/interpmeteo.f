@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE INTERPMETEO
-!                    **********************
+!                   **********************
+                    SUBROUTINE INTERPMETEO
+!                   **********************
 !
      &(WW,WINDX,WINDY,TAIR,PATM,HREL,NEBU,RAINFALL,EVAPORATION,AT,NFO)
 !

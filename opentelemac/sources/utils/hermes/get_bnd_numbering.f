@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_BND_NUMBERING
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_BND_NUMBERING
+!                   ************************
 !
      &(FFORMAT,FID,TYP_BND_ELEM,NPTFR,NBOR,IERR)
 !

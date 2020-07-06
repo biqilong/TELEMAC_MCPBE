@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE CVTRVF_NERD_2
-!                    ************************
+!                   ************************
+                    SUBROUTINE CVTRVF_NERD_2
+!                   ************************
 !
      &(F1,F1N,F1SCEXP,F2,F2N,F2SCEXP,H,HN,HPROP,UDEL,VDEL,DM1,
      & ZCONV,SOLSYS,SM1,SM2,SMH,YASMH,SMI1,SMI2,YASMI,
@@ -143,7 +143,7 @@
       USE DECLARATIONS_TELEMAC, ONLY : DEJA_CPOS2, INDIC_CPOS2
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM,P_DMIN,P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_SUM,P_MIN,P_MAX
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -227,8 +227,8 @@
           CINIT=MIN(CINIT,HN%R(I))
         ENDDO
         IF(NCSIZE.GT.1) THEN
-          C=P_DMIN(C)
-          CINIT=P_DMIN(CINIT)
+          C=P_MIN(C)
+          CINIT=P_MIN(CINIT)
         ENDIF
         WRITE(LU,*) 'AVANT TRAITEMENT HAUTEURS NEGATIVES, H MIN=',C
         WRITE(LU,*) 'AVANT TRAITEMENT HAUTEURS NEGATIVES, HN MIN=',CINIT
@@ -288,7 +288,7 @@
       DO I=1,MESH%NSEG
         CPREV=CPREV+ABS(FXMAT(I))
       ENDDO
-      IF(NCSIZE.GT.1) CPREV=P_DSUM(CPREV)
+      IF(NCSIZE.GT.1) CPREV=P_SUM(CPREV)
       CINIT=CPREV
       IF(TESTING) WRITE(LU,*) 'SOMME INITIALE DES FLUX=',CPREV
 !
@@ -609,7 +609,7 @@
         ENDDO
       ENDIF
 !
-      IF(NCSIZE.GT.1) C=P_DSUM(C)
+      IF(NCSIZE.GT.1) C=P_SUM(C)
       IF(TESTING) WRITE(LU,*) 'FLUX NON PRIS EN COMPTE=',C
       IF(C.NE.CPREV.AND.ABS(C-CPREV).GT.CINIT*1.D-9
      &             .AND.C.NE.0.D0) THEN
@@ -679,20 +679,20 @@
           C=C+(HT%R(I)-H%R(I))**2
         ENDDO
 !                       FAUX MAIS PAS GRAVE SI 0.
-        IF(NCSIZE.GT.1) C=P_DSUM(C)
+        IF(NCSIZE.GT.1) C=P_SUM(C)
         WRITE(LU,*) 'DIFFERENCE ENTRE H ET HT =',C
 !
         C=1.D99
         DO I=1,NPOIN
           C=MIN(C,F1%R(I))
         ENDDO
-        IF(NCSIZE.GT.1) C=P_DMIN(C)
+        IF(NCSIZE.GT.1) C=P_MIN(C)
         WRITE(LU,*) 'APRES TRAITEMENT TRACEUR 1 MIN=',C
         C=-1.D99
         DO I=1,NPOIN
           C=MAX(C,F1%R(I))
         ENDDO
-        IF(NCSIZE.GT.1) C=P_DMAX(C)
+        IF(NCSIZE.GT.1) C=P_MAX(C)
         WRITE(LU,*) 'APRES TRAITEMENT TRACEUR 1 MAX=',C
       ENDIF
 !

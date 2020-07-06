@@ -1,9 +1,9 @@
-!                    *****************
-                     SUBROUTINE TRANSF
-!                    *****************
+!                   *****************
+                    SUBROUTINE TRANSF
+!                   *****************
 !
-     &( FA    , FR    , XK    , KNEW  , NEWF  , NEWF1 , TAUX1 , TAUX2 , 
-     &  NPOIN2, NPLAN , NF   )
+     &( FA    , FR    , XK    , KNEW  , NEWF  , NEWF1 , TAUX1 , TAUX2 ,
+     &  NPOIN2, NDIRE , NF   )
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   28/06/2011
@@ -48,7 +48,7 @@
 !| NEWF           |<->| WORK TABLE
 !| NEWF1          |<->| WORK TABLE
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| RAISF          |-->| RAISON FREQUENTIELLE
 !| SINTET         |-->| SINE OF TETA ANGLE
@@ -68,12 +68,12 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    :: NPOIN2, NPLAN, NF
+      INTEGER, INTENT(IN)    :: NPOIN2, NDIRE, NF
       INTEGER, INTENT(INOUT) :: KNEW(NPOIN2),NEWF(NPOIN2), NEWF1(NPOIN2)
-      DOUBLE PRECISION, INTENT(IN)    :: FR(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: FR(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: TAUX1(NPOIN2),TAUX2(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: FA(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: FA(NPOIN2,NDIRE,NF)
 !
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -90,10 +90,10 @@
       F0=FREQ(1)
       UNSLRF=1.D0/LOG(RAISF)
 !
-      CALL OV('X=C     ', X=FA, C=0.D0, DIM1=NPOIN2*NPLAN*NF)
+      CALL OV('X=C     ', X=FA, C=0.D0, DIM1=NPOIN2*NDIRE*NF)
 !
       DO JF=1,NF
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           DO IP=1,NPOIN2
 !           ---------------------------------------------------------
 !           COMPUTES THE DIFFERENCE BETWEEN ABSOLUTE AND RELATIVE FREQUENCIES
@@ -122,7 +122,7 @@
               IF(FNEW.GT.0.D0) THEN
                 KNEW(IP)=JP
               ELSE
-                KNEW(IP)=1+MOD(JP+NPLAN/2-1,NPLAN)
+                KNEW(IP)=1+MOD(JP+NDIRE/2-1,NDIRE)
                 FNEW=0.D0
               ENDIF
 !

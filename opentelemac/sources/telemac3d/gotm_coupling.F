@@ -29,9 +29,9 @@
 
       CONTAINS
 
-!                    *****************************
-                     SUBROUTINE GOTM_COUPLING_INIT
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GOTM_COUPLING_INIT
+!                   *****************************
 !
 !
 !***********************************************************************
@@ -82,7 +82,7 @@
         CALL PLANTE(1)
       ENDIF
 
-      ! GOTM INITIALISATION 
+      ! GOTM INITIALISATION
 
       ! INITIATE TRIDIAGONAL
       CALL INIT_TRIDIAGONAL(NELEV)
@@ -142,9 +142,9 @@
       CALL PLANTE(1)
 #endif
       END SUBROUTINE GOTM_COUPLING_INIT
-!                    *****************************
-                     SUBROUTINE GOTM_COUPLING_STEP
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GOTM_COUPLING_STEP
+!                   *****************************
 !
 !
 !***********************************************************************
@@ -291,9 +291,9 @@
       CALL PLANTE(1)
 #endif
       END SUBROUTINE GOTM_COUPLING_STEP
-!                    ***********************
-                     SUBROUTINE DEALLOC_GOTM
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE DEALLOC_GOTM
+!                   ***********************
 !
 !***********************************************************************
 ! TELEMAC3D   V8P1

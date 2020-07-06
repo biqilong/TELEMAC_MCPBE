@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE WSTARW
-!                    *****************
+!                   *****************
+                    SUBROUTINE WSTARW
+!                   *****************
 !
      & (WW,WSS,WUP,WDOWN,SOMMEW)
 !
@@ -200,13 +200,13 @@
         CALL OV('X=C     ', X=T3_01%R(IAD-NPOIN2+1:IAD), C=0.D0,
      &          DIM1=NPOIN2)
         DO IELEM2 = 1, NELEM2
-           IELEM3 = (IPLAN-1) * NELEM2 + IELEM2
-           I1=MESH3D%IKLE%I(IELEM3)
-           I2=MESH3D%IKLE%I(IELEM3+NELMAX)
-           I3=MESH3D%IKLE%I(IELEM3+2*NELMAX)
-           T3_01%R(I1)=T3_01%R(I1)+MESH3D%W%R(IELEM3)
-           T3_01%R(I2)=T3_01%R(I2)+MESH3D%W%R(IELEM3+NELMAX)
-           T3_01%R(I3)=T3_01%R(I3)+MESH3D%W%R(IELEM3+2*NELMAX)
+          IELEM3 = (IPLAN-1) * NELEM2 + IELEM2
+          I1=MESH3D%IKLE%I(IELEM3)
+          I2=MESH3D%IKLE%I(IELEM3+NELMAX)
+          I3=MESH3D%IKLE%I(IELEM3+2*NELMAX)
+          T3_01%R(I1)=T3_01%R(I1)+MESH3D%W%R(IELEM3)
+          T3_01%R(I2)=T3_01%R(I2)+MESH3D%W%R(IELEM3+NELMAX)
+          T3_01%R(I3)=T3_01%R(I3)+MESH3D%W%R(IELEM3+2*NELMAX)
         ENDDO
       ENDDO
 !
@@ -220,59 +220,59 @@
 !
       DO IPLAN = 1,NPLAN-1
 !
-           IPLANINF = IPLAN
-           IPLANSUP = IPLAN+1
-           IADINF = IPLANINF * NPOIN2
-           IADSUP = IPLANSUP * NPOIN2
+        IPLANINF = IPLAN
+        IPLANSUP = IPLAN+1
+        IADINF = IPLANINF * NPOIN2
+        IADSUP = IPLANSUP * NPOIN2
 !
-!          1. 2*AVERAGE [DZ W*] FOR LAYER [IPLAN_INF,IPLAN_SUP]
-!             T2_02 SHOULD BE HERE OF TYPE 11 (LINEAR TRIANGLE)
-           CALL CPSTVC(H,T2_02)
-           CALL OV('X=CY    ', X=T2_02%R,
-     &             Y=WSS%R(IADINF-NPOIN2+1:IADINF),
-     &             C=2.D0, DIM1=NPOIN2)
+!       1. 2*AVERAGE [DZ W*] FOR LAYER [IPLAN_INF,IPLAN_SUP]
+!          T2_02 SHOULD BE HERE OF TYPE 11 (LINEAR TRIANGLE)
+        CALL CPSTVC(H,T2_02)
+        CALL OV('X=CY    ', X=T2_02%R,
+     &          Y=WSS%R(IADINF-NPOIN2+1:IADINF),
+     &          C=2.D0, DIM1=NPOIN2)
 !
-!          2. (1/DT) * [Z(N+1)-Z(N)]PLAN_SUP + [Z(N+1)-Z(N)]PLAN_INF
+!       2. (1/DT) * [Z(N+1)-Z(N)]PLAN_SUP + [Z(N+1)-Z(N)]PLAN_INF
 !
-!          2.1. PLAN_SUP
+!       2.1. PLAN_SUP
 !
-           CALL OV('X=X+CY  ', X=T2_02%R,
-     &              Y=Z3%R(IADSUP-NPOIN2+1:IADSUP),
-     &              C=SURDT, DIM1=NPOIN2)
+        CALL OV('X=X+CY  ', X=T2_02%R,
+     &           Y=Z3%R(IADSUP-NPOIN2+1:IADSUP),
+     &           C=SURDT, DIM1=NPOIN2)
 !
-           CALL OV('X=X+CY  ', X=T2_02%R,
-     &              Y=ZPROP%R(IADSUP-NPOIN2+1:IADSUP),
-     &              C=-SURDT, DIM1=NPOIN2)
+        CALL OV('X=X+CY  ', X=T2_02%R,
+     &           Y=ZPROP%R(IADSUP-NPOIN2+1:IADSUP),
+     &           C=-SURDT, DIM1=NPOIN2)
 !
-!          2.2. PLAN_INF
+!       2.2. PLAN_INF
 !
-           CALL OV('X=X+CY  ', X=T2_02%R,
-     &              Y=Z3%R(IADINF-NPOIN2+1:IADINF),
-     &              C=SURDT, DIM1=NPOIN2)
+        CALL OV('X=X+CY  ', X=T2_02%R,
+     &           Y=Z3%R(IADINF-NPOIN2+1:IADINF),
+     &           C=SURDT, DIM1=NPOIN2)
 !
-           CALL OV('X=X+CY  ', X=T2_02%R,
-     &              Y=ZPROP%R(IADINF-NPOIN2+1:IADINF),
-     &              C=-SURDT, DIM1=NPOIN2)
+        CALL OV('X=X+CY  ', X=T2_02%R,
+     &           Y=ZPROP%R(IADINF-NPOIN2+1:IADINF),
+     &           C=-SURDT, DIM1=NPOIN2)
 !
-!          3. MULTIPLIES BY THE MASS
+!       3. MULTIPLIES BY THE MASS
 !
-           CALL OS('X=YZ    ',X=SEM2D%ADR(1)%P,Y=MAT2D%ADR(1)%P%D,
-     &                        Z=T2_02)
+        CALL OS('X=YZ    ',X=SEM2D%ADR(1)%P,Y=MAT2D%ADR(1)%P%D,
+     &                     Z=T2_02)
 !
-!          4. ADDS PSIH * UCONV GRAD(Z)
+!       4. ADDS PSIH * UCONV GRAD(Z)
 !
-           CALL OV('X=X+CY  ', X=SEM2D%ADR(1)%P%R,
-     &              Y=T3_01%R(IADINF-NPOIN2+1:IADINF),
-     &              C=2.D0, DIM1=NPOIN2)
+        CALL OV('X=X+CY  ', X=SEM2D%ADR(1)%P%R,
+     &           Y=T3_01%R(IADINF-NPOIN2+1:IADINF),
+     &           C=2.D0, DIM1=NPOIN2)
 !
-!          5. SOLVES THE SYSTEM
+!       5. SOLVES THE SYSTEM
 !
-           IF(NCSIZE.GT.1) CALL PARCOM(SEM2D%ADR(1)%P,2,MESH2D)
+        IF(NCSIZE.GT.1) CALL PARCOM(SEM2D%ADR(1)%P,2,MESH2D)
 !
-!          SOLUTION IN (SOMMEW)PLAN_INF
+!       SOLUTION IN (SOMMEW)PLAN_INF
 !
-           CALL OV('X=YZ    ',SOMMEW(IADINF-NPOIN2+1:IADINF),
-     &             SEM2D%ADR(1)%P%R,T2_01%R,0.D0,NPOIN2)
+        CALL OV('X=YZ    ',SOMMEW(IADINF-NPOIN2+1:IADINF),
+     &          SEM2D%ADR(1)%P%R,T2_01%R,0.D0,NPOIN2)
 !
       ENDDO
 !
@@ -282,14 +282,14 @@
 !     NOTE FROM ASTRID: 2 TO NPLAN-1 WOULD BE ENOUGH
       DO IPLAN = 2,NPLAN
 !
-           IADSUP = IPLAN * NPOIN2         ! LAST NODE FROM IPLAN
-           IADINF = (IPLAN-1) * NPOIN2     ! LAST NODE FROM (IPLAN-1)
+        IADSUP = IPLAN * NPOIN2         ! LAST NODE FROM IPLAN
+        IADINF = (IPLAN-1) * NPOIN2     ! LAST NODE FROM (IPLAN-1)
 !
-!          [ WUP ] IPLAN = - [ WUP ] IPLAN-1 + [(W) IPLAN + (W) IPLAN-1]
-!                        = - [ WUP ] IPLAN-1 + [ SOMMEW ] IPLAN-1
-           CALL OV('X=Y+CZ  ', X=WUP(IADSUP-NPOIN2+1:IADSUP),
-     &            Y=SOMMEW(IADINF-NPOIN2+1:IADINF),
-     &            Z=WUP(IADINF-NPOIN2+1:IADINF), C=-1.D0, DIM1=NPOIN2)
+!       [ WUP ] IPLAN = - [ WUP ] IPLAN-1 + [(W) IPLAN + (W) IPLAN-1]
+!                     = - [ WUP ] IPLAN-1 + [ SOMMEW ] IPLAN-1
+        CALL OV('X=Y+CZ  ', X=WUP(IADSUP-NPOIN2+1:IADSUP),
+     &         Y=SOMMEW(IADINF-NPOIN2+1:IADINF),
+     &         Z=WUP(IADINF-NPOIN2+1:IADINF), C=-1.D0, DIM1=NPOIN2)
 !
       ENDDO
 !
@@ -300,18 +300,18 @@
 !     NOTE FROM ASTRID : 1 TO NPLAN - 2 WOULD BE ENOUGH
       DO IPLAN = 1,NPLAN-1
 !
-!          PLAN_SUP = (NPLAN-IPLAN+1)
-!          PLAN_INF = (NPLAN-IPLAN)
+!       PLAN_SUP = (NPLAN-IPLAN+1)
+!       PLAN_INF = (NPLAN-IPLAN)
 !
-           IADSUP = (NPLAN-IPLAN+1) * NPOIN2   ! LAST NODE FROM PLAN_SUP
-           IADINF = (NPLAN-IPLAN) * NPOIN2     ! LAST NODE FROM PLAN_INF
+        IADSUP = (NPLAN-IPLAN+1) * NPOIN2   ! LAST NODE FROM PLAN_SUP
+        IADINF = (NPLAN-IPLAN) * NPOIN2     ! LAST NODE FROM PLAN_INF
 !
-!          [ WDOWN ] PLAN_INF  = - [ WDOWN ] PLAN_SUP + [(W) PLAN_SUP + (W) PLAN_INF]
-!                        = - [ WDOWN ] PLAN_SUP  + [ SOMMEW ] PLAN_INF
-           CALL OV('X=Y+CZ  ', X=WDOWN(IADINF-NPOIN2+1:IADINF),
-     &             Y=SOMMEW(IADINF-NPOIN2+1:IADINF),
-     &             Z=WDOWN(IADSUP-NPOIN2+1:IADSUP), C=-1.D0,
-     &             DIM1=NPOIN2)
+!       [ WDOWN ] PLAN_INF  = - [ WDOWN ] PLAN_SUP + [(W) PLAN_SUP + (W) PLAN_INF]
+!                     = - [ WDOWN ] PLAN_SUP  + [ SOMMEW ] PLAN_INF
+        CALL OV('X=Y+CZ  ', X=WDOWN(IADINF-NPOIN2+1:IADINF),
+     &          Y=SOMMEW(IADINF-NPOIN2+1:IADINF),
+     &          Z=WDOWN(IADSUP-NPOIN2+1:IADSUP), C=-1.D0,
+     &          DIM1=NPOIN2)
 !
       ENDDO
 !
@@ -333,4 +333,3 @@
 !
       RETURN
       END
-

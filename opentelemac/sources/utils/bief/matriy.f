@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MATRIY
-!                    *****************
+!                   *****************
+                    SUBROUTINE MATRIY
+!                   *****************
 !
      &(FORMUL,XM,TYPDIA,TYPEXT,
      & XMUL,SF,SG,SH,SU,SV,SW,F,G,H,U,V,W,T,LEGO,
@@ -369,10 +369,10 @@
 !.......................................................................
 !         P1 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.11) THEN
-             CALL MT01AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
-     &                                       T(1,2)   ,XM(1,AAS(2,3,S)),
-     &                                                        T(1,3)   ,
-     &                   XMUL,SURFAC,NELEM,NELMAX)
+            CALL MT01AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
+     &                                      T(1,2)   ,XM(1,AAS(2,3,S)),
+     &                                                       T(1,3)   ,
+     &                  XMUL,SURFAC,NELEM,NELMAX)
 !
             TYPDIA='Q'
             TYPEXT='S'
@@ -441,7 +441,7 @@
 !.......................................................................
 !
           IF(IELM2.EQ.13) THEN
-             CALL MT01CC
+            CALL MT01CC
      & (   T(1,1)   ,XM(1,PPS(1,2,S)),XM(1,PPS(1,3,S)),
      &   XM(1,PPS(1,4,S)),XM(1,PPS(1,5,S)),XM(1,PPS(1,6,S)),
      &     T(1,2)   ,XM(1,PPS(2,3,S)),XM(1,PPS(2,4,S)),
@@ -452,8 +452,8 @@
      &     T(1,5)   ,XM(1,PPS(5,6,S)),T(1,6),
      &     XMUL,SURFAC,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -479,12 +479,12 @@
 !.......................................................................
 !         P1 SEGMENT COLUMN ELEMENT
           IF(IELM2.EQ.1.AND.S.EQ.1) THEN
-             CALL MT01OO(   T(1,1)   ,XM(1,OOS(1,2,S)),
-     &                                       T(1,2)   ,
-     &                   XMUL,LGSEG,NELEB,NELEBX)
+            CALL MT01OO(   T(1,1)   ,XM(1,OOS(1,2,S)),
+     &                                      T(1,2)   ,
+     &                  XMUL,LGSEG,NELEB,NELEBX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER COLUMN ELEMENT
@@ -511,10 +511,10 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF(IELM2.EQ.41) THEN
-             CALL MT01PP(T,XM,XMUL,ZPT,SURFAC,IKLE,NELEM,NELMAX)
+            CALL MT01PP(T,XM,XMUL,ZPT,SURFAC,IKLE,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -541,10 +541,10 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF(IELM2.EQ.31.OR.IELM2.EQ.51) THEN
-             CALL MT01TT(T,XM,XMUL,XPT,YPT,ZPT,IKLE,NELEM,NELMAX)
+            CALL MT01TT(T,XM,XMUL,XPT,YPT,ZPT,IKLE,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -607,18 +607,18 @@
 !
       IF(FORMUL(7:7).NE.'3') THEN
 !
-             CALL MT02AA(  T(1,1),XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
-     &                                   T(1,2)   ,XM(1,AAS(2,3,S)),
-     &                                                      T(1,3) ,
-     &                         XMUL,SU,U,SV,V,XEL,YEL,SURFAC,
-     &             IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,FORMUL)
+        CALL MT02AA(  T(1,1),XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
+     &                              T(1,2)   ,XM(1,AAS(2,3,S)),
+     &                                                 T(1,3) ,
+     &                    XMUL,SU,U,SV,V,XEL,YEL,SURFAC,
+     &        IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX,FORMUL)
 !
       ELSE
 !
-             CALL MT02AA_2( T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
-     &                                       T(1,2)   ,XM(1,AAS(2,3,S)),
-     &                                                        T(1,3)   ,
-     &                   XMUL,SU,SV,XEL,YEL,SURFAC,NELEM,NELMAX)
+        CALL MT02AA_2( T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
+     &                                  T(1,2)   ,XM(1,AAS(2,3,S)),
+     &                                                   T(1,3)   ,
+     &              XMUL,SU,SV,XEL,YEL,SURFAC,NELEM,NELMAX)
 !
       ENDIF
 !
@@ -650,7 +650,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT02BB
+            CALL MT02BB
      & (   T(1,1)   ,XM(1,BBS(1,2,S)),XM(1,BBS(1,3,S)),XM(1,BBS(1,4,S)),
      &                      T(1,2)   ,XM(1,BBS(2,3,S)),XM(1,BBS(2,4,S)),
      &                                       T(1,3)   ,XM(1,BBS(3,4,S)),
@@ -658,8 +658,8 @@
      &          XMUL,SU,U,XEL,YEL,SURFAC,
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -689,7 +689,7 @@
 !         USES MATRIX PPS BECAUSE WILL BE A 6X6 SYMMETRICAL MATRIX
 !
           IF(IELM2.EQ.13) THEN
-             CALL MT02CC
+            CALL MT02CC
      & (   T(1,1)   ,XM(1,PPS(1,2,S)),XM(1,PPS(1,3,S)),
      &   XM(1,PPS(1,4,S)),XM(1,PPS(1,5,S)),XM(1,PPS(1,6,S)),
      &     T(1,2)   ,XM(1,PPS(2,3,S)),XM(1,PPS(2,4,S)),
@@ -702,8 +702,8 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),
      &          NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -784,12 +784,12 @@
 !         P1 PRISM COLUMN ELEMENT
           IF(IELM2.EQ.31.OR.IELM2.EQ.51) THEN
 !
-          CALL MT02TT(T,XM,XMUL,SF,SG,SH,F,G,H,
-     &                XPT,YPT,ZPT,IKLE,NELEM,NELMAX,
-     &                BIEF_NBPTS(11,MESH))
+            CALL MT02TT(T,XM,XMUL,SF,SG,SH,F,G,H,
+     &                  XPT,YPT,ZPT,IKLE,NELEM,NELMAX,
+     &                  BIEF_NBPTS(11,MESH))
 !
-          TYPDIA='Q'
-          TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -839,17 +839,17 @@
 !.......................................................................
 !         P1 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.11) THEN
-             ! IKLE4 is not used because we are not in quasi bubble
-             ! GIving it IKLE(1,4) instead
-             CALL MT03AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
-     &                   XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
-     &                   XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
-     &                   XMUL,SF,SG,SU,SV,F,G,U,V,XEL,YEL,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,3),
-     &                   NELEM,NELMAX)
+            ! IKLE4 is not used because we are not in quasi bubble
+            ! GIving it IKLE(1,4) instead
+            CALL MT03AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
+     &                  XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
+     &                  XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
+     &                  XMUL,SF,SG,SU,SV,F,G,U,V,XEL,YEL,SURFAC,
+     &                  IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,3),
+     &                  NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -876,7 +876,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT03BB
+            CALL MT03BB
      & (   T(1,1)   ,XM(1,BBQ(1,2,S)),XM(1,BBQ(1,3,S)),XM(1,BBQ(1,4,S)),
      &  XM(1,BBQ(2,1,S)),   T(1,2)   ,XM(1,BBQ(2,3,S)),XM(1,BBQ(2,4,S)),
      &  XM(1,BBQ(3,1,S)),XM(1,BBQ(3,2,S)),   T(1,3)   ,XM(1,BBQ(3,4,S)),
@@ -884,8 +884,8 @@
      &          XMUL,SF,SG,SU,SV,F,G,U,V,
      &          XEL,YEL,IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -912,7 +912,7 @@
 !.......................................................................
 !         P2 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.13) THEN
-             CALL MT03CC
+            CALL MT03CC
      & (   T(1,1)   ,XM(1,PPQ(1,2,S)),XM(1,PPQ(1,3,S)),
      &   XM(1,PPQ(1,4,S)),XM(1,PPQ(1,5,S)),XM(1,PPQ(1,6,S)),
      &   XM(1,PPQ(2,1,S)),T(1,2),XM(1,PPQ(2,3,S)),XM(1,PPQ(2,4,S)),
@@ -929,8 +929,8 @@
      &          IKLE(1,4),IKLE(1,5),IKLE(1,6),
      &          NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !.......................................................................
 !         OTHER
 !.......................................................................
@@ -979,14 +979,14 @@
 !.......................................................................
 !         P1 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.11) THEN
-             CALL MT04AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
-     &                                       T(1,2)   ,XM(1,AAS(2,3,S)),
-     &                                                        T(1,3)   ,
-     &                   XMUL,SU,SV,U,V,XEL,YEL,SURFAC,IKLE,
-     &                   NELEM,NELMAX)
+            CALL MT04AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
+     &                                      T(1,2)   ,XM(1,AAS(2,3,S)),
+     &                                                       T(1,3)   ,
+     &                  XMUL,SU,SV,U,V,XEL,YEL,SURFAC,IKLE,
+     &                  NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1013,7 +1013,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT04BB
+            CALL MT04BB
      & (   T(1,1)   ,XM(1,BBS(1,2,S)),XM(1,BBS(1,3,S)),XM(1,BBS(1,4,S)),
      &                      T(1,2)   ,XM(1,BBS(2,3,S)),XM(1,BBS(2,4,S)),
      &                                       T(1,3)   ,XM(1,BBS(3,4,S)),
@@ -1021,8 +1021,8 @@
      &          XMUL,SU,SV,U,V,XEL,YEL,
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1049,7 +1049,7 @@
 !.......................................................................
 !         P2 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.13) THEN
-             CALL MT04CC
+            CALL MT04CC
      & (   T(1,1)   ,XM(1,PPS(1,2,S)),XM(1,PPS(1,3,S)),
      &   XM(1,PPS(1,4,S)),XM(1,PPS(1,5,S)),XM(1,PPS(1,6,S)),
      &     T(1,2)   ,XM(1,PPS(2,3,S)),XM(1,PPS(2,4,S)),
@@ -1062,8 +1062,8 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),
      &          IKLE(1,4),IKLE(1,5),IKLE(1,6),NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1188,14 +1188,14 @@
 !.......................................................................
 !         P1 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.11) THEN
-             CALL MT05AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
-     &                   XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
-     &                   XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
-     &                   XMUL,SU,SV,U,V,XEL,YEL,IKLE,
-     &                   NELEM,NELMAX,FORMUL)
+            CALL MT05AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
+     &                  XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
+     &                  XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
+     &                  XMUL,SU,SV,U,V,XEL,YEL,IKLE,
+     &                  NELEM,NELMAX,FORMUL)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -1222,7 +1222,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT05BB
+            CALL MT05BB
      & (   T(1,1)   ,XM(1,BBQ(1,2,S)),XM(1,BBQ(1,3,S)),XM(1,BBQ(1,4,S)),
      &  XM(1,BBQ(2,1,S)),   T(1,2)   ,XM(1,BBQ(2,3,S)),XM(1,BBQ(2,4,S)),
      &  XM(1,BBQ(3,1,S)),XM(1,BBQ(3,2,S)),   T(1,3)   ,XM(1,BBQ(3,4,S)),
@@ -1231,8 +1231,8 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
      &          NELEM,NELMAX,FORMUL)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -1259,7 +1259,7 @@
 !.......................................................................
 !         P2 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.13) THEN
-             CALL MT05CC
+            CALL MT05CC
      & (   T(1,1)   ,XM(1,PPQ(1,2,S)),XM(1,PPQ(1,3,S)),
      &   XM(1,PPQ(1,4,S)),XM(1,PPQ(1,5,S)),XM(1,PPQ(1,6,S)),
      &   XM(1,PPQ(2,1,S)),T(1,2),XM(1,PPQ(2,3,S)),XM(1,PPQ(2,4,S)),
@@ -1276,8 +1276,8 @@
      &          IKLE(1,4),IKLE(1,5),IKLE(1,6),
      &          NELEM,NELMAX,FORMUL)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -1304,12 +1304,12 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF(IELM2.EQ.41) THEN
-             CALL MT05PP(T,XM,XMUL,SU,SV,SW,U,V,W,F,G,
-     &                   XEL,YEL,ZPT,IKLE,NELEM,NELMAX,SIGMAG,
-     &                   SPECAD,NPLAN)
+            CALL MT05PP(T,XM,XMUL,SU,SV,SW,U,V,W,F,G,
+     &                  XEL,YEL,ZPT,IKLE,NELEM,NELMAX,SIGMAG,
+     &                  SPECAD,NPLAN)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -1336,11 +1336,11 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF(IELM2.EQ.31.OR.IELM2.EQ.51) THEN
-             CALL MT05TT(T,XM,XMUL,SU,SV,SW,U,V,W,
-     &                   XPT,YPT,ZPT,IKLE,NELEM,NELMAX)
+            CALL MT05TT(T,XM,XMUL,SU,SV,SW,U,V,W,
+     &                  XPT,YPT,ZPT,IKLE,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -1385,11 +1385,11 @@
 !         P1 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.11) THEN
 !
-             CALL MT06AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
-     &                                       T(1,2)   ,XM(1,AAS(2,3,S)),
-     &                                                        T(1,3)   ,
-     &                   XMUL,SF,F,SURFAC,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX)
+            CALL MT06AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
+     &                                      T(1,2)   ,XM(1,AAS(2,3,S)),
+     &                                                       T(1,3)   ,
+     &                  XMUL,SF,F,SURFAC,
+     &                  IKLE(1,1),IKLE(1,2),IKLE(1,3),NELEM,NELMAX)
 !
             TYPDIA='Q'
             TYPEXT='S'
@@ -1427,7 +1427,7 @@
 !
       IF(FORMUL(7:7).NE.'2') THEN
 !
-                CALL MT06FT
+        CALL MT06FT
      & (   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
      &                      T(1,2)   ,XM(1,AAS(2,3,S)),
      &                                       T(1,3)   ,
@@ -1436,7 +1436,7 @@
      &          NBOR,NELEB,NELEBX)
 !
       ELSE
-                CALL MT06FT2
+        CALL MT06FT2
      & (   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
      &                      T(1,2)   ,XM(1,AAS(2,3,S)),
      &                                       T(1,3)   ,
@@ -1444,8 +1444,8 @@
      &          IKLBOR(1,1),IKLBOR(1,2),IKLBOR(1,3),
      &          NBOR,NELEB,NELEBX)
       ENDIF
-            TYPDIA='Q'
-            TYPEXT='S'
+      TYPDIA='Q'
+      TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1473,7 +1473,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT06BB
+            CALL MT06BB
      & (   T(1,1)   ,XM(1,BBS(1,2,S)),XM(1,BBS(1,3,S)),XM(1,BBS(1,4,S)),
      &                      T(1,2)   ,XM(1,BBS(2,3,S)),XM(1,BBS(2,4,S)),
      &                                       T(1,3)   ,XM(1,BBS(3,4,S)),
@@ -1481,8 +1481,8 @@
      &          XMUL,SF,F,SURFAC,
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1510,7 +1510,7 @@
 !.......................................................................
 !         QUADRATIC TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.13) THEN
-             CALL MT06CC
+            CALL MT06CC
      & ( T(1,1)   ,XM(1,PPS(1,2,S)),XM(1,PPS(1,3,S)),
      &   XM(1,PPS(1,4,S)),XM(1,PPS(1,5,S)),XM(1,PPS(1,6,S)),
      &   T(1,2)   ,XM(1,PPS(2,3,S)),XM(1,PPS(2,4,S)),
@@ -1522,8 +1522,8 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),
      &          IKLE(1,4),IKLE(1,5),IKLE(1,6),NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1588,13 +1588,13 @@
 !.......................................................................
 !         P1 SEGMENT COLUMN ELEMENT
           IF(IELM2.EQ.1.AND.S.EQ.1) THEN
-             CALL MT06OO(   T(1,1)   ,XM(1,OOS(1,2,S)),
-     &                                       T(1,2)   ,
-     &                   XMUL,SF,F,LGSEG,IKLBOR(1,1),IKLBOR(1,2),
-     &                   NBOR,NELEB,NELEBX)
+            CALL MT06OO(   T(1,1)   ,XM(1,OOS(1,2,S)),
+     &                                      T(1,2)   ,
+     &                  XMUL,SF,F,LGSEG,IKLBOR(1,1),IKLBOR(1,2),
+     &                  NBOR,NELEB,NELEBX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !.......................................................................
 !         OTHER
 !.......................................................................
@@ -1653,10 +1653,10 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF (IELM2.EQ.41) THEN
-             CALL MT06PP(T,XM,XMUL,SF,F,ZPT,SURFAC,IKLE,NELEM,NELMAX)
+            CALL MT06PP(T,XM,XMUL,SF,F,ZPT,SURFAC,IKLE,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1690,12 +1690,12 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF (IELM2.EQ.31.OR.IELM2.EQ.51) THEN
-             CALL MT06TT(T,XM,
-     &                   XMUL,SF,F,
-     &                   XPT,YPT,ZPT,IKLE,NELEM,NELMAX)
+            CALL MT06TT(T,XM,
+     &                  XMUL,SF,F,
+     &                  XPT,YPT,ZPT,IKLE,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1752,13 +1752,13 @@
 !.......................................................................
 !
           IF(IELM2.EQ.11) THEN
-             CALL MT07AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
-     &                                       T(1,2)   ,XM(1,AAS(2,3,S)),
-     &                                                        T(1,3)   ,
-     &                   XMUL,SF,F,SURFAC,NELEM,NELMAX)
+            CALL MT07AA(   T(1,1)   ,XM(1,AAS(1,2,S)),XM(1,AAS(1,3,S)),
+     &                                      T(1,2)   ,XM(1,AAS(2,3,S)),
+     &                                                       T(1,3)   ,
+     &                  XMUL,SF,F,SURFAC,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1791,15 +1791,15 @@
 !.......................................................................
 !
           IF(IELM2.EQ.12) THEN
-             CALL MT07BB
+            CALL MT07BB
      & (   T(1,1)   ,XM(1,BBS(1,2,S)),XM(1,BBS(1,3,S)),XM(1,BBS(1,4,S)),
      &                      T(1,2)   ,XM(1,BBS(2,3,S)),XM(1,BBS(2,4,S)),
      &                                       T(1,3)   ,XM(1,BBS(3,4,S)),
      &                                                        T(1,4)   ,
      &          XMUL,SF,F,SURFAC,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1832,7 +1832,7 @@
 !.......................................................................
 !
           IF(IELM2.EQ.13) THEN
-             CALL MT07CC
+            CALL MT07CC
      & (   T(1,1)   ,XM(1,PPS(1,2,S)),XM(1,PPS(1,3,S)),
      &   XM(1,PPS(1,4,S)),XM(1,PPS(1,5,S)),XM(1,PPS(1,6,S)),
      &     T(1,2)   ,XM(1,PPS(2,3,S)),XM(1,PPS(2,4,S)),
@@ -1843,8 +1843,8 @@
      &     T(1,5)   ,XM(1,PPS(5,6,S)),T(1,6),
      &          XMUL,SF,F,SURFAC,NELEM,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='S'
+            TYPDIA='Q'
+            TYPEXT='S'
 !
 !.......................................................................
 !         OTHER
@@ -1908,20 +1908,20 @@
 !.......................................................................
 !
           IF(IELM2.EQ.11) THEN
-             CALL MT08AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
-     &                   XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
-     &                   XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
-     &                   XMUL,SF,F,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   NELEM,NELMAX,ICOORD)
+            CALL MT08AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
+     &                  XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
+     &                  XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
+     &                  XMUL,SF,F,XEL,YEL,
+     &                  IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                  NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !
           ELSEIF(IELM2.EQ.12) THEN
-             CALL MT08AB
+            CALL MT08AB
      & (   T(1,1)   ,XM(1,ABQ(1,2,S)),XM(1,ABQ(1,3,S)),XM(1,ABQ(1,4,S)),
      &  XM(1,ABQ(2,1,S)),   T(1,2)   ,XM(1,ABQ(2,3,S)),XM(1,ABQ(2,4,S)),
      &  XM(1,ABQ(3,1,S)),XM(1,ABQ(3,2,S)),   T(1,3)   ,XM(1,ABQ(3,4,S)),
@@ -1929,25 +1929,25 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
      &          NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
-           ELSEIF(IELM2.EQ.13) THEN
-             CALL MT08AC(   T(1,1)   ,XM(1,ACQ(1,2,S)),XM(1,ACQ(1,3,S)),
-     &                   XM(1,ACQ(1,4,S)),XM(1,ACQ(1,5,S)),
-     &                   XM(1,ACQ(1,6,S)),XM(1,ACQ(2,1,S)),
-     &                   T(1,2)  ,XM(1,ACQ(2,3,S)),
-     &                   XM(1,ACQ(2,4,S)),XM(1,ACQ(2,5,S)),
-     &                   XM(1,ACQ(2,6,S)),XM(1,ACQ(3,1,S)),
-     &                   XM(1,ACQ(3,2,S)),T(1,3)  ,XM(1,ACQ(3,4,S)),
-     &                   XM(1,ACQ(3,5,S)),XM(1,ACQ(3,6,S)),
-     &                   XMUL,SF,F,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   IKLE(1,4),IKLE(1,5),IKLE(1,6),
-     &                   NELEM,NELMAX,ICOORD)
+          ELSEIF(IELM2.EQ.13) THEN
+            CALL MT08AC(   T(1,1)   ,XM(1,ACQ(1,2,S)),XM(1,ACQ(1,3,S)),
+     &                  XM(1,ACQ(1,4,S)),XM(1,ACQ(1,5,S)),
+     &                  XM(1,ACQ(1,6,S)),XM(1,ACQ(2,1,S)),
+     &                  T(1,2)  ,XM(1,ACQ(2,3,S)),
+     &                  XM(1,ACQ(2,4,S)),XM(1,ACQ(2,5,S)),
+     &                  XM(1,ACQ(2,6,S)),XM(1,ACQ(3,1,S)),
+     &                  XM(1,ACQ(3,2,S)),T(1,3)  ,XM(1,ACQ(3,4,S)),
+     &                  XM(1,ACQ(3,5,S)),XM(1,ACQ(3,6,S)),
+     &                  XMUL,SF,F,XEL,YEL,
+     &                  IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                  IKLE(1,4),IKLE(1,5),IKLE(1,6),
+     &                  NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -1974,7 +1974,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT08BB
+            CALL MT08BB
      & (   T(1,1)   ,XM(1,BBQ(1,2,S)),XM(1,BBQ(1,3,S)),XM(1,BBQ(1,4,S)),
      &  XM(1,BBQ(2,1,S)),   T(1,2)   ,XM(1,BBQ(2,3,S)),XM(1,BBQ(2,4,S)),
      &  XM(1,BBQ(3,1,S)),XM(1,BBQ(3,2,S)),   T(1,3)   ,XM(1,BBQ(3,4,S)),
@@ -1983,22 +1983,22 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
      &          NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !         LINEAR TRIANGLE COLUMN ELEMENT
           ELSEIF(IELM2.EQ.11) THEN
-             CALL MT08BA
-     &         (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
-     &          XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
-     &          XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
-     &          XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
-     &          XMUL,SF,F,XEL,YEL,
-     &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &          NELEM,NELMAX,ICOORD)
+            CALL MT08BA
+     &        (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
+     &         XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
+     &         XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
+     &         XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
+     &         XMUL,SF,F,XEL,YEL,
+     &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &         NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !.......................................................................
 !         OTHER
 !.......................................................................
@@ -2025,9 +2025,9 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF(IELM2.EQ.41.AND.ICOORD.EQ.3) THEN
-             CALL MT08PP(T,XM,XMUL,SF,F,SURFAC,IKLE,NELEM,NELMAX)
-             TYPDIA='Q'
-             TYPEXT='Q'
+            CALL MT08PP(T,XM,XMUL,SF,F,SURFAC,IKLE,NELEM,NELMAX)
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -2054,9 +2054,9 @@
 !.......................................................................
 !         P1 PRISM COLUMN ELEMENT
           IF(IELM2.EQ.31.OR.IELM2.EQ.51) THEN
-             CALL MT08TT(T,XM,XMUL,XPT,YPT,SF,F,IKLE,NELEM,NELMAX)
-             TYPDIA='Q'
-             TYPEXT='Q'
+            CALL MT08TT(T,XM,XMUL,XPT,YPT,SF,F,IKLE,NELEM,NELMAX)
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -2248,14 +2248,14 @@
 !.......................................................................
 !         P1 SEGMENT COLUMN ELEMENT
           IF(IELM2.EQ.1.AND.S.EQ.1) THEN
-             CALL MT09OO(   T(1,1)   ,XM(1,OOQ(1,2,S)),
-     &                      XM(1,OOQ(2,1,S)),   T(1,2),
-     &                   XMUL,SF,F,G,SU,U,V,
-     &                   IKLBOR(1,1),IKLBOR(1,2),
-     &                   NBOR,NELEB,NELMAX)
+            CALL MT09OO(   T(1,1)   ,XM(1,OOQ(1,2,S)),
+     &                     XM(1,OOQ(2,1,S)),   T(1,2),
+     &                  XMUL,SF,F,G,SU,U,V,
+     &                  IKLBOR(1,1),IKLBOR(1,2),
+     &                  NBOR,NELEB,NELMAX)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !.......................................................................
 !         OTHER
 !.......................................................................
@@ -2317,20 +2317,20 @@
 !.......................................................................
 !
           IF(IELM2.EQ.11) THEN
-             CALL MT11AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
-     &                   XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
-     &                   XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
-     &                   XMUL,SF,F,XEL,YEL,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   NELEM,NELMAX,ICOORD)
+            CALL MT11AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
+     &                  XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
+     &                  XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
+     &                  XMUL,SF,F,XEL,YEL,
+     &                  IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                  NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !
           ELSEIF(IELM2.EQ.12) THEN
-             CALL MT11AB
+            CALL MT11AB
      & (   T(1,1)   ,XM(1,ABQ(1,2,S)),XM(1,ABQ(1,3,S)),XM(1,ABQ(1,4,S)),
      &  XM(1,ABQ(2,1,S)),   T(1,2)   ,XM(1,ABQ(2,3,S)),XM(1,ABQ(2,4,S)),
      &  XM(1,ABQ(3,1,S)),XM(1,ABQ(3,2,S)),   T(1,3)   ,XM(1,ABQ(3,4,S)),
@@ -2338,28 +2338,28 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
      &          NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !
           ELSEIF(IELM2.EQ.13) THEN
-             CALL MT11AC(
-     &       T(1,1)   ,XM(1,ACQ(1,2,S)),XM(1,ACQ(1,3,S)),
-     &       XM(1,ACQ(1,4,S)),XM(1,ACQ(1,5,S)),
-     &       XM(1,ACQ(1,6,S)),XM(1,ACQ(2,1,S)),
-     &       T(1,2)  ,XM(1,ACQ(2,3,S)),
-     &       XM(1,ACQ(2,4,S)),XM(1,ACQ(2,5,S)),
-     &       XM(1,ACQ(2,6,S)),XM(1,ACQ(3,1,S)),
-     &       XM(1,ACQ(3,2,S)),T(1,3)  ,XM(1,ACQ(3,4,S)),
-     &       XM(1,ACQ(3,5,S)),XM(1,ACQ(3,6,S)),
-     &          XMUL,SF,F,XEL,YEL,
-     &          IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &          IKLE(1,4),IKLE(1,5),IKLE(1,6),
-     &          NELEM,NELMAX,ICOORD)
+            CALL MT11AC(
+     &      T(1,1)   ,XM(1,ACQ(1,2,S)),XM(1,ACQ(1,3,S)),
+     &      XM(1,ACQ(1,4,S)),XM(1,ACQ(1,5,S)),
+     &      XM(1,ACQ(1,6,S)),XM(1,ACQ(2,1,S)),
+     &      T(1,2)  ,XM(1,ACQ(2,3,S)),
+     &      XM(1,ACQ(2,4,S)),XM(1,ACQ(2,5,S)),
+     &      XM(1,ACQ(2,6,S)),XM(1,ACQ(3,1,S)),
+     &      XM(1,ACQ(3,2,S)),T(1,3)  ,XM(1,ACQ(3,4,S)),
+     &      XM(1,ACQ(3,5,S)),XM(1,ACQ(3,6,S)),
+     &         XMUL,SF,F,XEL,YEL,
+     &         IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &         IKLE(1,4),IKLE(1,5),IKLE(1,6),
+     &         NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -2386,7 +2386,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT11BB
+            CALL MT11BB
      & (   T(1,1)   ,XM(1,BBQ(1,2,S)),XM(1,BBQ(1,3,S)),XM(1,BBQ(1,4,S)),
      &  XM(1,BBQ(2,1,S)),   T(1,2)   ,XM(1,BBQ(2,3,S)),XM(1,BBQ(2,4,S)),
      &  XM(1,BBQ(3,1,S)),XM(1,BBQ(3,2,S)),   T(1,3)   ,XM(1,BBQ(3,4,S)),
@@ -2395,22 +2395,22 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
      &          NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !         LINEAR TRIANGLE COLUMN ELEMENT
           ELSEIF(IELM2.EQ.11) THEN
-             CALL MT11BA
-     &         (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
-     &          XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
-     &          XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
-     &          XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
-     &          XMUL,SF,F,XEL,YEL,
-     &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &          NELEM,NELMAX,ICOORD)
+            CALL MT11BA
+     &        (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
+     &         XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
+     &         XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
+     &         XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
+     &         XMUL,SF,F,XEL,YEL,
+     &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &         NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !.......................................................................
 !         OTHER
 !.......................................................................
@@ -2473,20 +2473,20 @@
 !.......................................................................
 !
           IF(IELM2.EQ.11) THEN
-             CALL MT12AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
-     &                   XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
-     &                   XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
-     &                   XMUL,SF,SU,SV,F,U,V,XEL,YEL,MESH%SURDET%R,
-     &                   IKLE(1,1),IKLE(1,2),IKLE(1,3),
-     &                   NELEM,NELMAX,ICOORD)
+            CALL MT12AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
+     &                  XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
+     &                  XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
+     &                  XMUL,SF,SU,SV,F,U,V,XEL,YEL,MESH%SURDET%R,
+     &                  IKLE(1,1),IKLE(1,2),IKLE(1,3),
+     &                  NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !
           ELSEIF(IELM2.EQ.12) THEN
-             CALL MT12AB
+            CALL MT12AB
      & (   T(1,1)   ,XM(1,ABQ(1,2,S)),XM(1,ABQ(1,3,S)),XM(1,ABQ(1,4,S)),
      &  XM(1,ABQ(2,1,S)),   T(1,2)   ,XM(1,ABQ(2,3,S)),XM(1,ABQ(2,4,S)),
      &  XM(1,ABQ(3,1,S)),XM(1,ABQ(3,2,S)),   T(1,3)   ,XM(1,ABQ(3,4,S)),
@@ -2495,31 +2495,31 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
      &          NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         P2 TRIANGLE COLUMN ELEMENT
 !.......................................................................
 !
           ELSEIF(IELM2.EQ.13) THEN
-             CALL MT12AC(
-     &       T(1,1)   ,XM(1,ACQ(1,2,S)),XM(1,ACQ(1,3,S)),
-     &       XM(1,ACQ(1,4,S)),XM(1,ACQ(1,5,S)),
-     &       XM(1,ACQ(1,6,S)),XM(1,ACQ(2,1,S)),
-     &       T(1,2)  ,XM(1,ACQ(2,3,S)),
-     &       XM(1,ACQ(2,4,S)),XM(1,ACQ(2,5,S)),
-     &       XM(1,ACQ(2,6,S)),XM(1,ACQ(3,1,S)),
-     &       XM(1,ACQ(3,2,S)),T(1,3)  ,XM(1,ACQ(3,4,S)),
-     &       XM(1,ACQ(3,5,S)),XM(1,ACQ(3,6,S)),
-     &          XMUL,SF,SU,SV,F,U,V,
-     &          XEL,YEL,SURFAC,
-     &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &          IKLE(1,5),IKLE(1,6),
-     &          NELEM,NELMAX,ICOORD)
+            CALL MT12AC(
+     &      T(1,1)   ,XM(1,ACQ(1,2,S)),XM(1,ACQ(1,3,S)),
+     &      XM(1,ACQ(1,4,S)),XM(1,ACQ(1,5,S)),
+     &      XM(1,ACQ(1,6,S)),XM(1,ACQ(2,1,S)),
+     &      T(1,2)  ,XM(1,ACQ(2,3,S)),
+     &      XM(1,ACQ(2,4,S)),XM(1,ACQ(2,5,S)),
+     &      XM(1,ACQ(2,6,S)),XM(1,ACQ(3,1,S)),
+     &      XM(1,ACQ(3,2,S)),T(1,3)  ,XM(1,ACQ(3,4,S)),
+     &      XM(1,ACQ(3,5,S)),XM(1,ACQ(3,6,S)),
+     &         XMUL,SF,SU,SV,F,U,V,
+     &         XEL,YEL,SURFAC,
+     &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &         IKLE(1,5),IKLE(1,6),
+     &         NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -2546,7 +2546,7 @@
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.12) THEN
-             CALL MT12BB
+            CALL MT12BB
      & (   T(1,1)   ,XM(1,BBQ(1,2,S)),XM(1,BBQ(1,3,S)),XM(1,BBQ(1,4,S)),
      &  XM(1,BBQ(2,1,S)),   T(1,2)   ,XM(1,BBQ(2,3,S)),XM(1,BBQ(2,4,S)),
      &  XM(1,BBQ(3,1,S)),XM(1,BBQ(3,2,S)),   T(1,3)   ,XM(1,BBQ(3,4,S)),
@@ -2555,22 +2555,22 @@
      &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
      &          NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
           ELSEIF(IELM2.EQ.11) THEN
-             CALL MT12BA
-     &         (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
-     &          XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
-     &          XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
-     &          XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
-     &          XMUL,SF,SU,SV,F,U,V,
-     &          XEL,YEL,SURFAC,
-     &          IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
-     &          NELEM,NELMAX,ICOORD)
+            CALL MT12BA
+     &        (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
+     &         XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
+     &         XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
+     &         XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
+     &         XMUL,SF,SU,SV,F,U,V,
+     &         XEL,YEL,SURFAC,
+     &         IKLE(1,1),IKLE(1,2),IKLE(1,3),IKLE(1,4),
+     &         NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -2635,25 +2635,25 @@
 !.......................................................................
 !
           IF(IELM2.EQ.11) THEN
-             CALL MT13AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
-     &                   XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
-     &                   XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
-     &                   XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
+            CALL MT13AA(   T(1,1)   ,XM(1,AAQ(1,2,S)),XM(1,AAQ(1,3,S)),
+     &                  XM(1,AAQ(2,1,S)),   T(1,2)   ,XM(1,AAQ(2,3,S)),
+     &                  XM(1,AAQ(3,1,S)),XM(1,AAQ(3,2,S)),   T(1,3)   ,
+     &                  XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
           ELSEIF(IELM2.EQ.12) THEN
-             CALL MT13AB(   T(1,1)   ,XM(1,ABQ(1,2,S)),XM(1,ABQ(1,3,S)),
-     &                   XM(1,ABQ(1,4,S)),
-     &                   XM(1,ABQ(2,1,S)),   T(1,2)   ,XM(1,ABQ(2,3,S)),
-     &                   XM(1,ABQ(2,4,S)),
-     &                   XM(1,ABQ(3,1,S)),XM(1,ABQ(3,2,S)),   T(1,3)   ,
-     &                   XM(1,ABQ(3,4,S)),
-     &                   XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
+            CALL MT13AB(   T(1,1)   ,XM(1,ABQ(1,2,S)),XM(1,ABQ(1,3,S)),
+     &                  XM(1,ABQ(1,4,S)),
+     &                  XM(1,ABQ(2,1,S)),   T(1,2)   ,XM(1,ABQ(2,3,S)),
+     &                  XM(1,ABQ(2,4,S)),
+     &                  XM(1,ABQ(3,1,S)),XM(1,ABQ(3,2,S)),   T(1,3)   ,
+     &                  XM(1,ABQ(3,4,S)),
+     &                  XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -2680,28 +2680,28 @@
 !.......................................................................
 !         P1 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.11) THEN
-             CALL MT13BA
-     &         (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
-     &          XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
-     &          XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
-     &          XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
-     &          XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
+            CALL MT13BA
+     &        (     T(1,1)     ,XM(1,BAQ(1,2,S)),XM(1,BAQ(1,3,S)),
+     &         XM(1,BAQ(2,1,S)),     T(1,2)     ,XM(1,BAQ(2,3,S)),
+     &         XM(1,BAQ(3,1,S)),XM(1,BAQ(3,2,S)),     T(1,3)     ,
+     &         XM(1,BAQ(4,1,S)),XM(1,BAQ(4,2,S)),XM(1,BAQ(4,3,S)),
+     &         XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         QUASI-BUBBLE TRIANGLE COLUMN ELEMENT
           ELSEIF(IELM2.EQ.12) THEN
-             CALL MT13BB
+            CALL MT13BB
      & (   T(1,1)   ,XM(1,BBQ(1,2,S)),XM(1,BBQ(1,3,S)),XM(1,BBQ(1,4,S)),
      &  XM(1,BBQ(2,1,S)),   T(1,2)   ,XM(1,BBQ(2,3,S)),XM(1,BBQ(2,4,S)),
      &  XM(1,BBQ(3,1,S)),XM(1,BBQ(3,2,S)),   T(1,3)   ,XM(1,BBQ(3,4,S)),
      &  XM(1,BBQ(4,1,S)),XM(1,BBQ(4,2,S)),XM(1,BBQ(4,3,S)),   T(1,4)   ,
      &          XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -2728,22 +2728,22 @@
 !.......................................................................
 !         P1 TRIANGLE COLUMN ELEMENT
           IF(IELM2.EQ.11) THEN
-             CALL MT13CA
-     &         (     T(1,1)     ,XM(1,CAQ(1,2,S)),XM(1,CAQ(1,3,S)),
-     &          XM(1,CAQ(2,1,S)),     T(1,2)     ,XM(1,CAQ(2,3,S)),
-     &          XM(1,CAQ(3,1,S)),XM(1,CAQ(3,2,S)),     T(1,3)     ,
-     &          XM(1,CAQ(4,1,S)),XM(1,CAQ(4,2,S)),XM(1,CAQ(4,3,S)),
-     &          XM(1,CAQ(5,1,S)),XM(1,CAQ(5,2,S)),XM(1,CAQ(5,3,S)),
-     &          XM(1,CAQ(6,1,S)),XM(1,CAQ(6,2,S)),XM(1,CAQ(6,3,S)),
-     &          XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
+            CALL MT13CA
+     &        (     T(1,1)     ,XM(1,CAQ(1,2,S)),XM(1,CAQ(1,3,S)),
+     &         XM(1,CAQ(2,1,S)),     T(1,2)     ,XM(1,CAQ(2,3,S)),
+     &         XM(1,CAQ(3,1,S)),XM(1,CAQ(3,2,S)),     T(1,3)     ,
+     &         XM(1,CAQ(4,1,S)),XM(1,CAQ(4,2,S)),XM(1,CAQ(4,3,S)),
+     &         XM(1,CAQ(5,1,S)),XM(1,CAQ(5,2,S)),XM(1,CAQ(5,3,S)),
+     &         XM(1,CAQ(6,1,S)),XM(1,CAQ(6,2,S)),XM(1,CAQ(6,3,S)),
+     &         XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         P2 TRIANGLE COLUMN ELEMENT
           ELSEIF(IELM2.EQ.13) THEN
-             CALL MT13CC
+            CALL MT13CC
      & (   T(1,1)   ,XM(1,PPQ(1,2,S)),XM(1,PPQ(1,3,S)),
      &   XM(1,PPQ(1,4,S)),XM(1,PPQ(1,5,S)),XM(1,PPQ(1,6,S)),
      &   XM(1,PPQ(2,1,S)),T(1,2),XM(1,PPQ(2,3,S)),XM(1,PPQ(2,4,S)),
@@ -2757,8 +2757,8 @@
      &   XM(1,PPQ(6,4,S)),XM(1,PPQ(6,5,S)),T(1,6),
      &          XMUL,XEL,YEL,NELEM,NELMAX,ICOORD)
 !
-             TYPDIA='Q'
-             TYPEXT='Q'
+            TYPDIA='Q'
+            TYPEXT='Q'
 !
 !.......................................................................
 !         OTHER
@@ -3059,4 +3059,3 @@
 !
       RETURN
       END
-

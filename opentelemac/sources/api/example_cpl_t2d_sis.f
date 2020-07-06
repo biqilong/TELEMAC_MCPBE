@@ -24,11 +24,11 @@
         CHARACTER(LEN=PATH_LEN) :: RES_FILE_T2D, RES_FILE_SIS
         CHARACTER(LEN=PATH_LEN) :: CAS_FILE_T2D, DICO_FILE_T2D
         CHARACTER(LEN=PATH_LEN) :: CAS_FILE_SIS, DICO_FILE_SIS
-        CHARACTER(LEN=PATH_LEN) :: dummy
+        CHARACTER(LEN=PATH_LEN) :: DUMMY
         CHARACTER(LEN=SIS_VAR_LEN) :: VARNAME
         INTEGER LU,LNG,NPLAN,PARALLEL,REFFILE,PREFILE
         INTEGER RANK,NCSIZE,PMETHOD,VAR_SIZE,COMM
-        dummy = ' '
+        DUMMY = ' '
         COMM = 0
 
 !     OUTPUT FOR WRITING
@@ -51,17 +51,17 @@
         READ(12,*) CLI_FILE_SIS
         READ(12,*) REFFILE
         IF (REFFILE.EQ.1) THEN
-           READ(12,*) REF_FILE_T2D
-           READ(12,*) REF_FILE_SIS
+          READ(12,*) REF_FILE_T2D
+          READ(12,*) REF_FILE_SIS
         ELSE
-           READ(12,*)
-           READ(12,*)
+          READ(12,*)
+          READ(12,*)
         ENDIF
         READ(12,*) PREFILE
         IF (PREFILE.EQ.1) THEN
-           READ(12,*) PRE_FILE
+          READ(12,*) PRE_FILE
         ELSE
-           READ(12,*)
+          READ(12,*)
         ENDIF
         READ(12,*) PARALLEL
         CLOSE(12)
@@ -85,49 +85,49 @@
         PRINT*
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         IF(PARALLEL.EQ.1) THEN
-           ! Partitioning method to use 1: metis
-           PMETHOD=1
+          ! Partitioning method to use 1: metis
+          PMETHOD=1
 #if defined HAVE_MPI
-           ! Initialising mpi
+          ! Initialising mpi
 !! COMPAD-DCO-MPICHECK  BEGIN  JR2016
 #  if defined COMPAD
-           WRITE(LU,*) '(AD) COMPAD :: HOMERE_API.F : DIRECT CALL OF ',
-     &          'MPI_INIT NOT AD-READY'
-           WRITE(LU,*) '  PLEASE CONTACT JR @ ADJOINTWARE'
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,*) '(AD) COMPAD :: HOMERE_API.F : DIRECT CALL OF ',
+     &         'MPI_INIT NOT AD-READY'
+          WRITE(LU,*) '  PLEASE CONTACT JR @ ADJOINTWARE'
+          CALL PLANTE(1)
+          STOP
 #  endif
 !! COMPAD-DCO-MPICHECK  END  JR2016
-           CALL MPI_INIT(IERR)
-           ! Getting rank
-           CALL MPI_COMM_RANK(MPI_COMM_WORLD,RANK,IERR)
-           ! Getting the number of process
-           CALL MPI_COMM_SIZE(MPI_COMM_WORLD,NCSIZE,IERR)
-           COMM = MPI_COMM_WORLD
+          CALL MPI_INIT(IERR)
+          ! Getting rank
+          CALL MPI_COMM_RANK(MPI_COMM_WORLD,RANK,IERR)
+          ! Getting the number of process
+          CALL MPI_COMM_SIZE(MPI_COMM_WORLD,NCSIZE,IERR)
+          COMM = MPI_COMM_WORLD
 #else
         RANK = -1
 #endif
 !
-           CODE = 'SIS'
-           ! The partitioning is done sequentially
-           IF(RANK.EQ.0) THEN
+          CODE = 'SIS'
+          ! The partitioning is done sequentially
+          IF(RANK.EQ.0) THEN
             ! PARITIONING THE GEOMETRY FILE
-              CALL PARTEL(GEO_FILE,CLI_FILE_SIS,NCSIZE,PMETHOD,
-     &                    'SERAFIN ',' ',' ')
-              IF(REFFILE.EQ.1)   CALL PARRES(GEO_FILE,REF_FILE_SIS,
-     &                    NCSIZE,'SERAFIN ','SERAFIN ')
-           ENDIF
-           CODE = 'T2D'
-           ! The partitioning is done sequentially
-           IF(RANK.EQ.0) THEN
+            CALL PARTEL(GEO_FILE,CLI_FILE_SIS,NCSIZE,PMETHOD,
+     &                  'SERAFIN ',' ',' ')
+            IF(REFFILE.EQ.1)   CALL PARRES(GEO_FILE,REF_FILE_SIS,
+     &                  NCSIZE,'SERAFIN ','SERAFIN ')
+          ENDIF
+          CODE = 'T2D'
+          ! The partitioning is done sequentially
+          IF(RANK.EQ.0) THEN
             ! PARITIONING THE GEOMETRY FILE
-              CALL PARTEL(GEO_FILE,CLI_FILE_T2D,NCSIZE,PMETHOD,
-     &                    'SERAFIN ',' ',' ')
-              IF(REFFILE.EQ.1)   CALL PARRES(GEO_FILE,REF_FILE_T2D,
-     &                    NCSIZE,'SERAFIN ','SERAFIN ')
-              IF(PREFILE.EQ.1)   CALL PARRES(GEO_FILE,PRE_FILE,
-     &                    NCSIZE,'SERAFIN ','SERAFIN ')
-           ENDIF
+            CALL PARTEL(GEO_FILE,CLI_FILE_T2D,NCSIZE,PMETHOD,
+     &                  'SERAFIN ',' ',' ')
+            IF(REFFILE.EQ.1)   CALL PARRES(GEO_FILE,REF_FILE_T2D,
+     &                  NCSIZE,'SERAFIN ','SERAFIN ')
+            IF(PREFILE.EQ.1)   CALL PARRES(GEO_FILE,PRE_FILE,
+     &                  NCSIZE,'SERAFIN ','SERAFIN ')
+          ENDIF
         ENDIF
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -135,7 +135,7 @@
         CALL RUN_SET_CONFIG_T2D(ID_T2D,LU,LNG,COMM,IERR)
 
         CALL RUN_READ_CASE_T2D(ID_T2D,CAS_FILE_T2D,DICO_FILE_T2D,
-     &                         .TRUE.,IERR,dummy,dummy)
+     &                         .TRUE.,IERR,DUMMY,DUMMY)
 
         ! Changing the name of the result file
         VARNAME = 'MODEL.RESULTFILE'
@@ -188,12 +188,12 @@
         CALL GET_INTEGER(ID_T2D,'T2D',VARNAME,CPL_PERIOD, 0, 0, 0, IERR)
 
         DO I=1,NTIME_STEPS_T2D
-           CALL RUN_TIMESTEP_COMPUTE_T2D(ID_T2D,IERR)
-           !COUPLAGE
-           IF(CPL_PERIOD*(I/CPL_PERIOD).EQ.I) THEN
-              CALL RUN_TIMESTEP_SIS_CPL(ID_T2D, ID_SIS, IERR)
-           ENDIF
-           CALL RUN_TIMESTEP_RES_T2D(ID_T2D,IERR)
+          CALL RUN_TIMESTEP_COMPUTE_T2D(ID_T2D,IERR)
+          !COUPLAGE
+          IF(CPL_PERIOD*(I/CPL_PERIOD).EQ.I) THEN
+            CALL RUN_TIMESTEP_SIS_CPL(ID_T2D, ID_SIS, IERR)
+          ENDIF
+          CALL RUN_TIMESTEP_RES_T2D(ID_T2D,IERR)
         ENDDO
 !
 
@@ -203,23 +203,23 @@
         CALL RUN_FINALIZE_SIS(ID_SIS,IERR)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         IF(PARALLEL.EQ.1) THEN
-!          Mergin step
-           IF(RANK.EQ.0) THEN
-              CALL GRETEL_AUTOP(GEO_FILE,'SERAFIN ',RES_FILE_T2D,
-     &                          'SERAFIN ', NCSIZE,NPLAN)
-              CALL GRETEL_AUTOP(GEO_FILE,'SERAFIN ',RES_FILE_SIS,
-     &                          'SERAFIN ', NCSIZE,NPLAN)
+!         Mergin step
+          IF(RANK.EQ.0) THEN
+            CALL GRETEL_AUTOP(GEO_FILE,'SERAFIN ',RES_FILE_T2D,
+     &                        'SERAFIN ', NCSIZE,NPLAN)
+            CALL GRETEL_AUTOP(GEO_FILE,'SERAFIN ',RES_FILE_SIS,
+     &                        'SERAFIN ', NCSIZE,NPLAN)
 
-           ENDIF
+          ENDIF
 #if defined HAVE_MPI
 #  if defined COMPAD
-           WRITE(LU,*) '(AD) COMPAD :: HOMERE_API.F : DIRECT CALL OF ',
-     &          'MPI_FINALIZE NOT AD-READY'
-           WRITE(LU,*) '  PLEASE CONTACT JR @ ADJOINTWARE'
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,*) '(AD) COMPAD :: HOMERE_API.F : DIRECT CALL OF ',
+     &         'MPI_FINALIZE NOT AD-READY'
+          WRITE(LU,*) '  PLEASE CONTACT JR @ ADJOINTWARE'
+          CALL PLANTE(1)
+          STOP
 #  endif
-           CALL MPI_FINALIZE(IERR)
+          CALL MPI_FINALIZE(IERR)
 #endif
         ENDIF
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE OMSEG
-!                    ****************
+!                   ****************
+                    SUBROUTINE OMSEG
+!                   ****************
 !
      &(OP ,  DM,TYPDIM,XM,TYPEXM,   DN,TYPDIN,XN,TYPEXN,   D,C,
      & NDIAG,NSEG1,NSEG2,GLOSEG,SIZGLO)
@@ -132,9 +132,9 @@
         TYPDIM(1:1)=TYPDIN(1:1)
 !
         IF(TYPEXN(1:1).EQ.'S') THEN
-           CALL OV('X=Y     ', X=XM, Y=XN, DIM1=NSEG1)
+          CALL OV('X=Y     ', X=XM, Y=XN, DIM1=NSEG1)
         ELSEIF(TYPEXN(1:1).EQ.'Q') THEN
-           CALL OV('X=Y     ', X=XM, Y=XN, DIM1=NSEG1+NSEG2)
+          CALL OV('X=Y     ', X=XM, Y=XN, DIM1=NSEG1+NSEG2)
         ELSEIF(TYPEXN(1:1).NE.'0') THEN
           WRITE(LU,11) TYPEXN(1:1)
 11        FORMAT(1X,'OMSEG (BIEF) : TYPEXN UNKNOWN :',A1)
@@ -426,18 +426,18 @@
         IF(TYPEXM(1:1).EQ.'Q') THEN
           IF(TYPEXN(1:1).EQ.'Q') THEN
           DO ISEG = 1 , NSEG1
-           XM(ISEG     )=XM(ISEG     )-XN(ISEG     )*D(GLOSEG(ISEG,1))
-           XM(ISEG+DIMX)=XM(ISEG+DIMX)-XN(ISEG+DIMX)*D(GLOSEG(ISEG,2))
+            XM(ISEG     )=XM(ISEG     )-XN(ISEG     )*D(GLOSEG(ISEG,1))
+            XM(ISEG+DIMX)=XM(ISEG+DIMX)-XN(ISEG+DIMX)*D(GLOSEG(ISEG,2))
           ENDDO
           ELSEIF(TYPEXN(1:1).EQ.'S') THEN
           DO ISEG = 1 , NSEG1
-           XM(ISEG     ) = XM(ISEG     ) - XN(ISEG) * D(GLOSEG(ISEG,1))
-           XM(ISEG+DIMX) = XM(ISEG+DIMX) - XN(ISEG) * D(GLOSEG(ISEG,2))
+            XM(ISEG     ) = XM(ISEG     ) - XN(ISEG) * D(GLOSEG(ISEG,1))
+            XM(ISEG+DIMX) = XM(ISEG+DIMX) - XN(ISEG) * D(GLOSEG(ISEG,2))
           ENDDO
           ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+            WRITE(LU,11) TYPEXN(1:1)
+            CALL PLANTE(1)
+            STOP
           ENDIF
         ELSE
           WRITE(LU,173) TYPEXM(1:1)
@@ -464,18 +464,18 @@
         IF(TYPEXM(1:1).EQ.'Q') THEN
           IF(TYPEXN(1:1).EQ.'Q') THEN
           DO ISEG = 1 , NSEG1
-           XM(ISEG     )=XM(ISEG     )-XN(ISEG     )*D(GLOSEG(ISEG,2))
-           XM(ISEG+DIMX)=XM(ISEG+DIMX)-XN(ISEG+DIMX)*D(GLOSEG(ISEG,1))
+            XM(ISEG     )=XM(ISEG     )-XN(ISEG     )*D(GLOSEG(ISEG,2))
+            XM(ISEG+DIMX)=XM(ISEG+DIMX)-XN(ISEG+DIMX)*D(GLOSEG(ISEG,1))
           ENDDO
           ELSEIF(TYPEXN(1:1).EQ.'S') THEN
           DO ISEG = 1 , NSEG1
-           XM(ISEG     ) = XM(ISEG     ) - XN(ISEG) * D(GLOSEG(ISEG,2))
-           XM(ISEG+DIMX) = XM(ISEG+DIMX) - XN(ISEG) * D(GLOSEG(ISEG,1))
+            XM(ISEG     ) = XM(ISEG     ) - XN(ISEG) * D(GLOSEG(ISEG,2))
+            XM(ISEG+DIMX) = XM(ISEG+DIMX) - XN(ISEG) * D(GLOSEG(ISEG,1))
           ENDDO
           ELSEIF(TYPEXN(1:1).NE.'0') THEN
-           WRITE(LU,11) TYPEXN(1:1)
-           CALL PLANTE(1)
-           STOP
+            WRITE(LU,11) TYPEXN(1:1)
+            CALL PLANTE(1)
+            STOP
           ENDIF
         ELSE
           WRITE(LU,173) TYPEXM(1:1)
@@ -541,9 +541,9 @@
         CALL OV('X=C     ', X=DM, C=0.D0, DIM1=NDIAG)
 !
         IF(TYPEXM(1:1).EQ.'S') THEN
-           CALL OV('X=C     ', X=XM, C=0.D0, DIM1=NSEG1)
+          CALL OV('X=C     ', X=XM, C=0.D0, DIM1=NSEG1)
         ELSEIF(TYPEXM(1:1).EQ.'Q') THEN
-           CALL OV('X=C     ', X=XM, C=0.D0, DIM1=NSEG1+NSEG2)
+          CALL OV('X=C     ', X=XM, C=0.D0, DIM1=NSEG1+NSEG2)
         ELSEIF(TYPEXM(1:1).NE.'0') THEN
           WRITE(LU,711) TYPEXM(1:1)
 711       FORMAT(1X,'OMSEG (BIEF) : TYPEXM UNKNOWN :',A1)

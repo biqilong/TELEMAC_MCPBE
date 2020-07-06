@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE INTEG_GAIA
-!                    *********************
+!                   *********************
+                    SUBROUTINE INTEG_GAIA
+!                   *********************
 !
      &(A , B , IEIN , NPOIN)
 !
@@ -297,11 +297,11 @@
      &               ,' DANS VOTRE CAS',/)
 !
           IF (B(I).GT.1.D0) THEN
-             WRITE(LU,100) B(I),I
+            WRITE(LU,100) B(I),I
           ELSEIF (B(I).LT.BEIN(LNB)) THEN
-             WRITE(LU,101) BEIN(LNB),B(I),I
+            WRITE(LU,101) BEIN(LNB),B(I),I
           ELSEIF (A(I).LT.AEIN(1)) THEN
-             WRITE(LU,102) AEIN(1),A(I),I
+            WRITE(LU,102) AEIN(1),A(I),I
           ENDIF
           CALL PLANTE(0)
           STOP

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE COUUTI
-!                    *****************
+!                   *****************
+                    SUBROUTINE COUUTI
+!                   *****************
 !
      &(NCOU,FMTCOU)
 !
@@ -74,7 +74,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_TOMAWAC, EX_COUUTI => COUUTI
-      USE DECLARATIONS_TOMAWAC, ONLY : NPTFR, NBOR               
+      USE DECLARATIONS_TOMAWAC, ONLY : NPTFR, NBOR
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE

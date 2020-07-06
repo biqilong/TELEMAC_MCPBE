@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_CONLIT
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_CONLIT
+!                   **********************
 !
      &(NBOR,AT)
 !
@@ -33,7 +33,7 @@
       USE DECLARATIONS_TELEMAC
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

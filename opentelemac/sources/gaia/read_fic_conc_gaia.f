@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE READ_FIC_CONC_GAIA
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE READ_FIC_CONC_GAIA
+!                   *****************************
 !
      &(CGL_GAIA , WHAT , AT , NFIC , LISTIN , FOUND )
 !
@@ -132,9 +132,9 @@
 !       DYNAMICALLY ALLOCATES TIME_RFC AND INFIC_RFC
 !
         ALLOCATE(TIME_RFC(NLIG_RFC),STAT=OK)
-        IF(OK.NE.0) WRITE(LU,*) 'MEMORY ALLOCATION ERROR FOR TIME_RFC'
+        CALL CHECK_ALLOCATE(OK, 'TIME_RFC')
         ALLOCATE(INFIC_RFC(NVALUE_RFC,NLIG_RFC),STAT=OK)
-        IF(OK.NE.0) WRITE(LU,*) 'MEMORY ALLOCATION ERROR FOR INFIC_RFC'
+        CALL CHECK_ALLOCATE(OK, 'INFIC_RFC')
 !
 !       FINAL READ OF TIME_RFC AND INFIC_RFC
 !

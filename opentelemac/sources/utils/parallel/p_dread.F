@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE P_READ
-!                    *****************
+!                   ******************
+                    SUBROUTINE P_DREAD
+!                   ******************
 !
      &(BUFFER,N,BYTES,SOURCE,DATATYPE)
 !
@@ -99,14 +99,14 @@
 #  endif
 !
       IF(IER.NE.0) THEN
-        WRITE(LU,*) 'P_READ: ERROR IN MPI_RECV'
+        WRITE(LU,*) 'P_DREAD: ERROR IN MPI_RECV'
         WRITE(LU,*) 'MPI ERROR ',IER
         CALL PLANTE(1)
         STOP
       ENDIF
 #else
       BUFFER(1)=0.D0
-      WRITE(LU,*) 'CALL OF P_READ IN ITS VOID VERSION'
+      WRITE(LU,*) 'CALL OF P_DREAD IN ITS VOID VERSION'
 #endif
 !
 !-----------------------------------------------------------------------

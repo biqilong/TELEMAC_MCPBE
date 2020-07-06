@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE GET_TOMSPEC_VALUES
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GET_TOMSPEC_VALUES
+!                   *****************************
 !
      &(CHAINTWC,SPEC)
 !

@@ -3,7 +3,7 @@
 !                       *****************
 !
      &( TSTOT , TSDER , F     , CF    , XK    , USOLD , USNEW ,
-     &  NF    , NPLAN , NPOIN2, F_INT , BETOTO, BETOTN)
+     &  NF    , NDIRE , NPOIN2, F_INT , BETOTO, BETOTN)
 !
 !**********************************************************************
 ! TOMAWAC   V7P0                                 30/07/2014
@@ -29,7 +29,7 @@
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| XK             |-->| DISCRETIZED WAVE NUMBER
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSDER          |<->| DERIVED PART OF THE SOURCE TERM CONTRIBUTION
 !| TSTOT          |-->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
@@ -58,16 +58,16 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
       DOUBLE PRECISION, INTENT(IN)    :: USNEW(NPOIN2),USOLD(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: F_INT(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: BETOTO(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: BETOTN(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: CF(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: BETOTO(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: BETOTN(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: CF(NPOIN2,NDIRE,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -78,7 +78,7 @@
 !
 !-----------------------------------------------------------------------
 !
-      DTETAR=1.D0/DBLE(NPLAN)
+      DTETAR=1.D0/DBLE(NDIRE)
       W=25.D0
       SURCMOUT4=1.D0/CMOUT4
 !
@@ -91,7 +91,7 @@
         DO IP=1,NPOIN2
           F_INT(IP)=F(IP,1,IFF)
         ENDDO
-        DO JP=2,NPLAN
+        DO JP=2,NDIRE
           DO IP=1,NPOIN2
             F_INT(IP)=F_INT(IP)+F(IP,JP,IFF)
           ENDDO
@@ -112,7 +112,7 @@
             SQBSCMOUT4=SQRT(B*SURCMOUT4)
             AA=-CDSCUR*SQBSCMOUT4**(P0O/2)
             BB=-CDSCUR*SQBSCMOUT4**(P0N/2)
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               CC=MAX(CF(IP,JP,IFF)/FREQ(IFF),0.D0)
               BETOTO(IP,JP)=AA*CC
               BETOTN(IP,JP)=BB*CC
@@ -134,7 +134,7 @@
             SQBSCMOUT4=SQRT(B*SURCMOUT4)
             AA=-CDSCUR*SQBSCMOUT4**(P0O/2)
             BB=-CDSCUR*SQBSCMOUT4**(P0N/2)
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               CC=MAX(CF(IP,JP,IFF)/FREQ(IFF),0.D0)
               BETOTO(IP,JP)=AA*CC
               BETOTN(IP,JP)=BB*CC
@@ -146,7 +146,7 @@
 !
 !       TAKES THE SOURCE TERM INTO ACCOUNT
 !
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           DO IP=1,NPOIN2
             TSTOT(IP,JP,IFF)=TSTOT(IP,JP,IFF)
      &      +(BETOTO(IP,JP)+CIMPLI*(BETOTN(IP,JP)-BETOTO(IP,JP)))

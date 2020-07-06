@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_BND_COLOR
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_BND_COLOR
+!                   ************************
 !
      &(FFORMAT,FID,TYP_BND_ELEM,NELEBD,COLOR,IERR)
 !

@@ -1,9 +1,10 @@
-!                    ***************************
-                     SUBROUTINE PRERES_TELEMAC3D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE PRERES_TELEMAC3D
+!                   ***************************
+!
 !
 !***********************************************************************
-! TELEMAC3D
+! TELEMAC3D   V8P2
 !***********************************************************************
 !
 !brief    PREPARES THE VARIABLES WHICH WILL BE WRITTEN TO
@@ -77,7 +78,7 @@
 !
       LOGICAL LEO
 !
-      INTEGER LTT,I,IPLAN,I3
+      INTEGER LTT,I,IPLAN,I3,J
       DOUBLE PRECISION DELTAZ,U_0,U_1,V_0,V_1,C_0,C_1,XMAX
 !
       LOGICAL :: DEJA = .FALSE.
@@ -276,16 +277,60 @@
       ENDIF
 !
 !=======================================================================
-! DEPTH-AVERAGED TRACERS (VARIABLES 39 TO 38+NTRAC)
+! DEPTH-AVERAGED TRACERS (VARIABLES ADR_TRAC_2D TO ADR_TRAC_2D+NTRAC-1)
 !=======================================================================
 !
       IF(NTRAC.GT.0) THEN
         DO I=1,NTRAC
-          IF(LEO.AND.SORG2D(38+I)) THEN
-            CALL VERMOY(TRAV2%ADR(13+I)%P%R,TRAV2%ADR(13+I)%P%R,
+          IF(LEO.AND.SORG2D(ADR_TRAC_2D+I-1)) THEN
+            CALL VERMOY(TRAV2%ADR(ADR_TRAV2+I)%P%R,
+     &                  TRAV2%ADR(ADR_TRAV2+I)%P%R,
      &                  TA%ADR(I)%P%R,TA%ADR(I)%P%R,1,Z,
      &                  T3_01%R,T3_02%R,T3_03%R,1,NPLAN,NPOIN2,
      &                  NPLAN,OPTBAN)
+          ENDIF
+        ENDDO
+      ENDIF
+!
+!=======================================================================
+! VELOCITY COMPONENTS AT THE SURFACE
+!=======================================================================
+!
+      IF(LEO.AND.SORG2D(39)) THEN
+        DO I=1,NPOIN2
+          T2_14%R(I) = U%R(I+NPOIN3-NPOIN2)
+        ENDDO
+      ENDIF
+!
+      IF(LEO.AND.SORG2D(40)) THEN
+        DO I=1,NPOIN2
+          T2_15%R(I) = V%R(I+NPOIN3-NPOIN2)
+        ENDDO
+      ENDIF
+!
+      IF(LEO.AND.SORG2D(41)) THEN
+        DO I=1,NPOIN2
+          T2_16%R(I) = W%R(I+NPOIN3-NPOIN2)
+        ENDDO
+      ENDIF
+!
+      IF(LEO.AND.SORG2D(42)) THEN
+        DO I=1,NPOIN2
+          T2_17%R(I) = SQRT(T2_14%R(I)**2+T2_15%R(I)**2+T2_16%R(I)**2)
+        ENDDO
+      ENDIF
+!
+!=======================================================================
+! TRACERS AT THE SURFACE (VARIABLES ADR_TRAC_2D TO ADR_TRAC_2D+NTRAC-1)
+!=======================================================================
+!
+      IF(NTRAC.GT.0) THEN
+        DO I=1,NTRAC
+          IF(LEO.AND.SORG2D(ADR_TRAC_2D+NTRAC+I-1)) THEN
+            DO J=1,NPOIN2
+              TRAV2%ADR(ADR_TRAV2+NTRAC+I)%P%R(J) =
+     &        TA%ADR(I)%P%R(J+NPOIN3-NPOIN2)
+            ENDDO
           ENDIF
         ENDDO
       ENDIF

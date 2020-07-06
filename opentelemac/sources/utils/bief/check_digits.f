@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE CHECK_DIGITS
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE CHECK_DIGITS
+!                   ***********************
 !
      &(F,T1,MESH)
 !
@@ -43,7 +43,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -73,7 +73,7 @@
         ENDIF
       ENDDO
 !
-      IF(NCSIZE.GT.1) ISTOP=P_IMAX(ISTOP)
+      IF(NCSIZE.GT.1) ISTOP=P_MAX(ISTOP)
       IF(ISTOP.GT.0) THEN
         WRITE(LU,*) 'CHECK_DIGITS : ERROR ON VECTOR ',F%NAME
         CALL PLANTE(1)

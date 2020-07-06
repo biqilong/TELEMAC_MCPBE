@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE BILANT1
-!                    ******************
+!                   ******************
+                    SUBROUTINE BILANT1
+!                   ******************
 !
      &(H,UCONV,VCONV,HPROP,WORK2,WORK3,WORK4,WORK5,LT,NIT,INFO,
      & MASKTR,T,TN,TETAT,MASSOU,MSK,MASKEL,MESH,FLUSOR,FLUENT,EQUA,
@@ -71,7 +71,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -132,7 +132,7 @@
      &              1.D0,T,H,H,H,H,H,MESH,MSK,MASKEL)
       ENDIF
       MASTR2_BT1(ITRAC) = DOTS(WORK2,WORK4)
-      IF(NCSIZE.GT.1) MASTR2_BT1(ITRAC)=P_DSUM(MASTR2_BT1(ITRAC))
+      IF(NCSIZE.GT.1) MASTR2_BT1(ITRAC)=P_SUM(MASTR2_BT1(ITRAC))
 !
       IF(LT.EQ.0) THEN
         MASTR0_BT1(ITRAC) = MASTR2_BT1(ITRAC)
@@ -166,7 +166,7 @@
         CALL OSBD( 'X=CY    ' , WORK3 , T  ,  T , TETAT      , MESH )
         CALL OSBD( 'X=X+CY  ' , WORK3 , TN ,  T , 1.D0-TETAT , MESH )
         FLTDIR=DOTS(WORK2,WORK3)
-        IF(NCSIZE.GT.1) FLTDIR=P_DSUM(FLTDIR)
+        IF(NCSIZE.GT.1) FLTDIR=P_SUM(FLTDIR)
       ENDIF
 !
 !=======================================================================
@@ -183,7 +183,7 @@
         CALL OSBD( 'X=CY    ' , WORK3 , T  ,  T , TETAT      , MESH )
         CALL OSBD( 'X=X+CY  ' , WORK3 , TN ,  T , 1.D0-TETAT , MESH )
         FLTDDL=DOTS(WORK2,WORK3)
-        IF(NCSIZE.GT.1) FLTDDL=P_DSUM(FLTDDL)
+        IF(NCSIZE.GT.1) FLTDDL=P_SUM(FLTDDL)
       ENDIF
 !
 !=======================================================================
@@ -197,7 +197,7 @@
       CALL OSBD( 'X=CY    ' , WORK3 , T  ,  T , TETAT      , MESH )
       CALL OSBD( 'X=X+CY  ' , WORK3 , TN ,  T , 1.D0-TETAT , MESH )
       FLTOND=DOTS(WORK2,WORK3)
-      IF(NCSIZE.GT.1) FLTOND=P_DSUM(FLTOND)
+      IF(NCSIZE.GT.1) FLTOND=P_SUM(FLTOND)
 !
 !=======================================================================
 !

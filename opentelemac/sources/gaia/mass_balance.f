@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE MASS_BALANCE
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE MASS_BALANCE
+!                   ***********************
 !
      &(DT,NPTFR,ENTET,NSICLA,NUMLIQ,NFRLIQ,FLBCLA,
      & LT,NIT,NPOIN,VOLU2D,CHARR,SUSP,EVCL_MB,EVCL_MS,MASSTOT,
@@ -38,8 +38,8 @@
 !
       USE BIEF
       USE INTERFACE_GAIA, EX_MASS_BALANCE => MASS_BALANCE
-      USE DECLARATIONS_GAIA, ONLY : NSICLM,MAXFRO,NUM_ICLA_ISAND,
-     &                              AT0,NSAND,NUM_ISAND_ICLA,FLUER,
+      USE DECLARATIONS_GAIA, ONLY : NSICLM,NUM_ICLA_ISAND,
+     &                              FLUER,
      &                              FLUDP, SUMMCUMUCL, SUMRMASCL,
      &                              SUM_EROSION,SUM_DEPOSITION,
      &                              MASSNESTOR,SUMMASSNESTOR,
@@ -47,7 +47,7 @@
      &                              SUMBEDLOAD_B_FLUX,SUMBEDLOAD_B
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY: P_DSUM
+      USE INTERFACE_PARALLEL, ONLY: P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -71,7 +71,7 @@
 !
       INTEGER I,IFRLQ,IPTFR,ICLA,K
       DOUBLE PRECISION LOST,RELATI,DENOM
-      DOUBLE PRECISION RCUMU,FLUXTCLA
+      DOUBLE PRECISION FLUXTCLA
       DOUBLE PRECISION MCUMUCLA(NSICLM),RMASCLA(NSICLM)
       DOUBLE PRECISION EROSION_FLUX(NSICLM),DEPOSITION_FLUX(NSICLM)
       DOUBLE PRECISION SUMMASSTOT,SUMMASS0TOT
@@ -101,13 +101,13 @@
      &                     + FLUER%ADR(ICLA)%P%R(I)*VOLU2D%R(I)
             ENDDO
             IF(NCSIZE.GT.1) EROSION_FLUX(ICLA) =
-     &                      P_DSUM(EROSION_FLUX(ICLA))
+     &                      P_SUM(EROSION_FLUX(ICLA))
             DO I=1,NPOIN
-             DEPOSITION_FLUX(ICLA) = DEPOSITION_FLUX(ICLA)
+              DEPOSITION_FLUX(ICLA) = DEPOSITION_FLUX(ICLA)
      &                       + FLUDP%ADR(ICLA)%P%R(I)*VOLU2D%R(I)
             ENDDO
             IF(NCSIZE.GT.1) DEPOSITION_FLUX(ICLA) =
-     &                      P_DSUM(DEPOSITION_FLUX(ICLA))
+     &                      P_SUM(DEPOSITION_FLUX(ICLA))
           ENDDO
         ENDIF
       ENDIF
@@ -140,7 +140,7 @@
      &                      + EVCL_MB%ADR(ICLA)%P%R(I)*VOLU2D%R(I)
             ENDDO
           ENDIF
-          IF(NCSIZE.GT.1) RMASCLA(ICLA) = P_DSUM(RMASCLA(ICLA))
+          IF(NCSIZE.GT.1) RMASCLA(ICLA) = P_SUM(RMASCLA(ICLA))
 !
 !         COMPUTES THE FREE FLUXES BY CLASS, FOR EVERY BOUNDARY:
 !         BEDLOAD_B_FLUX
@@ -162,9 +162,9 @@
               ENDDO
             ENDIF
             IF(NCSIZE.GT.1) THEN
-              FLUXTCLA = P_DSUM(FLUXTCLA)
+              FLUXTCLA = P_SUM(FLUXTCLA)
               DO I=1,NFRLIQ
-                BEDLOAD_B_FLUX(I,ICLA) = P_DSUM(BEDLOAD_B_FLUX(I,ICLA))
+                BEDLOAD_B_FLUX(I,ICLA) = P_SUM(BEDLOAD_B_FLUX(I,ICLA))
               ENDDO
             ENDIF
           ENDIF
@@ -416,8 +416,6 @@
      &       '  ( KG )')
 2034  FORMAT(5X,'CUMULATED LOST MASS                       = ',G16.7,
      &       '  ( KG )')
-2111  FORMAT(5X,'TOTAL        BEDLOAD FLUX                 = ',G16.7,
-     &          '  ( KG/S  >0 = ENTERING )')
 2112  FORMAT(5X,'EROSION FLUX                              = ',G16.7,
      &          '  ( KG/S )')
 2113  FORMAT(5X,'DEPOSITION FLUX                           = ',G16.7,

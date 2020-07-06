@@ -1,9 +1,9 @@
-!                    *****************
-                     SUBROUTINE QMOUT1
-!                    *****************
+!                   *****************
+                    SUBROUTINE QMOUT1
+!                   *****************
 !
      &( TSTOT , TSDER , F     , XK    , ENRJ  , FMOY  , XKMOY ,
-     &  NF  , NPLAN , NPOIN2, TAUX1   )
+     &  NF  , NDIRE , NPOIN2, TAUX1   )
 !
 !***********************************************************************
 ! TOMAWAC   V6P3                                   23/06/2011
@@ -46,7 +46,7 @@
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| FMOY           |-->| MEAN SPECTRAL FRQUENCY FMOY
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| PROINF         |-->| LOGICAL INDICATING INFINITE DEPTH ASSUMPTION
 !| TAUX1          |<--| WORK TABLE
@@ -58,7 +58,7 @@
 !
       USE DECLARATIONS_TOMAWAC, ONLY : DEUPI,GRAVIT, CMOUT1,CMOUT2,
      &                                 PROINF, FREQ
-                     
+
 ! Variables in TOMAWAC MODULE
 ! CMOUT1         WHITE CAPPING DISSIPATION COEFFICIENT
 ! CMOUT2         WHITE CAPPING WEIGHTING COEFFICIENT
@@ -68,12 +68,12 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
       DOUBLE PRECISION, INTENT(IN)    :: XKMOY(NPOIN2),ENRJ(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: TAUX1(NPOIN2),FMOY(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -103,7 +103,7 @@
           DO IP=1,NPOIN2
             AUX = (FREQ(JF)/FMOY(IP))**2
             BETA=TAUX1(IP)*AUX*(1.D0-CMOUT2+CMOUT2*AUX)
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               TSTOT(IP,JP,JF) = TSTOT(IP,JP,JF)+BETA*F(IP,JP,JF)
               TSDER(IP,JP,JF) = TSDER(IP,JP,JF)+BETA
             ENDDO
@@ -133,7 +133,7 @@
           DO IP=1,NPOIN2
             AUX = XK(IP,JF) / XKMOY(IP)
             BETA=TAUX1(IP)*AUX*(1.D0-CMOUT2+CMOUT2*AUX)
-            DO JP=1,NPLAN
+            DO JP=1,NDIRE
               TSTOT(IP,JP,JF) = TSTOT(IP,JP,JF)+BETA*F(IP,JP,JF)
               TSDER(IP,JP,JF) = TSDER(IP,JP,JF)+BETA
             ENDDO

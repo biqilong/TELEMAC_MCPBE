@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_FWSPEC
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_FWSPEC
+!                   **********************
 !
      &(FW,FWCOEF,X,Y,NPOIN,PRIVE,ZF)
 !

@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE CONDIN_ADJ
-!                    *********************
+!                   *********************
+                    SUBROUTINE CONDIN_ADJ
+!                   *********************
 !
      &(NRES,RESFORMAT)
 !

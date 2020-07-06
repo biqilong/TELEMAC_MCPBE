@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE QTRIA2
-!                    *****************
+!                   *****************
+                    SUBROUTINE QTRIA2
+!                   *****************
 !
-     &( F     , XK    ,  NF    , NPLAN , NPOIN2, TSTOT )
+     &( F     , XK    ,  NF    , NDIRE , NPOIN2, TSTOT )
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   27/06/2011
@@ -37,16 +37,16 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
 !| XK             |-->| DISCRETIZED WAVE NUMBER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI,GRAVIT, FREQ  , DFREQ , 
+      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI,GRAVIT, FREQ  , DFREQ ,
      &                          DEPTH , TETA  , SINTET, COSTET ,  RAISF,
      &                          QINDI,BDISPB,BDSSPB, KSPB, NBD
-!     
+!
       USE DECLARATIONS_SPECIAL
       USE INTERFACE_TOMAWAC, EX_QTRIA2 => QTRIA2
       IMPLICIT NONE
@@ -54,19 +54,19 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    ::  NF, NPLAN, NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)    ::  NF, NDIRE, NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-!.....VARIABLES FROM MODULE TOMAWAC 
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+!.....VARIABLES FROM MODULE TOMAWAC
 !     """""""""""""""""""""""""""""
 ! QINDI           CONFIGURATION INDEX
 ! NBD             NUMBER OF TRIAD CONFIGURATIONS
 ! BDISPB          LOWER DIRECTIONAL BOUND. OF SPB TRIAD MODEL
 ! BDSSPB          UPPER DIRECTIONAL BOUND. OF SPB TRIAD MODEL
 ! KSPB            COEFFICIENT K OF SPB TRIAD INTERACTION MODEL
-! RAISF           FREQUENTIAL RATIO   
-!     
+! RAISF           FREQUENTIAL RATIO
+!
 !.....LOCAL VARIABLES
 !     """""""""""""""""
       INTEGER  IFF, JFF, IPL, JPL , IPO
@@ -138,8 +138,8 @@
                 AP2    = (TETA2-TETA(1))/DTETA
                 IPM    = NINT(AP2)
                 IPP    = IPM + 1
-                IF(IPM.EQ.0) IPM=NPLAN
-                IF(IPP.EQ.NPLAN+1) IPP = 1
+                IF(IPM.EQ.0) IPM=NDIRE
+                IF(IPP.EQ.NDIRE+1) IPP = 1
 !
 !.........COMPUTES COUPLING COEFFICIENTS
 !               """"""""""""""""""""""""""""""""""""

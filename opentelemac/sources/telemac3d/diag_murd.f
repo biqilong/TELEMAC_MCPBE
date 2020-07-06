@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE DIAG_MURD
-!                    ********************
+!                   ********************
+                    SUBROUTINE DIAG_MURD
+!                   ********************
 !
      &(DIAG,XM,NELEM,NELMAX,NPOIN3,IKLE,IELM3,DIM1X)
 !

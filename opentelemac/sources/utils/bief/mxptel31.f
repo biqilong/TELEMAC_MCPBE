@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE MXPTEL31
-!                    *******************
+!                   *******************
+                    SUBROUTINE MXPTEL31
+!                   *******************
 !
      & (NELEM,NPOIN,MXELVS,IKLES,MXPTVS)
 !

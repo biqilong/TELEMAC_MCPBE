@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE FASP_SP
-!                    ******************
+!                   ******************
+                    SUBROUTINE FASP_SP
+!                   ******************
 !
      &(XRELV,YRELV,ZRELV,NP,X,Y,Z,I)
 !
@@ -20,8 +20,8 @@
 !| XRELV          |-->| ABCISSAE OF TOMAWAC SPECTRA
 !| YRELV          |-->| ORDINATES OF TOMAWAC SPECTRA
 !| ZRELV          |-->| VALUES IN TOMAWAC SPECTRA
-!| I              |-->| ARTEMIS BOUNDARY NODE NUMBER 
-!| X,Y            |-->| MESH COORDINATES 
+!| I              |-->| ARTEMIS BOUNDARY NODE NUMBER
+!| X,Y            |-->| MESH COORDINATES
 !| Z              |<--| INTERPOLATED VALUES
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !

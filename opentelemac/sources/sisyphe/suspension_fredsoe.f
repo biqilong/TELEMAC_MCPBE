@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE SUSPENSION_FREDSOE
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE SUSPENSION_FREDSOE
+!                   *****************************
 !
      &(DM,TAUP,NPOIN,GRAV,XMVE,XMVS,AC,CSTAEQ)
 !

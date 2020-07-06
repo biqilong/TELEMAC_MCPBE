@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE READ_BIN_FRLIQ
-!                    *************************
+!                   *************************
+                    SUBROUTINE READ_BIN_FRLIQ
+!                   *************************
 !
      &(Q,VARNAME,AT,NFIC,FFORMAT,FOUND)
 !

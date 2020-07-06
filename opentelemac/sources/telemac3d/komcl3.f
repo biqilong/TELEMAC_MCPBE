@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE KOMCL3
-!                    *****************
+!                   *****************
+                    SUBROUTINE KOMCL3
+!                   *****************
 !
      & (KBORF,EBORF,LIKBOF,LIEBOF,LIUBOF,
      &  KBORL,EBORL,LIKBOL,LIEBOL,LIUBOL,

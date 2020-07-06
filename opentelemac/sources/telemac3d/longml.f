@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LONGML
-!                    *****************
+!                   *****************
+                    SUBROUTINE LONGML
+!                   *****************
 !
      & (LM2,Z,HN,NPOIN3,NPOIN2,NPLAN,MIXING,KARMAN)
 !

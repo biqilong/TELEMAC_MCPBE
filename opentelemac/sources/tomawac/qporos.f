@@ -1,9 +1,9 @@
-!                    *****************
-                     SUBROUTINE QPOROS
-!                    *****************
+!                   *****************
+                    SUBROUTINE QPOROS
+!                   *****************
 
      &( TSTOT , TSDER , F , CG,  LT,XK,
-     &  NF    , NPLAN  , NPOIN2   , AMORP )
+     &  NF    , NDIRE  , NPOIN2   , AMORP )
 
 !***********************************************************************
 ! TOMAWAC   V7P3
@@ -21,7 +21,7 @@
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| LT             |-->| TIME STEP
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSDER          |<->| DERIVED PART OF THE SOURCE TERM CONTRIBUTION
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
@@ -35,13 +35,13 @@
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2,LT
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2,LT
       DOUBLE PRECISION, INTENT(INOUT) :: AMORP(NPOIN2,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: CG(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: XK(NPOIN2,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
       INTEGER N
@@ -115,7 +115,7 @@
       ENDIF                     !LT.LT.1
       DO IP=1,NPOIN2
         DO JF=1,NF
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             TSTOT(IP,JP,JF) = TSTOT(IP,JP,JF)+AMORP(IP,JF)*F(IP,JP,JF)
             TSDER(IP,JP,JF) = TSDER(IP,JP,JF)+AMORP(IP,JF)
           ENDDO

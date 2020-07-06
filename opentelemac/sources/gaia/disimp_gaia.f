@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE DISIMP_GAIA
-!                    **********************
+!                   **********************
+                    SUBROUTINE DISIMP_GAIA
+!                   **********************
 !
      &(Q,Q2BOR,NUMLIQ,IFRLIQ,NSOLDIS,WORK1,QBOR,NPTFR,MASK,MESH)
 !
@@ -29,7 +29,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -86,7 +86,7 @@
 !
 !       FOR THE USER: POSITIVE DISCHARGE = ENTERING
         Q1 = BIEF_SUM(QBOR)
-        IF(NCSIZE.GT.1) Q1 = P_DSUM(Q1)
+        IF(NCSIZE.GT.1) Q1 = P_SUM(Q1)
 !
         IF(ABS(Q1).LT.1.D-10) THEN
 !         ZERO FLUX: WARNING MESSAGE

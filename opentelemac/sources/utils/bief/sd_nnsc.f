@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SD_NNSC
-!                    ******************
+!                   ******************
+                    SUBROUTINE SD_NNSC
+!                   ******************
 !
      &(N,R,C,IL,JL,IJL,L,D,IU,JU,IJU,U,Z,B,TMP)
 !

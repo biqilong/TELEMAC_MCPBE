@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_NOEROD
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_NOEROD
+!                   **********************
 !
      & (H , ZF , ZR , Z , X , Y , NPOIN , CHOIX , NLISS )
 !

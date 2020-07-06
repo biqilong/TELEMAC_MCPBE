@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LECSELLIM
-!                    *****************
+!                   *****************
+                    SUBROUTINE LECSELLIM
+!                   *****************
 !
      &(NLIM,LIHBOR,LIUBOR,LIVBOR,HBOR,UBOR,VBOR,
      & CHBORD,NBOR,NPMAX,NPTFR,NCOLOR)
@@ -45,7 +45,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER :: I, IERR, IDUM
+      INTEGER :: I, IERR
 !
       CALL GET_BND_NPOIN(FFORMAT,NLIM,TYP_BND_ELEM,NPTFR,IERR)
 

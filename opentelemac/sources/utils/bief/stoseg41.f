@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE STOSEG41
-!                    *******************
+!                   *******************
+                    SUBROUTINE STOSEG41
+!                   *******************
 !
      &(IFABOR,NELMAX,IELM,IKLE,NBOR,
      & GLOSEG,MAXSEG,ELTSEG,ORISEG,NELBOR,NULONE,NELMAX2,

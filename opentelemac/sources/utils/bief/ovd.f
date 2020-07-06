@@ -1,6 +1,6 @@
-!                    **************
-                     SUBROUTINE OVD
-!                    **************
+!                   **************
+                    SUBROUTINE OVD
+!                   **************
 !
      & ( OP , X , Y , Z , C , NPOIN , IOPT , D , EPS )
 !

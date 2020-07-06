@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE BIEF_CLOSE_FILES
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE BIEF_CLOSE_FILES
+!                   ***************************
 !
      &(FILES,NFILES,PEXIT)
 !

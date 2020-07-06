@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIFFIN
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIFFIN
+!                   *****************
 !
      &(MASKTR,LIMTRA,LITBOR,CLT,U,V,XNEBOR,YNEBOR,NBOR,
      & NPTFR,KENT,KSORT,KLOG,KNEU,KDIR,KDDL,

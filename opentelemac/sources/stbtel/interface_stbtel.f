@@ -1,6 +1,6 @@
-!                    ***********************
-                     MODULE INTERFACE_STBTEL
-!                    ***********************
+!                   ***********************
+                    MODULE INTERFACE_STBTEL
+!                   ***********************
 !
 !
 !***********************************************************************
@@ -697,7 +697,7 @@
 !-----------------------------------------------------------------------
 !
       INTERFACE
-                     SUBROUTINE WRITESELLIM
+                    SUBROUTINE WRITESELLIM
      &(NLIM,LIHBOR,LIUBOR,LIVBOR,HBOR,UBOR,VBOR,
      & CHBORD,NBOR,NPMAX,NPTFR)
       IMPLICIT NONE
@@ -715,7 +715,7 @@
 !-----------------------------------------------------------------------
 !
       INTERFACE
-                     SUBROUTINE LECSELLIM
+                    SUBROUTINE LECSELLIM
      &(NLIM,LIHBOR,LIUBOR,LIVBOR,HBOR,UBOR,VBOR,
      & CHBORD,NBOR,NPTFR,NPTFR2,NCOLOR)
       IMPLICIT NONE

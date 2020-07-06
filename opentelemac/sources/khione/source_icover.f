@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE SOURCE_ICOVER
-!                    ************************
+!                   ************************
+                    SUBROUTINE SOURCE_ICOVER
+!                   ************************
      &( NPOIN,FU,FV, H,U,V,ZF,
      &  T1,T2,T3,S,MESH,MSK,UNSV2D,
      &  GRAV,KARMAN,CHESTR,PATMOS,DT,AT )
@@ -41,11 +41,12 @@
       USE DECLARATIONS_SPECIAL
       USE DECLARATIONS_WAQTEL, ONLY: RO0
       USE DECLARATIONS_KHIONE, ONLY: ICEPROCESS,RHO_ICE,RHO_AIR,
-     &                               CA0,FICE,FICE_MAX,U_ICE,V_ICE,
-     &                               H_ICE,VZ,IFROT,IFICE,ICESTR,
-     &                               TIWX,TIWY,ANFEM,THIE,
+     &                               FICE,FICE_MAX,
+     &                               VZ,IFROT,IFICE,ICESTR,
+     &                               THIE,
      &                               THIFEMS,THIFEMF,
-     &                               HUN,DCOVX,DCOVY
+     &                               HUN
+!    &                               ,DCOVX,DCOVY
 !
       USE METEO_KHIONE,        ONLY: SYNC_METEO,WINDX,WINDY
 !
@@ -65,8 +66,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER                     :: I
-      DOUBLE PRECISION            :: SP_ICE,SP_EAU,SP_DWI,DWIX,DWIY
-      DOUBLE PRECISION            :: COEF,APPI,CWP
+      DOUBLE PRECISION            :: SP_EAU
       DOUBLE PRECISION            :: VMAG,WMAG,CD,CSTAR,CWSTAR,VZ31
       DOUBLE PRECISION            :: VZ32,UNTIER,UNSIX
       DOUBLE PRECISION, PARAMETER :: EPS=1.D-3

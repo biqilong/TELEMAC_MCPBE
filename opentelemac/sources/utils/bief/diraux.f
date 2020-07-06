@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIRAUX
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIRAUX
+!                   *****************
 !
      & ( X , Y , Z , W , F , INDIC , CRITER , MESH )
 !

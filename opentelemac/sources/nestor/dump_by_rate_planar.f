@@ -10,7 +10,7 @@
       USE m_TypeDefs_InterFace
       USE m_TypeDefs_Nestor
       USE m_Nestor , ONLY :  F, ParallelComputing, nGrainClass
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM, P_ISUM, P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_DSUM, P_ISUM
 !
 #ifndef  NESTOR_INTERFACES
       USE m_Interfaces_Nestor, ONLY :  Calculate_PlanarLevel
@@ -52,7 +52,7 @@
 !
         ALLOCATE( F(n)%dZ( F(n)%nNodes ), stat=status)
         F(n)%dZ(:) = 1234.567890D0
-        
+
         ALLOCATE( F(n)%NodeToDump( F(n)%nNodes ), stat=status)
         F(n)%NodeToDump(:) = .FALSE.
 !
@@ -68,7 +68,7 @@
           CALL Set_RefLevel_by_Profiles( F(n) )           ! the result is F(n)%refZ(:)
         ENDIF
 !
-        CALL Calculate_PlanarLevel( F(n), -A%DigVolume, 1 ) !> 1 => dump; The result is  
+        CALL Calculate_PlanarLevel( F(n), -A%DigVolume, 1 ) !> 1 => dump; The result is
                                                             !  total F%dz(:)and F%NodeToDump(:).
                                                             !  We use A%DigVolume because we
                                                             !  want to dump the DigVolume.
@@ -199,7 +199,7 @@
      &      .AND. A%DumpVolume     >  1.0D-9 ) THEN
           F(n)%Z(:) = z_sis( F(n)%Node(:) ) !>  F(n)%Node(i)= mesh index of field node
           F(n)%NodeToDump(:) = .FALSE.
-          CALL Calculate_PlanarLevel( F(n), A%DumpVolume, 1 ) !> 1 => dump;  The result is 
+          CALL Calculate_PlanarLevel( F(n), A%DumpVolume, 1 ) !> 1 => dump;  The result is
           F(n)%nNodeToDump = COUNT( F(n)%NodeToDump(:) )      !  total F%dz(:)and F%NodeToDump(:).
           A%fillArea = SUM( F(n)%NodeArea(:), MASK=F(n)%NodeToDump(:) )
 !
@@ -221,7 +221,7 @@
         ENDIF
 !
 !
-      ENDIF !( .NOT. A%FirstTimeActive )    
+      ENDIF !( .NOT. A%FirstTimeActive )
 !
 !
 !      dbug WRITE(6,*)'?>-------  SR Dump_by_Rate_Planar END-------'

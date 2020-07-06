@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SD_MDU
-!                    *****************
+!                   *****************
+                    SUBROUTINE SD_MDU
+!                   *****************
 !
      &(EK,DMIN,V,L,HEAD,LAST,NEXT,MARK)
 !

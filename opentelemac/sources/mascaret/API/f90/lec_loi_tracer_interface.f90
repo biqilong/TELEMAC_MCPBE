@@ -68,11 +68,9 @@ subroutine LEC_LOI_TRACER_INTERFACE( &
    ! Variables locales
    integer :: nb_loi_tracer         ! nombre de lois Tracer
    integer :: nb_point              ! nombre de points
-   integer :: nb_point_z,nb_point_q ! nombre de points
    integer :: iloi                  ! compteur sur les lois
    integer :: iFichiersloi          ! compteur sur les fichiers des lois
    integer :: i                     ! compteur sur les points
-   integer :: j ,k                  ! compteur sur les points
    integer :: retour                ! code de retour des fonctions intrinseques
    integer :: mode_entree_loi       ! type d'entree clavier/fichier
    integer :: unite_temps           ! unite de temps des lois entres par clavier
@@ -236,11 +234,6 @@ subroutine LEC_LOI_TRACER_INTERFACE( &
    10010 format ('Nombre de lois = ',i3)
    10020 format (/,'Loi ',i3,' : Nom = ',A)
    10030 format ('Mode d''entree      = ',A,' Nom du fichier = ',A)
-   10040 format ('Mode d''entree      = ',A)
-   10045 format ('Unite de temps     = ',A)
-   10050 format ('Nombre de points   = ',i3)
-   10060 format (A)
-   10070 format (i5,11f12.3)
 
    contains
 

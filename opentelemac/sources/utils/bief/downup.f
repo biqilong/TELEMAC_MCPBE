@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DOWNUP
-!                    *****************
+!                   *****************
+                    SUBROUTINE DOWNUP
+!                   *****************
 !
      &(X, A,B ,DITR,MESH)
 !

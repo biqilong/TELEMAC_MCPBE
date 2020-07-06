@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VISCKE
-!                    *****************
+!                   *****************
+                    SUBROUTINE VISCKE
+!                   *****************
 !
      &(VISCVI,VISCTA,AK,EP,NTRAC,CMU,
      & DNUVIH,DNUVIV,DNUTAH,DNUTAV,EMIN,ITURBH,ITURBV,PRANDTL)

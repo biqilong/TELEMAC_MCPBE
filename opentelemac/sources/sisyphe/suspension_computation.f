@@ -1,6 +1,6 @@
-!                    *********************************
-                     SUBROUTINE SUSPENSION_COMPUTATION
-!                    *********************************
+!                   *********************************
+                    SUBROUTINE SUSPENSION_COMPUTATION
+!                   *********************************
 !
      &(SLVTRA, HN,HN_TEL,UCONV, VCONV, MU,TOB,FDM, FD90, KSP,KSR,KS,
      & ELAY, AVA, AFBOR, BFBOR, LIMDIF, CLT, MASKEL, MASKTR,
@@ -549,7 +549,7 @@
 !       MUD ONLY
 !
         ELSE
-           CALL SUSPENSION_EROSION_COH(T4,NPOIN,XMVS,
+          CALL SUSPENSION_EROSION_COH(T4,NPOIN,XMVS,
      &                      PARTHENIADES,FLUER,
      &                      TOCE_VASE,NOMBLAY,DT,MS_VASE)
 !

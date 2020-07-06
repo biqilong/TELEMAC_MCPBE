@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE INTANG
-!                    *****************
+!                   *****************
+                    SUBROUTINE INTANG
+!                   *****************
 !
-     &( LAVANT, LAPRES, IPLAN , NPLAN , DELTAD)
+     &( LAVANT, LAPRES, IDIRE , NDIRE , DELTAD)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   17/06/2011
@@ -18,7 +18,7 @@
 !+                ARE EVENLY DISTRIBUTED OVER [0;2.PI].
 !
 !note     THE DELTAD DEVIATION SHOULD BE GIVEN IN DEGREES.
-!note   LAVANT AND LAPRES ARE COMPRISED BETWEEN 1 AND NPLAN.
+!note   LAVANT AND LAPRES ARE COMPRISED BETWEEN 1 AND NDIRE.
 !
 !reference  HASSELMANN S., HASSELMANN K. ET AL.(1985) :
 !+                     "COMPUTATIONS AND PARAMETERIZATIONS OF THE NONLINEAR
@@ -50,10 +50,10 @@
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| DELTAD         |-->| ANGULAR DEVIATION FROM THE STARTING DIRECTION
-!| IPLAN          |-->| STARTING DIRECTION INDEX
+!| IDIRE          |-->| STARTING DIRECTION INDEX
 !| LAPRES         |<--| ANGULAR INDEX FOLLOWING THE DIRECTION
 !| LAVANT         |<--| ANGULAR INDEX PRECEDING THE DIRECTION
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_TOMAWAC, EX_INTANG => INTANG
@@ -61,7 +61,7 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """""""""""""""""""""
-      INTEGER, INTENT(IN)          :: NPLAN , IPLAN
+      INTEGER, INTENT(IN)          :: NDIRE , IDIRE
       DOUBLE PRECISION, INTENT(IN) :: DELTAD
       INTEGER, INTENT(INOUT)       :: LAVANT, LAPRES
 !
@@ -70,8 +70,8 @@
       DOUBLE PRECISION TETA  , DTETAD
 !
 !
-      DTETAD=360.D0/DBLE(NPLAN)
-      TETA=DBLE(IPLAN-1)*DTETAD+DELTAD
+      DTETAD=360.D0/DBLE(NDIRE)
+      TETA=DBLE(IDIRE-1)*DTETAD+DELTAD
 !
 !.....TETA IS ADJUSTED TO BE COMPRISED BETWEEN 0 AND 360 DEG.
 !     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -88,7 +88,7 @@
 !     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
       LAVANT=INT(TETA/DTETAD)+1
       LAPRES=LAVANT+1
-      IF (LAPRES.GT.NPLAN) LAPRES=1
+      IF (LAPRES.GT.NDIRE) LAPRES=1
 !
       RETURN
       END

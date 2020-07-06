@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE COMP_IKLE
-!                    ********************
+!                   ********************
+                    SUBROUTINE COMP_IKLE
+!                   ********************
 !
      &(IKLE,IKLBOR,ELTSEG,NBOR,NELBOR,NULONE,
      & IELM,NELEM,NELMAX,NPOIN,NPTFR,NELEB,NELEBX)

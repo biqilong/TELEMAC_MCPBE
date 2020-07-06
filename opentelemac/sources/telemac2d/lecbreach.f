@@ -164,7 +164,7 @@
         CALL CHECK_ALLOCATE(ISTAT, "DS")
 !
         DO M = 1, NBL
-           READ(IFIC,*,ERR=990) XL(M), YL(M)
+          READ(IFIC,*,ERR=990) XL(M), YL(M)
         ENDDO
 !       SEARCH MESH POINTS INSIDE THE BREACH DOMAIN
         ISTAT = 0
@@ -195,34 +195,34 @@
         YP(2*NBL) = Y1 - V2*POLWDT%R(N)/2.D0
 !
         DO M = 2,NBL
-           X2 = XL(M)
-           Y2 = YL(M)
-           DX = X2 - X1
-           DY = Y2 - Y1
-           DS(M-1)=SQRT(DX*DX+DY*DY)
-           IF(DS(M-1).GT.0.D0) THEN
-             U1 = DX/DS(M-1)
-             U2 = DY/DS(M-1)
-           ELSE
-             WRITE(LU,*) 'PROBLEM IN DEFINITION OF BREACH :',N
-             CALL PLANTE(1)
-           ENDIF
-           V1 = -U2
-           V2 = U1
-           XP(M)         = X2 + V1*POLWDT%R(N)/2.D0
-           YP(M)         = Y2 + V2*POLWDT%R(N)/2.D0
-           XP(2*NBL-M+1) = X2 - V1*POLWDT%R(N)/2.D0
-           YP(2*NBL-M+1) = Y2 - V2*POLWDT%R(N)/2.D0
-           X1=X2
-           Y1=Y2
+          X2 = XL(M)
+          Y2 = YL(M)
+          DX = X2 - X1
+          DY = Y2 - Y1
+          DS(M-1)=SQRT(DX*DX+DY*DY)
+          IF(DS(M-1).GT.0.D0) THEN
+            U1 = DX/DS(M-1)
+            U2 = DY/DS(M-1)
+          ELSE
+            WRITE(LU,*) 'PROBLEM IN DEFINITION OF BREACH :',N
+            CALL PLANTE(1)
+          ENDIF
+          V1 = -U2
+          V2 = U1
+          XP(M)         = X2 + V1*POLWDT%R(N)/2.D0
+          YP(M)         = Y2 + V2*POLWDT%R(N)/2.D0
+          XP(2*NBL-M+1) = X2 - V1*POLWDT%R(N)/2.D0
+          YP(2*NBL-M+1) = Y2 - V2*POLWDT%R(N)/2.D0
+          X1=X2
+          Y1=Y2
         ENDDO
 !
         NBNDBR%I(N) = 0
         DO M = 1, NPOIN
-           IF(INPOLY(MESH%X%R(M), MESH%Y%R(M), XP, YP, 2*NBL)) THEN
-             NBNDBR%I(N) = NBNDBR%I(N)+1
-             ITMP(NBNDBR%I(N)) = M
-           ENDIF
+          IF(INPOLY(MESH%X%R(M), MESH%Y%R(M), XP, YP, 2*NBL)) THEN
+            NBNDBR%I(N) = NBNDBR%I(N)+1
+            ITMP(NBNDBR%I(N)) = M
+          ENDIF
         ENDDO
 !
         IF(N.LE.INDBR%MAXBLOCK) THEN
@@ -254,7 +254,7 @@
         ENDIF
 !
         DO M=1, NBNDBR%I(N)
-           INDBR%ADR(N)%P%I(M) = ITMP(M)
+          INDBR%ADR(N)%P%I(M) = ITMP(M)
         ENDDO
 
         IF (OPTERO%I(N).EQ.2) THEN

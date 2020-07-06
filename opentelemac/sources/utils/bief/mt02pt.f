@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT02PT
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT02PT
+!                   *****************
 !
      &(T,XM,XMUL,SF,SG,SH,F,G,H,X,Y,Z,IKLE,NELEM,NELMAX,INCHYD)
 !

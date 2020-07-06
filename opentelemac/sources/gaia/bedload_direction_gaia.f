@@ -1,6 +1,6 @@
-!                    *********************************
-                     SUBROUTINE BEDLOAD_DIRECTION_GAIA
-!                    *********************************
+!                   *********************************
+                    SUBROUTINE BEDLOAD_DIRECTION_GAIA
+!                   *********************************
 !
      &  (U2D, V2D, NPOIN, PI, THETAC)
 !

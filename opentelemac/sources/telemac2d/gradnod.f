@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE GRADNOD
-!                    ******************
+!                   ******************
+                    SUBROUTINE GRADNOD
+!                   ******************
 !
      &(IKLE,UA,DPX,DPY,DJX,DJY,DX,DY,IVIS,CE)
 !

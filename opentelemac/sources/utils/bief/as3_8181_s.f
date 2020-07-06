@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE AS3_8181_S
-!                    *********************
+!                   *********************
+                    SUBROUTINE AS3_8181_S
+!                   *********************
 !
      &(XM,NSEG,XMT,DIM1XMT,DIM2XMT,STOXMT,NELMAX,NELEM,
      & ELTSEG1,ELTSEG2,ELTSEG3)

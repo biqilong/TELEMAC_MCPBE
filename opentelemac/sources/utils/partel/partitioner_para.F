@@ -1,6 +1,6 @@
-!                    **************
-                     SUBROUTINE PARTITIONER_PARA
-!                    **************
+!                   **************
+                    SUBROUTINE PARTITIONER_PARA
+!                   **************
      &    (PMETHOD, NELEM, NPOIN, NDP, NPARTS, IKLES, EPART, NPART)
 !
 !
@@ -96,12 +96,12 @@
 !         THE NUMBER OF COMMON POINT NEEDED BETWEEN 2 ELEMENTS TO MAKE AN
 !         EDGE
           IF (NDP==3.OR.NDP==6) THEN
-             NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
+            NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
           ELSE
-             WRITE(LU,*) 'PARMETIS: IMPLEMENTED FOR ',
-     &                   'TRIANGLES OR PRISMS ONLY'
-             CALL PLANTE(1)
-             STOP
+            WRITE(LU,*) 'PARMETIS: IMPLEMENTED FOR ',
+     &                  'TRIANGLES OR PRISMS ONLY'
+            CALL PLANTE(1)
+            STOP
           ENDIF
 !
 !         ELMDIST: THIS ARRAY DESCRIBES HOW THE ELEMENTS OF THE MESH ARE DISTRIBUTED AMONG THE PROCESSORS.
@@ -197,12 +197,12 @@
 !!        The number of common point needed between 2 elements to make an
 !         edge
           IF (NDP==3.OR.NDP==6) THEN
-             NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
+            NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
           ELSE
-             WRITE(LU,*) 'PTSCOTCH: IMPLEMENTED FOR ',
-     &                   'TRIANGLES OR PRISMS ONLY'
-             CALL PLANTE(1)
-             STOP
+            WRITE(LU,*) 'PTSCOTCH: IMPLEMENTED FOR ',
+     &                  'TRIANGLES OR PRISMS ONLY'
+            CALL PLANTE(1)
+            STOP
           ENDIF
 !
 !    ELM  DIST: THIS ARRAY DESCRIBES HOW THE ELEMENTS OF THE MESH ARE DISTRIBUTED AMONG THE PROCESSORS.
@@ -210,7 +210,7 @@
 !              SAME PRINCIPAL AS FOR XADJ AND ADJCNY
           ELMDIST(1)=1
           DO I=1,NPARTS-1
-             ELMDIST(I+1) = ELMDIST(I) + NELEM/NPARTS
+            ELMDIST(I+1) = ELMDIST(I) + NELEM/NPARTS
           ENDDO
           ELMDIST(NPARTS+1) = NELEM + 1
 !
@@ -227,15 +227,15 @@
 !                  (SEE DISCUSSION IN SECTION 4.3).
 !
           DO I=1,NELEM_LOC+1
-             EPTR(I) = (I-1)*NDP + 1
+            EPTR(I) = (I-1)*NDP + 1
           ENDDO
 !
           K=1
           DO I=ELMDIST(IPID+1),ELMDIST(IPID+2)-1
-             DO J=1,NDP
-                EIND(K) = IKLES((I-1)*NDP+J)
-                K = K + 1
-             ENDDO
+            DO J=1,NDP
+              EIND(K) = IKLES((I-1)*NDP+J)
+              K = K + 1
+            ENDDO
           ENDDO
 !
 !!!! REP! RESENT THE NUMBER OF PARAMETER FOR BALANCING THE PARTIRION
@@ -277,7 +277,7 @@
      &                              NUMFLAG,     ! BASEVAL
      &                              NELEM_LOC,  ! VERTLOCNBR
      &                              NELEM_LOC,  ! VERTLOCMAX=VERLOCNBR (NO HOLES IN GLOBAL
-                                       ! NUMBERING)
+                                    ! NUMBERING)
      &                              XADJ2(1:NELEM_LOC),  ! VERTLOCTAB
      &                              XADJ2(2:NELEM_LOC+1),  ! VENDLOCTAB = NULL
      &                              XADJ2,  ! VELOLOCTAB = NULL
@@ -311,7 +311,7 @@
           END IF
 !!!! CHANGING EPART NUMBERING TO 1-NPART
           DO I=1,NELEM_LOC
-             EPART_LOC(I) = EPART_LOC(I) + 1
+            EPART_LOC(I) = EPART_LOC(I) + 1
           ENDDO
 !
           CALL SCOTCHFGRAPHEXIT(PTSCOTCHGRAPH)
@@ -352,15 +352,15 @@
           CALL CHECK_ALLOCATE(ERR, 'EIND')
 !
           DO I=1,NELEM+1
-             EPTR(I) = (I-1)*NDP + 1
+            EPTR(I) = (I-1)*NDP + 1
           ENDDO
 !
           K=1
           DO I=1,NELEM
-             DO J=1,NDP
-                EIND(K) = IKLES((I-1)*NDP+J)
-                K = K + 1
-             ENDDO
+            DO J=1,NDP
+              EIND(K) = IKLES((I-1)*NDP+J)
+              K = K + 1
+            ENDDO
           ENDDO
 !
 !         SWITCH TO C NUMBERING
@@ -374,11 +374,11 @@
 
 !
           IF (NDP==3.OR.NDP==6) THEN
-             NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
+            NCOMMONNODES = 2 ! FOR TRIANGLE OR RECTANGLE
           ELSE
-           WRITE(LU,*) 'METIS: IMPLEMENTED FOR TRIANGLES OR PRISMS ONLY'
-             CALL PLANTE(1)
-             STOP
+          WRITE(LU,*) 'METIS: IMPLEMENTED FOR TRIANGLES OR PRISMS ONLY'
+            CALL PLANTE(1)
+            STOP
           ENDIF
 
 !         WE ONLY USE METIS_PARTMESHDUAL AS ONLY THE FINITE ELEMENTS PARTITION

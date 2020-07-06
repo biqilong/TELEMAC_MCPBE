@@ -1,8 +1,8 @@
-!                    ***************
-                     SUBROUTINE QVEG
-!                    ***************
+!                   ***************
+                    SUBROUTINE QVEG
+!                   ***************
 !
-     & ( TSTOT , TSDER , F , VARIAN , FMOY , XKMOY , NF    , NPLAN  ,
+     & ( TSTOT , TSDER , F , VARIAN , FMOY , XKMOY , NF    , NDIRE  ,
      &   NPOIN2   )
 !
 !***********************************************************************
@@ -21,7 +21,7 @@
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| FMOY           |-->| MEAN SPECTRAL FRQUENCY FMOY (relative frequency)
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSDER          |<->| DERIVED PART OF THE SOURCE TERM CONTRIBUTION
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
@@ -37,11 +37,11 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
       DOUBLE PRECISION, INTENT(IN)    :: XKMOY(NPOIN2),VARIAN(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF),FMOY(NPOIN2)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) :: TSDER(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF),FMOY(NPOIN2)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -84,12 +84,12 @@
 !     TAKES THE SOURCE TERM INTO ACCOUNT
 !
         DO JF=1,NF
-          DO JP=1,NPLAN
+          DO JP=1,NDIRE
             TSTOT(IP,JP,JF) = TSTOT(IP,JP,JF)+BETA*F(IP,JP,JF)
             TSDER(IP,JP,JF) = TSDER(IP,JP,JF)+BETA
           ENDDO
         ENDDO
-        
+
       ENDDO
 
 !
@@ -97,4 +97,3 @@
 !
       RETURN
       END
-

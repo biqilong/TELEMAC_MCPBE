@@ -1,9 +1,9 @@
-!                    *****************
-                     SUBROUTINE QWIND1
-!                    *****************
+!                   *****************
+                    SUBROUTINE QWIND1
+!                   *****************
 !
      &( TSTOT , TSDER , F     , XK    , USOLD , USNEW , TWOLD , TWNEW ,
-     &  Z0OLD , Z0NEW , NF    , NPLAN , NPOIN2, TOLD  , TNEW  ,
+     &  Z0OLD , Z0NEW , NF    , NDIRE , NPOIN2, TOLD  , TNEW  ,
      &  USN   , USO   , OMNEW , OMOLD , BETAN , BETAO )
 !
 !***********************************************************************
@@ -49,7 +49,7 @@
 !| CPHAS          |<--| WORK TABLE
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| OMNEW          |<--| WORK TABLE
 !| OMOLD          |<--| WORK TABLE
@@ -71,30 +71,30 @@
 !
       USE DECLARATIONS_TOMAWAC, ONLY : DEUPI, GRAVIT, ROAIR, ROEAU,
      &                    TETA, FREQ, DECAL, XKAPPA,BETAM, CIMPLI
-      
+
 !
       USE INTERFACE_TOMAWAC, EX_QWIND1 => QWIND1
       IMPLICIT NONE
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)   ::  NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NPLAN,NF),XK(NPOIN2,NF)
+      INTEGER, INTENT(IN)   ::  NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NDIRE,NF),XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(IN)   :: TWOLD(NPOIN2), TWNEW(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)   :: USOLD(NPOIN2), USNEW(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)   :: Z0OLD(NPOIN2), Z0NEW(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT):: TNEW(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT):: TOLD(NPOIN2,NPLAN)
+      DOUBLE PRECISION, INTENT(INOUT):: TNEW(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT):: TOLD(NPOIN2,NDIRE)
       DOUBLE PRECISION, INTENT(INOUT):: USO(NPOIN2),USN(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT):: OMNEW(NPOIN2),OMOLD(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT):: BETAN(NPOIN2), BETAO(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT):: TSDER(NPOIN2,NPLAN,NF)
-!.....VARIABLES FROM MODULE TOMAWAC 
+      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: TSDER(NPOIN2,NDIRE,NF)
+!.....VARIABLES FROM MODULE TOMAWAC
 !     """"""""""""""""""""
 !     DECAL           SHIFT GROWING CURVE DUE TO WIND
 !     XKAPPA          VON KARMAN CONSTANT
-!     BETAM           WIND GENERATION COEFFICIENT  
+!     BETAM           WIND GENERATION COEFFICIENT
 !     CIMPLI          IMPLICITATION COEFFICIENT FOR SOURCE TERMS
 !
 !.....LOCAL VARIABLES
@@ -107,7 +107,7 @@
 !
 !.....COMPUTES (1ST PASS) THE DIRECTIONAL DEPENDENCES
 !     """"""""""""""""""""""""""""""""""""""""""""""
-      DO JP=1,NPLAN
+      DO JP=1,NDIRE
         DIREC=TETA(JP)
         DO IP=1,NPOIN2
           TOLD(IP,JP)=COS(DIREC-TWOLD(IP))
@@ -133,7 +133,7 @@
 !
 !.......LOOP ON THE DISCRETISED DIRECTIONS
 !       """"""""""""""""""""""""""""""""""""""""""""
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
 !
           DO IP=1,NPOIN2
             BETAO(IP)=0.D0

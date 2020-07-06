@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TNOMER
-!                    *****************
+!                   *****************
+                    SUBROUTINE TNOMER
+!                   *****************
 !
      &(X, XA,TYPEXA,B,IKLE,NELEM,NELMAX,NPOIN,IELM,DITR,COPY,LV)
 !

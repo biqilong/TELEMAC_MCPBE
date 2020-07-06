@@ -1,12 +1,12 @@
 !#######################################################################
                         SUBROUTINE UVSTOKES
-     &  (UST, VST, WST, FS, NPOIN2, XK, ZFJ, NPLAN, ZTEL, NZ, NF)
+     &  (UST, VST, WST, FS, NPOIN2, XK, ZFJ, NDIRE, ZTEL, NZ, NF)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !  calculation of the three components of the stokes drift
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| FS             |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| NZ             |-->| NUMBER OF PLAN IN TELEMAC3D
 !| XK             |-->| DISCRETIZED WAVE NUMBER
@@ -21,14 +21,14 @@
      &                                 DEPTH, DEUPI
       USE INTERFACE_TOMAWAC, EX_UVSTOKES => UVSTOKES
       
-!NPLAN - number of direction discretization      
+!NDIRE - number of direction discretization      
       IMPLICIT NONE
       
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
       INTEGER, INTENT(IN)  :: NZ,NF
-      INTEGER, INTENT(IN) :: NPOIN2, NPLAN
-      DOUBLE PRECISION, INTENT(IN) :: FS(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN) :: NPOIN2, NDIRE
+      DOUBLE PRECISION, INTENT(IN) :: FS(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN) :: ZFJ(NPOIN2)
       DOUBLE PRECISION, INTENT(IN) :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: UST(NPOIN2,NZ)
@@ -40,7 +40,7 @@
       INTEGER  JP    , JF    , IP, INZ
       DOUBLE PRECISION SIGMA, DTETAR, AUX1
 !
-      DTETAR=DEUPI/DBLE(NPLAN)
+      DTETAR=DEUPI/DBLE(NDIRE)
 
 !begin mjt- initialize variables      
       DO IP=1,NPOIN2
@@ -49,7 +49,7 @@
           VST(IP,INZ) = 0.D0
         ENDDO      
       ENDDO
-      DO JP=1,NPLAN
+      DO JP=1,NDIRE
         DO JF=1,NF
           SIGMA=DEUPI*FREQ(JF)
           AUX1=DFREQ(JF)*DTETAR

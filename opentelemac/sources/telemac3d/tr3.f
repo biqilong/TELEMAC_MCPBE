@@ -1,6 +1,6 @@
-!                    *****************************
-                     DOUBLE PRECISION FUNCTION TR3
-!                    *****************************
+!                   *****************************
+                    DOUBLE PRECISION FUNCTION TR3
+!                   *****************************
 !
      &( I , ITRAC , N , TIME , ENTET )
 !

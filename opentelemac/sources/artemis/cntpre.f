@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CNTPRE
-!                    *****************
+!                   *****************
+                    SUBROUTINE CNTPRE
+!                   *****************
 !
      &(DAM,NPOIN,IPRECO,IPREC2)
 !
@@ -118,7 +118,7 @@
 !     IPREC2 MAY HAVE BEEN CHANGED IN ANOTHER PROCESSOR, BUT ALWAYS
 !     IN THE SENSE OF A REDUCTION
 !
-      IF(NCSIZE.GT.1) IPREC2=P_IMIN(IPREC2)
+      IF(NCSIZE.GT.1) IPREC2=P_MIN(IPREC2)
 !
 !-----------------------------------------------------------------------
 !

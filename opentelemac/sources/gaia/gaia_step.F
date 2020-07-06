@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE GAIA_STEP
-!                    ********************
+!                   ********************
+                    SUBROUTINE GAIA_STEP
+!                   ********************
 !
      &(LOOPCOUNT,GRAFCOUNT,LISTCOUNT,TELNIT,
      & U_TEL,V_TEL,H_TEL,ZF_TEL,UETCAR,DELTAR,
@@ -84,7 +84,7 @@
       USE INTERFACE_HERMES
       USE DECLARATIONS_SPECIAL
 !
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MIN,P_MAX
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

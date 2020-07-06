@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE MURD3D_LIPS
-!                    **********************
+!                   **********************
+                    SUBROUTINE MURD3D_LIPS
+!                   **********************
 !
      &(SFC,FC,FN,VOLU,VOLUN,XB,DIM1XB,
      & FNSUB,TRA02,SFNSUB,STRA02,STRA03,IKLE3,MESH2D,MESH3D,

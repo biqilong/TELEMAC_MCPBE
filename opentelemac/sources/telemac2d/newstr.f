@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE NEWSTR
-!                    *****************
+!                   *****************
+                    SUBROUTINE NEWSTR
+!                   *****************
 !
      &(SETSTR,SETSTR2,DESC,RO,RSTART,NPARAM)
 !

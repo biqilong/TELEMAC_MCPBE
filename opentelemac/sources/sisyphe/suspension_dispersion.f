@@ -1,6 +1,6 @@
-!                    ******************************************
-                     SUBROUTINE SUSPENSION_DISPERSION ! (_IMP_)
-!                    ******************************************
+!                   ******************************************
+                    SUBROUTINE SUSPENSION_DISPERSION ! (_IMP_)
+!                   ******************************************
 !
      &  (TOB, XMVE,HN,  OPTDIF, NPOIN, XKX, XKY,
      &   T1, T2, T3, KX, KY, KZ, DISP,U2D,V2D,VISC_TEL,CODE)

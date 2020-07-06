@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LECLIM
-!                    *****************
+!                   *****************
+                    SUBROUTINE LECLIM
+!                   *****************
 !
      &(LIHBOR,LIUBOR,LIVBOR,LITBOR,HBOR,UBOR,VBOR,TBOR,
      & CHBORD,ATBOR,BTBOR,NPTFR,CODE,TRAC,FFORMAT,NGEO,

@@ -1,5 +1,6 @@
-                     SUBROUTINE TRID1D
-!                    *****************
+!                   *****************
+                    SUBROUTINE TRID1D
+!                   *****************
 !
      &(X, AA, BB, CC, DD, GAM,IMAX)
 !

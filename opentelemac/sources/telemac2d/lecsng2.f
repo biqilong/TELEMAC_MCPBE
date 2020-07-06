@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE LECSNG2
-!                    ******************
+!                   ******************
+                    SUBROUTINE LECSNG2
+!                   ******************
 !
      &(IOPTAN,IFIC)
 !
@@ -256,6 +256,7 @@
         ELSE
           NB16 = NB16*4 + 4
         ENDIF
+        LEN_W_BUF = 2*NB16
         ALLOCATE(W_BUF_RECV(2*NB16,NCSIZE),STAT=ERROR)
 !        ALLOCATE(W_BUF_RECV(NB16,NCSIZE),STAT=ERROR)
         IF (ERROR /= 0) THEN
@@ -283,6 +284,7 @@
               STOP
             ENDIF
           ENDDO
+          LEN_WT_BUF = NTRAC*NB16
           ALLOCATE(WT_BUF_RECV(NTRAC*NB16,NCSIZE),STAT=ERROR)
 !          ALLOCATE(WT_BUF_RECV(NB16,NCSIZE),STAT=ERROR)
           IF (ERROR /= 0) THEN

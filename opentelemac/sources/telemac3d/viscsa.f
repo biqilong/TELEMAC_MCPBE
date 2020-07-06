@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VISCSA
-!                    *****************
+!                   *****************
+                    SUBROUTINE VISCSA
+!                   *****************
 !
      &(VISCVI,VISCNU,NU,
      & DNUVIH,DNUVIV,AK,EP,STRAIN)

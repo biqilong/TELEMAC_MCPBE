@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE WNSCOU
-!                    *****************
+!                   *****************
+                    SUBROUTINE WNSCOU
+!                   *****************
 !
      &( CK2   , FREQ  , DEPTH )
 !

@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE CUBEEQUATION
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE CUBEEQUATION
+!                   ***********************
 !
      & (ACOF, BCOF, CCOF, DCOF, REALS, X)
 !

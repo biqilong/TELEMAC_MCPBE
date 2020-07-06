@@ -7,6 +7,7 @@ import re
 
 import numpy as np
 from scipy.spatial import cKDTree
+from scipy import interpolate
 import matplotlib.tri as mtri
 
 from utils.exceptions import TelemacException
@@ -48,6 +49,7 @@ class TelemacFile(HermesFile):
                             fformat=fformat,
                             log_lvl=log_lvl)
 
+        self.interp_method = "matplotlib.LinearTri"
         self._title = None
         self._datetime = None
 
@@ -87,6 +89,47 @@ class TelemacFile(HermesFile):
         self.tree = None
         self.neighbours = None
         self.edges = None
+
+    def __del__(self):
+        del self._title
+        del self._datetime
+
+        del self._ndim
+        del self._nelem3
+        del self._npoin3
+        del self._ndp3
+        del self._nplan
+        del self._nelem2
+        del self._npoin2
+        del self._ndp2
+        del self._meshx
+        del self._meshy
+        del self._meshz
+        del self._ikle3
+        del self._ikle2
+
+        del self._ipob3
+        del self._ipob2
+        del self._nptfr
+        del self._nelebd
+        del self._ikle_bnd
+        del self._nbor
+        del self._bnd_info
+
+        del self._nptir
+        del self._knolg
+
+        del self._ntimestep
+        del self._nvar
+        del self._varnames
+        del self._varunits
+        del self._values
+        del self._times
+
+        del self._tri
+        del self.tree
+        del self.neighbours
+        del self.edges
 
     @property
     def title(self):
@@ -128,6 +171,9 @@ class TelemacFile(HermesFile):
             # Removing spaces at the end of the names/units
             self._varnames = [var.strip() for var in tmp_varnames]
             self._varunits = [var.strip() for var in tmp_varunits]
+
+            del tmp_varnames
+            del tmp_varunits
 
         return self._varnames
 
@@ -461,6 +507,7 @@ class TelemacFile(HermesFile):
             self.neighbours = mpltri.get_neighbors()
             self.edges = mpltri.get_edges()
 
+
     def get_z_name(self):
         """
         Return name of the variable containing the Z elevation
@@ -576,6 +623,8 @@ class TelemacFile(HermesFile):
                                           - np.array(polyline[i+1]))))
             discret.append(int(dio/dxy))
 
+            del dio
+
         return discret
 
     #############################################
@@ -649,11 +698,44 @@ class TelemacFile(HermesFile):
         # Not using nelbor, ifabor, kp1bor (for now)
         _, _, _, numliq = identify_liq_bnd(
             ikles, ndim, liubor, lihbor, nbor,
-            coord)
+            coord, False)
 
         nbor -= 1
 
         return nbor, numliq
+    #############################################
+    #
+    # Interpolation function
+    #
+    #############################################
+    def interpolate_mesh_on_points(self, points, values):
+        """
+
+        Interpolate mesh on points given value
+
+        @param points (list) List og points for which to interpolate
+        @param values (np.darray) values for each mesh points
+        @param method (string) Interpolation methof to use
+
+        """
+        if self.interp_method == "scipy.LinearND":
+            grid_pt = np.column_stack((self.meshx[:self.npoin2],
+                                       self.meshy[:self.npoin2]))
+            data_interp = interpolate.LinearNDInterpolator(grid_pt, values)
+            pts = np.asarray([(pt[0], pt[1]) for pt in points])
+            res = data_interp(pts)
+        elif self.interp_method == "matplotlib.LinearTri":
+            data_interp = mtri.LinearTriInterpolator(self.tri, values)
+            pt_x = [pt[0] for pt in points]
+            pt_y = [pt[1] for pt in points]
+            res = data_interp(pt_x, pt_y)
+        else:
+            raise TelemacException(\
+               "Unknown interpolation method: {}\n"
+               "Avaialable methods: matplotlib.LinearTri, scipy.LinearND"\
+               .format(self.interp_method))
+
+        return res
 
     #############################################
     #
@@ -674,7 +756,6 @@ class TelemacFile(HermesFile):
 
         @returns (numpy.array)
         """
-        res = float('nan')*np.ones((len(points)), dtype=np.float64)
         if len(np.shape(np.array(points))) != 2:
             raise TelemacException('Warning problem with the list of '
                                    'extraction points')
@@ -703,15 +784,13 @@ class TelemacFile(HermesFile):
         if self.get_mesh_dimension() != 2:
             raise TelemacException("Action possible only on 2d mesh")
 
-        res = np.zeros((len(points)), dtype=np.float64)
         values = self.get_data_value(varname, record)
         if len(values) > self.npoin2:
             raise TelemacException('Warning the dimension of the result '
                                    'file is greater than 2')
-        data_interp = mtri.LinearTriInterpolator(self.tri, values)
-        pt_x = [pt[0] for pt in points]
-        pt_y = [pt[1] for pt in points]
-        res = data_interp(pt_x, pt_y)
+
+        res = self.interpolate_mesh_on_points(points, values)
+
         return res
 
     def _get_data_on_3d_points(self, varname, record, points):
@@ -816,7 +895,7 @@ class TelemacFile(HermesFile):
 
         @param varname (string) Name of variable for which to extract data
         @param record (int) Number of desired record
-        @param zslices (numpy.array) Elevation of the slice
+        @param zslices (numpy.array/list/int) Elevation of the slice or
         @param nplanref (int) Number of reference plane
 
         @returns (numpy.array)
@@ -825,9 +904,10 @@ class TelemacFile(HermesFile):
             raise TelemacException("Action possible only on 3d mesh")
 
         if isinstance(zslices, (list, np.ndarray)):
-            if zslices.ndim > 1:
-                raise TelemacException('Warning the slice coordinate'
-                                       'must be 1d')
+            if isinstance(zslices, np.ndarray):
+                if zslices.ndim > 1:
+                    raise TelemacException('Warning the slice coordinate'
+                                           'must be 1d')
             res = np.zeros(((self.npoin2), len(zslices)), dtype=np.float64)
             zslices_list = zslices
         elif isinstance(zslices, int):
@@ -840,32 +920,31 @@ class TelemacFile(HermesFile):
 
         z_name = self.get_z_name()
 
-        if z_name is not None:
-            if nplanref is not None:
-                zref = self.get_data_on_horizontal_plane(
-                    z_name, record, nplanref)
-            values_elevation = self.get_data_value(z_name, record)
-            values_elevation = values_elevation.reshape(self.nplan,
-                                                        self.npoin2)
-            values_var = self.get_data_value(varname, record)
-            values_var = values_var.reshape(self.nplan, self.npoin2)
+        if z_name is None:
+            raise TelemacException('Variable for elevation is missing')
 
-            for izs, zslice in enumerate(zslices_list):
-                zslice = zref + zslice
-                for j in range(self.npoin2):
-                    res[j, izs] = float('nan')
-                    for i in range(self.nplan-1):
-                        if values_elevation[i, j] <= zslice[j] and \
-                           zslice[j] <= values_elevation[i+1, j]:
-                            shz = (zslice[i]-values_elevation[i, j]) /\
-                                  max((values_elevation[i+1, j]
-                                       - values_elevation[i, j]), 1.0e-6)
-                            res[j, izs] = (1.0-shz)*values_var[i, j]+shz *\
-                                values_var[i+1, j]
-                            break
-        else:
-            raise TelemacException('Warning the dimension of the result '
-                                   'file is not 3 ELEVATION Z is missing')
+        if nplanref is not None:
+            zref = self.get_data_on_horizontal_plane(
+                z_name, record, nplanref)
+        values_elevation = self.get_data_value(z_name, record)
+        values_elevation = values_elevation.reshape(self.nplan,
+                                                    self.npoin2)
+        values_var = self.get_data_value(varname, record)
+        values_var = values_var.reshape(self.nplan, self.npoin2)
+
+        for izs, zslice in enumerate(zslices_list):
+            zslice = zref + zslice
+            for j in range(self.npoin2):
+                res[j, izs] = float('nan')
+                for i in range(self.nplan-1):
+                    if values_elevation[i, j] <= zslice[j] and \
+                       zslice[j] <= values_elevation[i+1, j]:
+                        shz = (zslice[i]-values_elevation[i, j]) /\
+                              max((values_elevation[i+1, j]
+                                   - values_elevation[i, j]), 1.0e-6)
+                        res[j, izs] = (1.0-shz)*values_var[i, j]+shz *\
+                            values_var[i+1, j]
+                        break
 
         if isinstance(zslices, (list, np.ndarray)):
             return res
@@ -909,10 +988,10 @@ class TelemacFile(HermesFile):
             for plan in range(self.nplan):
                 values = self.get_data_on_horizontal_plane(
                     varname, record, plan)
-                data_interp = mtri.LinearTriInterpolator(self.tri, values)
-                pt_x = [pt[0] for pt in polygone_discretized_points]
-                pt_y = [pt[1] for pt in polygone_discretized_points]
-                values_polylines[:, plan] = data_interp(pt_x, pt_y)
+                values_polylines[:, plan] = \
+                        self.interpolate_mesh_on_points(\
+                            polygone_discretized_points, values)
+                del values
         else:
             raise TelemacException('Warning the extraction on a polyline'
                                    ' of 2d points')
@@ -941,8 +1020,7 @@ class TelemacFile(HermesFile):
         for plan in range(self.nplan):
             values = self.get_data_on_horizontal_plane(
                 var_name, record, plan)
-            data_interp = mtri.LinearTriInterpolator(self.tri, values)
-            res[plan] = data_interp(point[0], point[1])
+            res[plan] = self.interpolate_mesh_on_points([point], values)
         return res
 
     #

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VGFPSI
-!                    *****************
+!                   *****************
+                    SUBROUTINE VGFPSI
+!                   *****************
 !
      &(RES,IELM,U,V,F,DT,XMUL,CFLMAX,T1,T2,MESH,MSK,MASKEL)
 !
@@ -54,7 +54,7 @@
       USE BIEF, EX_VGFPSI => VGFPSI
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -84,7 +84,7 @@
 !
       CALL CFLPSI(T1,U,V,DT,IELM,MESH,MSK,MASKEL)
       CALL MAXI(CFLMAX,IT,T1%R,BIEF_NBPTS(IELM,MESH))
-      IF(NCSIZE.GT.1) CFLMAX=P_DMAX(CFLMAX)
+      IF(NCSIZE.GT.1) CFLMAX=P_MAX(CFLMAX)
 !
       NIT = INT(CFLMAX) + 1
 !     WRITE(LU,*) 'VGFPSI : NIT=',NIT,' CFLMAX=',CFLMAX

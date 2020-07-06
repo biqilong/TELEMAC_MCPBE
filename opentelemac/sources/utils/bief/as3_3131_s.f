@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE AS3_3131_S
-!                    *********************
+!                   *********************
+                    SUBROUTINE AS3_3131_S
+!                   *********************
 !
      &(XM,NSEG,XMT,DIM1XMT,DIM2XMT,STOXMT,NELMAX,NELEM,
      & ELTSEG1,ELTSEG2,ELTSEG3,ELTSEG4,ELTSEG5,ELTSEG6)

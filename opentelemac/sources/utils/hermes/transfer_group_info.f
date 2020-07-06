@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE TRANSFER_GROUP_INFO
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE TRANSFER_GROUP_INFO
+!                   ******************************
 !
      &(FFORMAT,FID,FID2,TYPE_ELT,TYPE_BND_ELT,IKLE_BND,NELEBD,NDP,
      & TRANS_ELEM,TRANS_POINT,IERR)

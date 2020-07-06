@@ -1,6 +1,6 @@
-!                    **************
-                     SUBROUTINE WAC
-!                    **************
+!                   **************
+                    SUBROUTINE WAC
+!                   **************
 !
      &     (PART, NIT_ORI)
 !
@@ -96,7 +96,7 @@
 !
       INTEGER LT1
       INTEGER DATE(3),TIME(3),IP
-!     
+!
       INTEGER ADC,MDC,JDC,HDC
       LOGICAL IMPRES, DEBRES
       INTEGER TOTAL_ITER
@@ -232,7 +232,7 @@
           IF(DT.LE.CPL_WAC_DATA%DT_TEL*CPL_WAC_DATA%PERCOU_WAC) THEN
             NIT = NINT(CPL_WAC_DATA%DT_TEL*CPL_WAC_DATA%PERCOU_WAC/DT)
           ENDIF
-        
+
 !       RECEIVE DATA FROM TOMAWAC
 !                                                       WAC2
           IF(INCLUS(COUPLING,'TOMAWAC2')) THEN
@@ -287,7 +287,7 @@
 !
           IF (AVANT) THEN
             IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE LIMWAC'
-            CALL LIMWAC(F,       FBOR, NPTFR, NPLAN,  NF, NPOIN2, 
+            CALL LIMWAC(F,       FBOR, NPTFR, NDIRE,  NF, NPOIN2,
      &      KENT, PRIVE, NPRIV, WAC_FILES(IMPSPE))
             IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE LIMWAC'
           ENDIF
@@ -296,7 +296,7 @@
 !     I GUESS I DO NOT HAVE THOSE ANYMORE....SINCE I CHANGED DEPTH
           IF (.NOT.PROINF) THEN
             IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE ECRETE'
-            IF (ECRET) CALL ECRETE(SF%R,SDEPTH%R,NPOIN2,NPLAN,NF,
+            IF (ECRET) CALL ECRETE(SF%R,SDEPTH%R,NPOIN2,NDIRE,NF,
      &                             PROMIN)
             IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE ECRETE'
           ENDIF
@@ -332,7 +332,7 @@
 !
               CALL PREPRO( STSDER, STSTOT, IKLE2, IBOR, ELT, ETA, FRE,
      &             XK,     CG,     ITR01, NPOIN3, NPOIN2, NELEM2,
-     &             NPLAN,  NF,    COURAN.OR.PART.EQ.WAC_CPL_RUN)
+     &             NDIRE,  NF,    COURAN.OR.PART.EQ.WAC_CPL_RUN)
 !     Fin COUPLAGE
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PREPRO 2'
             ENDIF
@@ -350,8 +350,8 @@
             IF(LT.GE.NPTDIF) THEN
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE PREDIF'
               CALL PREDIF( STSDER, STSTOT, IKLE2, IBOR,   ELT,    ETA,
-     &        XK,     CG,     ITR01, NPOIN3, NPOIN2, NELEM2, NPLAN,
-     &        NF, COURAN.OR.PART.EQ.WAC_CPL_RUN, F,   
+     &        XK,     CG,     ITR01, NPOIN3, NPOIN2, NELEM2, NDIRE,
+     &        NF, COURAN.OR.PART.EQ.WAC_CPL_RUN, F,
      &        RX, RY,     RXX,    RYY,    NEIGB)
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PREDIF'
             ENDIF
@@ -365,7 +365,7 @@
             CALL IMPR(LISPRD,LT,AT,LT,5)
             IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE PROPA',LT
             CALL PROPA(F, B,    ELT, ETA, FRE ,NPOIN3, NPOIN2,
-     &           NPLAN,NF, COURAN.OR.PART.EQ.WAC_CPL_RUN, TSDER)
+     &           NDIRE,NF, COURAN.OR.PART.EQ.WAC_CPL_RUN, TSDER)
             IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE PROPA'
           ENDIF
 !
@@ -373,7 +373,7 @@
 !
           IF(SDSCU.EQ.1) THEN
             IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE LIMITE'
-            CALL LIMITE(F, FREQ, NPOIN2, NPLAN, NF)
+            CALL LIMITE(F, FREQ, NPOIN2, NDIRE, NF)
             IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE LIMITE'
           ELSEIF(SDSCU.GT.2) THEN
             WRITE(LU,*) ''
@@ -400,19 +400,19 @@
           IF(TSOU) THEN
             CALL IMPR(LISPRD,LT,AT,NSITS,4)
             IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE SEMIMP'
-            CALL SEMIMP( F,    CF,     XK, NF, NPLAN, NPOIN2,
+            CALL SEMIMP( F,    CF,     XK, NF, NDIRE, NPOIN2,
      &      IANGNL, TSTOT, TSDER, TOLD,  TNEW, TRA35, TRA36,
      &      TRA37,  TRA38, TRA39, T1,    T2,   T3,     T4,
      &      MDIA,  IANMDI, COEMDI, FBOR)
 
             IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE SEMIMP'
           ENDIF
-!     
+!
 !     11.8 AFFECTATION DES CONDITIONS AUX LIMITES.
 !
           IF(.NOT.AVANT) THEN
             IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE LIMWAC'
-            CALL LIMWAC(F,   FBOR, NPTFR, NPLAN,  NF, NPOIN2, KENT,
+            CALL LIMWAC(F,   FBOR, NPTFR, NDIRE,  NF, NPOIN2, KENT,
      &      PRIVE, NPRIV,  WAC_FILES(IMPSPE))
             IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE LIMWAC'
           ENDIF
@@ -434,8 +434,8 @@
               IF(LT.GE.GRADEB.AND.MOD(LT-GRADEB,GRAPRD).EQ.0) THEN
                 CALL TRANSF(TSTOT, F,   XK, ITR11, ITR12,ITR13, TRA31,
 !     WORK ARRAY UNTIL CALL ECRSPE BELOW
-     &               TRA32, NPOIN2, NPLAN,NF)
-              ENDIF  
+     &               TRA32, NPOIN2, NDIRE,NF)
+              ENDIF
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE TRANSF'
             ENDIF
 !
@@ -462,10 +462,10 @@
             IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE ECRSPE'
             IREC = (LT - GRADEB)/GRAPRD
             IF(COURAN.OR.PART.EQ.WAC_CPL_RUN) THEN
-              CALL ECRSPE(TSTOT, NPLAN, NF, NPOIN2, IREC,  TSDER, 
+              CALL ECRSPE(TSTOT, NDIRE, NF, NPOIN2, IREC,  TSDER,
      &        NOLEO, NPLEO, DEBRES,DATE,  TIME, MESH%KNOLG%I, MESH)
             ELSE
-              CALL ECRSPE(F,     NPLAN, NF, NPOIN2, IREC,  TSDER, 
+              CALL ECRSPE(F,     NDIRE, NF, NPOIN2, IREC,  TSDER,
      &        NOLEO, NPLEO, DEBRES,DATE,  TIME, MESH%KNOLG%I, MESH)
             ENDIF
             IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE ECRSPE'
@@ -473,49 +473,49 @@
           ENDIF
           IF(PART.EQ.WAC_CPL_RUN.AND.LT_WAC.EQ.NIT) THEN
             IF(CPL_WAC_DATA%COUPL3D) THEN
-              IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE TRANSF' 
-              CALL TRANSF(TSTOT, F,    XK,    ITR11, ITR12,ITR13, 
+              IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE TRANSF'
+              CALL TRANSF(TSTOT, F,    XK,    ITR11, ITR12,ITR13,
 !     WORK ARRAY UNTIL CALL ECRSPE BELOW TRA32 IS USED IN FRIC3D
-     &        TRA31, TRA32, NPOIN2, NPLAN, NF)
+     &        TRA31, TRA32, NPOIN2, NDIRE, NF)
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE TRANSF'
 !     DISSIPATION DUE TO DEPTH-INDUCED WAVE BREAKING
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE FDISS3D'
               CALL FDISS3D ( CPL_WAC_DATA%FDXW%R, CPL_WAC_DATA%FDYW%R,
-     &             NPOIN2, XK, NPLAN, F, NF)
+     &             NPOIN2, XK, NDIRE, F, NF)
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE FDISS3D'
 
 !     DISSIPATION DUE TO BOTTOM FRICTION
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE FBOTT3D'
               CALL FBOTT3D
      &             ( CPL_WAC_DATA%FBXW%R, CPL_WAC_DATA%FBYW%R, F,
-     &             NPOIN2, XK, NPLAN,NF)
+     &             NPOIN2, XK, NDIRE,NF)
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE FBOTT3D'
 !     The velocity STOKES DRIFT HORIZONTAL COMPONENTS
 !     ONE SHOULD CALL TRANSF BEFORE !!!
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE UVSTOKES'
               CALL UVSTOKES( CPL_WAC_DATA%USTW%R, CPL_WAC_DATA%VSTW%R,
-     &             CPL_WAC_DATA%WSTW%R, TSTOT,  NPOIN2,XK,ZF, NPLAN,
+     &             CPL_WAC_DATA%WSTW%R, TSTOT,  NPOIN2,XK,ZF, NDIRE,
      &             CPL_WAC_DATA%ZTELW%R, CPL_WAC_DATA%NZW,NF)
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE UVSTOKES'
 
 !     The wave induced pressure J
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE WIPJ'
-              CALL WIPJ (CPL_WAC_DATA%WIPW%R, TSTOT, NPOIN2, XK,  
-     &        CPL_WAC_DATA%WIPDXW%R,CPL_WAC_DATA%WIPDYW%R, NPLAN, NF)
+              CALL WIPJ (CPL_WAC_DATA%WIPW%R, TSTOT, NPOIN2, XK,
+     &        CPL_WAC_DATA%WIPDXW%R,CPL_WAC_DATA%WIPDYW%R, NDIRE, NF)
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE WIPJ'
-!     
+!
 !     WAVE ENHANCED MIXING
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE FDISSK'
-              CALL FDISSK( CPL_WAC_DATA%FDKW%R, NPOIN2, NPLAN, F,
+              CALL FDISSK( CPL_WAC_DATA%FDKW%R, NPOIN2, NDIRE, F,
      &             CPL_WAC_DATA%ZTELW%R,CPL_WAC_DATA%NZW, TRA38, TRA37,
      &             NF)
               IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE FDISSK'
-              
+
 !     FRICTION COEFFICIENT - WAVES+CURRENTS
 
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE VITFON'
               CALL VITFON(VIFOND, TSTOT, XK, NF,
-     &             NPOIN2,NPLAN)
+     &             NPOIN2,NDIRE)
               IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE FRIC3D'
 !     MODIFIED COEFFICIENT TO TAKE INTO ACCOUNT WAVES+CURRENTS
               CALL FRIC3D
@@ -527,25 +527,25 @@
                 IF(SVENT.EQ.1) THEN
                   IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE WINDISS1'
                   CALL WINDISS1( CPL_WAC_DATA%FWX%R, CPL_WAC_DATA%FWY%R,
-     &                 NPOIN2, XK, NPLAN, F, NF)
+     &                 NPOIN2, XK, NDIRE, F, NF)
                   IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE WINDISS1'
                 ELSEIF(SVENT.EQ.2) THEN
                   IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE WINDISS2'
                   CALL WINDISS2( CPL_WAC_DATA%FWX%R, CPL_WAC_DATA%FWY%R,
-     &                 NPOIN2, XK, NPLAN, F, NF)
+     &                 NPOIN2, XK, NDIRE, F, NF)
                   IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE WINDISS2'
                 ELSEIF(SVENT.EQ.3) THEN
                   IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE WINDISS3'
                   CALL WINDISS3( CPL_WAC_DATA%FWX%R, CPL_WAC_DATA%FWY%R,
-     &                 NPOIN2, XK, NPLAN, F, NF)
+     &                 NPOIN2, XK, NDIRE, F, NF)
                   IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE WINDISS3'
                 ENDIF
                 IF(SMOUT.EQ.1) THEN
                   CALL MOUDISS1( CPL_WAC_DATA%FWX%R, CPL_WAC_DATA%FWY%R,
-     &                 NPOIN2, XK, NPLAN, F, NF)
+     &                 NPOIN2, XK, NDIRE, F, NF)
                 ELSEIF(SMOUT.EQ.2)THEN
                   CALL MOUDISS2( CPL_WAC_DATA%FWX%R, CPL_WAC_DATA%FWY%R,
-     &                 NPOIN2, XK, NPLAN, F, NF, T1, T2)
+     &                 NPOIN2, XK, NDIRE, F, NF, T1, T2)
                 ENDIF
               ENDIF
 
@@ -556,7 +556,7 @@
 !
 !     STSTOT WORK ARRAY (ABSOLUTE FREQUENCY) IN ALL THIS IF BLOCK
             CALL TRANSF(TSTOT, F, XK, ITR11, ITR12,ITR13, TRA31, TRA32,
-     &           NPOIN2,NPLAN, NF)
+     &           NPOIN2,NDIRE, NF)
             CALL RADIAT(CPL_WAC_DATA%FX_WAC%R, CPL_WAC_DATA%FY_WAC%R,
      &           XK, TSTOT, CG, TSDER, TRA36, TRA37, TRA38, TRA39)
             IF(VENT) THEN
@@ -570,7 +570,7 @@
 !     3 VARIABLES THAT WILL BE TRANSMITTED TO SISYPHE OR GAIA
 !     ALL THIS IF BLOCK ADAPTED FROM DUMP2D
 !     MEAN DIRECTION
-              CALL TETMOY(CPL_WAC_DATA%DIRMOY_TEL%R, TSTOT, NPLAN,NF,
+              CALL TETMOY(CPL_WAC_DATA%DIRMOY_TEL%R, TSTOT, NDIRE,NF,
      &         NPOIN2)
             IF(TRIGO) THEN
               DO IP=1,NPOIN2
@@ -584,24 +584,24 @@
               ENDDO
             ENDIF
 !     SIGNIFICANT WAVE HEIGHT
-            CALL TOTNRJ(TRA37, TSTOT, NF, NPLAN, NPOIN2)
+            CALL TOTNRJ(TRA37, TSTOT, NF, NDIRE, NPOIN2)
             DO IP=1,NPOIN2
               CPL_WAC_DATA%HM0_TEL%R(IP)=4.D0*SQRT(TRA37(IP))
             ENDDO
 !     TPR5
             CALL FPREAD(CPL_WAC_DATA%TPR5_TEL%R, TSTOT,
-     &           NF, NPLAN, NPOIN2, 5.D0)
+     &           NF, NDIRE, NPOIN2, 5.D0)
             DO IP=1,NPOIN2
               CPL_WAC_DATA%TPR5_TEL%R(IP)=
      &      1.D0/MIN(MAX(CPL_WAC_DATA%TPR5_TEL%R(IP),FREQ(1)),FREQ(NF))
             ENDDO
 !     NEAR BED ORBITAL VELOCITY
             CALL VITFON(CPL_WAC_DATA%ORBVEL_TEL%R, TSTOT, XK,  NF,
-     &           NPOIN2,NPLAN)
+     &           NPOIN2,NDIRE)
           ENDIF
           IF (ALG_DISLODGE) THEN
             CALL VITFON(CPL_WAC_DATA%ORBVEL_TEL%R, TSTOT, XK,  NF,
-     &           NPOIN2,NPLAN)
+     &           NPOIN2,NDIRE)
           ENDIF
 !
         ENDIF
@@ -638,14 +638,14 @@
         IF(GLOB) THEN
           CALL IMPR(LISPRD,NIT,AT,NIT,6)
           IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE SOR3D'
-          CALL SOR3D(F,  NPLAN, NF, NPOIN2,  VENT,
+          CALL SOR3D(F,  NDIRE, NF, NPOIN2,  VENT,
      &         COURAN.OR.PART.EQ.WAC_CPL_RUN,
      &         MAREE.OR.PART.EQ.WAC_CPL_RUN, TITCAS, TSDER, MESH3D)
           IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE SOR3D'
         ENDIF
 !
 !----------------------------------------------------------------------
-!     
+!
 !     VALIDATION DES RESULTATS SUR LE FICHIER DE REFERENCES
 !
         IF(VALID) THEN
@@ -655,7 +655,7 @@
      &         MAXVAR,NPOIN2,   NIT,    NIT,ALIRE)
           IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE BIEF_VALIDA'
         ENDIF
-!     
+!
       ENDIF
 !
 !------------------------------------------------------------------

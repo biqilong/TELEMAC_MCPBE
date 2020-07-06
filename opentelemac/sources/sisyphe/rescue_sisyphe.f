@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE RESCUE_SISYPHE
-!                    *************************
+!                 *************************
+                  SUBROUTINE RESCUE_SISYPHE
+!                 *************************
 !
      &(H,S,ZF,ZR,ES,HW,TW,THETAW,NPOIN,NOMBLAY,NSICLA,
      & TROUVE,ALIRE,PASS,ICF,LISTI,MAXVAR)

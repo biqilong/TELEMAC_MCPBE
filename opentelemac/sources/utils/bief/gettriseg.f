@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE GETTRISEG
-!                    ********************
+!                   ********************
+                    SUBROUTINE GETTRISEG
+!                   ********************
 !
      &(XAUX,AD,AX,TETA,NPOIN,MESH,NSEG3D,NSEG2D,NPLAN,NPOIN2,IELM3)
 !

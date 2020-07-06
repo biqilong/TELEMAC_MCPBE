@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CLHUVT
-!                    *****************
+!                   *****************
+                    SUBROUTINE CLHUVT
+!                   *****************
 !
      &(NWEIRS,NPSING,NDGA1,NDGB1,ZDIG,X,Y,ZF,IOPTAN,UNORM,CHESTR,
      & NKFROT,KARMAN,T,NTRAC,H,UBOR,VBOR,TBOR,NBOR,
@@ -50,7 +50,7 @@
 !history  J.-M. HERVOUET (EDF LAB, LNHE)
 !+        11/02/2014
 !+        V7P0
-!+   All formulas involving P_DMAX and P_DMIN simplified.
+!+   All formulas involving P_MAX and P_MIN simplified.
 !
 !history  J,RIEHME (ADJOINTWARE)
 !+        November 2016
@@ -89,7 +89,7 @@
       USE BIEF
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN,
      &                               P_DMAX_ARRAY,P_DMIN_ARRAY
       IMPLICIT NONE
 !
@@ -299,7 +299,7 @@
         ENDIF
 !
         IF(NCSIZE.GT.1) THEN
-          UNORM1 =P_DMAX(UNORM1)+P_DMIN(UNORM1)
+          UNORM1 =P_MAX(UNORM1)+P_MIN(UNORM1)
         ENDIF
 !
         I2=NDGB1%ADR(N)%P%I(I)
@@ -345,7 +345,7 @@
                 T1=0.D0
               ENDIF
               IF(NCSIZE.GT.1) THEN
-                T1=P_DMAX(T1)+P_DMIN(T1)
+                T1=P_MAX(T1)+P_MIN(T1)
               ENDIF
               IF(I2.GT.0) THEN
                 LITBOR%ADR(ITRAC)%P%I(I2)=5
@@ -362,7 +362,7 @@
                 T2=0.D0
               ENDIF
               IF(NCSIZE.GT.1) THEN
-                T2=P_DMAX(T2)+P_DMIN(T2)
+                T2=P_MAX(T2)+P_MIN(T2)
               ENDIF
               IF(I1.GT.0) THEN
                 LITBOR%ADR(ITRAC)%P%I(I1)=5

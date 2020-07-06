@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE LECDON_GAIA
-!                    **********************
+!                   **********************
+                    SUBROUTINE LECDON_GAIA
+!                   **********************
 !
      &(MOTCAR,FILE_DESC,PATH,NCAR,CODE,CAS_FILE,DICO_FILE)
 !
@@ -784,7 +784,7 @@
 !
       IF(NMUD.EQ.0) THEN
         DO I=1,NOMBLAY
-           CONC_MUD0(I)=0.D0
+          CONC_MUD0(I)=0.D0
         ENDDO
       ENDIF
 !

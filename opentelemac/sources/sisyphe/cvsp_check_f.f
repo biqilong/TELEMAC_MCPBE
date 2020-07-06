@@ -1,6 +1,6 @@
-!                    *****************************
-                     RECURSIVE FUNCTION CVSP_CHECK_F
-!                    *****************************
+!                   *****************************
+                    RECURSIVE FUNCTION CVSP_CHECK_F
+!                   *****************************
 !
      &(J,K, SOMETEXT) RESULT(RET)
 !
@@ -53,7 +53,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       DOUBLE PRECISION TEMP, AT, ERRTOCORR
-      INTEGER I, JG, II
+      INTEGER I, JG
       LOGICAL RET
 !-----------------------------------------------------------------------
       AT = DT*LT/PERCOU
@@ -109,16 +109,16 @@
 !-----------------------------------------------------------------------
       IF(ABS(TEMP-1.D0).GT.0.D0) THEN
         IF(ABS(TEMP).LT.1.D-6) THEN
-!          SEVERE ERROR, FOR DEBUGGING ONLY RESET to 1 / NSICLA
-           IF(CP) WRITE(LU,*) 'CVSP CF: |SUM_ERR|~0;LT;J;K;SUM:'
-     &                   ,SOMETEXT,LT,JG,K,TEMP
-           RET = .FALSE.
-           IF(CP) WRITE(LU,*) 'CVSP  --> NSICLA: ', NSICLA
-           DO I=1,NSICLA
-             IF(CP) WRITE(LU,*) 'CVSP  --> ;LT;Pnt_J;Lay_K;F_I,%: '
-     &                  ,LT,JG,K,I,PRO_F(J,K,I)
-             PRO_F(J,K,I) = 0.D0
-           ENDDO
+!         SEVERE ERROR, FOR DEBUGGING ONLY RESET to 1 / NSICLA
+          IF(CP) WRITE(LU,*) 'CVSP CF: |SUM_ERR|~0;LT;J;K;SUM:'
+     &                  ,SOMETEXT,LT,JG,K,TEMP
+          RET = .FALSE.
+          IF(CP) WRITE(LU,*) 'CVSP  --> NSICLA: ', NSICLA
+          DO I=1,NSICLA
+            IF(CP) WRITE(LU,*) 'CVSP  --> ;LT;Pnt_J;Lay_K;F_I,%: '
+     &                 ,LT,JG,K,I,PRO_F(J,K,I)
+            PRO_F(J,K,I) = 0.D0
+          ENDDO
         ELSEIF(ABS(TEMP-1.D0).GT.1.D-6) THEN
 !STRONG DIFFERENCES ARE CORRECTED BY NORMALIZING ALL FRACTIONS
 !!!!!!!!!!! README!

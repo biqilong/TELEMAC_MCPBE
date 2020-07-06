@@ -1,9 +1,9 @@
-!                    *****************
-                     SUBROUTINE QWIND2
-!                    *****************
+!                   *****************
+                    SUBROUTINE QWIND2
+!                   *****************
 !
      &( TSTOT , TSDER , F     , XK    , USOLD , USNEW , TWOLD , TWNEW ,
-     &  NF    , NPLAN , NPOIN2, USN   , USO   )
+     &  NF    , NDIRE , NPOIN2, USN   , USO   )
 !
 !***********************************************************************
 ! TOMAWAC   V6P3                                   27/06/2011
@@ -55,7 +55,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSDER          |<->| DERIVED PART OF THE SOURCE TERM CONTRIBUTION
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
@@ -77,14 +77,14 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)            :: NF,NPLAN,NPOIN2
+      INTEGER, INTENT(IN)            :: NF,NDIRE,NPOIN2
       DOUBLE PRECISION, INTENT(IN)   :: TWOLD(NPOIN2),TWNEW(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)   :: USNEW(NPOIN2),USOLD(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT):: USO(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT):: USN(NPOIN2,NPLAN)
-      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT):: TSDER(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NPLAN,NF),XK(NPOIN2,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: USO(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT):: USN(NPOIN2,NDIRE)
+      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: TSDER(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NDIRE,NF),XK(NPOIN2,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -98,7 +98,7 @@
 !     ARRAYS DEPENDING ONLY ON POINTS AND DIRECTION
 !     COULD BE OPTIMISED MORE BY DECOMPOSING THE COS...
 !
-      DO JP=1,NPLAN
+      DO JP=1,NDIRE
         DIREC=TETA(JP)
         DO IP=1,NPOIN2
           USO(IP,JP)=28.D0*USOLD(IP)*COS(DIREC-TWOLD(IP))
@@ -111,7 +111,7 @@
       DO JF=1,NF
         CONST=C1*FREQ(JF)
         SURDEUPIFREQ=USDPI/FREQ(JF)
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
 !
 !         COMPUTES THE PROPORTIONALITY FACTORS BETA
 !         AND TAKES THE SOURCE TERM INTO ACCOUNT

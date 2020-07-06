@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE IFAB3DT
-!                    ******************
+!                   ******************
+                    SUBROUTINE IFAB3DT
+!                   ******************
 !
      &(IFABOR,LIUBOF,LIUBOS,
      & IKLE2,IKLE,NELEM2,NELMAX2,NELMAX,

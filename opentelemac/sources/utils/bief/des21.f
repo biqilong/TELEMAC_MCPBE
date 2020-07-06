@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE DES21
-!                    ****************
+!                   ****************
+                    SUBROUTINE DES21
+!                   ****************
 !
      &(X, XA1,XA2,XA3,XA4,XA5,XA6 , IKLE1,IKLE2,IKLE3,IKLE4,
      & NELEM,NELMAX,NPOIN,LV)

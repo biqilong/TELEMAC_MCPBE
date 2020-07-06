@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_QSFORM
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_QSFORM
+!                   **********************
 !
      &(U2D, V2D, TOB, HN, XMVE, TETAP, MU, NPOIN, DM,
      & DENS, GRAV, DSTAR, AC, QSC, QSS)

@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE FLUX_IMP3D
-!                    *********************
+!                   *********************
+                    SUBROUTINE FLUX_IMP3D
+!                   *********************
 !
      &(NELEM3,NELMAX,ELTSEG,ORISEG,FXMATPAR,NSEG3,IKLE,
      & NPOIN3,FN,FI_I,SURFAC,DFDT,TETA,ZN,ZP,SUR2VOL)

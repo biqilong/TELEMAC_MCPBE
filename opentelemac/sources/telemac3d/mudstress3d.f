@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE MUDSTRESS3D
-!                    **********************
+!                   **********************
+                    SUBROUTINE MUDSTRESS3D
+!                   **********************
 !
      &(NGEO,FFORMAT,S3D_LAYTOCE,S3D_NCOUCH,MESH)
 !

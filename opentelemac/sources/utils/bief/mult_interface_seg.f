@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE MULT_INTERFACE_SEG
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE MULT_INTERFACE_SEG
+!                   *****************************
 !
      &(FSEG,NH_COM_SEG,DIM1NHCOM,NB_NEIGHB_SEG,
      & NB_NEIGHB_PT_SEG,LIST_SEND,NSEG)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE WRIHYD
-!                    *****************
+!                   *****************
+                    SUBROUTINE WRIHYD
+!                   *****************
 !
      &(TITRE , ITSTRT , ITSTOP , NPOIN2 , MBND   ,
      & NSEG  , NOLAY  , NOMGEO , NOMLIM ,

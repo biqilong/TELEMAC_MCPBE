@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE LECDON_ARTEMIS
-!                    *************************
+!                   *************************
+                    SUBROUTINE LECDON_ARTEMIS
+!                   *************************
 !
      &(FILE_DESC,PATH,NCAR,
      & CAS_FILE,DICO_FILE)
@@ -616,19 +616,19 @@
 !
       IF(NCSIZE.GT.1) THEN
         IF(SLVART%SLV.EQ.8) THEN
-           WRITE(LU,3005)
-3005       FORMAT(1X,'WITH PARALLELISM,',/,1X,
-     &             'NO DIRECT SYSTEM SOLVER 8 USE 9',///)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,3005)
+3005      FORMAT(1X,'WITH PARALLELISM,',/,1X,
+     &            'NO DIRECT SYSTEM SOLVER 8 USE 9',///)
+          CALL PLANTE(1)
+          STOP
         ENDIF
       ELSE
         IF(SLVART%SLV.EQ.9) THEN
-           WRITE(LU,3005)
-3006       FORMAT(1X,'WITH NO PARALLELISM,',/,1X,
-     &             'NO DIRECT SYSTEM SOLVER 9 USE 8',///)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,3006)
+3006      FORMAT(1X,'WITH NO PARALLELISM,',/,1X,
+     &            'NO DIRECT SYSTEM SOLVER 9 USE 8',///)
+          CALL PLANTE(1)
+          STOP
         ENDIF
       ENDIF
 !

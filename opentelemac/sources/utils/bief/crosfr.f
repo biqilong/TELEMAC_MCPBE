@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CROSFR
-!                    *****************
+!                   *****************
+                    SUBROUTINE CROSFR
+!                   *****************
 !
      &(X,Y,XR,YR,XMAIL,YMAIL,NPMAX,NBOR,KP1BOR,NPTFR,DM,OK)
 !

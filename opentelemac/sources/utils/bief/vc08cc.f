@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC08CC
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC08CC
+!                   *****************
 !
      &(XMUL,SF,SU,SV,F,U,V,XEL,YEL,
      & IKLE1,IKLE2,IKLE3,IKLE4,IKLE5,IKLE6,NELEM,NELMAX,

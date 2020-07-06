@@ -1,6 +1,6 @@
-!                    *********************
-                     SUBROUTINE FLUSEC_T2D
-!                    *********************
+!                   *********************
+                    SUBROUTINE FLUSEC_T2D
+!                   *********************
 !
      &(GLOSEG,DIMGLO,DT,MESH,FLODEL,DOPLOT)
 !
@@ -52,7 +52,7 @@
      &                            NUMBEROFLINES_FLUSECT2D,
      &                            TIME_FLUSECT2D
 !
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -277,8 +277,8 @@
         IF(NCSIZE.GT.1) THEN
 !         PREPARE SINGLE DATA FOR SENDING
           DO I=1,NUMBEROFLINES_FLUSECT2D
-            SUMFLX = P_DSUM(FLX_FLUSECT2D(I,1))
-            SUMVOLFLUX = P_DSUM(VOLFLUX_FLUSECT2D(I,1))
+            SUMFLX = P_SUM(FLX_FLUSECT2D(I,1))
+            SUMVOLFLUX = P_SUM(VOLFLUX_FLUSECT2D(I,1))
             WRITE(LU,'(3X,A9,I3,A1)') 'SECTION ',I,':'
             WRITE(LU,1000) 'TIME FLUX WATER :',
      &      TIME_FLUSECT2D,SUMFLX,SUMVOLFLUX

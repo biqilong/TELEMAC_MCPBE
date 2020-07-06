@@ -96,15 +96,49 @@ http://aed.see.uwa.edu.au/research/models/AED/downloads/AED\_ScienceManual\_v4\_
 
 \chapter{Degradation law}
 
-WAQTEL simulates the evolution of a tracer $C$ over time from an initial condition
-according to a degradation law that is assumed to be of 1$^{\rm{st}}$ order (i.e. a tracer decrease):
+%WAQTEL simulates the evolution of a tracer $C$ over time from an initial condition
+%according to a degradation law that is assumed to be of 1$^{\rm{st}}$ order (i.e. a tracer decrease):
+
+%\begin{equation}
+%  F([C]) = -k_1 [C],
+%\end{equation}
+
+%where $k_1$ is the constant of tracer kinetic degradation $C$ (d$^{-1}$),
+%to be specified by the user.
+
+\waqtel can simulate usual laws for bacterial degradation with
+$T_{90}$ coefficient(s):
+time(s) required for 90\% of the initial bacterial population to disappear
+or also described as the time for bacterial or viral concentration to decrease
+by one log unit (hence the 2.3 coefficient below).
+It is expressed in hours.
+%mortality rate(s) of 90~\% when 90~\% of bacteria die.
+
+In other words, it simulates the evolution of tracer(s) $C$ over time from
+initial condition(s) according to a degradation law assumed to be of
+1$^{\rm{st}}$ order (i.e. a tracer decrease) with constant(s) of tracer kinetic
+degradation equal to $\frac{2.3}{T_{90}}$:
+
+\begin{equation}
+  F([C]) = -\frac{2.3}{T_{90}} [C],
+\end{equation}
+
+with $T_{90}$ coefficient(s) described above, in hours.
+%where $T_{90}$ the time when 90~\% of bacteria die, in hours.
+\\
+
+\begin{WarningBlock}{Note:}
+This is not the evolution of tracer(s) $C$ over time from initial condition(s) 
+according to a degradation law that is assumed to be of 1$^{\rm{st}}$ order
+(i.e. a tracer decrease):
 
 \begin{equation}
   F([C]) = -k_1 [C],
 \end{equation}
 
-where $k_1$ is the constant of tracer kinetic degradation $C$ (d$^{-1}$),
-to be specified by the user.
+where $k_1$ is the constant (or one of the constants) of tracer kinetic
+degradation $C$ (d$^{-1}$).
+\end{WarningBlock}
 
 
 \chapter{Conclusion}

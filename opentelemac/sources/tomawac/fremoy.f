@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE FREMOY
-!                    *****************
+!                   *****************
+                    SUBROUTINE FREMOY
+!                   *****************
 !
-     &(FMOY, F, NF, NPLAN, NPOIN2)
+     &(FMOY, F, NF, NDIRE, NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   15/06/2011
@@ -49,7 +49,7 @@
 !| FMOY           |<--| MEAN FREQUENCIES F-10
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TAILF          |-->| SPECTRUM QUEUE FACTOR
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,8 +61,8 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER,         INTENT(IN) ::  NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION,INTENT(IN) :: F(NPOIN2,NPLAN,NF)
+      INTEGER,         INTENT(IN) ::  NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION,INTENT(IN) :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION,INTENT(INOUT) :: FMOY(NPOIN2)
 !
 !.....LOCAL VARIABLES
@@ -72,7 +72,7 @@
 !
 !
       SEUIL = 1.D-20
-      DTETAR= DEUPI/DBLE(NPLAN)
+      DTETAR= DEUPI/DBLE(NDIRE)
       DO IP = 1,NPOIN2
         A1=0.D0
         A2=0.D0
@@ -83,7 +83,7 @@
         DO JF = 1,NF-1
           AUX3=DTETAR*DFREQ(JF)
           AUX4=AUX3/FREQ(JF)
-          DO JP = 1,NPLAN
+          DO JP = 1,NDIRE
             A1 = A1 + F(IP,JP,JF)*AUX3
             A2 = A2 + F(IP,JP,JF)*AUX4
           ENDDO               ! JP
@@ -99,7 +99,7 @@
           AUX3=DTETAR*DFREQ(NF)
           AUX4=AUX3/FREQ(NF)
         ENDIF
-        DO JP = 1,NPLAN
+        DO JP = 1, NDIRE
           A1 = A1 + F(IP,JP,NF)*AUX3
           A2 = A2 + F(IP,JP,NF)*AUX4
         ENDDO                  ! JP

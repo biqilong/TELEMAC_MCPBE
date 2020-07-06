@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE BILANT
-!                    *****************
+!                   *****************
+                    SUBROUTINE BILANT
+!                   *****************
 !
      &(H,WORK2,WORK3,DT,LT,NIT,INFO,
      & T,AGGLOT,MASSOU,MASTR0,MASTR2,MASTEN,
@@ -74,7 +74,7 @@
       USE BIEF, EX_BILANT => BILANT
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -123,7 +123,7 @@
       CALL OS('X=X+YZ  ',X=WORK2,Y=WORK3,Z=T)
 !
       MASTR2 = DOTS(WORK2,H)
-      IF(NCSIZE.GT.1) MASTR2=P_DSUM(MASTR2)
+      IF(NCSIZE.GT.1) MASTR2=P_SUM(MASTR2)
 !
       IF(LT.EQ.0) THEN
         MASTR0   = MASTR2
@@ -157,7 +157,7 @@
         ENDIF
         IF(NCSIZE.GT.1) THEN
           DO IFRLIQ=1,NFRLIQ
-            FLT_BOUND(IFRLIQ)=P_DSUM(FLT_BOUND(IFRLIQ))
+            FLT_BOUND(IFRLIQ)=P_SUM(FLT_BOUND(IFRLIQ))
           ENDDO
         ENDIF
         DO IFRLIQ=1,NFRLIQ
@@ -186,7 +186,7 @@
 !
 !     WILL WORK ONLY IF TRAIN AND RAIN CONSTANT ON ALL THE DOMAIN...
       MASRAI = MAX(MASS_RAIN,0.D0) * TRAIN
-      IF(NCSIZE.GT.1) MASRAI=P_DSUM(MASRAI)
+      IF(NCSIZE.GT.1) MASRAI=P_SUM(MASRAI)
       MASTRAIN = MASTRAIN + MASRAI
 !
 !=======================================================================

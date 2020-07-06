@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE COEF
-!                    ***************
+!                   ***************
+                    SUBROUTINE COEF
+!                   ***************
 !
      &     (S3D_IVIDE, S3D_EPAI, TRA01 ,
      &      S3D_NPFMAX, IMAX , NDEB  ,

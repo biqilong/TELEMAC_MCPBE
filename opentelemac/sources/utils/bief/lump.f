@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE LUMP
-!                    ***************
+!                   ***************
+                    SUBROUTINE LUMP
+!                   ***************
 !
      &(DIAG,A,MESH,XMUL)
 !

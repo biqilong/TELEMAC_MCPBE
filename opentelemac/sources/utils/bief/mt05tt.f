@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT05TT
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT05TT
+!                   *****************
 !
      &( T,XM,XMUL,SU,SV,SW,U,V,W,X,Y,Z,IKLE,NELEM,NELMAX)
 !

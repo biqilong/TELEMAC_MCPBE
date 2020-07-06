@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE SET_MESH
-!                    *******************
+!                   *******************
+                    SUBROUTINE SET_MESH
+!                   *******************
 !
      &(FFORMAT,FILE_ID,MESH_DIM,TYPELM,NDP,NPTFR,
      & NPTIR,NELEM,NPOIN,IKLE,IPOBO,

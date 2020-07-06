@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE WCTURB
-!                    *****************
+!                   *****************
+                    SUBROUTINE WCTURB
+!                   *****************
 !
      &(WC, WCHU0, U, V, TRAV1, TRAV2, TRAV3,
      & S, MESH3, IELM3, NPOIN2, NPLAN, TURBA, TURBB, MSK, MASKEL,

@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE MER11
-!                    ****************
+!                   ****************
+                    SUBROUTINE MER11
+!                   ****************
 !
      &(X, XA1,XA2,XA3,IKLE1,IKLE2,IKLE3,NELEM,NELMAX,NPOIN,LV)
 !

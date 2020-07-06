@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SD_NNFC
-!                    ******************
+!                   ******************
+                    SUBROUTINE SD_NNFC
+!                   ******************
 !
      &(N,R,C,IC,IA,JA,A,Z,B,LMAX,IL,JL,IJL,L,D,UMAX,IU,JU,IJU,U,
      & ROW,TMP,IRL,JRL,FLAG)

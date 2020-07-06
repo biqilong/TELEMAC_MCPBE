@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE BEDLOAD_SECCURRENT
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE BEDLOAD_SECCURRENT
+!                   *****************************
 !
      &(IELMU,CALFA,SALFA)
 !

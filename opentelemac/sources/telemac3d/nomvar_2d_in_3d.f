@@ -1,12 +1,12 @@
-!                    **************************
-                     SUBROUTINE NOMVAR_2D_IN_3D
-!                    **************************
+!                   **************************
+                    SUBROUTINE NOMVAR_2D_IN_3D
+!                   **************************
 !
      &(TEXTE,TEXTPR,MNEMO,NTRAC,MAXTRA,
-     & NAMETRAC,N_NAMES_PRIV2D,NAMES_PRIVE2D)
+     & NAMETRAC,N_NAMES_PRIV2D,NAMES_PRIVE2D,ADR_TRAC_2D)
 !
 !***********************************************************************
-! TELEMAC3D   V7P1
+! TELEMAC3D   V8P2
 !***********************************************************************
 !
 !brief    GIVES THE VARIABLE NAMES FOR THE RESULTS AND GEOMETRY
@@ -34,6 +34,7 @@
 !+   cross-referencing of the FORTRAN sources
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| ADR_TRAC_2D    |-->| ADDRESS OF TRACERS IN BLOCK VARSO2
 !| MAXTRA         |-->| MAXIMUM NUMBER OF TRACERS
 !| MNEMO          |<->| MNEMOTECHNIC NAME
 !| NAMETRAC       |-->| NAME OF TRACERS
@@ -50,7 +51,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER          , INTENT(IN)    :: NTRAC,N_NAMES_PRIV2D,MAXTRA
+      INTEGER , INTENT(IN) :: NTRAC,N_NAMES_PRIV2D,MAXTRA,ADR_TRAC_2D
       CHARACTER(LEN=32), INTENT(INOUT) :: TEXTE(*),TEXTPR(*)
       CHARACTER(LEN=8) , INTENT(INOUT) :: MNEMO(*)
       CHARACTER(LEN=32), INTENT(IN)    :: NAMETRAC(MAXTRA)
@@ -110,6 +111,10 @@
       TEXTE (36) = 'HIGH WATER TIME S               '
       TEXTE (37) = 'BED EVOLUTION   M               '
       TEXTE (38) = 'AIR TEMPERATURE DEGREE C        '
+      TEXTE (39) = 'U SURFACE       M/S             '
+      TEXTE (40) = 'V SURFACE       M/S             '
+      TEXTE (41) = 'W SURFACE       M/S             '
+      TEXTE (42) = 'M SURFACE       M/S             '
 !
 ! TEXTPR IS USED TO READ PREVIOUS COMPUTATION FILES.
 ! IN GENERAL TEXTPR=TEXTE BUT YOU CAN FOLLOW UP A COMPUTATION
@@ -154,6 +159,10 @@
       TEXTPR (36) = 'HIGH WATER TIME S               '
       TEXTPR (37) = 'BED EVOLUTION   M               '
       TEXTPR (38) = 'AIR TEMPERATURE DEGREE C        '
+      TEXTPR (39) = 'U SURFACE       M/S             '
+      TEXTPR (40) = 'V SURFACE       M/S             '
+      TEXTPR (41) = 'W SURFACE       M/S             '
+      TEXTPR (42) = 'M SURFACE       M/S             '
 !
 !-----------------------------------------------------------------------
 !
@@ -199,6 +208,10 @@
       TEXTE (36) = 'TEMPS COTE MAXI S               '
       TEXTE (37) = 'EVOLUTION FOND  M               '
       TEXTE (38) = 'TEMPERATURE AIR DEGRE C         '
+      TEXTE (39) = 'U SURFACE       M/S             '
+      TEXTE (40) = 'V SURFACE       M/S             '
+      TEXTE (41) = 'W SURFACE       M/S             '
+      TEXTE (42) = 'M SURFACE       M/S             '
 !
 ! TEXTPR SERT A LA LECTURE DES FICHIERS DE CALCULS PRECEDENTS
 ! A PRIORI TEXTPR=TEXTE MAIS ON PEUT ESSAYER DE FAIRE UNE SUITE
@@ -242,6 +255,10 @@
       TEXTPR (36) = 'TEMPS COTE MAXI S               '
       TEXTPR (37) = 'EVOLUTION FOND  M               '
       TEXTPR (38) = 'TEMPERATURE AIR DEGRE C         '
+      TEXTPR (39) = 'U SURFACE       M/S             '
+      TEXTPR (40) = 'V SURFACE       M/S             '
+      TEXTPR (41) = 'W SURFACE       M/S             '
+      TEXTPR (42) = 'M SURFACE       M/S             '
 !
 !-----------------------------------------------------------------------
 !
@@ -337,12 +354,20 @@
       MNEMO(37)   = 'DZF     '
 !     AIR TEMPERATURE
       MNEMO(38)   = 'TAIR    '
+!     VELOCITY COMPONENT U AT THE FREE SURFACE
+      MNEMO(39)   = 'USURF   '
+!     VELOCITY COMPONENT V AT THE FREE SURFACE
+      MNEMO(40)   = 'VSURF   '
+!     VELOCITY COMPONENT W AT THE FREE SURFACE
+      MNEMO(41)   = 'WSURF   '
+!     VELOCITY MAGNITUDE AT THE FREE SURFACE
+      MNEMO(42)   = 'MSURF   '
 !
 !-----------------------------------------------------------------------
 !
 !     TRACERS
 !
-      NEXT = 38+1
+      NEXT = ADR_TRAC_2D
 !
       IF(NTRAC.GT.0) THEN
         DO I=1,NTRAC
@@ -355,6 +380,15 @@
       IF(NEXT+NTRAC-1.GT.MIN(MAXVAR,MAXVA3)) THEN
         WRITE(LU,99)
 99      FORMAT(1X,'NOMVAR_2D_IN_3D : MAXVAR OR MAXVA3 TOO SMALL')
+      ENDIF
+!
+      IF(NTRAC.GT.0) THEN
+        DO I=1,NTRAC
+!          TEXTE(NEXT+NTRAC+I-1) = NAMETRAC(I)
+          WRITE(CHAR2,'(I2)') I
+          TEXTE(NEXT+NTRAC+I-1) = 'TRACER SURF '//ADJUSTL(CHAR2)//'  '
+          MNEMO(NEXT+NTRAC+I-1) = 'TASURF'//ADJUSTL(CHAR2)
+        ENDDO
       ENDIF
 !
 ! CV LAYER THICKNESS PRINTOUT
@@ -376,7 +410,7 @@
         TEXTE_ES(K)(17:32) = 'M               '
       ENDDO
 !
-      NEXT=NEXT+NTRAC
+      NEXT=NEXT+2*NTRAC
 !
 !
       DO I=1,S3D_NCOUCH
@@ -407,7 +441,7 @@
         MNEMO(NEXT+1) = 'PVSNCO  '
       ENDIF
 !
-      DO I=38,MIN(MAXVAR,MAXVA3)
+      DO I=ADR_TRAC_2D,MIN(MAXVAR,MAXVA3)
         TEXTPR(I)=TEXTE(I)
       ENDDO
 !

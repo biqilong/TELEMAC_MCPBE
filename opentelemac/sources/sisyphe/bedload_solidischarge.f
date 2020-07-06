@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE BEDLOAD_SOLIDISCHARGE
-!                    ********************************
+!                   ********************************
+                    SUBROUTINE BEDLOAD_SOLIDISCHARGE
+!                   ********************************
 !
      &(MESH,U2D,V2D,UNORM,HN,TW,UW,MU,TOB,CF,TOBW,FW,THETAW,
      & AVA,MASKPT,MASKEL,ACLADM,UNLADM,KSP,KSR,LIQBOR,

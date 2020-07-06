@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE FLUSEC_TELEMAC2D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE FLUSEC_TELEMAC2D
+!                   ***************************
 !
      &(U,V,H,IKLE,NELMAX,NELEM,X,Y,DT,NCP,CTRLSC,INFO,TPS,
      & MSKSEC,BM1,BM2,HPROP,MESH,S,CV1,IFABOR,COMFLU,CUMFLO)

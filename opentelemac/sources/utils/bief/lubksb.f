@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LUBKSB
-!                    *****************
+!                   *****************
+                    SUBROUTINE LUBKSB
+!                   *****************
 !
      &(A,N,NP,INDX,B)
 !
@@ -62,10 +62,11 @@
 !
 !-----------------------------------------------------------------------
 !
-      II=0 ! WHEN II HAS A POSITIVE VALUE, IT WILL BECOME THE INDEX
-           ! OF THE FIRST NONVANISHING ELEMENT OF B.
-           ! DOES THE FORWARD SUBSTITUTION, EQUATION (2.3.6). THE ONLY
-           ! NEW WRINKLE IS TO UNSCRAMBLE THE PERMUTATION AS WE GO.
+      II=0
+      ! WHEN II HAS A POSITIVE VALUE, IT WILL BECOME THE INDEX
+      ! OF THE FIRST NONVANISHING ELEMENT OF B.
+      ! DOES THE FORWARD SUBSTITUTION, EQUATION (2.3.6). THE ONLY
+      ! NEW WRINKLE IS TO UNSCRAMBLE THE PERMUTATION AS WE GO.
 !
       DO I=1,N
         LL=INDX(I)
@@ -73,7 +74,7 @@
         B(LL)=B(I)
         IF(II.NE.0) THEN
           DO J=II,I-1
-           XSOM=XSOM-A(I,J)*B(J)
+            XSOM=XSOM-A(I,J)*B(J)
           ENDDO
         ELSEIF(XSOM.NE.0.D0) THEN
           II=I

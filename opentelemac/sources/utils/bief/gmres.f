@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE GMRES
-!                    ****************
+!                   ****************
+                    SUBROUTINE GMRES
+!                   ****************
 !
      & (X,A,B,MESH,R0,V,AV,CFG,INFOGR,AUX)
 !

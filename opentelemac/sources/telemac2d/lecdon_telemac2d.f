@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE LECDON_TELEMAC2D
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE LECDON_TELEMAC2D
+!                   ***************************
 !
      &(MOTCAR,FILE_DESC,PATH,NCAR,
      & CAS_FILE,DICO_FILE,
@@ -627,7 +627,7 @@
       ILIMUV = MOTINT( ADRESS(1,117) )
       ILIMT  = MOTINT( ADRESS(1,118) )
       BNDCIN = MOTINT( ADRESS(1,119) )
-! 
+!
 !     MAX NUMBER OF ZONES TO DEFINE FRICTION COEFF.
       NZONMX = MOTINT( ADRESS(1,63) )
 !     COORDINATES OF THE ORIGIN
@@ -934,7 +934,7 @@
 !
 !  SECURITY COEFFICIENT FOR MEMORY ALLOCATION FOR SCARACT
 !
-      SECU = MOTREA( ADRESS(2,79) )
+      SECU = REAL(MOTREA( ADRESS(2,79) ))
 !
 !  ARRAYS OF REALS
 !
@@ -1172,8 +1172,6 @@
         TOLEST(K) = MOTREA( ADRESS(2,52) + K-1 )
       ENDDO
       NDEF     = MOTREA( ADRESS(2,53) )
-      DP       = MOTREA( ADRESS(2,54) )
-      SP       = MOTREA( ADRESS(2,55) )
       HWIND    = MOTREA( ADRESS(2,56) )
       HNEG     = MOTREA( ADRESS(2,57) )
       TETAZCOMP= MOTREA( ADRESS(2,58) )
@@ -1353,7 +1351,7 @@
       VERTIC    = MOTLOG( ADRESS(3,34) )
       DEFZON    = MOTLOG( ADRESS(3,36) )
       FRICTB    = MOTLOG( ADRESS(3,37) )
-      LINDNER   = MOTLOG( ADRESS(3,38) )
+      VEGETATION = MOTLOG( ADRESS(3,38) )
       CUMFLO    = MOTLOG( ADRESS(3,39) )
       COMFLU    = MOTLOG( ADRESS(3,40) )
 !     SALINITY AND TEMPERATURE OUTPUT FOR DELWAQ
@@ -2053,11 +2051,11 @@
         IF((MOD(SLVPRO%PRECON, 7).EQ.0).OR.
      &     (MOD(SLVPRO%PRECON,11).EQ.0).OR.
      &     (MOD(SLVPRO%PRECON,13).EQ.0)     ) THEN
-           WRITE(LU,5003)
-5003       FORMAT(1X,'WITH A DIFFERENT DISCRETIZATION OF H AND U',/,1X,
-     &               'NO CROUT-TYPE PRECONDITIONNING',///)
-           CALL PLANTE(1)
-           STOP
+          WRITE(LU,5003)
+5003      FORMAT(1X,'WITH A DIFFERENT DISCRETIZATION OF H AND U',/,1X,
+     &              'NO CROUT-TYPE PRECONDITIONNING',///)
+          CALL PLANTE(1)
+          STOP
         ENDIF
       ENDIF
 !

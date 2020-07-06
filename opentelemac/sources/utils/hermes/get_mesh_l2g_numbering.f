@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE GET_MESH_L2G_NUMBERING
-!                    *************************
+!                   *************************
+                    SUBROUTINE GET_MESH_L2G_NUMBERING
+!                   *************************
 !
      &(FFORMAT,FID,KNOLG,NPOIN,IERR)
 !

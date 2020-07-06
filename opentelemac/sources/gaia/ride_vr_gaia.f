@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE RIDE_VR_GAIA
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE RIDE_VR_GAIA
+!                   ***********************
 !
      & (KSR,KS,UNORM,HN,GRAV,XMVE,XMVS,NPOIN,ACLADM)
 !

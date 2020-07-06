@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SURV11
-!                    *****************
+!                   *****************
+                    SUBROUTINE SURV11
+!                   *****************
 !
      &(SURFAC, XEL,YEL,NELEM,NELMAX)
 !

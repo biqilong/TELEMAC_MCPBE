@@ -148,7 +148,7 @@ class ApiModule():
                     self.logger.debug('%d: starting compilation: %s',
                                       self.rank, user_fortran)
                     incs_flags = get_api_incs_flags()
-                    ld_flags = get_api_ld_flags(False)
+                    ld_flags = get_api_ld_flags('api', False)
                     compile_princi_lib(user_fortran,
                                        incs_flags, ld_flags)
 

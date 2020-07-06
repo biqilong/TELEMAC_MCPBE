@@ -1,7 +1,6 @@
-
-!                    ************************
-                     SUBROUTINE BEDLOAD_WILCOCK_CROWE
-!                    ************************
+!                   ************************
+                    SUBROUTINE BEDLOAD_WILCOCK_CROWE
+!                   ************************
 !
      &(TOB, MU, ACLADM, DM, AVA, GRAV, XMVE, XMVS, SANFRA, QSC, AC, ACP,
      & SLOPEFF,COEFPN)

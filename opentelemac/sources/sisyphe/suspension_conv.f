@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE SUSPENSION_CONV
-!                    **************************
+!                   **************************
+                    SUBROUTINE SUSPENSION_CONV
+!                   **************************
 !
      &(TOB,XMVE,KSR,NPOIN,ZREF,U2D,V2D,HN,
      & UCONV,VCONV,KARMAN,ZERO,XWC,ALPHA,RESOL,GLOSEG1,GLOSEG2,NSEG,

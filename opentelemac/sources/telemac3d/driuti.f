@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DRIUTI
-!                    *****************
+!                   *****************
+                    SUBROUTINE DRIUTI
+!                   *****************
 !
      & (FRI, RI, ITYP, ITRAC, NPOIN3)
 !

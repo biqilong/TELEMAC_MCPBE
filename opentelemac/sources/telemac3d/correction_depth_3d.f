@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE CORRECTION_DEPTH_3D
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE CORRECTION_DEPTH_3D
+!                   ******************************
 !
      &(GLOSEG,DIMGLO)
 !
@@ -132,9 +132,9 @@
 !           NOTHING TO DO, THIS WAS DONE IN FLUX_EF_VF_3D
 !
           ELSE
-           WRITE(LU,*) 'CORRECTION_DEPTH_3D: UNKNOWN ELEMENT:',IELM3
-           CALL PLANTE(1)
-           STOP
+            WRITE(LU,*) 'CORRECTION_DEPTH_3D: UNKNOWN ELEMENT:',IELM3
+            CALL PLANTE(1)
+            STOP
           ENDIF
 !
           OPTPOS=2

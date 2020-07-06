@@ -1,6 +1,6 @@
-!                    ***********************
-                     SUBROUTINE GRETEL_AUTOP
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE GRETEL_AUTOP
+!                   ***********************
      &(GEO,GEOFORMAT,BND,RES,RESFORMAT,NPROC,NPLAN_RES)
 !
 !

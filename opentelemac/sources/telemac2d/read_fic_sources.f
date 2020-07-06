@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE READ_FIC_SOURCES
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE READ_FIC_SOURCES
+!                   ***************************
 !
      &( Q , WHAT , AT , NFIC , LISTIN , FOUND )
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DISIMP
-!                    *****************
+!                   *****************
+                    SUBROUTINE DISIMP
+!                   *****************
 !
      &(Q,Q2BOR,NUMLIQ,IFRLIQ,NSOLDIS,WORK1,QBOR,NPTFR,MASK,MESH)
 !

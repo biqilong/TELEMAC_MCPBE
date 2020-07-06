@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE SD_MD
-!                    ****************
+!                 ****************
+                  SUBROUTINE SD_MD
+!                 ****************
 !
      &(N,IA,JA,MAXU,V,L,HEAD,LAST,NEXT,MARK,FLAG)
 !

@@ -121,7 +121,7 @@
 !      DOUBLE PRECISION  COUPLE
 !      EXTERNAL          COUPLE
 !
-      NT=NPLAN
+      NT=NDIRE
       DTETAR=DEUPI/DBLE(NT)
 !
 !=======================================================================

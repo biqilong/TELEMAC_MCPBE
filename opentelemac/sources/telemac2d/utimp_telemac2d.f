@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE UTIMP_TELEMAC2D
-!                    **************************
+!                   **************************
+                    SUBROUTINE UTIMP_TELEMAC2D
+!                   **************************
 !
      &(LTL,ATL,GRADEBL,GRAPRDL,LISDEBL,LISPRDL)
 !

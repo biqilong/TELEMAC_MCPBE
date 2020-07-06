@@ -1,6 +1,6 @@
-!                    *******************
-                     MODULE FRICTION_DEF
-!                    *******************
+!                   *******************
+                    MODULE FRICTION_DEF
+!                   *******************
 !
 !
 !***********************************************************************
@@ -35,13 +35,14 @@
       TYPE FRICTION_OBJ
 !         SEQUENCE
         INTEGER          :: GNUMB(2) ! GLOBAL NUMBER OF THE ZONE
-        INTEGER          :: RTYPE(2) ! TYPE OF LAW USED
+        INTEGER          :: RTYPE ! TYPE OF LAW USED
+        INTEGER          :: VTYPE
         ! USE REAL BECAUSE CHESTR IS SAVED AS SIMPLE PRECISION IN SELAFIN DATA
         ! --------------------------------------------------------------------
-        DOUBLE PRECISION :: RCOEF(2) ! FRICTION PARAMETER
-        DOUBLE PRECISION :: NDEF(2)  ! DEFAULT MANNING (FOR C-W LAW)
-        DOUBLE PRECISION :: DP       ! DIAMETER OF ROUGHNESS ELEMENT
-        DOUBLE PRECISION :: SP       ! SPACING OF ROUGHNESS ELEMENT
+        DOUBLE PRECISION :: RCOEF ! FRICTION PARAMETER
+        DOUBLE PRECISION :: NDEF  ! DEFAULT MANNING (FOR C-W LAW)
+        DOUBLE PRECISION :: VCOEF(15)    ! 15 COEFFICIENTS 
+        
         TYPE(POINTER_TO_FRICTION), POINTER, DIMENSION(:) :: ADR
       END TYPE FRICTION_OBJ
 !

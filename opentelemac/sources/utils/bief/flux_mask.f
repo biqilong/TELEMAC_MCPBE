@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE FLUX_MASK
-!                    ********************
+!                   ********************
+                    SUBROUTINE FLUX_MASK
+!                   ********************
 !
      &(FXMAT,NSEG,GLOSEG,SIZGLO,MASKPT)
 !

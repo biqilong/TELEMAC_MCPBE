@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE WALL_FRICTION
-!                    ************************
+!                   ************************
+                    SUBROUTINE WALL_FRICTION
+!                   ************************
 !
      &(UETUTA,AUBOR,CFBOR,DISBOR,UN,VN,LIMPRO,NBOR,NPTFR,
      & KARMAN,PROPNU,LISRUG,KNEU,IELMU,IKLBOR,

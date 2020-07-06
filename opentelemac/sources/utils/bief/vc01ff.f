@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC01FF
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC01FF
+!                   *****************
 !
      &(XMUL,SF,F,X,Y,Z,
      & IKLE1,IKLE2,IKLE3,IKLE4,NBOR,NELEB,NELEBX,W1,W2,W3,W4,

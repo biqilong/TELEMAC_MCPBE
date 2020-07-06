@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SMAGO3D
-!                    ******************
+!                   ******************
+                    SUBROUTINE SMAGO3D
+!                   ******************
 !
      &(U,V,W,TRAV1,TRAV2,TRAV3,TRAV4,TRAV5,TRAV6,
      & SVIDE,MESH3,IELM3,MSK,MASKEL)

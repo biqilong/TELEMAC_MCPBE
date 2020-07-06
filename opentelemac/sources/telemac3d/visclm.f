@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VISCLM
-!                    *****************
+!                   *****************
+                    SUBROUTINE VISCLM
+!                   *****************
 !
      &(VISCVI,VISCTA,RI,U,V,DELTAR,Z,HN,TRAV1,TRAV2,TRAV3,
      & TRAV4,TRAV5,TRAV7,MESH3D,IELM3,GRAV,

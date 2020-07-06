@@ -1,6 +1,6 @@
-!                    ****************
-                     SUBROUTINE BILAN
-!                    ****************
+!                   ****************
+                    SUBROUTINE BILAN
+!                   ****************
 !
      &(MESH,H,WORK,AT,DT,LT,NIT,INFO,MASSES,MSK,MASKEL,EQUA,POROSS,
      & OPTBAN,NPTFR,FLBOR,FLUX_BOUNDARIES,NUMLIQ,NFRLIQ,GAMMA)
@@ -76,7 +76,7 @@
      &                                   FLUXN_OLD,NTRAC,TMAX
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DSUM
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -122,7 +122,7 @@
       ENDIF
       MASSE2 = BIEF_SUM(WORK)
 !
-      IF(NCSIZE.GT.1) MASSE2 = P_DSUM(MASSE2)
+      IF(NCSIZE.GT.1) MASSE2 = P_SUM(MASSE2)
 !
       IF(LT.EQ.0) THEN
 !       INITIALISATION
@@ -133,7 +133,7 @@
         FLUXN_OLD = 0.D0
       ELSE
 !       SOURCE TERMS ADDED TO MASS
-        IF(NCSIZE.GT.1) MASSES = P_DSUM(MASSES)
+        IF(NCSIZE.GT.1) MASSES = P_SUM(MASSES)
         MASSET = MASSET + MASSES
       ENDIF
 !
@@ -156,7 +156,7 @@
         ENDIF
         IF(NCSIZE.GT.1) THEN
           DO I=1,NFRLIQ
-            FLUX_BOUNDARIES(I)=P_DSUM(FLUX_BOUNDARIES(I))
+            FLUX_BOUNDARIES(I)=P_SUM(FLUX_BOUNDARIES(I))
           ENDDO
         ENDIF
       ENDIF

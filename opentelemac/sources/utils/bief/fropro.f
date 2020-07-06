@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FROPRO
-!                    *****************
+!                   *****************
+                    SUBROUTINE FROPRO
+!                   *****************
 !
      &(NBOR,IKLE,NELEM,NELMAX,NPOIN,NPMAX,NPTFR,IELM,
      & IKLEM1,LIMVOI,OPTASS,PRODUC,MXPTVS,T1,

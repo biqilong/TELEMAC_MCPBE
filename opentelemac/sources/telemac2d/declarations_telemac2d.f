@@ -1,6 +1,6 @@
-!                    *****************************
-                     MODULE DECLARATIONS_TELEMAC2D
-!                    *****************************
+!                   *****************************
+                    MODULE DECLARATIONS_TELEMAC2D
+!                   *****************************
 !
 !
 !***********************************************************************
@@ -2345,9 +2345,13 @@
 !
       TYPE(BIEF_OBJ), TARGET :: KFROPT, NKFROT
 !
-!     ???????
+!     DEFAULT MANNING COEFFICIENT
 !
-      TYPE(BIEF_OBJ), TARGET :: NDEFMA, LINDDP, LINDSP
+      TYPE(BIEF_OBJ), TARGET :: NDEFMA
+!
+!     COEFFICIENTS FOR VEGETATION LAW AND VEGETATION LAW NUMBER
+!
+      TYPE(BIEF_OBJ), TARGET :: VCOEFF, VEGLAW
 !
 !     ???????
 !
@@ -2361,9 +2365,9 @@
 !
       INTEGER:: NZONMX
 !
-!     IF YES, NON-SUBMERGED VEGETATION FRICTION
+!     IF YES, VEGETATION FRICTION
 !
-      LOGICAL:: LINDNER
+      LOGICAL:: VEGETATION
 !
 !     IF YES, FRICTION DATA
 !
@@ -2372,14 +2376,6 @@
 !     DEFAULT MANNING VALUE (FOR COLEBROOK-WHITE LAW)
 !
       DOUBLE PRECISION :: NDEF
-!
-!     DIAMETER OF ROUGHNESS ELEMENTS
-!
-      DOUBLE PRECISION :: DP
-!
-!     SPACING OF ROUGHNESS ELEMENTS
-!
-      DOUBLE PRECISION :: SP
 !
 !-----------------------------------------------------------------------
 !
@@ -2420,6 +2416,7 @@
       TYPE (WEIR_NODES_PROC)  , ALLOCATABLE :: WN_SEND_PROC(:)
 !
       DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: W_BUF_RECV
+      INTEGER :: LEN_W_BUF, LEN_WT_BUF
       DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: W_BUF_SEND
       DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: WT_BUF_RECV
       DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: WT_BUF_SEND

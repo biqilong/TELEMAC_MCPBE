@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MT05PP
-!                    *****************
+!                   *****************
+                    SUBROUTINE MT05PP
+!                   *****************
 !
      &(T,XM,XMUL,SU,SV,SW,U,V,W,F,G,
      & X,Y,Z,IKLE,NELEM,NELMAX,SIGMAG,SPECAD,NPLAN)

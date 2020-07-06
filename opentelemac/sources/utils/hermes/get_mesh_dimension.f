@@ -1,6 +1,6 @@
-!                    *****************************
-                     SUBROUTINE GET_MESH_DIMENSION
-!                    *****************************
+!                   *****************************
+                    SUBROUTINE GET_MESH_DIMENSION
+!                   *****************************
 !
      &(FFORMAT,FID,NDIM,IERR)
 !

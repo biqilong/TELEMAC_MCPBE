@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VC04TT
-!                    *****************
+!                   *****************
+                    SUBROUTINE VC04TT
+!                   *****************
 !
      &(XMUL,SU,SV,SW,U,V,W,F,H,X,Y,Z,
      & IKLE1,IKLE2,IKLE3,IKLE4,NELEM,NELMAX,W1,W2,W3,W4,FORMUL,SPECAD,

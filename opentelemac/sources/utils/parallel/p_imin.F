@@ -1,6 +1,6 @@
-!                    ***********************
-                     INTEGER FUNCTION P_IMIN
-!                    ***********************
+!                   ***********************
+                    INTEGER FUNCTION P_IMIN
+!                   ***********************
 !
      &(MYPART)
 !
@@ -67,7 +67,7 @@
       ENDIF
       RETURN
 #else
-      WRITE(LU,*) 'CALL OF P_IMAX IN ITS VOID VERSION'
+      WRITE(LU,*) 'CALL OF P_IMIN IN ITS VOID VERSION'
 !
       P_IMIN=MYPART
 !

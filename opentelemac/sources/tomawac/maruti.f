@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MARUTI
-!                    *****************
+!                   *****************
+                    SUBROUTINE MARUTI
+!                   *****************
 !
      &(NMAR,FMTMAR)
 !

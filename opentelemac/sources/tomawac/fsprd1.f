@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE FSPRD1
-!                    *****************
+!                   *****************
+                    SUBROUTINE FSPRD1
+!                   *****************
 !
-     &( FRA   , NPLAN , SPRED1, TETA1 , SPRED2, TETA2 , XLAMDA)
+     &( FRA   , NDIRE , SPRED1, TETA1 , SPRED2, TETA2 , XLAMDA)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   15/06/2011
@@ -44,7 +44,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| DIREC          |-->| DISCRETIZED DIRECTION
 !| FRA            |<--| DIRECTIONAL SPREADING FUNCTION VALUES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| SPRED1         |-->| DIRECTIONAL SPREAD 1
 !| SPRED2         |-->| DIRECTIONAL SPREAD 1
 !| TETA1          |-->| MAIN DIRECTION 1
@@ -59,10 +59,10 @@
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER,INTENT(IN)             :: NPLAN
+      INTEGER,INTENT(IN)             :: NDIRE
       DOUBLE PRECISION,INTENT(IN)    :: SPRED1, TETA1 , SPRED2, TETA2
       DOUBLE PRECISION,INTENT(IN)    :: XLAMDA
-      DOUBLE PRECISION,INTENT(INOUT) :: FRA(NPLAN)
+      DOUBLE PRECISION,INTENT(INOUT) :: FRA(NDIRE)
 !
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -72,7 +72,7 @@
       DELT1 = 1.D0/DELFRA(SPRED1)
       DELT2 = 1.D0/DELFRA(SPRED2)
 !
-      DO JP=1,NPLAN
+      DO JP=1, NDIRE
         FTH = TETA(JP)
 !
         ARGUM = COS(FTH-TETA1)

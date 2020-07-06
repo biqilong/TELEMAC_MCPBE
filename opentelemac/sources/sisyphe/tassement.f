@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE TASSEMENT
-!                    ********************
+!                   ********************
+                    SUBROUTINE TASSEMENT
+!                   ********************
 !
      &(NPOIN,DTS,ELAY,DZF_TASS,T2,AVAIL,NSICLA,ES,XMVS,
      & XKV,TRANS_MASS,CONC_VASE,NOMBLAY,MS_SABLE,MS_VASE)
@@ -156,13 +156,13 @@
 !
         IF(NSICLA.GT.1) THEN
           DO J=1,NOMBLAY
-           IF(ES(I,J).GE.1.D-6) THEN
-             AVAIL(I,J,1)=MS_SABLE(I,J)/XMVS/ES(I,J)
-             AVAIL(I,J,2)=MS_VASE(I,J)/CONC_VASE(J)/ES(I,J)
-           ELSE
-             AVAIL(I,J,1)=0.D0
-             AVAIL(I,J,2)=0.D0
-           ENDIF
+            IF(ES(I,J).GE.1.D-6) THEN
+              AVAIL(I,J,1)=MS_SABLE(I,J)/XMVS/ES(I,J)
+              AVAIL(I,J,2)=MS_VASE(I,J)/CONC_VASE(J)/ES(I,J)
+            ELSE
+              AVAIL(I,J,1)=0.D0
+              AVAIL(I,J,2)=0.D0
+            ENDIF
           ENDDO
         ENDIF
 !

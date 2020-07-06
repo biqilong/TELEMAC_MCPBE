@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE STOSEG31
-!                    *******************
+!                   *******************
+                    SUBROUTINE STOSEG31
+!                   *******************
 !
      &(NPOIN,NELEM,NELEB,NELMAX,IELM,MXELVS,IKLE,IKLBOR,
      & NBOR,NPTFR,
@@ -447,9 +447,9 @@
 !
 !     SEGMENT ORIENTED LOWER RANK TO HIGHER RANK
                       IF(IG1.LT.IG2) THEN
-                         ORISEG(IVOIS,JSEG) = 1
+                        ORISEG(IVOIS,JSEG) = 1
                       ELSE
-                         ORISEG(IVOIS,JSEG) = 2
+                        ORISEG(IVOIS,JSEG) = 2
                       ENDIF
 !
                       FOUND = .TRUE.

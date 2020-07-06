@@ -1,6 +1,6 @@
-!                    **************
-                     SUBROUTINE LIT
-!                    **************
+!                   **************
+                    SUBROUTINE LIT
+!                   **************
 !
      &( X , W , I , C , NVAL , TYPE , CANAL , STD2 , ISTAT )
 !

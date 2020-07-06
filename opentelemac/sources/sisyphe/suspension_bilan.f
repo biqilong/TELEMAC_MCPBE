@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE SUSPENSION_BILAN
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE SUSPENSION_BILAN
+!                   ***************************
 !
      &(MESH,CST,HN,ZFCL_S,MASKEL,IELMT,ITRA,LT,NIT,DT,CSF,
      & MASSOU,MASED0,MSK,ENTET,MASTEN,MASTOU,MASINI,T2,

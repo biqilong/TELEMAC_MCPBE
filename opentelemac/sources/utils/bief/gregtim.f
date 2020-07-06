@@ -1,6 +1,6 @@
-!                            ******************
-                             SUBROUTINE GREGTIM
-!                            ******************
+!                           ******************
+                            SUBROUTINE GREGTIM
+!                           ******************
 !
      &(JULTIM,YEAR,MONTH,DAY,HOUR,MINU,SEC)
 !

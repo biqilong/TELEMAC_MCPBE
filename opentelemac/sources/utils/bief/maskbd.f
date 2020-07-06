@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASKBD
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASKBD
+!                   *****************
 !
      &(MASKEL,ZFE,ZF,HN,HMIN,IKLE,IFABOR,ITRA01,NELEM,NPOIN)
 !

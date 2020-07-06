@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE KMOYEN
-!                    *****************
+!                   *****************
+                    SUBROUTINE KMOYEN
+!                   *****************
 !
-     &(XKMOY, XK, F, NF, NPLAN, NPOIN2, AUX1, AUX2, AUX3)
+     &(XKMOY, XK, F, NF, NDIRE, NPOIN2, AUX1, AUX2, AUX3)
 !
 !***********************************************************************
 ! TOMAWAC   V6P3                                   20/06/2011
@@ -49,7 +49,7 @@
 !| F              |---| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TAILF          |-->| SPECTRUM QUEUE FACTOR
 !| XK             |-->| DISCRETIZED WAVE NUMBER
@@ -65,8 +65,8 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: NF,NPLAN,NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)             :: NF,NDIRE,NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: AUX1(NPOIN2),AUX2(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: AUX3(NPOIN2)
@@ -74,7 +74,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER  IPLAN , JF    , IP
+      INTEGER  IDIRE , JF    , IP
       DOUBLE PRECISION COEFF , SEUIL , CTE1  , CTE2  , AUX4
 !
 !-----------------------------------------------------------------------
@@ -89,16 +89,16 @@
 !
 !     SUMS UP THE CONTRIBUTIONS FOR THE DISCRETISED PART OF THE SPECTRUM
 !
-      DO JF = 1,NF
+      DO JF = 1, NF
 !
         AUX4=DFREQ(JF)
 !
         DO IP=1,NPOIN2
           AUX3(IP) = 0.D0
         ENDDO
-        DO IPLAN = 1,NPLAN
-          DO IP=1,NPOIN2
-            AUX3(IP) = AUX3(IP) + F(IP,IPLAN,JF)
+        DO IDIRE = 1, NDIRE
+          DO IP=1, NPOIN2
+            AUX3(IP) = AUX3(IP) + F(IP,IDIRE,JF)
           ENDDO
         ENDDO
 !

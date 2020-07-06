@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VISCOS
-!                    *****************
+!                   *****************
+                    SUBROUTINE VISCOS
+!                   *****************
 !
      &(VISCVI,VISCTA,DNUTAV,DNUTAH,DNUVIV,DNUVIH,NTRAC,ITURBH,ITURBV)
 !

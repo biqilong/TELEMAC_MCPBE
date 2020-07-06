@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FRICTI
-!                    *****************
+!                   *****************
+                    SUBROUTINE FRICTI
+!                   *****************
 !
      &(FU_IMP,FV_IMP,FUDRAG,FVDRAG,UN,VN,HN,CF,MESH,T1,T2,VERTIC,
      & UNSV2D,MSK,MASKEL,HFROT)

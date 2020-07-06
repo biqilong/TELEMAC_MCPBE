@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE LAYERS_P_GAIA
-!                    *******************
+!                   *******************
+                    SUBROUTINE LAYERS_P_GAIA
+!                   *******************
 !
      &(PATH_PRE,FILE_PRE,JG)
 !

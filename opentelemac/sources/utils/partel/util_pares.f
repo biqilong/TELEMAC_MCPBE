@@ -144,46 +144,46 @@
       ALLOCATE(IFABOR(NELEM,4))
       IFABOR(:,:) = 0
       DO IPOIN = 1, NPOIN
-          IKLE_TRI(:,:) = 0
-          VOIS_TRI(:,:) = 0
-          NBTRI         = 0
-          NV            = NVOIS(IPOIN)
-          ADR           = IADR(IPOIN)
-          DO IVOIS = 1, NV
-              IELEM = NEIGH(ADR+IVOIS)
-              DO IFACE = 1 , NFACE
-                  IF ( IFABOR(IELEM,IFACE) .EQ. 0 ) THEN
-                  I1 = IKLE(IELEM,SOMFAC(1,IFACE))
-                  I2 = IKLE(IELEM,SOMFAC(2,IFACE))
-                  I3 = IKLE(IELEM,SOMFAC(3,IFACE))
-                  M1 = MAX(I1,(MAX(I2,I3)))
-                  M3 = MIN(I1,(MIN(I2,I3)))
-                  M2 = I1+I2+I3-M1-M3
-                  FOUND = .FALSE.
-                  DO ITRI = 1, NBTRI
-                      IF ( IKLE_TRI(ITRI,1) .EQ. M1 ) THEN
-                          IF ( IKLE_TRI(ITRI,2) .EQ. M2 .AND.
-     &                         IKLE_TRI(ITRI,3) .EQ. M3 ) THEN
-                               IELEM2 = VOIS_TRI(ITRI,1)
-                               IFACE2 = VOIS_TRI(ITRI,2)
-                               IFABOR(IELEM ,IFACE ) = IELEM2
-                               IFABOR(IELEM2,IFACE2) = IELEM
-                               FOUND = .TRUE.
-                          END IF
-                      END IF
-                  END DO
-                  IF ( .NOT. FOUND) THEN
-                      NBTRI             = NBTRI + 1
-                      IKLE_TRI(NBTRI,1) = M1
-                      IKLE_TRI(NBTRI,2) = M2
-                      IKLE_TRI(NBTRI,3) = M3
-                      VOIS_TRI(NBTRI,1) = IELEM
-                      VOIS_TRI(NBTRI,2) = IFACE
+        IKLE_TRI(:,:) = 0
+        VOIS_TRI(:,:) = 0
+        NBTRI         = 0
+        NV            = NVOIS(IPOIN)
+        ADR           = IADR(IPOIN)
+        DO IVOIS = 1, NV
+          IELEM = NEIGH(ADR+IVOIS)
+          DO IFACE = 1 , NFACE
+            IF ( IFABOR(IELEM,IFACE) .EQ. 0 ) THEN
+              I1 = IKLE(IELEM,SOMFAC(1,IFACE))
+              I2 = IKLE(IELEM,SOMFAC(2,IFACE))
+              I3 = IKLE(IELEM,SOMFAC(3,IFACE))
+              M1 = MAX(I1,(MAX(I2,I3)))
+              M3 = MIN(I1,(MIN(I2,I3)))
+              M2 = I1+I2+I3-M1-M3
+              FOUND = .FALSE.
+              DO ITRI = 1, NBTRI
+                IF ( IKLE_TRI(ITRI,1) .EQ. M1 ) THEN
+                  IF ( IKLE_TRI(ITRI,2) .EQ. M2 .AND.
+     &                 IKLE_TRI(ITRI,3) .EQ. M3 ) THEN
+                    IELEM2 = VOIS_TRI(ITRI,1)
+                    IFACE2 = VOIS_TRI(ITRI,2)
+                    IFABOR(IELEM ,IFACE ) = IELEM2
+                    IFABOR(IELEM2,IFACE2) = IELEM
+                    FOUND = .TRUE.
                   END IF
-              END IF
+                END IF
               END DO
-!
+              IF ( .NOT. FOUND) THEN
+                NBTRI             = NBTRI + 1
+                IKLE_TRI(NBTRI,1) = M1
+                IKLE_TRI(NBTRI,2) = M2
+                IKLE_TRI(NBTRI,3) = M3
+                VOIS_TRI(NBTRI,1) = IELEM
+                VOIS_TRI(NBTRI,2) = IFACE
+              END IF
+            END IF
           END DO
+!
+        END DO
       END DO
       !
       NELEB = COUNT(IFABOR==0)

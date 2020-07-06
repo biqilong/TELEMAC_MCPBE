@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE GET_DATA_NVAR
-!                    ************************
+!                   ************************
+                    SUBROUTINE GET_DATA_NVAR
+!                   ************************
 !
      &(FFORMAT,FID,NVAR,IERR)
 !

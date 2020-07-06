@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE P_WRIT
-!                    *****************
+!                   ******************
+                    SUBROUTINE P_DWRIT
+!                   ******************
 !
      &(BUFFER,N,BYTES,DEST,DATATYPE)
 !
@@ -94,14 +94,14 @@
 #  endif
 !
       IF (IER.NE.0) THEN
-        WRITE(LU,*) 'P_WRITE: ERROR IN MPI_SEND'
+        WRITE(LU,*) 'P_DWRITE: ERROR IN MPI_SEND'
         WRITE(LU,*) 'MPI ERROR ',IER
         CALL PLANTE(1)
         STOP
       ENDIF
       RETURN
 #else
-      WRITE(LU,*) 'CALL OF P_WRIT IN ITS VOID VERSION'
+      WRITE(LU,*) 'CALL OF P_DWRIT IN ITS VOID VERSION'
 #endif
 !
 !----------------------------------------------------------------------

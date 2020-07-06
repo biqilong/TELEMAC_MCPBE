@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ANGLES
-!                    *****************
+!                   *****************
+                    SUBROUTINE ANGLES
+!                   *****************
 !
      &( XLAMD , DTPLUS, DTMOIN)
 !

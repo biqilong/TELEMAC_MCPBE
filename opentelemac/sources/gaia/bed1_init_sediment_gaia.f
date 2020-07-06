@@ -1,6 +1,6 @@
-!                    **********************************
-                     SUBROUTINE BED1_INIT_SEDIMENT_GAIA
-!                    **********************************
+!                   **********************************
+                    SUBROUTINE BED1_INIT_SEDIMENT_GAIA
+!                   **********************************
 !
      &(NSICLA,ELAY,ZF,ZR,NPOIN,XMVS0,ES,NOMBLAY,
      & DEBU,VOLU2D,NUMSTRAT,MAXVAR)
@@ -42,7 +42,7 @@
      & CONC_MUD_FOUND,TOCE_MUD_FOUND,PARTHENIADES_FOUND,MTRANS_FOUND
 
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY: P_DSUM
+      USE INTERFACE_PARALLEL, ONLY: P_SUM
       IMPLICIT NONE
 !
 !!-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -123,7 +123,7 @@
           DO IMUD = 1,NMUD
             FLUX_NEG_MUD_ACTIV_LAYER(IMUD,IPOIN)= 0.D0
             DO ILAYER=1,NOMBLAY
-             FLUX_POS_MUD_ACTIV_LAYER(IMUD,ILAYER,IPOIN)=0.D0
+              FLUX_POS_MUD_ACTIV_LAYER(IMUD,ILAYER,IPOIN)=0.D0
             ENDDO
           ENDDO
         ENDDO
@@ -451,9 +451,9 @@
                 TOTSAND= TOTSAND + RATIO_SAND(ISAND,ILAYER,IPOIN)
               ENDDO
               IF(TOTMUD+TOTSAND.GT.0.D0)THEN
-                 RATIO_MUD_SAND(ILAYER,IPOIN)=TOTMUD/(TOTMUD+TOTSAND)
+                RATIO_MUD_SAND(ILAYER,IPOIN)=TOTMUD/(TOTMUD+TOTSAND)
               ELSE
-                 RATIO_MUD_SAND(ILAYER,IPOIN)=1.D0
+                RATIO_MUD_SAND(ILAYER,IPOIN)=1.D0
               ENDIF
             ENDDO
           ENDDO
@@ -474,10 +474,10 @@
                 CHECK_RS=CHECK_RS+RATIO_SAND(ISAND,ILAYER,IPOIN)
               ENDDO
               IF(ABS(CHECK_RS-1.D0).GE.1.D-7) THEN
-                 WRITE(LU,*)'SUM OF SAND RATE COEFF MUST BE EQUAL TO 1!'
-                 WRITE(LU,*)'VERIFY YOUR MASS RATE OF SAND'
-                 CALL PLANTE(1)
-                 STOP
+                WRITE(LU,*)'SUM OF SAND RATE COEFF MUST BE EQUAL TO 1!'
+                WRITE(LU,*)'VERIFY YOUR MASS RATE OF SAND'
+                CALL PLANTE(1)
+                STOP
               ENDIF
             ENDIF
             IF(NMUD.GT.0) THEN
@@ -485,10 +485,10 @@
                 CHECK_RM=CHECK_RM+RATIO_MUD(IMUD,ILAYER,IPOIN)
               ENDDO
               IF(ABS(CHECK_RM-1.D0).GE.1.D-7) THEN
-                 WRITE(LU,*)'SUM OF MUD RATE COEFF MUST BE EQUAL TO 1!'
-                 WRITE(LU,*)'VERIFY YOUR MASS RATE OF MUD'
-                 CALL PLANTE(1)
-                 STOP
+                WRITE(LU,*)'SUM OF MUD RATE COEFF MUST BE EQUAL TO 1!'
+                WRITE(LU,*)'VERIFY YOUR MASS RATE OF MUD'
+                CALL PLANTE(1)
+                STOP
               ENDIF
             ENDIF
           ENDDO
@@ -511,7 +511,7 @@
      &          *RATIO_MUD(IMUD,ILAYER,IPOIN)
               ENDDO
             ENDDO
-           ENDDO
+          ENDDO
         ELSE
           DO IPOIN = 1,NPOIN
             DO ILAYER = 1,NOMBLAY
@@ -591,7 +591,7 @@
 !
       IF(NCSIZE.GT.1) THEN
         DO ICLA=1,NSICLA
-          MASSTOT(ICLA) = P_DSUM(MASSTOT(ICLA))
+          MASSTOT(ICLA) = P_SUM(MASSTOT(ICLA))
         ENDDO
       ENDIF
 !

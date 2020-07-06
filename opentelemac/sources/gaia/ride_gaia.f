@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE RIDE_GAIA
-!                    ********************
+!                   ********************
+                    SUBROUTINE RIDE_GAIA
+!                   ********************
 !
      &(KS,TW,UW,UNORM,GRAV,XMVE,XMVS,VCE,NPOIN,KSPRATIO,ACLADM)
 !

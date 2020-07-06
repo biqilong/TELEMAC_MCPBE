@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SET_DIF
-!                    ******************
+!                   ******************
+                    SUBROUTINE SET_DIF
+!                   ******************
 !
      &(FC,VOLU2D,Z,NPOIN2,NPOIN3,DT,FLUX,
      & NPLAN,WCHU,FLUDPT,FLUDP,FLUER,IPBOT,VISCTA)

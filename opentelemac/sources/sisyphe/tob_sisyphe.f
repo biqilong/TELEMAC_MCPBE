@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE TOB_SISYPHE
-!                    **********************
+!                   **********************
+                    SUBROUTINE TOB_SISYPHE
+!                   **********************
 !
      & (TOB, TOBW, MU, KS,KSP, KSR,CF,FW,CHESTR,UETCAR,
      &  CF_TEL,KS_TEL,CODE,

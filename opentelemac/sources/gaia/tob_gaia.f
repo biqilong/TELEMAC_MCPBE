@@ -1,6 +1,6 @@
-!                    *******************
-                     SUBROUTINE TOB_GAIA
-!                    *******************
+!                   *******************
+                    SUBROUTINE TOB_GAIA
+!                   *******************
 !
      & (TOB, TOBW, TOBCW_MEAN, TOBCW_MAX, THETAC, THETAW, MU,
      &  KS,KSP, KSR,CF,FW,UETCAR,CF_TEL,KS_TEL,CODE,

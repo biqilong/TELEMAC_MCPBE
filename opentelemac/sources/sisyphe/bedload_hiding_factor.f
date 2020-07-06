@@ -1,6 +1,6 @@
-!                    ********************************
-                     SUBROUTINE BEDLOAD_HIDING_FACTOR
-!                    ********************************
+!                 ********************************
+                  SUBROUTINE BEDLOAD_HIDING_FACTOR
+!                 ********************************
 !
      &(ACLADM, HIDFAC, NPOIN, HIDI, DM, KARIM_HOLLY_YANG, HIDING)
 !

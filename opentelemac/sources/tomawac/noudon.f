@@ -1,49 +1,49 @@
-!                    *****************
-                     SUBROUTINE NOUDON
-!                    *****************
-!     
+!                   *****************
+                    SUBROUTINE NOUDON
+!                   *****************
+!
      &     (F1,NAME1,MODE1, F2,NAME2,MODE2,F3,NAME3,MODE3,
      &     NPOIN,NDON,FFORMAT,AT,TV1,TV2,
      &     F11,F12,F21,F22,F31,F32,INDIC,CHDON,NVAR,TEXTE,
      &     TROUVE,UNITIME,PHASTIME)
-!     
+!
 !***********************************************************************
 !     TOMAWAC   V6P3                                  21/06/2011
 !***********************************************************************
-!     
+!
 !     brief    COMPUTES THE CURRENT / WIND VELOCITY
 !     +                FOR THE CURRENT TIME STEP AND ON THE COMPUTATION MESH.
 !     +
 !     +           (INSPIRED FROM SUBROUTINE FOND IN TELEMAC2D)
-!     
+!
 !     history  N.DURAND (HRW), S.E.BOURBAN (HRW)
 !     +        13/07/2010
 !     +        V6P0
 !     +   Translation of French comments within the FORTRAN sources into
 !     +   English comments
-!     
+!
 !     history  N.DURAND (HRW), S.E.BOURBAN (HRW)
 !     +        21/08/2010
 !     +        V6P0
 !     +   Creation of DOXYGEN tags for automated documentation and
 !     +   cross-referencing of the FORTRAN sources
-!     
+!
 !     history  G.MATTAROLO (EDF - LNHE)
 !     +        20/06/2011
 !     +        V6P1
 !     +   Translation of French names of the variables in argument
-!     
+!
 !     history  J-M HERVOUET (EDF - LNHE)
 !     +        16/11/2012
 !     +        V6P3
 !     +   Only SELAFIN format with same mesh kept. Arguments removed.
-!     
+!
 !     history  E. GAGNAIRE-RENOU & J-M HERVOUET (EDF - LNHE)
 !     +        16/05/2013
 !     +        V6P3
 !     +   In the case where a new record is not read, array TROUVE must be
 !     +   however built.
-!     
+!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !     | AT             |-->| COMPUTATION TIME
 !     | FFORMAT         |-->| DATA FILE FORMAT
@@ -75,17 +75,17 @@
 !     | X              |-->| ABSCISSAE OF POINTS IN THE MESH
 !     | Y              |-->| ORDINATES OF POINTS IN THE MESH
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!     
+!
       USE BIEF
       USE DECLARATIONS_TOMAWAC,ONLY: DEBUG
       USE INTERFACE_TOMAWAC, EX_NOUDON => NOUDON
       USE INTERFACE_HERMES
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
-!     
-!     
+!
+!
 !     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!     
+!
       INTEGER, INTENT(IN)             :: NDON,NPOIN,INDIC
       INTEGER, INTENT(INOUT)          :: NVAR
       INTEGER, INTENT(IN)             :: MODE1,MODE2,MODE3
@@ -100,9 +100,9 @@
       CHARACTER(LEN=32),INTENT(IN)    :: NAME1,NAME2,NAME3
       CHARACTER(LEN=32),INTENT(IN)    :: TEXTE(30)
       LOGICAL, INTENT(INOUT)          :: TROUVE(3)
-!     
+!
 !     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-!     
+!
       INTEGER I,J,MODE(3)
       DOUBLE PRECISION COEF
       CHARACTER(LEN=32) NAME(3),FULL_NAME(3)
@@ -112,9 +112,9 @@
       INTEGER :: RECORD1,RECORD2
       DOUBLE PRECISION :: TIME1,TIME2
       INTEGER :: IERR
-!     
+!
 !-----------------------------------------------------------------------
-!     
+!
       MODE(1)=MODE1
       MODE(2)=MODE2
       MODE(3)=MODE3
@@ -124,24 +124,24 @@
       DO J=1,3
         TROUVE(J)=.FALSE.
       ENDDO
-!     
+!
 !-----------------------------------------------------------------------
-!     
+!
       IF(AT.GT.TV2) THEN
-!     
+!
         IF(DEBUG.GT.0) THEN
           WRITE(LU,*) '   NOUDON : READING A NEW RECORD'
         ENDIF
-!     
+!
         IF(INDIC.EQ.3) THEN
-!     
+!
 !     ------------------------------------------------------------------
 !     READS A SELAFIN FILE OF TYPE: TELEMAC
 !     ------------------------------------------------------------------
-!     
-!     
+!
+!
 !     The test is useless as fields have already been checked for the initial value
-!     
+!
           CALL GET_DATA_NVAR(FFORMAT,NDON,NVAR,IERR)
           CALL CHECK_CALL(IERR,'NOUDON:GET_DATA_NVAR')
 !
@@ -165,7 +165,7 @@
           ENDDO
           DEALLOCATE(VAR_NAME)
           DEALLOCATE(VAR_UNIT)
-!     
+!
 !     Look for the two record before and after at for the interpolation
           RECORD1 = 0
           RECORD2 = 1
@@ -213,7 +213,7 @@
             ENDIF
           ENDDO
 !     Read the variables
-!     
+!
 !     Check if all the variables are found for record2
           DO J=1,3
             IF(MODE(J).EQ.2.AND..NOT.TROUVE(J)) THEN
@@ -239,13 +239,13 @@
               ENDIF
             ENDIF
           ENDDO
-!     
+!
         ELSEIF (INDIC.EQ.4) THEN
-!     
+!
 !     ---------------------------------------------------------------------
 !     READS A USER-DEFINED FILE FORMAT
 !     ---------------------------------------------------------------------
-!     
+!
           IF(CHDON(1:1).EQ.'C') THEN
             TROUVE(1)=.TRUE.
             TROUVE(2)=.TRUE.
@@ -261,15 +261,15 @@
             MARUT=.TRUE.
             CALL MARUTI(NDON,FFORMAT)
           ENDIF
-!     
+!
         ELSE
-!     
+!
           WRITE(LU,*) '************************************************'
           WRITE(LU,*)'NOUDON : UNKNOWN INDICATOR OF FORMAT : ',INDIC
           WRITE(LU,*) '************************************************'
           CALL PLANTE(1)
         ENDIF
-!     
+!
       ELSE
 !
         TROUVE(1)=.FALSE.
@@ -288,51 +288,51 @@
           TROUVE(2)=.TRUE.
         ENDIF
         IF(MARUT) TROUVE(3)=.TRUE.
-!     
+!
       ENDIF
-!     
+!
 !     --------------------------------------------------------------
 !     INTERPOLATES
 !     --------------------------------------------------------------
 !
-      IF (ABS(TV1-TV2).GT.1.D-30)  THEN 
+      IF (ABS(TV1-TV2).GT.1.D-30)  THEN
         COEF=(AT-TV1)/(TV2-TV1)
       ELSE
         COEF=0
       ENDIF
-!     
+!
       IF(TROUVE(1)) THEN
         DO I=1,NPOIN
           F1(I)=(F12(I)-F11(I))*COEF+F11(I)
         ENDDO
       ENDIF
-!     
+!
       IF(TROUVE(2)) THEN
         DO I=1,NPOIN
           F2(I)=(F22(I)-F21(I))*COEF+F21(I)
         ENDDO
       ENDIF
-!     
+!
       IF(TROUVE(3)) THEN
         DO I=1,NPOIN
           F3(I)=(F32(I)-F31(I))*COEF+F31(I)
         ENDDO
       ENDIF
-!     
+!
 !-----------------------------------------------------------------------
-!     
+!
       RETURN
-!     
+!
 !     IF FAILED TO READ THE FILE ...
-!     
+!
       WRITE(LU,*)'*********************************************'
       WRITE(LU,*)'  ERROR WHILE READING DATA FILE '
       WRITE(LU,*)'    OR UNEXPECTED END OF FILE           '
       WRITE(LU,*)'*********************************************'
       CALL PLANTE(1)
       STOP
-!     
+!
 !-----------------------------------------------------------------------
-!     
+!
       RETURN
       END

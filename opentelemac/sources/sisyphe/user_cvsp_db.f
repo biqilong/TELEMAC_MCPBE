@@ -1,6 +1,6 @@
-!                        ***********************
-                         SUBROUTINE USER_CVSP_DB
-!                        ***********************
+!                       ***********************
+                        SUBROUTINE USER_CVSP_DB
+!                       ***********************
 !
      &(CVSP_DB,J_GLOBAL, TIMESTAMP)
 !

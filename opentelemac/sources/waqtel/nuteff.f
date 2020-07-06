@@ -1,6 +1,6 @@
+!                  **********************
+                    SUBROUTINE NUTEFF
 !                   **********************
-                     SUBROUTINE NUTEFF
-!                    **********************
 !
      &(LNUT,TRR,NPOIN,IPO4,INO3,KP,KN)
 !

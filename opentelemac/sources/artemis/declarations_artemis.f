@@ -1,6 +1,6 @@
-!                    ***************************
-                     MODULE DECLARATIONS_ARTEMIS
-!                    ***************************
+!                   ***************************
+                    MODULE DECLARATIONS_ARTEMIS
+!                   ***************************
 !
 !
 !***********************************************************************
@@ -65,7 +65,7 @@
 !+        V7P3
 !+   1. Consolidation with CHAINTWC, meaning that it is now a choice of integers
 !+   and no longer a logical
-!+   2. NDTWC (now NDIR) and NFTWC (now NF) are no longer read in the 
+!+   2. NDTWC (now NDIR) and NFTWC (now NF) are no longer read in the
 !+   steering file but directly extracted from the spectrum file
 !+   3. Declaration of new structure type: SPECTRUM
 !+   4. PI (and related variables) now defined here and in ARTEMIS_CONSTANTS

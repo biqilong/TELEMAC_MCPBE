@@ -1,6 +1,6 @@
-!                    ************************
-                     PROGRAM HOMERE_TELEMAC2D
-!                    ************************
+!                   ************************
+                    PROGRAM HOMERE_TELEMAC2D
+!                   ************************
 !
 !
 !***********************************************************************
@@ -41,7 +41,7 @@
       USE DECLARATIONS_TELEMAC2D
       USE DECLARATIONS_SISYPHE, ONLY : SIS_FILES,MAXLU_SIS
 !                                                       WAC2
-      USE DECLARATIONS_TOMAWAC, ONLY : WAC_FILES,MAXLU_WAC, 
+      USE DECLARATIONS_TOMAWAC, ONLY : WAC_FILES,MAXLU_WAC,
      &    WACGEO, MESH_TOM=>MESH, COUROU_TEL, VENT_TEL, COPSIS_TEL
       USE DECLARATIONS_WAQTEL,  ONLY : WAQ_FILES,MAXLU_WAQ
       USE DECLARATIONS_KHIONE,  ONLY : ICE_FILES,MAXLU_ICE
@@ -56,7 +56,7 @@
       IMPLICIT NONE
 !
       INTEGER TDEB(8),TFIN(8),NCAR
-!     
+!
       CHARACTER(LEN=24), PARAMETER :: CODE2='SISYPHE                 '
       CHARACTER(LEN=24), PARAMETER :: CODE3='TOMAWAC                 '
       CHARACTER(LEN=24), PARAMETER :: CODE4='WAQTEL                  '
@@ -213,7 +213,7 @@
 !
         CALL CONFIG_CODE(1)
 !     SET TELEMAC PARAMETERS IN TOMAWAC
-        COUROU_TEL = COUROU 
+        COUROU_TEL = COUROU
         VENT_TEL   = VENT
         COPSIS_TEL = INCLUS(COUPLING,'SISYPHE')
 

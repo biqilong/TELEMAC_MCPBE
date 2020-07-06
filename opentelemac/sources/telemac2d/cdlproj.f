@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE CDLPROJ
-!                    ******************
+!                   ******************
+                    SUBROUTINE CDLPROJ
+!                   ******************
 !
      &(NS,NPTFR,NBOR,LIMPRO,XNEBOR,YNEBOR,KNEU,UA)
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VECLE6
-!                    *****************
+!                   *****************
+                    SUBROUTINE VECLE6
+!                   *****************
 !
      & (LV,IKLE,NELEM,NELMAX,NPOIN,V)
 !

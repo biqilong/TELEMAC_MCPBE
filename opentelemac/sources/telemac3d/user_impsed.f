@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_IMPSED
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_IMPSED
+!                   **********************
 !
      &(S3D_IVIDE, S3D_EPAI, S3D_CONC, S3D_TEMP, S3D_HDEP, PDEPOT,
      & S3D_FLUER, ZR    , ZF    , TA    , WC    , X     ,

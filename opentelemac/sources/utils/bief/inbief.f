@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE INBIEF
-!                    *****************
+!                   *****************
+                    SUBROUTINE INBIEF
+!                   *****************
 !
      &(LIHBOR,KLOG,IT1,IT2,IT3,LVMAC,IELMX,
      & LAMBD0,SPHERI,MESH,T1,T2,OPTASS,PRODUC,EQUA,MESH2D)

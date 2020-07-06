@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE SOUKOM
-!                    *****************
+!                   *****************
+                    SUBROUTINE SOUKOM
+!                   *****************
 !
      &(CV1,CV2,S1K,S1E,U,V,W,DELTAR,
      & DUDX,DUDY,DUDZ,DVDX,DVDY,DVDZ,DWDX,DWDY,DWDZ,DTADZ,

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE STOSEG
-!                    *****************
+!                   *****************
+                    SUBROUTINE STOSEG
+!                   *****************
 !
      &(IFABOR,NELEM,NELMAX,NELMAX2,IELM,IKLE,NBOR,NPTFR,
      & GLOSEG,MAXSEG,ELTSEG,ORISEG,NSEG,NELBOR,NULONE,KNOLG,

@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE USER_DRIUTI
-!                    **********************
+!                   **********************
+                    SUBROUTINE USER_DRIUTI
+!                   **********************
 !
      & (FRI, RI, ITYP, ITRAC, NPOIN3)
 !

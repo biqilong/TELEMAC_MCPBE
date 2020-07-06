@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE RIDE_VR
-!                    ******************
+!                   ******************
+                    SUBROUTINE RIDE_VR
+!                   ******************
 !
      & (KSR,KS,UNORM,HN,GRAV,XMVE,XMVS,NPOIN,ACLADM)
 !

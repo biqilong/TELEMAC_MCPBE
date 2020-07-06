@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CFLPSI
-!                    *****************
+!                   *****************
+                    SUBROUTINE CFLPSI
+!                   *****************
 !
      &(SYGMA,U,V,DT,IELM,MESH,MSK,MASKEL)
 !

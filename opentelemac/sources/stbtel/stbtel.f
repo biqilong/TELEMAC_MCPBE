@@ -327,7 +327,7 @@
               WRITE(LU,3001) NUMPB(I)
             ENDDO
             CALL ELMPB (NBPB, NUMPB, X,Y,IKLE,NCOLOR,ISDRY,TRAV2)
-           ELSE
+          ELSE
             WRITE(LU,3009)
           ENDIF
         ELSE
@@ -425,13 +425,13 @@
 !
         CALL DEPARR (IKLE,NDEPAR,LGVEC)
         IF(NDEPAR.NE.0) THEN
-           NITER = NITER + 1
-           IF (NITER.GT.50) THEN
-              WRITE(LU,4000)
-              CALL PLANTE(1)
-              STOP
-           ENDIF
-           GOTO 10
+          NITER = NITER + 1
+          IF (NITER.GT.50) THEN
+            WRITE(LU,4000)
+            CALL PLANTE(1)
+            STOP
+          ENDIF
+          GOTO 10
         ENDIF
 !
         WRITE(LU,4100) NITER

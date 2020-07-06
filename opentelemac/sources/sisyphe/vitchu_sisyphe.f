@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE VITCHU_SISYPHE
-!                    *************************
+!                   *************************
+                    SUBROUTINE VITCHU_SISYPHE
+!                   *************************
 !
      & ( WS , DENS , DM , GRAV , VCE )
 !

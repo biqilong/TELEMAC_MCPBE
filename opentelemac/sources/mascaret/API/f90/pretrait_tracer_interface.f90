@@ -141,9 +141,8 @@ subroutine PRETRAIT_Tracer_INTERFACE( &
    integer                       , parameter     :: POST_RUBENS  = 1
    integer                       , parameter     :: POST_OPTHYCA = 2
    logical  :: ImpressionLoiTracer
-   character(132)     :: arbredappel_old
-   integer  :: NbBief, NbExtLibre, ult
-   integer  i, ib, k, retour
+   integer  :: NbExtLibre, ult
+   integer  i, ib, retour
 
    ! FoX XML
    !--------
@@ -662,7 +661,6 @@ subroutine PRETRAIT_Tracer_INTERFACE( &
    10660 format (/,'CONDITIONS INITIALES TRACER',/, &
                &  '----------------------------',/)
    10690 format ('Presence de concentrations initiales        : ',A3)
-   10695 format ('Mode de saisie par fichier - Nom du fichier : ' , A )
 
    contains
 

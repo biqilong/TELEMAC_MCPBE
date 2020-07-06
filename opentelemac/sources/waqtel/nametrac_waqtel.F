@@ -6,7 +6,7 @@
 !
 !
 !***********************************************************************
-! WAQTEL      V7P3
+! WAQTEL      V8P2
 !***********************************************************************
 !
 !brief    Gives names to tracers added by the water quality
@@ -163,9 +163,15 @@
 !       I. ~~> AED2 VARIABLES
         NWAQ_AED2 = NWQVARS
         DO I = 1,NWQVARS
-          CALL ADDTRACER(NAMETRAC,NTRAC,
-     &      RANK_AED2(I),.TRUE.,
-     &      NAMESAED2(I),NAMESAED2(I),'   mmol/m3      ')
+          IF( NAMESAED2(I) == 'CAR_pH          ' ) THEN
+            CALL ADDTRACER(NAMETRAC,NTRAC,
+     &        RANK_AED2(I),.TRUE.,
+     &        NAMESAED2(I),NAMESAED2(I),'   -/m3         ')
+          ELSE
+            CALL ADDTRACER(NAMETRAC,NTRAC,
+     &        RANK_AED2(I),.TRUE.,
+     &        NAMESAED2(I),NAMESAED2(I),'   mmol/m3      ')
+          ENDIF
           IF( RANK_AED2(I).EQ.NTRAC ) THEN
             WAQTR = WAQTR + 1
             RANKTR(WAQTR) = RANK_AED2(I)

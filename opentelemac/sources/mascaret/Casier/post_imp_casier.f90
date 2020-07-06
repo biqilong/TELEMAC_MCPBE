@@ -63,7 +63,7 @@ subroutine POST_IMP_CASIER( &
 
 !.. Variables locales
    !character(132) :: arbredappel_old
-   integer :: ull, ulc, retour
+   integer :: ull, ulc
    integer :: icasier, nb_casier, iliaison, nb_liaison
 
 !============================ Instructions ==============================

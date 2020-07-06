@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE QSFORM
-!                    *****************
+!                   *****************
+                    SUBROUTINE QSFORM
+!                   *****************
 !
      &(U2D, V2D, TOB, HN, XMVE, TETAP, MU, NPOIN, DM,
      & DENS, GRAV, DSTAR, AC, QSC, QSS)

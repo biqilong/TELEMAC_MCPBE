@@ -94,7 +94,7 @@ subroutine START_ELEMENT_HANDLER(uri, localname, name,attributes)
    character(len=*), intent(in)   :: name
    type(dictionary_t), intent(in) :: attributes
 
-   integer :: i, icurdim, icurtaille
+   integer :: icurdim, icurtaille
    character (len=*), parameter :: MODELE_NAME = 'MASCARET_Model', ETAT_NAME = 'MASCARET_State'
    character (len=80) :: curDim, curTaille
    character (len=5) :: dimVar

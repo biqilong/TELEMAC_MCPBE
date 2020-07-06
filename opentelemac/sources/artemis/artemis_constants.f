@@ -1,6 +1,6 @@
-!                    ****************************
-                     SUBROUTINE ARTEMIS_CONSTANTS
-!                    ****************************
+!                   ****************************
+                    SUBROUTINE ARTEMIS_CONSTANTS
+!                   ****************************
 !
 !
 !***********************************************************************
@@ -30,9 +30,8 @@
 !
 !     VARIOUS CONSTANTS LINKED TO PI
 !
-!##> SEB @ HRW: ALGORITHMIC DIFFERENTIATION
+!     for ALGORITHMIC DIFFERENTIATION using the formula below
       PI = 4.D0 * ATAN( 1.D0 )
-!##< SEB @ HRW
       DEUPI  = 2.D0*PI
       PISUR2 = PI/2.D0
       USDPI  = 1.D0/DEUPI

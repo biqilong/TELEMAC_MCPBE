@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE BIEF_VALIDA
-!                    **********************
+!                   **********************
+                    SUBROUTINE BIEF_VALIDA
+!                   **********************
 !
      &(VARREF,TEXTREF,UREF,REFFORMAT,VARRES,TEXTRES,URES,RESFORMAT,
      & MAXTAB,NP,IT,MAXIT,ACOMPARER)
@@ -73,7 +73,7 @@
       USE DECLARATIONS_TELEMAC
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -150,7 +150,7 @@
               ENDIF
             ENDDO
 !
-            IF(NCSIZE.GT.1) ERMAX=P_DMAX(ERMAX)
+            IF(NCSIZE.GT.1) ERMAX=P_MAX(ERMAX)
             WRITE(LU,61) TEXTRES(IVAR)(1:16),ERMAX
 !
           ELSEIF(FINDREF(IVAR).EQ.1) THEN

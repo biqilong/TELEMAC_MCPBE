@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE NOMVAR_TOMAWAC
-!                    *************************
+!                   *************************
+                    SUBROUTINE NOMVAR_TOMAWAC
+!                   *************************
 !
      &(TEXTE,MNEMO,MAXVAR)
 !

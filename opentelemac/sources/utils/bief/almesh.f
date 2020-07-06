@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ALMESH
-!                    *****************
+!                   *****************
+                    SUBROUTINE ALMESH
+!                   *****************
 !
      &(MESH,NOM,IELM,SPHERI,CFG,FFORMAT,NFIC,EQUA,REFINE,NPLAN,NPMAX,
      & NPTFRX,NELMAX,PROJECTION,LATI0,LONGI0,CONVERGENCE,RLEVEL)
@@ -118,7 +118,7 @@
       USE INTERFACE_HERMES
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -910,7 +910,7 @@
         DO I=1,NPOIN
           NPOIN_GLOB=MAX(NPOIN_GLOB,MESH%KNOLG%I(I))
         ENDDO
-        NPOIN_GLOB=P_IMAX(NPOIN_GLOB)
+        NPOIN_GLOB=P_MAX(NPOIN_GLOB)
       ENDIF
 !
 !     COMPLEMENTS: ARRAYS X, Y FOR PRISMS AND TETRAHEDRONS

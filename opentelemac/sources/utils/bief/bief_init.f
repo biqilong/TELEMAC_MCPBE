@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE BIEF_INIT
-!                    ********************
+!                   ********************
+                    SUBROUTINE BIEF_INIT
+!                   ********************
 !
      &(CHAINE,NCAR,PINIT)
 !
@@ -64,9 +64,6 @@
 #if defined BOGUS
       ! Bogus call so that they are added when running rescan
       CALL INPOLY
-      CALL P_SYNC
-      CALL P_DMAX
-      CALL P_DMIN
 #endif
 !
 !-----------------------------------------------------------------------

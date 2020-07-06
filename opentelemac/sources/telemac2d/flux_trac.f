@@ -1,6 +1,6 @@
-!                    ********************
-                     SUBROUTINE FLUX_TRAC
-!                    ********************
+!                   ********************
+                    SUBROUTINE FLUX_TRAC
+!                   ********************
 !
      &(NUBO,IKLE,FLUTENT,FLUTSOR,CMI,DJXT,DJYT,DXT,DYT,DPX,DPY,
      & BETA,DSZ,AIRST,HC,FLUXT,ELTSEG,IFABOR,VNOCL)
@@ -44,6 +44,7 @@
      &                                 LIMTRA,X,Y,V2DPAR,MESH,ZF,DIFNU,
      &                                 H,DT,TN,TBOR,FLUHTEMP,FLUHBTEMP
       USE DECLARATIONS_TELEMAC, ONLY: KDIR,KNEU,KDDL
+      USE INTERFACE_PARALLEL, ONLY : P_SUM
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -74,8 +75,6 @@
 !     DYNAMIC ARRAY ALLOCATION !!!!!!!!
 !
       LOGICAL, ALLOCATABLE ::   YESNO(:)
-      DOUBLE PRECISION P_DSUM
-      EXTERNAL         P_DSUM
 !
 !-----------------------------------------------------------------------
 !     LOOP ON TRACERS

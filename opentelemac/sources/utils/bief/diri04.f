@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIRI04
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIRI04
+!                   *****************
 !
      &(X1,X2,A11,A12,A21,A22,SM1,SM2,T1,T2,T3,T4,
      & XBOR1,XBOR2,LIDIR1,LIDIR2,MESH,KDIR,MSK,MASKPT)

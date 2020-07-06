@@ -2515,8 +2515,8 @@
         INTEGER_SIZE=4
 #else
         INTEGER_SIZE=BIT_SIZE(I)/8!SHOULD RETURN A VALUE BETWEEN
-                                   !4 OR 8,MAYBE MORE LATER, BUT IT WILL
-                                   !FIT INTO AN INT ANYWAY
+                                  !4 OR 8,MAYBE MORE LATER, BUT IT WILL
+                                  !FIT INTO AN INT ANYWAY
 #endif
         NUM_BITS=H*W
         NUM_BYTES=NUM_BITS/8

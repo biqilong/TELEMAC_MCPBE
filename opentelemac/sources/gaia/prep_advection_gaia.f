@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE PREP_ADVECTION_GAIA
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE PREP_ADVECTION_GAIA
+!                   ******************************
 !
      &(UCONV_TEL,VCONV_TEL,ICONVF,SOLSYS,J,LITBOR,TBOR,TN,KENT,FLBOR_W,
      & HN_TEL)

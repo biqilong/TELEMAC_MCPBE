@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE EQCAE_BC_GAIA
-!                    ************************
+!                   ************************
+                    SUBROUTINE EQCAE_BC_GAIA
+!                   ************************
 !
      &(LITBOR,TBOR,TN,J,KENT)
 !

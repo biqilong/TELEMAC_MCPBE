@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FLOT3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE FLOT3D
+!                   *****************
 !
      &(XFLOT,YFLOT,ZFLOT,NFLOT,NFLOT_MAX,X,Y,Z,IKLE,NELEM,NELMAX,NPOIN,
      & NPLAN,TAGFLO,CLSFLO,SHPFLO,SHZFLO,ELTFLO,ETAFLO,MESH3D,LT,NIT,AT)

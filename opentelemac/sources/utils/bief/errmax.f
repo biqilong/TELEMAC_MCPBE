@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE ERRMAX
-!                    *****************
+!                   *****************
+                    SUBROUTINE ERRMAX
+!                   *****************
 !
      &(X1,X2,ERR,IERR)
 !
@@ -63,8 +63,8 @@
       DO I=1,X1%DIM1
 !
         IF(ABS(X1%R(I)-X2%R(I)).GT.ERR) THEN
-           ERR=ABS(X1%R(I)-X2%R(I))
-           IERR=I
+          ERR=ABS(X1%R(I)-X2%R(I))
+          IERR=I
         ENDIF
 !
       ENDDO

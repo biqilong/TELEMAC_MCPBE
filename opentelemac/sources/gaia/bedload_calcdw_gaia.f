@@ -1,6 +1,6 @@
-!                    ******************************
-                     SUBROUTINE BEDLOAD_CALCDW_GAIA
-!                    ******************************
+!                   ******************************
+                    SUBROUTINE BEDLOAD_CALCDW_GAIA
+!                   ******************************
 !
      &  (UCW, UW, TW, NPOIN, PI, UW1, UW2, TW1, TW2)
 !

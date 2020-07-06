@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CALCFW
-!                    *****************
+!                   *****************
+                    SUBROUTINE CALCFW
+!                   *****************
 !
      &(I,H,K,HMU,
      & NPOIN,OMEGA,GRAV,

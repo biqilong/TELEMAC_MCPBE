@@ -1,9 +1,9 @@
-!                    *****************
-                     SUBROUTINE STRESS
-!                    *****************
+!                   *****************
+                    SUBROUTINE STRESS
+!                   *****************
 !
-     &( TAUWAV, TSTOT , F     , USNEW , TWNEW , Z0NEW , 
-     &  NPOIN2, NPLAN , NF    , XTAUW , YTAUW , TAUHF )
+     &( TAUWAV, TSTOT , F     , USNEW , TWNEW , Z0NEW ,
+     &  NPOIN2, NDIRE , NF    , XTAUW , YTAUW , TAUHF )
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   28/06/2011
@@ -43,7 +43,7 @@
 !| F              |-->| DIRECTIONAL SPECTRUM
 !| FREQ           |-->| DISCRETIZED FREQUENCIES
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| SINTET         |-->| SINE OF TETA ANGLE
 !| TAUHF          |<->| WORK TABLE
@@ -58,23 +58,23 @@
 !| Z0NEW          |-->| SURFACE ROUGHNESS LENGTH
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI, GRAVIT,  ROAIR,  ROEAU, 
+      USE DECLARATIONS_TOMAWAC, ONLY : DEUPI, GRAVIT,  ROAIR,  ROEAU,
      &                           FREQ, DFREQ,   TETA, SINTET, COSTET,
      &                          DECAL,XKAPPA,  BETAM
-!     
+!
       USE INTERFACE_TOMAWAC, EX_STRESS => STRESS
       IMPLICIT NONE
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    ::  NPOIN2, NPLAN , NF
+      INTEGER, INTENT(IN)    ::  NPOIN2, NDIRE , NF
       DOUBLE PRECISION, INTENT(IN)    :: USNEW(NPOIN2), TWNEW(NPOIN2)
       DOUBLE PRECISION, INTENT(IN)    :: Z0NEW(NPOIN2)
-      DOUBLE PRECISION, INTENT(IN)    :: TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: TAUWAV(NPOIN2), TAUHF(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: XTAUW(NPOIN2) , YTAUW(NPOIN2)
-!.....VARIABLES FROM MODULE TOMAWAC 
+!.....VARIABLES FROM MODULE TOMAWAC
 !     """"""""""""""""""""
 !     DECAL           SHIFT GROWING CURVE DUE TO WIND
 !     XKAPPA          VON KARMAN CONSTANT
@@ -90,7 +90,7 @@
       DOUBLE PRECISION CONST1, OMEGAM, X0    , YC    , DELY  , AUX
 !
 !
-      DTETAR= DEUPI/DBLE(NPLAN)
+      DTETAR= DEUPI/DBLE(NDIRE)
       FRMAX = FREQ(NF)
       COEF1 = DTETAR*DEUPI**4*FRMAX**5/GRAVIT**2
       COEF2 = DEUPI*ROEAU/ROAIR*DTETAR
@@ -104,7 +104,7 @@
 !     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
       DO JF=1,NF
         AUX=COEF2*FREQ(JF)*DFREQ(JF)
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           C1=AUX*SINTET(JP)
           C2=AUX*COSTET(JP)
           DO IP=1,NPOIN2
@@ -120,7 +120,7 @@
         TAUHF(IP)=0.D0
       ENDDO ! IP
 !
-      DO JP=1,NPLAN
+      DO JP=1,NDIRE
         DIREC=TETA(JP)
         DO IP=1,NPOIN2
           COSTMP=MAX(COS(DIREC-TWNEW(IP)),0.D0)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FILP12
-!                    *****************
+!                   *****************
+                    SUBROUTINE FILP12
+!                   *****************
 !
      &(F,C,XSOM,YSOM,NSOM,X,Y,NPOIN,NELEM,NELMAX,IKLE)
 !

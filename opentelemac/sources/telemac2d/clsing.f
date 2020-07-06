@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE CLSING
-!                    *****************
+!                   *****************
+                    SUBROUTINE CLSING
+!                   *****************
 !
      &(NWEIRS,NPSING,NDGA1,NDGB1,X,Y,ZF,CHESTR,NKFROT,KARMAN,
      & ZDIG,PHIDIG,NBOR,H,T,NTRAC,IOPTAN,UNORM,
@@ -48,7 +48,7 @@
 !history  J.-M. HERVOUET (EDF LAB, LNHE)
 !+        11/02/2014
 !+        V7P0
-!+   All formulas involving P_DMAX and P_DMIN simplified.
+!+   All formulas involving P_MAX and P_MIN simplified.
 !
 !history  J,RIEHME (ADJOINTWARE)
 !+        November 2016
@@ -90,7 +90,7 @@
       USE INTERFACE_TELEMAC2D, EX_CLSING => CLSING
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMAX,P_DMIN,
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_MIN,
      &                               P_DMAX_ARRAY,P_DMIN_ARRAY
       IMPLICIT NONE
 !

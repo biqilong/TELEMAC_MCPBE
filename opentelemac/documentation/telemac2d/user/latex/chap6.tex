@@ -44,17 +44,17 @@ This may have the following values:
 \item 7: Colebrooke-White law.
 \end{itemize}
 
-Option 6 can only be used in the \telkey{FRICTION DATA FILE}
-(see Appendix \ref{tel2d:app5}).
+Option 6 is only for boundary conditions,
 
-In the case of options 1 to 5, it is necessary to specify the value
+In the case of options 1 to 6, it is necessary to specify the value
 of the coefficient corresponding to the law chosen by means of the keyword
 \telkey{FRICTION COEFFICIENT}.
 This is of course only valid if the friction is constant in time and space.
 
-In the case of option 7, the keyword
+In the case of option 7, an additional coefficient is needed which can be given
+by the keyword
 \telkey{MANNING DEFAULT VALUE FOR COLEBROOK-WHITE LAW}
-(whose default value = 0.02) must be given.
+(whose default value = 0.02).
 
 If the friction coefficient varies in time (and possibly in space as well),
 it is necessary to use the \telfile{USER\_STRCHE} and/or \telfile{USER\_CORSTR}
@@ -84,22 +84,27 @@ The second one is available since release 6.0 and seems to be slightly better
 on dam break studies.
 
 
-\subsection{Non-submerged vegetation}
+\subsection{Vegetation friction}
 
-The effect of non-submerged vegetation can be added in the domain
-with the keyword \telkey{NON-SUBMERGED VEGETATION FRICTION} (default = NO).
+The effect of additional roughness by vegetation can be added 
+with the keyword \telkey{VEGETATION FRICTION} (default = NO).
 
-In this case, 2 additional data must be given:
-\telkey{DIAMETER OF ROUGHNESS ELEMENTS} and
-\telkey{SPACING OF ROUGHNESS ELEMENTS},
-whose respective devault values are 0.006~m and 0.14~m.
+This option can only be used with a definition of friction by domains,
+see Appendix \ref{tel2d:app5}. The vegetation laws and their parameters
+must be given in an extra file. Currently 8 vegetation laws are implemented. 
+Please find the details of the vegetation laws there description and application range in 
+\cite{folke2019vegetation} and the cited original literature. 
 
-They will be used in the Lindner law giving the drag coefficients of the
-vegetation.
-
-This option will be preferably used with a definition of friction by domains,
-see Appendix \ref{tel2d:app5}.
-
+In case of unsteady flow conditions which lead to 
+submerged and non-submerged vegetation 
+the vegetation law of Baptist is recommended. 
+In order to take the flexibility of vegetation 
+into account the approach of Jaervelae is recommended.
+The Lindner approach is not recommended as it can increase the overall computing
+time by approx. 20~\% because of the iteration of the drag coefficient. 
+This is only useful if the shape of the vegetation is cylindrical, 
+regularly arranged, non-submerged and 
+diameter and spacing are well known.
 
 \subsection{Wave friction enhancement}
 

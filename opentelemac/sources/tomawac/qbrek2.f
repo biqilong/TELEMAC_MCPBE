@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE QBREK2
-!                    *****************
+!                   *****************
+                    SUBROUTINE QBREK2
+!                   *****************
 !
-     & ( TSTOT , F     , FCAR  , VARIAN, NF    , NPLAN , NPOIN2)
+     & ( TSTOT , F     , FCAR  , VARIAN, NF    , NDIRE , NPOIN2)
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   23/06/2011
@@ -47,24 +47,24 @@
 !| GAMATG         |-->| GAMMA CONSTANT OF WAVE BREAKING TG MODEL
 !| IWHTG          |-->| WEIGHT. FUN.SELECTION OF WAVE BREAKING TG MODEL
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| TSTOT          |<->| TOTAL PART OF THE SOURCE TERM CONTRIBUTION
 !| VARIAN         |-->| SPECTRUM VARIANCE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_TOMAWAC, ONLY : DEUPI, BORETG, GAMATG, IWHTG,
-     & DEPTH, BETABR 
+     & DEPTH, BETABR
 !
       USE INTERFACE_TOMAWAC, EX_QBREK2 => QBREK2
       IMPLICIT NONE
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)            :: NF, NPLAN, NPOIN2
-      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)            :: NF, NDIRE, NPOIN2
+      DOUBLE PRECISION, INTENT(IN)   :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)   :: VARIAN(NPOIN2), FCAR(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: TSTOT(NPOIN2,NDIRE,NF)
 !
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -83,7 +83,7 @@
           BETABR(IP) = COEF*8.D0*SQRT(VARIAN(IP)**5)*FCAR(IP)
      &             /(GAMMA2*DEPTH(IP)**5)
           DO IFF = 1,NF
-            DO JP = 1,NPLAN
+            DO JP = 1,NDIRE
               TSTOT(IP,JP,IFF) = TSTOT(IP,JP,IFF)
      &             +BETABR(IP)*F(IP,JP,IFF)
             ENDDO               ! JP
@@ -100,7 +100,7 @@
      &              DEPTH(IP)**3)*(1.D0-1.D0/(1.D0+VARIAN(IP)*8.D0
      &              /(GAMMA2*DEPTH(IP)*DEPTH(IP)))**2.5D0)
           DO IFF = 1,NF
-            DO JP = 1,NPLAN
+            DO JP = 1,NDIRE
               TSTOT(IP,JP,IFF) = TSTOT(IP,JP,IFF)
      &             +BETABR(IP)*F(IP,JP,IFF)
             ENDDO               ! JP

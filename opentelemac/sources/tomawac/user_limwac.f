@@ -1,7 +1,7 @@
-!                    **********************
-                     SUBROUTINE USER_LIMWAC
-!                    **********************
-     &(F     , FBOR  , NPTFR , NPLAN , NF    , NPOIN2,
+!                   **********************
+                    SUBROUTINE USER_LIMWAC
+!                   **********************
+     &(F     , FBOR  , NPTFR , NDIRE , NF    , NPOIN2,
      & KENT  , PRIVE , NPRIV , IMP_FILE)
 !
 !***********************************************************************
@@ -39,7 +39,7 @@
 !| NBOR           |-->| GLOBAL NUMBER OF BOUNDARY POINTS
 !| NF             |-->| NUMBER OF FREQUENCIES
 !| LUFO1           |-->| LOGICAL UNIT NUMBER OF THE USER FORMATTED FILE
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| NPRIV          |-->| NUMBER OF PRIVATE ARRAYS
 !| NPTFR          |-->| NUMBER OF BOUNDARY POINTS
@@ -67,7 +67,7 @@
      &     LIMSPE, FPMAXL, FETCHL, SIGMAL, SIGMBL, GAMMAL, FPICL ,
      &     HM0L  , APHILL, TETA1L, SPRE1L, TETA2L, SPRE2L, XLAMDL,
      &     SPEULI, VENT  , VENSTA, GRAVIT, DEPTH , TETA  , FREQ  , X, Y,
-     &     SPEC  , FRA   , FRABL , AT    , LT    , DDC   , UV    , VV, 
+     &     SPEC  , FRA   , FRABL , AT    , LT    , DDC   , UV    , VV,
      &     BOUNDARY_COLOUR,LIFBOR, NBOR, LUFO1, LUBI1, FMTBI1
 
       USE DECLARATIONS_SPECIAL
@@ -77,12 +77,12 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 !
-      INTEGER, INTENT(IN)            :: NPTFR,NPLAN,NF,NPOIN2,NPRIV
+      INTEGER, INTENT(IN)            :: NPTFR,NDIRE,NF,NPOIN2,NPRIV
       INTEGER, INTENT(IN)            :: KENT
       DOUBLE PRECISION, INTENT(IN)   :: PRIVE(NPOIN2,NPRIV)
       TYPE(BIEF_FILE), INTENT(IN)    :: IMP_FILE
-      DOUBLE PRECISION, INTENT(INOUT):: F(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT):: FBOR(NPTFR,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: F(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT):: FBOR(NPTFR,NDIRE,NF)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 !

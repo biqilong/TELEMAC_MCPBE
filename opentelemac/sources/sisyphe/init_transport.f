@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE INIT_TRANSPORT
-!                    *************************
+!                   *************************
+                    SUBROUTINE INIT_TRANSPORT
+!                   *************************
 !
      &(TROUVE,DEBU,HIDING,NSICLA,NPOIN,
      & T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,

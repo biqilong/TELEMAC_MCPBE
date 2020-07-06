@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE LUDCMP
-!                    *****************
+!                   *****************
+                    SUBROUTINE LUDCMP
+!                   *****************
 !
      &(A,N,NP,INDX)
 !
@@ -89,7 +89,7 @@
         DO I=1,J-1 ! EQUATION (2.3.12) EXCEPT FOR I = J
           XSOM=A(I,J)
           DO K=1,I-1
-             XSOM=XSOM-A(I,K)*A(K,J)
+            XSOM=XSOM-A(I,K)*A(K,J)
           ENDDO
           A(I,J)=XSOM
         ENDDO

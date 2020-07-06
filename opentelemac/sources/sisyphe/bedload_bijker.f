@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE BEDLOAD_BIJKER
-!                    *************************
+!                   *************************
+                    SUBROUTINE BEDLOAD_BIJKER
+!                   *************************
 !
      &  (TOBW,TOB,MU,KSP,KSR,HN,NPOIN,DM,DENS,XMVE,GRAV,XWC,
      &   KARMAN,ZERO,T4,T7,T8,T9,QSC,QSS,BIJK,HOULE)

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASKOB
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASKOB
+!                   *****************
 !
      &(MASKEL,X,Y,IKLE,NELEM,NELMAX,NPOIN,AT,LT)
 !

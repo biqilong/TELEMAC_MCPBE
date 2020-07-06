@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE CONDICE
-!                    ******************
+!                   ******************
+                    SUBROUTINE CONDICE
+!                   ******************
 !
      &( NPOIN,H,RECORD,AT,LISTIN )
 !

@@ -1,6 +1,6 @@
-!                    **********************
-                     SUBROUTINE SOLVE_MUMPS
-!                    **********************
+!                   **********************
+                    SUBROUTINE SOLVE_MUMPS
+!                   **********************
 !
      &(NPOIN,NSEGB,GLOSEG,MAXSEG,DA,XA,XINC,RHS,INFOGR,TYPEXT,LT)
 !

@@ -1,6 +1,6 @@
-!                    **************************
-                     SUBROUTINE BIEF_OPEN_FILES
-!                    **************************
+!                   **************************
+                    SUBROUTINE BIEF_OPEN_FILES
+!                   **************************
 !
      &(CODE,FILES,NFILES,PATH,NCAR,ICODE,FULLNAME)
 !
@@ -101,8 +101,8 @@
         RDONLY_PARAL=.FALSE.
         IF(FILES(I)%NAME(1:1).NE.' ') THEN
 !
-          write(lu,*) 'Opening: ', trim(FILES(I)%TELNAME), '-',
-     &                trim(FILES(I)%NAME)
+          WRITE(LU,*) 'OPENING: ', TRIM(FILES(I)%TELNAME), '-',
+     &                TRIM(FILES(I)%NAME)
 !         GET LOGICAL UNIT
           CALL GET_FREE_ID(FILES(I)%LU)
 !

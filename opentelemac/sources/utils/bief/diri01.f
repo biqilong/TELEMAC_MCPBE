@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DIRI01
-!                    *****************
+!                   *****************
+                    SUBROUTINE DIRI01
+!                   *****************
 !
      &(F, S, SM ,FBOR,LIMDIR,WORK1,WORK2,MESH,KDIR,MSK,MASKPT)
 !

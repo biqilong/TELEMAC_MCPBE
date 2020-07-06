@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE DISMOY
-!                    *****************
+!                   *****************
+                    SUBROUTINE DISMOY
+!                   *****************
 !
      &(NPOIN,NELEM,X,Y,IKLE,K,LISHHO)
 !

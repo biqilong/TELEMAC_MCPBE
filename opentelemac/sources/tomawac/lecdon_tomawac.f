@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE LECDON_TOMAWAC
-!                    *************************
+!                   *************************
+                    SUBROUTINE LECDON_TOMAWAC
+!                   *************************
 !
      &(FILE_DESC,PATH,NCAR,CAS_FILE,DICO_FILE)
 !
@@ -278,7 +278,7 @@
       GRAPRD = MOTINT( ADRESS(1,  1) )
       LISPRD = MOTINT( ADRESS(1,  2) )
       NIT    = MOTINT( ADRESS(1,  3) )
-      NPLAN  = MOTINT( ADRESS(1,  4) )
+      NDIRE  = MOTINT( ADRESS(1,  4) )
       NF     = MOTINT( ADRESS(1,  5) )
       GRADEB = MOTINT( ADRESS(1,  6) )
       LISFON = MOTINT( ADRESS(1,  7) )
@@ -534,14 +534,14 @@
      &          .GE.1D-6)THEN
             WRITE(LU,*) NIT,DT,CPL_WAC_DATA%NIT_TEL,CPL_WAC_DATA%DT_TEL
             WRITE(LU,*)'WHEN ONE WANTS A GLOBAL RESULT WITH COUPLING'
-            WRITE(LU,*)'DURATION OF TELEMAC AND TOMAWAC MUST', 
+            WRITE(LU,*)'DURATION OF TELEMAC AND TOMAWAC MUST',
      &                 'BE THE SAME'
             CALL PLANTE(1)
           ENDIF
           IF(MOD(NIT,CPL_WAC_DATA%PERCOU_WAC).NE.0)THEN
-             WRITE(LU,*)'WHEN ONE WANTS A GLOBAL RESULT WITH COUPLING'
-             WRITE(LU,*)'NUMBER OF TIME STEP OF TOMAWAC MUST',
-     &                  'BE A MULTIPLE OF COUPLING PERIOD'
+            WRITE(LU,*)'WHEN ONE WANTS A GLOBAL RESULT WITH COUPLING'
+            WRITE(LU,*)'NUMBER OF TIME STEP OF TOMAWAC MUST',
+     &                 'BE A MULTIPLE OF COUPLING PERIOD'
             CALL PLANTE(1)
           ENDIF
         ENDIF
@@ -647,7 +647,9 @@
       ENDIF
       IF(CBAJ.EQ.1) THEN
         LIMIT=3
-        STRIF=1
+!     IT used to include non linear transfert =1
+!     Now user has to set a non linear Law. 
+!       STRIF=1
         SVENT=1
         SMOUT=1
         CMOUT1=2.1D0
@@ -701,10 +703,10 @@
         SORLEO(8)=.FALSE.
         IF (SDSCU.NE.0) THEN
 ! AND NO DISSIPATION COEFFICIENT FOR STRONG CURRENT
-           WRITE(LU,*) '*****************************************'
-           WRITE(LU,*) ' NO DISSIPATION FOR STRONG CURRENT'
-           WRITE(LU,*) '*****************************************'
-           SDSCU = 0
+          WRITE(LU,*) '*****************************************'
+          WRITE(LU,*) ' NO DISSIPATION FOR STRONG CURRENT'
+          WRITE(LU,*) '*****************************************'
+          SDSCU = 0
         ENDIF
       ENDIF
 !
@@ -712,13 +714,13 @@
       IF (PROINF) THEN
         IF (SORLEO(11) .OR. SORLEO(12) .OR. SORLEO(13) .OR.
      &      SORLEO(14) .OR. SORLEO(15) ) THEN
-           WRITE(LU,*) '*****************************************'
-           WRITE(LU,*) '   RADIATION STRESSES ARE NOT COMPUTED  '
-           WRITE(LU,*) '       OVER INFINITE WATER DEPTHS       '
-           WRITE(LU,*) '******************************************'
-           DO K=11,15
-             SORLEO(K) = .FALSE.
-           ENDDO
+          WRITE(LU,*) '*****************************************'
+          WRITE(LU,*) '   RADIATION STRESSES ARE NOT COMPUTED  '
+          WRITE(LU,*) '       OVER INFINITE WATER DEPTHS       '
+          WRITE(LU,*) '******************************************'
+          DO K=11,15
+            SORLEO(K) = .FALSE.
+          ENDDO
         ENDIF
 !       LA HAUTEUR D'EAU ET LA PROFONDEUR NE DOIVENT PAS ETRE CALCULEE
 !       WATER DEPTH AND DEPTH MUST NOT BE COMPUTED

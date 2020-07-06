@@ -1,6 +1,6 @@
-!                          **********************
-                           MODULE INITIAL_DROGUES
-!                          **********************
+!                         **********************
+                          MODULE INITIAL_DROGUES
+!                         **********************
 !
 !***********************************************************************
 ! TELEMAC V8P0
@@ -21,7 +21,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF_DEF, ONLY : BIEF_OBJ, BIEF_MESH, IPID,NCSIZE
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX,P_ISUM,P_DMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX,P_SUM,P_MAX
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
@@ -71,9 +71,9 @@
 !       1) RANDOM SAMPLING
 !
 !
-!                    ***********************
-                     SUBROUTINE SAMPLE_WPOIN
-!                    ***********************
+!                   ***********************
+                    SUBROUTINE SAMPLE_WPOIN
+!                   ***********************
 !
      &( NP,NP_MAX,NCLS,NTAG, XP,YP,TAGP,CLSP,ELTP,SHPP,DSTY,
      &  NPOIN,NELEM,NELMAX,IKLE,CLSN,X,Y )
@@ -140,7 +140,7 @@
       DO I = 1,NPOIN
         MT = MAX( MT,CLSN(I) )
       ENDDO
-      IF( NCSIZE.GT.1 ) MT = P_IMAX( MT )
+      IF( NCSIZE.GT.1 ) MT = P_MAX( MT )
       IF( MT.NE.NCLS ) THEN
         WRITE(LU,22) MT,NCLS
  22     FORMAT(1X,'CONDIN_DROGUES:',/,
@@ -207,7 +207,7 @@
 !     TOTAL NUMBER OF PARCELS FOR CURRENT PROCESSOR
       NPI = INT(A)
       NPP = NPI + NP
-      IF( NCSIZE.GT.1 ) NPP = P_ISUM( NPP )
+      IF( NCSIZE.GT.1 ) NPP = P_SUM( NPP )
 !     CHECK AGAINST NUMBER OF PARCELS POSSIBLE
       IF( NPP.GT.NP_MAX ) THEN
         WRITE(LU,32) NPP,NP_MAX
@@ -230,7 +230,7 @@
             NPP = NPP + NPI
             ITAG = NPP
           ENDIF
-          NPP = P_IMAX( NPP )
+          NPP = P_MAX( NPP )
         ENDDO
         ITAG = ITAG - NPI
       ELSE
@@ -302,7 +302,7 @@
         IP = IP + NJ
 !
       ENDDO
-      IF( NCSIZE.GT.1 ) ITAG = P_IMAX( ITAG )
+      IF( NCSIZE.GT.1 ) ITAG = P_MAX( ITAG )
       NTAG = NTAG + ITAG
       NP = NP + NPI
 !
@@ -320,9 +320,9 @@
       RETURN
       END SUBROUTINE SAMPLE_WPOIN
 !
-!                  **************************
-                   SUBROUTINE SAMPLE_TRIANGLE
-!                  **************************
+!                 **************************
+                  SUBROUTINE SAMPLE_TRIANGLE
+!                 **************************
 !
      &( IP,NP,NP_MAX,IELM,ITAG,ICLS, TAGP,CLSP,ELTP,SHPP,
      &  XP,YP,X1,Y1,X2,Y2,X3,Y3 )
@@ -404,9 +404,9 @@
       RETURN
       END SUBROUTINE SAMPLE_TRIANGLE
 !
-!                  **************************
-                   SUBROUTINE SAMPLE_POLYLINE
-!                  **************************
+!                 **************************
+                  SUBROUTINE SAMPLE_POLYLINE
+!                 **************************
 !
      &( NP,NP_MAX,NCLS,NTAG, XP,YP,TAGP,CLSP,ELTP,SHPP,DSTY,
      &  NY,IY,VY,NG,XG,YG, NPOIN,NELEM,NELMAX,IKLE,X,Y )
@@ -465,7 +465,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER          I,J,K,IEL,NEL, N1,N2,N3, NPP, ITAG,JPID, MT
+      INTEGER          I,J,K,IEL,NEL, N1,N2,N3, NPP, JPID, MT
       INTEGER          NG1,NG2, JY
       LOGICAL          FOUND
       DOUBLE PRECISION A, R1,R2, XA,YA,XI,YI, X0,Y0,X1,Y1,X2,Y2,X3,Y3
@@ -486,7 +486,7 @@
       DO I = 1,NY
         MT = MAX( MT,INT(VY(I)) )
       ENDDO
-      IF( NCSIZE.GT.1 ) MT = P_IMAX( MT )
+      IF( NCSIZE.GT.1 ) MT = P_MAX( MT )
       IF( MT.NE.NCLS ) THEN
         WRITE(LU,22) MT,NCLS
  22     FORMAT(1X,'CONDIN_DROGUES:',/,
@@ -592,8 +592,8 @@
                 X0 = XI + R1*( XA-XI )
                 Y0 = YI + R2*( YA-YI )
               ENDIF
-              X0 = P_DMAX(X0)
-              Y0 = P_DMAX(Y0)
+              X0 = P_MAX(X0)
+              Y0 = P_MAX(Y0)
             ELSE
               CALL RANDOM_NUMBER(R1)
               CALL RANDOM_NUMBER(R2)
@@ -633,8 +633,8 @@
           ENDDO
 !
           IF( NCSIZE.GT.1 ) THEN
-            JPID = P_IMAX(JPID)
-            NTAG = P_IMAX(NTAG)
+            JPID = P_MAX(JPID)
+            NTAG = P_MAX(NTAG)
           ENDIF
           IF( JPID.EQ.IPID ) THEN
             NP = NP + 1
@@ -664,9 +664,9 @@
       RETURN
       END SUBROUTINE SAMPLE_POLYLINE
 !
-!                  ************************
-                   SUBROUTINE SAMPLE_POINTS
-!                  ************************
+!                 ************************
+                  SUBROUTINE SAMPLE_POINTS
+!                 ************************
 !
      &( NP,NP_MAX,NCLS,NTAG, XP,YP,TAGP,CLSP,ELTP,SHPP, NG,XG,YG,VG,
      &  NPOIN,NELEM,NELMAX,IKLE,X,Y )
@@ -723,7 +723,7 @@
       DO I = 1,NG
         MT = MAX( MT,INT(VG(I)) )
       ENDDO
-      IF( NCSIZE.GT.1 ) MT = P_IMAX( MT )
+      IF( NCSIZE.GT.1 ) MT = P_MAX( MT )
       IF( MT.NE.NCLS ) THEN
         WRITE(LU,22) MT,NCLS
  22     FORMAT(1X,'CONDIN_DROGUES:',/,
@@ -790,8 +790,8 @@
         ENDDO
 !
         IF( NCSIZE.GT.1 ) THEN
-          JPID = P_IMAX(JPID)
-          NTAG = P_IMAX(NTAG)
+          JPID = P_MAX(JPID)
+          NTAG = P_MAX(NTAG)
         ENDIF
         IF( JPID.EQ.IPID ) THEN
           NP = NP + 1

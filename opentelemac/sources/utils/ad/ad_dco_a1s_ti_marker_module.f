@@ -12,7 +12,7 @@
         USE DCO_A1S_COMMON
         IMPLICIT NONE
         TYPE DCO_A1S_TI_MARKER_LIST_ELEM
-           INTEGER(DCO_A1S_TAPE_IKND)     :: FRST, SIZE
+        INTEGER(DCO_A1S_TAPE_IKND)     :: FRST, SIZE
 !           INTEGER                        :: TSTP
         END TYPE DCO_A1S_TI_MARKER_LIST_ELEM
         TYPE DCO_A1S_TI_MARKER_LIST_TYPE
@@ -24,9 +24,9 @@
           INTEGER, INTENT(IN)          :: NIT
           PRINT *,'DCO_A1S_TI_MARKER_LIST_SETUP( ', NIT,' )'
           IF ( NIT < 0 ) THEN
-             PRINT *,'ERROR: DCO_A1S_TI_MARKER_LIST_SETUP :: NIT (',
+            PRINT *,'ERROR: DCO_A1S_TI_MARKER_LIST_SETUP :: NIT (',
      &            NIT,') < 0 !!'
-             STOP
+            STOP
           END IF
           ALLOCATE( TIM%DATA(0:NIT))
           TIM%DATA = DCO_A1S_TI_MARKER_LIST_ELEM(0,0)
@@ -53,7 +53,7 @@
           INTEGER                                  :: I
           PRINT *,'TIMDATA  : ',SIZE(TIM%DATA,1),' elements'
           DO I = 0, SIZE(TIM%DATA)-1
-             PRINT *,'TIMDATA ',i,' : ', TIM%DATA(i)%FRST,
+            PRINT *,'TIMDATA ',i,' : ', TIM%DATA(i)%FRST,
      &            ' -> ',TIM%DATA(i)%FRST+TIM%DATA(i)%SIZE,
      &            '  ( ',TIM%DATA(i)%SIZE,' )'
           END DO
@@ -108,9 +108,9 @@
           INTEGER,                     INTENT(IN)  :: TIM, TSTP
           CHARACTER(LEN=*),            INTENT(IN)  :: WHO
           IF ( TIM < 1 .OR. TIM > SIZE(DCO_A1S_TI_MARKER,1) ) THEN
-             PRINT *,'ERROR: DCO_A1S_TI_MARKER_'//who
+            PRINT *,'ERROR: DCO_A1S_TI_MARKER_'//who
      &               //' :: INVALID TIM NUMBER ', TIM, ' !!'
-             STOP
+            STOP
           END IF
           IF ( TSTP < 0 .OR.
      &         TSTP > SIZE(DCO_A1S_TI_MARKER(TIM)%DATA,1) ) THEN
@@ -163,10 +163,10 @@
         SUBROUTINE DCO_A1S_TI_MARKER_PRINT( TIM )
           INTEGER, INTENT(IN)                       :: TIM
           IF ( TIM < 1 .OR. TIM > SIZE(DCO_A1S_TI_MARKER,1) ) THEN
-             PRINT *,
+            PRINT *,
      &          'ERROR: DCO_A1S_TI_MARKER_PRINT :: INVALID TIM NUMBER ',
      &            TIM, ' !!'
-             STOP
+            STOP
           END IF
           CALL DCO_A1S_TI_MARKER_LIST_PRINT( DCO_A1S_TI_MARKER(TIM) )
         END  SUBROUTINE DCO_A1S_TI_MARKER_PRINT

@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE BILAN_SISYPHE
-!                    ************************
+!                   ************************
+                    SUBROUTINE BILAN_SISYPHE
+!                   ************************
 !
      &(E,ESOMT,T1,VCUMU,DT,NPTFR,
      & INFO,ZFCL_C,ZFCL_S,ZFCL_MS,
@@ -95,7 +95,7 @@
 !
       USE BIEF
       USE DECLARATIONS_SISYPHE, ONLY : NSICLM,MAXFRO
-      USE DECLARATIONS_SISYPHE, ONLY : NESTOR,ZF,ZR,AVAIL,ES,VOLINI,
+      USE DECLARATIONS_SISYPHE, ONLY : NESTOR,ZF,ZR,VOLINI,
      &     VCUMUCL,RMASCL,VOLNESTORCL,VOLNESTORCLA
 !
       USE DECLARATIONS_SPECIAL
@@ -125,7 +125,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER I,IFRLIQ,IPTFR,ICLA,J,K
+      INTEGER I,IFRLIQ,IPTFR,ICLA,J
       DOUBLE PRECISION RMASSE,RCUMU,RMASCLA(NSICLM)
       DOUBLE PRECISION VCUMUCLA(NSICLM),FLUXT,FLUXTCLA,VOLDEP
       DOUBLE PRECISION FLT_BOUND(MAXFRO),VOLDEPC

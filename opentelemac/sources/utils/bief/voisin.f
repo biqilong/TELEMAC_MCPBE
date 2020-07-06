@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VOISIN
-!                    *****************
+!                   *****************
+                    SUBROUTINE VOISIN
+!                   *****************
 !
      &(IFABOR,NELEM,NELMAX,IELM,IKLE,SIZIKL,
      & NPOIN,NACHB,NBOR,NPTFR,IADR,NVOIS)

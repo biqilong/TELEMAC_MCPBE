@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VECTOR
-!                    *****************
+!                   *****************
+                    SUBROUTINE VECTOR
+!                   *****************
 !
      &(VEC,OP,FORMUL,IELM1,XMUL,F,G,H,U,V,W,MESH,MSK,MASKEL,LEGO,ASSPAR)
 !

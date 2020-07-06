@@ -2,7 +2,7 @@
                         SUBROUTINE KMOYE2
 !                       *****************
 !
-     &( XKMOY , XK    , F     , NF    , NPLAN ,
+     &( XKMOY , XK    , F     , NF    , NDIRE ,
      &  NPOIN2, AUX1  , AUX2  , AUX3  )
 !
 !**********************************************************************
@@ -24,7 +24,7 @@
 !  ! DFREQ(-)    ! -->! TABLEAU DES PAS DE FREQUENCE               !
 !  ! TAILF       ! -->! FACTEUR DE QUEUE (TAILF = 4 OU 5)          !
 !  ! NF          ! -->! NOMBRE DE FREQUENCES DE DISCRETISATION     !
-!  ! NPLAN       ! -->! NOMBRE DE DIRECTIONS DE DISCRETISATION     !
+!  ! NDIRE       ! -->! NOMBRE DE DIRECTIONS DE DISCRETISATION     !
 !  ! NPOIN2      ! -->! NOMBRE DE POINTS DU MAILLAGE SPATIAL       !
 !  ! AUX1(-)     !<-->! TABLEAU DE TRAVAIL (DIMENSION NPOIN2)      !
 !  ! AUX2(-)     !<-->! TABLEAU DE TRAVAIL (DIMENSION NPOIN2)      !
@@ -49,8 +49,8 @@
 !
 !.....VARIABLES TRANSMISES
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)             :: NF, NPLAN, NPOIN2
-      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER, INTENT(IN)             :: NF, NDIRE, NPOIN2
+      DOUBLE PRECISION, INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION, INTENT(IN)    :: XK(NPOIN2,NF)
       DOUBLE PRECISION, INTENT(INOUT) :: AUX1(NPOIN2) , AUX2(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) :: AUX3(NPOIN2)
@@ -58,7 +58,7 @@
 !
 !.....VARIABLES LOCALES
 !     """""""""""""""""
-      INTEGER  IPLAN , JF    , IP
+      INTEGER  IDIRE , JF    , IP
       DOUBLE PRECISION COEFF , PI    , SEUIL , CTE1  , CTE2  , AUX4
 !
 !
@@ -78,9 +78,9 @@
         DO 15 IP=1,NPOIN2
           AUX3(IP) = 0.D0
    15   CONTINUE
-        DO 10 IPLAN = 1,NPLAN
+        DO 10 IDIRE = 1, NDIRE
           DO 5 IP=1,NPOIN2
-            AUX3(IP) = AUX3(IP) + F(IP,IPLAN,JF)
+            AUX3(IP) = AUX3(IP) + F(IP,IDIRE,JF)
     5     CONTINUE
    10   CONTINUE
 !

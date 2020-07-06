@@ -1,8 +1,8 @@
-!                    *****************
-                     SUBROUTINE FREPIC
-!                    *****************
+!                   *****************
+                    SUBROUTINE FREPIC
+!                   *****************
 !
-     &( FPIC, F, NF, NPLAN, NPOIN2 )
+     &( FPIC, F, NF, NDIRE, NPOIN2 )
 !
 !***********************************************************************
 ! TOMAWAC   V6P1                                   15/06/2011
@@ -17,18 +17,18 @@
 !| F              |-->| VARIANCE DENSITY DIRECTIONAL SPECTRUM
 !| FPIC           |<--| PEAK FREQUENCIES
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_TOMAWAC, EX_FREPIC => FREPIC
-      USE DECLARATIONS_TOMAWAC, ONLY : FREQ               
+      USE DECLARATIONS_TOMAWAC, ONLY : FREQ
       IMPLICIT NONE
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER,INTENT(IN)             :: NF    , NPLAN , NPOIN2
-      DOUBLE PRECISION,INTENT(IN)    :: F(NPOIN2,NPLAN,NF)
+      INTEGER,INTENT(IN)             :: NF    , NDIRE , NPOIN2
+      DOUBLE PRECISION,INTENT(IN)    :: F(NPOIN2,NDIRE,NF)
       DOUBLE PRECISION,INTENT(INOUT) :: FPIC(NPOIN2)
 !
 !.....LOCAL VARIABLES
@@ -46,17 +46,17 @@
 !
 !.......INTEGRATES WRT DIRECTIONS TO GET E(F)
 !       """""""""""""""""""""""""""""""""""""""""""""""""
-           E = 0.D0
-           DO JP = 1,NPLAN
-              E = E + F(IP,JP,JF)
-           ENDDO                ! JP
+          E = 0.D0
+          DO JP = 1, NDIRE
+            E = E + F(IP,JP,JF)
+          ENDDO                ! JP
 !
 !.......KEEPS THE MAXIMUM VALUE FOR E(F) AND ASSOCIATED FREQUENCY
 !       """""""""""""""""""""""""""""""""""""""""""""""""""""
-           IF (E.GT.EMAX) THEN
-              EMAX = E
-              FPIC(IP) = FREQ(JF)
-           ENDIF
+          IF (E.GT.EMAX) THEN
+            EMAX = E
+            FPIC(IP) = FREQ(JF)
+          ENDIF
         ENDDO                   ! JF
       ENDDO                     ! IP
 !

@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TAUTOT
-!                    *****************
+!                   *****************
+                    SUBROUTINE TAUTOT
+!                   *****************
 !
      &( TAUT  , UVENT , TAUW  , SEUIL ,
      &  ITR   , ITRMIN, ITRMAX)
@@ -67,7 +67,7 @@
 !     """"""""""""""""""""
       INTEGER, INTENT(IN)    ::  ITRMIN, ITRMAX
       INTEGER, INTENT(INOUT) ::  ITR
-      DOUBLE PRECISION, INTENT(IN)    :: UVENT , TAUW 
+      DOUBLE PRECISION, INTENT(IN)    :: UVENT , TAUW
       DOUBLE PRECISION, INTENT(IN)    :: SEUIL
       DOUBLE PRECISION, INTENT(INOUT) :: TAUT
 ! Variables in TOMAWAC MODULE

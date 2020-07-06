@@ -1,6 +1,6 @@
-!                    ******************************
-                     INTEGER FUNCTION BIEF_DIM2_EXT
-!                    ******************************
+!                   ******************************
+                    INTEGER FUNCTION BIEF_DIM2_EXT
+!                   ******************************
 !
      &(IELM1,IELM2,STO,TYPEXT,MESH)
 !

@@ -1,6 +1,6 @@
-!                    ***************
-                     SUBROUTINE OV_2
-!                    ***************
+!                   ***************
+                    SUBROUTINE OV_2
+!                   ***************
 !
      & ( OP , X , DIMX , Y , DIMY , Z , DIMZ , C , DIM1 , NPOIN )
 !

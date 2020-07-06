@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE VERMOY
-!                    *****************
+!                   *****************
+                    SUBROUTINE VERMOY
+!                   *****************
 !
      & (FINT1,FINT2,F1,F2,NFONC,Z,TRA01,TRA02,TRA03,
      &  IPLAN1,IPLAN2,NPOIN2,NPLAN,OPTBAN)

@@ -1,6 +1,6 @@
-!                    ***************************
-                     SUBROUTINE SUSPENSION_ROUSE
-!                    ***************************
+!                   ***************************
+                    SUBROUTINE SUSPENSION_ROUSE
+!                   ***************************
 !
      &(USTAR,HN,NPOIN,KARMAN,ZERO,XWC,ZREF,T2)
 !

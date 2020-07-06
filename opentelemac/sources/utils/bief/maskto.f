@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE MASKTO
-!                    *****************
+!                   *****************
+                    SUBROUTINE MASKTO
+!                   *****************
 !
      &(MASKEL,MASKPT,IFAMAS,IKLE,IFABOR,ELTSEG,NSEG,
      & NELEM,IELM,MESH)

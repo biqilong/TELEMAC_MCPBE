@@ -1,6 +1,6 @@
-!                    *************************
-                     SUBROUTINE BUILD_IKLE_EXT
-!                    *************************
+!                   *************************
+                    SUBROUTINE BUILD_IKLE_EXT
+!                   *************************
 !
      &(IKLE_EXT,NELMAX,IKLE,NELEM)
 !

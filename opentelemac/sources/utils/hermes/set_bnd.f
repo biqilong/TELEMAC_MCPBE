@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE SET_BND
-!                    ******************
+!                   ******************
+                    SUBROUTINE SET_BND
+!                   ******************
 !
      &(FFORMAT,FID,TYPE_BND_ELT,NELEBD,NDP,IKLE,NPTFR,LIHBOR,LIUBOR,
      & LIVBOR,HBOR,UBOR,VBOR,CHBORD,

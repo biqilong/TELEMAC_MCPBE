@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE INITSTR
-!                    ******************
+!                   ******************
+                    SUBROUTINE INITSTR
+!                   ******************
 !
      &(CHESTR,SETSTR,PZONE,NZONE,NPOIN,T1)
 !

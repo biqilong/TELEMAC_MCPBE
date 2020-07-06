@@ -1,6 +1,6 @@
-!                     *****************
-                       SUBROUTINE CALDT
-!                      ****************
+!                    *****************
+                      SUBROUTINE CALDT
+!                     ****************
 !
      &(DT,DTN,LEO)
 !
@@ -63,7 +63,7 @@
      &                                ENTET
       USE INTERFACE_TELEMAC2D, EX_CALDT => CALDT
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_DMIN
+      USE INTERFACE_PARALLEL, ONLY : P_MIN
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -158,7 +158,7 @@
 !   +++++++++++++++++++++++++
 !
 !     FOR PARALLELISM
-      IF(NCSIZE.GT.1) DT=P_DMIN(DT)
+      IF(NCSIZE.GT.1) DT=P_MIN(DT)
 !
       IF(DTVARI) THEN
 !

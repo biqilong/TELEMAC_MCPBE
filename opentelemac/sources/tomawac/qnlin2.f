@@ -2,7 +2,7 @@
                         SUBROUTINE QNLIN2
 !                       *****************
 !
-     &( TSTOT , TSDER , IANGNL, COEFNL, NF    , NPLAN ,
+     &( TSTOT , TSDER , IANGNL, COEFNL, NF    , NDIRE ,
      &  NPOIN2, F     , XKMOY , TAUX1 , DFINI , XCOEF )
 !
 !***********************************************************************
@@ -44,7 +44,7 @@
 !| F1             |-->| FIRST DISCRETIZED FREQUENCY
 !| IANGNL         |-->| ANGULAR INDICES TABLE
 !| NF             |-->| NUMBER OF FREQUENCIES
-!| NPLAN          |-->| NUMBER OF DIRECTIONS
+!| NDIRE          |-->| NUMBER OF DIRECTIONS
 !| NPOIN2         |-->| NUMBER OF POINTS IN 2D MESH
 !| PROINF         |-->| LOGICAL INDICATING INFINITE DEPTH ASSUMPTION
 !| RAISF          |-->| FREQUENTIAL RATIO
@@ -59,21 +59,21 @@
 !  ********    - PROGRAMME(S) APPELE(S) :  CQUEUE                     !
 !
       USE DECLARATIONS_TOMAWAC, ONLY : GRAVIT, DEPTH, PROINF,
-     &     F1  , RAISF              
+     &     F1  , RAISF
 !                                                                     !
       USE INTERFACE_TOMAWAC, EX_QNLIN2 => QNLIN2
       IMPLICIT NONE
 !
 !.....VARIABLES IN ARGUMENT
 !     """"""""""""""""""""
-      INTEGER, INTENT(IN)    ::   NPOIN2, NPLAN , NF
-      INTEGER, INTENT(IN)    ::   IANGNL(NPLAN,16)
+      INTEGER, INTENT(IN)    ::   NPOIN2, NDIRE , NF
+      INTEGER, INTENT(IN)    ::   IANGNL(NDIRE,16)
       DOUBLE PRECISION, INTENT(IN)    ::  XCOEF
-      DOUBLE PRECISION, INTENT(IN)    ::  F(NPOIN2,NPLAN,NF), COEFNL(32)
+      DOUBLE PRECISION, INTENT(IN)    ::  F(NPOIN2,NDIRE,NF), COEFNL(32)
       DOUBLE PRECISION, INTENT(IN)    ::  XKMOY(NPOIN2)
       DOUBLE PRECISION, INTENT(INOUT) ::  TAUX1(NPOIN2), DFINI(NPOIN2)
-      DOUBLE PRECISION, INTENT(INOUT) ::  TSTOT(NPOIN2,NPLAN,NF)
-      DOUBLE PRECISION, INTENT(INOUT) ::  TSDER(NPOIN2,NPLAN,NF)
+      DOUBLE PRECISION, INTENT(INOUT) ::  TSTOT(NPOIN2,NDIRE,NF)
+      DOUBLE PRECISION, INTENT(INOUT) ::  TSDER(NPOIN2,NDIRE,NF)
 !
 !.....LOCAL VARIABLES
 !     """""""""""""""""
@@ -240,7 +240,7 @@
 !
 !.......SECOND LOOP ON THE DIRECTIONS.
 !       """"""""""""""""""""""""""""""""""""
-        DO JP=1,NPLAN
+        DO JP=1,NDIRE
           JP1P_0 = IANGNL(JP, 1)
           JP1P_1 = IANGNL(JP, 2)
           JP2M_0 = IANGNL(JP, 3)
@@ -264,179 +264,179 @@
 !........./---------------------------------------------------------------/
 !
           DO IP=1,NPOIN2
-           F1PLUS = F(IP,JP1P_0,JB1_0)*D01 + F(IP,JP1P_1,JB1_0)*D02
-     &            + F(IP,JP1P_0,JB1_1)*D03 + F(IP,JP1P_1,JB1_1)*D04
-           F1MOIN = F(IP,JP1M_0,JB1_0)*D01 + F(IP,JP1M_1,JB1_0)*D02
-     &            + F(IP,JP1M_0,JB1_1)*D03 + F(IP,JP1M_1,JB1_1)*D04
-           F2PLUS = F(IP,JP2P_0,JB2_0)*D05 + F(IP,JP2P_1,JB2_0)*D06
-     &            + F(IP,JP2P_0,JB2_1)*D07 + F(IP,JP2P_1,JB2_1)*D08
-           F2MOIN = F(IP,JP2M_0,JB2_0)*D05 + F(IP,JP2M_1,JB2_0)*D06
-     &            + F(IP,JP2M_0,JB2_1)*D07 + F(IP,JP2M_1,JB2_1)*D08
-           F3PLUS = F(IP,JP3P_0,JB3_0)*D09 + F(IP,JP3P_1,JB3_0)*D10
-     &            + F(IP,JP3P_0,JB3_1)*D11 + F(IP,JP3P_1,JB3_1)*D12
-           F3MOIN = F(IP,JP3M_0,JB3_0)*D09 + F(IP,JP3M_1,JB3_0)*D10
-     &            + F(IP,JP3M_0,JB3_1)*D11 + F(IP,JP3M_1,JB3_1)*D12
-           F4PLUS = F(IP,JP4P_0,JB4_0)*D13 + F(IP,JP4P_1,JB4_0)*D14
-     &            + F(IP,JP4P_0,JB4_1)*D15 + F(IP,JP4P_1,JB4_1)*D16
-           F4MOIN = F(IP,JP4M_0,JB4_0)*D13 + F(IP,JP4M_1,JB4_0)*D14
-     &            + F(IP,JP4M_0,JB4_1)*D15 + F(IP,JP4M_1,JB4_1)*D16
+            F1PLUS = F(IP,JP1P_0,JB1_0)*D01 + F(IP,JP1P_1,JB1_0)*D02
+     &             + F(IP,JP1P_0,JB1_1)*D03 + F(IP,JP1P_1,JB1_1)*D04
+            F1MOIN = F(IP,JP1M_0,JB1_0)*D01 + F(IP,JP1M_1,JB1_0)*D02
+     &             + F(IP,JP1M_0,JB1_1)*D03 + F(IP,JP1M_1,JB1_1)*D04
+            F2PLUS = F(IP,JP2P_0,JB2_0)*D05 + F(IP,JP2P_1,JB2_0)*D06
+     &             + F(IP,JP2P_0,JB2_1)*D07 + F(IP,JP2P_1,JB2_1)*D08
+            F2MOIN = F(IP,JP2M_0,JB2_0)*D05 + F(IP,JP2M_1,JB2_0)*D06
+     &             + F(IP,JP2M_0,JB2_1)*D07 + F(IP,JP2M_1,JB2_1)*D08
+            F3PLUS = F(IP,JP3P_0,JB3_0)*D09 + F(IP,JP3P_1,JB3_0)*D10
+     &             + F(IP,JP3P_0,JB3_1)*D11 + F(IP,JP3P_1,JB3_1)*D12
+            F3MOIN = F(IP,JP3M_0,JB3_0)*D09 + F(IP,JP3M_1,JB3_0)*D10
+     &             + F(IP,JP3M_0,JB3_1)*D11 + F(IP,JP3M_1,JB3_1)*D12
+            F4PLUS = F(IP,JP4P_0,JB4_0)*D13 + F(IP,JP4P_1,JB4_0)*D14
+     &             + F(IP,JP4P_0,JB4_1)*D15 + F(IP,JP4P_1,JB4_1)*D16
+            F4MOIN = F(IP,JP4M_0,JB4_0)*D13 + F(IP,JP4M_1,JB4_0)*D14
+     &             + F(IP,JP4M_0,JB4_1)*D15 + F(IP,JP4M_1,JB4_1)*D16
 !
-           S_1P2M = F1PLUS + F2MOIN
-           S_1M2P = F1MOIN + F2PLUS
-           S_3P4M = F3PLUS + F4MOIN
-           S_3M4P = F3MOIN + F4PLUS
-           P_1P2M = F1PLUS * F2MOIN
-           P_1M2P = F1MOIN * F2PLUS
-           P_3P4M = F3PLUS * F4MOIN
-           P_3M4P = F3MOIN * F4PLUS
+            S_1P2M = F1PLUS + F2MOIN
+            S_1M2P = F1MOIN + F2PLUS
+            S_3P4M = F3PLUS + F4MOIN
+            S_3M4P = F3MOIN + F4PLUS
+            P_1P2M = F1PLUS * F2MOIN
+            P_1M2P = F1MOIN * F2PLUS
+            P_3P4M = F3PLUS * F4MOIN
+            P_3M4P = F3MOIN * F4PLUS
 !
-           W=TAUX1(IP)
-           QNL_A=W*( P_1P2M*S_3P4M - P_3P4M*S_1P2M )
-           QNL_B=W*( P_1P2M*S_3M4P - P_3M4P*S_1P2M )
-           QNL_C=W*( P_1M2P*S_3P4M - P_3P4M*S_1M2P )
-           QNL_D=W*( P_1M2P*S_3M4P - P_3M4P*S_1M2P )
+            W=TAUX1(IP)
+            QNL_A=W*( P_1P2M*S_3P4M - P_3P4M*S_1P2M )
+            QNL_B=W*( P_1P2M*S_3M4P - P_3M4P*S_1P2M )
+            QNL_C=W*( P_1M2P*S_3P4M - P_3P4M*S_1M2P )
+            QNL_D=W*( P_1M2P*S_3M4P - P_3M4P*S_1M2P )
 !
-           Q_APB = QNL_A + QNL_B
-           Q_APC = QNL_A + QNL_C
-           Q_BPD = QNL_B + QNL_D
-           Q_CPD = QNL_C + QNL_D
+            Q_APB = QNL_A + QNL_B
+            Q_APC = QNL_A + QNL_C
+            Q_BPD = QNL_B + QNL_D
+            Q_CPD = QNL_C + QNL_D
 !
 !
-           IF (JB4_0.EQ.JF4_0) THEN
-!..........For the frequency index before F4(-) : configurations A and C
-            TSTOT(IP,JP4M_0,JF4_0)=TSTOT(IP,JP4M_0,JF4_0) + Q_APC*C13
-            TSTOT(IP,JP4M_1,JF4_0)=TSTOT(IP,JP4M_1,JF4_0) + Q_APC*C14
-            TSDER(IP,JP4M_0,JF4_0)=TSDER(IP,JP4M_0,JF4_0)
-     &      +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C13SQ*US1ML4*W
-            TSDER(IP,JP4M_1,JF4_0)=TSDER(IP,JP4M_1,JF4_0)
-     &      +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C14SQ*US1ML4*W
-!..........For the frequency index before  F4(+) : configurations B and D
-            TSTOT(IP,JP4P_0,JF4_0)=TSTOT(IP,JP4P_0,JF4_0) + Q_BPD*C13
-            TSTOT(IP,JP4P_1,JF4_0)=TSTOT(IP,JP4P_1,JF4_0) + Q_BPD*C14
-            TSDER(IP,JP4P_0,JF4_0)=TSDER(IP,JP4P_0,JF4_0)
-     &      +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C13SQ*US1ML4*W
-            TSDER(IP,JP4P_1,JF4_0)=TSDER(IP,JP4P_1,JF4_0)
-     &      +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C14SQ*US1ML4*W
-           ENDIF
+            IF (JB4_0.EQ.JF4_0) THEN
+!...........For the frequency index before F4(-) : configurations A and C
+              TSTOT(IP,JP4M_0,JF4_0)=TSTOT(IP,JP4M_0,JF4_0) + Q_APC*C13
+              TSTOT(IP,JP4M_1,JF4_0)=TSTOT(IP,JP4M_1,JF4_0) + Q_APC*C14
+              TSDER(IP,JP4M_0,JF4_0)=TSDER(IP,JP4M_0,JF4_0)
+     &       +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C13SQ*US1ML4*W
+              TSDER(IP,JP4M_1,JF4_0)=TSDER(IP,JP4M_1,JF4_0)
+     &       +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C14SQ*US1ML4*W
+!...........For the frequency index before  F4(+) : configurations B and D
+              TSTOT(IP,JP4P_0,JF4_0)=TSTOT(IP,JP4P_0,JF4_0) + Q_BPD*C13
+              TSTOT(IP,JP4P_1,JF4_0)=TSTOT(IP,JP4P_1,JF4_0) + Q_BPD*C14
+              TSDER(IP,JP4P_0,JF4_0)=TSDER(IP,JP4P_0,JF4_0)
+     &       +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C13SQ*US1ML4*W
+              TSDER(IP,JP4P_1,JF4_0)=TSDER(IP,JP4P_1,JF4_0)
+     &       +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C14SQ*US1ML4*W
+            ENDIF
 !
-           IF (JB4_1.EQ.JF4_1) THEN
-!..........For the frequency index after F4(-) : configurations A and C
-            TSTOT(IP,JP4M_0,JF4_1)=TSTOT(IP,JP4M_0,JF4_1) + Q_APC*C15
-            TSTOT(IP,JP4M_1,JF4_1)=TSTOT(IP,JP4M_1,JF4_1) + Q_APC*C16
-            TSDER(IP,JP4M_0,JF4_1)=TSDER(IP,JP4M_0,JF4_1)
-     &      +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C15SQ*US1ML4*W
-            TSDER(IP,JP4M_1,JF4_1)=TSDER(IP,JP4M_1,JF4_1)
-     &      +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C16SQ*US1ML4*W
-!..........For the frequency index after F4(+) : configurations B and D
-            TSTOT(IP,JP4P_0,JF4_1)=TSTOT(IP,JP4P_0,JF4_1) + Q_BPD*C15
-            TSTOT(IP,JP4P_1,JF4_1)=TSTOT(IP,JP4P_1,JF4_1) + Q_BPD*C16
-            TSDER(IP,JP4P_0,JF4_1)=TSDER(IP,JP4P_0,JF4_1)
-     &      +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C15SQ*US1ML4*W
-            TSDER(IP,JP4P_1,JF4_1)=TSDER(IP,JP4P_1,JF4_1)
-     &      +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C16SQ*US1ML4*W
-           ENDIF
+            IF (JB4_1.EQ.JF4_1) THEN
+!...........For the frequency index after F4(-) : configurations A and C
+              TSTOT(IP,JP4M_0,JF4_1)=TSTOT(IP,JP4M_0,JF4_1) + Q_APC*C15
+              TSTOT(IP,JP4M_1,JF4_1)=TSTOT(IP,JP4M_1,JF4_1) + Q_APC*C16
+              TSDER(IP,JP4M_0,JF4_1)=TSDER(IP,JP4M_0,JF4_1)
+     &       +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C15SQ*US1ML4*W
+              TSDER(IP,JP4M_1,JF4_1)=TSDER(IP,JP4M_1,JF4_1)
+     &       +(-F3PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C16SQ*US1ML4*W
+!...........For the frequency index after F4(+) : configurations B and D
+              TSTOT(IP,JP4P_0,JF4_1)=TSTOT(IP,JP4P_0,JF4_1) + Q_BPD*C15
+              TSTOT(IP,JP4P_1,JF4_1)=TSTOT(IP,JP4P_1,JF4_1) + Q_BPD*C16
+              TSDER(IP,JP4P_0,JF4_1)=TSDER(IP,JP4P_0,JF4_1)
+     &       +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C15SQ*US1ML4*W
+              TSDER(IP,JP4P_1,JF4_1)=TSDER(IP,JP4P_1,JF4_1)
+     &       +(-F3MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C16SQ*US1ML4*W
+            ENDIF
 !
-           IF (JB2_0.EQ.JF2_0) THEN
-!..........For the frequency index before F2(-) : configurations A and B
-            TSTOT(IP,JP2M_0,JF2_0)=TSTOT(IP,JP2M_0,JF2_0) - Q_APB*C05
-            TSTOT(IP,JP2M_1,JF2_0)=TSTOT(IP,JP2M_1,JF2_0) - Q_APB*C06
-            TSDER(IP,JP2M_0,JF2_0)=TSDER(IP,JP2M_0,JF2_0)
-     &      -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C05SQ*US1MM4*W
-            TSDER(IP,JP2M_1,JF2_0)=TSDER(IP,JP2M_1,JF2_0)
-     &      -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C06SQ*US1MM4*W
-!..........For the frequency index before F2(+) : configurations C and D
-            TSTOT(IP,JP2P_0,JF2_0)=TSTOT(IP,JP2P_0,JF2_0) - Q_CPD*C05
-            TSTOT(IP,JP2P_1,JF2_0)=TSTOT(IP,JP2P_1,JF2_0) - Q_CPD*C06
-            TSDER(IP,JP2P_0,JF2_0)=TSDER(IP,JP2P_0,JF2_0)
-     &      -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C05SQ*US1MM4*W
-            TSDER(IP,JP2P_1,JF2_0)=TSDER(IP,JP2P_1,JF2_0)
-     &      -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C06SQ*US1MM4*W
-           ENDIF
+            IF (JB2_0.EQ.JF2_0) THEN
+!...........For the frequency index before F2(-) : configurations A and B
+              TSTOT(IP,JP2M_0,JF2_0)=TSTOT(IP,JP2M_0,JF2_0) - Q_APB*C05
+              TSTOT(IP,JP2M_1,JF2_0)=TSTOT(IP,JP2M_1,JF2_0) - Q_APB*C06
+              TSDER(IP,JP2M_0,JF2_0)=TSDER(IP,JP2M_0,JF2_0)
+     &       -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C05SQ*US1MM4*W
+              TSDER(IP,JP2M_1,JF2_0)=TSDER(IP,JP2M_1,JF2_0)
+     &       -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C06SQ*US1MM4*W
+!...........For the frequency index before F2(+) : configurations C and D
+              TSTOT(IP,JP2P_0,JF2_0)=TSTOT(IP,JP2P_0,JF2_0) - Q_CPD*C05
+              TSTOT(IP,JP2P_1,JF2_0)=TSTOT(IP,JP2P_1,JF2_0) - Q_CPD*C06
+              TSDER(IP,JP2P_0,JF2_0)=TSDER(IP,JP2P_0,JF2_0)
+     &       -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C05SQ*US1MM4*W
+              TSDER(IP,JP2P_1,JF2_0)=TSDER(IP,JP2P_1,JF2_0)
+     &       -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C06SQ*US1MM4*W
+            ENDIF
 !
-           IF (JB2_1.EQ.JF2_1) THEN
-!..........For the frequency index after F2(-) : configurations A and B
-            TSTOT(IP,JP2M_0,JF2_1)=TSTOT(IP,JP2M_0,JF2_1) - Q_APB*C07
-            TSTOT(IP,JP2M_1,JF2_1)=TSTOT(IP,JP2M_1,JF2_1) - Q_APB*C08
-            TSDER(IP,JP2M_0,JF2_1)=TSDER(IP,JP2M_0,JF2_1)
-     &      -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C07SQ*US1MM4*W
-            TSDER(IP,JP2M_1,JF2_1)=TSDER(IP,JP2M_1,JF2_1)
-     &      -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C08SQ*US1MM4*W
-!..........For the frequency index after F2(+) : configurations C and D
-            TSTOT(IP,JP2P_0,JF2_1)=TSTOT(IP,JP2P_0,JF2_1) - Q_CPD*C07
-            TSTOT(IP,JP2P_1,JF2_1)=TSTOT(IP,JP2P_1,JF2_1) - Q_CPD*C08
-            TSDER(IP,JP2P_0,JF2_1)=TSDER(IP,JP2P_0,JF2_1)
-     &      -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C07SQ*US1MM4*W
-            TSDER(IP,JP2P_1,JF2_1)=TSDER(IP,JP2P_1,JF2_1)
-     &      -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C08SQ*US1MM4*W
-           ENDIF
+            IF (JB2_1.EQ.JF2_1) THEN
+!...........For the frequency index after F2(-) : configurations A and B
+              TSTOT(IP,JP2M_0,JF2_1)=TSTOT(IP,JP2M_0,JF2_1) - Q_APB*C07
+              TSTOT(IP,JP2M_1,JF2_1)=TSTOT(IP,JP2M_1,JF2_1) - Q_APB*C08
+              TSDER(IP,JP2M_0,JF2_1)=TSDER(IP,JP2M_0,JF2_1)
+     &       -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C07SQ*US1MM4*W
+              TSDER(IP,JP2M_1,JF2_1)=TSDER(IP,JP2M_1,JF2_1)
+     &       -( F1PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C08SQ*US1MM4*W
+!...........For the frequency index after F2(+) : configurations C and D
+              TSTOT(IP,JP2P_0,JF2_1)=TSTOT(IP,JP2P_0,JF2_1) - Q_CPD*C07
+              TSTOT(IP,JP2P_1,JF2_1)=TSTOT(IP,JP2P_1,JF2_1) - Q_CPD*C08
+              TSDER(IP,JP2P_0,JF2_1)=TSDER(IP,JP2P_0,JF2_1)
+     &       -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C07SQ*US1MM4*W
+              TSDER(IP,JP2P_1,JF2_1)=TSDER(IP,JP2P_1,JF2_1)
+     &       -( F1MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C08SQ*US1MM4*W
+            ENDIF
 !
-           IF (JB1_0.EQ.JF1_0) THEN
-!..........For the frequency index before F1(+) : configurations A and B
-            TSTOT(IP,JP1P_0,JF1_0)=TSTOT(IP,JP1P_0,JF1_0) - Q_APB*C01
-            TSTOT(IP,JP1P_1,JF1_0)=TSTOT(IP,JP1P_1,JF1_0) - Q_APB*C02
-            TSDER(IP,JP1P_0,JF1_0)=TSDER(IP,JP1P_0,JF1_0)
-     &      -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C01SQ*US1PM4*W
-            TSDER(IP,JP1P_1,JF1_0)=TSDER(IP,JP1P_1,JF1_0)
-     &      -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C02SQ*US1PM4*W
-!..........For the frequency index before F1(-) : configurations C and D
-            TSTOT(IP,JP1M_0,JF1_0)=TSTOT(IP,JP1M_0,JF1_0) - Q_CPD*C01
-            TSTOT(IP,JP1M_1,JF1_0)=TSTOT(IP,JP1M_1,JF1_0) - Q_CPD*C02
-            TSDER(IP,JP1M_0,JF1_0)=TSDER(IP,JP1M_0,JF1_0)
-     &      -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C01SQ*US1PM4*W
-            TSDER(IP,JP1M_1,JF1_0)=TSDER(IP,JP1M_1,JF1_0)
-     &      -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C02SQ*US1PM4*W
-           ENDIF
+            IF (JB1_0.EQ.JF1_0) THEN
+!...........For the frequency index before F1(+) : configurations A and B
+              TSTOT(IP,JP1P_0,JF1_0)=TSTOT(IP,JP1P_0,JF1_0) - Q_APB*C01
+              TSTOT(IP,JP1P_1,JF1_0)=TSTOT(IP,JP1P_1,JF1_0) - Q_APB*C02
+              TSDER(IP,JP1P_0,JF1_0)=TSDER(IP,JP1P_0,JF1_0)
+     &       -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C01SQ*US1PM4*W
+              TSDER(IP,JP1P_1,JF1_0)=TSDER(IP,JP1P_1,JF1_0)
+     &       -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C02SQ*US1PM4*W
+!...........For the frequency index before F1(-) : configurations C and D
+              TSTOT(IP,JP1M_0,JF1_0)=TSTOT(IP,JP1M_0,JF1_0) - Q_CPD*C01
+              TSTOT(IP,JP1M_1,JF1_0)=TSTOT(IP,JP1M_1,JF1_0) - Q_CPD*C02
+              TSDER(IP,JP1M_0,JF1_0)=TSDER(IP,JP1M_0,JF1_0)
+     &       -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C01SQ*US1PM4*W
+              TSDER(IP,JP1M_1,JF1_0)=TSDER(IP,JP1M_1,JF1_0)
+     &       -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C02SQ*US1PM4*W
+            ENDIF
 !
-           IF (JB1_1.EQ.JF1_1) THEN
-!..........For the frequency index after F1(+) : configurations A and B
-            TSTOT(IP,JP1P_0,JF1_1)=TSTOT(IP,JP1P_0,JF1_1) - Q_APB*C03
-            TSTOT(IP,JP1P_1,JF1_1)=TSTOT(IP,JP1P_1,JF1_1) - Q_APB*C04
-            TSDER(IP,JP1P_0,JF1_1)=TSDER(IP,JP1P_0,JF1_1)
-     &      -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C03SQ*US1PM4*W
-            TSDER(IP,JP1P_1,JF1_1)=TSDER(IP,JP1P_1,JF1_1)
-     &      -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C04SQ*US1PM4*W
-!..........For the frequency index after F1(-) : configurations C and D
-            TSTOT(IP,JP1M_0,JF1_1)=TSTOT(IP,JP1M_0,JF1_1) - Q_CPD*C03
-            TSTOT(IP,JP1M_1,JF1_1)=TSTOT(IP,JP1M_1,JF1_1) - Q_CPD*C04
-            TSDER(IP,JP1M_0,JF1_1)=TSDER(IP,JP1M_0,JF1_1)
-     &      -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C03SQ*US1PM4*W
-            TSDER(IP,JP1M_1,JF1_1)=TSDER(IP,JP1M_1,JF1_1)
-     &      -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C04SQ*US1PM4*W
-           ENDIF
+            IF (JB1_1.EQ.JF1_1) THEN
+!...........For the frequency index after F1(+) : configurations A and B
+              TSTOT(IP,JP1P_0,JF1_1)=TSTOT(IP,JP1P_0,JF1_1) - Q_APB*C03
+              TSTOT(IP,JP1P_1,JF1_1)=TSTOT(IP,JP1P_1,JF1_1) - Q_APB*C04
+              TSDER(IP,JP1P_0,JF1_1)=TSDER(IP,JP1P_0,JF1_1)
+     &       -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C03SQ*US1PM4*W
+              TSDER(IP,JP1P_1,JF1_1)=TSDER(IP,JP1P_1,JF1_1)
+     &       -( F2MOIN*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C04SQ*US1PM4*W
+!...........For the frequency index after F1(-) : configurations C and D
+              TSTOT(IP,JP1M_0,JF1_1)=TSTOT(IP,JP1M_0,JF1_1) - Q_CPD*C03
+              TSTOT(IP,JP1M_1,JF1_1)=TSTOT(IP,JP1M_1,JF1_1) - Q_CPD*C04
+              TSDER(IP,JP1M_0,JF1_1)=TSDER(IP,JP1M_0,JF1_1)
+     &       -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C03SQ*US1PM4*W
+              TSDER(IP,JP1M_1,JF1_1)=TSDER(IP,JP1M_1,JF1_1)
+     &       -( F2PLUS*(S_3P4M+S_3M4P) - P_3P4M - P_3M4P)*C04SQ*US1PM4*W
+            ENDIF
 !
-           IF (JB3_0.EQ.JF3_0) THEN
-!..........For the frequency index before F3(+) : configurations A and C
-            TSTOT(IP,JP3P_0,JF3_0)=TSTOT(IP,JP3P_0,JF3_0) + Q_APC*C09
-            TSTOT(IP,JP3P_1,JF3_0)=TSTOT(IP,JP3P_1,JF3_0) + Q_APC*C10
-            TSDER(IP,JP3P_0,JF3_0)=TSDER(IP,JP3P_0,JF3_0)
-     &      +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C09SQ*US1PL4*W
-            TSDER(IP,JP3P_1,JF3_0)=TSDER(IP,JP3P_1,JF3_0)
-     &      +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C10SQ*US1PL4*W
-!..........For the frequency index before F3(-) : configurations B and D
-            TSTOT(IP,JP3M_0,JF3_0)=TSTOT(IP,JP3M_0,JF3_0) + Q_BPD*C09
-            TSTOT(IP,JP3M_1,JF3_0)=TSTOT(IP,JP3M_1,JF3_0) + Q_BPD*C10
-            TSDER(IP,JP3M_0,JF3_0)=TSDER(IP,JP3M_0,JF3_0)
-     &      +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C09SQ*US1PL4*W
-            TSDER(IP,JP3M_1,JF3_0)=TSDER(IP,JP3M_1,JF3_0)
-     &      +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C10SQ*US1PL4*W
-           ENDIF
+            IF (JB3_0.EQ.JF3_0) THEN
+!...........For the frequency index before F3(+) : configurations A and C
+              TSTOT(IP,JP3P_0,JF3_0)=TSTOT(IP,JP3P_0,JF3_0) + Q_APC*C09
+              TSTOT(IP,JP3P_1,JF3_0)=TSTOT(IP,JP3P_1,JF3_0) + Q_APC*C10
+              TSDER(IP,JP3P_0,JF3_0)=TSDER(IP,JP3P_0,JF3_0)
+     &       +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C09SQ*US1PL4*W
+              TSDER(IP,JP3P_1,JF3_0)=TSDER(IP,JP3P_1,JF3_0)
+     &       +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C10SQ*US1PL4*W
+!...........For the frequency index before F3(-) : configurations B and D
+              TSTOT(IP,JP3M_0,JF3_0)=TSTOT(IP,JP3M_0,JF3_0) + Q_BPD*C09
+              TSTOT(IP,JP3M_1,JF3_0)=TSTOT(IP,JP3M_1,JF3_0) + Q_BPD*C10
+              TSDER(IP,JP3M_0,JF3_0)=TSDER(IP,JP3M_0,JF3_0)
+     &       +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C09SQ*US1PL4*W
+              TSDER(IP,JP3M_1,JF3_0)=TSDER(IP,JP3M_1,JF3_0)
+     &       +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C10SQ*US1PL4*W
+            ENDIF
 !
-           IF (JB3_1.EQ.JF3_1) THEN
-!..........For the frequency index after F3(+) : configurations A and C
-            TSTOT(IP,JP3P_0,JF3_1)=TSTOT(IP,JP3P_0,JF3_1) + Q_APC*C11
-            TSTOT(IP,JP3P_1,JF3_1)=TSTOT(IP,JP3P_1,JF3_1) + Q_APC*C12
-            TSDER(IP,JP3P_0,JF3_1)=TSDER(IP,JP3P_0,JF3_1)
-     &      +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C11SQ*US1PL4*W
-            TSDER(IP,JP3P_1,JF3_1)=TSDER(IP,JP3P_1,JF3_1)
-     &      +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C12SQ*US1PL4*W
-!..........For the frequency index after F3(-) : configurations B and D
-            TSTOT(IP,JP3M_0,JF3_1)=TSTOT(IP,JP3M_0,JF3_1) + Q_BPD*C11
-            TSTOT(IP,JP3M_1,JF3_1)=TSTOT(IP,JP3M_1,JF3_1) + Q_BPD*C12
-            TSDER(IP,JP3M_0,JF3_1)=TSDER(IP,JP3M_0,JF3_1)
-     &      +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C11SQ*US1PL4*W
-            TSDER(IP,JP3M_1,JF3_1)=TSDER(IP,JP3M_1,JF3_1)
-     &      +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C12SQ*US1PL4*W
-           ENDIF
+            IF (JB3_1.EQ.JF3_1) THEN
+!...........For the frequency index after F3(+) : configurations A and C
+              TSTOT(IP,JP3P_0,JF3_1)=TSTOT(IP,JP3P_0,JF3_1) + Q_APC*C11
+              TSTOT(IP,JP3P_1,JF3_1)=TSTOT(IP,JP3P_1,JF3_1) + Q_APC*C12
+              TSDER(IP,JP3P_0,JF3_1)=TSDER(IP,JP3P_0,JF3_1)
+     &       +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C11SQ*US1PL4*W
+              TSDER(IP,JP3P_1,JF3_1)=TSDER(IP,JP3P_1,JF3_1)
+     &       +(-F4MOIN*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C12SQ*US1PL4*W
+!...........For the frequency index after F3(-) : configurations B and D
+              TSTOT(IP,JP3M_0,JF3_1)=TSTOT(IP,JP3M_0,JF3_1) + Q_BPD*C11
+              TSTOT(IP,JP3M_1,JF3_1)=TSTOT(IP,JP3M_1,JF3_1) + Q_BPD*C12
+              TSDER(IP,JP3M_0,JF3_1)=TSDER(IP,JP3M_0,JF3_1)
+     &       +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C11SQ*US1PL4*W
+              TSDER(IP,JP3M_1,JF3_1)=TSDER(IP,JP3M_1,JF3_1)
+     &       +(-F4PLUS*(S_1P2M+S_1M2P) + P_1P2M + P_1M2P)*C12SQ*US1PL4*W
+            ENDIF
 !
           ENDDO
 !

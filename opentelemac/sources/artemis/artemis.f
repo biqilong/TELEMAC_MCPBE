@@ -1,6 +1,6 @@
-!                    ******************
-                     SUBROUTINE ARTEMIS
-!                    ******************
+!                   ******************
+                    SUBROUTINE ARTEMIS
+!                   ******************
 !
 !
 !***********************************************************************
@@ -86,7 +86,7 @@
 !-----------------------------------------------------------------------
 !
       USE DECLARATIONS_SPECIAL
-      USE INTERFACE_PARALLEL, ONLY : P_IMAX
+      USE INTERFACE_PARALLEL, ONLY : P_MAX
       IMPLICIT NONE
 !
 ! INTEGERS
@@ -242,20 +242,20 @@
 !  IF ANIMATION IS REQUIRED, PREPARES THE OUTPUT FILES
 !
         IF (ANIMFS) THEN
-           CALL WRITE_HEADER(ART_FILES(ARTAMP)%FMT,
-     &                       ART_FILES(ARTAMP)%LU,
-     &                       TITCAS,
-     &                       MAXVAR,
-     &                       TEXTANIM,
-     &                       SORNIM)
-           CALL WRITE_MESH(ART_FILES(ARTAMP)%FMT,
-     &                     ART_FILES(ARTAMP)%LU,
-     &                     MESH,
-     &                     1,
-     &                     MARDAT,
-     &                     MARTIM,
-     &                     T1,T2,
-     &                     NCSIZE.GT.1,NPTIR)
+          CALL WRITE_HEADER(ART_FILES(ARTAMP)%FMT,
+     &                      ART_FILES(ARTAMP)%LU,
+     &                      TITCAS,
+     &                      MAXVAR,
+     &                      TEXTANIM,
+     &                      SORNIM)
+          CALL WRITE_MESH(ART_FILES(ARTAMP)%FMT,
+     &                    ART_FILES(ARTAMP)%LU,
+     &                    MESH,
+     &                    1,
+     &                    MARDAT,
+     &                    MARTIM,
+     &                    T1,T2,
+     &                    NCSIZE.GT.1,NPTIR)
         ENDIF
 !
         IF(DEBUG.GT.0) WRITE(LU,*) '< RESULTS FILE PREPARED'
@@ -274,7 +274,7 @@
         DO I=1,NPTFR
           NFRLIQ=MAX(NFRLIQ,NUMLIQ%I(I))
         ENDDO
-        NFRLIQ=P_IMAX(NFRLIQ)
+        NFRLIQ=P_MAX(NFRLIQ)
         WRITE(LU,*) ' '
         WRITE(LU,*) 'NUMBER OF LIQUID BOUNDARIES:',NFRLIQ
       ELSE

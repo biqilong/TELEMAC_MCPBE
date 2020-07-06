@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE FILP10
-!                    *****************
+!                   *****************
+                    SUBROUTINE FILP10
+!                   *****************
 !
      &( F , C , XSOM , YSOM , NSOM , X , Y , NELEM , NELMAX , IKLE )
 !

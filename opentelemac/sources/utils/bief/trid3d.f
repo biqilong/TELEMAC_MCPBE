@@ -1,6 +1,6 @@
-!                    *****************
-                     SUBROUTINE TRID3D
-!                    *****************
+!                   *****************
+                    SUBROUTINE TRID3D
+!                   *****************
 !
      &(XAUX,X,B,NPOIN,NPOIN2)
 !

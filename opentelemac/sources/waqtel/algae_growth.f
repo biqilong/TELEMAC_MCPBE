@@ -1,6 +1,6 @@
-!                    ************************
-                     SUBROUTINE ALGAE_GROWTH
-!                    ************************
+!                   ************************
+                    SUBROUTINE ALGAE_GROWTH
+!                   ************************
 !
      &(ALG,CMAX,RAY,GT,NUTR,TOX,NPOIN )
 !
@@ -45,7 +45,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER I
-!      
+!
       DO I=1,NPOIN
         ALG(I)=CMAX*RAY(I)*GT%R(I)*NUTR(I)*TOX
       ENDDO

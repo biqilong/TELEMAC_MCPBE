@@ -1,6 +1,6 @@
-!                    **********************
-                     INTEGER FUNCTION INTLU
-!                    **********************
+!                   **********************
+                    INTEGER FUNCTION INTLU
+!                   **********************
 !
      &( ICOL , LIGNE )
 !
@@ -78,13 +78,13 @@
 !     //// DECODES THE SIGN IF NEED BE ////
 !
       IF ( LIGNE(I1:I1).EQ.'-' ) THEN
-           ISIGNE = -1
-           I1     =   NEXT ( I1+1      , LIGNE )
+        ISIGNE = -1
+        I1     =   NEXT ( I1+1      , LIGNE )
       ELSE IF ( LIGNE(I1:I1).EQ.'+' ) THEN
-           ISIGNE = +1
-           I1     =   NEXT ( I1+1      , LIGNE )
+        ISIGNE = +1
+        I1     =   NEXT ( I1+1      , LIGNE )
       ELSE
-           ISIGNE = +1
+        ISIGNE = +1
       ENDIF
 !
 !     //// SEEKS THE FIRST WHITE CHARACTER FOLLOWING THE NUMBER ////
