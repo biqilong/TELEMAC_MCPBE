@@ -33,7 +33,7 @@ Then run the following script:
 lcov --directory $HOMETEL/builds/$USETELCFG/lib --capture \
 --initial --output-file $HOMETEL/app.info
 # Running test cases
-validateTELEMAC.py -k2 --clean --bypass
+validate_telemac.py -k2 --clean --bypass
 # Gathering data
 lcov --directory $HOMETEL/builds/$USETELCFG/lib --capture \
 --output-file $HOMETEL/app.info

@@ -152,9 +152,10 @@
       !>@param[in,out] RESFORMAT Format of the result file
       !>@param[in] NPROC Number of processors
       !>@param[in] NPLAN_RES Number of planes for the result file
+      !>@param[in] METHOD Method to merge data information
       !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       SUBROUTINE RUN_GRETEL(CODE,GEO,GEOFORMAT,BND,RES,RESFORMAT,NPROC,
-     &     NPLAN_RES)
+     &     NPLAN_RES,METHOD)
 !
         CHARACTER(LEN=3),  INTENT(IN) :: CODE
         CHARACTER(LEN=250), INTENT(IN) :: GEO
@@ -163,6 +164,7 @@
         CHARACTER(LEN=8),   INTENT(INOUT) :: GEOFORMAT,RESFORMAT
         INTEGER,            INTENT(IN) :: NPROC
         INTEGER,            INTENT(INOUT) :: NPLAN_RES
+        INTEGER,            INTENT(IN) :: METHOD
 !
         INTEGER :: TMP_LU
 !
@@ -175,7 +177,7 @@
         ! The partitioning is done sequentially
         ! PARITIONING THE GEOMETRY FILE
         CALL GRETEL_AUTOP(GEO,GEOFORMAT,BND,RES,RESFORMAT,NPROC,
-     &                    NPLAN_RES)
+     &                    NPLAN_RES,METHOD)
         IF(.NOT. STD_OUTPUT) THEN
           CLOSE(LU)
         ENDIF

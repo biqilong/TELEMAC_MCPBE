@@ -5,7 +5,7 @@
      & (NPOIN2,NPOIN3,TA,ATABOS,BTABOS,PATMOS,ATMOSEXCH,WIND,RHO)
 !
 !***********************************************************************
-! WAQTEL   V8P1
+! WAQTEL   V8P2
 !***********************************************************************
 !
 !brief   COMPUTES BOUNDARY CONDITIONS FOR WAQ THERMIC PROCESS
@@ -60,7 +60,8 @@
 !
       USE BIEF
       USE DECLARATIONS_SPECIAL
-      USE DECLARATIONS_WAQTEL,ONLY:C_ATMOS,HREL,TAIR,NEBU,CP_EAU,IND_T
+      USE DECLARATIONS_WAQTEL,ONLY:C_ATMOS,HREL,TAIR,NEBU,CP_EAU,IND_T,
+     &    CFAER,N_C_ATMOS
       USE EXCHANGE_WITH_ATMOSPHERE
       USE INTERFACE_WAQTEL, EX_CALCS3D_THERMICS => CALCS3D_THERMICS
       IMPLICIT NONE
@@ -105,12 +106,18 @@
 !
           WW = SQRT(WIND%ADR(1)%P%R(IPOIN2)*WIND%ADR(1)%P%R(IPOIN2)
      &       + WIND%ADR(2)%P%R(IPOIN2)*WIND%ADR(2)%P%R(IPOIN2))
-!         LOG LAW FOR WIND AT 2 METERS
-!          WW2 = WW * LOG(2.D0/0.0002D0)/LOG(10.D0/0.0002D0)
-!         WRITTEN BELOW AS:
-          WW2 = WW * FACT
-!         ALTERNATIVE LAW FOR WIND AT 2 METERS
-!          WW2 = 0.6D0*WW
+!
+          IF(N_C_ATMOS.EQ.2.AND.ATMOSEXCH.EQ.2) THEN
+            WW2 = WW
+          ELSE
+!           LOG LAW FOR WIND AT 2 METERS
+!            WW2 = WW * LOG(2.D0/0.0002D0)/LOG(10.D0/0.0002D0)
+!           WRITTEN BELOW AS:
+            WW2 = WW * FACT
+!           ALTERNATIVE LAW FOR WIND AT 2 METERS
+!            WW2 = 0.6D0*WW
+          ENDIF
+!
           IF(ATMOSEXCH.EQ.1) THEN
             A=(4.48D0+0.049D0*TREEL+2021.5D0*C_ATMOS*(1.D0+WW)*
      &        (1.12D0+0.018D0*TREEL+0.00158D0*TREEL**2))/LAMB
@@ -121,7 +128,8 @@
 !     SENSIBLE HEAT FLUXES
 !
             CALL EVAPO(TREEL,TAIR%R(IPOIN2),WW2,PATMOS%R(IPOIN2),HREL,
-     &                 RO,FLUX_EVAP,FLUX_SENS,DEBEVAP,C_ATMOS)
+     &                 RO,FLUX_EVAP,FLUX_SENS,DEBEVAP,C_ATMOS,CFAER(1),
+     &                 CFAER(2))
 !
 !     LONGWAVE HEAT FLUXES
 !

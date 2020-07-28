@@ -68,6 +68,11 @@ def main():
               dest="nplan",
               default=0,
               help="Number of horizontal levels ,default is 0")
+    parser.add_argument(\
+              "--method",
+              dest="method",
+              default=1,
+              help="Method for merging data ,default is 1")
     args = parser.parse_args()
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -93,6 +98,7 @@ def main():
             res_file_fmt = f.readline().strip('\n')
             ncsize = f.readline().strip('\n')
             nplan = f.readline().strip('\n')
+            method = f.readline().strip('\n')
     else:
         geo_file = args.geo_file
         geo_file_fmt = args.geo_file_fmt
@@ -101,6 +107,7 @@ def main():
         res_file_fmt = args.res_file_fmt
         ncsize = args.ncsize
         nplan = args.nplan
+        method = args.method
 
     # Getting partel command from configuration
     pbin = path.join(CFGS.get_root(), 'builds', CFGS.cfgname, 'bin')
@@ -108,7 +115,7 @@ def main():
     # Running paritionning
 
     run_gretel(grecmd, res_file, res_file_fmt, geo_file, geo_file_fmt, bnd,
-               ncsize, nplan, False)
+               ncsize, nplan, method, False)
 
     print('\n\nMy work is done\n\n')
     sys.exit(0)

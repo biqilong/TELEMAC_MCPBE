@@ -361,9 +361,7 @@
 ! UPDATE THE POINTERS TO THE DIFFERENTIATED VARIABLES
 !=======================================================================
 !
-!     TODO: TRY NOT USING THE HARDCODED NUMBER 34
-!
-      J = 34+1+NTRAC+2*NPERIAF+VARCL%N
+      J = ADR_TRAC+NTRAC+2*NPERIAF+VARCL%N
       DO I = 1,NADVAR
         IF((LEO.AND.SORLEO(J)).OR.(IMP.AND.SORIMP(J))) THEN
           CALL AD_GET_TELEMAC2D(I,ADVAR%ADR(I)%P)

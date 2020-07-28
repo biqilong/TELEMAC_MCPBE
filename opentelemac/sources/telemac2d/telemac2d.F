@@ -6,7 +6,7 @@
      & CONVERGENCE_LEVEL)
 !
 !***********************************************************************
-! TELEMAC2D   V7P2
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    SOLVES THE SAINT-VENANT EQUATIONS FOR U,V,H.
@@ -494,7 +494,7 @@
       IF(NTRAC.GT.0) THEN
         DO ITRAC=1,NTRAC
 !         SEE NOMVAR_TELEMAC2D
-          ALIRE(35+ITRAC) = 1
+          ALIRE(ADR_TRAC+ITRAC) = 1
         ENDDO
       ENDIF
 !
@@ -509,7 +509,7 @@
       IF(NADVAR.GT.0) THEN
         DO IVAR=1,NADVAR
 !         SEE NOMVAR_TELEMAC2D
-          ALIRE(35+NTRAC+2*NPERIAF+IVAR) = 1
+          ALIRE(ADR_TRAC+NTRAC+2*NPERIAF+IVAR) = 1
         ENDDO
       ENDIF
 !
@@ -952,7 +952,7 @@
         IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING BORICE'
         CALL BORICE( H,U,V,TN,AT,LT,DT, W1DEB,T8,
      &    LIUBOR%I,NPTFR,NUMLIQ%I,KLOG,
-     &    MASK,MESH )
+     &    MASK,MESH,S )
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM BORICE'
       ENDIF
 !
@@ -1780,8 +1780,7 @@
 !
       IF(INCLUS(COUPLING,'KHIONE')) THEN
         IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING BORDER_ICOVER'
-        CALL BORDER_ICOVER(U,V,
-     &    T%ADR(IND_T)%P, ROEAU, DT, MESH )
+        CALL BORDER_ICOVER(U,V, MESH )
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM BORDER_ICOVER'
 !        IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING DYNAMICE'
 !        THIS IS LAGARNGIAN PART- TO BE INTRODUCED SOON
@@ -1950,7 +1949,8 @@
      &        MARTIM,        ! START TIME
      &        .FALSE.,       ! WHETHER TO WRITE THE FILE HEADER
      &        .FALSE.,       ! WHETHER TO WRITE THE FILE MESH
-     &        .TRUE.)        ! WHETEHR TO WRITE THE VARIABLES AT AT
+     &        .TRUE.,        ! WHETEHR TO WRITE THE VARIABLES AT AT
+     &        T)
             IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM OUTPUT_KHIONE'
           ENDIF
         ENDIF

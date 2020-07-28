@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC2D   V8P1
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !
@@ -2285,10 +2285,10 @@
 !
       INTERFACE
         SUBROUTINE RESCUE
-     &(U,V,H,S,ZF,T,TRAC0,NTRAC,ITURB,NPOIN,AKEP,TROUVE)
+     &(U,V,H,S,ZF,T,TRAC0,NTRAC,ITURB,NPOIN,AKEP,TROUVE,ADR_TRAC)
       USE BIEF_DEF
       IMPLICIT NONE
-      INTEGER, INTENT(IN)             :: TROUVE(36),ITURB,NPOIN,NTRAC
+      INTEGER, INTENT(IN) :: TROUVE(*),ITURB,NPOIN,NTRAC,ADR_TRAC
       LOGICAL, INTENT(INOUT)          :: AKEP
       DOUBLE PRECISION, INTENT(INOUT) :: U(NPOIN),V(NPOIN),H(NPOIN)
       DOUBLE PRECISION, INTENT(INOUT) :: S(NPOIN),ZF(NPOIN)

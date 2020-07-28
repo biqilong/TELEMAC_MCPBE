@@ -1,7 +1,7 @@
 [general]
 path: <root>|sources|telemac2d
 module: telemac2d
-liborder: special damocles hermes parallel bief waqtel nestor ad stbtel tomawac sisyphe khione gaia telemac2d
+liborder: special damocles hermes parallel bief nestor ad stbtel waqtel tomawac sisyphe khione gaia telemac2d
 name: telemac2d
 
 [ad]
@@ -195,135 +195,7 @@ files: bief_def.f
   osbd.f
   paracoi.f
   parcom2i.f
-  cflp11.f
-  cflp12.f
-  cflpsi.f
-  bief_allvec_in_block.f
-  char_gauss.f
-  mv0202.f
-  mv0303.f
-  mv0304.f
-  mv0306.f
-  mv0403.f
-  mv0404.f
-  mv0404_2.f
-  mv0603.f
-  mv0606.f
-  mv0606_2.f
-  mvseg.f
-  opass.f
-  mw0303.f
-  matvct.f
-  matvec.f
-  matrbl.f
-  allblo_in_block.f
-  dot_comp.f
-  p_dot.f
-  p_dotpair.f
-  p_dots.f
-  cgsqua.f
-  des11.f
-  des21.f
-  des41.f
-  descen.f
-  desseg.f
-  rem11.f
-  rem21.f
-  rem41.f
-  remont.f
-  remseg.f
-  dwnup1.f
-  downup.f
-  cgstab.f
-  asmve1.f
-  asmvec.f
-  dldu11.f
-  dldu21.f
-  dldu41.f
-  dlduseg.f
-  decldu.f
-  dcpldu.f
-  equnor.f
-  errmin.f
-  godwn1.f
-  godown.f
-  goup1.f
-  goup.f
-  mer11.f
-  mer21.f
-  mer41.f
-  tnomer.f
-  puog1.f
-  puog.f
-  gmres.f
-  trid3d.f
-  gracjg.F
-  cpstmt.f
-  om0101.f
-  ovdb.f
-  om1101.f
-  om1111.f
-  om1112.f
-  om1113.f
-  om1201.f
-  om1211.f
-  om1302.f
-  om1311.f
-  om2121.f
-  om3181.f
-  om4111.f
-  om4121.f
-  om4141.f
-  om5111.f
-  om5161.f
-  omborseg.f
-  omseg.f
-  omsegbor.f
-  om.f
-  gsebe.f
-  sd_fabsg4.f
-  sd_strsg4.f
-  solve_mumps_par.F
-  pre4_mumps.F
-  prebd4.f
-  prebd9.f
-  prebdt.f
-  precd1.f
-  precd4.f
-  precd9.f
-  precdt.f
-  preverebe.f
-  preverseg.f
-  rescjg.f
-  sd_nnfc.f
-  sd_nnsc.f
-  sd_nntc.f
-  sd_nroc.f
-  sd_nsfc.f
-  sd_cdrv.f
-  sd_strtri.f
-  sd_fabcad.f
-  sd_mdi.f
-  sd_mdm.f
-  sd_mdp.f
-  sd_mdu.f
-  sd_md.f
-  sd_sro.f
-  sd_odrv.f
-  sd_snf.f
-  sd_sns.f
-  sd_ssf.f
-  sd_sdrv.f
-  sd_strssd.f
-  sd_solve_1.f
-  sd_solve_4.f
-  solaux.f
-  um1x04.f
-  um1x09.f
-  um1x.f
-  solve.f
-  ad_solve.F
-  lump.f
+  global_to_local_point.f
   as3_1111_q.f
   as3_1111_s.f
   as3_1112.f
@@ -410,7 +282,136 @@ files: bief_def.f
   mt99aa.f
   mt99bb.f
   matriy.f
+  cpstmt.f
+  om0101.f
+  ovdb.f
+  om1101.f
+  om1111.f
+  om1112.f
+  om1113.f
+  om1201.f
+  om1211.f
+  om1302.f
+  om1311.f
+  om2121.f
+  om3181.f
+  om4111.f
+  om4121.f
+  om4141.f
+  om5111.f
+  om5161.f
+  omborseg.f
+  omseg.f
+  omsegbor.f
+  om.f
   matrix.f
+  mv0202.f
+  mv0303.f
+  mv0304.f
+  mv0306.f
+  mv0403.f
+  mv0404.f
+  mv0404_2.f
+  mv0603.f
+  mv0606.f
+  mv0606_2.f
+  mvseg.f
+  opass.f
+  mw0303.f
+  matvct.f
+  matvec.f
+  cflp11.f
+  cflp12.f
+  cflpsi.f
+  bief_allvec_in_block.f
+  char_gauss.f
+  matrbl.f
+  allblo_in_block.f
+  dot_comp.f
+  p_dot.f
+  p_dotpair.f
+  p_dots.f
+  cgsqua.f
+  des11.f
+  des21.f
+  des41.f
+  descen.f
+  desseg.f
+  rem11.f
+  rem21.f
+  rem41.f
+  remont.f
+  remseg.f
+  dwnup1.f
+  downup.f
+  cgstab.f
+  asmve1.f
+  asmvec.f
+  dldu11.f
+  dldu21.f
+  dldu41.f
+  dlduseg.f
+  decldu.f
+  dcpldu.f
+  equnor.f
+  errmin.f
+  godwn1.f
+  godown.f
+  goup1.f
+  goup.f
+  mer11.f
+  mer21.f
+  mer41.f
+  tnomer.f
+  puog1.f
+  puog.f
+  gmres.f
+  trid3d.f
+  gracjg.F
+  gsebe.f
+  sd_fabsg4.f
+  sd_strsg4.f
+  solve_mumps_par.F
+  pre4_mumps.F
+  prebd4.f
+  prebd9.f
+  prebdt.f
+  precd1.f
+  precd4.f
+  precd9.f
+  precdt.f
+  preverebe.f
+  preverseg.f
+  rescjg.f
+  sd_nnfc.f
+  sd_nnsc.f
+  sd_nntc.f
+  sd_nroc.f
+  sd_nsfc.f
+  sd_cdrv.f
+  sd_strtri.f
+  sd_fabcad.f
+  sd_mdi.f
+  sd_mdm.f
+  sd_mdp.f
+  sd_mdu.f
+  sd_md.f
+  sd_sro.f
+  sd_odrv.f
+  sd_snf.f
+  sd_sns.f
+  sd_ssf.f
+  sd_sdrv.f
+  sd_strssd.f
+  sd_solve_1.f
+  sd_solve_4.f
+  solaux.f
+  um1x04.f
+  um1x09.f
+  um1x.f
+  solve.f
+  ad_solve.F
+  lump.f
   char_weak.F
   gtsh11.f
   gtsh41.f
@@ -452,7 +453,6 @@ files: bief_def.f
   diffcl.f
   diffin.f
   anti_dirac.f
-  global_to_local_point.f
   masktf.f
   maskto.f
   cvtrvf_nerd_2.f
@@ -717,6 +717,7 @@ files: declarations_khione.f
   meteo_khione.f
   border_icover.f
   freezeup_khione.f
+  section_khione.f
   borice.f
   thermal_khione.f
   source_frazil.f
@@ -730,6 +731,7 @@ files: declarations_khione.f
   nametrac_khione.f
   ad_get_khione.F
   point_khione.f
+  yasmi_khione.f
 
 [nestor]
 path: <root>|sources|nestor
@@ -1204,6 +1206,7 @@ files: friction_def.f
   telemac2d.F
   homere_adj_t2d.f
   lecdon_telemac2d_gaia.f
+  lecdon_telemac2d_khione.f
   user_nomvar_telemac2d.f
   nomvar_telemac2d.f
   lecdon_telemac2d.f
@@ -1345,12 +1348,13 @@ files: declarations_tomawac.f
 path: <root>|sources|waqtel
 files: declarations_waqtel.f
   interface_waqtel.f
-  exchange_with_atmosphere.f
   algae_death.f
   algae_growth.f
   nuteff.f
   ray_effect.f
   calcs2d_biomass.f
+  user_calcs2d_degradation.f
+  calcs2d_degradation.f
   reaer.f
   satur_o2.f
   calcs2d_eutro.f
@@ -1360,11 +1364,14 @@ files: declarations_waqtel.f
   calcs2d_micropol.f
   calcs2d_o2.f
   calcs2d_thermic.f
+  exchange_with_atmosphere.f
   fv_aed2_csv_reader.F90
   fv_zones.F90
   t3d_aed2.F90
   calcs3d_aed2.F
   calcs3d_biomass.f
+  user_calcs3d_degradation.f
+  calcs3d_degradation.f
   calcs3d_eutro.f
   calcs3d_micropol.f
   calcs3d_o2.f

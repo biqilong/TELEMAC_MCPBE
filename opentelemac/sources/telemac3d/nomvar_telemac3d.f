@@ -2,7 +2,7 @@
                     SUBROUTINE NOMVAR_TELEMAC3D
 !                   ***************************
 !
-     &(TEXT3,TEXTP3,MNEMO,NTRAC,MAXTRA,NAMETRAC,ADR_TRAC)
+     &(TEXT3,TEXTP3,MNEMO,NTRAC,MAXTRA,NAMETRAC)
 !
 !***********************************************************************
 ! TELEMAC3D   V7P1
@@ -39,7 +39,6 @@
 !+
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| ADR_TRAC       |-->| ADDRESS OF TRACERS IN BLOCK VARSO3
 !| MAXTRA         |-->| MAXIMUM NUMBER OF TRACERS
 !| MNEMO          |<->| MNEMOTECHNIC NAME
 !| NAMETRAC       |-->| NAME OF TRACERS
@@ -48,14 +47,14 @@
 !| TEXTP3         |<->| SEE ABOVE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_TELEMAC3D, ONLY: MAXVAR,MAXVA3
+      USE DECLARATIONS_TELEMAC3D, ONLY: MAXVAR,MAXVA3,NVAR_T3D,ADR_TRAC
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN) :: NTRAC,ADR_TRAC,MAXTRA
+      INTEGER, INTENT(IN) :: NTRAC,MAXTRA
 !                        140 = MAXVAR IN DECLARATIONS_TELEMAC3D
       CHARACTER(LEN=32), INTENT(INOUT) :: TEXT3(*),TEXTP3(*)
       CHARACTER(LEN=32), INTENT(IN)    :: NAMETRAC(MAXTRA)
@@ -228,6 +227,8 @@
 !
 ! WHATEVER THE LANGUAGE: TRACERS
 !
+      NVAR_T3D = 31
+      ADR_TRAC = NVAR_T3D + 1
       NEXT = ADR_TRAC
 !
       IF(NTRAC.GT.0) THEN

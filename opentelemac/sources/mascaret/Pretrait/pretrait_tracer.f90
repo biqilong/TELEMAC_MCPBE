@@ -93,7 +93,7 @@ subroutine PRETRAIT_Tracer( &
    use M_ERREUR_T                  ! Traitement des erreurs
    use M_MESSAGE_C
    use M_MESSAGE_TRACER_C
-   use Fox_dom                 ! parser XML Fortran
+   use M_XCAS_S
 
    !.. Implicit Declarations ..
    implicit none
@@ -144,14 +144,10 @@ subroutine PRETRAIT_Tracer( &
    logical  :: ImpressionConcIni, ImpressionLoiTracer
    integer  :: NbExtLibre, ult
    integer  i, ib, k, retour
-
-   ! FoX XML
-   !--------
-   type(Node), pointer :: document,element,champ1,champ2,champ3
-   type(DOMconfiguration), pointer :: config
-   type(DOMException) :: ex
-   integer :: ios
-   !
+   character(len=256)  :: pathNode
+   character(len=1024) :: line
+   character(len=256)  :: xcasFile
+   integer             :: unitNum
    logical, allocatable :: ltab1(:),ltab2(:)
    integer, allocatable :: itab1(:),itab2(:)
 
@@ -162,35 +158,27 @@ subroutine PRETRAIT_Tracer( &
    !arbredappel_old = trim(Erreur%arbredappel)
    !Erreur%arbredappel = trim(Erreur%arbredappel)//'=>PRETRAIT_TRACER'
 
-   ! FoX : initialisation
-   !---------------------
-   config => newDOMConfig()
-   call setParameter(config, "xml-declaration", .false.)
-   call setParameter(config, "validate-if-schema", .true.)
-   document => parseFile(FichierMotCle%Nom,config,iostat=ios,ex=ex)
-   if (inException(ex).or.ios.ne.0) then
-       print*,"Parse error", getExceptionCode(ex)
-       Erreur%Numero = 704
-       Erreur%ft     = err_704
-       Erreur%ft_c   = err_704c
-       call TRAITER_ERREUR( Erreur )
-       return
-   endif
-   element => getDocumentElement(document)
-   !print *, 'element principal = ',getLocalName(element)
+   ! Open .xcas file
+   unitNum = FichierMotCle%Unite
+   xcasFile = FichierMotCle%Nom
+   open(unit=unitNum, file=xcasFile, status="old", action="read", iostat=retour)
+   if(retour.ne.0) then
+    erreur%numero = 3
+      erreur%ft     = err_3
+      erreur%ft_c   = err_3c
+      call traiter_erreur(erreur, xcasFile)
+      return
+   end if
 
    ! Couplage avec la qualite d'eau ? (implique 1 couplage Hydraulique / Convection Diffusion)
-   champ1 => item(getElementsByTagname(document, "parametresTraceur"), 0)
-   if(associated(champ1).eqv..false.) then
+   pathNode = 'parametresTraceur'
+   line = xcasReader(unitNum, pathNode)
+   if(len(trim(line)).eq.0) then
        OptionTracer = .false.
    else
-     champ2 => item(getElementsByTagname(champ1, "presenceTraceurs"), 0)
-     if(associated(champ1).eqv..false.) then
-        print*,"Parse error => presenceTraceurs"
-        call xerror(Erreur)
-        return
-     endif
-     call extractDataContent(champ2,OptionTracer)
+     pathNode = 'parametresTraceur/presenceTraceurs'
+     line = xcasReader(unitNum, pathNode)
+     read(unit=line, fmt=*) OptionTracer
    endif
    PretraitTracer : if (OptionTracer) then
       !=======================================================================
@@ -199,48 +187,26 @@ subroutine PRETRAIT_Tracer( &
       !
       ! Fichier listing et de resultats
       ! -------------------------------
-      champ2 => item(getElementsByTagname(champ1, "parametresImpressionTraceur"), 0)
-      if(associated(champ2).eqv..false.) then
-         print*,"Parse error => parametresImpressionTraceur"
-         call xerror(Erreur)
-         return
-      endif
-      champ3 => item(getElementsByTagname(champ2, "fichListTracer"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => fichListTracer"
-         call xerror(Erreur)
-         return
-      endif
-      FichierListingTracer%Nom = getTextContent(champ3)
+      pathNode = 'parametresTraceur/parametresImpressionTraceur/fichListTracer'
+      FichierListingTracer%Nom = xcasReader(unitNum, pathNode)
+
       ult                      = FichierListingTracer%Unite
-      champ3 => item(getElementsByTagname(champ2, "concentInit"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => concentInit"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,ImpressionConcIni)
-      champ3 => item(getElementsByTagname(champ2, "loiTracer"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => loiTracer"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,ImpressionLoiTracer)
-      champ3 => item(getElementsByTagname(champ2, "concentrations"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => concentrations"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,ImpressionConcListing)
-      champ3 => item(getElementsByTagname(champ2, "bilanTracer"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => bilanTracer"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,ImpressionBilanTracer)
+
+      pathNode = 'parametresTraceur/parametresImpressionTraceur/concentInit'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) ImpressionConcIni
+
+      pathNode = 'parametresTraceur/parametresImpressionTraceur/loiTracer'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) ImpressionLoiTracer
+
+      pathNode = 'parametresTraceur/parametresImpressionTraceur/concentrations'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) ImpressionConcListing
+
+      pathNode = 'parametresTraceur/parametresImpressionTraceur/bilanTracer'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) ImpressionBilanTracer
 
       open( unit = ult , file = FichierListingTracer%Nom , access = 'SEQUENTIAL' , &
             action = 'WRITE' , form = 'FORMATTED' , iostat = RETOUR , &
@@ -253,20 +219,12 @@ subroutine PRETRAIT_Tracer( &
          return
       end if
 
-      champ3 => item(getElementsByTagname(champ2, "fichResultTracer"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => fichResultTracer"
-         call xerror(Erreur)
-         return
-      endif
-      FichierResuTracer%Nom  = getTextContent(champ3)
-      champ3 => item(getElementsByTagname(champ2, "formatFichResultat"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => formatFichResultat"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,post_processeur_tracer)
+      pathNode = 'parametresTraceur/parametresImpressionTraceur/fichResultTracer'
+      FichierResuTracer%Nom = xcasReader(unitNum, pathNode)
+
+      pathNode = 'parametresTraceur/parametresImpressionTraceur/formatFichResultat'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) post_processeur_tracer
 
       if( ( post_processeur_tracer /= POST_RUBENS ).and.( post_processeur_tracer /= POST_OPTHYCA ) ) then
          Erreur%Numero = 512
@@ -286,13 +244,10 @@ subroutine PRETRAIT_Tracer( &
       !
       ! Nombre de traceurs
       ! ------------------
-      champ2 => item(getElementsByTagname(champ1, "nbTraceur"), 0)
-      if(associated(champ2).eqv..false.) then
-         print*,"Parse error => nbTraceur"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ2,Nbtrac)
+      pathNode = 'parametresTraceur/nbTraceur'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) Nbtrac
+
       write(ult,10640) Nbtrac
       if( NbTrac > 10 ) Then
          Erreur%Numero = 508
@@ -305,19 +260,10 @@ subroutine PRETRAIT_Tracer( &
       ! Modele de qualite d'eau
       ! -----------------------
       !... Type de modele
-      champ2 => item(getElementsByTagname(champ1, "parametresNumeriquesQualiteEau"), 0)
-      if(associated(champ2).eqv..false.) then
-         print*,"Parse error => parametresNumeriquesQualiteEau"
-         call xerror(Erreur)
-         return
-      endif
-      champ3 => item(getElementsByTagname(champ2, "modeleQualiteEau"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => modeleQualiteEau"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,Modele_Qual_Eau)
+      pathNode = 'parametresTraceur/parametresNumeriquesQualiteEau/modeleQualiteEau'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) Modele_Qual_Eau
+
       write(ult,10650) Modele_Qual_Eau
       if( Modele_Qual_Eau > 6 ) Then
          Erreur%Numero = 508
@@ -344,13 +290,9 @@ subroutine PRETRAIT_Tracer( &
       !... Parametres physiques dependant du modele
       !
       if( Modele_Qual_Eau.NE.1 ) then
-         champ3 => item(getElementsByTagname(champ2, "fichParamPhysiqueTracer"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => fichParamPhysiqueTracer"
-            call xerror(Erreur)
-            return
-         endif
-         Fichier_Parphy%nom = getTextContent(champ3)
+         pathNode = 'parametresTraceur/parametresNumeriquesQualiteEau/fichParamPhysiqueTracer'
+         Fichier_Parphy%nom = xcasReader(unitNum, pathNode)
+
          call LEC_PARPHY( Fichier_ParPhy , ParPhy , Erreur )
       endif
       !
@@ -359,11 +301,13 @@ subroutine PRETRAIT_Tracer( &
       if( ( ( Modele_Qual_Eau.EQ.3 )   &
          .OR.(Modele_Qual_Eau.EQ.4) ) &
          .OR.(Modele_Qual_Eau.EQ.6)   ) then
-         champ3 => item(getElementsByTagname(champ2, "fichMeteoTracer"), 0)
-         if(associated(champ3).eqv..false.) then
+
+         pathNode = 'parametresTraceur/parametresNumeriquesQualiteEau/fichMeteoTracer'
+         line = xcasReader(unitNum, pathNode)
+         if(len(trim(line)).eq.0) then
             Fichier_Meteo%nom = ""
          else
-            Fichier_Meteo%nom = getTextContent(champ3)
+            Fichier_Meteo%nom = line
          endif
          call LEC_METEO( Meteo , Fichier_Meteo , Modele_Qual_Eau , Erreur )
       endif
@@ -389,79 +333,64 @@ subroutine PRETRAIT_Tracer( &
           return
       end if
 
-      champ2 => item(getElementsByTagname(champ1, "parametresConvectionDiffusion"), 0)
-      if(associated(champ2).eqv..false.) then
+      pathNode = 'parametresTraceur/parametresConvectionDiffusion'
+      line = xcasReader(unitNum, pathNode)
+      if(len(trim(line)).eq.0) then
          print*,"Parse error => parametresConvectionDiffusion"
          call xerror(Erreur)
          return
       endif
-      champ3 => item(getElementsByTagname(champ2, "convectionTraceurs"), 0)
-      if(associated(champ3).eqv..false.) then
+
+      pathNode = 'parametresTraceur/parametresConvectionDiffusion/convectionTraceurs'
+      line = xcasReader(unitNum, pathNode)
+      if(len(trim(line)).eq.0) then
          print*,"Parse error => convectionTraceurs"
          call xerror(Erreur)
          return
       endif
-      call extractDataContent(champ3,ltab1)
-      champ3 => item(getElementsByTagname(champ2, "diffusionTraceurs"), 0)
-      if(associated(champ3).eqv..false.) then
+      read(unit=line, fmt=*) ltab1
+
+      pathNode = 'parametresTraceur/parametresConvectionDiffusion/diffusionTraceurs'
+      line = xcasReader(unitNum, pathNode)
+      if(len(trim(line)).eq.0) then
          print*,"Parse error => diffusionTraceurs"
          call xerror(Erreur)
          return
       endif
-      call extractDataContent(champ3,ltab2)
+      read(unit=line, fmt=*) ltab2
 
       do ib = 1 , nbtrac
          Constrac(ib)%CONV             = ltab1(ib)
-         champ3 => item(getElementsByTagname(champ2, "optionConvection"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => optionConvection"
-            call xerror(Erreur)
-            return
-         endif
-         call extractDataContent(champ3,ConsTrac(ib)%Scheconv)
+
+         pathNode = 'parametresTraceur/parametresConvectionDiffusion/optionConvection'
+         line = xcasReader(unitNum, pathNode)
+         read(unit=line, fmt=*) ConsTrac(ib)%Scheconv
+
          ConsTrac(ib)%DIFF             = ltab2(ib)
-         champ3 => item(getElementsByTagname(champ2, "optionCalculDiffusion"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => optionCalculDiffusion"
-            call xerror(Erreur)
-            return
-         endif
-         call extractDataContent(champ3,ConsTrac(ib)%OptionCalculDisp)
-         champ3 => item(getElementsByTagname(champ2, "coeffDiffusion1"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => coeffDiffusion1"
-            call xerror(Erreur)
-            return
-         endif
-         call extractDataContent(champ3,ConsTrac(ib)%CoefDiffu(1))
-         champ3 => item(getElementsByTagname(champ2, "coeffDiffusion2"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => coeffDiffusion2"
-            call xerror(Erreur)
-            return
-         endif
-         call extractDataContent(champ3,ConsTrac(ib)%CoefDiffu(2))
-         champ3 => item(getElementsByTagname(champ2, "ordreSchemaConvec"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => ordreSchemaConvec"
-            call xerror(Erreur)
-            return
-         endif
-         call extractDataContent(champ3,ConsTrac(ib)%OrdreVF)
-         champ3 => item(getElementsByTagname(champ2, "paramW"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => paramW"
-            call xerror(Erreur)
-            return
-         endif
-         call extractDataContent(champ3,ConsTrac(ib)%ParamW)
-         champ3 => item(getElementsByTagname(champ2, "LimitPente"), 0)
-         if(associated(champ3).eqv..false.) then
-            print*,"Parse error => LimitPente"
-            call xerror(Erreur)
-            return
-         endif
-         call extractDataContent(champ3,ConsTrac(ib)%LimiteurPente)
+
+         pathNode = 'parametresTraceur/parametresConvectionDiffusion/optionCalculDiffusion'
+         line = xcasReader(unitNum, pathNode)
+         read(unit=line, fmt=*) ConsTrac(ib)%OptionCalculDisp
+
+         pathNode = 'parametresTraceur/parametresConvectionDiffusion/coeffDiffusion1'
+         line = xcasReader(unitNum, pathNode)
+         read(unit=line, fmt=*) ConsTrac(ib)%CoefDiffu(1)
+
+         pathNode = 'parametresTraceur/parametresConvectionDiffusion/coeffDiffusion2'
+         line = xcasReader(unitNum, pathNode)
+         read(unit=line, fmt=*) ConsTrac(ib)%CoefDiffu(2)
+
+         pathNode = 'parametresTraceur/parametresConvectionDiffusion/ordreSchemaConvec'
+         line = xcasReader(unitNum, pathNode)
+         read(unit=line, fmt=*) ConsTrac(ib)%OrdreVF
+
+         pathNode = 'parametresTraceur/parametresConvectionDiffusion/paramW'
+         line = xcasReader(unitNum, pathNode)
+         read(unit=line, fmt=*) ConsTrac(ib)%ParamW
+
+         pathNode = 'parametresTraceur/parametresConvectionDiffusion/LimitPente'
+         line = xcasReader(unitNum, pathNode)
+         read(unit=line, fmt=*) ConsTrac(ib)%LimiteurPente
       end do
 
       if( ConsTrac(1)%Scheconv > 4 ) Then
@@ -499,19 +428,9 @@ subroutine PRETRAIT_Tracer( &
       !
       ! Frequence de couplage entre hydraulique et TRACER
       ! -------------------------------------------------
-      champ2 => item(getElementsByTagname(champ1, "parametresNumeriquesQualiteEau"), 0)
-      if(associated(champ2).eqv..false.) then
-         print*,"Parse error => parametresNumeriquesQualiteEau"
-         call xerror(Erreur)
-         return
-      endif
-      champ3 => item(getElementsByTagname(champ2, "frequenceCouplHydroTracer"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => frequenceCouplHydroTracer"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,FreqCouplage)
+      pathNode = 'parametresTraceur/parametresNumeriquesQualiteEau/frequenceCouplHydroTracer'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) FreqCouplage
 
       if( MOD(PasStockage, FreqCouplage) > EPS8 ) then
          Erreur%Numero = 506
@@ -535,20 +454,10 @@ subroutine PRETRAIT_Tracer( &
       ! ------------------------
       ! presence de concentrations initiales
       !
-      if( ImpressionConcIni ) write(ult,10660)
-      champ2 => item(getElementsByTagname(champ1, "parametresConcentrationsInitialesTraceur"), 0)
-      if(associated(champ2).eqv..false.) then
-         print*,"Parse error => parametresConcentrationsInitialesTraceur"
-         call xerror(Erreur)
-         return
-      endif
-      champ3 => item(getElementsByTagname(champ2, "presenceConcInit"), 0)
-      if(associated(champ3).eqv..false.) then
-            print*,"Parse error => presenceConcInit"
-            call xerror(Erreur)
-            return
-         endif
-      call extractDataContent(champ3,Presence_ConcIni)
+      pathNode = 'parametresTraceur/parametresConcentrationsInitialesTraceur/presenceConcInit'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) Presence_ConcIni
+
       if( ImpressionConcIni ) then
          if( Presence_ConcIni ) then
             write(ult,10690) 'OUI'
@@ -568,7 +477,7 @@ subroutine PRETRAIT_Tracer( &
                           nbtrac , & ! nombre de traceurs
                          Connect , & ! Table de connectivite du reseau
                           Profil , & ! Profils geometriques
-                        document , & ! Pointeur vers document XML
+                         unitNum , & ! Unite logique du fichier .xcas
                           Erreur   ) ! Erreur
          if( Erreur%Numero /= 0 ) then
             return
@@ -591,7 +500,7 @@ subroutine PRETRAIT_Tracer( &
         ImpressionLoiTracer , & ! Flag d'impression des lois tracer
         ult                 , & ! Unite logique fichier listing
         TempsMaximum        , & ! Temps maximum du calcul
-        document            , & ! Pointeur vers document XML
+        unitNum             , & ! Unite logique du fichier .xcas
         Erreur                )
       if( Erreur%Numero /= 0 ) then
          return
@@ -608,7 +517,7 @@ subroutine PRETRAIT_Tracer( &
               Profil , & ! Profils geometriques
               nbtrac , & ! nb de traceurs
                  ult , & ! Unite listing
-            document , & ! Pointeur vers document XML
+             unitNum , & ! Unite logique du fichier .xcas
               Erreur   & ! Erreur
                       )
       if( Erreur%Numero /= 0 ) then
@@ -638,26 +547,13 @@ subroutine PRETRAIT_Tracer( &
           return
       end if
 
-      champ2 => item(getElementsByTagname(champ1, "parametresConditionsLimitesTraceur"), 0)
-      if(associated(champ2).eqv..false.) then
-         print*,"Parse error => parametresConditionsLimitesTraceur"
-         call xerror(Erreur)
-         return
-      endif
-      champ3 => item(getElementsByTagname(champ2, "typeCondLimTracer"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => typeCondLimTracer"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,itab1)
-      champ3 => item(getElementsByTagname(champ2, "numLoiCondLimTracer"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => numLoiCondLimTracer"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ3,itab2)
+      pathNode = 'parametresTraceur/parametresConditionsLimitesTraceur/typeCondLimTracer'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) itab1
+
+      pathNode = 'parametresTraceur/parametresConditionsLimitesTraceur/numLoiCondLimTracer'
+      line = xcasReader(unitNum, pathNode)
+      read(unit=line, fmt=*) itab2
 
       do i = 1 , NbExtlibre
 
@@ -689,8 +585,7 @@ subroutine PRETRAIT_Tracer( &
 
    endif PretraitTracer
 
-   call destroy(document)
-   call destroy(config)
+   close(unitNum)
 
    !Erreur%arbredappel = arbredappel_old
 
@@ -703,8 +598,6 @@ subroutine PRETRAIT_Tracer( &
                &' [ 1 : Aucun / 2 : O2       / 3 : Biomass    ',/,&
                &'   4 : Eutro / 5 : Micropol / 6 : Thermic  ] ')
    10655 format ('Frequence de couplage hydraulique / Tracer   : ',I3)
-   10660 format (/,'CONDITIONS INITIALES TRACER',/, &
-               &  '----------------------------',/)
    10690 format ('Presence de concentrations initiales        : ',A3)
 
    contains

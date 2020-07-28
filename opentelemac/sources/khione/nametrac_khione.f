@@ -2,20 +2,14 @@
                       SUBROUTINE NAMETRAC_KHIONE
 !                     **************************
 !
-     &  (NAMETRAC,NTRAC,PROCESS)
+     &  (NAMETRAC,NTRAC)
 !
 !
 !***********************************************************************
 ! KHIONE      V7P3
 !***********************************************************************
 !
-!brief    Gives names to tracers added by the ice modelling component
-!
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        11/11/2016
-!+        V7P3
-!+        Coupling TELEMAC-2D with KHIONE (ice modelling component)
-!+        Initial developments
+!brief    Add tracers needed for the modelling of frazil ice
 !
 !history  F. SOUILLE (EDF)
 !+        30/09/2019
@@ -23,30 +17,26 @@
 !+        Fixed name and unit of frazil (conc to volumic fraction)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NAMETRAC |<--| ARRAY OF NAMES OF TRACERS
-!| NTRAC    |-->| MODIFYING NUMBER OF TRACER IF NECESARY
-!| PROCESS  |-->| ALSO ICEPROCESS, DEFINES THE ICE PROCESSES
-!|          |   | - 2: HEAT EXCHANGE WITH THE ATMOSPHER
-!|          |   | - 3: IMPACT OF THE ICE COVER ON THE HYDRODYNAMICS
-!|          |   | - 5: CLOGGING ON RACKS
-!|          |   | - 7: STATIC BORDER ICE
+!| NAMETRAC |<->| ARRAY OF NAMES OF TRACERS
+!| NTRAC    |<->| MODIFYING NUMBER OF TRACER IF NECESARY
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_SPECIAL
       USE DECLARATIONS_KHIONE
+      USE DECLARATIONS_TELEMAC
 !      USE INTERFACE_KHIONE, EX_NAMETRAC_KHIONE => NAMETRAC_KHIONE
 !
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-!
-      INTEGER          , INTENT(IN   )::  PROCESS
       INTEGER          , INTENT(INOUT)::  NTRAC
       CHARACTER(LEN=32), INTENT(INOUT)::  NAMETRAC(*)
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
+      INTEGER            :: IFRA,I,K
+      CHARACTER(LEN=2)   :: CHAR2
       LOGICAL :: FOUND
 !
 !-----------------------------------------------------------------------
@@ -55,45 +45,88 @@
 !
 !-----------------------------------------------------------------------
 !
-!     INITIALISATION
-!
-      IF( PROCESS.EQ.1 ) THEN
-        FOUND = .TRUE.
-!
-        ICETR = 0
-!
-      ELSE IF( PROCESS*INT(ICEPROCESS/PROCESS).NE.ICEPROCESS ) THEN
-        WRITE(LU,21) PROCESS,ICEPROCESS
-        CALL PLANTE(1)
-        STOP
-      ENDIF
-!
-!-----------------------------------------------------------------------
-!
 !     ADDING TRACERS WHEN RELEVANT
 !
-!     2.: THERMAL BUDGET WITH FRAZIL PRODUCTION
-      IF( ( 2*INT(ICEPROCESS/2) .EQ. ICEPROCESS ).OR.
-!     5.:
-     &    ( 5*INT(ICEPROCESS/5) .EQ. ICEPROCESS ) ) THEN
+!     THERMAL BUDGET
+      IF( (THERMAL_BUDGET) .OR. (CLOGGING) ) THEN
         FOUND = .TRUE.
 !
-!     1. ~~> FRAZIL
-        CALL ADDTRACER(NAMETRAC,NTRAC,
-     &    IND_F,.TRUE.,
-     &    'FRASIL          ','FRAZIL          ','VOLUME FRACTION ')
-!     2. ~~> TEMPERATURE
+!   ~~> TEMPERATURE
         CALL ADDTRACER(NAMETRAC,NTRAC,
      &    IND_T,.TRUE.,
-     &    'TEMPERATURE     ','TEMPERATURE     ','   oC           ')
-!     3. ~~> SALINITY
-        CALL ADDTRACER(NAMETRAC,NTRAC,
-     &    IND_S,.FALSE.,
-     &    'SALINITE        ','SALINITY        ','   ppt          ' )
+     &    'TEMPERATURE     ',
+     &    'TEMPERATURE     ',
+     &    '   oC           ')
 !
-!     3.: STATIC ICE COVER
-      ELSEIF( 3*INT(ICEPROCESS/3) .EQ. ICEPROCESS ) THEN
+!   ~~> SALINITY
+        IF(SALINITY) THEN
+          CALL ADDTRACER(NAMETRAC,NTRAC,
+     &      IND_S,.TRUE.,
+     &      'SALINITE        ',
+     &      'SALINITY        ',
+     &      '   ppt          ' )
+        ENDIF
+!
+!   ~~> FRAZIL MULTI-CLASS
+        IFRA = 1
+        IF(NC_FRA.GT.1) THEN
+!
+          WRITE(LU,*) 'MULTI-CLASS IS NOT VALIDATED YET',
+     &                'USE IT AT YOUR OWN RISK'
+!
+          IND_FRA = NTRAC+1
+          DO I=1,NC_FRA
+            WRITE(CHAR2,'(I2)') IFRA
+            IFRA = IFRA + 1
+            CALL ADDTRACER(NAMETRAC,NTRAC,K,.TRUE.,
+     &        'FRASIL ' //ADJUSTL(CHAR2)//'       ',
+     &        'FRAZIL ' //ADJUSTL(CHAR2)//'       ',
+     &        'VOLUME FRACTION ')
+          ENDDO
+
+!   ~~> FRAZIL MONO-CLASS
+        ELSE
+          CALL ADDTRACER(NAMETRAC,NTRAC,
+     &      IND_FRA,.TRUE.,
+     &      'FRASIL          ',
+     &      'FRAZIL          ',
+     &      'VOLUME FRACTION ')
+        ENDIF
+!
+!   ~~> FRAZIL PRECIPITATION
+        IF(PREC) THEN
+          CALL ADDTRACER(NAMETRAC,NTRAC,
+     &      IND_PRE,.TRUE.,
+     &      'FRASIL PRECIPITA',
+     &      'FRAZIL PRECIPITA',
+     &      'SURFAC FRACTION ')
+          CALL ADDTRACER(NAMETRAC,NTRAC,
+     &      IND_THI,.TRUE.,
+     &      'EPAISSEUR COUV. ',
+     &      'COVER THICKNESS ',
+     &      '   M            ')
+        ENDIF
+!
+!     STATIC ICE COVER
+      ELSEIF( (ICOVER_IMPACT) .OR. (BD_ICE) ) THEN
+!
         FOUND = .TRUE.
+!
+!   ~~> TEMPERATURE
+        CALL ADDTRACER(NAMETRAC,NTRAC,
+     &    IND_T,.TRUE.,
+     &    'TEMPERATURE     ',
+     &    'TEMPERATURE     ',
+     &    '   oC           ')
+!
+!   ~~> SALINITY
+        IF(SALINITY) THEN
+          CALL ADDTRACER(NAMETRAC,NTRAC,
+     &      IND_S,.TRUE.,
+     &      'SALINITE        ',
+     &      'SALINITY        ',
+     &      '   ppt          ' )
+        ENDIF
 !
       ENDIF
 !
@@ -102,15 +135,10 @@
 !     UNKNOWN PROCESS
 !
       IF(.NOT.FOUND ) THEN
-        WRITE(LU,20) PROCESS
+        WRITE(LU,*) 'NAMETRAC_KHIONE: NO ACTIVE PROCESSES'
         CALL PLANTE(1)
         STOP
       ENDIF
-!
-20    FORMAT(1X,'NAMETRAC_KHIONE: UNKNOWN ICE PROCESS: ',I4)
-!
-21    FORMAT(1X,'NAMETRAC_KHIONE: PROCESS CALLED ',I4,
-     &       ' IS NOT A MULTIPLYING VALUE OF: ',I4)
 !
 !-----------------------------------------------------------------------
 !

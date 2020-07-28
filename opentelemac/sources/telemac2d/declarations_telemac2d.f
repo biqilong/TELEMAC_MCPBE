@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC2D   V8P1
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    DECLARATION OF PRINICIPAL TELEMAC2D VARIABLES
@@ -737,10 +737,15 @@
 !     MAXIMUM NUMBER OF OUTPUT VARIABLES
 !
       INTEGER, PARAMETER :: MAXVAR = 100
+      INTEGER :: NVAR_T2D
 !
 !     MAXIMUM NUMBER OF TRACERS
 !
       INTEGER MAXTRA
+!
+!     ADDRESS OF TRACERS IN VARSOR
+!
+      INTEGER :: ADR_TRAC
 !
 !     MAXIMUM NUMBER OF POINTS TO DEFINE SOURCES REGIONS
 !
@@ -1642,6 +1647,10 @@
 !     IF YES, COEFFICIENT OF WIND INFLUENCE VARIES WITH WIND SPEED
 !
       LOGICAL FAIRACCU
+!
+!     IF YES, BOTTOM SMOOTHINGS ARE DONE AFTER MODIFICATIONS BY THE USER
+!
+      LOGICAL LISFON_AFTER
 !
 !-----------------------------------------------------------------------
 !

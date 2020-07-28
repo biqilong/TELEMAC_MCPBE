@@ -7,73 +7,6 @@ name: HOMERE_MASCARET
 [mascaret]
 path: <root>|sources|mascaret
 files:
-  Fox|fsys|m_ieee.f90
-  Fox|fsys|fox_m_fsys_abort_flush.F90
-  Fox|fsys|fox_m_fsys_array_str.F90
-  Fox|fsys|fox_m_fsys_realtypes.f90
-  Fox|fsys|fox_m_fsys_count_parse_input.F90
-  Fox|fsys|fox_m_fsys_format.F90
-  Fox|fsys|fox_m_fsys_parse_input.F90
-  Fox|fsys|fox_m_fsys_string.F90
-  Fox|fsys|fox_m_fsys_string_list.F90
-  Fox|utils|fox_m_utils_mtprng.F90
-  Fox|utils|fox_m_utils_uri.F90
-  Fox|utils|fox_m_utils_uuid.F90
-  Fox|utils|fox_utils.f90
-  Fox|common|m_common_error.F90
-  Fox|common|m_common_charset.F90
-  Fox|common|m_common_content_model.F90
-  Fox|common|m_common_namecheck.F90
-  Fox|common|m_common_element.F90
-  Fox|common|m_common_attrs.F90
-  Fox|common|m_common_buffer.F90
-  Fox|common|m_common_elstack.F90
-  Fox|common|m_common_entities.F90
-  Fox|common|m_common_notations.F90
-  Fox|common|m_common_struct.F90
-  Fox|common|m_common_entity_expand.F90
-  Fox|common|m_common_io.F90
-  Fox|common|m_common_namespaces.F90
-  Fox|common|fox_common.F90
-  Fox|wxml|m_wxml_escape.F90
-  Fox|wxml|m_wxml_core.F90
-  Fox|wxml|m_wxml_overloads.F90
-  Fox|wxml|fox_wxml.f90
-  Fox|wcml|m_wcml_stml.F90
-  Fox|wcml|m_wcml_coma.F90
-  Fox|wcml|m_wcml_metadata.F90
-  Fox|wcml|m_wcml_core.F90
-  Fox|wcml|m_wcml_geometry.F90
-  Fox|wcml|m_wcml_lattice.F90
-  Fox|wcml|m_wcml_lists.F90
-  Fox|wcml|m_wcml_molecule.F90
-  Fox|wcml|m_wcml_parameter.F90
-  Fox|wcml|m_wcml_property.F90
-  Fox|wcml|fox_wcml.f90
-  Fox|wkml|m_contours.F90
-  Fox|wkml|m_wkml_lowlevel.F90
-  Fox|wkml|m_wkml_chart.F90
-  Fox|wkml|m_wkml_color_def.F90
-  Fox|wkml|m_wkml_color.F90
-  Fox|wkml|m_wkml_styling.F90
-  Fox|wkml|m_wkml_core.F90
-  Fox|wkml|m_wkml_features.F90
-  Fox|wkml|m_wkml_contours.F90
-  Fox|wkml|m_wkml_coverage.F90
-  Fox|wkml|fox_wkml.f90
-  Fox|sax|m_sax_xml_source.F90
-  Fox|sax|m_sax_reader.F90
-  Fox|sax|m_sax_types.F90
-  Fox|sax|m_sax_tokenizer.F90
-  Fox|sax|m_sax_parser.F90
-  Fox|sax|m_sax_operate.F90
-  Fox|sax|fox_sax.f90
-  Fox|dom|m_dom_error.f90
-  Fox|dom|m_dom_dom.F90
-  Fox|dom|m_dom_utils.f90
-  Fox|dom|m_dom_extras.F90
-  Fox|dom|m_dom_parse.f90
-  Fox|dom|fox_dom.f90
   Damoc|aidelu.f
   Damoc|carlu.f
   Damoc|classe.f
@@ -92,6 +25,7 @@ files:
   Damoc|prev.f
   Damoc|preval.f
   Damoc|realu.f
+  Modules|m_xcas_s.f90
   Modules|m_precision.f90
   Modules|m_barrage_t.f90
   Modules|m_fichier_t.f90

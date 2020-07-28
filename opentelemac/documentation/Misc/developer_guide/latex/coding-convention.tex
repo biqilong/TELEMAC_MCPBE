@@ -309,13 +309,13 @@ do it in a simple loop.
 
 Thus the following sequence taken from bedload\_seccurrent.f in \sisyphe:
 \begin{lstlisting}
-CALL OS( 'X=YZ    ' , T2 , QU      , QU   , C   ) ! QU**2
-CALL OS( 'X=Y/Z   ' , T2 , T2      , HN   , C   ) ! QU**2/HN
-CALL OS( 'X=Y/Z   ' , T2 , T2      , HN   , C   ) ! QU**2/HN**2
-CALL OS( 'X=YZ    ' , T3 , QV      , QV   , C   ) ! QV**2
-CALL OS( 'X=Y/Z   ' , T3 , T3      , HN   , C   ) ! QV**2/HN
-CALL OS( 'X=Y/Z   ' , T3 , T3      , HN   , C   ) ! QV**2/HN**2
-CALL OS( 'X=X+Y   ' , T2 , T3      , T3   , C   ) ! QU**2+QV**2/HN**2
+CALL OS('X=YZ    ', X=T2, Y=QU, Z=QU) ! QU**2
+CALL OS('X=Y/Z   ', X=T2, Y=T2, Z=HN) ! QU**2/HN
+CALL OS('X=Y/Z   ', X=T2, Y=T2, Z=HN) ! QU**2/HN**2
+CALL OS('X=YZ    ', X=T3, Y=QV, Z=QV) ! QV**2
+CALL OS('X=Y/Z   ', X=T3, Y=T3, Z=HN) ! QV**2/HN
+CALL OS('X=Y/Z   ', X=T3, Y=T3, Z=HN) ! QV**2/HN**2
+CALL OS('X=X+Y   ', X=T2, Y=T3)       ! QU**2+QV**2/HN**2
 \end{lstlisting}
 should be better written (once the discretization of $T2$ is secured, for example
 by $CALL~~CPSTVC(QU, T2)$):
@@ -333,3 +333,30 @@ flats that bring many opportunities of divisions by zero and a number of extra
 problems. New algorithms must then be duly tested against parallelism and tidal
 flats or, in 3D, cases where elements are crushed.
 %
+
+\section{Adding a new output variable}
+
+In most of the modules you can find the keyword \telkey{VARIABLES FOR GRAPHIC
+PRINTOUTS} or something alike.  This defines the variable to write in the module
+output file. Here we will describe what need to be done to add a new one. The
+example below is made for telemac2d but all the modules follow the same
+behaviour.
+
+To be added to the output variables the variable must validate the followin points:
+\begin{itemize}
+  \item It must be stored in a bief\_obj.
+  \item It must be disctretized on the number of points.
+\end{itemize}
+
+\begin{itemize}
+  \item Add the variable in the dictionary for the keywords for graphical and
+    listing outputes. Add them in both CHOIX and CHOIX1. Also do not forget to
+    add them in AIDE and AIDE1 as well. The short name of the variable must not
+    exceed 8 characters. The short name must also be the name of the bief\_obj
+    containing the variable.
+  \item Add the variable to the bief\_obj varsor (in \telemac{3D} varsor is for 2d output
+    varso3 is for 3d output) in \verb!point_telemac2d.f!.
+  \item Add the variable names and unit in TEXT and TEXTPR in
+    \verb!nomvar_telemac2d.f!. Also fill the mnemo with the short name you used
+    in the ditionary. Increase the variable NVAR\_T2D.
+\end{itemize}

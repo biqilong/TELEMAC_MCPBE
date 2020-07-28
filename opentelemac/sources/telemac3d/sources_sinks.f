@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC3D   V7P3
+! TELEMAC3D   V8P2
 !***********************************************************************
 !
 !brief    BUILDS THE SOURCE TERMS TO ADD IN 2D AND 3D
@@ -85,7 +85,7 @@
       USE DECLARATIONS_TELEMAC
       USE DECLARATIONS_TELEMAC3D
       USE DECLARATIONS_WAQTEL, ONLY: RO0,TAIR,ATMOSEXCH,RAINFALL,
-     &  HREL,C_ATMOS
+     &  HREL,C_ATMOS,CFAER,N_C_ATMOS
       USE EXCHANGE_WITH_ATMOSPHERE
       USE DECLARATIONS_SPECIAL
 !
@@ -197,15 +197,22 @@
               SAL = TA%ADR(IND_S)%P%R(NPOIN3-NPOIN2+I)
             ENDIF
             WW = SQRT(WIND%ADR(1)%P%R(I)**2 + WIND%ADR(2)%P%R(I)**2)
-!           LOG LAW FOR WIND AT 2 METERS
-!           WW2 = WW * LOG(2.D0/0.0002D0)/LOG(10.D0/0.0002D0)
-!           DIRECTLY WRITTEN BELOW
-            WW2 = WW * LOG(1.D4)/LOG(5.D4)
-!           ALTERNATIVE LAW FOR WIND AT 2 METERS
-!           WW2 = 0.6D0*WW
+!
+            IF(N_C_ATMOS.EQ.2.AND.ATMOSEXCH.EQ.2) THEN
+              WW2 = WW
+            ELSE
+!             LOG LAW FOR WIND AT 2 METERS
+!             WW2 = WW * LOG(2.D0/0.0002D0)/LOG(10.D0/0.0002D0)
+!             DIRECTLY WRITTEN BELOW
+              WW2 = WW * LOG(1.D4)/LOG(5.D4)
+!             ALTERNATIVE LAW FOR WIND AT 2 METERS
+!             WW2 = 0.6D0*WW
+            ENDIF
+!
             RO = RO0*(1.D0-(7.D0*(TREEL-4.D0)**2-750.D0*SAL)*1.D-6)
             CALL EVAPO(TREEL,TAIR%R(I),WW2,PATMOS%R(I),HREL,RO,
-     &                 FLUX_EVAP,FLUX_SENS,DEBEVAP,C_ATMOS)
+     &                 FLUX_EVAP,FLUX_SENS,DEBEVAP,C_ATMOS,CFAER(1),
+     &                 CFAER(2))
 !           WATER FLUXES = RAIN - EVAPORATION
 !           CONVERSION FROM MM/S TO M/S --> *1.D-3
             PLUIE%R(I) = RAINFALL*1.D-3-DEBEVAP

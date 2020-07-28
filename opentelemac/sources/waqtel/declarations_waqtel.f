@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! WAQTEL   V7P3
+! WAQTEL   V8P2
 !***********************************************************************
 !
 !brief    DECLARATION OF PRINCIPAL WAQTEL VARIABLES
@@ -172,6 +172,11 @@
 !     ATMOSPHERE-WATER EXCHANGE MODEL
 !
       INTEGER ATMOSEXCH
+!
+!     NUMBER OF COEFFICIENTS TO CALIBRATE THE ATMOSPHERE-WATER EXCHANGE
+!     MODEL IN 3D
+!
+      INTEGER N_C_ATMOS
 !
 !     BRIGHTNESS OF THE SKY
 !
@@ -528,7 +533,7 @@
 !
 !
 !
-!     THERMIC PROCESS (COMMON VARIABLES WITH EWCHANGE_WITH_ATMOSPHERE MODULE)
+!     THERMIC PROCESS (COMMON VARIABLES WITH EXCHANGE_WITH_ATMOSPHERE MODULE)
 !
 !
 !     WATER SPECIFIC HEAT

@@ -1298,7 +1298,14 @@
         WRITE(LU,102) NITER
       ENDIF
 !
+      IF(NITER.EQ.NITMAX) THEN
+        WRITE(LU,103) NITER
+      ENDIF
+!
 102   FORMAT(' CVTRVF_ERIA (SCHEME ERIA, 15): ',1I3,' ITERATIONS')
+103   FORMAT(' CVTRVF_ERIA (SCHEME ERIA, 15): ',1I3,' ITERATIONS',
+     &  ' = MAXIMUM',
+     &  /,'INCREASE MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES')
 !
 !-----------------------------------------------------------------------
 !

@@ -2,7 +2,7 @@
                       SUBROUTINE PRERES_KHIONE
 !                     ************************
 !
-     &(NPOIN,AT,LT,TELSOR)
+     &(NPOIN,LT,TELSOR,TN)
 !
 !***********************************************************************
 ! KHIONE   V7P3
@@ -11,20 +11,14 @@
 !brief    PREPARES THE VARIABLES WHICH WILL BE WRITTEN TO
 !+         THE RESULTS FILE OR TO THE LISTING.
 !
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        11/11/2016
-!+        V7P3
-!+        Coupling TELEMAC-2D with KHIONE (ice modelling component)
-!+        Initial developments
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| AT             |-->| CURRENT TIME IN SECONDS
 !| LT             |-->| CURRENT NUMBER OF OF TIME STEP
 !| NPOIN          |-->| NUMBER OF NODES
+!| TELSOR         |-->| OUTPUT OF TELEMAC2D
+!| TN             |-->| TELEMAC2D TRACER VALUES
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
-      USE DECLARATIONS_WAQTEL, ONLY : RO0
       USE DECLARATIONS_KHIONE
 !
       USE DECLARATIONS_SPECIAL
@@ -32,13 +26,12 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION,      INTENT(IN) :: AT
       INTEGER,               INTENT(IN) :: LT,NPOIN
-      TYPE(BIEF_OBJ),        INTENT(IN) :: TELSOR
+      TYPE(BIEF_OBJ),        INTENT(IN) :: TELSOR,TN
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER I
+      INTEGER I,J
       LOGICAL IMP,LEO
 !
 !-----------------------------------------------------------------------
@@ -66,7 +59,7 @@
 !     COMPUTES THE EQUIVALENT SURFACE ELEVATION
 !=======================================================================
 !
-      IF( (LEO.AND.SORLEO(17)).OR.(IMP.AND.SORIMP(17)) ) THEN
+      IF( (LEO.AND.SORLEO(16)).OR.(IMP.AND.SORIMP(16)) ) THEN
 !       TELSOR%ADR(4)%P: H
 !       TELSOR%ADR(6)%P: ZF
         DO I = 1,NPOIN
@@ -79,7 +72,7 @@
 !     COMPUTES THE TOP OF THE ICE COVER
 !=======================================================================
 !
-      IF( (LEO.AND.SORLEO(18)).OR.(IMP.AND.SORIMP(18)) ) THEN
+      IF( (LEO.AND.SORLEO(17)).OR.(IMP.AND.SORIMP(17)) ) THEN
 !       TELSOR%ADR(4)%P: H
 !       TELSOR%ADR(6)%P: ZF
         DO I = 1,NPOIN
@@ -92,7 +85,7 @@
 !     COMPUTES THE BOTTOM OF THE ICE COVER, ALSO THE SURFACE ELEVATION
 !=======================================================================
 !
-      IF( (LEO.AND.SORLEO(19)).OR.(IMP.AND.SORIMP(19)) ) THEN
+      IF( (LEO.AND.SORLEO(18)).OR.(IMP.AND.SORIMP(18)) ) THEN
 !       TELSOR%ADR(4)%P: H
 !       TELSOR%ADR(6)%P: ZF
         CALL OS( 'X=Y+Z   ', X=T5,Y=TELSOR%ADR(4)%P,Z=TELSOR%ADR(6)%P )
@@ -102,10 +95,66 @@
 !     CONVERTER ICE CHARACTERISTICS (PRIME NUMBER) INTO ITS REAL PART
 !=======================================================================
 !
-      IF( (LEO.AND.SORLEO(21)).OR.(IMP.AND.SORIMP(21)) ) THEN
+      IF( (LEO.AND.SORLEO(20)).OR.(IMP.AND.SORIMP(20)) ) THEN
         DO I = 1,NPOIN
           ICETYPE%R(I) = 1.D0 * ICETYPE%I(I)
         ENDDO
+      ENDIF
+!
+!=======================================================================
+!     COMPUTES TOTAL CONCENTRATION
+!=======================================================================
+!
+      IF( (LEO.AND.SORLEO(22)).OR.(IMP.AND.SORIMP(22)) ) THEN
+        CALL OS('X=Y     ', X=CTOT, Y=TN%ADR(IND_FRA)%P)
+        IF(NC_FRA.GT.1) THEN
+          DO I = 2,NC_FRA
+            CALL OS('X=X+Y   ', X=CTOT, Y=TN%ADR(IND_FRA+I-1)%P)
+          ENDDO
+        ENDIF
+      ENDIF
+!
+!=======================================================================
+!     COMPUTES TOTAL NUMBER OF PARTICLES
+!=======================================================================
+!
+      IF( (LEO.AND.SORLEO(21)).OR.(IMP.AND.SORIMP(21)) ) THEN
+        CALL OS('X=CY    ', X=NTOT, Y=TN%ADR(IND_FRA)%P,
+     &                      C=1.D0/VK_FRZL(1))
+        IF(NC_FRA.GT.1) THEN
+          DO I = 2,NC_FRA
+            CALL OS('X=X+CY  ', X=NTOT, Y=TN%ADR(IND_FRA+I-1)%P,
+     &                          C=1.D0/VK_FRZL(I))
+          ENDDO
+        ENDIF
+      ENDIF
+!
+!=======================================================================
+!     VARIABLES OF THERMAL BUDGET FROM T2D TRACER
+!=======================================================================
+!
+      DO I=1,NC_FRA
+        IF( (LEO.AND.SORLEO(22+I)).OR.(IMP.AND.SORIMP(22+I)) ) THEN
+          CALL OS('X=Y     ', X=FRZL%ADR(I)%P, Y=TN%ADR(IND_FRA+I-1)%P)
+        ENDIF
+      ENDDO
+!
+      DO I=1,NC_FRA
+        IF( (LEO.AND.SORLEO(22+I+NC_FRA))
+     &       .OR.(IMP.AND.SORIMP(22+I+NC_FRA)) ) THEN
+          CALL OS('X=CY    ', X=NBP%ADR(I)%P, Y=TN%ADR(IND_FRA+I-1)%P,
+     &                        C=VK_FRZL(I))
+        ENDIF
+      ENDDO
+!
+      IF( (LEO.AND.SORLEO(22+2*NC_FRA+1))
+     &     .OR.(IMP.AND.SORIMP(22+2*NC_FRA+1)) ) THEN
+        CALL OS('X=Y     ', X=TEMP, Y=TN%ADR(IND_T)%P)
+      ENDIF
+!
+      IF( (LEO.AND.SORLEO(22+2*NC_FRA+2))
+     &     .OR.(IMP.AND.SORIMP(22+2*NC_FRA+2)) ) THEN
+        CALL OS('X=Y     ', X=SAL, Y=TN%ADR(IND_S)%P)
       ENDIF
 !
 !=======================================================================

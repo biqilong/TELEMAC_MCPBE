@@ -39,7 +39,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_ARTEMIS, EX_NOMVAR_ARTEMIS => NOMVAR_ARTEMIS
-      USE DECLARATIONS_ARTEMIS, ONLY : MAXVAR
+      USE DECLARATIONS_ARTEMIS, ONLY : MAXVAR,NVAR_ART
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
@@ -209,6 +209,7 @@
       MNEMO(24)   = 'SXX     '
       MNEMO(25)   = 'SXY     '
       MNEMO(26)   = 'SYY     '
+      NVAR_ART = 26
 !
 !-----------------------------------------------------------------------
 !

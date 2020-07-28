@@ -434,12 +434,16 @@ with:
     given by $\rho_{air} = \frac{100 P_{atm}}{(T_{air} + 273.15).287}$,
     where $P_{atm}$ is the atmospheric pressure in hPa,
   \item $C_{p_{air}}$ = air thermic capacity (J/kg$^{\circ}$C),
-  \item $f(V)$ is a function of the wind velocity $V$,
-    $f(V) = a+bV$ in 2D and
-    $f(V) = b(1+V)$ for wind velocity at 2~m high in 3D,
+  \item $f(V)$ is a function of the wind velocity $V$:
+    \begin{itemize}
+    \item in 2D: $f(V) = a+bV$,
+    \item in 3D: $f(V) = b(1+V)$ for wind velocity at 2~m high
+      or $f(V) = a+bV$ for wind velocity at 10~m high,
+      depending on user's choice,
+    \end{itemize}
   \item $V$ = wind velocity (m/s),
   \item $a, b$ = empirical coefficients
-    to be calibrated (2 in 2D and only $a$ in 3D).
+    to be calibrated (2 in 2D and 3D, only $a$ in 3D if one single calibrating coefficient).
     Their values are very close, around 0.0025.
 \end{itemize}
 
@@ -456,9 +460,13 @@ with:
 \begin{itemize}
   \item $L(T_{water}) = 2500900 - 2365 T_{water}$ = latent heat of evaporation (J/kg)
     taken at the surface in 3D,
-  \item $f(V)$ is a function of the wind velocity $V$,
-    $f(V) = a+bV$ in 2D and
-    $f(V) = b(1+V)$ for wind velocity at 2~m high in 3D,
+  \item $f(V)$ is a function of the wind velocity $V$:
+    \begin{itemize}
+      \item in 2D: $f(V) = a+bV$,
+      \item in 3D: $f(V) = b(1+V)$ for wind velocity at 2~m high
+        or $f(V) = a+bV$ for wind velocity at 10~m high,
+        depending on user's choice,
+    \end{itemize}
   \item $V$ = wind velocity (m/s),
   \item $H^{sat} = \frac{0.622 P_{vap}^{sat}}{P_{atm}-0.378 P_{vap}^{sat}}$
     = the saturated air specific humidity (kg/kg),

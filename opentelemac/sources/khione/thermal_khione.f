@@ -9,12 +9,6 @@
 !brief    Module containing all subroutines to deal with the physics
 !+        of thermal exchanges, at a node level.
 !+        To be joined up with THERMAL_WAQTEL.
-!+
-!
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        11/11/2016
-!+        V7P2
-!+        Initial developments
 !
 !history  F. SOUILLE (EDF)
 !+        30/09/2019
@@ -29,7 +23,8 @@
       IMPLICIT NONE
 !
       PRIVATE
-      PUBLIC :: THERMAL_FLUXES,FRAZIL_HEAT_COEF,ICOVER_GROWTH
+      PUBLIC :: THERMAL_FLUXES,FRAZIL_HEAT_COEF,ICOVER_GROWTH,LEAP,
+     &          DAYNUM
 !
 !=======================================================================
 !
@@ -43,9 +38,9 @@
                     SUBROUTINE THERMAL_FLUXES
 !                   *************************
 !
-     &  ( TAIR,TWAT,TFRZ,SRCT,TDEW,CC,VISB,WIND,PLUIE,
-     &    SUMPH, PHCL,PHRI,PHPS,PHIB,PHIE,PHIH,PHIP,
-     &    CONSTSS,ANFEM,DT,AT,DEPTH, MARDAT,MARTIM, LAMBD0 )
+     &(TAIR,TWAT,TFRZ,SRCT,TDEW,CC,VISB,WIND,PLUIE,SUMPH,PHCL,PHRI,PHPS,
+     & PHIB,PHIE,PHIH,PHIP,CONSTSS,ANFEM,DT,AT,DEPTH,MARDAT,MARTIM,
+     & LAMBD0)
 !
 !***********************************************************************
 ! RICE-2D    V7P2                                          11/11/2016
@@ -53,40 +48,41 @@
 !
 !brief
 !
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+   11/11/2016
-!+   V7P2
-!+   Initial implementation
-!
-!history  F. SOUILLE (EDF)
-!+        30/09/2019
-!+        V8P01
-!+        Added coefficients for full heat budget
-!+        Added freezing temperature
-!
-!reference
-!+
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| ANFEM   |-->| CONCENTRATION OF SURFACE ICE PARTICLES
+!| AT      |-->| CURRENT TIME
+!| CONSTSS |-->| MAJORATED RADIATION
+!| CC      |-->| CLOUD COVER
 !| DN      |-->| CURRENT TIME
+!| DT      |-->| TIME STEP
+!| DEPTH   |-->| PROPAGATION DEPTH
+!| LAMBD0  |-->| LATITUDE OF ORIGIN POINT (KEYWORD, IN DEGREES)
 !| MARDAT  |-->| DATE (YEAR, MONTH,DAY)
 !| MARTIM  |-->| TIME (HOUR, MINUTE,SECOND)
-!| AT      |-->| CURRENT TIME
+!| PHCL    |<->| SOLAR RAD (FLUX) REACHING SURFACE, UNDER CLEAR SKY
+!| PHIB    |<->| EFFECTIVE BACK RADIATION (OPEN WATER OR ICE)
+!| PHIE    |<->| EVAPORATIVE HEAT TRANSFER
+!| PHIH    |<->| CONVECTIVE HEAT TRANSFER
+!| PHIP    |<->| HEAT TRANSFER DUE TO PRECIPITATION
+!| PHPS    |<->| NET SOLAR RADIATION (FLUX) AFTER REFLEXION
+!| PHRI    |<->| SOLAR RAD (FLUX) REACHING SURFACE, UNDER CLOUDY SKY
+!| PLUIE   |-->| RAIN
+!| SRCT    |<->| SOURCE TERM FOR EXCHANGES BETWEEN AIR AND OPEN WATER
+!| SUMPH   |<->| NET SUM OF ALL THERMAL FLUXES
 !| T1      |-->| STARTING HOUR FOR SOLAR RADIATION CALCULATION (HRS)
 !| T2      |-->| ENDING HOUR FOR SOLAR RADIATION CALCULATION (HRS)
-!| PHCL    |-->|
-!| PHRI    |-->|
-!| PHPS    |-->|
-!| PHIB    |-->| EFFECTIVE BACK RADIATION (OPEN WATER OR ICE)
-!| ALBE    |-->|
-!| LAMBD0  |-->| LATITUDE OF ORIGIN POINT (KEYWORD, IN DEGREES)
+!| TAIR    |-->| AIR TEMPERATURE
+!| TDEW    |-->| DEWPOINT TEMPERATURE
+!| TFRZ    |-->| FREEZING TEMPERATURE
+!| TWAT    |-->| WATER TEMPERATURE
+!| VISB    |-->| VISIBILITY
+!| WIND    |-->| WIND SPEED EFFECT ON ICE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_WAQTEL,      ONLY: BOLTZ,CP_EAU,ATMOSEXCH
       USE DECLARATIONS_KHIONE,      ONLY: LH_ICE,CP_ICE,
      &  LIN_WATAIR,CST_WATAIR,LIN_ICEAIR,CST_ICEAIR,
-     &  COEF_PHIB, COEF_PHIE, COEF_PHIH, COEF_PHIP
-      USE EXCHANGE_WITH_ATMOSPHERE, ONLY: LEAP,DAYNUM
+     &  COEF_PHIB, COEF_PHIE, COEF_PHIH, COEF_PHIP, SGMA,
+     &  CP_EAU, ATMOEXCH
       USE METEO_KHIONE,             ONLY: WINDZ
 !
       IMPLICIT NONE
@@ -199,7 +195,7 @@
 !
 !     LINEAR HEAT TRANSFER FOR AIR-WATER INTERFACE ONLY
 !
-      IF( ATMOSEXCH.EQ.3 ) THEN
+      IF( ATMOEXCH.EQ.3 ) THEN
         IF(CICE.EQ.1) THEN  ! ICE
           PHIH = - CST_ICEAIR - ( TAIR-TFRZ )*LIN_ICEAIR
         ELSE              ! OPEN WATER
@@ -211,7 +207,7 @@
 !
 !     FULL BUDGET FOR AIR-WATER INTERFACE
 !
-      ELSEIF( ATMOSEXCH.EQ.4 ) THEN
+      ELSEIF( ATMOEXCH.EQ.4 ) THEN
 !       FBH 2016-11
         TAK = TAIR + 273.16  ! TAK = AIR TEMPERATURE
         TSK = TWAT + 273.16  ! TSK = WATER TEMP
@@ -247,12 +243,12 @@
           EPINA = 1-0.261D0*EXP(-0.000777*(273.16-TAK)**2)
         ENDIF
         ! (4.30)
-        PHBC = EPINA * BOLTZ * TAK ** 4
+        PHBC = EPINA * SGMA * TAK ** 4
         ! = ATMOSPHERIC RADIATION UNDER CLOUDY SKY (TELEMAC 2D)
         PHBA = PHBC * (1.D0 + 0.0017D0 * CC **2)
 !  EMISSIVITY OF RIVER SURFACE = PHBW
         ! (4.29), TSK = WATER TEMP (ALWAYS)
-        PHBW = 0.97D0 * BOLTZ * TSK ** 4
+        PHBW = 0.97D0 * SGMA * TSK ** 4
 
 !  REFLECTED LONG WAVE RADIATION = PHBR
         ! (4.36)
@@ -345,8 +341,7 @@
                     SUBROUTINE ICOVER_GROWTH
 !                   ************************
 !
-     &  ( TAIR,TWAT,TFRZ, SUMPH, ANFEM, THIFEMS,THIFEMF,
-     &    EPK,HS1, HIN,FHC, DT )
+     &(TAIR,TWAT,TMELT,SUMPH,ANFEM,THIFEMS,FHC,DT)
 !
 !***********************************************************************
 ! RICE-2D    V7P3                                          11/11/2016
@@ -354,38 +349,32 @@
 !
 !brief
 !
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+   20/06/2018
-!+   V7P2
-!+   Initial implementation
-!
-!reference
-!+
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!! EPK     !-->| SURFACE OR PARCEL ICE POROSITY
+!| ANFEM   |<->| CONCENTRATION OF SURFACE ICE PARTICLES
+!| DT      |-->| TIME STEP
+!| FHC     |-->| FRAZIL HEAT COEFFICIENT
 !| SUMPH   |-->| NET HEAT EXCHANGE FLUX WITH THE ATMOSPHERE
+!| TAIR    |-->| AIR TEMPERATURE
+!| THIFEMS |<->| SOLID ICE THICKNESS
+!| TMELT   |-->| FREEZING POINT OF WATER
+!| TWAT    |-->| WATER TEMPERATURE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_WAQTEL,      ONLY: BOLTZ
-      USE DECLARATIONS_KHIONE,      ONLY: RHO_ICE,
-     &  LH_ICE, SURF_EF, TC_S,TC_BI,
-     &  LIN_ICEAIR
-      USE EXCHANGE_WITH_ATMOSPHERE, ONLY: LEAP,DAYNUM
+      USE DECLARATIONS_KHIONE, ONLY: RHO_ICE,LH_ICE,TC_BI,LIN_ICEAIR
 !
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION, INTENT(IN)    :: EPK,FHC,HS1
-      DOUBLE PRECISION, INTENT(IN)    :: TAIR,TWAT,TFRZ,SUMPH
+      DOUBLE PRECISION, INTENT(IN)    :: FHC
+      DOUBLE PRECISION, INTENT(IN)    :: TAIR,TWAT,TMELT,SUMPH
       DOUBLE PRECISION, INTENT(IN)    :: DT
-      DOUBLE PRECISION, INTENT(INOUT) :: ANFEM,HIN,THIFEMS,THIFEMF
+      DOUBLE PRECISION, INTENT(INOUT) :: ANFEM,THIFEMS
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
 !
-      DOUBLE PRECISION B1,B2,B3, DH
+      DOUBLE PRECISION B1,B3, DH
 !
 !-----------------------------------------------------------------------
 !
@@ -394,54 +383,24 @@
 !     SUMPH = PHPS + CST_ICEAIR + ( TAIR-TFRZ )*LIN_ICEAIR
 !     GROWTH OF ICE COVER DUE TO COLD SURFACE AIR TEMPERATURE
 !
-      IF( TAIR.LT.TFRZ ) THEN
+      IF( TAIR.LT.TMELT ) THEN
 !
         DH = MAX( 0.D0, - SUMPH * ( DT/RHO_ICE/LH_ICE ) /
-     &    ( THIFEMS*LIN_ICEAIR/TC_BI + 1.D0 + HS1*LIN_ICEAIR/TC_S ) )
-        B1 = HIN*EPK
-        B2 = B1 + THIFEMF*SURF_EF
-        IF( DH.LT.B1 ) THEN
-          DH = DH / EPK
-          THIFEMS = THIFEMS + DH
-          HIN = HIN - DH
-        ELSEIF( DH.LT.B2 ) THEN
-          DH = DH - HIN * EPK
-          DH = DH / SURF_EF
-          THIFEMS = THIFEMS + HIN + DH
-          HIN = 0.D0
-          THIFEMF = THIFEMF - DH
-        ELSE
-          DH = DH - HIN * EPK - THIFEMF * SURF_EF
-          THIFEMS = THIFEMS + HIN + THIFEMF + DH
-          HIN = 0.D0
-          THIFEMF = 0.D0
-        ENDIF
-      ENDIF
+     &    ( THIFEMS*LIN_ICEAIR/TC_BI + 1.D0  ) )
+        THIFEMS = THIFEMS + DH
 !
+      ENDIF
 !-----------------------------------------------------------------------
 !
 !     MELTING OF ICE COVER DUE TO WARM SURFACE AIR TEMPERATURE
 !
-      IF( TAIR.GT.TFRZ ) THEN
+      IF( TAIR.GT.TMELT ) THEN
         DH = MIN( 0.D0, - SUMPH * DT /( RHO_ICE*LH_ICE ) )
         B1 = THIFEMS
-        B2 = B1 + HIN*( 1.D0-EPK )
-        B3 = B2 + THIFEMF*( 1.D0-SURF_EF )
         IF( B1.GT.ABS(DH) ) THEN
           THIFEMS = THIFEMS + DH
-        ELSEIF( B2.GT.ABS(DH) ) THEN
-          DH = DH + THIFEMS
-          HIN = HIN + DH / ( 1.D0-EPK )
-          THIFEMS = 0.D0
-        ELSEIF( B3.GT.ABS(DH) ) THEN
-          DH = DH + THIFEMS + HIN * ( 1.D0-EPK )
-          THIFEMF = THIFEMF + DH / ( 1.D0-SURF_EF )
-          THIFEMS = 0.D0
-          HIN = 0.D0
         ELSE
-          THIFEMF = 0.D0
           THIFEMS = 0.D0
-          HIN = 0.D0
         ENDIF
       ENDIF
 !
@@ -449,26 +408,13 @@
 !
 !     MELTING OF ICE COVER DUE TO WARM UNDER WATER TEMPERATURE
 !
-      IF( TWAT.GT.TFRZ ) THEN
-        DH = FHC * ( TWAT-TFRZ ) * DT / ( RHO_ICE * LH_ICE )
-        B1 = THIFEMF*( 1.D0-SURF_EF )
-        B2 = B1 + HIN*( 1.D0-EPK )
-        B3 = B2 + THIFEMS
-        IF( DH.LT.B1 ) THEN
-          THIFEMF = THIFEMF - DH / ( 1.D0-SURF_EF )
-        ELSEIF( DH.LT.B2 ) THEN
-          DH = DH - THIFEMF * ( 1.D0-SURF_EF )
-          HIN = HIN - DH / ( 1.D0-EPK )
-          THIFEMF = 0.0
-        ELSEIF( DH.LT.B3 ) THEN
-          DH = DH - HIN*( 1.D0-EPK ) - THIFEMF*( 1.D0-SURF_EF )
-          THIFEMF = 0.0
+      IF( TWAT.GT.TMELT ) THEN
+        DH = FHC * ( TWAT-TMELT ) * DT / ( RHO_ICE * LH_ICE )
+        B3 = THIFEMS
+        IF( DH.LT.B3 ) THEN
           THIFEMS = THIFEMS - DH
-          HIN = 0.0
         ELSE
-          THIFEMF = 0.0
           THIFEMS = 0.0
-          HIN = 0.0
         ENDIF
       ENDIF
 !
@@ -477,8 +423,7 @@
 !     NOT ALLOWING NEGATIVE ICE COVER THICKNESS
 !
       IF( THIFEMS.LE.0.D0 ) THIFEMS = 0.D0
-      IF( THIFEMF.LE.0.D0 ) THIFEMF = 0.D0
-      IF( (THIFEMS+THIFEMF).LE.0.D0 ) ANFEM = 0.D0
+      IF( THIFEMS.LE.0.D0 ) ANFEM = 0.D0
 !
 !-----------------------------------------------------------------------
 !
@@ -490,7 +435,7 @@
 !                     ****************
                       SUBROUTINE SOLAR
 !                     ****************
-     &( DN,T1,T2,CC,PHCL,PHRI,PHPS,CICE,LAMBD0 )
+     &(DN,T1,T2,CC,PHCL,PHRI,PHPS,CICE,LAMBD0)
 !
 !***********************************************************************
 ! KHIONE   V7P3
@@ -499,20 +444,15 @@
 !brief    Same as SOLRAD within EXCHANGE_WITH_ATMOSPHERE (WAQTEL)
 !+        TODO: Combined with SOLAR
 !
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        19/11/2016
-!+        V7P2
-!+        INITIAL DEVELOPMENTS
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| CC      |-->| CLOUD COVER, IN THENTHS, 0-10 (/!\ NOT IN OCTAS)
+!| CICE    |-->| ICE CONDITION, OPEN WATER : 0 ; ICE : 1
 !| DN      |-->| CURRENT TIME (THE NUMBER OF DAYS FROM JAN. 1)
 !| T1      |-->| STARTING HOUR FOR SOLAR RADIATION CALCULATION (HRS)
 !| T2      |-->| ENDING HOUR FOR SOLAR RADIATION CALCULATION (HRS)
-!| PHCL    |-->|
-!| PHRI    |-->|
-!| PHPS    |-->|
-!| CICE    |-->|
-!| CC      |-->| CLOUD COVER, IN THENTHS, 0-10 (/!\ NOT IN OCTAS)
+!| PHCL    |<->| SOLAR RAD (FLUX) REACHING SURFACE, UNDER CLEAR SKY
+!| PHPS    |<->| NET SOLAR RADIATION (FLUX) AFTER REFLEXION
+!| PHRI    |<->| SOLAR RAD (FLUX) REACHING SURFACE, UNDER CLOUDY SKY
 !| LAMBD0  |-->| LATITUDE OF ORIGIN POINT (NORTH +, SOUTH -, DEGREES)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -681,14 +621,9 @@
 !
 !brief    Computes the heat exchange coefficient with the ice cover
 !
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        19/11/2016
-!+        V7P3
-!+        INITIAL DEVELOPMENTS
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| DH      |-->|
-!| U       |-->|
+!| DH      |-->| PROPAGATION DEPTH
+!| U       |-->| VELOCITY MAGNITUDE
 !| TWAT    |-->| WATER TEMPERATURE
 !| TFRZ    |-->| FREEZING POINT FOR WATER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -733,6 +668,116 @@
 !
       END FUNCTION FRAZIL_HEAT_COEF
 !
+!                       *********************
+                        INTEGER FUNCTION LEAP
+!                       *********************
+!
+     &(IYEAR)
+!
+!***********************************************************************
+! TELEMAC-3D V6P2                             27/06/2012
+!***********************************************************************
+!
+!brief    DETERMINES WHETHER IYEAR IS A LEAP YEAR
+!+        DESCRIPTION - RETURNS 1 IF IYEAR IS A LEAP YEAR, 0 OTHERWISE
+!+
+!
+!history  C. GUILBAUD (SOGREAH)
+!+        JUNE 2001
+!+        V6P0?
+!+
+!
+!history  C.-T. PHAM (EDF-LNHE)
+!+        27/06/2012
+!+        V6P2
+!+   Introduction into EXCHANGE_WITH_ATMOSPHERE module + INTENT
+!+
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| IYEAR          |-->| INDEX OF YEAR
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+      IMPLICIT NONE
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+      INTEGER, INTENT(IN) :: IYEAR
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+      IF( MOD(IYEAR,4).EQ.0.AND.
+     &   (MOD(IYEAR,100).NE.0.OR.MOD(IYEAR,400).EQ.0)) THEN
+        LEAP = 1
+      ELSE
+        LEAP = 0
+      ENDIF
+!
+!-----------------------------------------------------------------------
+!
+      RETURN
+      END FUNCTION LEAP
+
+!                   ********************************
+                    DOUBLE PRECISION FUNCTION DAYNUM
+!                   ********************************
+!
+     &(IYEAR,IMONTH,IDAY,IHOUR,IMIN,ISEC)
+!
+!***********************************************************************
+! TELEMAC-3D V6P2                             27/06/2012
+!***********************************************************************
+!
+!brief    RETURNS DAY NUMBER OF THE YEAR (FRACTIONAL)
+!+
+!
+!history  C. GUILBAUD (SOGREAH)
+!+        JUNE 2001
+!+        V6P0?
+!+
+!
+!history  C.-T. PHAM (EDF-LNHE)
+!+        27/06/2012
+!+        V6P2
+!+   Introduction into EXCHANGE_WITH_ATMOSPHERE module
+!+   Change for type of result (double precision, not integer)
+!+   + REAL conversion + addition of seconds ISEC
+!+
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| IDAY           |-->| INDEX OF DAY
+!| IHOUR          |-->| INDEX OF HOUR
+!| IMIN           |-->| INDEX OF MINUTE
+!| IMONTH         |-->| INDEX OF MONTH
+!| ISEC           |-->| INDEX OF SECOND
+!| IYEAR          |-->| INDEX OF YEAR
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+      IMPLICIT NONE
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+      INTEGER, INTENT(IN) :: IYEAR,IMONTH,IDAY,IHOUR,IMIN,ISEC
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+!
+!
+!     INTEGER  LEAP
+!     EXTERNAL LEAP
+!
+      INTEGER MONTH(12)
+      PARAMETER ( MONTH=(/0,31,59,90,120,151,181,212,243,273,304,334/) )
+!
+!-----------------------------------------------------------------------
+!
+      DAYNUM = REAL(MONTH(IMONTH)+IDAY)
+     &       + REAL(IHOUR)/24.D0+REAL(IMIN)/1440.D0+REAL(ISEC)/86400.D0
+      IF(IMONTH.GT.2) DAYNUM = DAYNUM + REAL(LEAP(IYEAR))
+!
+!-----------------------------------------------------------------------
+!
+      RETURN
+      END FUNCTION DAYNUM
+
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       END MODULE THERMAL_KHIONE

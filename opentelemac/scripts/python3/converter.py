@@ -26,6 +26,7 @@ from pretel.generate_atm import generate_atm, generate_atm_parser
 from pretel.convert_to_bnd import generate_bnd, generate_bnd_parser
 from pretel.stbtel_refine import run_refine, stbtel_refine_parser
 from vvytel.xml2py import xml2py, xml2py_parser
+from vvytel.report_class import Report
 
 # _____             ________________________________________________
 # ____/ MAIN CALL  /_______________________________________________/
@@ -34,14 +35,49 @@ from vvytel.xml2py import xml2py, xml2py_parser
 __author__ = "Yoann Audouin"
 __date__ = "$21-Sep-2012 16:51:09$"
 
-def print_actions_help():
-    """ Print help for the list of actions """
-    print(\
-'''\n
-Tools for handling SELAFIN files and TELEMAC binary related in python\n
-Possible actions:\n
-    refine     Refinement of the mesh using stbtel
-    ''')
+def report2xls_parser(subparser):
+    """
+    Add arguments for a conversion of report2xls
+
+    @param subparser (argumentParser) argument parser
+
+    @return (argumentParser) the updated argument parser
+    """
+    parser = subparser.add_parser('report2xls',
+                                  help='Converting validation report csv'\
+                                       'into Xls file')
+    parser.add_argument(
+        "report_file",
+        help="path of the report file.")
+    parser.add_argument(
+        "xls_file",
+        help="path of the xls file.")
+    parser.add_argument(
+        "-a", "--append",
+        dest="append", action='store_true', default=False,
+        help='If given append data to existing xls file')
+    parser.add_argument(
+        "--title",
+        dest="title", default=None,
+        help='Title give to the worksheet')
+    parser.add_argument(
+        "--job-id",
+        dest="job_id", default=None,
+        help='Name of the column of data')
+    parser.add_argument(
+        "--date",
+        dest="date", default=None,
+        help='Date of the column of data')
+    parser.add_argument(
+        "--guess",
+        dest="guess", action='store_true', default=False,
+        help='Will guess job_id, title and date from report_file name')
+    parser.add_argument(
+        "-v", "--verbose",
+        dest="verbose", action='store_true', default=False,
+        help='Will print more information')
+
+    return subparser
 
 def main():
     """
@@ -74,6 +110,7 @@ def main():
     subparser = xml2py_parser(subparser)
     subparser = extrac_ptraver_parser(subparser)
     subparser = convert_courlis_parser(subparser)
+    subparser = report2xls_parser(subparser)
 
     options = parser.parse_args()
 
@@ -139,6 +176,21 @@ def main():
                                 options.write_opt, options.budget,
                                 options.txt_format, options.csv_format,
                                 options.xlsx_format, options.time_check)
+    elif options.command == "report2xls":
+        rep = Report('', 'examples')
+
+        if options.guess:
+            import re
+            test = re.compile(r"(?P<name>[-a-zA-Z]+)_(?P<job_id>[0-9]+)_(?P<config>[-.a-zA-Z0-9]+)_[-.a-zA-Z]+_[-.a-zA-Z]+_(?P<date>[-0-9]+)-[0-9hmins]+.csv")
+            proc = test.search(options.report_file)
+
+            options.job_id = proc.group('job_id')
+            options.date = proc.group('date')
+            options.title = proc.group('config')
+
+        rep.read(file_name=options.report_file)
+        rep.write2xls(options.xls_file, options.append, options.title,
+                      options.job_id, options.date, verbose=options.verbose)
     else:
         parser.print_help()
 

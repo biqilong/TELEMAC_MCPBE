@@ -9,12 +9,6 @@
 !brief    Module containing all subroutines to deal with atmospheric
 !+        exchange, whether its dynamics (wind, pressure, etc.) or its
 !+        thermal budget (air temperature, solar radiation, cloud, etc.)
-!+
-!
-!history  S.E. BOURBAN (HRW)
-!+        13/06/2017
-!+        V7P3
-!+        Initial developments for compatibility between all modules
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -248,15 +242,12 @@
 !
 !brief    Memory allocation of structures, aliases, blocks...
 !
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| FILES      |-->| BIEF_FILES STRUCTURES OF ALL FILES
 !| ATMFILEA   |-->| LOGICAL UNIT OF THE ASCII ATMOSPHERIC FILE
 !| ATMFILEB   |-->| LOGICAL UNIT OF THE BINARY ATMOSPHERIC FILE
+!| FILES      |-->| BIEF_FILES STRUCTURES OF ALL FILES
+!| IELMT      |-->| NUMBER OF ELEMENTS
+!| MESH       |-->| MESH STRUCTURE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       IMPLICIT NONE
@@ -268,7 +259,7 @@
 !
       INTEGER I,J
 !
-      CHARACTER(LEN=16), ALLOCATABLE  :: CHOIX(:)
+      CHARACTER(LEN=16), POINTER  :: CHOIX(:)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -342,11 +333,9 @@
 !     1: ASCII FILE
 !     2: BINARY FILE
 !
-      ALLOCATE(CHOIX(METEO_MAXVALUE))
       DO I = 1,2
         IF( METEO_DEJA(I) ) THEN
-          CHOIX = ' '
-          CHOIX = METEO_CHOIX(I,1:METEO_MAXVALUE)
+          CHOIX => METEO_CHOIX(I,1:METEO_MAXVALUE)
 !
           J = FIND_NAME( 'TAIR', CHOIX, METEO_MAXVALUE )
           INC_TAIR = INC_TAIR .OR. ( J.NE.0 )
@@ -380,7 +369,6 @@
 !
         ENDIF
       ENDDO
-      DEALLOCATE(CHOIX)
 !
 !-----------------------------------------------------------------------
 !
@@ -398,11 +386,6 @@
 !***********************************************************************
 !
 !brief    Memory de-allocation of structures, aliases, blocks...
-!
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -464,11 +447,6 @@
 !
 !brief    Synchronise the ASCII and the BINARY file for spatial and
 !         temporal interpolation
-!
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| WHEN           |-->| CURRENT TIME
@@ -583,12 +561,10 @@
 !brief    Spatial and temporal interpolation of variables from either
 !+        the ASCII or the BINARY file
 !
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| NPOIN          |-->| NUMBER OF NODES
+!| VALEURS        |<->| VALUES CONTAINED IN THE VARIABLE
+!| WHAT           |-->| VARIABLE TO CONSIDER
 !| WHEN           |-->| CURRENT TIME
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -602,14 +578,13 @@
       INTEGER           J,IPOIN
       DOUBLE PRECISION  A,B,C,D,ALPHA,DELTA
       DOUBLE PRECISION  X1,Y1,Z1,X2,Y2,Z2,X3,Y3,Z3,NX,NY,NZ,MX,MY
-      CHARACTER(LEN=16), ALLOCATABLE  :: CHOIX(:)
+      CHARACTER(LEN=16), POINTER  :: CHOIX(:)
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
 !     A: ASCII FILE
-      ALLOCATE(CHOIX(METEO_MAXVALUE))
       IF( METEO_DEJA(1) ) THEN
-        CHOIX = METEO_CHOIX(1,1:METEO_MAXVALUE)
+        CHOIX => METEO_CHOIX(1,1:METEO_MAXVALUE)
         J = FIND_NAME( WHAT, CHOIX, METEO_MAXVALUE )
         IF( J.NE.0 ) THEN
 !         ______________________________________________________________
@@ -720,7 +695,7 @@
 !
 !     B: BINARY FILE
       IF( METEO_DEJA(2) ) THEN
-        CHOIX = METEO_CHOIX(2,1:METEO_MAXVALUE)
+        CHOIX => METEO_CHOIX(2,1:METEO_MAXVALUE)
         J = FIND_NAME( WHAT, CHOIX, METEO_MAXVALUE )
         IF( J.NE.0 ) THEN
 !         ______________________________________________________________
@@ -736,7 +711,6 @@
 !
         ENDIF
       ENDIF
-      DEALLOCATE(CHOIX)
 !
 !-----------------------------------------------------------------------
 !
@@ -759,15 +733,10 @@
 !+        METEO files). Return 0 if not found, the index in CHOIX
 !+        otherwise.
 !
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NAME           |-->| MNEMO OF THE VARIABLE
 !| CHOIX          |-->| LIST OF VARIABLES PRESENT IN THE METEO FILE
 !| MAXVALUE       |-->| MAXIMUM SIZE OF THE LIST CHOIX
+!| NAME           |-->| MNEMO OF THE VARIABLE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       IMPLICIT NONE
@@ -806,14 +775,9 @@
 !
 !brief    Scan the ASCII file and prepare skeleton for future calls
 !
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| FILES          |-->| ARRAYS OF ALL FILES
 !| ATMFILEA       |-->| LOGICAL UNIT OF ASCII FILE FOR METEO
+!| FILES          |-->| ARRAYS OF ALL FILES
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_HERMES
@@ -934,14 +898,9 @@
 !
 !brief    Scan the ASCII file and prepare skeleton for future calls
 !
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| FILES          |-->| ARRAYS OF ALL FILES
 !| ATMFILEA       |-->| LOGICAL UNIT OF ASCII FILE FOR METEO
+!| FILES          |-->| ARRAYS OF ALL FILES
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       IMPLICIT NONE
@@ -1222,11 +1181,6 @@
 !brief    Synchronise the BINARY file for spatial and temporal
 !         interpolation
 !
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| WHEN           |-->| CURRENT TIME
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1308,11 +1262,6 @@
 !
 !brief    Synchronise the ASCII file for spatial and temporal
 !         interpolation
-!
-!history  S.E. BOURBAN (HRW)
-!+        11/06/2017
-!+        V7P3
-!+        Initial implementation
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| WHEN           |-->| CURRENT TIME

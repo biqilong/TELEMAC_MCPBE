@@ -60,7 +60,8 @@ yet every option of computations with \telemac{2d} is not available).
 The second one is recommended when observing free surface wiggles
 (in particular in case of strong bathymetry gradients).
 But in that situation, the recommended configuration is to use the wave equation
-associated with the keyword \telkey{FREE SURFACE GRADIENT COMPATIBILITY} = 0.9.\\
+associated with the keyword \telkey{FREE SURFACE GRADIENT COMPATIBILITY} = 0.9.
+The user can also decrease that value down to 0. if needed.\\
 
 Wave equation (\telkey{TREATMENT OF THE LINEAR SYSTEM} = 2) has not been
 implemented for quadratic elements (13).
@@ -117,7 +118,7 @@ Finite elements resolution is based on the primitive equations.
 It is possible to replace the original equations by a generalized wave equation
 obtained by eliminating the velocity from the continuity equation using a value
 obtained from the momentum equation.
-This technique decreases calculation speed but has the disadvantage
+This technique decreases calculation time but has the disadvantage
 of smoothing the results.
 The choice between these two options is done using the keyword
 \telkey{TREATMENT OF THE LINEAR SYSTEM}:
@@ -145,7 +146,7 @@ Since release 6.0, the value concerning depth is ignored by \telemac{2D}.
 The optimum numerical scheme is automatically selected by the code
 (conservative scheme).
 
-Each integer may have a value between 1 and 14, corresponding to the following
+Each integer may have a value between 1 and 15, corresponding to the following
 possibilities:
 
 \begin{itemize}
@@ -211,7 +212,10 @@ which is a good compromise between accuracy and computational time.
 Indeed, increasing the number of corrections the scheme is more accurate
 but the CPU time rapidly increases.
 The keyword \telkey{NUMBER OF CORRECTIONS OF DISTRIBUTIVE SCHEMES} can be used
-with advection schemes of type (3, 4, 5, LIPS or not, and ERIA).
+with predictor-corrector options and advection schemes of type
+3, 4, 5, LIPS or predictor-corrector, and ERIA i.e.
+\telkey{SCHEME FOR ADVECTION OF...} = 3, 4, 5 or 15 AND
+\telkey{SCHEME OPTION FOR ADVECTION OF...} = 2, 3 or 4.
 
 The keyword \telkey{MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES}
 enables to limit the number of solver iterations for the advection schemes
@@ -670,8 +674,8 @@ it is mandatory to activate \telkey{CONTINUITY CORRECTION} = YES.
 
 \subsection{Preconditioning}
 
-When solving a system of equations by a conjugate gradient method,
-convergence can often be hastened by means of preconditioning.
+When solving a system of equations by an iterative linear solver,
+convergence can often be accelerated by means of preconditioning.
 
 \telemac{2D} offers several possibilities for preconditioning.
 These are selected with the keywords \telkey{PRECONDITIONING},
@@ -992,4 +996,4 @@ The user has to give the number of refinement levels with the keyword
 Each level multiplies the number of triangular elements by 4 with \stbtel.
 
 This option is only available in sequential mode
-(\telkey{PARALLEL PROCESSORS} = 0 or 1, or Python option --ncsize = 0 or 1).
+(\telkey{PARALLEL PROCESSORS} = 0 or 1, or Python option -{}-ncsize = 0 or 1).

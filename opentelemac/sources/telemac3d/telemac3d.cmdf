@@ -1,7 +1,7 @@
 [general]
 path: <root>|sources|telemac3d
 module: telemac3d
-liborder: special damocles parallel hermes bief nestor waqtel ad tomawac telemac2d sisyphe gaia telemac3d
+liborder: special damocles parallel hermes bief nestor khione waqtel ad tomawac telemac2d sisyphe gaia telemac3d
 name: telemac3d
 
 [ad]
@@ -697,6 +697,10 @@ files: interface_hermes.f
   ecri2.f
   lit.F
 
+[khione]
+path: <root>|sources|khione
+files: declarations_khione.f
+
 [nestor]
 path: <root>|sources|nestor
 files: m_typedefs_nestor.f
@@ -1014,6 +1018,8 @@ files: declarations_telemac3d.f
   flused.f
   clsedi.f
   compute_bc_sedi.f
+  floc_wchu_2cpbe.f
+  floc_wchu_3cpbe.f
   soulsbyfloc3d.f
   wchind.f
   calcg.f
@@ -1081,6 +1087,8 @@ files: declarations_telemac3d.f
   user_source.f
   source.f
   sources_sinks.f
+  floc_kinetics_2cpbe.f
+  floc_kinetics_3cpbe.f
   source_trac.f
   sousa.f
   user_t3d_debsce.f
@@ -1143,10 +1151,6 @@ files: declarations_telemac3d.f
   wave_equation.F
   telemac3d.F
   homere_telemac3d.f
-  floc_wchu_2cpbe.f
-  floc_wchu_3cpbe.f
-  floc_kinetics_2cpbe.f
-  floc_kinetics_3cpbe.f
 
 [tomawac]
 path: <root>|sources|tomawac
@@ -1296,6 +1300,8 @@ files: declarations_waqtel.f
   nuteff.f
   ray_effect.f
   calcs2d_biomass.f
+  user_calcs2d_degradation.f
+  calcs2d_degradation.f
   reaer.f
   satur_o2.f
   calcs2d_eutro.f
@@ -1307,6 +1313,8 @@ files: declarations_waqtel.f
   calcs2d_thermic.f
   calcs3d_aed2.F
   calcs3d_biomass.f
+  user_calcs3d_degradation.f
+  calcs3d_degradation.f
   calcs3d_eutro.f
   calcs3d_micropol.f
   calcs3d_o2.f

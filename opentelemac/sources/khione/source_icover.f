@@ -1,9 +1,7 @@
 !                   ************************
                     SUBROUTINE SOURCE_ICOVER
 !                   ************************
-     &( NPOIN,FU,FV, H,U,V,ZF,
-     &  T1,T2,T3,S,MESH,MSK,UNSV2D,
-     &  GRAV,KARMAN,CHESTR,PATMOS,DT,AT )
+     &(NPOIN,FU,FV,H,U,V,T1,T2,T3,GRAV,KARMAN,CHESTR,DT,AT)
 !
 !***********************************************************************
 ! KHIONE   V7P2                                             02/11/2016
@@ -11,15 +9,6 @@
 !
 !brief    COMPUTES CONTRIBUTION TO MOMENTUM FORCES AND WATER LEVEL
 !+        TERMS RESULTING FROM ICE PROCESSES.
-!+        IN PARTICULAR (DEPENDING ON ICEPROCESS):
-!+          #2.- THERMAL BALANCE
-!+          #3.- ICE COVER
-!+          #5.- ...
-!
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        19/11/2016
-!+        V7P2
-!+        INITIAL DEVELOPMENTS
 !
 !history  F. SOUILLE (EDF)
 !+        30/10/2019
@@ -27,26 +16,29 @@
 !+        Updated friction source term
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| NPOIN      |-->| NUMBER OF NODES IN THE MESH
+!| AT         |-->| TIME IN SECONDS
+!| CHESTR     |-->| FRICTION COEFFICIENT
+!| DT         |-->| TIME STEP
 !| FU         |<->| SOURCE TERMS ON VELOCITY U
 !| FV         |<->| SOURCE TERMS ON VELOCITY V
 !| GRAV       |-->| GRAVITY
+!| H          |-->| WATER DEPTH
+!| KARMAN     |-->| VON KARMAN'S CONSTANT
+!| NPOIN      |-->| NUMBER OF NODES IN THE MESH
+!| T1         |<->| WORKING ARRAY
+!| T2         |<->| WORKING ARRAY
+!| T3         |<->| WORKING ARRAY
+!| U          |-->| X COMPONENT OF THE VELOCITY
+!| V          |-->| Y COMPONENT OF THE VELOCITY
 !| WINDX      |<->| FIRST COMPONENT OF WIND VELOCITY
 !| WINDY      |<->| SECOND COMPONENT OF WIND VELOCITY
-!| DT         |-->| TIME STEP
-!| AT         |-->| TIME IN SECONDS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
       USE DECLARATIONS_SPECIAL
-      USE DECLARATIONS_WAQTEL, ONLY: RO0
-      USE DECLARATIONS_KHIONE, ONLY: ICEPROCESS,RHO_ICE,RHO_AIR,
-     &                               FICE,FICE_MAX,
-     &                               VZ,IFROT,IFICE,ICESTR,
-     &                               THIE,
-     &                               THIFEMS,THIFEMF,
-     &                               HUN
-!    &                               ,DCOVX,DCOVY
+      USE DECLARATIONS_KHIONE, ONLY: ICOVER_IMPACT,BD_ICE,RHO_AIR,FICE,
+     &                               FICE_MAX,VZ,IFROT,IFICE,ICESTR,
+     &                               THIE,THIFEMS,THIFEMF,HUN,RO0
 !
       USE METEO_KHIONE,        ONLY: SYNC_METEO,WINDX,WINDY
 !
@@ -55,13 +47,10 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER,          INTENT(IN)    :: NPOIN
-      TYPE(BIEF_MESH),  INTENT(INOUT) :: MESH
       TYPE(BIEF_OBJ),   INTENT(INOUT) :: T1,T2,T3
-      TYPE(BIEF_OBJ),   INTENT(IN)    :: S, UNSV2D
-      LOGICAL,          INTENT(IN)    :: MSK
       DOUBLE PRECISION, INTENT(IN)    :: DT,AT,GRAV,KARMAN
-      TYPE(BIEF_OBJ),   INTENT(INOUT) :: FU,FV, PATMOS
-      TYPE(BIEF_OBJ),   INTENT(IN)    :: CHESTR, H,U,V, ZF
+      TYPE(BIEF_OBJ),   INTENT(INOUT) :: FU,FV
+      TYPE(BIEF_OBJ),   INTENT(IN)    :: CHESTR, H,U,V
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -73,20 +62,9 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-! ICEPROCESS:
-!    PRIME NUMBER DEFINING WHICH PROCESS IS SWITCHED ON:
-!    - 2: THERMAL BALANCE
-!    - 3: IMPACT OF THE ICE COVER ON THE HYDRODYNAMICS
-!    - 5: CLOGGING ON RACKS
-!    - 7: STATIC BORDER ICE
-!    - 0: ALL PROCESSES ABOVE BECAUSE N*INT(0/N) = 0
-!    - 1: NONE OF THE PROCESSES BECAUSE N*INT(1/N) <> 1
-!
-!-----------------------------------------------------------------------
-!
 !=======================================================================
 !
-!     1 - FOR GOOD MEASURE - SHOULD BE DONE AT THE TELEMAC-2D LEVEL
+!     FOR GOOD MEASURE - SHOULD BE DONE AT THE TELEMAC-2D LEVEL
 !
 !-----------------------------------------------------------------------
 !
@@ -96,11 +74,11 @@
 !
 !=======================================================================
 !
-!     7 - STATIC BORDER ICE GROWTH
+!     STATIC BORDER ICE GROWTH
 !
 !-----------------------------------------------------------------------
 !
-      IF( INT(ICEPROCESS/7)*7 .EQ. ICEPROCESS ) THEN
+      IF( BD_ICE ) THEN
 !
 !-----------------------------------------------------------------------
 !       PREPARATION TO STATIC BORDER ICE GROWTH
@@ -131,19 +109,19 @@
 !
 !=======================================================================
 !
-!     2 - THERMAL BALANCE AND ICE COVER GROWTH
+!     THERMAL BALANCE AND ICE COVER GROWTH
 !
 !     FOLLOW-UP IMPACT ON THE HYDRODYNAMICS
 !
-!     TODO: Implement ICEPROCESS = 2
+!     TODO: Implement THERMAL_BUDGET=TRUE
 !
 !=======================================================================
 !
-!     3 - ICE COVER IMPACT
+!     ICE COVER IMPACT ON HYDRODYNAMICS
 !
 !-----------------------------------------------------------------------
 !
-      IF( INT(ICEPROCESS/3)*3 .EQ. ICEPROCESS ) THEN
+      IF( ICOVER_IMPACT ) THEN
 !
 ! ~~>   PREPARATORY WORK
 !
@@ -191,10 +169,10 @@
           FU%R(I) = FU%R(I) - 0.5D0 * T1%R(I)*SP_EAU*U%R(I) / T3%R(I)
           FV%R(I) = FV%R(I) - 0.5D0 * T1%R(I)*SP_EAU*V%R(I) / T3%R(I)
 !
-! ~~>     LOCAL STATIC PRESSURE INCREASE DUE TO ICE THICKNESS
-          IF( H%R(I).GT.EPS ) THEN
-            PATMOS%R(I) = PATMOS%R(I) + GRAV * RHO_ICE * T2%R(I)
-          ENDIF
+! ~~>     LOCAL STATIC PRESSURE INCREASE DUE TO ICE THICKNESS (TODO)
+!          IF( H%R(I).GT.EPS ) THEN
+!            PATMOS%R(I) = PATMOS%R(I) + GRAV * RHO_ICE * T2%R(I)
+!          ENDIF
         ENDDO
 !
 ! ~~>   SEEPAGE (TODO)
@@ -203,11 +181,11 @@
 !
 !=======================================================================
 !
-!     5 - CLOGGING
+!     CLOGGING
 !
 !     NO IMPACT ON THE HYDRODYNAMICS
 !
-!     TODO: Implement ICEPROCESS = 5
+!     TODO: Implement CLOGGING=TRUE
 !
 !-----------------------------------------------------------------------
 !

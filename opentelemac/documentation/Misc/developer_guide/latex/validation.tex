@@ -76,10 +76,21 @@ This defines a class named "\verb!VnvStudy!" which inherits from
 "\verb!AbstractVnvStudy!" which is an abstract class for which you need to fill
 the following 4 functions:
 \begin{itemize}
-\item \_init: This is were we define the rank and the tags. The rank defines
-  the importance of the test case the rule for the rank is described below.
-    While the tag is a system to identify was is tested in the case. This list
-    of tags can be find in \verb!validate_telemac.py!
+\item \_init: This is were we define the rank and the tags and optional
+  parameter. Only rank and tags are mandatory.
+  \begin{itemize}
+    \item rank: defines the importance of the test case the rule for the rank is described below.
+    \item tags: While the tag is a system to identify was is tested in the case. This list
+    of tags can be find in \verb!validate_telemac.py!.
+  \item listing: If set to True will force option -s in execution to write the
+    listing in a file. This is necessary when you are using post-treatment on
+      the listing.
+  \item walltime: This can be used to force the value of runcode.py potions
+    --walltime. It can be either a str or a dictionary. If it is an str it will
+      apply it to all the studies within the file. If it is a dictionary the
+      keys are a study name and value the associated walltime. This option is
+      only taken into account if you have a cluster configuration.
+  \end{itemize}
 \item \_pre: This is were we will defined the studies, a study is defined by a
   steering file and a module.
 \item \_check\_results: This is were we will do checks on the results versus,

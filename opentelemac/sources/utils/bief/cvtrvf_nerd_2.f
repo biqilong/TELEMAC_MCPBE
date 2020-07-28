@@ -720,7 +720,14 @@
         WRITE(LU,102) NITER
       ENDIF
 !
-102   FORMAT(' CVTRVF_POS_2 (SCHEME 13 OR 14): ',1I3,' ITERATIONS')
+      IF(NITER.EQ.NITMAX) THEN
+        WRITE(LU,103) NITER
+      ENDIF
+!
+102   FORMAT(' CVTRVF_NERD_2 (SCHEME 13 OR 14): ',1I3,' ITERATIONS')
+103   FORMAT(' CVTRVF_NERD_2 (SCHEME NERD, 13 OR 14): ',1I3,
+     &  ' ITERATIONS = MAXIMUM',
+     &  /,'INCREASE MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES')
 !
 !-----------------------------------------------------------------------
 !

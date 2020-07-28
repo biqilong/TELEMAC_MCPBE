@@ -2,7 +2,8 @@
                       SUBROUTINE OUTPUT_KHIONE
 !                     ************************
 !
-     &(TITLE,NPOIN,AT,LT,MESH,TELSOR,DATE,MARTIM,ISHEAD,ISMESH,ISVARS)
+     &(TITLE,NPOIN,AT,LT,MESH,TELSOR,DATE,MARTIM,ISHEAD,ISMESH,ISVARS,
+     & TN)
 !
 !***********************************************************************
 ! KHIONE   V7P3
@@ -13,19 +14,18 @@
 !+            THE COUPLED MODEL RATHER THAN CONFLICTING PRINTOUT
 !+            PERIODS, VARSOR, MAXVAR, ETC.
 !
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        11/11/2016
-!+        V7P3
-!+        Coupling TELEMAC-2D with KHIONE (ice modelling component)
-!+        Initial developments
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| AT             |-->| CURRENT TIME IN SECONDS
-!| LT             |-->| CURRENT NUMBER OF OF TIME STEP
-!| NPOIN          |-->| NUMBER OF NODES
+!| DATE           |-->| START DATE
 !| ISHEAD         !-->| 1: WRITE HEADER; 0: DOES NOT WRITE HEADER
 !| ISMESH         !-->| 1: WRITE MESH; 0: DOES NOT WRITE MESH
 !| ISVARS         !-->| 1: WRITE VARS; 0: DOES NOT WRITE VARS
+!| LT             |-->| CURRENT NUMBER OF OF TIME STEP
+!| MARTIM         |-->| START TIME
+!| MESH           |-->| MESH STRUCTURE
+!| NPOIN          |-->| NUMBER OF NODES
+!| TELSOR         |-->| OUTPUT FOR TELEMAC2D
+!| TITLE          |-->| STUDY TITLE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
@@ -38,7 +38,7 @@
 !
       CHARACTER(LEN=72),     INTENT(IN) :: TITLE
       TYPE(BIEF_MESH),       INTENT(IN) :: MESH
-      TYPE(BIEF_OBJ),        INTENT(IN) :: TELSOR
+      TYPE(BIEF_OBJ),        INTENT(IN) :: TELSOR,TN
       INTEGER, DIMENSION(3), INTENT(IN) :: DATE
       INTEGER, DIMENSION(3), INTENT(IN) :: MARTIM
       DOUBLE PRECISION,      INTENT(IN) :: AT
@@ -85,7 +85,7 @@
       IF( ISVARS ) THEN
 !
 !       PREPARES THE RESULTS
-        CALL PRERES_KHIONE(NPOIN,AT,LT,TELSOR)
+        CALL PRERES_KHIONE(NPOIN,LT,TELSOR,TN)
 !
 !       OUTPUTS A STANDARD TIME STEP
         CALL BIEF_DESIMP(

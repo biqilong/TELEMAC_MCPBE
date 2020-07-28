@@ -390,7 +390,8 @@ The coefficient value can be obtained from many different formulas.
 This is the formula used by the Institute of Oceanographic Sciences
 (United Kingdom):
 
-
+\begin{table}[h!]
+\begin{center}
 \begin{tabular}{ll}
 
 if $\| \vec{U}_{wind} \| < 5$ m/s & $a_{wind}  = 0.565 \times 10^{-3}$ \\
@@ -398,7 +399,8 @@ if $5 < \| \vec{U}_{wind} \| < 19.22$ m/s &
  $a_{wind} = (- 0.12 + 0.137 \| \vec{U}_{wind} \| ) 10^{-3}$ \\
 if $\| \vec{U}_{wind} \| > 19.22$ m/s & $a_{wind} = 2.513 \times 10^{-3}$ \\
 \end{tabular}
-
+\end{center}
+\end{table}
 
 This formula can be activated by setting the keyword
 \telkey{COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED} to YES

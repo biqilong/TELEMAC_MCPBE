@@ -5,7 +5,7 @@
      & (FILE_DESC,PATH,NCAR,CAS_FILE,DICO_FILE)
 !
 !***********************************************************************
-! WAQTEL   V7P2
+! WAQTEL   V8P2
 !***********************************************************************
 !
 !brief    READS THE STEERING FILE THROUGH A DAMOCLES CALL.
@@ -253,6 +253,18 @@
       I0     = MOTREA( ADRESS(2,133) )
       C_ATMOS= MOTREA( ADRESS(2,135) )
       EVAPORATION= MOTREA( ADRESS(2,137) )
+!
+      IF(TROUVE(2,125).EQ.2) THEN
+!       WIND FUNCTION FOR ATMOSPHERIC-WATER EXCHANGE MODEL IN 3D
+!       WITH 2 COEFFICIENTS, ONLY IF THE USER FILLS THE KEYWORD
+        N_C_ATMOS = 2
+        WRITE(LU,*) 'IF NEEDED IN 3D, A WIND FUNCTION WITH 2 PARAMETERS'
+        WRITE(LU,*) 'WILL BE USED FOR ATMOSPHER-WATER EXCHANGE MODEL'
+      ELSE
+!       WIND FUNCTION FOR ATMOSPHERIC-WATER EXCHANGE MODEL IN 3D
+!       WITH 1 COEFFICIENT (DEFAULT)
+        N_C_ATMOS = 1
+      ENDIF
 !
 !*******************************
 !     LOGICAL KEYWORDS         *

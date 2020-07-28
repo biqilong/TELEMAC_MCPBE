@@ -26,7 +26,7 @@ subroutine LEC_CONC_INI_TRACER( &
                       nb_trac , & ! nombre de traceurs
                       Connect , & ! Table de connectivite du reseau
                        Profil , & ! Profils geometriques
-                     document , & ! Pointeur vers document XML
+                      unitNum , & ! Unite logique du fichier .xcas
                        Erreur ) ! Erreur
 
 !***********************************************************************
@@ -68,7 +68,7 @@ subroutine LEC_CONC_INI_TRACER( &
    use M_INTERPOLATION_S       ! Interface du sous programme INTERPOLATION_S
    use M_ABS_ABS_S             ! Calcul de l'abscisse absolue
    use M_TRAITER_ERREUR_I      ! Traitement des erreurs
-   use Fox_dom               ! parser XML Fortran
+   use M_XCAS_S
 
    !.. Declarations explicites ..
    implicit none
@@ -83,7 +83,7 @@ subroutine LEC_CONC_INI_TRACER( &
    integer                             , intent(in   ) :: TypeMaillage
    logical                             , intent(in   ) :: ImpressionConcIni
    integer            , intent(in   )                  :: UniteListing
-   type(Node), pointer, intent(in)                     :: document
+   integer, intent(in)                                 :: unitNum
    type(ERREUR_T)                      , intent(inout) :: Erreur
    integer                             , parameter     :: ORDRE_INTERP = 1  ! ordre d'interpolation
    ! Variables locales
@@ -97,7 +97,8 @@ subroutine LEC_CONC_INI_TRACER( &
    logical      :: interpoler           ! test necessite interpolatione
    integer      :: RETOUR               ! code de retour des fonctions intrinseques
    real(DOUBLE) :: sigma
-   type(Node), pointer :: champ1,champ2,champ3
+   character(len=256)  :: pathNode
+   character(len=1024) :: line
 
    !============================ Instructions ==============================
    ! INITIALISATION
@@ -123,33 +124,13 @@ subroutine LEC_CONC_INI_TRACER( &
    ProfFinBief(Profil(nb_prof)%NumBief) = nb_prof
 
    ! Type d'entree des concentrations initiales
-   champ1 => item(getElementsByTagname(document, "parametresTraceur"), 0)
-   if(associated(champ1).eqv..false.) then
-      print*,"Parse error => parametresTraceur"
-      call xerror(Erreur)
-      return
-   endif
-   champ2 => item(getElementsByTagname(champ1, "parametresConcentrationsInitialesTraceur"), 0)
-   if(associated(champ2).eqv..false.) then
-      print*,"Parse error => parametresConcentrationsInitialesTraceur"
-      call xerror(Erreur)
-      return
-   endif
-   champ3 => item(getElementsByTagname(champ2, "modeEntree"), 0)
-   if(associated(champ3).eqv..false.) then
-      print*,"Parse error => modeEntree"
-      call xerror(Erreur)
-      return
-   endif
-   call extractDataContent(champ3,TypeEntreeConcInit)
+   pathNode = 'parametresTraceur/parametresConcentrationsInitialesTraceur/modeEntree'
+   line = xcasReader(unitNum, pathNode)
+   read(unit=line, fmt=*) TypeEntreeConcInit
+
    if( TypeEntreeConcInit == SAISIE_PAR_FICHIER ) then
-      champ3 => item(getElementsByTagname(champ2, "fichConcInit"), 0)
-      if(associated(champ3).eqv..false.) then
-         print*,"Parse error => fichConcInit"
-         call xerror(Erreur)
-         return
-      endif
-      FichierConcIni%Nom = getTextContent(champ3)
+      pathNode = 'parametresTraceur/parametresConcentrationsInitialesTraceur/fichConcInit'
+      FichierConcIni%Nom = xcasReader(unitNum, pathNode)
       if( ImpressionConcIni ) write(UniteListing,1100) FichierConcIni%Nom
    else
       if(ImpressionConcIni) write(UniteListing,1200)
@@ -307,23 +288,5 @@ subroutine LEC_CONC_INI_TRACER( &
    2003 FORMAT( 'Concentration du traceur no ',I1,'( C(I) , I=1,nb_sect ) :'/)
 
    return
-
-   contains
-
-   subroutine xerror(Erreur)
-
-       use M_MESSAGE_C
-       use M_ERREUR_T            ! Type ERREUR_T
-
-       type(ERREUR_T)                   , intent(inout) :: Erreur
-
-       Erreur%Numero = 704
-       Erreur%ft     = err_704
-       Erreur%ft_c   = err_704c
-       call TRAITER_ERREUR( Erreur )
-
-       return
-
-   end subroutine xerror
 
 end subroutine LEC_CONC_INI_TRACER

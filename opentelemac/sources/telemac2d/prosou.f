@@ -742,9 +742,8 @@
 !     ICE PROCESSES
 !
       IF(INCLUS(COUPLING,'KHIONE')) THEN
-        CALL SOURCE_ICOVER(NPOIN,FU,FV, H,U,V,ZF,T1,T2,T3,S,MESH,MSK,
-     &                     UNSV2D,GRAV,KARMAN,CHESTR,
-     &                     PATMOS,DT,AT )
+        CALL SOURCE_ICOVER(NPOIN,FU,FV, H,U,V,T1,T2,T3,
+     &                     GRAV,KARMAN,CHESTR,DT,AT )
       ENDIF
 !
 !=======================================================================

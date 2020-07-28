@@ -898,7 +898,14 @@
         WRITE(LU,102) SCHCF,NITER
       ENDIF
 !
+      IF(NITER.EQ.NITMAX) THEN
+        WRITE(LU,103) SCHCF,NITER
+      ENDIF
+!
 102   FORMAT(1X,'MURD3D_POS SCHEME: ',1I4,'  ',1I4,' ITERATIONS')
+103   FORMAT(1X,'MURD3D_POS SCHEME: ',1I4,'  ',1I4,' ITERATIONS',
+     &  ' = MAXIMUM',
+     &  /,'INCREASE MAXIMUM NUMBER OF ITERATIONS FOR ADVECTION SCHEMES')
 !
 !-----------------------------------------------------------------------
 !

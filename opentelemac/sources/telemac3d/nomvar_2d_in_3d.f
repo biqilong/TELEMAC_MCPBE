@@ -3,7 +3,7 @@
 !                   **************************
 !
      &(TEXTE,TEXTPR,MNEMO,NTRAC,MAXTRA,
-     & NAMETRAC,N_NAMES_PRIV2D,NAMES_PRIVE2D,ADR_TRAC_2D)
+     & NAMETRAC,N_NAMES_PRIV2D,NAMES_PRIVE2D)
 !
 !***********************************************************************
 ! TELEMAC3D   V8P2
@@ -34,7 +34,6 @@
 !+   cross-referencing of the FORTRAN sources
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| ADR_TRAC_2D    |-->| ADDRESS OF TRACERS IN BLOCK VARSO2
 !| MAXTRA         |-->| MAXIMUM NUMBER OF TRACERS
 !| MNEMO          |<->| MNEMOTECHNIC NAME
 !| NAMETRAC       |-->| NAME OF TRACERS
@@ -44,14 +43,15 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_TELEMAC3D, ONLY: S3D_NCOUCH, S3D_NLAYMAX,
-     &                                  S3D_MIXTE,MAXVAR,MAXVA3
+     &                                  S3D_MIXTE,MAXVAR,MAXVA3,
+     &                                  NVAR_HYD,ADR_TRAC_2D
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER , INTENT(IN) :: NTRAC,N_NAMES_PRIV2D,MAXTRA,ADR_TRAC_2D
+      INTEGER , INTENT(IN) :: NTRAC,N_NAMES_PRIV2D,MAXTRA
       CHARACTER(LEN=32), INTENT(INOUT) :: TEXTE(*),TEXTPR(*)
       CHARACTER(LEN=8) , INTENT(INOUT) :: MNEMO(*)
       CHARACTER(LEN=32), INTENT(IN)    :: NAMETRAC(MAXTRA)
@@ -367,6 +367,8 @@
 !
 !     TRACERS
 !
+      NVAR_HYD = 42
+      ADR_TRAC_2D = NVAR_HYD + 1
       NEXT = ADR_TRAC_2D
 !
       IF(NTRAC.GT.0) THEN

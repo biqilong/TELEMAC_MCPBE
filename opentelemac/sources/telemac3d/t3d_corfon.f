@@ -3,7 +3,7 @@
 !                   *********************
 !
      &(SZF, ST1, ST2, ZF, T1, T2, X, Y, PRIVE, NPOIN2,
-     & LISFON, MSK, MASKEL, MATR2D, MESH2D, S)
+     & LISFON, LISFON_AFTER, MSK, MASKEL, MATR2D, MESH2D, S)
 !
 !***********************************************************************
 ! TELEMAC3D
@@ -77,7 +77,7 @@
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       INTEGER, INTENT(IN) :: NPOIN2, LISFON
-      LOGICAL, INTENT(IN) :: MSK
+      LOGICAL, INTENT(IN) :: LISFON_AFTER, MSK
       TYPE (BIEF_OBJ), INTENT(INOUT) :: SZF, ST1, ST2
       DOUBLE PRECISION, DIMENSION(NPOIN2), INTENT(INOUT) :: ZF, T1, T2
       DOUBLE PRECISION, DIMENSION(NPOIN2), INTENT(IN) :: X,Y
@@ -93,11 +93,13 @@
 !
 !-----------------------------------------------------------------------
 !
-!     USER FUNCTION
+!     USER FUNCTION CALLED BEFORE POTENTIAL BOTTOM SMOOTHINGS
 !
-      CALL USER_T3D_CORFON
-     &(SZF, ST1, ST2, ZF, T1, T2, X, Y, PRIVE, NPOIN2,
-     & LISFON, MSK, MASKEL, MATR2D, MESH2D, S)
+      IF(LISFON_AFTER) THEN
+        CALL USER_T3D_CORFON
+     &  (SZF, ST1, ST2, ZF, T1, T2, X, Y, PRIVE, NPOIN2,
+     &   LISFON, MSK, MASKEL, MATR2D, MESH2D, S)
+      ENDIF
 !
 !     SMOOTHES THE BOTTOM ELEVATION
 !
@@ -107,6 +109,16 @@
 !
         CALL FILTER(SZF,MAS,ST1,ST2,MATR2D,'MATMAS          ',
      &              1.D0,S,S,S,S,S,S,MESH2D,MSK,MASKEL,LISFON)
+      ENDIF
+!
+!-----------------------------------------------------------------------
+!
+!     USER FUNCTION CALLED AFTER POTENTIAL BOTTOM SMOOTHINGS
+!
+      IF(.NOT.LISFON_AFTER) THEN
+        CALL USER_T3D_CORFON
+     &  (SZF, ST1, ST2, ZF, T1, T2, X, Y, PRIVE, NPOIN2,
+     &   LISFON, MSK, MASKEL, MATR2D, MESH2D, S)
       ENDIF
 !
 !-----------------------------------------------------------------------

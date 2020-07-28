@@ -11,11 +11,6 @@
 !brief    ASSOCIATE THE ARRAY ADOBJ%R TO THE APPROPRIATE
 !         DIFFERENTED VARIBALE.
 !
-!history  S.E.BOURBAN (HRW)
-!+        20/06/2016
-!+        V7P2
-!+   First version for differentiated variables
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| IVAR       |-->| ONE SPECIFIC DIFERENTIABLE VARIABLE
 !| ADOBJ      |<->| MOST LIKELY ONE OF THE VARSOR%ADR(I_ADVAR)%P

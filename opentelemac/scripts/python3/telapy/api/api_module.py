@@ -117,6 +117,7 @@ class ApiModule():
         self.rank = 0
         self.parallel_run = False
         self._variables = None
+        self.gretel_method = 1
 
         if log_lvl == 'INFO':
             i_log = logging.INFO
@@ -177,11 +178,11 @@ class ApiModule():
             else:
                 raise TelemacException('Error: unsupported Operating System!')
             raise TelemacException(
-                    'Error: unable to load the dynamic library '
-                    + '_api.' + ext
-                    + '\nYou can check the environment variable:'
-                    + ' PYTHONPATH'
-                    + '\n'+str(execpt))
+                'Error: unable to load the dynamic library '
+                + '_api.' + ext
+                + '\nYou can check the environment variable:'
+                + ' PYTHONPATH'
+                + '\n'+str(execpt))
         ApiModule._api = sys.modules['_api']
         self.api_inter = ApiModule._api.api_interface
 
@@ -340,9 +341,9 @@ class ApiModule():
         geo_fmt = get_file_format('GEOMETRY FILE', cas)
         self.logger.debug('%d: starting partel for %s', self.rank, geo_file)
         self._error = self.api_inter.run_partel(
-                         code, geo_file, cli_file,
-                         self.ncsize, 1, geo_fmt,
-                         sec_file, zone_file, weirs_file)
+                        code, geo_file, cli_file,
+                        self.ncsize, 1, geo_fmt,
+                        sec_file, zone_file, weirs_file)
         self.logger.debug('%d: starting partel for %s', self.rank, geo_file)
         # Loop on all input files
         for key in cas.in_files:
@@ -356,8 +357,8 @@ class ApiModule():
                     self.logger.debug('%d: starting parres for %s',
                                       self.rank, ffile)
                     self._error = self.api_inter.run_parres(
-                            code, geo_file, ffile,
-                            self.ncsize, geo_fmt, file_fmt)
+                        code, geo_file, ffile,
+                        self.ncsize, geo_fmt, file_fmt)
                     self.logger.debug('%d: endding parres for %s',
                                       self.rank, ffile)
                 elif submit[5][0:7] == 'PARAL' or \
@@ -408,9 +409,9 @@ class ApiModule():
                             "to run gretel manually")
                         continue
                     self._error = self.api_inter.run_gretel(
-                            code, geo_file, geo_fmt,
-                            cli_file, ffile, file_fmt,
-                            self.ncsize, nplan)
+                        code, geo_file, geo_fmt,
+                        cli_file, ffile, file_fmt,
+                        self.ncsize, nplan, self.gretel_method)
                     self.logger.debug('%d: endding gretel for %s',
                                       self.rank, ffile)
                 if submit[5][0:6] == 'DELWAQ':
@@ -435,16 +436,16 @@ class ApiModule():
             gaia_file = ' '*250 if self.gaia_file is None else self.gaia_file
             gaia_dico = ' '*250 if self.gaia_dico is None else self.gaia_dico
             self._error = self._run_read_case(
-                    self.my_id, self.casfile,
-                    self.dicofile, init,
-                    waqfile, waqdico,
-                    gaia_file, gaia_dico)
+                self.my_id, self.casfile,
+                self.dicofile, init,
+                waqfile, waqdico,
+                gaia_file, gaia_dico)
         elif self.name == "t2d":
             self._error = self._run_read_case(
-                    self.my_id, self.casfile,
-                    self.dicofile, init,
-                    gaia_cas=self.gaia_file,
-                    gaia_dico=self.gaia_dico)
+                self.my_id, self.casfile,
+                self.dicofile, init,
+                gaia_cas=self.gaia_file,
+                gaia_dico=self.gaia_dico)
 
         else:
             self._error = self._run_read_case(self.my_id, self.casfile,
@@ -461,17 +462,17 @@ class ApiModule():
         """
         if self._initstate == 0:
             raise TelemacException(
-                    'Error: the object is not a Telemac 2D instance')
-        else:
-            # run_allocation
-            self.logger.debug('%d: beginning run_allocation', self.rank)
-            self._error = self._run_allocation(self.my_id)
-            self.logger.debug('%d: ending run_allocation', self.rank)
-            self.logger.debug('%d: beginning run_init', self.rank)
-            self._error = self._run_init(self.my_id)
-            self.logger.debug('%d: ending run_init', self.rank)
-            if self._error == 0:
-                self._initstate = 2
+                'Error: the object is not a Telemac 2D instance')
+
+        # run_allocation
+        self.logger.debug('%d: beginning run_allocation', self.rank)
+        self._error = self._run_allocation(self.my_id)
+        self.logger.debug('%d: ending run_allocation', self.rank)
+        self.logger.debug('%d: beginning run_init', self.rank)
+        self._error = self._run_init(self.my_id)
+        self.logger.debug('%d: ending run_init', self.rank)
+        if self._error == 0:
+            self._initstate = 2
 
     def run_one_time_step_compute(self):
         """
@@ -748,7 +749,7 @@ class ApiModule():
 
         dim1, dim2, dim3, self._error = \
             self.api_inter.get_var_size(
-                    self.my_id, self.name.upper(), varname.encode('utf-8'))
+                self.my_id, self.name.upper(), varname.encode('utf-8'))
 
         return dim1, dim2, dim3
 
@@ -778,41 +779,40 @@ class ApiModule():
         if ndim >= 1:
             if not 0 <= i < dim1:
                 raise TelemacException(
-                        "i=%i is not within [0,%i]" % (i, dim1))
+                    "i=%i is not within [0,%i]" % (i, dim1))
 
         if ndim >= 2:
             if not 0 <= j < dim2:
                 raise TelemacException(
-                        "j=%i is not within [0,%i]" % (j, dim2))
+                    "j=%i is not within [0,%i]" % (j, dim2))
 
         if ndim == 3:
             if not 0 <= k < dim3:
                 raise TelemacException(
-                        "k=%i is not within [0,%i]" % (k, dim3))
+                    "k=%i is not within [0,%i]" % (k, dim3))
 
         # Getting value depending on type
         if b"DOUBLE" in vartype:
-            value, self._error = \
-                 self.api_inter.get_double(
-                    self.my_id, self.name.upper(), varname,
-                    i+1, j+1, k+1)
+            value, self._error = self.api_inter.get_double(
+                self.my_id, self.name.upper(), varname,
+                i+1, j+1, k+1)
         elif b"INTEGER" in vartype:
             value, self._error = self.api_inter.get_integer(
-                    self.my_id, self.name.upper(), varname,
-                    i+1, j+1, k+1)
+                self.my_id, self.name.upper(), varname,
+                i+1, j+1, k+1)
         elif b"STRING" in vartype:
 
             tmp_value, self._error = self.api_inter.get_string(
-                    self.my_id, self.name.upper(), varname,
-                    dim0, i+1, j+1)
+                self.my_id, self.name.upper(), varname,
+                dim0, i+1, j+1)
             value = tmp_value.decode('utf-8').strip()
         elif b"BOOLEAN" in vartype:
             value, self._error = self.api_inter.get_boolean(
-                    self.my_id, self.name.upper(), varname,
-                    i+1, j+1, k+1)
+                self.my_id, self.name.upper(), varname,
+                i+1, j+1, k+1)
         else:
             raise TelemacException(
-                    "Unknown data type %s for %s" % (vartype, varname))
+                "Unknown data type %s for %s" % (vartype, varname))
 
         return value
 
@@ -845,47 +845,46 @@ class ApiModule():
         # Check readonly value
         if readonly:
             raise TelemacException(
-                    "Variable %s is readonly" % varname)
+                "Variable %s is readonly" % varname)
 
         # Checking that index are within bound
         if ndim >= 1:
             if not 0 <= i < dim1:
                 raise TelemacException(
-                        "i=%i is not within [0,%i]" % (i, dim1))
+                    "i=%i is not within [0,%i]" % (i, dim1))
 
         if ndim >= 2:
             if not 0 <= j < dim2:
                 raise TelemacException(
-                        "j=%i is not within [0,%i]" % (j, dim2))
+                    "j=%i is not within [0,%i]" % (j, dim2))
 
         if ndim == 3:
             if not 0 <= k < dim3:
                 raise TelemacException(
-                        "k=%i is not within [0,%i]" % (k, dim3))
+                    "k=%i is not within [0,%i]" % (k, dim3))
 
         # Getting value depending on type
         if b"DOUBLE" in vartype:
-            self._error = \
-               self.api_inter.set_double(
-                   self.my_id, self.name.upper(), varname, value,
-                   i+1, j+1, k+1)
+            self._error = self.api_inter.set_double(
+                self.my_id, self.name.upper(), varname, value,
+                i+1, j+1, k+1)
         elif b"INTEGER" in vartype:
             self._error = self.api_inter.set_integer(
-                    self.my_id, self.name.upper(), varname, value,
-                    i+1, j+1, k+1)
+                self.my_id, self.name.upper(), varname, value,
+                i+1, j+1, k+1)
         elif b"STRING" in vartype:
             # Filling value with spaces to reach dim1
             tmp_str = value + ' '*(dim0 - len(value))
             self._error = self.api_inter.set_string(
-                    self.my_id, self.name.upper(), varname, tmp_str,
-                    i+1, j+1)
+                self.my_id, self.name.upper(), varname, tmp_str,
+                i+1, j+1)
         elif b"BOOLEAN" in vartype:
             self._error = self.api_inter.set_boolean(
-                    self.my_id, self.name.upper(), varname, value,
-                    i+1, j+1, k+1)
+                self.my_id, self.name.upper(), varname, value,
+                i+1, j+1, k+1)
         else:
             raise TelemacException(
-                    "Unknown data type %s for %s" % (vartype, varname))
+                "Unknown data type %s for %s" % (vartype, varname))
 
     def get_array(self, varname, block_index=0):
         """
@@ -901,50 +900,50 @@ class ApiModule():
         dim1, dim2, dim3 = self.get_var_size(varname)
         if not(b"DOUBLE" in var_type or b"INTEGER" in var_type):
             raise TelemacException(
-                    "get_array only works for integer and double" +
-                    "arrays not for {}".format(var_type))
+                "get_array only works for integer and double" +
+                "arrays not for {}".format(var_type))
 
         if ndim == 1:
             # Initialising array
             if b"DOUBLE" in var_type:
                 res = np.zeros((dim1), dtype=np.float64)
                 self.api_inter.get_double_array(
-                        self.my_id, self.name.upper(), varname, res, dim1)
+                    self.my_id, self.name.upper(), varname, res, dim1)
             else:
                 res = np.zeros((dim1), dtype=np.int32)
                 self.api_inter.get_integer_array(
-                        self.my_id, self.name.upper(), varname, res, dim1)
+                    self.my_id, self.name.upper(), varname, res, dim1)
         elif ndim == 2:
             if b"DOUBLE_BLOCK" in var_type:
                 res = np.zeros(dim2, dtype=np.float64)
                 self.api_inter.get_double_array(
-                        self.my_id, self.name.upper(), varname, res, dim2,
-                        block_index=block_index+1)
+                    self.my_id, self.name.upper(), varname, res, dim2,
+                    block_index=block_index+1)
             elif b"DOUBLE" in var_type:
                 res = np.zeros((dim1*dim2), dtype=np.float64)
                 self.api_inter.get_double_array(
-                        self.my_id, self.name.upper(), varname, res, dim1*dim2)
+                    self.my_id, self.name.upper(), varname, res, dim1*dim2)
             else:
                 res = np.zeros((dim1*dim2), dtype=np.int32)
                 self.api_inter.get_integer_array(
-                        self.my_id, self.name.upper(), varname, res, dim1*dim2)
+                    self.my_id, self.name.upper(), varname, res, dim1*dim2)
             res = res.reshape((dim1, dim2))
         elif ndim == 3:
             if b"DOUBLE" in var_type:
                 res = np.zeros((dim1*dim2*dim3), dtype=np.float64)
                 self.api_inter.get_double_array(
-                        self.my_id, self.name.upper(), varname, res,
-                        dim1*dim2*dim3)
+                    self.my_id, self.name.upper(), varname, res,
+                    dim1*dim2*dim3)
             else:
                 res = np.zeros((dim1*dim2*dim3), dtype=np.int32)
                 self.api_inter.get_integer_array(
-                        self.my_id, self.name.upper(), varname, res,
-                        dim1*dim2*dim3)
+                    self.my_id, self.name.upper(), varname, res,
+                    dim1*dim2*dim3)
             res = res.reshape((dim1, dim2, dim3))
         else:
             raise TelemacException(
-                    "Getting array of a 0d variable!!\n\
-                    Use basic get instead")
+                "Getting array of a 0d variable!!\n\
+                Use basic get instead")
 
         return res
 
@@ -961,57 +960,57 @@ class ApiModule():
         dim1, dim2, dim3 = self.get_var_size(varname)
         if not(b"DOUBLE" in var_type or b"INTEGER" in var_type):
             raise TelemacException(
-                    "set_array only works for integer and double" +
-                    "arrays not for {}".format(var_type))
+                "set_array only works for integer and double" +
+                "arrays not for {}".format(var_type))
 
         if ndim == 1:
             # Checking shape
             if values.shape != (dim1,):
                 raise TelemacException(
-                        "Error in shape of values is %s should be %s"
-                        % (str(values.shape), str((dim1,))))
+                    "Error in shape of values is %s should be %s"
+                    % (str(values.shape), str((dim1,))))
             if b"DOUBLE" in var_type:
                 self.api_inter.set_double_array(
-                        self.my_id, self.name.upper(), varname, values, dim1)
+                    self.my_id, self.name.upper(), varname, values, dim1)
             else:
                 self.api_inter.set_integer_array(
-                        self.my_id, self.name.upper(), varname, values, dim1)
+                    self.my_id, self.name.upper(), varname, values, dim1)
         elif ndim == 2:
             # Checking shape
             if values.shape != (dim1, dim2):
                 raise TelemacException(
-                        "Error in shape of values is %s should be %s"
-                        % (str(values.shape), str((dim1, dim2))))
+                    "Error in shape of values is %s should be %s"
+                    % (str(values.shape), str((dim1, dim2))))
             tmp = values.reshape(dim1*dim2)
             if b"DOUBLE_BLOCK" in var_type:
                 self.api_inter.set_double_array(
-                        self.my_id, self.name.upper(), varname, tmp, dim3*dim2,
-                        block_index=block_index+1)
+                    self.my_id, self.name.upper(), varname, tmp, dim3*dim2,
+                    block_index=block_index+1)
             elif b"DOUBLE" in var_type:
                 self.api_inter.set_double_array(
-                        self.my_id, self.name.upper(), varname, tmp, dim1*dim2)
+                    self.my_id, self.name.upper(), varname, tmp, dim1*dim2)
             else:
                 self.api_inter.set_integer_array(
-                        self.my_id, self.name.upper(), varname, tmp, dim1*dim2)
+                    self.my_id, self.name.upper(), varname, tmp, dim1*dim2)
         elif ndim == 3:
             # Checking shape
             if values.shape != (dim1, dim2, dim3):
                 raise TelemacException(
-                        "Error in shape of values is %s should be %s"
-                        % (str(values.shape), str((dim1, dim2, dim3))))
+                    "Error in shape of values is %s should be %s"
+                    % (str(values.shape), str((dim1, dim2, dim3))))
             tmp = values.reshape(dim1*dim2*dim3)
             if b"DOUBLE" in var_type:
                 self.api_inter.set_double_array(
-                        self.my_id, self.name.upper(), varname, tmp,
-                        dim1*dim2*dim3)
+                    self.my_id, self.name.upper(), varname, tmp,
+                    dim1*dim2*dim3)
             else:
                 self.api_inter.set_integer_array(
-                        self.my_id, self.name.upper(), varname, tmp,
-                        dim1*dim2*dim3)
+                    self.my_id, self.name.upper(), varname, tmp,
+                    dim1*dim2*dim3)
         else:
             raise TelemacException(
-                    "Setting array of a 0d variable!!\n\
-                    Use basic set instead")
+                "Setting array of a 0d variable!!\n\
+                Use basic set instead")
 
     def get_on_polygon(self, varname, poly):
         """
@@ -1084,7 +1083,7 @@ class ApiModule():
             # Checking range
             if irange == "":
                 raise TelemacException(
-                        "Missing range for first dimension")
+                    "Missing range for first dimension")
             # Decoding ranges
             my_irange = decode_range(irange)
 
@@ -1137,8 +1136,8 @@ class ApiModule():
                                                 j=val_j, k=val_k)
         else:
             raise TelemacException(
-                    "Getting range of a 0d variable!!\n\
-                    Use basic set instead")
+                "Getting range of a 0d variable!!\n\
+                Use basic set instead")
 
         return res
 
@@ -1349,7 +1348,7 @@ class ApiModule():
 
         if i >= size:
             raise TelemacException(
-              "Index {} higher than number of local point {}".format(i, size))
+                "Index {} higher than number of local point {}".format(i, size))
 
         return self._knolg[i]
 
@@ -1396,12 +1395,12 @@ class ApiModule():
         # If we have a string the first dimension is the size of the string
         if vartype.strip() != b'DOUBLE':
             raise TelemacException(
-                    "mpi_get only works with double")
+                "mpi_get only works with double")
 
         # TODO: Handle blocks ?
         if ndim != 1:
             raise TelemacException(
-                    "mpi_get only works with 1 dimension arrays")
+                "mpi_get only works with 1 dimension arrays")
 
         local_i = self.g2l(i)
 
@@ -1424,10 +1423,10 @@ class ApiModule():
                 return None
 
             return value[0]
-        else:
-            self.comm.Allreduce(local_value, value, op=MPI.SUM)
 
-            return value[0]
+        self.comm.Allreduce(local_value, value, op=MPI.SUM)
+
+        return value[0]
 
     def mpi_set(self, varname, value, i=-1, root=-1):
         """
@@ -1452,12 +1451,12 @@ class ApiModule():
         # If we have a string the first dimension is the size of the string
         if vartype != b'DOUBLE':
             raise TelemacException(
-                    "mpi_get only works with double")
+                "mpi_get only works with double")
 
         # TODO: Handle blocks ?
         if ndim != 1:
             raise TelemacException(
-                    "mpi_get only works with 1 dimension arrays")
+                "mpi_get only works with 1 dimension arrays")
 
         # Broadcasting value to all processors
         if root != -1:
@@ -1591,8 +1590,8 @@ class ApiModule():
         # Checking that the values have the right size
         if values.shape != (npoin_global,):
             raise TelemacException(
-                    "Error in size of values is {} should be {}"
-                    .format(values.shape, (npoin_global)))
+                "Error in size of values is {} should be {}"
+                .format(values.shape, (npoin_global)))
 
         # Array containing data for local partition
         lvalues = np.zeros(npoin, dtype=np.float64)

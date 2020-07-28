@@ -289,17 +289,19 @@ These source and sink terms are numerically modelled and parameterized as detail
 
 
 \subsection{ Wind input (term Qin)}
+\label{WIND_INPUT}
 
  Three wind generation models are available in \tomawac. The model to be activated is selected through the keyword \textit{WIND GENERATION} in the steering file, which can take four values, namely:
 
 \begin{itemize}
 \item  0 no wind input \textit{(default value)}
-\item  1 Janssen's model \cite{Janssen1989} \cite{Janssen1991} (WAM cycle 4) (see in paragraph \ref{parag4.3.2.1}).
-\item  2 Snyder \textit{et al. }model \cite{Snyder1981} (see in paragraph \ref{parag4.3.2.2}).
-\item  3 Yan's model \cite{Yan1987} (see in paragraph \ref{parag4.3.2.3})
+\item  1 Janssen's model \cite{Janssen1989} \cite{Janssen1991} (WAM cycle 4)% (see in paragraph \ref{parag4.3.2.1}).
+\item  2 Snyder \textit{et al. }model \cite{Snyder1981} %(see in paragraph \ref{parag4.3.2.2}).
+\item  3 Yan's model \cite{Yan1987}% (see in paragraph \ref{parag4.3.2.3})
 \end{itemize}
 
- Beside those exponential growth-type wind generation models, a linear growth model is also available in \tomawac, which has been proposed by Cavaleri \& Malanotte-Rizzoli [Cavaleri and Malanotte-Rizzoli,~1981] (see paragraph \ref{parag4.3.2.4}. The model can be activated through the keyword \textit{LINEAR WAVE GROWTH}, and can be used together with one of the three above mentioned models. Its main feature is that it permits to start a wave simulation from a nil wave spectrum (whereas the three above mentioned models need some initial energy level for the wave spectrum to grow under wind action).
+Beside those exponential growth-type wind generation models, a linear growth model is also available in \tomawac, which has been proposed by Cavaleri \& Malanotte-Rizzoli [Cavaleri and Malanotte-Rizzoli,~1981] (see last paragraph in this section % \ref{parag4.3.2.4}.
+The model can be activated through the keyword \textit{LINEAR WAVE GROWTH}, and can be used together with one of the three above mentioned models. Its main feature is that it permits to start a wave simulation from a nil wave spectrum (whereas the three above mentioned models need some initial energy level for the wave spectrum to grow under wind action).
 
 
   \subsubsection{Option 1 for wind input: Janssen's model}
@@ -454,13 +456,13 @@ f_{PM} =\frac{1}{2\pi } \frac{g}{28.u_{*} }
 To select this model, the keyword \textit{LINEAR WAVE GROWTH} must be set to 1 in the steering file. This model does not require any input parameter.
 
 \subsection{ Whitecapping-induced dissipations (term Qds)}
-
+\label{WHITECAPPING}
  Two models are available in \tomawac. The whitecapping or the free surface slope-induced breaking is activated through the keyword \textit{WHITE CAPPING DISSIPATION} in the steering file; the keyword can take three values, namely:
 
 \begin{itemize}
 \item  0 no whitecapping-induced dissipation \textit{(default value)}
-\item  1 Komen \textit{et al.} \cite{Komen1984} and Janssen's \cite{Janssen1991} dissipation model see \ref{parag4.3.3.1}.
-\item  2 Westhuysen \textit{et al.} dissipation model \cite{Westhuys2007}, see \ref{parag4.3.3.2}
+\item  1 Komen \textit{et al.} \cite{Komen1984} and Janssen's \cite{Janssen1991} dissipation model%see \ref{parag4.3.3.1}.
+\item  2 Westhuysen \textit{et al.} dissipation model \cite{Westhuys2007}. %see \ref{parag4.3.3.2}
 \end{itemize}
 
  For a more detailed description of the issues related to the whitecapping dissipation modelling and of the recent advances in this field, reference can be made to \cite{Wise2007}.
@@ -534,7 +536,7 @@ with $f_{br} =\frac{1}{2} +\frac{1}{2} \tanh \left\{10\left[\left(\frac{B(k)}{B_
 
 
 \subsection{ Bottom friction-induced dissipations (term Qbf)}
-
+\label{BOTTOMFRICTION}
  A single model is available in \tomawac. The bottom friction-induced dissipation is activated through the keyword \textit{BOTTOM FRICTION DISSIPATION} in the steering file; the keyword can take two values, namely:
 
  \begin{itemize}
@@ -563,10 +565,10 @@ That source term has a single parameter:
 
 \begin{itemize}
 \item  No breaking-induced dissipation \textit{(default value)}
-\item  Battjes and Janssen's model \cite{Battjes1978} see \ref{parag4.3.5.1}
-\item  Thornton and Guza's model \cite{Thornton1983} see \ref{parag4.3.5.2}
-\item  Roelvink's model \cite{Roelvink1993} see \ref{parag4.3.5.3}
-\item  Izumiya and Horikawa's model \cite{Izumiya1984} see \ref{parag4.3.5.4}
+\item  Battjes and Janssen's model \cite{Battjes1978}% see \ref{parag4.3.5.1}
+\item  Thornton and Guza's model \cite{Thornton1983}% see \ref{parag4.3.5.2}
+\item  Roelvink's model \cite{Roelvink1993}% see \ref{parag4.3.5.3}
+\item  Izumiya and Horikawa's model \cite{Izumiya1984}% see \ref{parag4.3.5.4}
 \end{itemize}
 
 The first three models are parametric spectral models developed for studying the random waves, whereas the fourth one is a turbulence model initially developed for studying the regular waves.
@@ -791,17 +793,17 @@ Thus, the breaking model as proposed by Izumiya and Horikawa can be parameterize
 
 
 \subsection{ Non-linear quadruplet interactions (term Qnl)}
-
+\label{Quadruplet}
  Three non-linear quadruplet interactions models are available in \tomawac. The non-linear quadruplet interactions are activated through the keyword \textit{NON-LINEAR TRANSFERS BETWEEN FREQUENCIES} in the steering file; the keyword can take four values, namely:
 
 \begin{itemize}
 \item  0 no non-linear quadruplet interaction \textit{(default value)}
 
-\item  1 DIA method (Discrete Interaction Approximation) of Hasselmann \textit{et al.} \cite{Hasselmann1985_1} \cite{Hasselmann1985_2} which is a discrete parameterization of the exact computation operator as proposed by Hasselmann \cite{Hasselmann1962_1} \cite{Hasselmann1962_2} see \ref{parag4.3.6.1}
+\item  1 DIA method (Discrete Interaction Approximation) of Hasselmann \textit{et al.} \cite{Hasselmann1985_1} \cite{Hasselmann1985_2} which is a discrete parameterization of the exact computation operator as proposed by Hasselmann \cite{Hasselmann1962_1} \cite{Hasselmann1962_2}% see \ref{parag4.3.6.1}
 
-\item  2 MDIA method (Multiple DIA) as proposed by Tolman \cite{Tolman2004} see \ref{parag4.3.6.2}
+\item  2 MDIA method (Multiple DIA) as proposed by Tolman \cite{Tolman2004}% see \ref{parag4.3.6.2}
 
-\item  3 Quasi exact GQM method (Gaussian Quadrature Method) as introduced by Lavrenov \cite{Lavrenov2001} and implemented by Gagnaire-Renou et al. \cite{Gagnaire2010} see \ref{parag4.3.6.3}.
+\item  3 Quasi exact GQM method (Gaussian Quadrature Method) as introduced by Lavrenov \cite{Lavrenov2001} and implemented by Gagnaire-Renou et al. \cite{Gagnaire2010}% see \ref{parag4.3.6.3}.
 \end{itemize}
 
 

@@ -294,7 +294,8 @@
      &    MARTIM,        ! START TIME
      &    .TRUE.,        ! WHETHER TO WRITE THE FILE HEADER
      &    .TRUE.,        ! WHETHER TO WRITE THE FILE MESH
-     &    .FALSE.)       ! WHETEHR TO WRITE THE VARIABLES AT AT
+     &    .FALSE.,       ! WHETEHR TO WRITE THE VARIABLES AT AT
+     &    T)
         IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM OUTPUT_KHIONE'
 !
       ENDIF
@@ -530,7 +531,7 @@
 !       RESCUE MISSING VARIABLES
 !
         CALL RESCUE(U%R,V%R,H%R,FV%R,ZF%R,T,TRAC0,NTRAC,
-     &              ITURB,NPOIN,AKEP,TROUVE)
+     &              ITURB,NPOIN,AKEP,TROUVE,ADR_TRAC)
 !
 !       DIFFERENTIATED VARIABLES
 !
@@ -1010,7 +1011,8 @@
      &      MARTIM,        ! START TIME
      &      .FALSE.,       ! WHETHER TO WRITE THE FILE HEADER
      &      .FALSE.,       ! WHETHER TO WRITE THE FILE MESH
-     &      .TRUE.)        ! WHETEHR TO WRITE THE VARIABLES AT AT
+     &      .TRUE.,        ! WHETEHR TO WRITE THE VARIABLES AT AT
+     &      T)
           IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM OUTPUT_KHIONE'
         ENDIF
 !

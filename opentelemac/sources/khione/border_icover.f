@@ -2,7 +2,7 @@
                       SUBROUTINE BORDER_ICOVER
 !                     ************************
 !
-     &( U,V,TWAT, ROEAU, DT, MESH )
+     &( U,V, MESH )
 !
 !***********************************************************************
 ! KHIONE   V8P0
@@ -10,67 +10,39 @@
 !
 !brief    COMPUTES PRESENCE OF STATIC BORDER ICE
 !
-!history  F. HUANG (CLARKSON U.) AND S.E. BOURBAN (HRW)
-!+        20/06/2018
-!+        V7P3
-!+        Coupling TELEMAC-2D with KHIONE (ice modelling component)
-!+        Initial developments
-!
-!history  S.E. BOURBAN (HRW)
-!+        21/08/2018
-!+        V7P3
-!+  Use of ICETYPE to characterise and track expansion of both the
-!+    dynamic and the static border ice. ICETYPE is a multiplicative
-!+    combination of prime numbers defined as follows:
+!+  Use of ICETYPE:
+!+    1 - open water
+!+    2 - static border ice (within or at the edge of the cover)
+!+    3 - border ice (both static and dynamic, and including the edge)
+!+  Use of ICELOC:
 !+    1 - open water
 !+    2 - domain boundary node
-!+    3 - static border ice (within or at the edge of the cover)
-!+    7 - border ice (both static and dynamic, and including the edge)
-!+    5 - edge of the border ice where dynamic border ice accumulates
+!+    3 - edge of the border ice where dynamic border ice accumulates
 !+  Note that dynamic border ice (where ice is being accumulated),
-!+    cannot happen where static border ice has formed
-!+  The following combination exist:
-!+    1 - open water
-!+    7 - node within the dynamic border ice cover
-!+    14 - dynamic border ice node on the edge of the domain not not
-!+      on the edge of the dynamic border ice cover.
-!+    21 - node within the static border ice cover
-!+    35 - node on the edge of the dynamic border ice cover, where
-!+      dynamic border ice is being accumulated
-!+    42 - same as 21 but also on the edge of the domain
-!+    70 - same as 35 but on the edge of the domain
 !+  TODO: This method still need to be updated to account for the
 !+    melting down of border ice (in patches if possible)
 !
-!history  R. ATA (LNHE)
-!+        21/08/2018
-!+        V8P0
-!+  Few optimizations and typos
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| AT             |-->| CURRENT TIME IN SECONDS
-!| LT             |-->| CURRENT NUMBER OF OF TIME STEP
-!| NPOIN          |-->| NUMBER OF NODES
+!| U              |-->| X-COMPONENT OF THE VELOCITY
+!| V              |-->| Y-COMPONENT OF THE VELOCITY
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF
-      USE DECLARATIONS_KHIONE, ONLY:ICEPROCESS,ANFEM,THIFEMF,THIFEMS,
-     &                              DWB,ANFEM0,IT1,IT2,T1,T2,
+      USE DECLARATIONS_KHIONE, ONLY:BD_ICE,ANFEM,THIFEMF,THIFEMS,
+     &                              ANFEM0,IT1,IT2,T1,
      &                              ICETYPE,VCRBOR,VCRBOM,TCR,VZ,
-     &                              LH_ICE,LIN_WATAIR,TC,TMELT
-      USE METEO_KHIONE       ,ONLY: TAIR
+     &                              TC,TMELT,ICELOC,ICETYPEP
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
       TYPE(BIEF_MESH),  INTENT(INOUT) :: MESH
-      TYPE(BIEF_OBJ),   INTENT(IN)    :: U,V,TWAT
-      DOUBLE PRECISION, INTENT(IN)    :: ROEAU,DT
+      TYPE(BIEF_OBJ),   INTENT(IN)    :: U,V
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER          I,J,K,N1,N2,IT,NPOIN,NELEM,NELMAX
-      DOUBLE PRECISION THICK, USTAR,R,DPHI,DW,VMAG,VB
+      INTEGER          I,J,K,N1,N2,IT,NPOIN,NELEM,NELMAX,IL,ITP
+      DOUBLE PRECISION THICK, USTAR,VMAG,VB
 !
 !-----------------------------------------------------------------------
 !
@@ -85,7 +57,7 @@
 !
 !-----------------------------------------------------------------------
 !
-      IF( INT(ICEPROCESS/7)*7 .EQ. ICEPROCESS ) THEN
+      IF( BD_ICE ) THEN
 !
 !-----------------------------------------------------------------------
 !
@@ -93,7 +65,7 @@
 !     TODO: T1 CAN BE REPLACED BY VOLUPAR (ALREADY COMPUTED)
 !
         CALL VECTOR(T1,'=','MASBAS          ',U%ELM,1.D0,
-     &              T2,T2,T2,T2,T2,T2,MESH,.FALSE.,T2)
+     &              T1,T1,T1,T1,T1,T1,MESH,.FALSE.,T1)
 !       ASSEMBLING THE SUM OF ALL VALUES
         IF( NCSIZE.GT.1 ) CALL PARCOM( T1,2,MESH )
 !
@@ -103,6 +75,8 @@
 !
         DO I = 1,NPOIN
           IT = ICETYPE%I(I)
+          IL = ICELOC%I(I)
+          ITP = ICETYPEP%I(I)
 !
 !         CURRENT VELOCITY
           VMAG = SQRT( U%R(I)**2 + V%R(I)**2 )
@@ -126,11 +100,11 @@
           IF( TCR%R(I).LE.(TC-TMELT%R(I)) .AND. ! THERMAL PROPERTY
      &        VB.GT.1.1*VZ%R(I) .AND.           ! BOYANT VS. TURBULANCE
      &        VMAG.LT.VCRBOR ) THEN             ! CRITICAL VELOCITY
-            IF( INT(IT/3)*3 .NE. IT ) THEN
+            IF( IT .NE. 2 ) THEN
 !           NODE OUTSIDE STATIC BORDER ICE COVER (NOT MULTIPLIER OF 3)
               IT1%I(I) = 1
 !             BORDER NODE ABOUT TO BE SWITCH TO STATIC BORDER ICE
-              IF( INT(IT/2)*2 .EQ. IT ) IT1%I(I) = 2
+              IF( IL.EQ.2.OR.IL.EQ.4 ) IT1%I(I) = 2
             ENDIF
           ENDIF
 !
@@ -146,17 +120,17 @@
 !     > THRESHOLDS FOR DYNAMIC BORDER ICE FORMATION
           IF( !THICK.GE.0.0D0 .AND.              ! CRITICAL THICKNESS
      &        USTAR.LE.1.D0 ) THEN              ! CRITICAL VELOCITY
-            IF( INT(IT/5)*5 .NE. IT .AND. INT(IT/7)*7 .NE. IT ) THEN
+            IF( IL .LT. 3.AND.ITP.NE.2  ) THEN
               IT2%I(I) = 1
 !             BORDER NODE ABOUT TO BE SWITCH TO STATIC BORDER ICE
-              IF( INT(IT/2)*2 .EQ. IT ) IT2%I(I) = 2
+              IF( IL.EQ.2 ) IT2%I(I) = 2
 !
-            ELSE !IF( INT(IT/5)*5 .EQ. IT ) THEN
+!            ELSE !IF( IL.GE.3 ) THEN
 !     > FURTHER GROWING DYNAMIC ICE
-              R = 14.1 * USTAR ** (-0.93) * ANFEM%R(I) ** 1.08
-              DPHI = LIN_WATAIR*( TWAT%R(I) - TAIR%R(I) )
-              DW = DPHI * R / ( ROEAU * LH_ICE ) * DT
-              DWB%R(I) = MIN( 1.D0, DWB%R(I) + DW / SQRT( T1%R(I) ) )
+!              R = 14.1 * USTAR ** (-0.93) * ANFEM%R(I) ** 1.08
+!              DPHI = LIN_WATAIR*( TWAT%R(I) - TAIR%R(I) )
+!              DW = DPHI * R / ( ROEAU * LH_ICE )
+!              DWB%R(I) = MIN( 1.D0, DWB%R(I) + DW / SQRT( T1%R(I) ) )
 !
             ENDIF
           ENDIF
@@ -180,20 +154,22 @@
             I = MESH%IKLE%I( J + (K-1)*NELMAX )
 !
             IT = ICETYPE%I(I)
+            ITP = ICETYPEP%I(I)
+            IL = ICELOC%I(I)
 !           NODES ABOUT TO BE SWITCHED NEED TO BE BELOW THRESHOLDS AND
 !           --NOT-- ALREADY BODER ICE NODES. THEY ALSO NEED TO BE CLOSE
 !           TO TWO OTHER (SUFFICIENTLY THICK) BORDER ICE NODES.
             IF( IT1%I(I).EQ.1 ) THEN
               N1 = ICETYPE%I( MESH%IKLE%I( J + MOD(K,3)*NELMAX ) )
               N2 = ICETYPE%I( MESH%IKLE%I( J + MOD(K+1,3)*NELMAX ) )
-              IF( INT(N1/3)*3 .EQ. N1 .AND. INT(N2/3)*3 .EQ. N2 ) THEN
+              IF( N1 .EQ. 2 .AND. N2 .EQ. 2 ) THEN
                 IT1%I(I) = 2
               ENDIF
             ENDIF
             IF( IT2%I(I).EQ.1 ) THEN
-              N1 = ICETYPE%I( MESH%IKLE%I( J + MOD(K,3)*NELMAX ) )
-              N2 = ICETYPE%I( MESH%IKLE%I( J + MOD(K+1,3)*NELMAX ) )
-              IF( INT(N1/7)*7 .EQ. N1 .AND. INT(N2/7)*7 .EQ. N2 ) THEN
+              N1 = ICETYPEP%I( MESH%IKLE%I( J + MOD(K,3)*NELMAX ) )
+              N2 = ICETYPEP%I( MESH%IKLE%I( J + MOD(K+1,3)*NELMAX ) )
+              IF( N1 .EQ. 2 .AND. N2 .EQ. 2 ) THEN
                 IT2%I(I) = 2
               ENDIF
             ENDIF
@@ -211,24 +187,27 @@
 !
         DO I = 1,NPOIN
           IT = ICETYPE%I(I)
+          ITP = ICETYPEP%I(I)
+          IL = ICELOC%I(I)
 !
           IF( IT1%I(I).EQ.2 ) THEN
 !     > STATIC BORDER ICE
-            ICETYPE%I(I) = ICETYPE%I(I) * 3           !=> INSTANT SWITCH
+            ICETYPE%I(I) = 2           !=> INSTANT SWITCH
 !
 !         SWITCH FROM SOLID DYNAMIC TO STATIC BORDER ICE
-            IF( INT(IT/7)*7 .EQ. IT ) THEN
+            IF( ITP .EQ. 2 ) THEN
 !
 !         SWITCH FROM GROWING DYNAMIC TO STATIC BORDER ICE
-            ELSEIF( INT(IT/5)*5 .EQ. IT ) THEN
+            ELSEIF( IL .GE. 3 ) THEN
 !           USE DWB TO COMPUTE THIFEMS, THIFEMF AND ANFEM ?
-              ICETYPE%I(I) = ICETYPE%I(I) * 7         !=> INSTANT SWITCH
-              ICETYPE%I(I) = ICETYPE%I(I) / 5         !=> INSTANT SWITCH
+              IF(IL.EQ.3) ICELOC%I(I) = 1         !=> INSTANT SWITCH
+              IF(IL.EQ.4) ICELOC%I(I) = 2         !=> INSTANT SWITCH
+              ICETYPEP%I(I) = 2
 !
 !         NEW STATIC BORDER ICE
             ELSE
 !           NOT PART OF THE DYNAMIC ICE COVER
-              ICETYPE%I(I) = ICETYPE%I(I) * 7         !=> INSTANT SWITCH
+              ICETYPEP%I(I) = 2         !=> INSTANT SWITCH
               THIFEMS%R(I) = 0.D0
               THIFEMF%R(I) = 0.D0
               ANFEM%R(I) = ANFEM0
@@ -237,20 +216,12 @@
 !
 !     > DYNAMIC BORDER ICE
           ELSEIF( IT2%I(I).EQ.2 ) THEN
-            IF( INT(IT/5)*5 .NE. IT ) THEN
-              ICETYPE%I(I) = ICETYPE%I(I) * 5         !=> INSTANT SWITCH
+            IF( IL .LT. 3 ) THEN
               THIFEMS%R(I) = 0.D0
               THIFEMF%R(I) = 0.D0
               ANFEM%R(I) = ANFEM0
-            ENDIF
-          ENDIF
-!
-!     > EXPANDING DYNAMIC BORDER ICE COVER OVER THE EDGE
-          IF( INT(ICETYPE%I(I)/5)*5 .EQ. ICETYPE%I(I) .AND.
-     &        DWB%R(I).GE.1.D0 ) THEN
-            ICETYPE%I(I) = ICETYPE%I(I) / 5           !=> INSTANT SWITCH
-            IF( INT(ICETYPE%I(I)/7)*7 .NE. ICETYPE%I(I) ) THEN
-              ICETYPE%I(I) = ICETYPE%I(I) * 7         !=> INSTANT SWITCH
+              IF(IL.EQ.1) ICELOC%I(I) = 3         !=> INSTANT SWITCH
+              IF(IL.EQ.2) ICELOC%I(I) = 4         !=> INSTANT SWITCH
             ENDIF
           ENDIF
 !

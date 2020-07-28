@@ -189,8 +189,8 @@
 !
       IF(DEBUG.GT.0) WRITE(LU,*) 'CALLING T3D_CORFON'
       CALL T3D_CORFON(ZF,T2_01,T2_02,ZF%R,T2_01%R,T2_02%R,
-     &                X,Y,PRIVE,NPOIN2,LISFON,.FALSE.,MASKEL,
-     &                MATR2H,MESH2D,SVIDE)
+     &                X,Y,PRIVE,NPOIN2,LISFON,LISFON_AFTER,.FALSE.,
+     &                MASKEL,MATR2H,MESH2D,SVIDE)
       IF(DEBUG.GT.0) WRITE(LU,*) 'RETURN FROM T3D_CORFON'
 !
 ! FINELY ANALYSES THE BATHYMETRY
@@ -834,7 +834,7 @@
      &                  NPLAN,           ! NUMBER OF PLANE /NA/
      &                  DATE,            ! START DATE
      &                  TIME,            ! START HOUR
-     &                  T2_01,T2_02,       ! WORKING ARRAYS
+     &                  T3_01,T3_02,     ! WORKING ARRAYS
      &                  NCSIZE.GT.1,NPTIR,
      &                  NGEO=T3D_FILES(T3DGEO)%LU,
      &                  GEOFORMAT=T3D_FILES(T3DGEO)%FMT,
@@ -860,7 +860,7 @@
      &                  NPLAN,           ! NUMBER OF PLANE /NA/
      &                  DATE,            ! START DATE
      &                  TIME,            ! START HOUR
-     &                  T2_01,T2_02,     ! WORKING ARRAYS
+     &                  T3_01,T3_02,     ! WORKING ARRAYS
      &                  NCSIZE.GT.1, NPTIR,
      &                  NGEO=T3D_FILES(T3DGEO)%LU,
      &                  GEOFORMAT=T3D_FILES(T3DGEO)%FMT,
@@ -942,13 +942,13 @@
      &                    SORG2D)     ! SORTIE OU PAS DES VARIABLES
         IF(DEBUG.GT.0) WRITE(LU,*) 'RETOUR DE WRITE_HEADER'
         IF(DEBUG.GT.0) WRITE(LU,*) 'APPEL DE WRITE_MESH'
-        CALL WRITE_MESH(T3D_FILES(T3DHYD)%FMT, ! FORMAT FICHIER RESULTAT
-     &                  T3D_FILES(T3DHYD)%LU,  ! LU FICHIER RESULTAT
+        CALL WRITE_MESH(T3D_FILES(T3DHYD)%FMT, ! RESULT FILE FORMAT
+     &                  T3D_FILES(T3DHYD)%LU,  ! RESULT FILE LU
      &                  MESH2D,
-     &                  1,               ! NOMBRE DE PLAN /NA/
-     &                  DATE,            ! DATE DEBUT
-     &                  TIME,            ! HEURE DEBUT
-     &                  T2_01,T2_02,       ! WORKING ARRAYS
+     &                  1,               ! NUMBER OF PLANE /NA/
+     &                  DATE,            ! START DATE
+     &                  TIME,            ! START HOUR
+     &                  T2_01,T2_02,     ! WORKING ARRAYS
      &                  NCSIZE.GT.1, NPTIR,
      &                  NGEO=T3D_FILES(T3DGEO)%LU,
      &                  GEOFORMAT=T3D_FILES(T3DGEO)%FMT,

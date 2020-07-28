@@ -29,7 +29,7 @@
 /  - REAL (REEL):
 /       1-22,24-53,56-82 OUT OF  79
 /  - LOGICAL (LOGIQUE):
-/       1-59 OUT OF  59
+/       1-60 OUT OF  60
 /  - CHARACTER (CARACTERE):
 /       1-3,6-11,13-13,15-20,23-29,33-38,40-41,48-56,59-98,100-103,162 OUT OF  85
 /
@@ -453,7 +453,7 @@ INDEX = 31
 TAILLE = 1
 DEFAUT = 0
 DEFAUT1 = 0
-MNEMO = 'LISFOND'
+MNEMO = 'LISFON'
 RUBRIQUE =
 'ENVIRONNEMENT DE CALCUL';'INITIALISATION';'FICHIERS D ENTREE'
 RUBRIQUE1 =
@@ -470,6 +470,28 @@ AIDE1 =
 Each smoothing is mass conservative.
 to be used when interpolation of bathymetry on the mesh gives
 very rough results.'
+/
+NOM = 'LISSAGES DU FOND APRES MODIFICATIONS UTILISATEUR'
+NOM1 = 'BOTTOM SMOOTHINGS AFTER USER MODIFICATIONS'
+TYPE = LOGICAL
+INDEX = 60
+TAILLE = 1
+DEFAUT = YES
+DEFAUT1 = YES
+MNEMO = 'LISFON\_AFTER'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'INITIALISATION';'FICHIERS D ENTREE'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INITIALIZATION';'INPUT FILES'
+NIVEAU = 0
+AIDE =
+'Indique si le nombre d eventuels lissages sur la topographie est
+effectue apres (ou sinon avant) les modifications de topographie
+apportees par l utilisateur.'
+AIDE1 =
+'Indicates if the number of potential smoothings on bottom topography
+is done after (or before otherwise) the topography modifications
+implemented by the user.'
 /
 NOM = 'FICHIER DES CONDITIONS AUX LIMITES'
 NOM1 = 'BOUNDARY CONDITIONS FILE'

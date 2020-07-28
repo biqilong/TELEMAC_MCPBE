@@ -10,11 +10,6 @@
 !
 !brief
 !+
-!history  S.E.BOURBAN (HRW)
-!+        14/06/2017
-!+        V7P3
-!+
-!+
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| ANG1           |<--|
@@ -26,7 +21,7 @@
 !| RFR0,RFR1      |<--|
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_KHIONE, ONLY : RHOICE,EF0
+      USE DECLARATIONS_KHIONE, ONLY : RHO_ICE,EF0
 !
       IMPLICIT NONE
 !
@@ -56,7 +51,7 @@
         AICE = ADONT - RATIO*ASH
       ENDIF
 !
-      FM1 = AICE*BAR*RHOICE*(1.0 - EF0)
+      FM1 = AICE*BAR*RHO_ICE*(1.0 - EF0)
       FMT = FM1*NBAR
 !
       END SUBROUTINE FRAZIL_MASS_ON_BAR

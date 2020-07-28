@@ -2,10 +2,10 @@
                     SUBROUTINE RESCUE
 !                   *****************
 !
-     &(U,V,H,S,ZF,T,TRAC0,NTRAC,ITURB,NPOIN,AKEP,TROUVE)
+     &(U,V,H,S,ZF,T,TRAC0,NTRAC,ITURB,NPOIN,AKEP,TROUVE,ADR_TRAC)
 !
 !***********************************************************************
-! TELEMAC2D   V7P1
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    COMPUTES MISSING DATA/VARIABLES (WHEN RESUMING SIMULATION).
@@ -49,6 +49,7 @@
 !+   Add a clipping of water depth
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| ADR_TRAC       |-->| ADDRESS OF TRACERS IN BLOCK VARSOR
 !| AKEP           |-->| IF YES, K AND EPSILON TO BE INITIALISED
 !| H              |<--| WATER DEPTH
 !| ITURB          |-->| TURBULENCE MODEL
@@ -68,7 +69,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER, INTENT(IN)             :: TROUVE(*),ITURB,NPOIN,NTRAC
+      INTEGER, INTENT(IN) :: TROUVE(*),ITURB,NPOIN,NTRAC,ADR_TRAC
       LOGICAL, INTENT(INOUT)          :: AKEP
       DOUBLE PRECISION, INTENT(INOUT) :: U(NPOIN),V(NPOIN),H(NPOIN)
       DOUBLE PRECISION, INTENT(INOUT) :: S(NPOIN),ZF(NPOIN)
@@ -130,7 +131,7 @@
 !
       IF(NTRAC.GT.0) THEN
         DO ITRAC=1,NTRAC
-          IF(TROUVE(35+ITRAC).EQ.0) THEN
+          IF(TROUVE(ADR_TRAC+ITRAC).EQ.0) THEN
             WRITE(LU,901)
 901         FORMAT(1X,'RESCUE : PREVIOUS CALCULATION WITHOUT TRACER',
      &           /,1X,'         WE FIX IT TO TRAC0')

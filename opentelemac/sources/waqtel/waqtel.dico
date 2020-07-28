@@ -1873,17 +1873,11 @@ MNEMO = 'ATMOSEXCH'
 CHOIX =
 '0="PAS DE MODELE D ECHANGES EAU-ATMOSPHERE"';
 '1="FORMULE LINEARISEE A LA SURFACE"';
-'2="MODELE A BILAN COMPLET"';
-'3="FORMULE LINEARISEE SANS LES GLACES"';
-'4="FORMULE LINEARISEE AVEC LES GLACES"';
-'5="MODELE A BILAN COMPLET AVEC LES GLACES"'
+'2="MODELE A BILAN COMPLET"'
 CHOIX1 =
 '0="NO MODEL"';
 '1="LINEARISED FORMULA AT THE FREE SURFACE"';
-'2="MODEL WITH COMPLETE BALANCE"';
-'3="LINEARISED FORMULA WITHOUT ICE"';
-'4="LINEARISED FORMULA WITH ICE"';
-'5="MODEL WITH COMPLETE BALANCE WITH ICE"'
+'2="MODEL WITH COMPLETE BALANCE"'
 RUBRIQUE =
 'PARAMETRES QE';'THERMIQUE';''
 RUBRIQUE1 =
@@ -1894,10 +1888,7 @@ AIDE =
 \begin{itemize}
 \item 0 : pas de mode d echanges eau-atmosphere (defaut) ;
 \item formule linearisee a la surface (3D seulement) ;
-\item modele a bilan complet ;
-\item formule linearisee sans les glaces ;
-\item formule linearisee avec les glaces ;
-\item modele a bilan complet avec les glaces.
+\item modele a bilan complet.
 \end{itemize}
 En 2D, si autre processus que THERMIC, laisser obligatoirement
 a 0.'
@@ -1906,10 +1897,7 @@ AIDE1 =
 \begin{itemize}
 \item 0: no model (default),
 \item 1: linearised formula at the free surface,
-\item 2: model with complete balance,
-\item 3: linearised formula without ice,
-\item 4: linearised formula with ice,
-\item 5: model with complete balance with ice.
+\item 2: model with complete balance.
 \end{itemize}
 In 2D, if another processus than THERMIC, mandatory to let to 0.'
 /
@@ -2036,10 +2024,16 @@ DEFAUT1 = 0;0
 MNEMO = 'LOITRAC'
 CHOIX =
 '0="PAS DE DEGRADATION"';
-'1="LOI EN F(T90)"'
+'1="LOI EN F(T90)"';
+'2="CINETIQUE D ORDRE 1, CONSTANTE DE DEGRADATION EN HEURES"';
+'3="CINETIQUE D ORDRE 1, CONSTANTE DE DEGRADATION EN JOURS"';
+'4="LOI PROGRAMMEE PAR L UTILISATEUR"'
 CHOIX1 =
 '0="NO DEGRADATION"';
-'1="F(T90) LAW"'
+'1="F(T90) LAW"';
+'2="FIRST ORDER KINETIC LAW, CONSTANT OF DEGRADATION IN HOURS"';
+'3="FIRST ORDER KINETIC LAW, CONSTANT OF DEGRADATION IN DAYS"';
+'4="LAW IMPLEMENTED BY USER"'
 APPARENCE =
 'DYNLIST'
 RUBRIQUE =
@@ -2051,12 +2045,32 @@ AIDE =
 'Prise en compte d''une loi de decroissance des traceurs. Valeur 0 si
 pas de prise en compte, 1 si loi 1... Pour chaque valeur entree, un
 nom de traceur correspondant doit etre present dans
-\telkey{NOMS DES TRACEURS}, auquel sera appliquee la loi.'
+\telkey{NOMS DES TRACEURS}, auquel sera appliquee la loi.
+Les choix possibles sont :
+\begin{itemize}
+\item 0 : pas de degradation ;
+\item 1 : loi de degradation bacteriologique avec coefficient $T_{90}$ ;
+\item 2 : loi de degradation d ordre 1, constante de degradation
+en h$^{-1}$ ;
+\item 3 : loi de degradation d ordre 1, constante de degradation
+en jours$^{-1}$ ;
+\item 4 : loi programmee par l utilisateur.
+\end{itemize}'
 AIDE1 =
 'Take in account a law for tracers decrease. Value 0 if not taken into
 account, 1 if law 1... For each value entered, a corresponding name
 should be present in the keyword \telkey{NAMES OF TRACERS}, so that the
-decrease law is applied to the correct tracer(s).'
+decrease law is applied to the correct tracer(s).
+Possible choices are:
+\begin{itemize}
+\item 0: no degradation,
+\item 1: law for bacterial degradation with $T_{90}$ coefficient,
+\item 2: degradation law of first order, constant of tracer kinetic
+degradation in h$^{-1}$,
+\item 3: degradation law of first order, constant of tracer kinetic
+degradation in d$^{-1}$,
+\item 4: law implemented by user.
+\end{itemize}'
 /
 NOM = 'COEFFICIENT 1 DE LA LOI DE DEGRADATION DES TRACEURS'
 NOM1 = 'COEFFICIENT 1 FOR LAW OF TRACERS DEGRADATION'

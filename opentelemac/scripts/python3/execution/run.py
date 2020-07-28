@@ -60,7 +60,7 @@ def run_partition(partel, cas, geom, fmtgeom, conlim, ncsize,
         file_name = submit[1]
         if submit[5][-4:] == 'GEOM':
             continue
-        elif submit[5][0:7] == 'SELAFIN':
+        if submit[5][0:7] == 'SELAFIN':
             print('  partitioning: ' + path.basename(file_name))
             file_format = get_file_format(cas, k)
             run_partel(partel, file_name, file_format, conlim, ncsize,
@@ -132,10 +132,10 @@ def run_partel(partel, par_file, file_format, conlim, ncsize, bypass,
             else:
                 log = "No log available check command:\n"+par_cmd
             raise TelemacException(
-                                   'Could not split your file '+par_file
-                                   + ' with the error as follows:'
-                                   + '\n        '+tail
-                                   + '\n\n'+log)
+                'Could not split your file '+par_file
+                + ' with the error as follows:'
+                + '\n        '+tail
+                + '\n\n'+log)
 
 
 def run_code(exe, sortiefile):
@@ -217,14 +217,14 @@ def run_recollection(gretel, cas, glogeo, fmtgeo, globnd,
             except TelemacException:
                 nplan = 0
             run_gretel(gretel, file_name, file_format, glogeo, fmtgeo,
-                       globnd, ncsize, nplan, False)
+                       globnd, ncsize, nplan)
         if tpe[0:6] == 'DELWAQ':
             print('     collecting: ' + path.basename(file_name))
             run_gredel(gretel, file_name, glogeo, tpe[6:], ncsize, False)
 
 
 def run_gretel(gretel, gre_file, file_format, geom, geo_format, bnd,
-               ncsize, nplan, bypass):
+               ncsize, nplan, method=1, bypass=False):
 
     """
     @brief Runs GRETEL, the functions that merges results
@@ -237,6 +237,7 @@ def run_gretel(gretel, gre_file, file_format, geom, geo_format, bnd,
     @param bnd (string): name of the boundary file
     @param ncsize (int): number of processors
     @param nplan (int): number of vertical layers
+    @param method (int): method for data merging
     @param bypass (boolean): continue execution after exception was
         raised if True, kill the execution otherwise
 
@@ -248,7 +249,8 @@ def run_gretel(gretel, gre_file, file_format, geom, geo_format, bnd,
     gretel_log = 'gretel_'+gre_file+'.log'
     put_file_content(gretel_par,
                      [geom, geo_format, bnd, gre_file,
-                      file_format, str(ncsize), str(nplan)])
+                      file_format, str(ncsize), str(nplan),
+                      str(method)])
     mes = Messages(size=10)
     cmd = '{} < {} >> {}'.format(gretel, gretel_par, gretel_log)
     tail, code = mes.run_cmd(cmd, bypass)
@@ -296,5 +298,5 @@ def run_gredel(gredel, gredel_file, geom, gredel_type, ncsize, bypass):
     tail, code = mes.run_cmd(cmd, bypass)
     if code != 0:
         raise TelemacException(
-           'Could not split your file (runcode='+str(code) +
-           ').\n      '+gredel_file+'\n        '+tail)
+            'Could not split your file (runcode='+str(code) +
+            ').\n      '+gredel_file+'\n        '+tail)

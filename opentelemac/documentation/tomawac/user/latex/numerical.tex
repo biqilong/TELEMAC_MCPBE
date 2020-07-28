@@ -233,7 +233,9 @@ Non-linear transfers  & non-lin &  & $\Lambda^*$ & $Q_{tr}^{*} $ \\
 
 \section{ A set of different models: BAJ modelisation. }
 \label{se:baj}
- In \cite{Bidlot2007}, the authors proposed a new formulation in terms of mean wave parameters to emphasis the high frequency part in interaction between windsea and swell. That formula has been implemented in Tomawac. It consist firstly in choosing a set of formulation in term of simulation. This modelisation includes WAM 4 for Janssen wind modelisation, (i.e. option 1 in tomawac see 4.2.3.2.1), Discrete Integration Approximation for non linear resonant quadruplet interactions, (i.e. option 1 in tomawac see TITRE ? 4.2.3.6.1), Komen whitecapping dissipation (i.e. option 1 in tomawac see  TITRE ? 4.2.3.3.1, with $C_{dis}=2.1$ and $\delta=0.4$).
+In \cite{Bidlot2007}, the authors proposed a new formulation in terms of mean wave parameters to emphasis the high frequency part in interaction between windsea and swell. That formula has been implemented in Tomawac. It consist firstly in choosing a set of formulation in term of simulation. This modelisation includes WAM 4 for Janssen wind modelisation, (i.e. option 1 in \ref{WIND_INPUT}), Komen whitecapping dissipation (i.e. option 1 in \ref{WHITECAPPING},% 4.2.3.3.1,
+with $C_{dis}=2.1$ and $\delta=0.4$). In the initial paper, BAJ formulation also includes  Discrete Integration Approximation for non linear resonant quadruplet interactions, (i.e. option 1 in \ref{Quadruplet}% see 4.2.3.6.1
+), but since \telemac v8.2, it doesn't include automatically this modele, which allows user to use BAJ with another formulation for Non Linear Interaction.   
 
  In those formulations the mean wave number $\sqrt{k}$
  and the mean angular frequency $\sigma$ are defined using weighted spectral integrals that put more emphasis on the high frequencies:

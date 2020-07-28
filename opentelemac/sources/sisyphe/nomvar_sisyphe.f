@@ -82,7 +82,7 @@
 !| UNIT           |-->| LOGICAL, FILE NUMBER
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_SISYPHE, ONLY : NSICLM,NLAYMAX
+      USE DECLARATIONS_SISYPHE, ONLY : NSICLM,NLAYMAX,NVAR_SIS
 !
       USE DECLARATIONS_SPECIAL
       IMPLICIT NONE
@@ -251,21 +251,23 @@
         TEXTE(21) = 'MEAN DIAMETER M                 '
         TEXTE(22) = 'BOTTOM VELOCITY M/S             '
         TEXTE(23) = 'REFERENCE LEVEL M               '   ! reference level for Nestor
+
+        NVAR_SIS = 23
 !
         DO I=1,NSICLA
-          TEXTE(23+I+NOMBLAY*NSICLA)     = TEXTE_QS(I)
-          MNEMO(23+I+NOMBLAY*NSICLA)     = MNEMO_QS(I)
-          TEXTE(23+I+(NOMBLAY+1)*NSICLA) = TEXTE_CS(I)
-          MNEMO(23+I+(NOMBLAY+1)*NSICLA) = MNEMO_CS(I)
+          TEXTE(NVAR_SIS+I+NOMBLAY*NSICLA)     = TEXTE_QS(I)
+          MNEMO(NVAR_SIS+I+NOMBLAY*NSICLA)     = MNEMO_QS(I)
+          TEXTE(NVAR_SIS+I+(NOMBLAY+1)*NSICLA) = TEXTE_CS(I)
+          MNEMO(NVAR_SIS+I+(NOMBLAY+1)*NSICLA) = MNEMO_CS(I)
         ENDDO
 !
-        ADD=NSICLA*(NOMBLAY+2)
-        TEXTE(24+ADD)='QS BEDLOAD      M2/S            '
-        TEXTE(25+ADD)='QS BEDLOAD X    M2/S            '
-        TEXTE(26+ADD)='QS BEDLOAD Y    M2/S            '
-        TEXTE(27+ADD)='QS SUSPENSION   M2/S            '
-        TEXTE(28+ADD)='QS SUSPENSION X M2/S            '
-        TEXTE(29+ADD)='QS SUSPENSION Y M2/S            '
+        ADD=NVAR_SIS+NSICLA*(NOMBLAY+2)
+        TEXTE(1+ADD)='QS BEDLOAD      M2/S            '
+        TEXTE(2+ADD)='QS BEDLOAD X    M2/S            '
+        TEXTE(3+ADD)='QS BEDLOAD Y    M2/S            '
+        TEXTE(4+ADD)='QS SUSPENSION   M2/S            '
+        TEXTE(5+ADD)='QS SUSPENSION X M2/S            '
+        TEXTE(6+ADD)='QS SUSPENSION Y M2/S            '
 !
       ELSE
 !
@@ -295,60 +297,62 @@
         TEXTE(22)  = 'VITESSE FOND    M/S             '
         TEXTE(23)  = 'REFERENCE LEVEL M               '   ! reference level for Nestor
 
+        NVAR_SIS = 23
 !
         DO I=1,NSICLA
-          TEXTE(23+I+NOMBLAY*NSICLA)     = TEXTE_QS(I)
-          MNEMO(23+I+NOMBLAY*NSICLA)     = MNEMO_QS(I)
-          TEXTE(23+I+(NOMBLAY+1)*NSICLA) = TEXTE_CS(I)
-          MNEMO(23+I+(NOMBLAY+1)*NSICLA) = MNEMO_CS(I)
+          TEXTE(NVAR_SIS+I+NOMBLAY*NSICLA)     = TEXTE_QS(I)
+          MNEMO(NVAR_SIS+I+NOMBLAY*NSICLA)     = MNEMO_QS(I)
+          TEXTE(NVAR_SIS+I+(NOMBLAY+1)*NSICLA) = TEXTE_CS(I)
+          MNEMO(NVAR_SIS+I+(NOMBLAY+1)*NSICLA) = MNEMO_CS(I)
         ENDDO
 !
-        ADD=NSICLA*(NOMBLAY+2)
-        TEXTE(24+ADD)='QS CHARRIAGE    M2/S            '
-        TEXTE(25+ADD)='QS CHARRIAGE X  M2/S            '
-        TEXTE(26+ADD)='QS CHARRIAGE Y  M2/S            '
-        TEXTE(27+ADD)='QS SUSPENSION   M2/S            '
-        TEXTE(28+ADD)='QS SUSPENSION X M2/S            '
-        TEXTE(29+ADD)='QS SUSPENSION Y M2/S            '
+        ADD=NVAR_SIS+NSICLA*(NOMBLAY+2)
+        TEXTE(1+ADD)='QS CHARRIAGE    M2/S            '
+        TEXTE(2+ADD)='QS CHARRIAGE X  M2/S            '
+        TEXTE(3+ADD)='QS CHARRIAGE Y  M2/S            '
+        TEXTE(4+ADD)='QS SUSPENSION   M2/S            '
+        TEXTE(5+ADD)='QS SUSPENSION X M2/S            '
+        TEXTE(6+ADD)='QS SUSPENSION Y M2/S            '
 !
       ENDIF
 !
+      ADD = NVAR_SIS + 6
       DO I=1,NSICLA
-        TEXTE(29+I+NSICLA*(NOMBLAY+2)) = TEXTE_QSC(I)
-        MNEMO(29+I+NSICLA*(NOMBLAY+2)) = MNEMO_QSC(I)
-        TEXTE(29+I+NSICLA*(NOMBLAY+3)) = TEXTE_QSS(I)
-        MNEMO(29+I+NSICLA*(NOMBLAY+3)) = MNEMO_QSS(I)
+        TEXTE(ADD+I+NSICLA*(NOMBLAY+2)) = TEXTE_QSC(I)
+        MNEMO(ADD+I+NSICLA*(NOMBLAY+2)) = MNEMO_QSC(I)
+        TEXTE(ADD+I+NSICLA*(NOMBLAY+3)) = TEXTE_QSS(I)
+        MNEMO(ADD+I+NSICLA*(NOMBLAY+3)) = MNEMO_QSS(I)
       ENDDO
 !
       DO I=1,NOMBLAY
-        TEXTE(29+I+NSICLA*(NOMBLAY+4)) = TEXTE_ES(I)
-        MNEMO(29+I+NSICLA*(NOMBLAY+4)) = MNEMO_ES(I)
+        TEXTE(ADD+I+NSICLA*(NOMBLAY+4)) = TEXTE_ES(I)
+        MNEMO(ADD+I+NSICLA*(NOMBLAY+4)) = MNEMO_ES(I)
       ENDDO
 !
       DO I=1,NOMBLAY
-        TEXTE(29+I+NSICLA*(NOMBLAY+4)+NOMBLAY) = TEXTE_CONC(I)
-        MNEMO(29+I+NSICLA*(NOMBLAY+4)+NOMBLAY) = MNEMO_CONC(I)
+        TEXTE(ADD+I+NSICLA*(NOMBLAY+4)+NOMBLAY) = TEXTE_CONC(I)
+        MNEMO(ADD+I+NSICLA*(NOMBLAY+4)+NOMBLAY) = MNEMO_CONC(I)
       ENDDO
 !
-      ADD=NSICLA*(NOMBLAY+4)+2*NOMBLAY
+      ADD=NVAR_SIS+6+NSICLA*(NOMBLAY+4)+2*NOMBLAY
 !
-      TEXTE(30+ADD)='PRIVE 1                         '
-      TEXTE(31+ADD)='PRIVE 2                         '
-      TEXTE(32+ADD)='PRIVE 3                         '
-      TEXTE(33+ADD)='PRIVE 4                         '
+      TEXTE(1+ADD)='PRIVE 1                         '
+      TEXTE(2+ADD)='PRIVE 2                         '
+      TEXTE(3+ADD)='PRIVE 3                         '
+      TEXTE(4+ADD)='PRIVE 4                         '
 !
 !     NPRIV MAY BE GREATER THAN 4
-!     TEXTE(31+ADD)='PRIVE 5                         '
+!     TEXTE(5+ADD)='PRIVE 5                         '
 !
 !     IF NAMES OF PRIVATE VARIABLES GIVEN
 !
       IF(N_NAMES_PRIV.GT.0) THEN
         DO I=1,N_NAMES_PRIV
-          TEXTE(ADD+29+I)=NAMES_PRIVE(I)
+          TEXTE(ADD+I)=NAMES_PRIVE(I)
         ENDDO
       ENDIF
 !
-      DO I=1,33+ADD
+      DO I=1,4+ADD
         TEXTPR(I)=TEXTE(I)
       ENDDO
 !
@@ -404,23 +408,23 @@
 !     reference level for nestor
       MNEMO(23)   = 'ZRL     '
 !
-      MNEMO(24+NSICLA*(NOMBLAY+2)) = 'QSBL    '
-      MNEMO(25+NSICLA*(NOMBLAY+2)) = 'QSBLX   '
-      MNEMO(26+NSICLA*(NOMBLAY+2)) = 'QSBLY   '
-      MNEMO(27+NSICLA*(NOMBLAY+2)) = 'QSSUSP  '
-      MNEMO(28+NSICLA*(NOMBLAY+2)) = 'QSSUSPX '
-      MNEMO(29+NSICLA*(NOMBLAY+2)) = 'QSSUSPY '
+      MNEMO(NVAR_SIS+1+NSICLA*(NOMBLAY+2)) = 'QSBL    '
+      MNEMO(NVAR_SIS+2+NSICLA*(NOMBLAY+2)) = 'QSBLX   '
+      MNEMO(NVAR_SIS+3+NSICLA*(NOMBLAY+2)) = 'QSBLY   '
+      MNEMO(NVAR_SIS+4+NSICLA*(NOMBLAY+2)) = 'QSSUSP  '
+      MNEMO(NVAR_SIS+5+NSICLA*(NOMBLAY+2)) = 'QSSUSPX '
+      MNEMO(NVAR_SIS+6+NSICLA*(NOMBLAY+2)) = 'QSSUSPY '
 
-      ADD=NSICLA*(NOMBLAY+4)+2*NOMBLAY
-      MNEMO(30+ADD) = 'A       '
-      MNEMO(31+ADD) = 'G       '
-      MNEMO(32+ADD) = 'L       '
-      MNEMO(33+ADD) = 'O       '
+      ADD=NVAR_SIS+6+NSICLA*(NOMBLAY+4)+2*NOMBLAY
+      MNEMO(1+ADD) = 'A       '
+      MNEMO(2+ADD) = 'G       '
+      MNEMO(3+ADD) = 'L       '
+      MNEMO(4+ADD) = 'O       '
 !     THE NUMBER OF PRIVATE ARRAYS IS A KEYWORD
 !     MNEMO(31+ADD) = '????????'
 !
 !----------------------------
-      ADD=NSICLA*(NOMBLAY+4)+2*NOMBLAY+29+MAX(NPRIV,4)
+      ADD=NSICLA*(NOMBLAY+4)+2*NOMBLAY+NVAR_SIS+6+MAX(NPRIV,4)
       IF(ADD.LT.MAXVAR) THEN
         DO I=ADD+1,MAXVAR
           MNEMO(I) =' '

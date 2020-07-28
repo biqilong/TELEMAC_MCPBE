@@ -465,6 +465,8 @@
 !brief BLOCK OF VARIABLES FOR OUTPUT
 !
       TYPE(BIEF_OBJ), TARGET :: VARSOR
+!brief Number of variables in varsor
+      INTEGER :: NVAR_ART
 !brief BLOCK OF VARIABLES FOR ANIMATION OUTPUT
 !
       TYPE(BIEF_OBJ), TARGET :: VARNIM

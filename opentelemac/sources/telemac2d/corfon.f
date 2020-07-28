@@ -45,9 +45,9 @@
 !
 !-----------------------------------------------------------------------
 !
-!     USER FUNCTION
+!     USER FUNCTION CALLED BEFORE POTENTIAL BOTTOM SMOOTHINGS
 !
-      CALL USER_CORFON
+      IF(LISFON_AFTER) CALL USER_CORFON
 !
 !-----------------------------------------------------------------------
 !  SMOOTHING(S) OF THE BOTTOM (OPTIONAL)
@@ -59,6 +59,12 @@
      &              1.D0,T1,T1,T1,T1,T1,T1,MESH,MSK,MASKEL,LISFON)
 !
       ENDIF
+!
+!-----------------------------------------------------------------------
+!
+!     USER FUNCTION CALLED AFTER POTENTIAL BOTTOM SMOOTHINGS
+!
+      IF(.NOT.LISFON_AFTER) CALL USER_CORFON
 !
 !-----------------------------------------------------------------------
 !

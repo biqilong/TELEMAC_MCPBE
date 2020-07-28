@@ -289,30 +289,27 @@
 !
       IF( 17*INT(WAQPROCESS/17).EQ.WAQPROCESS ) THEN
 !
-        DO J = 1,NWAQ_DEGRA
-          ITRAC = RANK_DEGRA(J)
-          IF(LOITRAC(ITRAC).EQ.1) THEN
-            IF(DIMM.EQ.2)THEN
-              CALL OS('X=X+CY  ',X=TIMP%ADR(ITRAC)%P,
-     &             Y=HPROP,C=-2.3D0/COEF1TRAC(ITRAC)/3600.D0)
-            ELSEIF(DIMM.EQ.3)THEN
-              CALL OS('X=X+C   ',X=TIMP%ADR(ITRAC)%P,
-     &             C=2.3D0/COEF1TRAC(ITRAC)/3600.D0)
-            ENDIF
-          ELSEIF(LOITRAC(ITRAC).GT.1) THEN
-            WRITE(LU,21) LOITRAC(ITRAC),ITRAC
-21    FORMAT(1X,'LOITRAC ',I4,' FOR TRACER ',I4,' NOT YET PROGRAMMED')
-            CALL PLANTE(1)
-            STOP
-          ENDIF
-!
-          IF(DIMM.EQ.2)THEN
+        IF(DIMM.EQ.2) THEN
+          IF(DEBUG.GT.0) WRITE(LU,*) 'CALL OF CALCS2D_DEGRADATION'
+          CALL CALCS2D_DEGRADATION(NPOIN2,TN,TEXP,TIMP,HPROP,NWAQ_DEGRA,
+     &                             RANK_DEGRA,LOITRAC,COEF1TRAC)
+          IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM CALCS2D_DEGRADATION'
+!          DO J = 1,NWAQ_DEGRA
+!            ITRAC = RANK_DEGRA(J)
 !            YASMI(ITRAC) = .TRUE.
-          ELSEIF(DIMM.EQ.3)THEN
-            TIMP%ADR(ITRAC)%P%TYPR='Q'
-          ENDIF
+!          ENDDO
+        ELSEIF(DIMM.EQ.3) THEN
+          IF(DEBUG.GT.0) WRITE(LU,*) 'CALL OF CALCS3D_DEGRADATION'
+          CALL CALCS3D_DEGRADATION(NPOIN3,NPOIN2,NPLAN,TN,TEXP,TIMP,
+     &                             ZPROP,NWAQ_DEGRA,RANK_DEGRA,
+     &                             LOITRAC,COEF1TRAC)
+          IF(DEBUG.GT.0) WRITE(LU,*) 'BACK FROM CALCS3D_DEGRADATION'
 !
-        ENDDO
+          DO J = 1,NWAQ_DEGRA
+            ITRAC = RANK_DEGRA(J)
+            TIMP%ADR(ITRAC)%P%TYPR='Q'
+          ENDDO
+        ENDIF
         FOUND = .TRUE.
 !
       ENDIF

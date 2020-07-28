@@ -18,6 +18,11 @@ By default, the \telfile{CORFON} subroutine (which calls the
 of bottom smoothings equal to \telfile{LISFON},
 i.e. equal to the number specified by the keyword \telkey{BOTTOM SMOOTHINGS}
 for which the default value is 0 (no smoothing).
+The call to bottom smoothings can be done after or before the call to
+\telfile{USER\_CORFON} in the \telfile{CORFON} subroutine with the keyword
+\telkey{BOTTOM SMOOTHINGS AFTER USER MODIFICATIONS}.
+By default, potential bottom smoothings are done after potential modifications
+of the bottom in \telfile{USER\_CORFON} subroutine (default = YES).
 
 The \telfile{CORFON} subroutine is not called up
 if a computation is continued.

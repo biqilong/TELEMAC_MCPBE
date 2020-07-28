@@ -3,7 +3,7 @@
 !                     *******************************
 !
 !***********************************************************************
-! TELEMAC3D   V7P0                                   03/07/2014
+! WAQTEL   V8P2
 !***********************************************************************
 !
 !brief    Module containing some subroutines to deal with heat exchange
@@ -451,10 +451,11 @@
                     SUBROUTINE EVAPO
 !                   ****************
 !
-     &(TREEL,TAIR,W2,PATM,HREL,RO,FLUX_EVAP,FLUX_SENS,DEBEVAP,B)
+     &(TREEL,TAIR,W2,PATM,HREL,RO,FLUX_EVAP,FLUX_SENS,DEBEVAP,C_ATMOS,
+     & C1_ATMOS,C2_ATMOS)
 !
 !***********************************************************************
-! TELEMAC-3D V7P0                             25/06/2012
+! WAQTEL   V8P2
 !***********************************************************************
 !
 !brief    CALCULATES FLUX OF LATENT HEAT (W/M^2)
@@ -491,7 +492,9 @@
 !+
 !
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-!| B              |-->| PARAMETER TO CALIBRATE
+!| C_ATMOS        |-->| PARAMETER TO CALIBRATE (FWW = C_ATMOS*(1.D0+W2))
+!| C1_ATMOS       |-->| PARAMETER TO CALIBRATE (FWW = C1_ATMOS+C2_ATMOS*W)
+!| C2_ATMOS       |-->| PARAMETER TO CALIBRATE (FWW = C1_ATMOS+C2_ATMOS*W)
 !| DEB_EVAP       |<--| EVAPORATION FLOWRATE AT THE SURFACE
 !| FLUX_EVAP      |<--| ENERGY FLUX DUE TO EVAPORATED WATER
 !| FLUX_SENS      |<--| HEAT FLUX BY CONVECTION
@@ -503,12 +506,13 @@
 !| W2             |-->| RELATIVE MAGNITUDE OF WIND AT 2 M
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
-      USE DECLARATIONS_WAQTEL, ONLY: CP_AIR
+      USE DECLARATIONS_WAQTEL, ONLY: CP_AIR,N_C_ATMOS
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      DOUBLE PRECISION, INTENT(IN)  :: TREEL,TAIR,W2,PATM,HREL,RO,B
+      DOUBLE PRECISION, INTENT(IN)  :: TREEL,TAIR,W2,PATM,HREL,RO
+      DOUBLE PRECISION, INTENT(IN)  :: C_ATMOS,C1_ATMOS,C2_ATMOS
       DOUBLE PRECISION, INTENT(OUT) :: FLUX_EVAP,FLUX_SENS,DEBEVAP
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -531,7 +535,13 @@
       HUMI_AIR  =        0.622D0*(HREL/100.D0)*Q_SAT_AIR
      &          / (PATM-(0.378D0*(HREL/100.D0)*Q_SAT_AIR))
 !  HEAT FLUX BY EVAPORATION (SALENCON)
-      FWW       = B*(1.D0+W2)
+!
+      IF(N_C_ATMOS.EQ.2) THEN
+        FWW     = C1_ATMOS+C2_ATMOS*W2
+      ELSE
+!     N_C_ATMOS.EQ.1 IS THE DEFAULT OPTION, NO OTHER OPTION THAN 1 OR 2
+        FWW     = C_ATMOS*(1.D0+W2)
+      ENDIF
 !
       FLUX_EVAP = ROAIR*(2500.9D3-TREEL*2.365D3)*FWW
      &                 *(HUMI_EAU-HUMI_AIR)

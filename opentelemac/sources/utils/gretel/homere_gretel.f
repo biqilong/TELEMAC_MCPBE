@@ -28,7 +28,7 @@
       CHARACTER(LEN=PATH_LEN) :: BND
       CHARACTER(LEN=8)   :: GEOFORMAT,RESFORMAT
       CHARACTER(LEN=PATH_LEN) :: RES
-      INTEGER            :: NPARTS, NPLAN
+      INTEGER            :: NPARTS, NPLAN, METHOD
 !
 !-------------------------------------------------------------------------
 !
@@ -147,8 +147,13 @@
       WRITE (LU,*) '--NUMBER OF PLANES: '
       READ (LI,*) NPLAN
       WRITE (LU,*) ' INPUT: ',NPLAN
+
+      WRITE (LU,*) '--METHOD (1: min memory, 2:max memory): '
+      READ (LI,*) METHOD
+      WRITE (LU,*) ' INPUT: ',METHOD
 !
-      CALL GRETEL_AUTOP(GEO,GEOFORMAT,BND,RES,RESFORMAT,NPARTS,NPLAN)
+      CALL GRETEL_AUTOP(GEO,GEOFORMAT,BND,RES,RESFORMAT,NPARTS,NPLAN,
+     &                  METHOD)
 !
       STOP 0
       END PROGRAM

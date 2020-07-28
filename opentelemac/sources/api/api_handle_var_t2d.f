@@ -14,7 +14,7 @@
         !> Size of the string containing the information about a variable
         INTEGER, PARAMETER :: T2D_INFO_LEN=200
         !> The maximum number of variables
-        INTEGER, PARAMETER :: NB_VAR_T2D=82
+        INTEGER, PARAMETER :: NB_VAR_T2D=83
         !> List of variable names
         CHARACTER(LEN=40),ALLOCATABLE,DIMENSION(:) :: VNAME_T2D
         !> List of variable info
@@ -128,6 +128,8 @@
           VALEUR = INST%E%R(INDEX1)
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.PARTHENIADES') THEN
           VALEUR = INST%PARTHENIADES(INDEX1,INDEX2)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
+          VALEUR = INST%VOLU2D%R(INDEX1)
         ! <get_double>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -229,6 +231,8 @@
           INST%E%R(INDEX1) = VALEUR
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.PARTHENIADES') THEN
           INST%PARTHENIADES(INDEX1,INDEX2) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
+          INST%VOLU2D%R(INDEX1) = VALEUR
         ! <set_double>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -351,6 +355,9 @@
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.EVOLUTION') THEN
           VALEUR(1:SIZE(INST%E%R)) =
      &     INST%E%R(1:SIZE(INST%E%R))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
+          VALEUR(1:SIZE(INST%VOLU2D%R)) =
+     &     INST%VOLU2D%R(1:SIZE(INST%VOLU2D%R))
         ! <get_double_array>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -473,6 +480,9 @@
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.EVOLUTION') THEN
           INST%E%R(1:SIZE(INST%E%R)) =
      &     VALEUR(1:SIZE(INST%E%R))
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
+          INST%VOLU2D%R(1:SIZE(INST%VOLU2D%R)) = 
+     &     VALEUR(1:SIZE(INST%VOLU2D%R))
         ! <set_double_array>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -1166,6 +1176,8 @@
           DIM1 = SIZE(INST%MARDAT)
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.MARTIM') THEN
           DIM1 = SIZE(INST%MARTIM)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
+          DIM1 = INST%VOLU2D%DIM1
         ! <get_var_size>
         ENDIF
 !
@@ -1733,6 +1745,12 @@
           NDIM = 0
           GETPOS = NO_POSITION
           SETPOS = NO_POSITION
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 1
+          GETPOS = NO_POSITION
+          SETPOS = NO_POSITION
         ! <get_var_type>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -2046,6 +2064,9 @@
           I = I + 1
           VNAME_T2D(I) = 'MODEL.START_RECORD'
           VINFO_T2D(I) = 'A SIMPLE INTEGER'
+          I = I + 1
+          VNAME_T2D(I) = 'MODEL.VOLU2D'
+          VINFO_T2D(I) = 'INTEGRAL OF BASES DOUBLE BIEF_OBJ'
           ! <set_var_list>
           IF(I.NE.NB_VAR_T2D) THEN
             IERR = INCREASE_NB_VAR_T2D_ERROR

@@ -73,7 +73,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE DECLARATIONS_SPECIAL
-      USE DECLARATIONS_TELEMAC2D, ONLY : IND_SEC,ITURB
+      USE DECLARATIONS_TELEMAC2D, ONLY : IND_SEC,ITURB,ADR_TRAC,NVAR_T2D
       IMPLICIT NONE
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -350,9 +350,10 @@
 !     REFERENCE LEVEL FOR NESTOR
       MNEMO(35)   = 'ZRL     '
 !
-!     THE LAST RANK 35
-!
-      ILAST = 35
+      NVAR_T2D = 35
+
+      ADR_TRAC = NVAR_T2D
+      ILAST = NVAR_T2D
       INEXT = ILAST+1
 !
 !-----------------------------------------------------------------------

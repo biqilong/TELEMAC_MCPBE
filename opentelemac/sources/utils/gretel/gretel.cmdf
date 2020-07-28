@@ -13,7 +13,8 @@ files: bief_def.f
 
 [gretel]
 path: <root>|sources|utils|gretel
-files: gretel_autop.f
+files: merge_data.f
+  gretel_autop.f
   homere_gretel.f
 
 [hermes]
@@ -24,15 +25,13 @@ files: interface_hermes.f
   hermes_index_file.f
   utils_med.F
   utils_serafin.F
+  close_bnd.f
   lib_vtk_io.F
   utils_vtk.F
-  add_data.f
-  close_bnd.f
   close_mesh.f
   get_bnd_connectivity.f
   get_data_ntimestep.f
   get_data_nvar.f
-  get_data_time.f
   get_data_value.f
   get_data_var_list.f
   get_mesh_coord.f
@@ -41,8 +40,10 @@ files: interface_hermes.f
   get_mesh_nplan.f
   get_mesh_npoin.f
   get_mesh_title.f
-  open_bnd.f
+  add_data.f
+  get_data_time.f
   open_mesh.f
+  open_bnd.f
   get_bnd_ipobo.f
   get_mesh_connectivity.f
   get_bnd_nelem.f
@@ -63,10 +64,10 @@ files: declarations_partel.f
 path: <root>|sources|utils|special
 files: declarations_special.F
   plante.F
-  get_free_id.f
-  get_nodes_per_element.f
-  blanc2uscore.f
   check_allocate.f
   write_error.f
   check_call.f
+  get_free_id.f
+  get_nodes_per_element.f
+  blanc2uscore.f
   extens.f

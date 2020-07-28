@@ -8,7 +8,7 @@
 %
 %
 To launch a test you must go on the CIS main page then click on your branch tab.
-This will lead you to the page on Fig \ref{fig:cis-main}.
+This will lead you to the page on Fig~\ref{fig:cis-main}.
 %
 \begin{figure}[H]
     \centering
@@ -18,8 +18,7 @@ This will lead you to the page on Fig \ref{fig:cis-main}.
 \end{figure}
 %
 Click on the button in the red circle to launch the job. If you do not see that
-button check that you are logged in. This will lead you to the page on Fig
-\ref{fig:cis-run-job}.
+button check that you are logged in. This will lead you to the page on Fig~\ref{fig:cis-run-job}.
 %
 \begin{figure}[H]
     \centering
@@ -40,13 +39,13 @@ need to validate a development before integration.
 \item The level of complexity of test cases to run. The higher the number the
 longer the test cases simulation is. For validation of a development 0 is
 needed.
-\end{itemize} 
+\end{itemize}
 
 If you wanna run the validation locally you need to type one the following commands:
 \begin{lstlisting}[language=bash]
-validateTELEMAC.py -m module
-validateTELEMAC.py --ncsize=3
-validateTELEMAC.py
+validate_telemac.py --tags module
+validate_telemac.py --ncsize=3
+validate_telemac.py
 \end{lstlisting}
 The first one will launch the validate on a specify list of modules (for example
 "telemac2d", "tomawac artemis").
@@ -58,8 +57,8 @@ The third one will run the validation on the whole system
 \section{Get the listing of the test}
 %
 %
-To see the output of the job you need to follow the step described in Fig
-\ref{fig:cis-to-listing}. For step 2 you need to click on the Linux
+To see the output of the job you need to follow the step described in
+Fig~\ref{fig:cis-to-listing}. For step 2 you need to click on the Linux
 distribution you want want to get the listing from.  For information only the
 ubuntu configuration runs the test cases in parallel.
 %
@@ -72,7 +71,7 @@ ubuntu configuration runs the test cases in parallel.
 %
 On step 4, clicking on the "raw" button will give you the complete listing as
 the "Console Output" button will only give you the tail of the output that you
-can see on Fig \ref{fig:cis-listing}.
+can see on Fig~\ref{fig:cis-listing}.
 %
 \begin{figure}[H]
     \centering

@@ -6,17 +6,16 @@
 # _____          ___________________________________________________
 # ____/ Imports /__________________________________________________/
 #
-# ~~> dependencies towards standard python
-from data_manip.computation.triangulation import triangulation_from_data
-from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines, \
-        vnv_plot1d_history
-from postel.plot2d import plot2d_triangle_mesh, plot2d_scalar_filled_contour, \
-        plot2d_spectrum
-from postel.plot1d import plot1d
-from utils.exceptions import TelemacException
 import argparse
 import matplotlib.pyplot as plt
+# Unsued but must be kept
 from mpl_toolkits.mplot3d import Axes3D
+# ~~> dependencies towards standard python
+from postel.plot_vnv import vnv_plot2d, vnv_plot1d_polylines, \
+        vnv_plot1d_history
+from postel.plot2d import plot2d_spectrum
+from postel.plot1d import plot1d
+from utils.exceptions import TelemacException
 
 # _____             ________________________________________________
 # ____/ MAIN CALL  /_______________________________________________/
@@ -86,13 +85,13 @@ def arg_points(string):
         try:
             x, y = map(float, string.split(','))
             return x, y
-        except Exception as e:
+        except Exception:
             raise argparse.ArgumentTypeError("Points must be x,y")
     elif n_coords == 3:
         try:
             x, y, z = map(float, string.split(','))
             return x, y, z
-        except Exception as e:
+        except Exception:
             raise argparse.ArgumentTypeError("Points must be x,y,z")
     else:
         raise argparse.ArgumentTypeError("Points must be either x,y or x,y,z")
@@ -470,9 +469,13 @@ def plot_mesh2d(res, display_bnd=False,
     """
     if (display_bnd or display_liq_bnd) and res.boundary_file == '':
         raise TelemacException(
-                "bnd_file is mandatory if using --bnd or --liq-bnd")
+            "bnd_file is mandatory if using --bnd or --liq-bnd")
 
-    vnv_plot2d(res.varnames[0], res,
+    try:
+        varname = res.varnames[0]
+    except IndexError:
+        varname = ''
+    vnv_plot2d(varname, res,
                plot_mesh=True,
                annotate_bnd=display_bnd,
                annotate_liq_bnd=display_liq_bnd,
@@ -530,20 +533,18 @@ def plot_vertical_slice(res, varname, poly,
     # If time is positive searched for record
     if time is not None:
         rrecord = res.get_closest_record(time)
-        ttime = time
     else:
         rrecord = record
-        ttime = res.times[record]
 
     vnv_plot2d(
-            varname,
-            res,
-            poly=poly,
-            plot_mesh=add_mesh,
-            record=rrecord,
-            filled_contours=True,
-            aspect_ratio="equal",
-            fig_name=fig_name)
+        varname,
+        res,
+        poly=poly,
+        plot_mesh=add_mesh,
+        record=rrecord,
+        filled_contours=True,
+        aspect_ratio="equal",
+        fig_name=fig_name)
 
 
 def plot_horizontal_slice(res, varname, plane, record=-1, time=None,

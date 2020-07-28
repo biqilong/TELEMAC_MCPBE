@@ -23,7 +23,7 @@ subroutine LEC_LOI_TRACER( &
               impression , & ! Flag d'impression des lois
             UniteListing , & ! Unite logique fichier listing
             TempsMaximum , & ! Temps maximum du calcul
-                document , & ! Pointeur vers document XML
+                 unitNum , & ! Unite logique du fichier .xcas
                   Erreur   & ! Erreur
                         )
 
@@ -53,7 +53,7 @@ subroutine LEC_LOI_TRACER( &
    use M_CONSTANTES_CALCUL_C ! Constantes num, phys et info
    use M_TRAITER_ERREUR_I    ! Traitement de l'erreur
    use M_LEC_FIC_LOI_TRACER_I  ! Interface de sous-programme
-   use Fox_dom               ! parser XML Fortran
+   use M_XCAS_S
 
    implicit none
 
@@ -64,7 +64,7 @@ subroutine LEC_LOI_TRACER( &
    integer                      , intent(in   ) :: Nbtrac
    integer                      , intent(in   ) :: UniteListing
    real(DOUBLE)                 , intent(in   ) :: TempsMaximum
-   type(Node), pointer, intent(in)                   :: document
+   integer, intent(in)                          :: unitNum
    ! Variables locales
    integer :: nb_loi_tracer         ! nombre de lois Tracer
    integer :: nb_point              ! nombre de points
@@ -74,7 +74,8 @@ subroutine LEC_LOI_TRACER( &
    integer :: mode_entree_loi       ! type d'entree clavier/fichier
    integer :: unite_temps           ! unite de temps des lois entres par clavier
    character(132) :: arbredappel_old
-   type(Node), pointer :: champ1,champ2,champ3,champ4,champ5
+   character(len=256)  :: pathNode
+   character(len=1024) :: line
    ! Traitement des erreurs
    type(ERREUR_T), intent(inout) :: Erreur
 
@@ -90,25 +91,10 @@ subroutine LEC_LOI_TRACER( &
 
    ! Nombre de lois
    !---------------
-   champ1 => item(getElementsByTagname(document, "parametresTraceur"), 0)
-   if(associated(champ1).eqv..false.) then
-      print*,"Parse error => parametresTraceur"
-      call xerror(Erreur)
-      return
-   endif
-   champ2 => item(getElementsByTagname(champ1, "parametresLoisTraceur"), 0)
-   if(associated(champ2).eqv..false.) then
-      print*,"Parse error => parametresLoisTraceur"
-      call xerror(Erreur)
-      return
-   endif
-   champ3 => item(getElementsByTagname(champ2, "nbLoisTracer"), 0)
-   if(associated(champ3).eqv..false.) then
-      print*,"Parse error => nbLoisTracer"
-      call xerror(Erreur)
-      return
-   endif
-   call extractDataContent(champ3,nb_loi_tracer)
+   pathNode = 'parametresTraceur/parametresLoisTraceur/nbLoisTracer'
+   line = xcasReader(unitNum, pathNode)
+   read(unit=line, fmt=*) nb_loi_tracer
+
    if( impression ) then
       write(UniteListing,10010) nb_loi_tracer
    endif
@@ -124,34 +110,25 @@ subroutine LEC_LOI_TRACER( &
       return
    end if
 
-   champ3 => item(getElementsByTagname(champ2, "loisTracer"), 0)
-   if(associated(champ3).eqv..false.) then
-      print*,"Parse error => loisTracer"
-      call xerror(Erreur)
-      return
+   pathNode = 'parametresTraceur/parametresLoisTraceur/loisTracer'
+   line = xcasReader(unitNum, pathNode)
+   if(len(trim(line)).eq.0) then
+       print*,"Parse error => loisTracer"
+       call xerror(Erreur)
+       return
    endif
-   do iloi = 1 , nb_loi_tracer
 
-      champ4 => item(getElementsByTagname(champ3, "structureSParametresLoiTraceur"), iloi-1)
-      if(associated(champ4).eqv..false.) then
-         print*,"Parse error => structureSParametresLoiTraceur"
-         call xerror(Erreur)
-         return
+   do iloi = 1 , nb_loi_tracer
+      pathNode = 'structureSParametresLoiTraceur/nom'
+      if(iloi.eq.1) then
+        LoiTracer(iloi)%Nom = xcasReader(unitNum, pathNode, 0)
+      else
+        LoiTracer(iloi)%Nom = xcasReader(unitNum, pathNode, 1)
       endif
-      champ5 => item(getElementsByTagname(champ4, "nom"), 0)
-      if(associated(champ5).eqv..false.) then
-         print*,"Parse error => nom"
-         call xerror(Erreur)
-         return
-      endif
-      LoiTracer(iloi)%Nom = getTextContent(champ5)
-      champ5 => item(getElementsByTagname(champ4, "modeEntree"), 0)
-      if(associated(champ5).eqv..false.) then
-         print*,"Parse error => modeEntree"
-         call xerror(Erreur)
-         return
-      endif
-      call extractDataContent(champ5,mode_entree_loi)
+
+      pathNode = 'modeEntree'
+      line = xcasReader(unitNum, pathNode, 0)
+      read(unit=line, fmt=*) mode_entree_loi
 
       if( mode_entree_loi /= SAISIE_PAR_FICHIER .and. &
           mode_entree_loi /= SAISIE_PAR_CLAVIER ) then
@@ -168,13 +145,8 @@ subroutine LEC_LOI_TRACER( &
 
       if( mode_entree_loi == SAISIE_PAR_FICHIER ) then
 
-         champ5 => item(getElementsByTagname(champ4, "fichier"), 0)
-         if(associated(champ5).eqv..false.) then
-            print*,"Parse error => fichier"
-            call xerror(Erreur)
-            return
-         endif
-         FichierLoiTracer%Nom = getTextContent(champ5)
+         pathNode = 'fichier'
+         FichierLoiTracer%Nom = xcasReader(unitNum, pathNode, 0)
 
          if( impression ) then
             write(UniteListing,10030) 'PAR FICHIER' , FichierLoiTracer%Nom

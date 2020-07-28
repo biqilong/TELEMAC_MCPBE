@@ -397,23 +397,25 @@ function add_variable {
 
   echo "Adding $var_name in $module"
   write_get
-  echo " -> $? write_get"
+  echo " -> write_get: error code: $?"
   write_set
-  echo " -> $? write_set"
+  echo " -> write_set: error code: $?"
   write_size
-  echo " -> $? write_size"
+  echo " -> write_size: error code: $?"
   write_type
-  echo " -> $? write_type"
+  echo " -> write_type: error code: $?"
   write_help
-  echo " -> $? write_help"
+  echo " -> write_help: error code: $?"
   increase_nvar
-  echo " -> $? increas_nvar"
+  echo " -> increas_nvar: error code: $?"
   add_instance
-  echo " -> $? add_instance"
+  echo " -> add_instance: error code: $?"
   write_get_array
-  echo " -> $? write_get_array"
+  echo " -> write_get_array: error code: $?"
   write_set_array
-  echo " -> $? write_set_array"
+  echo " -> write_set_array: error code: $?"
+
+  MESSAGE="${MESSAGE}Do not forget to set the variable ${var_inst_name} as ,TARGET in the associated module (${module})\n"
 
 }
 #Returns incorrect lines
@@ -437,9 +439,12 @@ fi
 
 desc_file=$1
 {
+  MESSAGE=''
 read
 while IFS=\; read -r module var_name var_type var_inst_name var_dim1 var_ndim var_readonly var_get_pos var_set_pos var_help
 do
   add_variable
 done
 } < $desc_file
+echo "********************"
+echo -e $MESSAGE

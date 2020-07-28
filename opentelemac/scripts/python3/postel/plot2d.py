@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 Contains functions to plot scalar and vectors in 2d
 """

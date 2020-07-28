@@ -1,7 +1,7 @@
 !                   ***********************
                     SUBROUTINE GRETEL_AUTOP
 !                   ***********************
-     &(GEO,GEOFORMAT,BND,RES,RESFORMAT,NPROC,NPLAN_RES)
+     &(GEO,GEOFORMAT,BND,RES,RESFORMAT,NPROC,NPLAN_RES,METHOD)
 !
 !
 !***********************************************************************
@@ -29,6 +29,9 @@
 !>@param[in,out] RESFORMAT Format of the result file
 !>@param[in] NPROC Number of processors
 !>@param[in] NPLAN_RES Number of planes for the result file
+!>@param[in] METHOD method for merging data information:
+!!                  1: No more dans npoin*nvar in memory loop on time
+!!                  2: Max memory npoin*nvar*ntimestep loop on files
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE INTERFACE_HERMES
@@ -36,12 +39,18 @@
       USE BIEF, ONLY: READ_MESH_INFO
 !
       IMPLICIT NONE
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+!
       CHARACTER(LEN=PATH_LEN), INTENT(IN) :: GEO
       CHARACTER(LEN=PATH_LEN), INTENT(IN) :: BND
       CHARACTER(LEN=PATH_LEN), INTENT(IN) :: RES
       CHARACTER(LEN=8),   INTENT(INOUT) :: GEOFORMAT,RESFORMAT
       INTEGER,            INTENT(IN) :: NPROC
       INTEGER,            INTENT(INOUT) :: NPLAN_RES
+      INTEGER,            INTENT(IN) :: METHOD
+!
+!+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 !
       INTEGER IPID
       INTEGER I,J,IELEM
@@ -53,12 +62,9 @@
       INTEGER, DIMENSION(:), ALLOCATABLE :: IKLE_GEO,IKLE3D
       INTEGER, DIMENSION(:), ALLOCATABLE :: IKLE_BND
 !
-      DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: RESDATA
       DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: TMP, X, Y
 !
       DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: X3D, Y3D, Z3D
-!
-      DOUBLE PRECISION AT
 !
       CHARACTER(LEN=300) :: RESPAR
 !
@@ -76,7 +82,6 @@
       INTEGER NTIMESTEP_RES
       INTEGER NPOIN_GEO, NPOIN_RES, NPOIN_PAR
       INTEGER NVAR_RES,NVAR_GEO
-      INTEGER IVAR, ITIME
       INTEGER NPOIN3D, NELEM3D
       INTEGER DATE_TMP(6)
 !
@@ -351,71 +356,9 @@
 !
 !     Read results informations from partitioned files
 !
-      ! TODO: SEE IF LOOP ON ALL FILE OR LOOP ON TIMESTEPS
-      ALLOCATE(RESDATA(NPOIN_RES,NVAR_RES),STAT=IERR)
-      CALL CHECK_ALLOCATE(IERR,'GRETEL:RES')
-      ! LOOP ON ALL THE PARTITIONNED FILES
-      DO ITIME=0,NTIMESTEP_RES-1
-        DO IPID = 0, NPROC-1
-!
-          RESPAR = TRIM(RES) // EXTENS(NPROC-1,IPID)
-          CALL OPEN_MESH(RESFORMAT,RESPAR,NRESPAR,'READ     ',IERR)
-          CALL CHECK_CALL(IERR,"GRETEL:OPEN_MESH:RESPAR2")
-!
-          CALL GET_MESH_NPOIN(RESFORMAT,NRESPAR,TYP_ELEM,NPOIN_PAR,IERR)
-          CALL CHECK_CALL(IERR,"GRETEL:GET_MESH_NPOIN:RESPAR")
-!
-          ALLOCATE(KNOLG(NPOIN_PAR),STAT=IERR)
-          CALL CHECK_ALLOCATE(IERR,'GRETEL:KNOLG')
-          ALLOCATE(TMP(NPOIN_PAR),STAT=IERR)
-          CALL CHECK_ALLOCATE(IERR,'GRETEL:TMP')
-          ! GET THE TIME OF THE TIMSTEP
-          IF(IPID.EQ.0) THEN
-            CALL GET_DATA_TIME(RESFORMAT,NRESPAR,ITIME,AT,IERR)
-            CALL CHECK_CALL(IERR,'GRETEL:GET_DATA_TIME:RESPAR')
-          ENDIF
-!
-          CALL GET_MESH_L2G_NUMBERING(RESFORMAT,NRESPAR,KNOLG,
-     &                                NPOIN_PAR,IERR)
-          CALL CHECK_CALL(IERR,'GRETEL:GET_MESH_L2G_NUMBERING:RESPAR')
-!
-          ! LOOP ON ALL THE VARIABLE FOR THE TIMESTEP ITIME
-          DO IVAR=1,NVAR_RES
-            VARNAME = TEXTELU(IVAR)(1:16)
-            CALL GET_DATA_VALUE(RESFORMAT,NRESPAR,ITIME,
-     &                          VARNAME,TMP,
-     &                          NPOIN_PAR,IERR)
-            CALL CHECK_CALL(IERR,'GRETEL:GET_DATA_VALUE')
-            IF(NDIM.EQ.2) THEN
-              ! 2D
-              DO I=1,NPOIN_PAR
-                RESDATA(KNOLG(I),IVAR) = TMP(I)
-              ENDDO
-            ELSE
-              ! 3D
-              DO I=1,NPOIN_PAR/NPLAN_RES
-                DO J=1,NPLAN_RES
-                  RESDATA(KNOLG(I) + (J-1)*NPOIN_GEO, IVAR) =
-     &                       TMP(I + (J-1)*NPOIN_PAR/NPLAN_RES)
-                ENDDO
-              ENDDO
-            ENDIF
-          ENDDO ! IVAR
-          CALL CLOSE_MESH(RESFORMAT,NRESPAR,IERR)
-          CALL CHECK_CALL(IERR,'GRETEL:CLOSEMESH:RESPAR')
-          DEALLOCATE(TMP)
-          DEALLOCATE(KNOLG)
-        ENDDO ! IPID
-        ! WRITING TIME STEP
-        WRITE(LU,*)'WRITING DATASET NO.',ITIME,' TIME =',REAL(AT)
-        !
-        DO I=1,NVAR_RES
-          CALL ADD_DATA(RESFORMAT,NRES,TEXTELU(I),AT,ITIME,I.EQ.1,
-     &                  RESDATA(:,I),NPOIN_RES,IERR)
-          CALL CHECK_CALL(IERR,'GRETEL:ADD_DATA:RES')
-        ENDDO
-
-      ENDDO ! ITIME
+      CALL MERGE_DATA
+     &(NPOIN_RES, NVAR_RES, NTIMESTEP_RES, NPROC, RESFORMAT, NRES,
+     & TYP_ELEM, TEXTELU, RES, NDIM, NPLAN_RES, NPOIN_GEO, METHOD)
 
       ! DONE
       CALL CLOSE_MESH(RESFORMAT,NRES,IERR)
@@ -426,7 +369,6 @@
       CALL CHECK_CALL(IERR,'GRETEL:CLOSE_MESH:GEO')
 
       DEALLOCATE(TEXTELU)
-      DEALLOCATE(RESDATA)
       WRITE(LU,*) 'END OF PROGRAM, ',NTIMESTEP_RES,' DATASETS FOUND'
 
       END SUBROUTINE GRETEL_AUTOP

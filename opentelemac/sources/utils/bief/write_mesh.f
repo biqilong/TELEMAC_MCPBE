@@ -92,7 +92,7 @@
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
-      INTEGER :: IERR, I, NDP,NDIM,NPOIN
+      INTEGER :: IERR, I, NDP,NDIM,NPOIN,IPLAN
       INTEGER, ALLOCATABLE :: IPOBO(:)
       INTEGER, ALLOCATABLE :: IKLE_BND(:)
       INTEGER :: NELEBD
@@ -148,6 +148,13 @@
         CALL CORRXY(T1%R,T2%R,NPOIN)
 !
         IF(MESH%DIM1.EQ.3) THEN
+          DO IPLAN=2,NPLAN
+            DO I=1,NPOIN
+              T1%R(I+(IPLAN-1)*NPOIN) = T1%R(I)
+              T2%R(I+(IPLAN-1)*NPOIN) = T2%R(I)
+            ENDDO
+          ENDDO
+!
           CALL SET_MESH(FFORMAT,NFILE,MESH%DIM1,MESH%TYPELM,NDP,
      &                  MESH%NPTFR,NPTIR,MESH%NELEM,MESH%NPOIN,
      &                 MESH%IKLE%I,IPOBO,MESH%KNOLG%I,T1%R,T2%R,

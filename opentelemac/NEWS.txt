@@ -1,12 +1,44 @@
 Trunk
 ===========================
 
+WAQTEL: possibility to use a wind function with 2 calibrating coefficients
+with ATMOSPHERE-WATER EXCHANGE MODEL = 2 in 3D
+
+WAQTEL: new degradation laws for 2D and 3D (classical 1st order degradation law,
+not only bacterial T90 laws) + possibility of user defined degradation law
+
+TELEMAC-3D: fix the reading of STAGE-DISCHARGE CURVES FILE in 3D
+
+KHIONE: fix static border ice criteria, fix clogging model,
+new logic for ice processes, remove ice cover dynamics obsolete developments,
+remove coupling with waqtel, add new keywords for frazil ice thermal growth
+and thermal budget, new semi-implicit source for frazil thermal growth,
+new multiclass frazil ice model with thermal growth and decay,
+secondary nucleation, flocculation, precipitation, salinity effects and turbulence
+
+TELEMAC-2D: adding a variable ADR_TRAC (address of tracers) for TELEMAC-2D
+rather than using multiple hard-coded values
+
+TELEMAC-3D: fix keeping longitude/latitude coordinates writing with TELEMAC-3D
+
+TELEMAC-2D+TELEMAC-3D: new keyword to tell if bottom smoothings are to be done
+after or before user modifications of bottom:
+BOTTOM SMOOTHINGS AFTER USER MODIFICATIONS
+
 TELEMAC-3D: velocity components + tracers values at the free surface as
 variables for graphic printouts of the 2D RESULT FILE
 
 PARALLEL: new generic function:
 Function that had the same functionalities but different argument types can now be called using the same function.
 For example instead of using p_imax, p_dmax you use p_max for both case.
+  - P_IMAX, P_DMAX => P_MAX
+  - P_IMIN, P_DMIN => P_MIN
+  - P_ISUM, P_DSUM => P_SUM
+  - MPI_ADDRESS1, MPI_ADDRESS2, MPI_ADDRESS3 => MPI_ADDRESS
+  - P_IMAX_ARRAY, P_DMAX_ARRAY => P_MAX_ARRAY
+  - P_MPI_ALLTOALLV_I, P_MPI_ALLTOALLV_OIL, P_MPI_ALLTOALLV_ALG, P_MPI_ALLTOALLV_CHARAC => P_MPI_ALLTOALLV
+  - P_DREAD, P_IREAD, P_IREADI8, P_IREADI => P_READ
+  - P_DWRIT, P_IWRIT, P_IWRITI8, P_IWRITI => P_WRITE
 
 TELEMAC-2D: new vegetation friction laws
 
@@ -16,6 +48,8 @@ TELEMAC-2D: fix restart mode with tracers (T1 was missing)
 
 TELEMAC-3D: fix the overwriting of TELEMAC-3D boundary conditions when coupling
 with TOMAWACT3D
+
+TELEMAC-3D: fix for RESTART FILE with NON-HYDROSTATIC VERSION = NO
 
 TELEMAC-2D: new default values for 3 keywords:
   - TREATMENT OF THE LINEAR SOLVER = 2 (i.e. wave equation, old = 1: coupled),

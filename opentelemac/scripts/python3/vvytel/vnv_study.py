@@ -44,6 +44,7 @@ class AbstractVnvStudy(ABC):
         self.options = options
         self.action_time = OrderedDict()
         # Walltime for cluster run (default the one from options)
+        self._default_walltime = options.walltime
         self.walltime = options.walltime
         self.listing = False
 
@@ -210,7 +211,14 @@ class AbstractVnvStudy(ABC):
                 self.options.sortie_file = True
             # Forcing ncsize
             self.options.ncsize = study.ncsize
-            self.options.walltime = self.walltime
+            # study specifiv walltime
+            if isinstance(self.walltime, dict):
+                if name in self.walltime:
+                    self.options.walltime = self.walltime[name]
+                else:
+                    self.options.walltime = self._default_walltime
+            else:
+                self.options.walltime = self.walltime
             self.options.jobname = "{}__{}".format(path.basename(self.name), name)
             if study.cfg['HPC'] == {} or self.options.mpi:
                 run_local_cas(study, self.options)

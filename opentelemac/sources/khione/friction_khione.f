@@ -20,11 +20,6 @@
 !+     KFROT = 4 :  LAW OF MANNING
 !+     KFROT = 5 :  LAW OF NIKURADSE
 !
-!history  S.E. BOURBAN (HRW)
-!+        26/07/2018
-!+     Copied and adapted from FRICTION_CALC
-!+
-!
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !| CF             |<--| ADIMENSIONAL FRICTION COEFFICIENT
 !| CHESTR         |-->| FRICTION PARAMETER
@@ -32,6 +27,9 @@
 !| H              |-->| WATER DEPTH
 !| KARMAN         |-->| VON KARMAN'S CONSTANT
 !| KFROT          |-->| LAW USED FOR THE CALCULATION
+!| NPOIN          |-->| NUMBER OF NODES
+!| U              |-->| X COMPONENT OF THE VELOCITY
+!| V              |-->| Y COMPONENT OF THE VELOCITY
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
       USE BIEF

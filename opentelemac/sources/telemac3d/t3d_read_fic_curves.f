@@ -5,7 +5,7 @@
      &(NFIC,NFRLIQ,STA_DIS_CURVES,PTS_CURVES)
 !
 !***********************************************************************
-! TELEMAC3D   V6P1                                   21/08/2010
+! TELEMAC3D   V8P2
 !***********************************************************************
 !
 !brief    READS STAGE-DISCHARGE CURVES IN THEIR FILE.
@@ -59,17 +59,27 @@
 !
       INTRINSIC CHAR
 !
+      LOGICAL FIRST
+!
 !-----------------------------------------------------------------------
 !
       NMAXPTS=0
 !     FILE WILL BE READ TWICE, THE FIRST TIME (PASS=0) TO COUNT DATA
 !                              THE SECOND TIME (PASS=1) TO READ THEM
       PASS=0
+      FIRST=.TRUE.
 !
 10    CONTINUE
       REWIND(NFIC)
 !     SKIPS COMMENTS
-1     READ(NFIC,FMT='(A)',END=1000,ERR=999) LIGNE
+1     CONTINUE
+      IF(FIRST) THEN
+        READ(NFIC,FMT='(A)',END=1000,ERR=999) LIGNE
+      ELSE
+!       FOR SOME COMPILERS READING AFTER END IS AN ERROR
+!       SO HERE ERROR IS TREATED AS END
+        READ(NFIC,FMT='(A)',END=1000,ERR=1000) LIGNE
+      ENDIF
       IF(LIGNE(1:1).EQ.'#') GO TO 1
 !
 !     NOW A LINE ANNOUNCING Q(??) OR Z(??)
@@ -105,8 +115,10 @@
 !       SKIPS UNITS (UNITS NOT CHECKED)
         READ(NFIC,FMT='(A)',END=1000,ERR=999) LIGNE
         PTS_CURVES(ICURVE)=0
-4       READ(NFIC,FMT='(A)',END=1001,ERR=999) LIGNE
-        IF(LIGNE(1:1).NE.'#') THEN
+        WRITE(LU,*) 'INITIALISATION ICURVE=',ICURVE
+4       CONTINUE
+        READ(NFIC,FMT='(A)',END=1001,ERR=999) LIGNE
+        IF(LIGNE(1:1).NE.'#'.AND.LIGNE.NE.'') THEN
           PTS_CURVES(ICURVE)=PTS_CURVES(ICURVE)+1
           IF(PASS.EQ.1) THEN
 !           READS AND STORES
@@ -124,6 +136,7 @@
 !       END OF BLOCK FOR CURVE ICURVE
 1001    NMAXPTS=MAX(NMAXPTS,PTS_CURVES(ICURVE))
 !       TREATS THE NEXT CURVE
+        FIRST=.FALSE.
         GO TO 1
       ELSE
         WRITE(LU,*) 'ERROR IN THE STAGE-DISCHARGE CURVES FILE'
@@ -160,14 +173,14 @@
           STOP
         ENDIF
         PASS=1
-!       SHOOT AGAIN
+!       SHOOT AGAIN WITH PASS = 1
         GO TO 10
       ENDIF
 !
 !     REPORTS IN LISTING
 !
       DO ICURVE=1,NFRLIQ
-        IF(PTS_CURVES(ICURVE).GT.0) THEN
+        IF(STA_DIS_CURVES(ICURVE).GT.0) THEN
           WRITE(LU,*) ' '
           WRITE(LU,*) 'STAGE-DISCHARGE CURVE:',ICURVE
           WRITE(LU,*) ' '
