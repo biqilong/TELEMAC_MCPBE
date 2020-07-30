@@ -88,8 +88,8 @@
         SHR_G(IPOIN) = SQRT(EP%R(IPOIN)/DNUVIV)
 !       FOR THE BOTTOM NODE, EP COULD ALSO USE THEORETICAL VALUE (ML)            
         IF(IPOIN.LE.NPOIN2) THEN
-          SHR_G(IPOIN) = SQRT(UETCAR%R(IPOIN)**1.5/(KARMAN*0.5)
-     &                 * (1-MAX(0.5,H%R(IPOIN))/H%R(IPOIN))/DNUVIV)
+          SHR_G(IPOIN) = SQRT(UETCAR%R(IPOIN)**1.5/(KARMAN*1.0)
+     &                 * (1-MAX(1.0,H%R(IPOIN))/H%R(IPOIN))/DNUVIV)
         ENDIF 
 
         KL_CAP(IPOIN) = GAMMA_F*(1+OMG1)*(1.D-6/SHR_G(IPOIN))
