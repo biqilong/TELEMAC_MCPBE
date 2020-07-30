@@ -87,10 +87,10 @@
 !       Here, Please create a depth and shear velocity dependent "SHR_G"			 
         SHR_G(IPOIN) = SQRT(EP%R(IPOIN)/DNUVIV)
 !       FOR THE BOTTOM NODE, EP COULD ALSO USE THEORETICAL VALUE (ML)            
-!       IF(IPOIN.LE.NPOIN2) THEN
-!         SHR_G(IPOIN) = SQRT(UETCAR%R(IPOIN)**1.5/(KARMAN*0.001)
-!    &                             * (1-0.001/H%R(IPOIN))/DNUVIV)
-!       ENDIF 
+        IF(IPOIN.LE.NPOIN2) THEN
+          SHR_G(IPOIN) = SQRT(UETCAR%R(IPOIN)**1.5/(KARMAN*0.01)
+     &                             * (1-0.01/H%R(IPOIN))/DNUVIV)
+        ENDIF 
 
         KL_CAP(IPOIN) = GAMMA_F*(1+OMG1)*(1.D-6/SHR_G(IPOIN))
      &         **0.5D0/NC2(IPOIN)**(1.D0/FRACDIM_MEG)
