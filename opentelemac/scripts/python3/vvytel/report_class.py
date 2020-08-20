@@ -11,10 +11,39 @@ from __future__ import print_function
 # ~~> dependencies towards standard python
 import time as ttime
 from os import path, sep
+from collections import OrderedDict
 from utils.exceptions import TelemacException
 from config import CFGS
-from collections import OrderedDict
 
+
+def insert_key(odict, key, after=None):
+    """
+    Insert a key in an OrderedDict either after a specific key or it assumes
+    the keys are sorted and places it were it belongs
+
+    @param odict (OrderedDict) Dict in which to insert key
+    @param key (str) Key to insert
+    @param after (str) If not None the key is added after 'after' if after is
+    '' it is added in first position
+    """
+
+    odict.update({key:OrderedDict()})
+
+    if after is not None:
+
+        move = after == ''
+        for okey in list(odict.keys())[:-1]:
+            if move:
+                odict.move_to_end(okey)
+            else:
+                if okey == after:
+                    move = True
+    else:
+        for okey in list(odict.keys())[:-1]:
+            if okey > key:
+                odict.move_to_end(okey)
+
+    return odict
 
 def get_value(sheet, cell):
     """
@@ -207,9 +236,9 @@ class Report():
             header = "Python file;rank;action_name;duration;passed\n"
             with open(file_name, 'w') as f:
                 f.write(header)
-                for file_name, actions in self.values.items():
+                for ffile_name, actions in self.values.items():
                     for action_name, action_info in actions.items():
-                        llist = [file_name,
+                        llist = [ffile_name,
                                  str(action_info['rank']),
                                  action_name,
                                  str(action_info['time']),
@@ -219,22 +248,23 @@ class Report():
             header = "Notebook file;duration;passed\n"
             with open(file_name, 'w') as f:
                 f.write(header)
-                for file_name, actions in self.values.items():
-                    llist = [file_name,
+                for ffile_name, actions in self.values.items():
+                    llist = [ffile_name,
                              str(actions['time']),
                              str(actions['passed'])]
                     f.write(';'.join(llist)+'\n')
 
-    def write2xls(self, xls_file, append, title, job_id, date, verbose=False):
+    def write2xls(self, xls_file, mode, title, job_id, date, verbose=False, max_report=0):
         """
         Transfer data from report_file into an xls file
 
         @param xls_file (str) Path to the xls file
-        @param append (bool) If true adding data to existing xls file
+        @param mode (str) mode to write append, create, insert
         @param title (str) Title of the worsheet
         @param job_id (str) Id for the data column
         @param date (str) Date for the data column
-        @param verbose (bool) If True print aditional information
+        @param verbose (str) If true more verbose
+        @param max_report (str) Max of report within the file (delete older report)
         """
         from openpyxl import Workbook, load_workbook
         from openpyxl.utils.cell import get_column_letter
@@ -243,55 +273,91 @@ class Report():
         if self.type_valid != "examples":
             raise TelemacException("write2xls only avaialable for examples type")
 
-        if append:
+        if mode != 'create':
             wb = load_workbook(filename=xls_file)
         else:
             wb = Workbook()
 
         ws = wb.worksheets[0]
 
-        if not append:
+        if mode == 'create':
             if verbose:
                 print("Creating header for fixed columns")
             ws.title = title
 
-            ws['A2'] = "Module"
-            ws['A2'].font = Font(bold=True)
-            ws['B2'] = "Case"
-            ws['B2'].font = Font(bold=True)
-            ws['C2'] = "Python File"
-            ws['C2'].font = Font(bold=True)
-            ws['D2'] = "Rank"
-            ws['D2'].font = Font(bold=True)
-            ws['E2'] = "action_name"
-            ws['E2'].font = Font(bold=True)
+            ws['A3'] = "Module"
+            ws['A3'].font = Font(bold=True)
+            ws['B3'] = "Case"
+            ws['B3'].font = Font(bold=True)
+            ws['C3'] = "Python File"
+            ws['C3'].font = Font(bold=True)
+            ws['D3'] = "Rank"
+            ws['D3'].font = Font(bold=True)
+            ws['E3'] = "action_name"
+            ws['E3'].font = Font(bold=True)
             # Freezing column and row of headers
-            ws.freeze_panes = ws['F3']
+            ws.freeze_panes = ws['F4']
 
 
+        green_color = "0000FF00"
+        red_color = "00FF0000"
 
-        # Get column index to add data
-        column_index = 6
-        if append:
+
+        # Get first and last column
+        # Index of first report column
+        first_column_index = 6
+        # index of first empty report column
+        last_column_index = first_column_index
+
+        if verbose:
+            print("Identifying last column position")
+        cell = ws['{}1'.format(get_column_letter(last_column_index))]
+        while cell.value is not None:
+            last_column_index += 2
+            col_let = get_column_letter(last_column_index)
+            cell = ws['{}1'.format(col_let)]
+
+
+        # define were the new columns will be added
+        if mode == 'insert':
+            column_index = first_column_index
             if verbose:
-                print("Identifying new column position")
-            cell = ws['{}1'.format(get_column_letter(column_index))]
-            while cell.value is not None:
-                column_index += 2
-                col_let = get_column_letter(column_index)
-                cell = ws['{}1'.format(col_let)]
+                print("Adding new columns")
+            ws.insert_cols(column_index)
+            ws.insert_cols(column_index)
+        elif mode == 'apppend':
+            column_index = last_column_index
+        else:
+            column_index = first_column_index
 
-        start_line = 3
+        last_column_index += 2
+
+        if max_report > 0:
+            if (last_column_index - first_column_index)//2 > max_report:
+                if mode == 'append':
+                    # delete first two columns
+                    ws.delete_cols(first_column_index)
+                    ws.delete_cols(first_column_index)
+                    last_column_index -= 2
+                if mode == 'insert':
+                    # delete last two columns
+                    ws.delete_cols(last_column_index-2)
+                    ws.delete_cols(last_column_index-2)
+                    last_column_index -= 2
+
+
+        start_line = 4
 
         if verbose:
             print("Adding new columns header")
         # Writting job number
         column_letter1 = get_column_letter((column_index))
-        ws['{}2'.format(column_letter1)] = "time (s)"
-        ws['{}2'.format(column_letter1)].font = Font(bold=True)
+        ws['{}3'.format(column_letter1)] = "time (s)"
+        ws['{}3'.format(column_letter1)].font = Font(bold=True)
+
         column_letter2 = get_column_letter((column_index+1))
-        ws['{}2'.format(column_letter2)] = "passed"
-        ws['{}2'.format(column_letter2)].font = Font(bold=True)
+        ws['{}3'.format(column_letter2)] = "passed"
+        ws['{}3'.format(column_letter2)].font = Font(bold=True)
 
         # Merge job number cells
         ws.merge_cells('{}1:{}1'.format(column_letter1, column_letter2))
@@ -300,8 +366,37 @@ class Report():
                 Alignment(horizontal="center", vertical="center")
         ws['{}1'.format(column_letter1)].font = Font(bold=True)
 
+        # Number of passed and failed
+        ws['{}2'.format(column_letter1)].fill = \
+                    PatternFill(start_color=green_color,
+                                end_color=green_color,
+                                fill_type="solid")
+
+        ws['{}2'.format(column_letter2)].fill = \
+                    PatternFill(start_color=red_color,
+                                end_color=red_color,
+                                fill_type="solid")
+
+        # update of all sums (Did not manage to create relative sums the insert
+        # mode break them)
+        for column in range(first_column_index, last_column_index, 2):
+
+            column_letter_1 = get_column_letter(column)
+            column_letter_2 = get_column_letter(column+1)
+            ws['{}2'.format(column_letter_1)] = \
+                    '=COUNTIF({col}{start}:{col}{end},"passed")'\
+                    .format(col=column_letter_2, start=start_line, end=3000)
+            ws['{}2'.format(column_letter_1)].font = Font(bold=True)
+            ws['{}2'.format(column_letter_2)] = \
+                    '=COUNTIF({col}{start}:{col}{end},"failed")'\
+                    .format(col=column_letter_2, start=start_line, end=3000)
+            ws['{}2'.format(column_letter_2)].font = Font(bold=True)
+
+            if mode == 'insert':
+                ws.merge_cells('{}1:{}1'.format(column_letter_1, column_letter_2))
+
         # Unmerging A through E column (issues when append)
-        if append:
+        if mode != 'create':
             if verbose:
                 print("Unmerging cells")
             # Merging cell with same name for
@@ -329,24 +424,79 @@ class Report():
         # building dict strucre of module, cases, py_file, action
         # existing combinaison to detect new inputs (new module, case,
         # py_file, action)
-        used = {}
+        used = OrderedDict()
         if verbose:
             print("Building dict structure")
-        if append:
-            for line in range(3, ws.max_row):
+        if mode != 'create':
+            for line in range(start_line, ws.max_row+1):
                 mod = ws['A{}'.format(line)].value
                 if mod not in used:
-                    used[mod] = {}
+                    used[mod] = OrderedDict()
                 case = ws['B{}'.format(line)].value
                 if case not in used[mod]:
-                    used[mod][case] = {}
+                    used[mod][case] = OrderedDict()
                 py_file = ws['C{}'.format(line)].value
                 if py_file not in used[mod][case]:
-                    used[mod][case][py_file] = []
+                    used[mod][case][py_file] = OrderedDict()
                 action = ws['E{}'.format(line)].value
-                if action not in used[mod][case][py_file]:
-                    used[mod][case][py_file].append(action)
+                used[mod][case][py_file][action] = line
+            last_line = line
+
+            # check for difference between input file and excel structure
+            # And add new entries in dict
+            stuff_added = False
+            for file_name, actions in self.values.items():
+                head, tail = path.split(file_name)
+                py_file = tail
+                head, tail = path.split(head)
+                case = tail
+                head, tail = path.split(head)
+                mod = tail
+                # Adding new dict if not already in
+                if mod not in used:
+                    insert_key(used, mod)
+                    stuff_added = True
+                if case not in used[mod]:
+                    insert_key(used[mod], case)
+                    stuff_added = True
+                if py_file not in used[mod][case]:
+                    insert_key(used[mod][case], py_file)
+                    stuff_added = True
+                prev_action = ''
+                # Actions are not sort by name so adding them after previous one
+                for action in actions:
+                    if action not in used[mod][case][py_file]:
+                        insert_key(used[mod][case][py_file], action,
+                                   after=prev_action)
+                        used[mod][case][py_file][action] = 0
+                        stuff_added = True
+                    prev_action = action
+
+            # Update line info and create new lines for the new entries
+            if stuff_added:
+                line = start_line
+                new_lines = 0
+                for mod in used:
+                    for case in used[mod]:
+                        for py_file in used[mod][case]:
+                            for action in used[mod][case][py_file]:
+                                res = used[mod][case][py_file][action]
+                                # New line
+                                if res == 0:
+                                    ws.insert_rows(line)
+                                    used[mod][case][py_file][action] = line
+                                    new_lines += 1
+                                    line += 1
+                                else:
+                                    # Updating old line value
+                                    used[mod][case][py_file][action] += \
+                                            new_lines
+                                    line = used[mod][case][py_file][action] + 1
+                last_line = line
+
         else:
+            # Building line number for each report line
+            line = start_line
             for file_name, actions in self.values.items():
                 head, tail = path.split(file_name)
                 py_file = tail
@@ -355,15 +505,16 @@ class Report():
                 head, tail = path.split(head)
                 mod = tail
                 if mod not in used:
-                    used[mod] = {}
+                    used[mod] = OrderedDict()
                 if case not in used[mod]:
-                    used[mod][case] = {}
+                    used[mod][case] = OrderedDict()
                 if py_file not in used[mod][case]:
-                    used[mod][case][py_file] = []
+                    used[mod][case][py_file] = OrderedDict()
                 for action in actions:
-                    used[mod][case][py_file].append(action)
+                    used[mod][case][py_file][action] = line
+                    line += 1
+            last_line = line
 
-        line = start_line
         for file_name, actions in self.values.items():
             if verbose:
                 print("adding element for: ", file_name)
@@ -374,49 +525,10 @@ class Report():
             head, tail = path.split(head)
             module = tail
             for action_name, action_info in actions.items():
+
+                line = used[module][case][py_file][action_name]
                 if verbose:
                     print("  adding action for: ", action_name)
-                if append:
-                    max_row = ws.max_row
-                    while True:
-                        # checking that the line we are on is the right one
-                        ws_module = ws.cell(row=line, column=1).value
-                        ws_case = ws.cell(row=line, column=2).value
-                        ws_py_file = ws.cell(row=line, column=3).value
-                        ws_action = ws.cell(row=line, column=5).value
-                        # If not
-                        if not(module == ws_module and \
-                               ws_case == case and\
-                               py_file == ws_py_file and \
-                               ws_action == action_name):
-                            if module not in used or\
-                               case not in used[module] or\
-                               py_file not in used[module][case] or\
-                               action_name not in used[module][case][py_file]:
-                                #Adding new line
-                                if verbose:
-                                    print("Adding new line")
-                                ws.insert_rows(line)
-                                break
-                            # In case we found the matching line exiting
-                            if module == ws_module and\
-                               case == ws_case and\
-                               py_file == ws_py_file:
-                                break
-                            line += 1
-                            if line > max_row+1:
-                                raise TelemacException\
-                                    ("Could not find matching line for:\n"
-                                     "module:{module}\n"
-                                     "case:{case}\n"
-                                     "py_file:{py_file}\n"
-                                     "action:{action}"\
-                                     .format(module=module,
-                                             case=case,
-                                             py_file=py_file,
-                                             action=action_name))
-                        else:
-                            break
 
                 # Module
                 ws.cell(row=line, column=1).value = module
@@ -442,24 +554,6 @@ class Report():
                                         end_color=color,
                                         fill_type="solid")
 
-                line += 1
-
-                if append and not action_info["passed"]:
-                    # In case of a failed test skipping (if they exists) other
-                    # line for this file
-                    in_file = True
-                    while in_file:
-                        ws_module = ws.cell(row=line, column=1).value
-                        ws_case = ws.cell(row=line, column=2).value
-                        ws_py_file = ws.cell(row=line, column=3).value
-                        ws_action = ws.cell(row=line, column=5).value
-                        in_file = module == ws_module and \
-                                  py_file == ws_py_file and \
-                                  ws_case == case
-                        line += 1
-                    line -= 1
-                    break
-
         # Merging cell with same name for
         # Module, case, py_file, rank (same merge as py_file)
         if verbose:
@@ -467,7 +561,7 @@ class Report():
         for column in ['A', 'B', 'C']:
             first_line = start_line
             merge_val = ws['{}{}'.format(column, first_line)].value
-            for iline in range(start_line+1, line+1):
+            for iline in range(start_line+1, last_line+2):
                 val = ws['{}{}'.format(column, iline)].value
                 if val != merge_val:
                     if first_line < iline:
@@ -501,7 +595,8 @@ class Report():
         # Setting filters
         if verbose:
             print("Adding filters")
-        ws.auto_filter.ref = "A2:{}{}".format(get_column_letter(ws.max_column), ws.max_row)
+        col_let = get_column_letter(ws.max_column-1)
+        ws.auto_filter.ref = "A3:{}{}".format(col_let, ws.max_row)
         #ws.auto_filter.add_filter_column(0, list(used.keys()))
 
         if verbose:

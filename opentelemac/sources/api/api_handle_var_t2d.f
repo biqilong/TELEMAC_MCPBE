@@ -14,7 +14,7 @@
         !> Size of the string containing the information about a variable
         INTEGER, PARAMETER :: T2D_INFO_LEN=200
         !> The maximum number of variables
-        INTEGER, PARAMETER :: NB_VAR_T2D=83
+        INTEGER, PARAMETER :: NB_VAR_T2D=84
         !> List of variable names
         CHARACTER(LEN=40),ALLOCATABLE,DIMENSION(:) :: VNAME_T2D
         !> List of variable info
@@ -130,6 +130,8 @@
           VALEUR = INST%PARTHENIADES(INDEX1,INDEX2)
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
           VALEUR = INST%VOLU2D%R(INDEX1)
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.PROPNU') THEN
+          VALEUR = INST%PROPNU
         ! <get_double>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -196,7 +198,7 @@
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.TIDALVELOCITY') THEN
           INST%CTIDEV = VALEUR
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.SEALEVEL') THEN
-          INST%MSL = VALEUR
+          INST%MSL = VALEUR  
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.FAIR') THEN
           INST%FAIR = VALEUR
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.AK') THEN
@@ -233,6 +235,8 @@
           INST%PARTHENIADES(INDEX1,INDEX2) = VALEUR
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.VOLU2D') THEN
           INST%VOLU2D%R(INDEX1) = VALEUR
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.PROPNU') THEN
+          INST%PROPNU = VALEUR
         ! <set_double>
         ELSE
           IERR = UNKNOWN_VAR_ERROR
@@ -1562,7 +1566,7 @@
           READONLY = .FALSE.
           NDIM = 0
           GETPOS = RUN_ALLOCATION_POS
-          SETPOS = RUN_ALLOCATION_POS
+          SETPOS = RUN_ALLOCATION_POS 
         ELSE IF(TRIM(VARNAME).EQ.'MODEL.NTIMESTEPS') THEN
           VARTYPE = 'INTEGER'
           READONLY = .FALSE.
@@ -1749,6 +1753,12 @@
           VARTYPE = 'DOUBLE'
           READONLY = .FALSE.
           NDIM = 1
+          GETPOS = NO_POSITION
+          SETPOS = NO_POSITION
+        ELSE IF(TRIM(VARNAME).EQ.'MODEL.PROPNU') THEN
+          VARTYPE = 'DOUBLE'
+          READONLY = .FALSE.
+          NDIM = 0
           GETPOS = NO_POSITION
           SETPOS = NO_POSITION
         ! <get_var_type>
@@ -2067,6 +2077,9 @@
           I = I + 1
           VNAME_T2D(I) = 'MODEL.VOLU2D'
           VINFO_T2D(I) = 'INTEGRAL OF BASES DOUBLE BIEF_OBJ'
+          I = I + 1
+          VNAME_T2D(I) = 'MODEL.PROPNU'
+          VINFO_T2D(I) = 'DIFFUSION COEFFICIENT OF VELOCITY'
           ! <set_var_list>
           IF(I.NE.NB_VAR_T2D) THEN
             IERR = INCREASE_NB_VAR_T2D_ERROR

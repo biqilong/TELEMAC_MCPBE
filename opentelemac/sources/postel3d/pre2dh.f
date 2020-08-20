@@ -3,7 +3,7 @@
 !                       *****************
 !
      &(X,Y,IKLES,IPOBO,NPOIN2,NELEM2,NC2DH,NCOU,TITCAS,
-     & FFORMAT,NVA3,TEXTLU)
+     & FFORMAT,NVA3,TEXTLU,X_ORIG,Y_ORIG)
 !
 !***********************************************************************
 ! POSTEL3D VERSION 5.1   01/09/99   T. DENOT (LNH) 01 30 87 74 89
@@ -62,6 +62,7 @@
       CHARACTER(LEN=32), INTENT(IN) :: TEXTLU(100)
       CHARACTER(LEN=8),INTENT(INOUT) :: FFORMAT
       INTEGER,INTENT(IN) :: NVA3
+      INTEGER, INTENT(IN) :: X_ORIG,Y_ORIG
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -103,7 +104,7 @@
         ENDDO
         CALL SET_MESH(FFORMAT,NCOU(IC),2,TRIANGLE_ELT_TYPE,3,0,0,
      &                NELEM2,NPOIN2,IKLE,IPOBO,IPOBO,X,Y,0,
-     &                DATE,TIME,IERR)
+     &                DATE,TIME,X_ORIG,Y_ORIG,IERR)
         CALL CHECK_CALL(IERR,'PRED2H:SET_MESH')
         DEALLOCATE(IKLE)
 !

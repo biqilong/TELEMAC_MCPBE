@@ -266,6 +266,11 @@
 !
       LOGICAL :: DEJA_SW = .FALSE.
       LOGICAL :: DEJA_CA = .FALSE.
+!
+!     IF YES, SOLAR RADIATION IS READ IN THE ASCII ATMOSPHERIC DATA FILE
+!
+      LOGICAL SOLRADMETEO
+!
 !-----------------------------------------------------------------------
 !
 !       4) REALS

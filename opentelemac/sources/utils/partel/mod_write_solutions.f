@@ -214,6 +214,7 @@
             CALL SET_MESH(FFORMAT,NOUT,2,TYP_ELEM,NDP,NPTFR_P(I),
      &                    NPTIR_P(I),NELEM_P(I),NPOIN_P(I),IKLE_P,
      &                    KNOLG_P,KNOLG_P,X,Y,NPLAN,DATE,TIME,
+     &                    X_ORIG,Y_ORIG,
      &                    IERR)
             CALL CHECK_CALL(IERR,'PARTEL:SET_MESH:NOUT')
           ELSE
@@ -221,6 +222,7 @@
      &                    NPTIR_P(I),NELEM_P(I)*(NPLAN-1),
      &                    NPOIN_P(I)*NPLAN,IKLE3D_P,
      &                    KNOLG_P,KNOLG_P,X,Y,NPLAN,DATE,TIME,
+     &                    X_ORIG,Y_ORIG,
      &                    IERR)
             CALL CHECK_CALL(IERR,'PARTEL:SET_MESH:NOUT')
             DEALLOCATE(IKLE3D_P)

@@ -1,6 +1,30 @@
 Trunk
 ===========================
 
+TELEMAC-3D: new keyword to change the number of tracer used for AMR
+(MESH TRANSFORMATION = 5)
+
+WAQTEL: new keyword to read the solar radiation in the meteo file instead of
+computing it in the heat exchange with atmosphere module in 3D
+
+TELEMAC-2D/TELEMAC-3D: possibility to use x and y origin coordinates stored
+in the geometry file to decrease the number of digits of coordinates
+when modelling tide.
+The tidal computations automatically take into account this offset for
+UTM + Lambert projections for JMJ+OSU (e.g. TPXO) databases
+Deleted keyword: ORIGIN COORDINATES
+
+TELEMAC-2D/TELEMAC-3D new keywords to define the minimum water depth by which
+divisions of transports are done for boundary and initial conditions if using
+OSU tidal solutions (e.g. TPXO) + possibility to start with 0 velocity
+or velocity computed by OSU tidal solutions
+
+TELEMAC-3D: UBOR2D and VBORD2D arrays not filled in correctly
+for Thompson Boundary Conditions in 3D
+
+TELEMAC-3D: COEFFICIENT TO CALIBRATE TIDAL VELOCITIES really taken into account
+when modelling tide in 3D (all tidal databases)
+
 WAQTEL: possibility to use a wind function with 2 calibrating coefficients
 with ATMOSPHERE-WATER EXCHANGE MODEL = 2 in 3D
 

@@ -90,11 +90,11 @@ class HermesFile():
             else:
                 raise TelemacException('Error: unsupported Operating System!')
             raise TelemacException(
-                    'Error: unable to load the dynamic library '
-                    + '_hermes.' + ext
-                    + '\nYou can check the environment variable:'
-                    + ' PYTHONPATH'
-                    + '\n'+str(execpt))
+                'Error: unable to load the dynamic library '
+                + '_hermes.' + ext
+                + '\nYou can check the environment variable:'
+                + ' PYTHONPATH'
+                + '\n'+str(execpt))
         HermesFile._hermes = sys.modules['_hermes']
 
         if 'r' in access:
@@ -104,13 +104,13 @@ class HermesFile():
                 self.openmode = b'READ     '
                 if not path.exists(self.file_name):
                     raise TelemacException(
-                            "Could not find {}".format(self.file_name))
+                        "Could not find {}".format(self.file_name))
         elif 'w' in access:
             self.openmode = b'WRITE    '
         else:
             raise TelemacException(
-                    "Error in access string '%s' \
-                    should contain only r and/or w " % access)
+                "Error in access string '%s' \
+                should contain only r and/or w " % access)
 
         self.logger.debug("Opening mesh %s in format %s in mode %s",
                           self.file_name,
@@ -243,8 +243,7 @@ class HermesFile():
 
         self.logger.debug("Getting number of points per element")
         ndp, self.error = HermesFile._hermes.get_mesh_npoin_per_element(
-                       self.fformat,
-                       self.my_id, self.typ_elem)
+            self.fformat, self.my_id, self.typ_elem)
 
         return ndp
 
@@ -262,8 +261,8 @@ class HermesFile():
         self.logger.debug("Number of points per element: %d", ndp)
         tmp_ikle = np.zeros((nelem*ndp), dtype=np.int32)
         self.error = HermesFile._hermes.get_mesh_connectivity(
-                      self.fformat, self.my_id, self.typ_elem,
-                      tmp_ikle, nelem, ndp)
+            self.fformat, self.my_id, self.typ_elem,
+            tmp_ikle, nelem, ndp)
         ikle = tmp_ikle.reshape((nelem, ndp)) - 1
 
         return ikle
@@ -307,6 +306,19 @@ class HermesFile():
                                 self.fformat, self.my_id)
 
         return ndim
+
+    def get_mesh_orig(self):
+        """
+        Retuns the number of planes
+
+        @returns The number of planes
+        """
+
+        self.logger.debug("Getting origin of coordinates")
+        x_orig, y_orig, self.error = HermesFile._hermes.get_mesh_orig(
+                                   self.fformat, self.my_id)
+
+        return x_orig, y_orig
 
     def get_mesh_coord(self, jdim):
         """
@@ -654,7 +666,7 @@ class HermesFile():
 
     def set_mesh(self, mesh_dim, typ_elem, ndp, nptfr, nptir, nelem, npoin,
                  ikles, ipobo, knolg, coordx, coordy, nplan, date,
-                 time, coordz=None):
+                 time, x_orig, y_orig, coordz=None):
         """
         Write the mesh information into the file
 
@@ -674,6 +686,8 @@ class HermesFile():
         @param nplan Number of planes
         @param date Date of the creation of the mesh
         @param time Time of the creation of the mesh
+        @param x_orig Origin of x coordinates
+        @param y_orig Origin of y coordinates
         @param coordz Z coordinates of the mesh points
         """
         if coordz is None:
@@ -691,7 +705,8 @@ class HermesFile():
                                  mesh_dim, typ_elem, ndp, nptfr,
                                  nptir, nelem, tmp_ikle,
                                  ipobo, knolg, coordx, coordy,
-                                 nplan, date, time, npoin, tmp_z)
+                                 nplan, date, time, x_orig, y_orig,
+                                 npoin, tmp_z)
         del tmp_ikle
         if coordz is None:
             del tmp_z
@@ -833,6 +848,7 @@ class HermesFile():
         nelem = src.get_mesh_nelem()
         ndp = src.get_mesh_npoin_per_element()
         nplan = src.get_mesh_nplan()
+        x_orig, y_orig = src.get_mesh_orig()
 
         coordx = src.get_mesh_coord(1)
         coordy = src.get_mesh_coord(2)
@@ -879,7 +895,7 @@ class HermesFile():
 
         self.set_mesh(ndim, typ_elem, ndp, nptfr, nptir, nelem, npoin,
                       ikle, ipobo, knolg, coordx, coordy, nplan, date2,
-                      time2, coordz)
+                      time2, x_orig, y_orig, coordz)
 
         if self.fformat == src.fformat and b'SERAFIN' not in self.fformat:
             self.import_group_info(src)

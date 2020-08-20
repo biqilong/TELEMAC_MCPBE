@@ -67,6 +67,13 @@ In a majority of cases, when no measurements are available,
 this flux is estimated using the method of Perrin \& Brichambaut (\cite{El-Kadi2012}),
 which uses the cloud cover of the sky that varies during the day (function of time).
 So far, this flux is considered constant in space.
+
+Since release 8.2, solar radiation or sun ray can be either read in the 
+\telkey{ASCII ATMOSPHERIC DATA FILE} or computed by \waqtel in 3D.
+To read it in the meteo file, the keyword
+\telkey{SOLAR RADIATION READ IN METEO FILE} is to be activated (default = NO,
+i.e. it is computed by \waqtel in 3D).
+
 For more real cases, the user is invited to use the ``heat exchange'' module
 (in folder sources/telemac3d).
 A sun ray flux varying in space, common between \telemac{2d} and \telemac{3d} will be implemented in next releases.

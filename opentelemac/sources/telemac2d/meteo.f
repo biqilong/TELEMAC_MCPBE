@@ -7,7 +7,7 @@
      & PATMOS_VALUE,AWATER_QUALITY,PLUIE,AOPTWIND,AWIND_SPD)
 !
 !***********************************************************************
-! TELEMAC2D   V7P2
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    COMPUTES ATMOSPHERIC PRESSURE AND WIND VELOCITY FIELDS
@@ -93,8 +93,8 @@
 !
       USE BIEF
       USE DECLARATIONS_WAQTEL,ONLY: PVAP,RAY3,NWIND,NEBU,TAIR,
-     &                              TAIR_VALUE,HREL,RAINFALL,
-     &                              EVAPORATION,ATMOSEXCH
+     &                              TAIR_VALUE,HREL,RAINFALL,ATMOSEXCH,
+     &                              RAYAED2
       USE DECLARATIONS_TELEMAC2D, ONLY : AT1_METEO,AT2_METEO,
      &                                   FUAIR1_METEO,FUAIR2_METEO,
      &                                   FVAIR1_METEO,FVAIR2_METEO
@@ -182,9 +182,10 @@
 !           TIME VARYING WATER QUALITY WITH HEAT EXCHANGE WITH ATMOSPHERE
               ELSEIF(ATMOSEXCH.EQ.1.OR.ATMOSEXCH.EQ.2) THEN
                 CALL INTERPMETEO(WW,UAIR,VAIR,TA,PATM,
-     &                           HREL,NEBU,RAINFALL,EVAPORATION,AT,UL)
+     &                           HREL,NEBU,RAINFALL,RAY3,AT,UL)
                 CALL OV('X=C     ', X=WINDX, C=UAIR, DIM1=NPOIN)
                 CALL OV('X=C     ', X=WINDY, C=VAIR, DIM1=NPOIN)
+                CALL OS('X=C     ', X=RAYAED2, C=RAY3)
               ENDIF
 !
             ELSEIF(OPTWIND.EQ.2) THEN
@@ -236,11 +237,12 @@
 !         TIME VARYING WATER QUALITY WITH HEAT EXCHANGE WITH ATMOSPHERE
             ELSEIF(ATMOSEXCH.EQ.1.OR.ATMOSEXCH.EQ.2) THEN
               CALL INTERPMETEO(WW,UAIR,VAIR,TA,PATM,
-     &                         HREL,NEBU,RAINFALL,EVAPORATION,AT,UL)
+     &                         HREL,NEBU,RAINFALL,RAY3,AT,UL)
               CALL OV('X=C     ',X=WINDX, C=UAIR, DIM1=NPOIN)
               CALL OV('X=C     ',X=WINDY, C=VAIR, DIM1=NPOIN)
               CALL OV('X=C     ',X=PATMOS, C=PATM, DIM1=NPOIN)
               CALL OV('X=C     ',X=TAIR%R, C=TA, DIM1=NPOIN)
+              CALL OS('X=C     ', X=RAYAED2, C=RAY3)
             ENDIF
 !
           ELSEIF (VENT) THEN

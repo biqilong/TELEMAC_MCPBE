@@ -222,6 +222,17 @@ than elements at the bottom with a minimum height of
 \telkey{MINIMUM DISTANCE BETWEEN PLANES CLOSE TO THE BOTTOM},
 this last keyword should be set to 0~m and
 \telkey{THRESHOLD HEIGHT BEFORE CRUSHED ELEMENTS} to a value greater than 0~m.
+\\
+
+Another mesh transformation was introduced in release 6.1:
+the Adaptive Mesh Refinement (or Redistribution) aka AMR.
+It can be used by setting \telkey{MESH TRANSFORMATION} = 5.
+The mesh is changed following criteria for a tracer.
+The interested user can read the TUC 2011 proceeding \cite{Cawthorn2011}
+for more details.
+The keyword \telkey{NUMBER OF TRACER FOR AMR} enables to change the number of
+tracer given to AMR algorithm in order to adapt the vertical mesh (default = 1).
+
 
 \section{Prescribing the initial conditions}
 
@@ -1296,6 +1307,27 @@ rather than directly addressing to the global database. The harmonic constants
 specific file is specified using the keyword \telkey{HARMONIC CONSTANTS FILE},
 this file is an output file in the first calculation, and an input file in
 subsequent calculations.
+\\
+
+If using tidal solutions coming from OSU (e.g. TPXO), to get velocity
+components, it is necessary to divide the transports terms
+(water depth times velocity components) by water depth.
+A minimum value of water depth to get them is taken to avoid divisions by 0.
+Since release 8.2, it is possible to change this old hard coded value of 0.1~m,
+both for boundary conditions and initial conditions, with the keywords
+\telkey{MINIMUM DEPTH TO COMPUTE TIDAL VELOCITIES BOUNDARY CONDITIONS} and
+\telkey{MINIMUM DEPTH TO COMPUTE TIDAL VELOCITIES INITIAL CONDITIONS}.
+Both default values are 0.1~m.
+Moreover, for initial conditions, if water depth is below 
+\telkey{MINIMUM DEPTH TO COMPUTE TIDAL VELOCITIES INITIAL CONDITIONS},
+the velocity components are set to 0.
+These 2 keywords enable to decrease artificially too high velocities
+in particular at open boundaries with shallows or if the tidal solutions
+have shallows at the same location.
+If this effect of the latter keyword is not sufficient,
+the user can initialise the computation with no velocities with
+\telkey{INITIAL VELOCITIES COMPUTED BY TPXO} = NO (default = YES, i.e. the
+tidal velocities are computed by algorithms to use OSU tidal solutions).
 
 
 \subsubsection{Horizontal spatial calibration}
@@ -1350,6 +1382,22 @@ in the tide examples of \telemac{2D} called gr3df97a.txt which is used
 for the conversion in the Lambert 93 projection.
 The keyword \telkey{LAMBERT 93 CONVERSION FILE} has to indicate the path
 and the name of the gr3df97a.txt file.
+\\
+
+Since release 8.2, it is possible to use $x$ and $y$ origin coordinates stored
+in the geometry file to decrease the number of digits of coordinates
+when modelling tide, e.g. when using UTM or Lambert projections.
+The two numbers are stored in the \telfile{I\_ORIGIN} and \telfile{J\_ORIGIN}
+variables reachable with the help of \telfile{GET\_MESH\_ORIG} subroutine.
+Caution: these two numbers are integers, not floats as the preliminary structure
+available in the SERAFIN format expected this type for these 2 variables.
+The tidal computations automatically take into account this offset for
+UTM + Lambert projections when generating the \telkey{HARMONIC CONSTANTS FILE}
+for JMJ database or when interpolating harmonic constants to compute boundary
+or initial conditions for solutions coming from OSU (e.g. TPXO).
+In particular for the operations to locate the nodes correctly (a simple
+translation) but \telemac{3D} still continues to compute other steps in a local
+coordinate system.
 
 \subsubsection{Calibration of the information}
 

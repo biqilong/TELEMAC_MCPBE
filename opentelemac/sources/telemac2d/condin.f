@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC2D   V7P3
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    INITIALISES THE PHYSICAL PARAMETERS H, U, V ETC.
@@ -109,7 +109,8 @@
      &                  GEOSYST,NUMZONE,T2DL93,LAMBD0,PHI0,
      &                  T2D_FILES,T2DBB1,T2DBB2,
      &                  MARDAT,MARTIM,INTMICON,MSL,
-     &                  TIDALTYPE,BOUNDARY_COLOUR,ICALHWG)
+     &                  TIDALTYPE,BOUNDARY_COLOUR,ICALHWG,
+     &                  I_ORIG,J_ORIG,HMIN_VIT_IC,VITINI_TPXO)
       ELSEIF(CDTINI(1:13).EQ.'PARTICULIERES'.OR.
      &       CDTINI(1:10).EQ.'PARTICULAR'.OR.
      &       CDTINI(1:07).EQ.'SPECIAL') THEN

@@ -53,9 +53,12 @@ def report2xls_parser(subparser):
         "xls_file",
         help="path of the xls file.")
     parser.add_argument(
-        "-a", "--append",
-        dest="append", action='store_true', default=False,
-        help='If given append data to existing xls file')
+        "--mode",
+        dest="mode", default='create',
+        choices=['create', 'append', 'insert'],
+        help="mode of xrite (create for a new file, "
+             "append to add a new column at the end, "
+             "insert to add a new column at the beginning")
     parser.add_argument(
         "--title",
         dest="title", default=None,
@@ -76,6 +79,10 @@ def report2xls_parser(subparser):
         "-v", "--verbose",
         dest="verbose", action='store_true', default=False,
         help='Will print more information')
+    parser.add_argument(
+        "--max-report",
+        dest="max_report", default=0, type=int,
+        help='Fix max of report within the file (delete oldest one)')
 
     return subparser
 
@@ -189,8 +196,9 @@ def main():
             options.title = proc.group('config')
 
         rep.read(file_name=options.report_file)
-        rep.write2xls(options.xls_file, options.append, options.title,
-                      options.job_id, options.date, verbose=options.verbose)
+        rep.write2xls(options.xls_file, options.mode, options.title,
+                      options.job_id, options.date, verbose=options.verbose,
+                      max_report=options.max_report)
     else:
         parser.print_help()
 

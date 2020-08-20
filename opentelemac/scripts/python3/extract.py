@@ -8,6 +8,7 @@
 #
 # ~~> dependencies towards standard python
 import sys
+from os import path
 from argparse import ArgumentParser
 import numpy as np
 from data_manip.extraction.extract_actions import \
@@ -38,24 +39,37 @@ def main():
 
 #   Actions to run
     if command == 'timeseries':
-        header, data = extract_timeseries(options.file_name, options.var,
-                                          nodes=options.nodes,
-                                          points=options.points)
+        variables = options.var.split(',')
+        for var in variables:
+            header, data = extract_timeseries(options.file_name, var,
+                                              nodes=options.nodes,
+                                              points=options.points)
+            # Writting csv file
+            csv_name = options.csv_name
+            if len(variables) > 1:
+                root, ext = path.splitext(options.csv_name)
+                csv_name = "{}_{}{}".format(root, var.strip(' ').replace(' ', '_'), ext)
+
+            np.savetxt(csv_name, data, header=options.delimiter.join(header),
+                       delimiter=options.delimiter)
 
     elif command == "mesh2d":
         header, data = extract_mesh2d(options.file_name)
+        # Writting csv file
+        np.savetxt(options.csv_name, data, header=options.delimiter.join(header),
+                   delimiter=options.delimiter)
 
     elif command == 'spectrum':
         header, data = extract_spectrum(\
                 options.file_name, options.point,
                 radian=options.radian,
                 time=options.time, record=options.record)
+        # Writting csv file
+        np.savetxt(options.csv_name, data, header=options.delimiter.join(header),
+                   delimiter=options.delimiter)
     else:
         parser.print_help()
 
-    # Writting csv file
-    np.savetxt(options.csv_name, data, header=options.delimiter.join(header),
-               delimiter=options.delimiter)
 
     sys.exit(0)
 

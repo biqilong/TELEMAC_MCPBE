@@ -68,6 +68,9 @@
         INTEGER :: TYP_BND_ELT
         INTEGER :: NPTFR
         INTEGER :: NCLI
+        ! COORDINATES OFFSET
+        INTEGER :: X_ORIG
+        INTEGER :: Y_ORIG
         !FILE ID OF THE INDEX FILE
         INTEGER :: MESH_IDX_ID
         INTEGER :: CLI_IDX_ID
@@ -438,6 +441,8 @@
      &           'OPEN_MESH_SRF:READ_IB'
             RETURN
           ENDIF
+          SRF_OBJ_TAB(SRF_ID)%X_ORIG = IB(3)
+          SRF_OBJ_TAB(SRF_ID)%Y_ORIG = IB(4)
           SRF_OBJ_TAB(SRF_ID)%NPLAN = IB(7)
           SRF_OBJ_TAB(SRF_ID)%NPTFR = IB(8)
           SRF_OBJ_TAB(SRF_ID)%NPTIR = IB(9)
@@ -595,6 +600,8 @@
           SRF_OBJ_TAB(SRF_ID)%NPTFR = 0
           SRF_OBJ_TAB(SRF_ID)%NPTIR = 0
           SRF_OBJ_TAB(SRF_ID)%NDIM = 0
+          SRF_OBJ_TAB(SRF_ID)%X_ORIG = 0
+          SRF_OBJ_TAB(SRF_ID)%Y_ORIG = 0
           SRF_OBJ_TAB(SRF_ID)%TYP_ELT = 0
           SRF_OBJ_TAB(SRF_ID)%TYP_BND_ELT = 0
           SRF_OBJ_TAB(SRF_ID)%CLI_LINE_BEGIN = 0
@@ -901,6 +908,8 @@
         SRF_OBJ_TAB(SRF_ID)%NPTFR = 0
         SRF_OBJ_TAB(SRF_ID)%NPTIR = 0
         SRF_OBJ_TAB(SRF_ID)%NDIM = 0
+        SRF_OBJ_TAB(SRF_ID)%X_ORIG = 0
+        SRF_OBJ_TAB(SRF_ID)%Y_ORIG = 0
         SRF_OBJ_TAB(SRF_ID)%TYP_ELT = 0
         SRF_OBJ_TAB(SRF_ID)%TYP_BND_ELT = 0
         SRF_OBJ_TAB(SRF_ID)%CLI_LINE_BEGIN = 0
@@ -1263,6 +1272,50 @@
         ENDIF
         !
         NPLAN = SRF_OBJ_TAB(SRF_ID)%NPLAN
+        !
+        RETURN
+      END SUBROUTINE
+!***********************************************************************
+      SUBROUTINE GET_MESH_ORIG_SRF
+!***********************************************************************
+!
+     &(FILE_ID,X_ORIG,Y_ORIG,IERR)
+!
+!***********************************************************************
+! HERMES   V7P0                                               01/05/2014
+!***********************************************************************
+!
+!brief    Returns the X,Y origin of the mesh file
+!
+!history  Y AUDOUIN (LNHE)
+!+        24/03/2014
+!+        V7P0
+!+
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| FILE_ID        |-->| FILE DESCRIPTOR
+!| X_ORIG         |<->| Off set of the X coordinates
+!| Y_ORIG         |<->| Off set of the Y coordinates
+!| IERR           |<--| 0 IF NO ERROR DURING THE EXECUTION
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+        IMPLICIT NONE
+        !
+        INTEGER, INTENT(IN) :: FILE_ID
+        INTEGER, INTENT(INOUT) :: X_ORIG, Y_ORIG
+        INTEGER, INTENT(OUT) :: IERR
+        !
+        INTEGER          :: SRF_ID
+        !
+        CALL GET_OBJ(HASH,FILE_ID,SRF_ID,IERR)
+        IF(IERR.NE.0) THEN
+          ERROR_MESSAGE = 'ERROR WITH ID '//I2CHAR(FILE_ID)//': '//
+     &         'GET_MESH_ORIG_SRF:GET_OBJ'
+          RETURN
+        ENDIF
+        !
+        X_ORIG = SRF_OBJ_TAB(SRF_ID)%X_ORIG
+        Y_ORIG = SRF_OBJ_TAB(SRF_ID)%Y_ORIG
         !
         RETURN
       END SUBROUTINE
@@ -2559,7 +2612,7 @@
 !***********************************************************************
 !
      &(FFORMAT,FILE_ID,MESH_DIM,TYPELT,NDP,NPTFR,NPTIR,NELEM,NPOIN,
-     & IKLE,IPOBO,KNOLG,X,Y,NPLAN,DATE,TIME,IERR,IN_PLACE)
+     & IKLE,IPOBO,KNOLG,X,Y,NPLAN,DATE,TIME,X_ORIG,Y_ORIG,IERR,IN_PLACE)
 !
 !***********************************************************************
 ! HERMES   V7P0                                               01/05/2014
@@ -2590,6 +2643,8 @@
 !| NPLAN          |-->| NUMBER OF PLANES
 !| DATE           |-->| DATE OF THE CREATION OF THE MESH
 !| TIME           |-->| TIME OF THE CREATION OF THE MESH
+!| X_ORIG         |-->| Off set of the X coordinates
+!| Y_ORIG         |-->| Off set of the Y coordinates
 !| IERR           |<--| 0 IF NO ERROR DURING THE EXECUTION
 !| Z  (OPTIONAL)  |-->| Z COORDINATES OF THE MESH POINTS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2612,6 +2667,7 @@
         INTEGER,               INTENT(IN) :: IPOBO(*)
         INTEGER,               INTENT(IN) :: KNOLG(*)
         DOUBLE PRECISION,      INTENT(IN) :: X(NPOIN),Y(NPOIN)
+        INTEGER,               INTENT(IN) :: X_ORIG,Y_ORIG
         INTEGER,               INTENT(OUT) :: IERR
         LOGICAL, OPTIONAL,     INTENT(IN) :: IN_PLACE
         !
@@ -2676,8 +2732,8 @@
         SRF_OBJ_TAB(SRF_ID)%NDIM = MESH_DIM
         TMP(1) = 1
         TMP(2) = 0
-        TMP(3) = 0
-        TMP(4) = 0
+        TMP(3) = X_ORIG
+        TMP(4) = Y_ORIG
         TMP(5) = 0
         TMP(6) = 0
         TMP(7) = SRF_OBJ_TAB(SRF_ID)%NPLAN

@@ -253,6 +253,7 @@ def run_gretel(gretel, gre_file, file_format, geom, geo_format, bnd,
                       str(method)])
     mes = Messages(size=10)
     cmd = '{} < {} >> {}'.format(gretel, gretel_par, gretel_log)
+    print('     +> '+cmd)
     tail, code = mes.run_cmd(cmd, bypass)
     if code != 0:
         if path.exists(gretel_log):

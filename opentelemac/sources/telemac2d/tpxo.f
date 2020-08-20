@@ -2255,10 +2255,11 @@
 !
      &(NPOIN,NPTFR,NBOR,X,Y,H,U,V,LIHBOR,LIUBOR,KENT,KENTU,
      & GEOSYST,NUMZONE,T2DL93,LAMBD0,PHI0,T2D_FILES,T2DBB1,T2DBB2,
-     & MARDAT,MARTIM,INTMICON,MSL,TIDALTYPE,BOUNDARY_COLOUR,ICALHW)
+     & MARDAT,MARTIM,INTMICON,MSL,TIDALTYPE,BOUNDARY_COLOUR,ICALHW,
+     & I_ORIG,J_ORIG,HMIN_VIT_IC,VITINI_TPXO)
 !
 !***********************************************************************
-! TELEMAC2D   V7P3
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    Prepare a level boundary filter to store the TPXO constituents
@@ -2308,10 +2309,14 @@
 !|  GEOSYST       |-->| TYPE OF GEOGRAPHIC SYSTEM (WGS84 LONG/LAT, UTM OR LAMBERT)
 !|  H             |<->| COMES IN AS -ZF, TO WHICH THE TPXO FREE SURFACE
 !|                |   | WILL BE ADDED TO PRODUCE WATER DEPTH
+!|  HMIN_VIT_IC   |-->| MINIMUM DEPTH TO COMPUTE TIDAL VELOCITIES
+!|                |   | INITIAL CONDITIONS
 !|  ICALHW        |<->| NUMBER THAT MAY BE CHOSEN BY THE USER
 !|                |   | TO CALIBRATE HIGH WATER OR AUTOMATICALLY CHOSEN
 !|                |   | IN CASE OF THE MODELLING OF A SCHEMATIC TIDE
 !|  INTMICON      |-->| IF YES, INFERENCE OF MINOR CONSTITUENTS
+!|  I_ORIG        |-->| OFFSET ON X COORDINATES
+!|  J_ORIG        |-->| OFFSET ON Y COORDINATES
 !|  KENT          |-->| CONVENTION FOR LIQUID INPUT WITH PRESCRIBED VALUE
 !|  KENTU         |-->| CONVENTION FOR LIQUID INPUT WITH PRESCRIBED VELOCITY
 !|  LAMBD0        |-->| LATITUDE OF ORIGIN POINT (KEYWORD, IN DEGREES)
@@ -2334,6 +2339,8 @@
 !|  TIDALTYPE     |-->| TYPE OF TIDE TO MODEL
 !|  U             |<--| 2D DEPTH-AVERAGED VELOCITY COMPONENT U
 !|  V             |<--| 2D DEPTH-AVERAGED VELOCITY COMPONENT V
+!|  VITINI_TPXO   |-->| IF YES, INITIAL VELOCITIES ARE COMPUTED FROM OSU
+!|                |   | TIDAL SOLUTIONS, E.G. TPXO. OTHERWISE = 0.
 !|  X             |-->| COORDINATES X OF THE NODES OF THE MESH
 !|  Y             |-->| COORDINATES Y OF THE NODES OF THE MESH
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2352,14 +2359,15 @@
       INTEGER, INTENT(IN)             :: NBOR(NPTFR)
       INTEGER, INTENT(IN)             :: GEOSYST,NUMZONE,T2DL93
       INTEGER, INTENT(IN)             :: TIDALTYPE,MARTIM(3)
+      INTEGER, INTENT(IN)             :: I_ORIG,J_ORIG
       INTEGER, INTENT(INOUT)          :: ICALHW,MARDAT(3)
-      DOUBLE PRECISION, INTENT(IN)    :: LAMBD0,PHI0,MSL
+      DOUBLE PRECISION, INTENT(IN)    :: LAMBD0,PHI0,MSL,HMIN_VIT_IC
       DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN)
       DOUBLE PRECISION, INTENT(INOUT) :: H(NPOIN)
       DOUBLE PRECISION, INTENT(INOUT) :: U(NPOIN),V(NPOIN)
       TYPE(BIEF_FILE), INTENT(IN)     :: T2D_FILES(*)
       TYPE(BIEF_OBJ), INTENT(IN)      :: BOUNDARY_COLOUR
-      LOGICAL, INTENT(INOUT)          :: INTMICON
+      LOGICAL, INTENT(INOUT)          :: INTMICON,VITINI_TPXO
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -2368,8 +2376,9 @@
       INTEGER, ALLOCATABLE :: MASKT(:,:),MASKU(:,:),MASKV(:,:)
       DOUBLE PRECISION PI,DTR,RTD
       DOUBLE PRECISION STIME_MJD
-      DOUBLE PRECISION XM,XL,YL,XO,YO,ALPHA,RADIUS
+      DOUBLE PRECISION XM,XL,YL,XO,YO,ALPHA,RADIUS,X_ORIG,Y_ORIG
       DOUBLE PRECISION, ALLOCATABLE :: LAT(:),LON(:)
+      DOUBLE PRECISION, ALLOCATABLE :: XT(:),YT(:)
       DOUBLE PRECISION PH_LIM(2),TH_LIM(2)
       REAL PH_LIM_R(2),TH_LIM_R(2)
 !      COMPLEX, ALLOCATABLE :: ZT(:,:,:)
@@ -2633,14 +2642,48 @@
 !  WARNING!!! IN TELEMAC DICO, LAMBD0 IS LATITUDE AND PHI0 IS LONGITUDE
 !  LAMBD0 AND PHI0 ARE NOT USED FOR GEOSYST = 2 OR 3
       IF(GEOSYST.EQ.2.OR.GEOSYST.EQ.3.OR.GEOSYST.EQ.5) THEN
-        CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
-     &                               LON(1:NPOIN),LAT(1:NPOIN),
-     &                               GEOSYST,NUMZONE,PHI0,LAMBD0)
+!       POSSIBLE OFFSET STORED IN THE GEOMETRY FILE
+        IF(I_ORIG.NE.0.OR.J_ORIG.NE.0) THEN
+          X_ORIG = DBLE(I_ORIG)
+          Y_ORIG = DBLE(J_ORIG)
+!         X AND Y ARE READ ONLY => OTHER ARRAYS XT AND YT
+          ALLOCATE( XT(NPOIN) )
+          ALLOCATE( YT(NPOIN) )
+          DO K=1,NPOIN
+            XT(K) = X(K) + X_ORIG
+            YT(K) = Y(K) + Y_ORIG
+          ENDDO
+          CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,XT(1:NPOIN),YT(1:NPOIN),
+     &                                 LON(1:NPOIN),LAT(1:NPOIN),
+     &                                 GEOSYST,NUMZONE,PHI0,LAMBD0)
+          DEALLOCATE( XT,YT )
+        ELSE
+          CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
+     &                                 LON(1:NPOIN),LAT(1:NPOIN),
+     &                                 GEOSYST,NUMZONE,PHI0,LAMBD0)
+        ENDIF
 !  NTF LAMBERT
       ELSEIF(GEOSYST.EQ.4) THEN
-        CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
-     &                              LON(1:NPOIN),LAT(1:NPOIN),
-     &                              NUMZONE,T2D_FILES(T2DL93)%LU)
+!       POSSIBLE OFFSET STORED IN THE GEOMETRY FILE
+        IF(I_ORIG.NE.0.OR.J_ORIG.NE.0) THEN
+          X_ORIG = DBLE(I_ORIG)
+          Y_ORIG = DBLE(J_ORIG)
+!         X AND Y ARE READ ONLY => OTHER ARRAYS XT AND YT
+          ALLOCATE( XT(NPOIN) )
+          ALLOCATE( YT(NPOIN) )
+          DO K=1,NPOIN
+            XT(K) = X(K) + X_ORIG
+            YT(K) = Y(K) + Y_ORIG
+          ENDDO
+          CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,XT(1:NPOIN),YT(1:NPOIN),
+     &                                LON(1:NPOIN),LAT(1:NPOIN),
+     &                                NUMZONE,T2D_FILES(T2DL93)%LU)
+          DEALLOCATE( XT,YT )
+        ELSE
+          CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
+     &                                LON(1:NPOIN),LAT(1:NPOIN),
+     &                                NUMZONE,T2D_FILES(T2DL93)%LU)
+        ENDIF
 !  WGS84 LONGITUDE/LATITUDE
       ELSEIF(GEOSYST.EQ.1) THEN
         DO K=1,NPOIN
@@ -3022,7 +3065,7 @@
      &              STIME_MJD,INTMICON)
 !
 !     VELOCITY READ IN M/S
-          IF( H(IPOIN).GT.0.1D0 ) THEN
+          IF( H(IPOIN).GT.HMIN_VIT_IC .AND. VITINI_TPXO ) THEN
             U(IPOIN) = U(IPOIN) / H(IPOIN)
             V(IPOIN) = V(IPOIN) / H(IPOIN)
             SPEED = SQRT( U(IPOIN)**2+V(IPOIN)**2 )
@@ -3112,7 +3155,7 @@
      &        PTIDE_SCHEM(ZCON3_R,ZCON3_I,C_ID2,NCON2,CCIND2,0.D0)
 !
 !     VELOCITY READ IN M/S
-          IF( H(IPOIN).GT.0.1D0 ) THEN
+          IF( H(IPOIN).GT.HMIN_VIT_IC  .AND. VITINI_TPXO ) THEN
             U(IPOIN) = U(IPOIN) / H(IPOIN)
             V(IPOIN) = V(IPOIN) / H(IPOIN)
             SPEED = SQRT( U(IPOIN)**2+V(IPOIN)**2 )
@@ -3153,10 +3196,10 @@
      & BOUNDARY_COLOUR,HBTIDE,UBTIDE,VBTIDE,
      & ICALHW,MARDAT,MARTIM,
      & T2D_FILES,T2DBB1,T2DBB2,X,Y,GEOSYST,NUMZONE,T2DL93,LAMBD0,PHI0,
-     & INTMICON)
+     & I_ORIG,J_ORIG,INTMICON,HMIN_VIT_BC)
 !
 !***********************************************************************
-! TELEMAC2D   V7P3
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    MODIFIES THE BOUNDARY CONDITIONS ARRAYS FOR TIDES
@@ -3195,10 +3238,14 @@
 !| CTIDEV         |-->| COEFFICIENT TO CALIBRATE THE VELOCITIES
 !| GEOSYST        |-->| TYPE OF GEOGRAPHIC SYSTEM (WGS84 LONG/LAT, UTM OR LAMBERT)
 !| HBTIDE         |<->| WATER DEPTH ON TIDAL BOUNDARY CONDITIONS
+!| HMIN_VIT_BC    |-->| MINIMUM DEPTH TO COMPUTE TIDAL VELOCITIES
+!|                |   | BOUNDARY CONDITIONS
 !| ICALHW         |<->| NUMBER THAT MAY BE CHOSEN BY THE USER
 !|                |   | TO CALIBRATE HIGH WATER OR AUTOMATICALLY CHOSEN
 !|                |   | IN CASE OF THE MODELLING OF A SCHEMATIC TIDE
 !| INTMICON       |-->| IF YES, INFERENCE OF MINOR CONSTITUENTS
+!| I_ORIG         |-->| OFFSET ON X COORDINATES
+!| J_ORIG         |-->| OFFSET ON Y COORDINATES
 !| KENT           |-->| CONVENTION FOR LIQUID INPUT WITH PRESCRIBED VALUE
 !| KENTU          |-->| CONVENTION FOR LIQUID INPUT WITH PRESCRIBED VELOCITY
 !| LAMBD0         |-->| LATITUDE OF ORIGIN POINT (KEYWORD, IN DEGREES)
@@ -3241,9 +3288,10 @@
       INTEGER, INTENT(IN)             :: LIHBOR(NPTFR),LIUBOR(NPTFR)
       INTEGER, INTENT(IN)             :: NUMLIQ(NPTFR),NBOR(NPTFR)
       INTEGER, INTENT(IN)             :: TIDALTYPE,MARDAT(3),MARTIM(3)
+      INTEGER, INTENT(IN)             :: I_ORIG,J_ORIG
       INTEGER, INTENT(INOUT)          :: ICALHW
       DOUBLE PRECISION, INTENT(IN)    :: TEMPS,CTIDE,MSL,CTIDEV
-      DOUBLE PRECISION, INTENT(IN)    :: LAMBD0,PHI0
+      DOUBLE PRECISION, INTENT(IN)    :: LAMBD0,PHI0,HMIN_VIT_BC
       DOUBLE PRECISION, INTENT(IN)    :: ZF(NPOIN)
       DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN)
       TYPE(BIEF_FILE), INTENT(IN)     :: T2D_FILES(*)
@@ -3260,8 +3308,9 @@
       DOUBLE PRECISION PI,DTR,RTD
       DOUBLE PRECISION Z
       DOUBLE PRECISION STIME_MJD
-      DOUBLE PRECISION XM,XL,YL,XO,YO,ALPHA,RADIUS
+      DOUBLE PRECISION XM,XL,YL,XO,YO,ALPHA,RADIUS,X_ORIG,Y_ORIG
       DOUBLE PRECISION, ALLOCATABLE :: LAT(:),LON(:)
+      DOUBLE PRECISION, ALLOCATABLE :: XT(:),YT(:)
       DOUBLE PRECISION PH_LIM(2),TH_LIM(2)
       REAL PH_LIM_R(2),TH_LIM_R(2)
 !      COMPLEX, ALLOCATABLE :: ZT(:,:,:)
@@ -3531,14 +3580,49 @@
 !  WARNING!!! IN TELEMAC DICO, LAMBD0 IS LATITUDE AND PHI0 IS LONGITUDE
 !  LAMBD0 AND PHI0 ARE NOT USED FOR GEOSYST = 2 OR 3
       IF(GEOSYST.EQ.2.OR.GEOSYST.EQ.3.OR.GEOSYST.EQ.5) THEN
-        CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
-     &                               LON(1:NPOIN),LAT(1:NPOIN),
-     &                               GEOSYST,NUMZONE,PHI0,LAMBD0)
+!       POSSIBLE OFFSET STORED IN THE GEOMETRY FILE
+        IF(I_ORIG.NE.0.OR.J_ORIG.NE.0) THEN
+          X_ORIG = DBLE(I_ORIG)
+          Y_ORIG = DBLE(J_ORIG)
+!         X AND Y ARE READ ONLY => OTHER ARRAYS XT AND YT
+          ALLOCATE( XT(NPOIN) )
+          ALLOCATE( YT(NPOIN) )
+          DO K=1,NPOIN
+            XT(K) = X(K) + X_ORIG
+            YT(K) = Y(K) + Y_ORIG
+          ENDDO
+          CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,XT(1:NPOIN),YT(1:NPOIN),
+     &                                 LON(1:NPOIN),LAT(1:NPOIN),
+     &                                 GEOSYST,NUMZONE,PHI0,LAMBD0)
+          DEALLOCATE( XT,YT )
+        ELSE
+          CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
+     &                                 LON(1:NPOIN),LAT(1:NPOIN),
+     &                                 GEOSYST,NUMZONE,PHI0,LAMBD0)
+        ENDIF
+!
 !  NTF LAMBERT
       ELSEIF(GEOSYST.EQ.4) THEN
-        CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
-     &                              LON(1:NPOIN),LAT(1:NPOIN),
-     &                              NUMZONE,T2D_FILES(T2DL93)%LU)
+!       POSSIBLE OFFSET STORED IN THE GEOMETRY FILE
+        IF(I_ORIG.NE.0.OR.J_ORIG.NE.0) THEN
+          X_ORIG = DBLE(I_ORIG)
+          Y_ORIG = DBLE(J_ORIG)
+!         X AND Y ARE READ ONLY => OTHER ARRAYS XT AND YT
+          ALLOCATE( XT(NPOIN) )
+          ALLOCATE( YT(NPOIN) )
+          DO K=1,NPOIN
+            XT(K) = X(K) + X_ORIG
+            YT(K) = Y(K) + Y_ORIG
+          ENDDO
+          CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,XT(1:NPOIN),YT(1:NPOIN),
+     &                                LON(1:NPOIN),LAT(1:NPOIN),
+     &                                NUMZONE,T2D_FILES(T2DL93)%LU)
+          DEALLOCATE( XT,YT )
+        ELSE
+          CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
+     &                                LON(1:NPOIN),LAT(1:NPOIN),
+     &                                NUMZONE,T2D_FILES(T2DL93)%LU)
+        ENDIF
 !  WGS84 LONGITUDE/LATITUDE
       ELSEIF(GEOSYST.EQ.1) THEN
         DO K=1,NPOIN
@@ -3973,13 +4057,13 @@
      &                                TPXO_BOR_R,TPXO_BOR_I,C_ID,
      &                                NCON,CCIND,
      &                                STIME_MJD+TEMPS/86400.D0,INTMICON)
-     &              / MAX( 0.1D0 , Z-ZF(NBOR(K)) )
+     &              / MAX( HMIN_VIT_BC , Z-ZF(NBOR(K)) )
             VBTIDE%R(K) =
      &              CTIDEV*TPXO_PTIDE(3,NBOR(K),TPXO_NFR,
      &                                TPXO_BOR_R,TPXO_BOR_I,C_ID,
      &                                NCON,CCIND,
      &                                STIME_MJD+TEMPS/86400.D0,INTMICON)
-     &              / MAX( 0.1D0 , Z-ZF(NBOR(K)) )
+     &              / MAX( HMIN_VIT_BC , Z-ZF(NBOR(K)) )
 !$$$           ENDIF
           ELSEIF(TIDALTYPE.GE.2.AND.TIDALTYPE.LE.6) THEN
 !  IF LIHBOR(K).EQ.4, Z IS NOT CALCULATED BEFORE
@@ -3992,12 +4076,12 @@
      &         CTIDEV*TPXO_PTIDE_SCHEM(2,NBOR(K),TPXO_NFR,
      &                                 TPXO_BOR2_R,TPXO_BOR2_I,
      &                                 C_ID2,NCON2,CCIND2,TEMPS)
-     &               / MAX( 0.1D0 , Z-ZF(NBOR(K)) )
+     &               / MAX( HMIN_VIT_BC , Z-ZF(NBOR(K)) )
             VBTIDE%R(K) =
      &         CTIDEV*TPXO_PTIDE_SCHEM(3,NBOR(K),TPXO_NFR,
      &                                 TPXO_BOR2_R,TPXO_BOR2_I,
      &                                 C_ID2,NCON2,CCIND2,TEMPS)
-     &              / MAX( 0.1D0 , Z-ZF(NBOR(K)) )
+     &               / MAX( HMIN_VIT_BC , Z-ZF(NBOR(K)) )
 !$$$           ENDIF
           ENDIF
 !
@@ -4016,10 +4100,10 @@
 !                   **********************
 !
      &(NPOIN,X,Y,H,GEOSYST,NUMZONE,T2DL93,LAMBD0,PHI0,T2D_FILES,T2DBB1,
-     & CAMPLIF,MSL)
+     & CAMPLIF,MSL,I_ORIG,J_ORIG)
 !
 !***********************************************************************
-! TELEMAC2D   V7P3
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    Prepare a level boundary filter to store the TPXO constituents
@@ -4048,6 +4132,8 @@
 !|  GEOSYST       |-->| TYPE OF GEOGRAPHIC SYSTEM (WGS84 LONG/LAT, UTM OR LAMBERT)
 !|  H             |<->| COMES IN AS -ZF, TO WHICH THE TPXO FREE SURFACE
 !|                |   | WILL BE ADDED TO PRODUCE WATER DEPTH
+!|  I_ORIG        |-->| OFFSET ON X COORDINATES
+!|  J_ORIG        |-->| OFFSET ON Y COORDINATES
 !|  LAMBD0        |-->| LATITUDE OF ORIGIN POINT (KEYWORD, IN DEGREES)
 !|  MSL           |-->| COEFFICIENT TO CALIBRATE SEA LEVEL KEYWORD
 !|  NPOIN         |-->| NUMBER OF 2D NODES IN THE MESH
@@ -4071,6 +4157,7 @@
 !
       INTEGER, INTENT(IN)             :: NPOIN,T2DBB1
       INTEGER, INTENT(IN)             :: GEOSYST,NUMZONE,T2DL93
+      INTEGER, INTENT(IN)             :: I_ORIG,J_ORIG
       DOUBLE PRECISION, INTENT(IN)    :: LAMBD0,PHI0,CAMPLIF,MSL
       DOUBLE PRECISION, INTENT(IN)    :: X(NPOIN),Y(NPOIN)
       DOUBLE PRECISION, INTENT(INOUT) :: H(NPOIN)
@@ -4081,8 +4168,9 @@
       INTEGER IC,I,J,K,IPOIN,IERR,NC,N,M
       INTEGER, ALLOCATABLE :: MASKT(:,:)
       DOUBLE PRECISION PI,DTR,RTD
-      DOUBLE PRECISION XM,XL,YL,XO,YO,ALPHA,RADIUS
+      DOUBLE PRECISION XM,XL,YL,XO,YO,ALPHA,RADIUS,X_ORIG,Y_ORIG
       DOUBLE PRECISION, ALLOCATABLE :: LAT(:),LON(:)
+      DOUBLE PRECISION, ALLOCATABLE :: XT(:),YT(:)
       DOUBLE PRECISION PH_LIM(2),TH_LIM(2)
       REAL PH_LIM_R(2),TH_LIM_R(2)
 !      COMPLEX, ALLOCATABLE :: ZT(:,:,:)
@@ -4174,14 +4262,48 @@
 !  WARNING!!! IN TELEMAC DICO, LAMBD0 IS LATITUDE AND PHI0 IS LONGITUDE
 !  LAMBD0 AND PHI0 ARE NOT USED FOR GEOSYST = 2 OR 3
       IF(GEOSYST.EQ.2.OR.GEOSYST.EQ.3.OR.GEOSYST.EQ.5) THEN
-        CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
-     &                               LON(1:NPOIN),LAT(1:NPOIN),
-     &                               GEOSYST,NUMZONE,PHI0,LAMBD0)
+!       POSSIBLE OFFSET STORED IN THE GEOMETRY FILE
+        IF(I_ORIG.NE.0.OR.J_ORIG.NE.0) THEN
+          X_ORIG = DBLE(I_ORIG)
+          Y_ORIG = DBLE(J_ORIG)
+!         X AND Y ARE READ ONLY => OTHER ARRAYS XT AND YT
+          ALLOCATE( XT(NPOIN) )
+          ALLOCATE( YT(NPOIN) )
+          DO K=1,NPOIN
+            XT(K) = X(K) + X_ORIG
+            YT(K) = Y(K) + Y_ORIG
+          ENDDO
+          CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,XT(1:NPOIN),YT(1:NPOIN),
+     &                                 LON(1:NPOIN),LAT(1:NPOIN),
+     &                                 GEOSYST,NUMZONE,PHI0,LAMBD0)
+          DEALLOCATE( XT,YT )
+        ELSE
+          CALL CONV_MERCATOR_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
+     &                                 LON(1:NPOIN),LAT(1:NPOIN),
+     &                                 GEOSYST,NUMZONE,PHI0,LAMBD0)
+        ENDIF
 !  NTF LAMBERT
       ELSEIF(GEOSYST.EQ.4) THEN
-        CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
-     &                              LON(1:NPOIN),LAT(1:NPOIN),
-     &                              NUMZONE,T2D_FILES(T2DL93)%LU)
+!       POSSIBLE OFFSET STORED IN THE GEOMETRY FILE
+        IF(I_ORIG.NE.0.OR.J_ORIG.NE.0) THEN
+          X_ORIG = DBLE(I_ORIG)
+          Y_ORIG = DBLE(J_ORIG)
+!         X AND Y ARE READ ONLY => OTHER ARRAYS XT AND YT
+          ALLOCATE( XT(NPOIN) )
+          ALLOCATE( YT(NPOIN) )
+          DO K=1,NPOIN
+            XT(K) = X(K) + X_ORIG
+            YT(K) = Y(K) + Y_ORIG
+          ENDDO
+          CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,XT(1:NPOIN),YT(1:NPOIN),
+     &                                LON(1:NPOIN),LAT(1:NPOIN),
+     &                                NUMZONE,T2D_FILES(T2DL93)%LU)
+          DEALLOCATE( XT,YT )
+        ELSE
+          CALL CONV_LAMBERT_TO_DEGDEC(NPOIN,X(1:NPOIN),Y(1:NPOIN),
+     &                                LON(1:NPOIN),LAT(1:NPOIN),
+     &                                NUMZONE,T2D_FILES(T2DL93)%LU)
+        ENDIF
 !  WGS84 LONGITUDE/LATITUDE
       ELSEIF(GEOSYST.EQ.1) THEN
         DO K=1,NPOIN

@@ -4,7 +4,7 @@
 !
      &(FFORMAT,FILE_ID,MESH_DIM,TYPELM,NDP,NPTFR,
      & NPTIR,NELEM,NPOIN,IKLE,IPOBO,
-     & KNOLG,X,Y,NPLAN,DATE,TIME,IERR,Z,IN_PLACE)
+     & KNOLG,X,Y,NPLAN,DATE,TIME,X_ORIG,Y_ORIG,IERR,Z,IN_PLACE)
 !
 !***********************************************************************
 ! HERMES   V7P0                                               01/05/2014
@@ -35,6 +35,8 @@
 !| NPLAN          |-->| NUMBER OF PLANES
 !| DATE           |-->| DATE OF THE CREATION OF THE MESH
 !| TIME           |-->| TIME OF THE CREATION OF THE MESH
+!| X_ORIG         |-->| Off set of the X coordinates
+!| Y_ORIG         |-->| Off set of the Y coordinates
 !| IERR           |<--| 0 IF NO ERROR DURING THE EXECUTION
 !| Z  (OPTIONAL)  |-->| Z COORDINATES OF THE MESH POINTS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,6 +61,8 @@
       INTEGER,          INTENT(IN)  :: NPTIR
       INTEGER,          INTENT(IN)  :: NELEM
       INTEGER,          INTENT(IN)  :: NPOIN
+      INTEGER,          INTENT(IN)  :: X_ORIG
+      INTEGER,          INTENT(IN)  :: Y_ORIG
       INTEGER,          INTENT(INOUT)  :: IKLE(NELEM*NDP)
       INTEGER,          INTENT(IN)  :: IPOBO(*)
       INTEGER,          INTENT(IN)  :: KNOLG(*)
@@ -78,7 +82,8 @@
         CASE ('SERAFIN')
           CALL SET_MESH_SRF(FFORMAT,FILE_ID,MESH_DIM,TYPELM,NDP,NPTFR,
      &                      NPTIR,NELEM,NPOIN,IKLE,IPOBO,
-     &                      KNOLG,X,Y,NPLAN,DATE,TIME,IERR,
+     &                      KNOLG,X,Y,NPLAN,DATE,TIME,X_ORIG,Y_ORIG,
+     &                      IERR,
      &                      IN_PLACE=IN_PLACE)
         CASE ('MED    ')
 !         STORE COORDINATES
@@ -99,7 +104,7 @@
 !
           CALL SET_MESH_MED(FILE_ID,MESH_DIM,MESH_DIM,TYPELM,NDP,
      &      NPTIR,NELEM,NPOIN,IKLE,KNOLG,COORD,NPLAN,
-     &      DATE,TIME,IERR)
+     &      DATE,TIME,X_ORIG,Y_ORIG,IERR)
           DEALLOCATE(COORD)
         CASE ('VTK    ')
           CALL SET_MESH_VTK(FILE_ID,MESH_DIM,TYPELM,NDP,

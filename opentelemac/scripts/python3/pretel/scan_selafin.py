@@ -56,6 +56,8 @@ class ScanSelafin(ChopSelafin):
         print("   - npoin3 = {}".format(self.slf.npoin3))
         print("   - ndp3   = {}".format(self.slf.ndp3))
         print("   - nplan  = {}".format(self.slf.nplan))
+        print("   - x_orig/y_orig = {}, {}".format(self.slf.iparam[2],
+                                              self.slf.iparam[3]))
         if self.slf.nplan > 1:
             print("   - nelem2 = {}".format(self.slf.nelem2))
             print("   - npoin2 = {}".format(self.slf.npoin2))

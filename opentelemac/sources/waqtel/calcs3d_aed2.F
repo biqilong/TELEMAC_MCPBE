@@ -4,9 +4,8 @@
      &(NPOIN3,NPOIN2,NPLAN,Z,RHO,TA,TEXP,LONGIT,
      & LATIT,AT,MARDAT,MARTIM,EXTCAED2,RAYAED2)
 !
-!
 !***********************************************************************
-! WAQTEL      V8P1
+! WAQTEL      V8P2
 !***********************************************************************
 !
 !brief    COMPUTES SOURCE TERMS WHEN COUPLING WITH AED2 FOR 3D CASE
@@ -66,7 +65,7 @@
 !
       USE BIEF
       USE DECLARATIONS_SPECIAL
-      USE DECLARATIONS_WAQTEL,ONLY:NEBU,CP_EAU,IND_T
+      USE DECLARATIONS_WAQTEL,ONLY:NEBU,CP_EAU,IND_T,RAY3,SOLRADMETEO
       USE EXCHANGE_WITH_ATMOSPHERE
 #if defined HAVE_AED2
       USE T3D_AED2
@@ -137,7 +136,12 @@
 !
 !     INCIDENT SOLAR RADIATION
 !
-      CALL SOLRAD(RAY_SOL,NEBU,MARDAT,MARTIM,AT,LATIT,LONGIT)
+      IF(.NOT.SOLRADMETEO) THEN
+        CALL SOLRAD(RAY_SOL,NEBU,MARDAT,MARTIM,AT,LATIT,LONGIT)
+      ELSE
+!       RAY3 READ IN METEO SUBROUTINE
+        RAY_SOL = RAY3
+      ENDIF
 !
       CALL OS('X=C     ', X=RAYAED2, C=RAY_SOL)
 !
@@ -154,7 +158,7 @@
 !          ENDIF
 !          RO=RO0*(1.D0-(7.D0*(TREEL-4.D0)**2-750.D0*SAL)*1.D-6)
           LAMB=RHO(NPOIN3-NPOIN2+I)*CP_EAU
-          TEXP%ADR(IND_T)%P%R(J) =
+          TEXP%ADR(IND_T)%P%R(J) = TEXP%ADR(IND_T)%P%R(J) +
      &             EXTCAED2(I,IPLAN)
      &            *EXP(EXTCAED2(I,IPLAN)*(Z(J)-Z(I+(NPLAN-1)*NPOIN2)))
      &            *RAY_SOL/LAMB

@@ -25,13 +25,13 @@
 /
 / INDICES IN USE SO FAR:
 /  - INTEGER (ENTIER):
-/       1-3,5-11,13-19,21-45,47-108,110-119 OUT OF 114
+/       1-3,5-11,13-19,21-45,47-64,66-108,110-119 OUT OF 113
 /  - REAL (REEL):
-/       1-22,24-53,56-82 OUT OF  79
+/       1-22,24-82 OUT OF  81
 /  - LOGICAL (LOGIQUE):
-/       1-60 OUT OF  60
+/       1-61 OUT OF  61
 /  - CHARACTER (CARACTERE):
-/       1-3,6-11,13-13,15-20,23-29,33-38,40-41,48-56,59-98,100-103,162 OUT OF  85
+/       1-3,6-11,13-13,15-20,23-29,33-38,40-41,48-56,58-98,100-103 OUT OF  85
 /
 /-------------------------------------------------------------------------------
 /
@@ -186,12 +186,12 @@ DEFAUT1 = 'BIN'
 MNEMO = 'T2D\_FILES(T2DBI1)\%FMT'
 CHOIX =
 'BIN';
-'SERAFIN';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
 'BIN';
-'SERAFIN';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -248,12 +248,12 @@ DEFAUT1 = 'BIN'
 MNEMO = 'T2D\_FILES(T2DBI2)\%FMT'
 CHOIX =
 'BIN';
-'SERAFIN';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
 'BIN';
-'SERAFIN';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -1301,12 +1301,12 @@ DEFAUT1 = 'BIN'
 MNEMO = 'T2D\_FILES(T2DRBI)\%NAME'
 CHOIX =
 'BIN';
-'SERAFIN';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 CHOIX1 =
 'BIN';
-'SERAFIN';
+'SERAFIN ';
 'SERAFIND';
 'MED'
 RUBRIQUE =
@@ -4234,27 +4234,6 @@ AIDE1 =
 ////////////////////////////////////////////////////////////////////////
 ///// 3.2-LOCATION
 ////////////////////////////////////////////////////////////////////////
-NOM = 'COORDONNEES DE L''ORIGINE'
-NOM1 = 'ORIGIN COORDINATES'
-TYPE = INTEGER
-INDEX = 65
-TAILLE = 2
-DEFAUT = 0;0
-DEFAUT1 = 0;0
-MNEMO = 'I\_ORIG,J\_ORIG'
-RUBRIQUE =
-'PARAMETRES GENERAUX';'LOCALISATION';''
-RUBRIQUE1 =
-'GENERAL PARAMETERS';'LOCATION';''
-NIVEAU = 0
-AIDE =
-'Valeur en metres, utilise pour eviter les trops grands nombres,
-transmis dans le format SERAFIN mais pas d''autre traitement pour
-l''instant.'
-AIDE1 =
-'Value in metres, used to avoid large real numbers,
-added in SERAFIN format, but so far no other treatment.'
-/
 NOM = 'COORDONNEES SPHERIQUES'
 NOM1 = 'SPHERICAL COORDINATES'
 TYPE = LOGICAL
@@ -8352,6 +8331,55 @@ Inference of minor constituents from the one read in input files
 linked to keywords \telkey{BINARY DATABASE 1 FOR TIDE}
 and \telkey{BINARY DATABASE 2 FOR TIDE}.'
 /
+NOM = 'VITESSES INITIALES CALCULEES PAR TPXO'
+NOM1 = 'INITIAL VELOCITIES COMPUTED BY TPXO'
+TYPE = LOGICAL
+INDEX = 61
+TAILLE = 1
+DEFAUT = YES
+DEFAUT1 = OUI
+MNEMO = 'VITINI\_TPXO'
+RUBRIQUE =
+'MAREES';'';''
+RUBRIQUE1 =
+'TIDES';'';''
+NIVEAU = 1
+AIDE =
+'Composantes de vitesses initiales calculees a partir des
+solutions de maree de l OSU (ex TPXO).
+Prendre NON pour eviter une initialisation avec des vitesses de maree
+trop grandes.
+Pour les solutions de marees provenant de l OSU uniquement (ex TPXO).'
+AIDE1 =
+'Initial velocity components computed from a tidal solution from
+OSU (e.g. TPXO).
+NO to prevent from an initialisation with too big tidal velocities.
+For tidal solutions coming from OSU only (e.g. TPXO).'
+/
+NOM = 'HAUTEUR MINIMALE POUR LES CONDITIONS INITIALES DE COURANTS'
+NOM1 = 'MINIMUM DEPTH TO COMPUTE TIDAL VELOCITIES INITIAL CONDITIONS'
+TYPE = REAL
+INDEX = 54
+TAILLE = 1
+DEFAUT = 0.1
+DEFAUT1 = 0.1
+MNEMO = 'HMIN\_VIT\_IC'
+RUBRIQUE =
+'MAREES';'';''
+RUBRIQUE1 =
+'TIDES';'';''
+NIVEAU = 1
+AIDE =
+'Valeur minimale de hauteur d eau au dessus de laquelle les conditions
+initiales de courants de maree sont calculees.
+Autrement, les vitesses sont annulees.
+Pour les solutions de maree provenant de l OSU uniquement (ex TPXO).'
+AIDE1 =
+'Minimum value of water depth above which initial conditions for tidal
+velocities are computed.
+Otherwise, the velocity components are equal to 0.
+For tidal solutions coming from OSU only (e.g. TPXO).'
+/
 ////////////////////////////////////////////////////////////////////////
 ///// 10.1-BOUNDARY CONDITIONS
 ////////////////////////////////////////////////////////////////////////
@@ -8626,6 +8654,28 @@ are computed with JMJ, NEA, FES, PREVIMER databases (except TPXO-type
 databases). The tidal constituents have their phase shifted with respect
 to this point to start the simulation with a high water (for schematic
 tides only).'
+/
+NOM = 'HAUTEUR MINIMALE POUR LES CONDITIONS AUX LIMITES DE COURANTS'
+NOM1 = 'MINIMUM DEPTH TO COMPUTE TIDAL VELOCITIES BOUNDARY CONDITIONS'
+TYPE = REAL
+INDEX = 55
+TAILLE = 1
+DEFAUT = 0.1
+DEFAUT1 = 0.1
+MNEMO = 'HMIN\_VIT\_BC'
+RUBRIQUE =
+'MAREES';'';''
+RUBRIQUE1 =
+'TIDES';'';''
+NIVEAU = 1
+AIDE =
+'Valeur minimale de hauteur d eau utilisee pour le calcul des conditions
+aux limites de courants de maree si les profondeurs sont trop petites.
+Pour les solutions de marees provenant de l OSU uniquement (ex TPXO).'
+AIDE1 =
+'Minimum value of water depth used to compute tidal boundary conditions
+for velocities if the water depths are too small.
+For tidal solutions coming from OSU only (e.g. TPXO).'
 /
 ////////////////////////////////////////////////////////////////////////
 ///// 10.2-PHYSICAL PARAMETERS
@@ -9083,7 +9133,7 @@ of time steps. By default, it is coupled at every time step.'
 NOM = 'FICHIER DES PARAMETRES DE GAIA'
 NOM1 = 'GAIA STEERING FILE'
 TYPE = STRING
-INDEX = 162
+INDEX = 58
 TAILLE = 1
 DEFAUT = ''
 DEFAUT1 = ''

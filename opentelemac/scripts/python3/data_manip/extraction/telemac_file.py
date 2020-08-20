@@ -64,6 +64,8 @@ class TelemacFile(HermesFile):
         self._meshx = None
         self._meshy = None
         self._meshz = None
+        self._x_orig = None
+        self._y_orig = None
         self._ikle3 = None
         self._ikle2 = None
 
@@ -424,6 +426,26 @@ class TelemacFile(HermesFile):
                 self._meshz = None
 
         return self._meshy
+
+    @property
+    def x_orig(self):
+        """
+        Returns y coordinates value
+        """
+        if self._x_orig is None:
+            self._x_orig, self._y_orig = self.get_mesh_orig()
+
+        return self._x_orig
+
+    @property
+    def y_orig(self):
+        """
+        Returns y coordinates value
+        """
+        if self._y_orig is None:
+            self._x_orig, self._y_orig = self.get_mesh_orig()
+
+        return self._y_orig
 
     @property
     def nptir(self):
@@ -1335,6 +1357,8 @@ class TelemacFile(HermesFile):
         self._meshx = src.meshx
         self._meshy = src.meshy
         self._meshz = src.meshz
+        self._x_orig = src.x_orig
+        self._y_orig = src.y_orig
 
         # Copying connectivity
         self._ikle3 = src.ikle3
@@ -1429,7 +1453,7 @@ class TelemacFile(HermesFile):
                       self._nptir, self._nelem3, self._npoin3,
                       self._ikle3, self._ipob3, self._knolg,
                       self._meshx, self._meshy, self._nplan, date2,
-                      time2, self._meshz)
+                      time2, self._x_orig, self._y_orig, self._meshz)
 
         # Boundary part
         if self.boundary_file is not None:

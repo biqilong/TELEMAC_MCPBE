@@ -81,7 +81,7 @@
 !
       INTEGER I,ISTAT,NPOIN,NVAR,NPL
       INTEGER NELEM, NPTFR, NPTIR2, NDP, TYP_ELEM
-      INTEGER NTIMESTEP
+      INTEGER NTIMESTEP, X_ORIG, Y_ORIG
       CHARACTER(LEN=80) CAR
 !
       INTEGER NVA3
@@ -90,7 +90,7 @@
 !***********************************************************************
 !
       CALL READ_MESH_INFO(FFORMAT,NPRE,CAR,NVAR,NPOIN,TYP_ELEM,
-     &                    NELEM,NPTFR,NPTIR2,NDP,NPL)
+     &                    NELEM,NPTFR,NPTIR2,NDP,NPL,X_ORIG,Y_ORIG)
 !
       IF(NPL.NE.NDIRE) THEN
         WRITE(LU,*) 'LECSUI: BAD NUMBER OF PLANES IN THE PREVIOUS'

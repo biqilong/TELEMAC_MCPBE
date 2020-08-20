@@ -25,9 +25,9 @@
 /
 / INDICES IN USE SO FAR:
 /
-/ INTEGER INDEX USED: 1-4,8-8,13-14,16-17,22-22,49 OUT OF   9
-/ REAL INDEX USED: 1-2,4-5,8-8,11-12,16-37,39-50,52-52,56-59,62-65,67-67,69-71,73-75,98 OUT OF  58
-/ LOGICAL INDEX USED: 1-6,9-9,16-17 OUT OF   8
+/ INTEGER INDEX USED: 1-4,8-20,22-22,49 OUT OF  19
+/ REAL INDEX USED: 1-1,4-5,8-8,11-14,16-37,39-50,52-52,56-59,62-65,67-67,69-71,73-75,98 OUT OF  59
+/ LOGICAL INDEX USED: 1-6,9-9,16-17 OUT OF   9
 / STRING INDEX USED: 1-8,10-16,25-26,35-37 OUT OF  20
 /
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -37,7 +37,7 @@
 
 NOM = 'FICHIER DES PARAMETRES'
 NOM1 = 'STEERING FILE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 1
 SUBMIT = 'INUTILE;ICECAS;OBLIG;ASC;LIT;CAS'
 DEFAUT = ''
@@ -45,189 +45,266 @@ DEFAUT1 = ''
 NIVEAU = 0
 DEFAUT = ' '
 DEFAUT1 = ' '
-RUBRIQUE = 'ENTREES-SORTIES, FICHIERS';'NOMS'
-RUBRIQUE1 = 'INPUT-OUTPUT, FILES';'NAMES'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
 NIVEAU = 1
-AIDE = 'NOM DU FICHIER CONTENANT LES PARAMETRES DU CALCUL
-DES GLACES A REALISER. DONNE PAR L''UTILISATEUR.'
-AIDE1 = 'NAME OF THE FILE CONTAINING PARAMETERS OF THE ICE
-COMPUTATION. PROVIDED BY THE USER.'
+AIDE = 'Nom du fichier contenant les parametres du calcul
+des glaces a realiser. Donne par l''utilisateur.'
+AIDE1 = 'Name of the file containing parameters of the ice
+computation. Provided by the user.'
 
 NOM = 'FICHIER FORTRAN'
 NOM1 = 'FORTRAN FILE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 2
+TAILLE = 1
 MNEMO = 'NOMFOR'
 SUBMIT = 'INUTILE;ICEFORT.F;FACUL;ASC;LIT;FORTRAN'
 DEFAUT = ''
 DEFAUT1 = ''
-RUBRIQUE = 'ENTREES-SORTIES, FICHIERS';'NOMS'
-RUBRIQUE1 = 'INPUT-OUTPUT, FILES';'NAMES'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
 NIVEAU = 1
 APPARENCE = 'LISTE IS FICHIER'
-AIDE = 'NOM DU FICHIER FACULTATIF FORTRAN A SOUMETTRE.'
-AIDE1 = 'NAME OF OPTIONAL FORTRAN FILE TO BE SUBMITTED.'
+AIDE =
+'Nom du fichier ou repertoire FORTRAN a soumettre,
+contenant les sous-programmes specifiques au modele.'
+AIDE1 =
+'Name of the FORTRAN file or directory to be submitted,
+including specific subroutines of the model.'
 
 NOM = 'TITRE'
 NOM1 = 'TITLE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 3
+TAILLE = 1
 MNEMO = 'TITCAS'
 DEFAUT = ' '
 DEFAUT1 = ' '
-RUBRIQUE = 'ENTREES-SORTIES, GENERALITES';'CALCUL'
-RUBRIQUE1 = 'INPUT-OUTPUT, INFORMATION';'COMPUTATIONAL INFORMATION'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'GLOBAL';''
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'GLOBAL';''
 COMPORT = 'FOREGROUND ("ENTREES-SORTIES, GENERALITES*CALCUL")
 IS BRUT (RED)'
 NIVEAU = 1
-AIDE = 'TITRE DU CAS ETUDIE. CE TITRE SERA INSCRIT DANS LES SORTIES. '
-AIDE1 = 'TITLE OF THE CASE BEING CONSIDERED.
-THIS TITLE SHALL BE WRITTEN IN THE PRINTOUTS.'
+AIDE =
+'Titre du cas etudie.'
+AIDE1 =
+'Title of the case being considered.'
 
 NOM = 'FICHIER DES CONDITIONS AUX LIMITES'
 NOM1 = 'BOUNDARY CONDITIONS FILE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 4
-MNEMO = 'ICE\_FILES(ICECLI)%NAME'
+TAILLE = 1
+MNEMO = 'ICE\_FILES(ICECLI)\%NAME'
 SUBMIT = 'ICECLI-READ;ICECLI;OBLIG;ASC;LIT;CONLIM'
 /DEFAUT = ' '
 /DEFAUT1 = ' '
-RUBRIQUE = 'ENTREES-SORTIES, FICHIERS';'NOMS'
-RUBRIQUE1 = 'INPUT-OUTPUT, FILES';'NAMES'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
 APPARENCE = 'LISTE IS FICHIER'
 NIVEAU = 1
-AIDE = 'NOM DU FICHIER CONTENANT LES TYPES DE CONDITIONS AUX LIMITES.
-CE FICHIER EST REMPLI DE FACON AUTOMATIQUE PAR LE MAILLEUR AU MOYEN DE
-COULEURS AFFECTEES AUX NOEUDS DES FRONTIERES DU DOMAINE DE CALCUL.'
-AIDE1 = 'NAME OF THE FILE CONTAINING THE TYPES OF BOUNDARY CONDITIONS.
-THIS FILE IS FILLED AUTOMATICALLY BY THE MESH GENERATOR THROUGH
-THROUGH COLOURS THAT ARE ASSIGNED TO THE BOUNDARY NODES.'
+AIDE =
+'Nom du fichier contenant les types de conditions aux limites.
+Ce fichier est rempli de facon automatique par le mailleur au moyen de
+couleurs affectees aux noeuds des frontieres du domaine de calcul.'
+AIDE1 =
+'Name of the file containing the types of boundary conditions.
+This file is filled automatically by the mesh generator through
+colours that are assigned to the boundary nodes.'
 
 NOM = 'FICHIER DE GEOMETRIE'
 NOM1 = 'GEOMETRY FILE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 5
-MNEMO = 'ICE\_FILES(ICEGEO)%NAME'
 TAILLE = 0
+MNEMO = 'ICE\_FILES(ICEGEO)\%NAME'
 SUBMIT = 'ICEGEO-READ;ICEGEO;FACUL;BIN;LIT;SELAFIN-GEOM'
 DEFAUT = ''
 DEFAUT1 = ''
 NIVEAU = 2
 APPARENCE = 'LISTE IS FICHIER'
-RUBRIQUE = 'FICHIERS DONNEES'
-RUBRIQUE1 = 'DATA FILES'
-AIDE = 'FICHIER DE GEOMETRIE, IDENTIQUE A CELUI DE TELEMAC-2D'
-AIDE1 = 'GEOMETRY FILE IDENTICAL TO THE TELEMAC-2D ONE'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
+AIDE =
+'Fichier de geometrie, identique a celui de \telemac{2D}.'
+AIDE1 =
+'Geometry file identical to the \telemac{2D} one.'
 
 NOM = 'FORMAT DU FICHIER DE GEOMETRIE'
 NOM1 = 'GEOMETRY FILE FORMAT'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 35
-MNEMO = 'ICE\_FILES(ICEGEO)%FMT'
+TAILLE = 1
+MNEMO = 'ICE\_FILES(ICEGEO)\%FMT'
 DEFAUT = 'SERAFIN '
 DEFAUT1 = 'SERAFIN '
 NIVEAU = 2
-CHOIX = 'SERAFIN ';'SERAFIND';'MED     '
-CHOIX1 = 'SERAFIN ';'SERAFIND';'MED     '
-RUBRIQUE = 'ENTREES-SORTIES, FICHIERS'
-RUBRIQUE1 = 'INPUT-OUTPUT, FILES'
-AIDE = 'FORMAT DU FICHIER DE GEOMETRIE.
-LES VALEURS POSSIBLES SONT :
-- SERAFIN : FORMAT STANDARD SIMPLE PRECISION POUR TELEMAC;
-- SERAFIND: FORMAT STANDARD DOUBLE PRECISION POUR TELEMAC;
-- MED     : FORMAT MED BASE SUR HDF5'
-AIDE1 = 'GEOMETRY FILE FORMAT.
-POSSIBLE VALUES ARE:
-- SERAFIN : CLASSICAL SINGLE PRECISION FORMAT IN TELEMAC;
-- SERAFIND: CLASSICAL DOUBLE PRECISION FORMAT IN TELEMAC;
-- MED     : MED FORMAT BASED ON HDF5'
+CHOIX =
+'SERAFIN ';
+'SERAFIND';
+'MED'
+CHOIX1 =
+'SERAFIN ';
+'SERAFIND';
+'MED'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
+AIDE =
+'Format du \telkey{FICHIER DE GEOMETRIE}.
+Les valeurs possibles sont :
+\begin{itemize}
+\item SERAFIN : format standard simple precision pour \tel ;
+\item SERAFIND: format standard double precision pour \tel ;
+\item MED     : format MED double precision base sur HDF5.
+\end{itemize}'
+AIDE1 =
+'Format of the \telkey{GEOMETRY FILE}.
+Possible choices are:
+\begin{itemize}
+\item SERAFIN : classical single precision format in \tel,
+\item SERAFIND: classical double precision format in \tel,
+\item MED     : MED double precision format based on HDF5.
+\end{itemize}'
 
 NOM = 'FICHIER DE REFERENCE'
 NOM1 = 'REFERENCE FILE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 6
-MNEMO = 'ICE\_FILES(ICEREF)%NAME'
+MNEMO = 'ICE\_FILES(ICEREF)\%NAME'
 TAILLE = 0
 SUBMIT = 'ICEREF-READ;ICEREF;FACUL;BIN;LIT;SELAFIN'
 DEFAUT = ''
 DEFAUT1 = ''
 NIVEAU = 2
 APPARENCE = 'LISTE IS FICHIER'
-RUBRIQUE = 'FICHIERS DONNEES'
-RUBRIQUE1 = 'DATA FILES'
-AIDE = 'NOM DU FICHIER SERVANT A VALIDER LE CALCUL.
-SI VALIDATION = OUI, LES RESULTATS DU CALCUL VONT ETRE
-COMPAREES AUX VALEURS CONTENUES DANS CE FICHIER.
-LA COMPARAISON EST EFFECTUEE PAR LE SOUS-PROGRAMME VALIDA'
-AIDE1 = 'NAME OF THE FILE USED TO VALIDATE THE COMPUTATION.
-IF VALIDATION = YES, THE RESULTS OF THE COMPUTATION WILL BE
-COMPARED WITH THE VALUES OF THIS FILE. THE COMPARISON IS
-MADE BY THE SUBROUTINE BIEF\_VALIDA. (NOT IMPLEMENTED YET)'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
+AIDE =
+'Nom du fichier de resultats de reference pour la validation.
+Si \telkey{VALIDATION} = OUI, les resultats du calcul vont etre
+compares aux valeurs contenues dans ce fichier.
+La comparaison est effectuee par le sous-programme \telfile{VALIDA}.'
+AIDE1 =
+'Name of the binary-coded result file used to validate the compuation.
+If \telkey{VALIDATION} = YES, the results of the computation will be
+compared with the values of this file.
+The comparison is done by the subroutine \telfile{BIEF\_VALIDA}.'
 
 NOM = 'FORMAT DU FICHIER DE REFERENCE'
 NOM1 = 'REFERENCE FILE FORMAT'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 36
-MNEMO = 'ICE\_FILES(ICEREF)%FMT'
+TAILLE = 1
+MNEMO = 'ICE\_FILES(ICEREF)\%FMT'
 DEFAUT = 'SERAFIN '
 DEFAUT1 = 'SERAFIN '
 NIVEAU = 2
-CHOIX = 'SERAFIN ';'SERAFIND';'MED     '
-CHOIX1 = 'SERAFIN ';'SERAFIND';'MED     '
-RUBRIQUE = 'ENTREES-SORTIES, FICHIERS'
-RUBRIQUE1 = 'INPUT-OUTPUT, FILES'
-AIDE = 'FORMAT DU FICHIER HYDRODYNAMIQUE.
-LES VALEURS POSSIBLES SONT :
-- SERAFIN : FORMAT STANDARD SIMPLE PRECISION POUR TELEMAC;
-- SERAFIND: FORMAT STANDARD DOUBLE PRECISION POUR TELEMAC;
-- MED     : FORMAT MED BASE SUR HDF5'
-AIDE1 = 'HYDRODYNAMIC FILE FORMAT.
-POSSIBLE VALUES ARE:
-- SERAFIN : CLASSICAL SINGLE PRECISION FORMAT IN TELEMAC;
-- SERAFIND: CLASSICAL DOUBLE PRECISION FORMAT IN TELEMAC;
-- MED     : MED FORMAT BASED ON HDF5'
+CHOIX =
+'SERAFIN ';
+'SERAFIND';
+'MED'
+CHOIX1 =
+'SERAFIN ';
+'SERAFIND';
+'MED'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
+NIVEAU = 0
+AIDE =
+'Format du \telkey{FICHIER DE REFERENCE}.
+Les valeurs possibles sont :
+\begin{itemize}
+\item SERAFIN : format standard simple precision pour \tel ;
+\item SERAFIND: format standard double precision pour \tel ;
+\item MED     : format MED double precision base sur HDF5.
+\end{itemize}'
+AIDE1 =
+'Format of the \telkey{REFERENCE FILE}.
+Possible choices are:
+\begin{itemize}
+\item SERAFIN : classical single precision format in \tel,
+\item SERAFIND: classical double precision format in \tel,
+\item MED     : MED double precision format based on HDF5.
+\end{itemize}'
 
 NOM = 'FICHIER DES RESULTATS'
 NOM1 = 'RESULTS FILE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 7
-MNEMO = 'ICE\_FILES(ICERES)%NAME'
+MNEMO = 'ICE\_FILES(ICERES)\%NAME'
 TAILLE = 0
 SUBMIT = 'ICERES-WRITE;ICERES;FACUL;BIN;ECR;SELAFIN'
 /DEFAUT = ''
 /DEFAUT1 = ''
 NIVEAU = 1
 APPARENCE = 'LISTE IS FICHIER'
-RUBRIQUE = 'RESULTATS'
-RUBRIQUE1 = 'RESULTS'
-AIDE = 'NOM DU FICHIER DANS LEQUEL SERONT ECRITS LES RESULTATS AVEC
-UNE PERIODICITE DONNEE PAR LE MOT CLE PERIODE DE SORTIE DES GLACES.'
-AIDE1 = 'NAME OF THE FILE INTO WICH THE COMPUTATION RESULTS SHALL BE
-WRITTEN, THE PERIODICITY BEING GIVEN BY THE KEYWORD
-ICE PRINTOUT PERIOD.'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'RESULTATS'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
+AIDE =
+'Nom du fichier dans lequel seront ecrits les resultats du
+calcul avec la periodicite donnee par le mot cle \telkey{PERIODE DE
+SORTIES DES GLACES}.'
+AIDE1 =
+'Name of the file into which the computation results
+are written with a periodicity given by the keyword
+\telkey{ICE PRINTOUT PERIOD}.'
 
 NOM = 'FORMAT DU FICHIER DES RESULTATS'
 NOM1 = 'RESULTS FILE FORMAT'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 37
-MNEMO = 'ICE\_FILES(ICERES)%FMT'
+TAILLE = 1
+MNEMO = 'ICE\_FILES(ICERES)\%FMT'
 DEFAUT = 'SERAFIN '
 DEFAUT1 = 'SERAFIN '
 NIVEAU = 2
-CHOIX = 'SERAFIN ';'SERAFIND';'MED     '
-CHOIX1 = 'SERAFIN ';'SERAFIND';'MED     '
-RUBRIQUE = 'ENTREES-SORTIES, FICHIERS'
-RUBRIQUE1 = 'INPUT-OUTPUT, FILES'
-AIDE = 'FORMAT DU FICHIER DES RESULTATS.
-LES VALEURS POSSIBLES SONT :
-- SERAFIN : FORMAT STANDARD SIMPLE PRECISION POUR TELEMAC;
-- SERAFIND: FORMAT STANDARD DOUBLE PRECISION POUR TELEMAC;
-- MED     : FORMAT MED BASE SUR HDF5'
-AIDE1 = 'RESULTS FILE FORMAT.
-POSSIBLE VALUES ARE:
-- SERAFIN : CLASSICAL SINGLE PRECISION FORMAT IN TELEMAC;
-- SERAFIND: CLASSICAL DOUBLE PRECISION FORMAT IN TELEMAC;
-- MED     : MED FORMAT BASED ON HDF5'
+CHOIX =
+'SERAFIN ';
+'SERAFIND';
+'MED'
+CHOIX1 =
+'SERAFIN ';
+'SERAFIND';
+'MED'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'RESULTATS'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
+NIVEAU = 0
+AIDE =
+'Format du \telkey{FICHIER DES RESULTATS}.
+Les valeurs possibles sont :
+\begin{itemize}
+\item SERAFIN : format standard simple precision pour \tel ;
+\item SERAFIND: format standard double precision pour \tel ;
+\item MED     : format MED double precision base sur HDF5.
+\end{itemize}'
+AIDE1 =
+'Format of the \telkey{RESULTS FILE}. Possible choices are:
+\begin{itemize}
+\item SERAFIN : classical single precision format in \tel,
+\item SERAFIND: classical double precision format in \tel,
+\item MED     : MED double precision format based on HDF5.
+\end{itemize}'
 
 NOM = 'FICHIER COUVERT DE GLACE DU CALCUL PRECEDENT'
 NOM1 = 'PREVIOUS ICE COVER COMPUTATION FILE'
@@ -237,7 +314,7 @@ TAILLE = 1
 SUBMIT = 'ICECOV-READ;ICECOV;FACUL;BIN;LIT;SELAFIN'
 DEFAUT = ''
 DEFAUT1 = ''
-MNEMO = 'ICE\_FILES(ICECOV)%NAME'
+MNEMO = 'ICE\_FILES(ICECOV)\%NAME'
 RUBRIQUE =
 'ENVIRONNEMENT DE CALCUL';'REPRISE DE CALCUL';''
 RUBRIQUE1 =
@@ -260,7 +337,7 @@ INDEX = 14
 TAILLE = 1
 DEFAUT = 'SERAFIN '
 DEFAUT1 = 'SERAFIN '
-MNEMO = 'ICE\_FILES(ICECOV)%FMT'
+MNEMO = 'ICE\_FILES(ICECOV)\%FMT'
 CHOIX =
 'SERAFIN ';
 'SERAFIND'
@@ -275,13 +352,17 @@ NIVEAU = 0
 AIDE =
 'Format du fichier de resultats du calcul de couvert de glace precedent.
 Les valeurs possibles sont :
-- SERAFIN : format standard simple precision pour TELEMAC;
-- SERAFIND: format standard double precision pour TELEMAC'
+\begin{itemize}
+\item SERAFIN : format standard simple precision pour \tel ;
+\item SERAFIND: format standard double precision pour \tel.
+\end{itemize}'
 AIDE1 =
 'Previous ice cover computation results file format.
 Possible values are:
-- SERAFIN : classical single precision format in TELEMAC;
-- SERAFIND: classical double precision format in TELEMAC'
+\begin{itemize}
+\item SERAFIN : classical single precision format in \tel,
+\item SERAFIND: classical double precision format in \tel.
+\end{itemize}'
 
 NOM = 'FICHIER BLOCS DE GLACE DU CALCUL PRECEDENT'
 NOM1 = 'PREVIOUS ICE BLOCKS COMPUTATION FILE'
@@ -291,7 +372,7 @@ TAILLE = 1
 SUBMIT = 'ICEBLK-READ;ICEBLK;FACUL;BIN;LIT;SELAFIN'
 DEFAUT = ''
 DEFAUT1 = ''
-MNEMO = 'ICE\_FILES(ICEBLK)%NAME'
+MNEMO = 'ICE\_FILES(ICEBLK)\%NAME'
 RUBRIQUE =
 'ENVIRONNEMENT DE CALCUL';'REPRISE DE CALCUL';''
 RUBRIQUE1 =
@@ -314,7 +395,7 @@ INDEX = 16
 TAILLE = 1
 DEFAUT = 'SERAFIN '
 DEFAUT1 = 'SERAFIN '
-MNEMO = 'ICE\_FILES(ICEBLK)%FMT'
+MNEMO = 'ICE\_FILES(ICEBLK)\%FMT'
 CHOIX =
 'SERAFIN ';
 'SERAFIND'
@@ -330,27 +411,36 @@ AIDE =
 'Format du fichier de resultats Lagrangien du calcul de couvert
 de glace precedent.
 Les valeurs possibles sont :
-- UNKNOWN : format non-defini simple precision pour TELEMAC;
-- UNKNOWND: format non-defini double precision pour TELEMAC'
+\begin{itemize}
+\item UNKNOWN : format non-defini simple precision pour \tel ;
+\item UNKNOWND: format non-defini double precision pour \tel.
+\end{itemize}'
 AIDE1 =
 'Previous ice cover blocks computation results file format.
 Possible values are:
-- UNKNOWN : not-yet-defined single precision format in TELEMAC;
-- UNKNOWND: not-yet-defined double precision format in TELEMAC'
+\begin{itemize}
+\item UNKNOWN : not-yet-defined single precision format in \tel,
+\item UNKNOWND: not-yet-defined double precision format in \tel.
+\end{itemize}'
 
 NOM = 'DICTIONNAIRE'
 NOM1 = 'DICTIONARY'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 12
+TAILLE = 1
 MNEMO = ''
 SUBMIT = 'INUTILE;ICEDICO;OBLIG;ASC;LIT;DICO'
 DEFAUT = 'KHIONE.DICO'
 DEFAUT1 = 'KHIONE.DICO'
-RUBRIQUE = 'ENTREES-SORTIES, GENERALITES';'ENVIRONNEMENT'
-RUBRIQUE1 = 'INPUT-OUTPUT, INFORMATION';'COMPUTATION ENVIRONMENT'
-NIVEAU = -3
-AIDE ='DICTIONNAIRE DES MOTS CLES.'
-AIDE1 ='KEY WORD DICTIONARY.'
+RUBRIQUE =
+'INTERNE';'';''
+RUBRIQUE1 =
+'INTERNAL';'';''
+NIVEAU = 100
+AIDE =
+'Dictionnaire des mots cles.'
+AIDE1 =
+'Key word dictionary.'
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 /
@@ -359,7 +449,7 @@ AIDE1 ='KEY WORD DICTIONARY.'
 
 /NOM = 'SUITE DE CALCUL'
 /NOM1 = 'COMPUTATION CONTINUED'
-/TYPE = LOGIQUE
+/TYPE = LOGICAL
 /INDEX = 1
 /MNEMO = 'DEBU'
 /TAILLE = 0
@@ -404,32 +494,47 @@ AIDE1 ='KEY WORD DICTIONARY.'
 
 NOM = 'CONDITIONS INITIALES'
 NOM1 = 'INITIAL CONDITIONS'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 26
+TAILLE = 1
 MNEMO = 'CDTINI'
 DEFAUT = 'SANS COUVERT DE GLACE'
 DEFAUT1 = 'WITHOUT ICE COVER'
 NIVEAU = 1
-CHOIX = '"SANS COUVERT DE GLACE"'; '"COUVERT DE GLACE CONSTANT"';
-'"PARTICULIERES"' ; '"SPECIAL"';'"PARTICULAR"'
-CHOIX1 = '"WITHOUT ICE COVER"'; '"CONSTANT ICE COVER"';
-'"SPECIAL"'; '"PARTICULIERES"';'"PARTICULAR"'
-RUBRIQUE = 'EQUATIONS, CONDITIONS INITIALES'
-RUBRIQUE1 = 'EQUATIONS, INITIAL CONDITIONS'
-AIDE = 'Permet de definir les conditions initiales sur
-le couvert de glaces
+CHOIX =
+'"SANS COUVERT DE GLACE"';
+'"COUVERT DE GLACE CONSTANT"';
+'"PARTICULIERES"';
+'"SPECIAL"';
+'"PARTICULAR"'
+CHOIX1 =
+'"WITHOUT ICE COVER"';
+'"CONSTANT ICE COVER"';
+'"SPECIAL"';
+'"PARTICULIERES"';
+'"PARTICULAR"'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'INITIALISATION';''
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INITIALIZATION';''
+AIDE =
+'Permet de definir les conditions initiales sur le couvert de glaces.
 Les valeurs possibles sont :
-   - SANS COUVERT DE GLACE.
-   - COUVERT DE GLACE CONSTANT.
-   - PARTICULIERES. Les conditions initiales sur de couvert de glace
-           doivent etre precisees dans le sous-programme CONDIC.'
-AIDE1 = 'Makes it possible to define the initial conditions with
-ice cover.
+\begin{itemize}
+\item SANS COUVERT DE GLACE ;
+\item COUVERT DE GLACE CONSTANT ;
+\item PARTICULIERES. Les conditions initiales sur le couvert de glace
+doivent etre precisees dans le sous-programme \telfile{CONDICE}.
+\end{itemize}'
+AIDE1 =
+'Makes it possible to define the initial conditions with ice cover.
 The possible values are as follows:
-   - WITHOUT ICE COVER.
-   - CONSTANT ICE COVER.
-   - SPECIAL. The initial conditions with the water depth should be
-stated in the CONDIC subroutine.'
+\begin{itemize}
+\item WITHOUT ICE COVER,
+\item CONSTANT ICE COVER,
+\item SPECIAL. The initial conditions with the water depth should be
+stated in the \telfile{CONDICE} subroutine.
+\end{itemize}'
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 /
@@ -438,9 +543,10 @@ stated in the CONDIC subroutine.'
 
 NOM = 'VARIABLES POUR LES SORTIES GRAPHIQUES'
 NOM1 = 'VARIABLES FOR GRAPHIC PRINTOUTS'
-TYPE = CARACTERE
+TYPE = STRING
 MNEMO = 'VARDES'
 INDEX = 10
+TAILLE = 1
 DEFAUT = ''
 DEFAUT1 = ''
 APPARENCE = 'LISTE IS EDITABLE'
@@ -498,75 +604,95 @@ CHOIX1 =
 'N*="PARTICLE NUMBER OF FRAZIL BY CLASS"';
 'TEMP="WATER TEMPERATURE"';
 'SAL="SALINITY OF WATER"'
-RUBRIQUE = 'ENTREES-SORTIES, GRAPHIQUES ET LISTING'
-RUBRIQUE1 = 'INPUT-OUTPUT, GRAPHICS AND LISTING'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'RESULTATS'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
 NIVEAU = 1
-AIDE  = 'NOMS DES VARIABLES QUE L''UTILISATEUR VEUT ECRIRE DANS
-LE FICHIER DES RESULTATS DES GLACES.
-CHAQUE VARIABLE EST REPRESENTEE PAR UNE LETTRE.'
-AIDE1 = 'NAMES OF VARIABLES THE USER WANTS TO WRITE
-INTO THE ICE RESULTS FILE.'
+AIDE =
+'Noms des variables que l''utilisateur veut ecrire dans
+le \telkey{FICHIER DES RESULTATS DES GLACES}.
+Chaque variable est representee par une lettre.
+Le choix des separateurs est libre.'
+AIDE1 =
+'Names of variables that may be written in the
+\telkey{ICE RESULTS FILE}.
+Every variable is represented by a group of letters with
+any separator between them , ; or blank.'
 /
 / CHOIX1 COULD:
 /   PHI* HEAT BUDGET FLUXES
 
 NOM = 'VARIABLES A IMPRIMER'
 NOM1 = 'VARIABLES TO BE PRINTED'
-TYPE = CARACTERE
+TYPE = STRING
 MNEMO = 'VARIMP'
 INDEX = 11
+TAILLE = 1
 DEFAUT = ''
 DEFAUT1 = ''
 APPARENCE = 'LISTE IS EDITABLE'
 CHOIX = 'A EDITER'
 CHOIX1= 'TO BE EDITED'
-RUBRIQUE = 'ENTREES-SORTIES, GRAPHIQUES ET LISTING'
-RUBRIQUE1 = 'INPUT-OUTPUT, GRAPHICS AND LISTING'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'LISTING'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'OUTPUT';'LISTING'
 NIVEAU = 0
-AIDE  = 'MOT NECESSAIRE MAIS QUI NE FAIT RIEN.'
-AIDE1 = 'NECESSARY KEYWORD BUT DOES NOT DO MUCH.'
+AIDE =
+'Mot cle necessaire mais qui ne fait rien.'
+AIDE1 =
+'Necessary keyword but does not do much.'
 
 NOM = 'PERIODE POUR LES SORTIES GRAPHIQUES'
 NOM1 = 'GRAPHIC PRINTOUT PERIOD'
-TYPE = ENTIER
+TYPE = INTEGER
 INDEX = 1
 MNEMO = 'LEOPRD'
 TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
-RUBRIQUE = 'ENTREES-SORTIES, GRAPHIQUES ET LISTING'
-RUBRIQUE1 = 'INPUT-OUTPUT, GRAPHICS AND LISTING'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'RESULTATS'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
 COMPORT =
 'Foreground ("ENTREES-SORTIES, GRAPHIQUES ET LISTING")
 IS VALEUR (red)'
 NIVEAU = 1
-AIDE = 'Determine la periode en nombre de pas de temps d''impression
-des ''VARIABLES POUR LES SORTIES GRAPHIQUES'' (voir ce mot-cle)
-dans le FICHIER DES RESULTATS.'
-AIDE1 = 'Determines, in number of time steps, the printout period for
-the VARIABLES FOR GRAPHIC PRINTOUTS in the RESULTS FILE.'
+AIDE =
+'Determine la periode en nombre de pas de temps d''impression des
+\telkey{VARIABLES POUR LES SORTIES GRAPHIQUES}
+(voir ce mot-cle) dans le \telkey{FICHIER DES RESULTATS}.'
+AIDE1 =
+'Determines, in number of time steps, the printout period for the
+\telkey{VARIABLES FOR GRAPHIC PRINTOUTS}
+in the \telkey{RESULTS FILE}.'
 
 NOM = 'PERIODE DE SORTIE LISTING'
 NOM1 = 'LISTING PRINTOUT PERIOD'
-TYPE = ENTIER
+TYPE = INTEGER
 INDEX = 2
 MNEMO = 'LISPRD'
 TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
-RUBRIQUE = 'ENTREES-SORTIES, GRAPHIQUES ET LISTING'
-RUBRIQUE1 = 'INPUT-OUTPUT, GRAPHICS AND LISTING'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'LISTING'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'OUTPUT';'LISTING'
 NIVEAU = 1
-AIDE = 'Determine la periode en nombre de pas de temps d''impression
-des ''VARIABLES A IMPRIMER'' (voir ce mot-cle) Pour la mise au point,
-il faut savoir que la sortie des resultats est effectuee
-systematiquement sur le fichier de retour d''execution du code
-(actuellement accessible par le menu 3.f de SPF sur IBM, et dans
-le fichier !CAS.SORTIE sur station de travail)'
-AIDE1 = 'Determines, in number of time steps, the printout period of
-the VARIABLES TO BE PRINTED
-The results are systematically printed out on the listing file
-(file CAS.SORTIE at the workstation).'
+AIDE =
+'Determine la periode en nombre de pas de temps d''impression des
+\telkey{VARIABLES A IMPRIMER} (voir ce mot-cle).
+Pour la mise au point, il faut
+savoir que la sortie des resultats est effectuee systematiquement sur le
+listing (CAS.SORTIE sur station de travail).'
+AIDE1 =
+'Determines, in number of time steps, the printout period of the
+\telkey{VARIABLES TO BE PRINTED}.
+The results are systematically printed out on
+the listing file (file CAS.SORTIE at the workstation).'
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 /
@@ -575,36 +701,55 @@ The results are systematically printed out on the listing file
 
 NOM = 'BILAN DE MASSE'
 NOM1 = 'MASS-BALANCE'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 MNEMO = 'WQBILMAS'
 INDEX = 16
+TAILLE = 1
 DEFAUT = NON
 DEFAUT1 = NO
-RUBRIQUE = 'RESULTATS'
-RUBRIQUE1 = 'RESULTS'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'LISTING'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'OUTPUT';'LISTING'
 NIVEAU = 1
-AIDE = 'DETERMINE SI OUI OU NON LE BILAN DE MASSE EST REALISE.'
-AIDE1 = 'DETERMINES WHETHER A CHECK OF THE MASS-BALANCE OVER THE DOMAIN
-IS MADE OR NOT'
+AIDE =
+'Determine si l''on effectue ou non le bilan de masse
+sur le domaine.'
+AIDE1 =
+'Determines whether a check of the mass-balance over
+the domain is done or not.'
 
 NOM = 'VALIDATION'
 NOM1 = 'VALIDATION'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 17
+TAILLE = 1
 MNEMO ='WQVALID'
 DEFAUT = NON
 DEFAUT1 = NO
-RUBRIQUE = 'DIVERS'
-RUBRIQUE1 = 'MISCELLANEOUS'
+RUBRIQUE =
+'ENVIRONNEMENT DE CALCUL';'ENTREE';'DONNEES'
+RUBRIQUE1 =
+'COMPUTATION ENVIRONMENT';'INPUT';'DATA'
 NIVEAU = 2
-AIDE = 'OPTION UTILISEE PRINCIPALEMENT POUR LE DOSSIER DE VALIDATION.
-SI CE MOT-CLE VAUT OUI, LES RESULTATS DU CALCUL VONT ALORS ETRE
-COMPARES AUX VALEURS DU FICHIER DE REFERENCE.'
-AIDE1 = 'THIS OPTION IS PRIMARILY USED FOR THE VALIDATION
-DOCUMENTS. IF THIS KEYWORD IS EQUAL TO YES, THE REFERENCE FILE
-IS THEN CONSIDERED AS A REFERENCE WHICH THE COMPUTATION IS
-GOING TO BE COMPARED WITH.'
-
+AIDE =
+'Option utilisee principalement pour le dossier de validation.
+Si ce mot-cle vaut OUI, les resultats du calcul vont alors etre
+compares aux valeurs du \telkey{FICHIER DE REFERENCE}.
+Le \telkey{FICHIER DE REFERENCE} est alors considere comme une
+reference a laquelle on va comparer le calcul. La comparaison est
+effectuee par le sous-programme \telfile{BIEF\_VALIDA}
+qui peut etre une comparaison avec une solution exacte par exemple.'
+AIDE1 =
+'This option is primarily used for the validation documents.
+If this keyword is equal to YES, the \telkey{REFERENCE FILE}
+is then considered as a reference which the computation is
+going to be compared with.
+The \telkey{REFERENCE FILE} is then considered as a reference
+which the computation is going to be compared with.
+The comparison is done by the subroutine \telfile{BIEF\_VALIDA},
+which can be modified so as to include, for example,
+a comparison with an exact solution.'
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 /
@@ -621,8 +766,8 @@ TAILLE = 1
 DEFAUT = 4
 DEFAUT1 = 4
 MNEMO = 'IFROT'
-RUBRIQUE = 'USER PROPERTIES AND CONSTANTS'
-RUBRIQUE1 = 'USER PROPERTIES AND CONSTANTS'
+/RUBRIQUE = 'USER PROPERTIES AND CONSTANTS'
+/RUBRIQUE1 = 'USER PROPERTIES AND CONSTANTS'
 CHOIX =
 '0="PAS DE FROTTEMENT"';
 '1="HAALAND"';
@@ -637,20 +782,34 @@ CHOIX1 =
 '3="STRICKLER"';
 '4="MANNING"';
 '5="NIKURADSE"'
-RUBRIQUE = 'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
-RUBRIQUE1 = 'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
+RUBRIQUE =
+'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
+RUBRIQUE1 =
+'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
 NIVEAU = 0
 AIDE =
-' selectionne le type de formulation utilisee pour le calcul du
+'Selectionne le type de formulation utilisee pour le calcul du
 frottement sous le couvert de glace. Les lois possibles sont les
-suivantes (cf. Note de principe) : - 0 : pas de frottement sur le fond;
-1 : formule de Haaland 2 : formule de Chezy 3 : formule de STRICKLER 4 :
-formule de MANNING 5 : formule de NIKURADSE'
+suivantes (cf. Note de principe) :
+\begin{itemize}
+\item 0 : pas de frottement sur le fond ;
+\item 1 : formule de Haaland ;
+\item 2 : formule de Chezy ;
+\item 3 : formule de Strickler ;
+\item 4 : formule de Manning ;
+\item 5 : formule de Nikuradse.
+\end{itemize}'
 AIDE1 =
-' Selects the type of formulation used for the under ice cover friction.
-The possible laws are as follows (refer to the Principle note): 0: no
-friction against bottom, 1: Haaland''s formula 2: CHEZY''s formula 3:
-STRICKLER''s formula 4: MANNING''s formula 5: NIKURADSE''s formula'
+'Selects the type of formulation used for the under ice cover friction.
+The possible laws are as follows (refer to the Principle note):
+\begin{itemize}
+\item 0: no friction against bottom,
+\item 1: Haaland formula,
+\item 2: Chezy formula,
+\item 3: Strickler formula,
+\item 4: Manning formula,
+\item 5: Nikuradse formula.
+\end{itemize}'
 
 NOM = 'COEFFICIENT DE FROTTEMENT'
 NOM1 = 'FRICTION COEFFICIENT'
@@ -660,46 +819,54 @@ TAILLE = 1
 DEFAUT = 0.04
 DEFAUT1 = 0.04
 MNEMO = 'FICE'
-RUBRIQUE = 'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
-RUBRIQUE1 = 'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
+RUBRIQUE =
+'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
+RUBRIQUE1 =
+'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
 NIVEAU = 0
 AIDE =
 'Fixe la valeur du coefficient de frottement pour la
 formulation choisie.
-Attention; la signification de ce chiffre varie suivant la formule
+Attention : la signification de ce chiffre varie suivant la formule
 choisie :
-                    1 : coefficient lineaire
-                    2 : coefficient de Chezy
-                    3 : coefficient de Strickler
-                    4 : coefficient de Manning
-                    5 : hauteur de rugosite de Nikuradse'
+\begin{itemize}
+\item 1 : coefficient lineaire ;
+\item 2 : coefficient de Chezy ;
+\item 3 : coefficient de Strickler ;
+\item 4 : coefficient de Manning ;
+\item 5 : hauteur de rugosite de Nikuradse.
+\end{itemize}'
 AIDE1 =
 'Sets the value of the friction coefficient for the selected
 formulation. It is noteworthy that the meaning of this figure changes
-according to the selected formula (Chezy, Strickler, etc.) :
-                    1 : linear coefficient
-                    2 : Chezy coefficient
-                    3 : Strickler coefficient
-                    4 : Manning coefficient
-                    5 : Nikuradse grain size'
+according to the selected formula (Chezy, Strickler, etc.):
+\begin{itemize}
+\item 1: linear coefficient,
+\item 2: Chezy coefficient,
+\item 3: Strickler coefficient,
+\item 4: Manning coefficient,
+\item 5: Nikuradse grain size.
+\end{itemize}'
 
 NOM = 'COEFFICIENT DE FROTTEMENT MAXIMAL'
 NOM1 = 'MAXIMAL FRICTION COEFFICIENT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'FICE\_MAX'
 INDEX = 52
 TAILLE = 1
 DEFAUT = 0.04
 DEFAUT1 = 0.04
-RUBRIQUE = 'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
-RUBRIQUE1 = 'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
+RUBRIQUE =
+'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
+RUBRIQUE1 =
+'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
 NIVEAU = 0
 AIDE =
 'Fixe le coefficient de frottement maximal lorsque la celui-ci depend
-de l''epaisseur du couvert de glace'
+de l''epaisseur du couvert de glace.'
 AIDE1 =
 'Sets the maximal friction coefficient when it depends linearly on the
-ice cover thickness'
+ice cover thickness.'
 
 NOM = 'LOI POUR LE COEFFICIENT DE FROTTEMENT'
 NOM1 = 'LAW FOR FRICTION COEFFICIENT'
@@ -709,8 +876,10 @@ TAILLE = 1
 DEFAUT = 0
 DEFAUT1 = 0
 MNEMO = 'IFICE'
-RUBRIQUE = 'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
-RUBRIQUE1 = 'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
+RUBRIQUE =
+'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
+RUBRIQUE1 =
+'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
 NIVEAU = 0
 CHOIX =
 '0="COEF DE FRICTION CONSTANT"';
@@ -723,18 +892,20 @@ AIDE =
 lineairement en fonction de l''epaisseur du couvert de glace.'
 AIDE1 =
 'Selection between constant friction coefficient of linearly dependant
-on ice cover thickness'
+on ice cover thickness.'
 
 NOM = 'EPAISSEUR DE COUVERT DE GLACE CARACTERISTIQUE'
 NOM1 = 'EQUIVALENT SURFACE ICE THICKNESS'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'THIE'
 INDEX = 75
 TAILLE = 0
 DEFAUT = 0.001
 DEFAUT1 = 0.001
-RUBRIQUE = 'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
-RUBRIQUE1 = 'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
+RUBRIQUE =
+'COUVERT DE GLACE';'PARAMETRES PHYSIQUES';'FROTTEMENT'
+RUBRIQUE1 =
+'ICE COVER';'PHYSICAL PARAMETERS';'FRICTION'
 NIVEAU = 2
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -746,258 +917,320 @@ NIVEAU = 2
 
 NOM = 'MASSE VOLUMIQUE DE L''AIR'
 NOM1 = 'AIR DENSITY'
-TYPE = REEL
+TYPE = REAL
 MNEMO ='RHO\_AIR'
 INDEX = 11
+TAILLE = 1
 DEFAUT = 1.225
 DEFAUT1 = 1.225
-RUBRIQUE = 'GENERAL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'GENERAL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'GENERAL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'GENERAL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 COMPORT =
 'FOREGROUND ("PARAMETRES PHYSIQUES")
 IS BRUT (YELLOW)'
-AIDE = 'FIXE LA VALEUR DE LA MASSE VOLUMIQUE DE L''AIR.'
-AIDE1 = 'SETS THE VALUE OF AIR DENSITY.'
+AIDE =
+'Fixe la valeur de la masse volumique de l''air.'
+AIDE1 =
+'Sets the value of air density.'
 
 NOM = 'MASSE VOLUMIQUE DE LA GLACE'
 NOM1 = 'ICE DENSITY'
-TYPE = REEL
+TYPE = REAL
 MNEMO ='RHO\_ICE'
 INDEX = 12
 DEFAUT = 916.8
 DEFAUT1 = 916.8
-RUBRIQUE = 'GENERAL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'GENERAL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'GENERAL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'GENERAL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 COMPORT =
 'FOREGROUND ("PARAMETRES PHYSIQUES")
 IS BRUT (YELLOW)'
-AIDE = 'FIXE LA VALEUR DE LA MASSE VOLUMIQUE DE LA GLACE.'
-AIDE1 = 'SETS THE VALUE OF ICE DENSITY.'
+AIDE =
+'Fixe la valeur de la masse volumique de la glace, en kg/m$^3$.'
+AIDE1 =
+'Sets the value of ice density, in kg/m$^3$.'
 
 /......
 
 NOM = 'CHALEUR SPECIFIQUE DE L''EAU'
 NOM1 = 'WATER SPECIFIC HEAT'
-TYPE = REEL
+TYPE = REAL
 INDEX = 5
 TAILLE = 0
 DEFAUT = 4180.
 DEFAUT1 = 4180.
 MNEMO = 'CP\_EAU'
-RUBRIQUE = 'THERMIQUE';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'THERMAL BUDGET';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'THERMIQUE';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'THERMAL BUDGET';'PHYSICAL PARAMETERS'
 NIVEAU = 1
-AIDE = 'FIXE LA VALEUR DE LA CHALEUR SPECIFIQUE DE L''EAU.'
-AIDE1 = 'SETS THE VALUE OF THE SPECIFIC HEAT OF WATER.'
+AIDE =
+'Fixe la valeur de la chaleur specifique de l eau, en J/kg/K.'
+AIDE1 =
+'Sets the value of the specific heat of water, in J/kg/K.'
 
 NOM = 'CHALEUR SPECIFIQUE DE LA GLACE'
 NOM1 = 'SPECIFIC HEAT OF ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO ='CP\_ICE'
 INDEX = 16
+TAILLE = 1
 DEFAUT = 2.04E+03
 DEFAUT1 = 2.04E+03
-RUBRIQUE = 'THERMIQUE';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'THERMAL BUDGET';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'THERMIQUE';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'THERMAL BUDGET';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 COMPORT =
 'FOREGROUND ("PARAMETRES PHYSIQUES")
 IS BRUT (YELLOW)'
-AIDE = 'FIXE LA VALEUR DE LA CHALEUR SPECIFIQUE DE LA GLACE.'
-AIDE1 = 'SETS THE VALUE OF THE SPECIFIC HEAT OF ICE.'
+AIDE =
+'Fixe la valeur de la chaleur specifique de la glace,
+en J/kg/K.'
+AIDE1 =
+'Sets the value of the specific heat of ice,
+in J/kg/K.'
 
 NOM = 'CHALEUR LATENTE DE LA GLACE'
 NOM1 = 'LATENT HEAT OF ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO ='LH\_ICE'
 INDEX = 17
+TAILLE = 1
 DEFAUT = 3.34E5
 DEFAUT1 = 3.34E5
-RUBRIQUE = 'THERMIQUE';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'THERMAL BUDGET';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'THERMIQUE';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'THERMAL BUDGET';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 COMPORT =
 'FOREGROUND ("PARAMETRES PHYSIQUES")
 IS BRUT (YELLOW)'
-AIDE = 'FIXE LA VALEUR DE LA CHALEUR LATENTE DE LA GLACE.'
-AIDE1 = 'SETS THE VALUE OF THE LATENT HEAT OF ICE.'
+AIDE =
+'Fixe la valeur de la chaleur latente de la glace.'
+AIDE1 =
+'Sets the value of the latent heat of ice.'
 
 NOM = 'COEFFICIENT D''ECHANGE THERMIQUE EAU-AIR'
 NOM1 = 'WATER-AIR HEAT EXCHANGE COEFFICIENT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'LIN\_WATAIR'
 INDEX = 18
 TAILLE = 0
-DEFAUT = 20.0
-DEFAUT1 = 20.0
-RUBRIQUE = 'THERMIQUE';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'THERMAL BUDGET';'PHYSICAL PARAMETERS'
+DEFAUT = 20.
+DEFAUT1 = 20.
+RUBRIQUE =
+'THERMIQUE';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'THERMAL BUDGET';'PHYSICAL PARAMETERS'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DU COEFFICIENT D''ECHANGE THERMIQUE ENTRE
- L''EAU ET L''AIR.'
-AIDE1 = 'SETS THE HEAT EXCHANGE COEFFICIENT BETWEEN WATER AND AIR.'
-
+AIDE =
+'Fixe la valeur du coefficient d''echange thermique entre
+ l''eau et l''air.'
+AIDE1 =
+'Sets the heat exchange coefficient between water and air.'
 
 NOM = 'CONSTANTE D''ECHANGE THERMIQUE EAU-AIR'
 NOM1 = 'WATER-AIR HEAT EXCHANGE CONSTANT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'CST\_WATAIR'
 INDEX = 20
 TAILLE = 0
-DEFAUT = 50.0
-DEFAUT1 = 50.0
-RUBRIQUE = 'THERMIQUE';'CONSTANTE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CONSTANT'
+DEFAUT = 50.
+DEFAUT1 = 50.
+RUBRIQUE =
+'THERMIQUE';'CONSTANTE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CONSTANT'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DE LA CONSTANTE D''ECHANGE THERMIQUE ENTRE
- L''EAU ET L''AIR.'
-AIDE1 = 'SETS THE HEAT EXCHANGE CONSTANT BETWEEN WATER AND AIR.'
-
+AIDE =
+'Fixe la valeur de la constante d''echange thermique entre
+ l''eau et l''air.'
+AIDE1 =
+'Sets the heat exchange constant between water and air.'
 
 NOM = 'COEFFICIENT D''ECHANGE THERMIQUE GLACE-AIR'
 NOM1 = 'ICE-AIR HEAT EXCHANGE COEFFICIENT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'LIN\_ICEAIR'
 INDEX = 19
 TAILLE = 0
 DEFAUT = 12.189
 DEFAUT1 = 12.189
-RUBRIQUE = 'THERMIQUE';'CONSTANTE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CONSTANT'
+RUBRIQUE =
+'THERMIQUE';'CONSTANTE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CONSTANT'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DU COEFFICIENT D''ECHANGE THERMIQUE LINEAIRE
- ENTRE LA GLACE ET L''AIR.'
-AIDE1 = 'SETS THE LINEARISED HEAT FLUX EXCHANGE COEFFICIENT BETWEEN
- ICE AND AIR.'
+AIDE =
+'Fixe la valeur du coefficient d''echange thermique lineaire
+ entre la glace et l''air.'
+AIDE1 =
+'Sets the linearised heat flux exchange coefficient between
+ ice and air.'
 
 NOM = 'CONSTANTE D''ECHANGE THERMIQUE GLACE-AIR'
 NOM1 = 'ICE-AIR HEAT EXCHANGE CONSTANT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'CST\_ICEAIR'
 INDEX = 21
 TAILLE = 0
 DEFAUT = 32.547
 DEFAUT1 = 32.547
-RUBRIQUE = 'THERMIQUE';'CONSTANTE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CONSTANT'
+RUBRIQUE =
+'THERMIQUE';'CONSTANTE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CONSTANT'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DE LA CONSTANTE D''ECHANGE THERMIQUE LINEAIRE
- ENTRE LA GLACE ET L''AIR.'
-AIDE1 = 'SETS THE LINEARISED HEAT FLUX EXCHANGE CONSTANT BETWEEN
- ICE AND AIR.'
+AIDE =
+'Fixe la valeur de la constante d''echange thermique lineaire
+ entre la glace et l''air.'
+AIDE1 =
+'Sets the linearised heat flux exchange constant between ice and air.'
 
 NOM = 'COEFFICIENT DE CALAGE DU FLUX RADIATIF ATMOSPHERIQUE'
 NOM1 = 'COEFFICIENT FOR CALIBRATION OF BACK RADIATION'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'COEF\_PHIB'
 INDEX = 56
 TAILLE = 0
-DEFAUT = 1.0
-DEFAUT1 = 1.0
-RUBRIQUE = 'THERMIQUE';'COEFFICIENT DE CALAGE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
+DEFAUT = 1.
+DEFAUT1 = 1.
+RUBRIQUE =
+'THERMIQUE';'COEFFICIENT DE CALAGE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DU COEFFICIENT DE CALAGE DU FLUX RADIATIF
-ENTRE L''ATMOSPHERE ET LA SURFACE LIBRE'
-AIDE1 = 'SETS HEAT FLUX CALIBRATION COEFFICIENT FOR EFFETIVE BACK
-RADIATION ON THE FREE SURFACE'
+AIDE =
+'Fixe la valeur du coefficient de calage du flux radiatif
+entre l''atmosphere et la surface libre.'
+AIDE1 =
+'Sets heat flux calibration coefficient for effective back
+radiation on the free surface.'
 
 NOM = 'COEFFICIENT DE CALAGE DU TRANSFERT EVAPORATIF'
 NOM1 = 'COEFFICIENT FOR CALIBRATION OF EVAPORATIVE HEAT TRANSFERT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'COEF\_PHIE'
 INDEX = 57
 TAILLE = 0
-DEFAUT = 1.0
-DEFAUT1 = 1.0
-RUBRIQUE = 'THERMIQUE';'COEFFICIENT DE CALAGE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
+DEFAUT = 1.
+DEFAUT1 = 1.
+RUBRIQUE =
+'THERMIQUE';'COEFFICIENT DE CALAGE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DU COEFFICIENT DE CALAGE DU TRANSFERT DE CHALEUR
-EVAPORATIF ENTRE L''ATMOSPHERE ET LA SURFACE LIBRE'
-AIDE1 = 'SETS HEAT FLUX CALIBRATION COEFFICIENT FOR EVAPORATIVE HEAT
-TRANSFERT BETWEEN AIR AND ATMOSPHERE'
+AIDE =
+'Fixe la valeur du coefficient de calage du transfert de chaleur
+evaporatif entre l''atmosphere et la surface libre.'
+AIDE1 =
+'Sets heat flux calibration coefficient for evaporative heat
+transfert between air and atmosphere.'
 
 NOM = 'COEFFICIENT DE CALAGE DU TRANSFERT CONDUCTIF'
 NOM1 = 'COEFFICIENT FOR CALIBRATION OF CONDUCTIVE HEAT TRANSFERT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'COEF\_PHIH'
 INDEX = 58
 TAILLE = 0
-DEFAUT = 1.0
-DEFAUT1 = 1.0
-RUBRIQUE = 'THERMIQUE';'COEFFICIENT DE CALAGE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
+DEFAUT = 1.
+DEFAUT1 = 1.
+RUBRIQUE =
+'THERMIQUE';'COEFFICIENT DE CALAGE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DU COEFFICIENT DE CALAGE DU TRANSFERT DE CHALEUR
-CONDUCTIF ENTRE L''ATMOSPHERE ET LA SURFACE LIBRE'
-AIDE1 = 'SETS HEAT FLUX CALIBRATION COEFFICIENT FOR CONDUCTIVE HEAT
-TRANSFERT BETWEEN AIR AND ATMOSPHERE'
+AIDE =
+'Fixe la valeur du coefficient de calage du transfert de chaleur
+conductif entre l''atmosphere et la surface libre.'
+AIDE1 =
+'Sets heat flux calibration coefficient for conductive heat
+transfert between air and atmosphere.'
 
 NOM = 'COEFFICIENT DE CALAGE DU TRANSFERT LIE AUX PRECIPITATIONS'
 NOM1 = 'COEFFICIENT FOR CALIBRATION OF PRECIPITATION HEAT TRANSFERT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'COEF\_PHIP'
 INDEX = 59
 TAILLE = 0
-DEFAUT = 1.0
-DEFAUT1 = 1.0
-RUBRIQUE = 'THERMIQUE';'COEFFICIENT DE CALAGE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
+DEFAUT = 1.
+DEFAUT1 = 1.
+RUBRIQUE =
+'THERMIQUE';'COEFFICIENT DE CALAGE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CALIBRATION COEFFICIENT'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DU COEFFICIENT DE CALAGE DU TRANSFERT DE CHALEUR
-ENTRE L''ATMOSPHERE ET LA SURFACE LIBRE LIE AUX PRECIPITATIONS'
-AIDE1 = 'SETS HEAT FLUX CALIBRATION COEFFICIENT FOR PRECIPITATION HEAT
-TRANSFERT BETWEEN AIR AND ATMOSPHERE'
+AIDE =
+'Fixe la valeur du coefficient de calage du transfert de chaleur
+entre l''atmosphere et la surface libre lie aux precipitations.'
+AIDE1 =
+'Sets heat flux calibration coefficient for precipitation heat
+transfert between air and atmosphere.'
 
 NOM = 'CONDUCTIVITE THERMIQUE ENTRE EAU ET FRASIL'
 NOM1 = 'THERMAL CONDUCTIVITY BETWEEN WATER AND FRAZIL '
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'TC\_WT'
 INDEX = 44
 TAILLE = 0
 DEFAUT = 0.56594
 DEFAUT1 = 0.56594
-RUBRIQUE = 'THERMIQUE';'CONDUCTIVITE THERMIQUE'
-RUBRIQUE1 = 'THERMAL BUDGET';'THERMAL CONDUCTIVITY'
+RUBRIQUE =
+'THERMIQUE';'CONDUCTIVITE THERMIQUE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'THERMAL CONDUCTIVITY'
 NIVEAU = 2
 
 NOM = 'CONDUCTIVITE THERMIQUE DE LA GLACE SOMBRE'
 NOM1 = 'THERMAL CONDUCTIVITY OF BLACK ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'TC\_BI'
 INDEX = 65
 TAILLE = 0
 DEFAUT = 2.24
 DEFAUT1 = 2.24
-RUBRIQUE = 'THERMIQUE';'CONDUCTIVITE THERMIQUE'
-RUBRIQUE1 = 'THERMAL BUDGET';'THERMAL CONDUCTIVITY'
+RUBRIQUE =
+'THERMIQUE';'CONDUCTIVITE THERMIQUE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'THERMAL CONDUCTIVITY'
 NIVEAU = 2
 
 NOM = 'CONDUCTIVITE THERMIQUE DE LA NEIGE'
 NOM1 = 'THERMAL CONDUCTIVITY OF SNOW'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'TC\_S'
 INDEX = 67
 TAILLE = 0
 DEFAUT = 0.3
 DEFAUT1 = 0.3
-RUBRIQUE = 'THERMIQUE';'CONDUCTIVITE THERMIQUE'
-RUBRIQUE1 = 'THERMAL BUDGET';'THERMAL CONDUCTIVITY'
+RUBRIQUE =
+'THERMIQUE';'CONDUCTIVITE THERMIQUE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'THERMAL CONDUCTIVITY'
 NIVEAU = 2
 
 NOM = 'POROSITE DE LA GLACE DE SURFACE'
 NOM1 = 'POROSITY OF SURFACE ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'SURF\_EF'
 INDEX = 39
 TAILLE = 0
 DEFAUT = 0.4
 DEFAUT1 = 0.4
-RUBRIQUE = 'GENERAL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'GENERAL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'GENERAL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'GENERAL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -1015,22 +1248,28 @@ INDEX = 22
 TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
-AIDE = 'FIXE LE NOMBRE DE CLASSE DE PARTICULES DE FRASIL EN SUSPENSION'
-AIDE1 = 'SETS THE NUMBER OF CLASS OF SUSPENDED FRAZIL ICE GRANULES'
+AIDE =
+'Fixe le nombre de classes de particules de frasil en suspension.'
+AIDE1 =
+'Sets the number of classes of suspended frazil ice granules.'
 
 NOM = 'NOMBRE DE NUSSELT'
 NOM1 = 'NUSSELT NUMBER'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'NUSS'
 INDEX = 24
 TAILLE = 0
 DEFAUT = 4.
 DEFAUT1 = 4.
-RUBRIQUE = 'FRASIL';'TURBULENCE'
-RUBRIQUE1 = 'FRAZIL';'TURBULENCE'
+RUBRIQUE =
+'FRASIL';'TURBULENCE'
+RUBRIQUE1 =
+'FRAZIL';'TURBULENCE'
 NIVEAU = 2
 
 NOM = 'MODELE POUR LE CALCUL DU NOMBRE DE NUSSELT'
@@ -1041,37 +1280,43 @@ INDEX = 9
 TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
-RUBRIQUE = 'FRASIL';'TURBULENCE'
-RUBRIQUE1 = 'FRAZIL';'TURBULENCE'
+RUBRIQUE =
+'FRASIL';'TURBULENCE'
+RUBRIQUE1 =
+'FRAZIL';'TURBULENCE'
 NIVEAU = 2
 
-NOM = 'RAYON DES CRYSTAUX DE FRASIL'
+NOM = 'RAYON DES CRISTAUX DE FRASIL'
 NOM1 = 'FRAZIL CRYSTALS RADIUS'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'RK\_FRZL'
 INDEX = 27
 TAILLE = 1
-DEFAUT = 1.0E-4
-DEFAUT1 = 1.0E-4
+DEFAUT = 1.E-4
+DEFAUT1 = 1.E-4
 APPARENCE =
 'DYNLIST'
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 
-NOM = 'RATIO DIAMETRE EPAISSEUR D''UN CRYTAL DE FRASIL'
+NOM = 'RATIO DIAMETRE EPAISSEUR D''UN CRISTAL DE FRASIL'
 NOM1 = 'FRAZIL CRYSTALS DIAMETER THICKNESS RATIO'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'DE'
 INDEX = 28
 TAILLE = 0
 DEFAUT = 10.
 DEFAUT1 = 10.
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 
-NOM = 'MODELE POUR LE CALCUL DU VITESSE DE FLOTAISON'
+NOM = 'MODELE POUR LE CALCUL DE LA VITESSE DE FLOTTABILITE'
 NOM1 = 'MODEL FOR THE BUOYANCY VELOCITY'
 TYPE = INTEGER
 MNEMO = 'IBUOY'
@@ -1079,8 +1324,10 @@ INDEX = 10
 TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 CHOIX =
 '1="DALY (1984)"';
 '2="MATOUSEK (1992)"';
@@ -1095,14 +1342,16 @@ NIVEAU = 2
 
 NOM = 'COEFFICIENT DE DEPOSITION DES GLACES SUR BARRES'
 NOM1 = 'SETTLING COEFFICIENT OF FRAZIL ON BARS'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'AF'
 INDEX = 29
 TAILLE = 0
-DEFAUT = 1.0
-DEFAUT1 = 1.0
-RUBRIQUE = 'FRASIL';'COEFFICIENT DE CALAGE'
-RUBRIQUE1 = 'FRAZIL';'CALIBRATION COEFFICIENT'
+DEFAUT = 1.
+DEFAUT1 = 1.
+RUBRIQUE =
+'FRASIL';'COEFFICIENT DE CALAGE'
+RUBRIQUE1 =
+'FRAZIL';'CALIBRATION COEFFICIENT'
 NIVEAU = 2
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -1114,26 +1363,30 @@ NIVEAU = 2
 
 NOM = 'POROSITE DE LA GLACE ACCUMULEE'
 NOM1 = 'POROSITY OF ACCUMULATED ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'CLOG\_EFC'
 INDEX = 37
 TAILLE = 0
 DEFAUT = 0.67
 DEFAUT1 = 0.67
-RUBRIQUE = 'COLMATAGE';'PARAMETRES PHYSIQUES';'GLACE'
-RUBRIQUE1 = 'CLOGGING';'PHYSICAL PARAMETERS';'GLACE'
+RUBRIQUE =
+'COLMATAGE';'PARAMETRES PHYSIQUES';'GLACE'
+RUBRIQUE1 =
+'CLOGGING';'PHYSICAL PARAMETERS';'GLACE'
 NIVEAU = 2
 
 NOM = 'ANGLE D ACCUMULATION DE LA GLACE'
 NOM1 = 'ANGLE OF ACCUMULATED ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'CLOG\_TETHA'
 INDEX = 36
 TAILLE = 0
-DEFAUT = 35.0
-DEFAUT1 = 35.0
-RUBRIQUE = 'COLMATAGE';'PARAMETRES PHYSIQUES';'GLACE'
-RUBRIQUE1 = 'CLOGGING';'PHYSICAL PARAMETERS';'GLACE'
+DEFAUT = 35.
+DEFAUT1 = 35.
+RUBRIQUE =
+'COLMATAGE';'PARAMETRES PHYSIQUES';'GLACE'
+RUBRIQUE1 =
+'CLOGGING';'PHYSICAL PARAMETERS';'GLACE'
 NIVEAU = 2
 
 NOM = 'PARAMETRES PHYSIQUES DE LA GRILLE D ENTREE'
@@ -1144,24 +1397,30 @@ INDEX = 35
 TAILLE = 4
 DEFAUT = 0.06; 0.01; 0.06; 0.01
 DEFAUT1 = 0.06; 0.01; 0.06; 0.01
-RUBRIQUE = 'COLMATAGE';'PARAMETRES PHYSIQUES';'GRILLE'
-RUBRIQUE1 = 'CLOGGING';'PHYSICAL PARAMETERS';'GRID'
+RUBRIQUE =
+'COLMATAGE';'PARAMETRES PHYSIQUES';'GRILLE'
+RUBRIQUE1 =
+'CLOGGING';'PHYSICAL PARAMETERS';'GRID'
 NIVEAU = 0
 AIDE =
-'Characteristiques des barres verticales et horizonales, dans l''ordre:
- 1. distance entre les centres des barres transversales
- 2. diametre des barres transversales
- 3. distance verticale entre les centres des barres verticales
- 4. diametre des barres verticales
-Un diametre de zero pour un certain group de barres entrainera la
- supression des barres de ce group.'
+'Caracteristiques des barres verticales et horizontales, dans l ordre :
+\begin{itemize}
+\item 1 : distance entre les centres des barres transversales ;
+\item 2 : diametre des barres transversales ;
+\item 3 : distance verticale entre les centres des barres verticales ;
+\item 4 : diametre des barres verticales.
+\end{itemize}
+Un diametre de zero pour un certain groupe de barres entrainera la
+ supression des barres de ce groupe.'
 AIDE1 =
 'Characteristics of vertical and transverse bars, in order of
 appearance:
- 1. distance between the centre of the transverse bars
- 2. diameter of the transverse bars
- 3. distance between the centre of th vertical bars
- 4. diameter of the vertical bars
+\begin{itemize}
+\item 1: distance between the centre of the transverse bars,
+\item 2: diameter of the transverse bars,
+\item 3: distance between the centre of the vertical bars,
+\item 4: diameter of the vertical bars.
+\end{itemize}
 A zero diameter for one particular set of bars will result in not
  having those bars on the rack.'
 
@@ -1173,14 +1432,16 @@ TAILLE = 1
 MNEMO = 'NUMCLOG'
 DEFAUT = 0
 DEFAUT1 = 0
-RUBRIQUE = 'COLMATAGE';'CONDITION AUX LIMITES'
-RUBRIQUE1 = 'CLOGGING';'BOUNDARIES CONDITION'
+RUBRIQUE =
+'COLMATAGE';'CONDITION AUX LIMITES'
+RUBRIQUE1 =
+'CLOGGING';'BOUNDARIES CONDITION'
 NIVEAU = 1
 AIDE =
 'Liste des numeros de frontieres liquides ou des grilles de prises
-  d''eau sont presentes'
+d''eau sont presentes.'
 AIDE1 =
-'List of liquid boundary numbers where intake racks are present'
+'List of liquid boundary numbers where intake racks are present.'
 
 NOM = 'SECTIONS COLMATEES'
 NOM1 = 'CLOGGED SECTIONS'
@@ -1190,10 +1451,13 @@ TAILLE = 1
 MNEMO = 'SECLOG'
 DEFAUT = 0
 DEFAUT1 = 0
-RUBRIQUE = 'COLMATAGE';'CONDITION AUX LIMITES'
-RUBRIQUE1 = 'CLOGGING';'BOUNDARIES CONDITION'
+RUBRIQUE =
+'COLMATAGE';'CONDITION AUX LIMITES'
+RUBRIQUE1 =
+'CLOGGING';'BOUNDARIES CONDITION'
 NIVEAU = 1
-AIDE = 'Liste des noeuds composant les sections sur lequelles
+AIDE =
+'Liste des noeuds composant les sections sur lequelles
 on a une grille potentiellement colmatee, vont par paire :
 sec1\_depart;sec1\_arrivee;sec2\_depart;sec2\_arrivee;...'
 AIDE1 =
@@ -1203,20 +1467,20 @@ sec1\_start;sec1\_end;sec2\_start;sec2\_end;...'
 
 NOM = 'FICHIER DE RESULTATS DE LA GLACE ACCUMULEE'
 NOM1 = 'CLOGGING RESULTS FILE'
-TYPE = CARACTERE
+TYPE = STRING
 INDEX = 25
 TAILLE = 1
-SUBMIT = 'CLGRFO-WRITE;CLGRFO;FACUL;ASC;ECR;SCAL'
+SUBMIT = 'CLGRFO-WRITE;CLGRFO;FACUL;ASC;ECR;PARAL'
 DEFAUT = ''
 DEFAUT1 = ''
-MNEMO = 'ICE\_FILES(CLGRFO)%NAME'
+MNEMO = 'ICE\_FILES(CLGRFO)\%NAME'
 RUBRIQUE =
-'ENVIRONNEMENT DE CALCUL';'FICHIERS DE SORTIE';'FICHIERS RESULTATS'
+'ENVIRONNEMENT DE CALCUL';'SORTIE';'RESULTATS'
 RUBRIQUE1 =
-'COMPUTATION ENVIRONMENT';'OUTPUT FILES';'RESULTS FILES'
+'COMPUTATION ENVIRONMENT';'OUTPUT';'RESULTS'
 NIVEAU = 1
 AIDE =
-'Fichier de resultats de la glace accumulee aux prises d eau.'
+'Fichier ASCII de resultats de la glace accumulee aux prises d eau.'
 AIDE1 =
 'ASCII file of results for clogged ice parameters at water intakes.'
 
@@ -1229,26 +1493,30 @@ AIDE1 =
 
 NOM = 'VITESSE CRITIQUE POUR LA GLACE DE BORD STATIQUE'
 NOM1 = 'CRITICAL VELOCITY FOR STATIC BORDER ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'VCRBOR'
 INDEX = 50
 TAILLE = 0
 DEFAUT = 0.07
 DEFAUT1 = 0.07
-RUBRIQUE = 'COUVERT DE GLACE'
-RUBRIQUE1 = 'ICE COVER'
+RUBRIQUE =
+'COUVERT DE GLACE'
+RUBRIQUE1 =
+'ICE COVER'
 NIVEAU = 2
 
-NOM = 'VITESSE CRITIQUE POUR LA GLACE DE BORD DYAMIQUE'
+NOM = 'VITESSE CRITIQUE POUR LA GLACE DE BORD DYNAMIQUE'
 NOM1 = 'CRITICAL VELOCITY FOR DYNAMIC BORDER ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'VCRBOM'
 INDEX = 73
 TAILLE = 0
 DEFAUT = 0.4
 DEFAUT1 = 0.4
-RUBRIQUE = 'COUVERT DE GLACE'
-RUBRIQUE1 = 'ICE COVER'
+RUBRIQUE =
+'COUVERT DE GLACE'
+RUBRIQUE1 =
+'ICE COVER'
 NIVEAU = 2
 
 /
@@ -1258,257 +1526,295 @@ NIVEAU = 2
 /...................................................................../
 
 
-NOM = 'HAUTEUR DE MEASURE DU VENT'
+NOM = 'HAUTEUR DE MESURE DU VENT'
 NOM1 = 'HEIGHT OF MEASURED WIND'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'WINDZ'
 INDEX = 22
 TAILLE = 0
 DEFAUT = 4.5
 DEFAUT1 = 4.5
-RUBRIQUE = 'THERMIQUE';'METEO';'VENT'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'WIND'
+RUBRIQUE =
+'THERMIQUE';'METEO';'VENT'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'WIND'
 NIVEAU = 2
-AIDE = 'FIXE LA VALEUR DE LA HAUTEUR A AQUELLE LE VENT EST MEASURE.'
-AIDE1 = 'SETS THE HEIGHT AT WHICH THE WIND IS MEASURED.'
+AIDE =
+'Fixe la valeur de la hauteur a laquelle le vent est mesure, en metres.'
+AIDE1 =
+'Sets the height at which the wind is measured, in meters.'
 
 NOM = 'ELEVATION DU MODELE RELATIVE AU NIVEAU MOYEN DES OCEANS'
 NOM1 = 'RELATIVE MODEL ELEVATION FROM MEAN SEA LEVEL'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'MODELZ'
 INDEX = 23
 TAILLE = 0
-DEFAUT = 0.0
-DEFAUT1 = 0.0
-RUBRIQUE = 'THERMIQUE';'METEO';'SOLEIL'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
+DEFAUT = 0.
+DEFAUT1 = 0.
+RUBRIQUE =
+'THERMIQUE';'METEO';'SOLEIL'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
 NIVEAU = 2
-AIDE = 'FIXE L''ELEVATION DU MODELE RELATIVE AU NIVEAU
- MOYEN DES OCEANS.'
-AIDE1 = 'SETS THE RELATIVE MODEL ELEVATION FROM MEAN SEA LEVEL.'
+AIDE =
+'Fixe l''elevation du modele relative au niveau moyen des oceans.'
+AIDE1 =
+'Sets the relative model elevation from mean sea level.'
 
 /......
 
 NOM = 'ANGLE DU SOLEIL COUCHANT'
 NOM1 = 'SUN SET ANGLE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ALPHSD'
 INDEX = 25
 TAILLE = 0
-DEFAUT = 180.0
-DEFAUT1 = 180.0
-RUBRIQUE = 'THERMIQUE';'METEO';'SOLEIL'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
+DEFAUT = 180.
+DEFAUT1 = 180.
+RUBRIQUE =
+'THERMIQUE';'METEO';'SOLEIL'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
 NIVEAU = 2
-AIDE = 'FIXE L''ANGLE DU SOLEIL COUCHANT, 180 DEGREES POUR
- L''HORIZONTALE'
-AIDE1 = 'SETS THE SUN SET ANGLE, 180 DEGREES FOR THE HORIZONTAL.'
+AIDE =
+'Fixe l''angle du soleil couchant, 180 degres pour l''horizontale.'
+AIDE1 =
+'Sets the sun set angle, 180 degrees for the horizontal.'
 
 NOM = 'ANGLE DU SOLEIL LEVANT'
 NOM1 = 'SUN RISE ANGLE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ALPHRD'
 INDEX = 26
 TAILLE = 0
-DEFAUT = 0.0
-DEFAUT1 = 0.0
-RUBRIQUE = 'THERMIQUE';'METEO';'SOLEIL'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
+DEFAUT = 0.
+DEFAUT1 = 0.
+RUBRIQUE =
+'THERMIQUE';'METEO';'SOLEIL'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
 NIVEAU = 2
-AIDE = 'FIXE L''ANGLE DU SOLEIL LEVANT, 0 DEGREES POUR
- L''HORIZONTALE'
-AIDE1 = 'SETS THE SUN RISE ANGLE, 0 DEGREES FOR THE HORIZONTAL.'
+AIDE =
+'Fixe l''angle du soleil levant, 0 degres pour l''horizontale.'
+AIDE1 =
+'Sets the sun rise angle, 0 degrees for the horizontal.'
 
 NOM = 'CONSTANTE SOLAIRE'
 NOM1 = 'SOLAR CONSTANT'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'SIO'
 INDEX = 33
 TAILLE = 0
-DEFAUT = 1380.0
-DEFAUT1 = 1380.0
-RUBRIQUE = 'THERMIQUE';'METEO';'SOLEIL'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
+DEFAUT = 1380.
+DEFAUT1 = 1380.
+RUBRIQUE =
+'THERMIQUE';'METEO';'SOLEIL'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'SUN'
 NIVEAU = 2
-AIDE = 'FIXE LA CONSTANTE SOLAIRE'
-AIDE1 = 'SETS THE SOLAR CONSTANT
+AIDE =
+'Fixe la constante solaire.'
+AIDE1 =
+'Sets the solar constant.
 The solar constant, a measure of flux density, is the mean solar
 electromagnetic radiation (the solar irradiance) per unit area that
 would be incident on a plane perpendicular to the rays, at a distance
 of one astronomical unit (AU) from the Sun (roughly the mean distance
 from the Sun to the Earth). The solar constant includes all types of
 solar radiation, not just the visible light. It is measured by
-satellite as being 1.361 kilowatts per square meter (kW/m2) at solar
-minimum and approximately 0.1% greater (roughly 1.362 kW/m2) at solar
-maximum. The solar "constant" is not a physical constant in scientific
+satellite as being 1.361 kilowatts per square meter (kW/m$^2$) at solar
+minimum and approximately 0.1~\% greater (roughly 1.362 kW/m$^2$) at
+solar maximum.
+The solar "constant" is not a physical constant in scientific
 sense; that is, it is not like the Planck constant or the speed of
 light, which are absolutely constant in physics. The solar constant is
 merely an average of the actually varying value. It has been shown to
-vary in the past 400 years over a range of less than 0.2 percent.'
+vary in the past 400 years over a range of less than 0.2~\%.'
 
 /......
 
 NOM = 'ALBEDO DES GLACES'
 NOM1 = 'ALBEDO OF ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ALBE'
 INDEX = 34
 TAILLE = 0
 DEFAUT = 0.2
 DEFAUT1 = 0.2
-RUBRIQUE = 'THERMIQUE';'METEO'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES'
+RUBRIQUE =
+'THERMIQUE';'METEO'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES'
 NIVEAU = 2
-AIDE = 'FIXE LA CONSTANTE ALBEDO DES GLACES'
-AIDE1 = 'SETS THE ALBEDO OF ICE'
+AIDE =
+'Fixe la constante albedo des glaces.'
+AIDE1 =
+'Sets the albedo of ice.'
 
 /......
 
 NOM = 'TEMPERATURE DE L''AIR'
 NOM1 = 'AIR TEMPERATURE'
-TYPE = REEL
+TYPE = REAL
 INDEX = 41
 MNEMO = 'CST\_TAIR'
 TAILLE = 0
 DEFAUT = 20.
 DEFAUT1 = 20.
-RUBRIQUE = 'THERMIQUE';'METEO';'AIR'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
+RUBRIQUE =
+'THERMIQUE';'METEO';'AIR'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
 NIVEAU = 1
-AIDE = 'en $^{circ}$C, TEMPERATURE DE L AIR
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'in $^{circ}$C, AIR TEMPERATURE USED
-     WHEN IT IS NOT ALREADY PROVIDED WITHIN
-     ONE OF THE METEO FILES'
+AIDE =
+'En $^{\circ}$C, temperature de l air lorsque celle-ci n est pas deja
+donnee dans un des fichiers meteo.'
+AIDE1 =
+'In $^{\circ}$C, air temperature used when it is not already provided
+within one of the meteo files.'
 
 NOM = 'TEMPERATURE DE ROSEE'
 NOM1 = 'DEWPOINT TEMPERATURE'
-TYPE = REEL
+TYPE = REAL
 INDEX = 42
 MNEMO = 'CST\_TDEW'
 TAILLE = 0
 DEFAUT = 0.
 DEFAUT1 = 0.
-RUBRIQUE = 'THERMIQUE';'METEO';'AIR'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
+RUBRIQUE =
+'THERMIQUE';'METEO';'AIR'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
 NIVEAU = 1
-AIDE = 'en $^{circ}$C, TEMPERATURE DE ROSEE
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'in $^{circ}$C, DEWPOINT TEMPERATURE USED
-     WHEN IT IS NOT ALREADY PROVIDED WITHIN
-     ONE OF THE METEO FILES'
+AIDE =
+'En $^{\circ}$C, temperature de rosee lorsque celle-ci n est pas deja
+donnee dans un des fichiers meteo.'
+AIDE1 =
+'In $^{\circ}$C, dewpoint temperature used when it is not already
+provided within one of the meteo files.'
 
 NOM = 'COUVERTURE NUAGEUSE'
 NOM1 = 'CLOUD COVER'
-TYPE = REEL
+TYPE = REAL
 INDEX = 43
 MNEMO = 'CST\_CLDC'
 TAILLE = 0
 DEFAUT = 0.
 DEFAUT1 = 0.
-RUBRIQUE = 'THERMIQUE';'METEO';'AIR'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
+RUBRIQUE =
+'THERMIQUE';'METEO';'AIR'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
 NIVEAU = 1
-AIDE = 'en dixieme, COUVERTURE NUAGEUSE
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'in tenth, CLOUD COVER USED
-     WHEN IT IS NOT ALREADY PROVIDED WITHIN
-     ONE OF THE METEO FILES'
+AIDE =
+'En dixieme, couverture nuageuse lorsque celle-ci n est pas deja donnee
+dans un des fichiers meteo.'
+AIDE1 =
+'In tenth, cloud cover used when it is not already provided within one
+of the meteo files.'
 
 NOM = 'VISIBILITE'
 NOM1 = 'VISIBILITY'
-TYPE = REEL
+TYPE = REAL
 INDEX = 45
 MNEMO = 'CST\_VISBI'
 TAILLE = 0
 DEFAUT = 1.E13
 DEFAUT1 = 1.E13
-RUBRIQUE = 'THERMIQUE';'METEO';'AIR'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
+RUBRIQUE =
+'THERMIQUE';'METEO';'AIR'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
 NIVEAU = 1
-AIDE = 'en metres, VISIBILITE
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'in meters, VISIBILITY USED
-     WHEN IT IS NOT ALREADY PROVIDED WITHIN
-     ONE OF THE METEO FILES'
+AIDE =
+'En metres, visibilite lorsque celle-ci n est pas deja donnee
+dans un des fichiers meteo.'
+AIDE1 =
+'In meters, visibility used when it is not already provided
+within one of the meteo files.'
 
 NOM = 'PLUIE'
 NOM1 = 'RAIN'
-TYPE = REEL
+TYPE = REAL
 INDEX = 46
 MNEMO = 'CST\_PLUIE'
 TAILLE = 0
 DEFAUT = 0.
 DEFAUT1 = 0.
 DEFAUT1 = 1.E13
-RUBRIQUE = 'THERMIQUE';'METEO';'AIR'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
+RUBRIQUE =
+'THERMIQUE';'METEO';'AIR'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
 NIVEAU = 1
-AIDE = 'en metres, PLUIE
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'in meters, RAIN USED
-     WHEN IT IS NOT ALREADY PROVIDED WITHIN
-     ONE OF THE METEO FILES'
+AIDE =
+'En metres, pluie lorsque celle-ci n est pas deja donnee
+dans un des fichiers meteo.'
+AIDE1 =
+'In meters, rain used when it is not already provided
+within one of the meteo files.'
 
 NOM = 'INTENSITE ET DIRECTION DU VENT'
 NOM1 = 'WIND SPEED AND DIRECTION'
-TYPE = REEL
+TYPE = REAL
 INDEX = 47
 MNEMO = 'CST\_WINDS,CST\_WINDD'
 TAILLE = 2
 DEFAUT = 0.;0.
 DEFAUT1 = 0.;0.
-RUBRIQUE = 'THERMIQUE';'METEO';'VENT'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'WIND'
+RUBRIQUE =
+'THERMIQUE';'METEO';'VENT'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'WIND'
 NIVEAU = 1
-AIDE = 'en m/s et deg venant du nord tournant dans sens de la montre,
-     INTENSITE ET DIRECTION DU VENT
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'en m/s et deg from north, clockwise, WIND SPEED
-     AND DIRECTION USED WHEN IT IS NOT ALREADY PROVIDED
-     WITHIN ONE OF THE METEO FILES'
+AIDE =
+'En m/s et degres venant du nord tournant dans sens de la montre,
+intensite et direction du vent lorsque celle-ci n est pas deja donnee
+dans un des fichiers meteo.'
+AIDE1 =
+'In m/s and degrees from north, clockwise, wind speed and direction used
+when it is not already provided within one of the meteo files.'
 
 NOM = 'COMPOSANTES X ET Y DU VENT'
 NOM1 = 'WIND XY-COMPONENTS'
-TYPE = REEL
+TYPE = REAL
 INDEX = 48
 MNEMO = 'CST\_WINDX,CST\_WINDY'
 TAILLE = 2
 DEFAUT = 0.;0.
 DEFAUT1 = 0.;0.
-RUBRIQUE = 'THERMIQUE';'METEO';'VENT'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'WIND'
+RUBRIQUE =
+'THERMIQUE';'METEO';'VENT'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'WIND'
 NIVEAU = 1
-AIDE = 'en m/s, COMPOSANTES X ET Y DU VENT
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'in m/s, WIND XY-COMPONENTS USED
-     WHEN IT IS NOT ALREADY PROVIDED WITHIN
-     ONE OF THE METEO FILES'
+AIDE =
+'En m/s, composantes $x$ et $y$ du vent lorsque celle-ci n est pas deja
+donnee dans un des fichiers meteo.'
+AIDE1 =
+'In m/s, wind xy-components used when it is not already provided within
+one of the meteo files.'
 
 NOM = 'PRESSION ATMOSPHERIQUE'
 NOM1 = 'ATMOSPHERIC PRESSURE'
-TYPE = REEL
+TYPE = REAL
 INDEX = 49
 MNEMO = 'CST\_PATM'
 TAILLE = 0
 DEFAUT = 0.
 DEFAUT1 = 0.
-RUBRIQUE = 'THERMIQUE';'METEO';'AIR'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
+RUBRIQUE =
+'THERMIQUE';'METEO';'AIR'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'AIR'
 NIVEAU = 1
-AIDE = 'en ??, PRESSION ATMOSPHERIQUE
-     LORSQUE CELLE-CI N EST PAS DEJA DONNEE
-     DANS UN DES FICHIER METEO'
-AIDE1 = 'in ??, ATMOSPHERIC PRESSURE USED
-     WHEN IT IS NOT ALREADY PROVIDED WITHIN
-     ONE OF THE METEO FILES'
+AIDE =
+'En ??, pression atmospherique lorsque celle-ci n est pas deja donnee
+dans un des fichiers meteo.'
+AIDE1 =
+'In ??, atmospheric pressure used when it is not already provided within
+one of the meteo files.'
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 /
@@ -1518,47 +1824,59 @@ AIDE1 = 'in ??, ATMOSPHERIC PRESSURE USED
 /
 / TODO: KEYWORDS TO BE REPLACED BY A COMPUTATION FROM PHI0 (AND LAMBD0)
 /
-NOM = 'LONGITUDE GLOBALE, EN DEGREES'
+NOM = 'LONGITUDE GLOBALE, EN DEGRES'
 NOM1 = 'GLOBAL LONGITUDE, IN DEGREES'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ALSM'
 INDEX = 30
 TAILLE = 0
-DEFAUT = 75.0
-DEFAUT1 = 75.0
-RUBRIQUE = 'THERMIQUE';'METEO';'POSITION'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'POSITION'
+DEFAUT = 75.
+DEFAUT1 = 75.
+RUBRIQUE =
+'THERMIQUE';'METEO';'POSITION'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'POSITION'
 NIVEAU = 2
-AIDE = 'FIXE LA LONGITUDE GLOBALE'
-AIDE1 = 'SETS THE GLOBAL LONGITUDE'
+AIDE =
+'Fixe la longitude globale, en degres.'
+AIDE1 =
+'Sets the global longitude, in degrees.'
 
-NOM = 'LONGITUDE LOCALE, EN  DEGREES'
+NOM = 'LONGITUDE LOCALE, EN  DEGRES'
 NOM1 = 'LOCAL LONGITUDE, IN  DEGREES'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ALLM'
 INDEX = 31
 TAILLE = 0
 DEFAUT = 75.43
 DEFAUT1 = 75.43
-RUBRIQUE = 'THERMIQUE';'METEO';'POSITION'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'POSITION'
+RUBRIQUE =
+'THERMIQUE';'METEO';'POSITION'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'POSITION'
 NIVEAU = 2
-AIDE = 'FIXE LA LONGITUDE LOCALE'
-AIDE1 = 'SETS THE LOCAL LONGITUDE'
+AIDE =
+'Fixe la longitude locale, en degres.'
+AIDE1 =
+'Sets the local longitude, in degrees.'
 
 NOM = 'LONGITUDE EST OU OUEST'
 NOM1 = 'EAST OR WEST LONGITUDE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ETADIR'
 INDEX = 32
 TAILLE = 0
-DEFAUT = -1
-DEFAUT1 = -1
-RUBRIQUE = 'THERMIQUE';'METEO';'POSITION'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'POSITION'
+DEFAUT = -1.
+DEFAUT1 = -1.
+RUBRIQUE =
+'THERMIQUE';'METEO';'POSITION'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES';'POSITION'
 NIVEAU = 2
-AIDE = '-1, POUR LES LONGITUDES OUEST; + POUR LES LONGITUDE EST'
-AIDE1 = '-1, FOR WEST LONGITUDES; + FOR EAST LONGITUDES'
+AIDE =
+'-1., pour les longitudes ouest; +1. pour les longitude est.'
+AIDE1 =
+'-1., for west longitudes; +1. for east longitudes'
 
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -1568,26 +1886,29 @@ AIDE1 = '-1, FOR WEST LONGITUDES; + FOR EAST LONGITUDES'
 
 NOM = 'INCLURE LA DYNAMIQUE DES GLACES'
 NOM1 = 'INCLUDE ICE DYNAMICS'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 9
 MNEMO = 'ICEDYNAMICS'
 TAILLE = 0
 DEFAUT = NON
 DEFAUT1 = NO
 NIVEAU = 1
-RUBRIQUE = 'COUVERT DE GLACE';'DYNAMIQUE DES GLACES'
-RUBRIQUE1 = 'ICE COVER';'ICE DYNAMICS'
-AIDE = 'ACTIVE LES PROCESSESSUS DE DYNAMIQUE DES GLACES
- DE SURFACES'
-AIDE1 = 'SWITCH THE SURFACE ICE DYNAMICS PROCESSES'
+RUBRIQUE =
+'COUVERT DE GLACE';'DYNAMIQUE DES GLACES'
+RUBRIQUE1 =
+'ICE COVER';'ICE DYNAMICS'
+AIDE =
+'Active les processessus de dynamique des glaces de surfaces.'
+AIDE1 =
+'Switch the surface ice dynamics processes.'
 
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 /
 /   ALGORITHMIC DIFFERENTIATION
 /...................................................................../
 
-NOM = 'NOMBRE DE DERIVEES'
-NOM1 = 'NUMBER OF DERIVATIVES'
+NOM = 'AD NOMBRE DE DERIVEES'
+NOM1 = 'AD NUMBER OF DERIVATIVES'
 TYPE = INTEGER
 INDEX = 13
 TAILLE = 1
@@ -1599,13 +1920,15 @@ RUBRIQUE =
 RUBRIQUE1 =
 'NUMERICAL PARAMETERS';'AUTOMATIC DIFFERENTIATION';''
 NIVEAU = 0
-AIDE = 'Definit le nombre de derivees utilisateurs, dans le cadre
+AIDE =
+'Definit le nombre de derivees utilisateurs, dans le cadre
 de la differentiation algorithmique.'
-AIDE1 = 'Defines the number of user derivatives, within the framework
+AIDE1 =
+'Defines the number of user derivatives, within the framework
 of the algorithmic differentiation.'
 /
-NOM = 'NOMS DES DERIVEES'
-NOM1 = 'NAMES OF DERIVATIVES'
+NOM = 'AD NOMS DES DERIVEES'
+NOM1 = 'AD NAMES OF DERIVATIVES'
 TYPE = STRING
 INDEX = 13
 TAILLE = 2
@@ -1615,10 +1938,12 @@ RUBRIQUE =
 RUBRIQUE1 =
 'NUMERICAL PARAMETERS';'AUTOMATIC DIFFERENTIATION';''
 NIVEAU = 0
-AIDE = 'Noms des derivees utilisateurs en 32 caracteres,
-         16 pour le nom, 16 pour l''unite'
-AIDE1 = 'Name of user derivatives in 32 characters,
-         16 for the name, 16 for the unit.'
+AIDE =
+'Noms des derivees utilisateurs en 32 caracteres,
+16 pour le nom, 16 pour l''unite.'
+AIDE1 =
+'Name of user derivatives in 32 characters,
+16 for the name, 16 for the unit.'
 
 
 
@@ -1633,129 +1958,153 @@ AIDE1 = 'Name of user derivatives in 32 characters,
 
 NOM = 'MASSE VOLUMIQUE DE L''EAU'
 NOM1 = 'WATER DENSITY'
-TYPE = REEL
+TYPE = REAL
 MNEMO ='RO0'
 INDEX = 1
+TAILLE = 1
 DEFAUT = 999.972
 DEFAUT1 = 999.972
-RUBRIQUE = 'GENERAL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'GENERAL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'GENERAL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'GENERAL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 COMPORT =
 'FOREGROUND ("PARAMETRES PHYSIQUES")
 IS BRUT (YELLOW)'
-AIDE = 'FIXE LA VALEUR DE LA MASSE VOLUMIQUE DE L''EAU.'
-AIDE1 = 'SETS THE VALUE OF WATER DENSITY.'
+AIDE =
+'Fixe la valeur de la masse volumique de l''eau, en kg/m$^3$.'
+AIDE1 =
+'Sets the value of water density, in kg/m$^3$.'
 
 NOM = 'VISCOSITE CINEMATIQUE DE L''EAU'
 NOM1 = 'KINEMATIC WATER VISCOSITY'
-TYPE = REEL
+TYPE = REAL
 INDEX = 8
+TAILLE = 1
 MNEMO = 'XNU'
-DEFAUT = 1.792e-6
-DEFAUT1 = 1.792e-6
-RUBRIQUE = 'GENERAL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'GENERAL';'PHYSICAL PARAMETERS'
+DEFAUT = 1.792E-6
+DEFAUT1 = 1.792E-6
+RUBRIQUE =
+'GENERAL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'GENERAL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
-AIDE = 'DEFINIT LA VISCOSITE CINEMATIQUE DE L''EAU.
-         M/S2'
-AIDE1 = 'SPECIFIES THE WATER KINEMATIC VISCOSITY.
-         M/S2'
+AIDE =
+'Definit la viscosite cinematique de l''eau. En m/s$^2$.'
+AIDE1 =
+'Specifies the water kinematic viscosity. In m/s$^2$.'
 
 NOM = 'CONST. POUR LE TRANSFERT THERMIQUE ENTRE L''EAU ET LA GLACE'
 NOM1 = 'CONSTANT FOR HEAT TRANSFER BETWEEN TURBULENT WATER AND ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'CWI1'
 INDEX = 62
 TAILLE = 0
-DEFAUT = 1448.0
-DEFAUT1 = 1448.0
-RUBRIQUE = 'THERMIQUE';'CONSTANTE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CONSTANT'
+DEFAUT = 1448.
+DEFAUT1 = 1448.
+RUBRIQUE =
+'THERMIQUE';'CONSTANTE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CONSTANT'
 NIVEAU = 2
 
 NOM = 'CONST. POUR LE TRANSFERT THERMIQUE POUR L''EAU EN SURFUSION'
 NOM1 = 'CONSTANT FOR HEAT TRANSFER FOR SUPERCOOLED TURBULENT FLOW'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'CIW1'
 INDEX = 63
 TAILLE = 0
-DEFAUT = 1118.00
-DEFAUT1 = 1118.00
-RUBRIQUE = 'THERMIQUE';'CONSTANTE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CONSTANT'
+DEFAUT = 1118.
+DEFAUT1 = 1118.
+RUBRIQUE =
+'THERMIQUE';'CONSTANTE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CONSTANT'
 NIVEAU = 2
 
 NOM = 'NOMBRE DE NUSSELT POUR LE TRANFERT THERMIQUE LAMINAIRE'
 NOM1 = 'NUSSELT NUMBER FOR HEAT TRANSFER BETWEEN LAMINAR WATER AND ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ATA'
 INDEX = 64
 TAILLE = 0
 DEFAUT = 7.541
 DEFAUT1 = 7.541
-RUBRIQUE = 'THERMIQUE';'TURBULENCE'
-RUBRIQUE1 = 'THERMAL BUDGET';'TURBULENCE'
+RUBRIQUE =
+'THERMIQUE';'TURBULENCE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'TURBULENCE'
 NIVEAU = 2
 
 NOM = 'CONSTANTE DE BOLTZMANN'
 NOM1 = 'BOLTZMANN CONSTANT (WM-2K-4)'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'SGMA'
 INDEX = 69
 TAILLE = 0
 DEFAUT = 5.67D-8
 DEFAUT1 = 5.67D-8
-RUBRIQUE = 'THERMIQUE';'CONSTANTE'
-RUBRIQUE1 = 'THERMAL BUDGET';'CONSTANT'
+RUBRIQUE =
+'THERMIQUE';'CONSTANTE'
+RUBRIQUE1 =
+'THERMAL BUDGET';'CONSTANT'
 NIVEAU = 2
 
 NOM = 'TEMPERATURE DE CONGELATION DE L''EAU'
 NOM1 = 'FREEZING POINT OF WATER'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'CST\_TMELT'
 INDEX = 70
 TAILLE = 0
 DEFAUT = 0.
 DEFAUT1 = 0.
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 
 NOM = 'TEMPERATURE D''EAU CRITIQUE POUR LA GLACE DE BORD STATIQUE'
 NOM1 = 'CRITICAL WATER TEMPERATURE FOR STATIC BORDER ICE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'TC'
 INDEX = 71
 TAILLE = 0
 DEFAUT = -1.1
 DEFAUT1 = -1.1
-RUBRIQUE = 'COUVERT DE GLACE';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'ICE COVER';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'COUVERT DE GLACE';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'ICE COVER';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 
-NOM = 'LARGEUR DU CHENNAL POUR LE CALCUL DE LA TEMPERATURE DE SURFACE'
+NOM = 'LARGEUR DU CHENAL POUR LE CALCUL DE LA TEMPERATURE DE SURFACE'
 NOM1 = 'CHANNEL WIDTH FOR THE COMPUTATION OF SURFACE TEMPERATURE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'BCH'
 INDEX = 98
 TAILLE = 0
 DEFAUT = 0.15
 DEFAUT1 = 0.15
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 
 NOM = 'CONCENTRATION MAXIMALE DU COUVERT DE GLACE'
 NOM1 = 'CONCENTRATION OF SURFACE ICE WHEN FORMATION'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'ANFEM0'
 INDEX = 74
 TAILLE = 0
-DEFAUT = 1.0
-DEFAUT1 = 1.0
-RUBRIQUE = 'COUVERT DE GLACE';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'ICE COVER';'PHYSICAL PARAMETERS'
+DEFAUT = 1.
+DEFAUT1 = 1.
+RUBRIQUE =
+'COUVERT DE GLACE';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'ICE COVER';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 
 NOM = 'PROCESSEURS PARALLELES'
@@ -1767,104 +2116,115 @@ DEFAUT = 0
 DEFAUT1 = 0
 MNEMO = 'NCSIZE'
 RUBRIQUE =
-'ENVIRONNEMENT DE CALCUL';'INITIALISATION';'GLOBAL'
+'ENVIRONNEMENT DE CALCUL';'GLOBAL';''
 RUBRIQUE1 =
-'COMPUTATION ENVIRONMENT';'INITIALIZATION';'GLOBAL'
+'COMPUTATION ENVIRONMENT';'GLOBAL';''
 NIVEAU = 1
 AIDE =
-'NOMBRE DE PROCESSEURS EN CALCUL PARALLELE
-0 : 1 machine, compilation sans bibliotheque de parallelisme
-1 : 1 machine, compilation avec bibliotheque de parallelisme
-2 : 2 processeurs ou machines en parallele
-etc...'
+'Nombre de processeurs pour la decomposition en parallele:
+\begin{itemize}
+\item 0 : 1 machine, compilation sans bibliotheque de parallelisme ;
+\item 1 : 1 machine, compilation avec bibliotheque de parallelisme ;
+\item 2 : 2 processeurs ou machines en parallele etc...
+\end{itemize}'
 AIDE1 =
-'NUMBER OF PROCESSORS FOR PARALLEL PROCESSING
-0 : 1 machine, compiling without parallel library
-1 : 1 machine, compiling with a parallel library
-2 : 2 processors or machines in parallel
-etc....'
+'Number of processors for domain partition.
+\begin{itemize}
+\item 0: 1 machine, compiling without parallel library,
+\item 1: 1 machine, compiling with a parallel library,
+\item 2: 2 processors or machines in parallel etc...
+\end{itemize}'
 
 NOM = 'BILAN THERMIQUE'
 NOM1 = 'HEAT BUDGET'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 1
 TAILLE = 0
 DEFAUT = OUI
 DEFAUT1 = YES
 MNEMO = 'THERMAL\_BUDGET'
-RUBRIQUE = 'THERMIQUE'
-RUBRIQUE1 = 'THERMAL BUDGET'
+RUBRIQUE =
+'THERMIQUE'
+RUBRIQUE1 =
+'THERMAL BUDGET'
 NIVEAU = 1
 AIDE =
-'PRISE EN COMPTE DES ECHANGES THERMIQUES DANS LE CALCUL'
+'Prise en compte des echanges thermiques dans le calcul.'
 AIDE1 =
-'COMPUTATION OF THE THERMAL EXCHANGES IN KHIONE'
+'Computation of the thermal exchanges in \khione.'
 
 NOM = 'IMPACT DU COUVERT SUR L''HYDRODYNAMIQUE'
 NOM1 = 'ICE COVER IMPACT ON HYDRODYNAMIC'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 2
 TAILLE = 0
 DEFAUT = NON
 DEFAUT1 = NO
 MNEMO = 'ICOVER\_IMPACT'
-RUBRIQUE = 'COUVERT DE GLACE'
-RUBRIQUE1 = 'ICE COVER'
+RUBRIQUE =
+'COUVERT DE GLACE'
+RUBRIQUE1 =
+'ICE COVER'
 NIVEAU = 1
 AIDE =
-'PRISE EN COMPTE DE L''IMPACT DU COUVERT DE GLACE SUR
-L''HYDRODYNAMIQUE'
+'Prise en compte de l''impact du couvert de glace sur
+l''hydrodynamique.'
 AIDE1 =
-'COMPUTATION OF ICE COVER IMPACT ON THE HYDRODYNAMIC'
+'Computation of ice cover impact on the hydrodynamic.'
 
 NOM = 'COLMATAGE DES GRILLES'
 NOM1 = 'CLOGGING ON BARS'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 3
 TAILLE = 0
 DEFAUT = NON
 DEFAUT1 = NO
 MNEMO = 'CLOGGING'
-RUBRIQUE = 'COLMATAGE'
-RUBRIQUE1 = 'CLOGGING'
+RUBRIQUE =
+'COLMATAGE'
+RUBRIQUE1 =
+'CLOGGING'
 NIVEAU = 1
 AIDE =
-'PRISE EN COMPTE DE L''IMPACT DU COLMATAGE SUR LES GRILLES'
+'Prise en compte de l''impact du colmatage sur les grilles.'
 AIDE1 =
-'COMPUTATION OF CLOGGING ON GRID'
+'Computation of clogging on grid.'
 
 NOM = 'GLACE DE BORD STATIQUE'
 NOM1 = 'BORDER ICE COVER'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 4
 TAILLE = 0
 DEFAUT = NON
 DEFAUT1 = NO
 MNEMO = 'BD\_ICE'
-RUBRIQUE = 'COUVERT DE GLACE'
-RUBRIQUE1 = 'ICE COVER'
+RUBRIQUE =
+'COUVERT DE GLACE'
+RUBRIQUE1 =
+'ICE COVER'
 NIVEAU = 1
 AIDE =
-'PRISE EN COMPTE DU CALCUL DES BORDS DE GLACE STATIQUE'
+'Prise en compte du calcul de glace de bord statique.'
 AIDE1 =
-'COMPUTATION OF BORDER ICE COVER'
+'Computation of border ice cover.'
 
 NOM = 'SALINITE'
 NOM1 = 'SALINITY'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 5
 TAILLE = 0
 DEFAUT = NON
 DEFAUT1 = NO
 MNEMO = 'SALINITY'
-RUBRIQUE = 'GENERAL'
-RUBRIQUE1 = 'GENERAL'
+RUBRIQUE =
+'GENERAL'
+RUBRIQUE1 =
+'GENERAL'
 AIDE =
-'AJOUTE LA SALINITE ET MODIFIT LE POINT DE CONGELATION
- DE LA GLACE EN FONCTION'
+'Ajoute la salinite et modifie le point de congelation de la glace en
+fonction.'
 AIDE1 =
-'ADD SALINITY TRACER AND MODIFY FREEZING POINT OF WATER
-ACCORDINGLY'
+'Add salinity tracer and modify freezing point of water accordingly.'
 
 NOM = 'VERSION DU BILAN ENERGETIQUE'
 NOM1 = 'ENERGY BALANCE VERSION'
@@ -1874,8 +2234,10 @@ TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
 MNEMO = 'INRJB'
-RUBRIQUE = 'GENERAL'
-RUBRIQUE1 = 'GENERAL'
+RUBRIQUE =
+'GENERAL'
+RUBRIQUE1 =
+'GENERAL'
 CHOIX =
 '1="SIMPLIFIED ENERGY BALANCE"';
 '2="FULL ENERGY BALANCE"'
@@ -1883,9 +2245,9 @@ CHOIX1 =
 '1="SIMPLIFIED ENERGY BALANCE"';
 '2="FULL ENERGY BALANCE"'
 AIDE =
-'CHOIX DE LA VERSION DU BILAN ENERGETIQUE '
+'Choix de la version du bilan energetique.'
 AIDE1 =
-'CHOICE OF THE ENERGY BALANCE VERSION '
+'Choice of the energy balance version.'
 
 NOM = 'OPTION DU SCHEMA POUR LA CROISSANCE THERMIQUE'
 NOM1 = 'SCHEME OPTION FOR THERMAL GROWTH'
@@ -1895,8 +2257,10 @@ TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
 MNEMO = 'ITGM'
-RUBRIQUE = 'FRASIL'
-RUBRIQUE1 = 'FRAZIL'
+RUBRIQUE =
+'FRASIL'
+RUBRIQUE1 =
+'FRAZIL'
 CHOIX =
 '1="EXPLICIT TIME SCHEME"';
 '2="SEMI-IMPLICIT TIME SCHEME"'
@@ -1904,13 +2268,12 @@ CHOIX1 =
 '1="EXPLICIT TIME SCHEME"';
 '2="SEMI-IMPLICIT TIME SCHEME"'
 AIDE =
-'CHOIX DU SCHEMA D''INTEGRATION EN TEMPS POUR LE TERME SOURCE
-DE CROISSANCE THERMIQUE DE FRASIL'
+'Choix du schema d''integration en temps pour le terme source
+de croissance thermique de frasil.'
 AIDE1 =
-'TIME INTEGRATION OPTION FOR THE FRASIL THERMAL
-GROWTH SOURCE TERM'
+'Time integration option for the frazil thermal growth source term.'
 
-NOM = 'MODELE POUR LA NUCELATION SECONDAIRE'
+NOM = 'MODELE POUR LA NUCLEATION SECONDAIRE'
 NOM1 = 'MODEL FOR THE SECONDARY NUCLEATION'
 TYPE = INTEGER
 INDEX = 12
@@ -1918,8 +2281,10 @@ TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
 MNEMO = 'ISNUC'
-RUBRIQUE = 'FRASIL'
-RUBRIQUE1 = 'FRAZIL'
+RUBRIQUE =
+'FRASIL'
+RUBRIQUE1 =
+'FRAZIL'
 CHOIX =
 '0="PAS DE MODELE"';
 '1="SVENSSON ET OMSTEDT 1994"';
@@ -1929,11 +2294,11 @@ CHOIX1 =
 '1="SVENSSON AND OMSTEDT 1994"';
 '2="WANG AND DOERING 2005"'
 AIDE =
-'CHOIX DU MODELE DE NUCLEATION SECONDAIRE,
-VALABLE UNIQUEMENT POUR LE MODELE MULTI-CLASSES'
+'Choix du modele de nucleation secondaire,
+valable uniquement pour le modele multi-classes.'
 AIDE1 =
-'CHOICE OF THE MODEL FOR SECONDARY NUCLEATION,
-ONLY FOR MULTI-CLASS MODEL'
+'Choice of the model for secondary nucleation,
+only for multi-class model.'
 
 NOM = 'PARAMETRE NMAX POUR LA NUCLEATION SECONDAIRE'
 NOM1 = 'SECONDARY NUCLEATION NMAX PARAMETER'
@@ -1943,23 +2308,27 @@ TAILLE = 0
 DEFAUT = 1.E3
 DEFAUT1 = 1.E3
 MNEMO = 'SNNMAX'
-RUBRIQUE = 'FRASIL'
-RUBRIQUE1 = 'FRAZIL'
+RUBRIQUE =
+'FRASIL'
+RUBRIQUE1 =
+'FRAZIL'
 AIDE =
-'CHOIX DU PARAMETRE NMAX POUR LA NUCLEATION SECONDAIRE'
+'Choix du parametre NMAX pour la nucleation secondaire.'
 AIDE1 =
-'CHOICE OF SECONDARY NUCLEATION NMAX PARAMETER'
+'Choice of secondary nucleation NMAX parameter.'
 
 NOM = 'MODELE POUR LA FLOCULATION ET RUPTURE'
-NOM1 = 'MODEL FOR THE FLOCULATION AND BREAKUP'
+NOM1 = 'MODEL FOR THE FLOCCULATION AND BREAKUP'
 TYPE = INTEGER
 INDEX = 15
 TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
 MNEMO = 'IFLOC'
-RUBRIQUE = 'FRASIL'
-RUBRIQUE1 = 'FRAZIL'
+RUBRIQUE =
+'FRASIL'
+RUBRIQUE1 =
+'FRAZIL'
 CHOIX =
 '0="PAS DE MODELE"';
 '1="SVENSSON ET OMSTEDT 1994"'
@@ -1967,28 +2336,30 @@ CHOIX1 =
 '0="NO MODEL"';
 '1="SVENSSON AND OMSTEDT 1994"'
 AIDE =
-'CHOIX DU MODELE DE FLOCULATION ET RUPTURE,
-VALABLE UNIQUEMENT POUR LE MODELE MULTI-CLASSES'
+'Choix du modele de floculation et rupture,
+valable uniquement pour le modele multi-classes.'
 AIDE1 =
-'CHOICE OF THE MODEL FOR FLOCULATION AND BREAKUP,
-ONLY FOR MULTI-CLASS MODEL'
+'Choice of the model for flocculation and breakup,
+only for multi-class model.'
 
 NOM = 'PARAMETRE AFLOC POUR LA FLOCULATION'
-NOM1 = 'FLOCULATION AFLOC PARAMETER'
+NOM1 = 'FLOCCULATION AFLOC PARAMETER'
 TYPE = REAL
 INDEX = 14
 TAILLE = 0
 DEFAUT = 1.E3
 DEFAUT1 = 1.E3
 MNEMO = 'AFLOC'
-RUBRIQUE = 'FRASIL'
-RUBRIQUE1 = 'FRAZIL'
+RUBRIQUE =
+'FRASIL'
+RUBRIQUE1 =
+'FRAZIL'
 AIDE =
-'CHOIX DU PARAMETRE AFLOC POUR LA FLOCULATION'
+'Choix du parametre \telfile{AFLOC} pour la floculation.'
 AIDE1 =
-'CHOICE OF FLOCULATION AFLOC PARAMETER'
+'Choice of flocculation \telfile{AFLOC} parameter.'
 
-NOM = 'MODELE POUR L''ENSEMENCEMENT DU FRAZIL'
+NOM = 'MODELE POUR L''ENSEMENCEMENT DU FRASIL'
 NOM1 = 'MODEL FOR FRAZIL SEEDING'
 TYPE = INTEGER
 INDEX = 19
@@ -1996,8 +2367,10 @@ TAILLE = 0
 DEFAUT = 1
 DEFAUT1 = 1
 MNEMO = 'ISEED'
-RUBRIQUE = 'FRASIL'
-RUBRIQUE1 = 'FRAZIL'
+RUBRIQUE =
+'FRASIL'
+RUBRIQUE1 =
+'FRAZIL'
 CHOIX =
 '0="PAS DE MODELE"';
 '1="SEUIL MINIMUM DE CONC."';
@@ -2009,27 +2382,29 @@ CHOIX1 =
 '2="CONSTANT SEEDING RATE"';
 '3="BOTH OPTIONS 1 AND 2"'
 AIDE =
-'CHOIX DU MODELE D''ENSEMENCEMENT DU FRAZIL'
+'Choix du modele d''ensemencement du frasil.'
 AIDE1 =
-'CHOICE OF THE MODEL FOR FRAZIL SEEDING'
+'Choice of the model for frazil seeding.'
 
 NOM = 'TAUX D''ENSEMENCEMENT DE FRASIL'
 NOM1 = 'FRAZIL SEEDING RATE'
-TYPE = REEL
+TYPE = REAL
 MNEMO = 'SEEDR'
 INDEX = 40
 TAILLE = 0
 DEFAUT = 50.
 DEFAUT1 = 50.
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 AIDE =
-'NOMBRE DE CRISTAUX PAR UNITE DE VOLUME AJOUTEES PAR SECONDE'
+'Nombre de cristaux par unite de volume ajoutees par seconde.'
 AIDE1 =
-'NUMBER OF CRYSTALS PER UNIT VOLUME ADDED PER SECOND'
+'Number of crystals per unit volume added per second.'
 
-NOM = 'NOMBRE MINIMUM DE CRISTAUX DE FRAZIL'
+NOM = 'NOMBRE MINIMUM DE CRISTAUX DE FRASIL'
 NOM1 = 'MINIMUM NUMBER OF FRAZIL CRYSTALS'
 TYPE = INTEGER
 MNEMO = 'MINNK'
@@ -2037,17 +2412,19 @@ INDEX = 20
 TAILLE = 0
 DEFAUT = 1000
 DEFAUT1 = 1000
-RUBRIQUE = 'FRASIL';'PARAMETRES PHYSIQUES'
-RUBRIQUE1 = 'FRAZIL';'PHYSICAL PARAMETERS'
+RUBRIQUE =
+'FRASIL';'PARAMETRES PHYSIQUES'
+RUBRIQUE1 =
+'FRAZIL';'PHYSICAL PARAMETERS'
 NIVEAU = 2
 AIDE =
-'NOMBRE MINIMUM DE CRISTAUX PAR UNITE DE VOLUME'
+'Nombre minimum de cristaux par unite de volume.'
 AIDE1 =
-'MINIMUM NUMBER OF CRYSTALS PER UNIT VOLUME'
+'Minimum number of crystals per unit volume.'
 
 NOM = 'MODELE D''ECHANGES EAU-ATMOSPHERE'
 NOM1 = 'ATMOSPHERE-WATER EXCHANGE MODEL'
-TYPE = ENTIER
+TYPE = INTEGER
 INDEX = 17
 TAILLE = 0
 DEFAUT = 0
@@ -2067,8 +2444,10 @@ CHOIX1 =
 '3="LINEARISED FORMULA WITHOUT ICE"';
 '4="LINEARISED FORMULA WITH ICE"';
 '5="MODEL WITH COMPLETE BALANCE WITH ICE"'
-RUBRIQUE = 'THERMIQUE';'METEO'
-RUBRIQUE1 = 'THERMAL BUDGET';'METEOROLOGICAL PROCESSES'
+RUBRIQUE =
+'THERMIQUE';'METEO'
+RUBRIQUE1 =
+'THERMAL BUDGET';'METEOROLOGICAL PROCESSES'
 NIVEAU = 2
 AIDE =
 'Choix du modele d echanges entre l eau et l atmosphere.
@@ -2102,36 +2481,40 @@ TAILLE = 0
 DEFAUT = 0
 DEFAUT1 = 0
 MNEMO = 'ITURB'
-RUBRIQUE = 'FRASIL';'TURBULENCE'
-RUBRIQUE1 = 'FRAZIL';'TURBULENCE'
+RUBRIQUE =
+'FRASIL';'TURBULENCE'
+RUBRIQUE1 =
+'FRAZIL';'TURBULENCE'
 AIDE =
 '\begin{itemize}
-\item 0: valeurs constantes fixées par défaut dans le code
-\item 1: valeurs estimées à partir d''une intégration verticale
-du modèle de longueur de mélange
-\item 2: valeurs calculées et données par TELEMAC-2D
+\item 0: valeurs constantes fixees par defaut dans le code ;
+\item 1: valeurs estimees a partir d''une integration verticale
+du modele de longueur de melange ;
+\item 2: valeurs calculees et donnees par \telemac{2D}.
 \end{itemize}'
 AIDE1 =
 '\begin{itemize}
-\item 0: constant values set in the code
+\item 0: constant values set in the code,
 \item 1: values estimated from vertical integration of a mixed length
-model
-\item 2: values computed and given by TELEMAC-2D
+model,
+\item 2: values computed and given by \telemac{2D}.
 \end{itemize}'
 
 NOM = 'PRECIPITATION DU FRASIL'
 NOM1 = 'FRAZIL PRECIPITATION'
-TYPE = LOGIQUE
+TYPE = LOGICAL
 INDEX = 6
 TAILLE = 0
 DEFAUT = NON
 DEFAUT1 = NO
 MNEMO = 'PREC'
-RUBRIQUE = 'FRASIL';'PRECIPITATION'
-RUBRIQUE1 = 'FRAZIL';'PRECIPITATION'
+RUBRIQUE =
+'FRASIL';'PRECIPITATION'
+RUBRIQUE1 =
+'FRAZIL';'PRECIPITATION'
 AIDE =
-'PRISE EN COMPTE DE LE PRECIPITATION DU FRASIL'
+'Prise en compte de le precipitation du frasil.'
 AIDE1 =
-'COMPUTATION OF THE FRAZIL PRECIPITATION'
+'Computation of the frazil precipitation.'
 
 /

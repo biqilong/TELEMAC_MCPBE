@@ -127,7 +127,8 @@
      &                    GEOSYST,NUMZONE,T3DL93,LATIT,LONGIT,
      &                    T3D_FILES,T3DBB1,T3DBB2,
      &                    MARDAT,MARTIM,INTMICON,MSL,
-     &                    TIDALTYPE,BOUNDARY_COLOUR,ICALHWG)
+     &                    TIDALTYPE,BOUNDARY_COLOUR,ICALHWG,
+     &                    I_ORIG,J_ORIG,HMIN_VIT_IC,VITINI_TPXO)
         ELSEIF(CDTINI(1:13).EQ.'PARTICULIERES'.OR.
      &         CDTINI(1:10).EQ.'PARTICULAR'.OR.
      &         CDTINI(1:07).EQ.'SPECIAL') THEN

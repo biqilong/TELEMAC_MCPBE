@@ -1202,6 +1202,99 @@
 !
 !----------------------------------------------------------------------
 !
+      SUBROUTINE GET_MESH_ORIG_MED (FILE_ID, X_ORIG, Y_ORIG, IERR)
+!
+!BRIEF    READS ORIGIN OF COORDINATES
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!| FILE_ID        |<--| MED FILE DESCRIPTOR
+!| X_ORIG         |<->| Off set of the X coordinates
+!| Y_ORIG         |<->| Off set of the Y coordinates
+!| IERR           |-->| ERROR TAG
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+      IMPLICIT NONE
+!
+      INTEGER, INTENT(IN)  :: FILE_ID
+      INTEGER, INTENT(OUT) :: X_ORIG, Y_ORIG
+      INTEGER, INTENT(OUT) :: IERR
+!
+#if defined (HAVE_MED)
+      INTEGER :: MED_ID,NSTEP,ITYP,NPARAM,I
+      CHARACTER(LEN=MED_NAME_SIZE) :: PNAME,DTUNIT
+      CHARACTER(LEN=MED_COMMENT_SIZE) :: DESC
+      LOGICAL :: FOUND
+      INTEGER(KIND=KID) :: FID
+!
+!-----------------------------------------------------------------------
+!
+!     GET INFO FROM THE MED FILE OBJECT
+      CALL GET_OBJ(HASH,FILE_ID,MED_ID,IERR)
+      IF(IERR.NE.0) THEN
+        ERROR_MESSAGE = 'ERROR WITH ID '//I2CHAR(FILE_ID)//': '//
+     &       'GET_MESH_ORIG_MED:GET_OBJ'
+        RETURN
+      ENDIF
+!
+      FID = MED_OBJ_TAB(MED_ID)%ID
+!     INITIALISATION
+      ! Looping on all parameter to check if nplan is in
+      CALL MPRNPR(FID,NPARAM,IERR)
+      IF(IERR.NE.0) THEN
+        ERROR_MESSAGE = 'ERROR IN '//
+     &       TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &       'GET_MESH_ORIG_MED:MPRNPR'
+        RETURN
+      ENDIF
+      FOUND = .FALSE.
+      DO I=1,NPARAM
+        CALL MPRPRI(FID,I,PNAME,ITYP,DESC,DTUNIT,NSTEP,IERR)
+        IF(IERR.NE.0) THEN
+          ERROR_MESSAGE = 'ERROR IN '//
+     &         TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &         'GET_MESH_ORIG_MED:MPRNPR'
+          RETURN
+        ENDIF
+        IF(PNAME(1:5).EQ.'X_ORIG') THEN
+          FOUND = .TRUE.
+        ENDIF
+      ENDDO
+      IF(FOUND) THEN
+        PNAME = 'X_ORIG'//CHAR(0)
+        CALL MPRIVR(FID,PNAME,MED_NO_DT,MED_NO_IT,X_ORIG,IERR)
+        IF(IERR.NE.0) THEN
+          ERROR_MESSAGE = 'ERROR IN '//
+     &         TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &         'GET_MESH_ORIG_MED:MPRIVR'
+          RETURN
+        ENDIF
+        PNAME = 'Y_ORIG'//CHAR(0)
+        CALL MPRIVR(FID,PNAME,MED_NO_DT,MED_NO_IT,Y_ORIG,IERR)
+        IF(IERR.NE.0) THEN
+          ERROR_MESSAGE = 'ERROR IN '//
+     &         TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &         'GET_MESH_ORIG_MED:MPRIVR'
+          RETURN
+        ENDIF
+      ELSE
+        X_ORIG = 0
+        Y_ORIG = 0
+      ENDIF
+!
+#else
+!
+      X_ORIG = 0
+      Y_ORIG = 0
+!     MED LIBRARY NOT LOADED
+      IERR = HERMES_MED_NOT_LOADED_ERR
+!
+#endif
+!
+      RETURN
+      END SUBROUTINE
+!
+!-----------------------------------------------------------------------
+!
       SUBROUTINE GET_MESH_NPLAN_MED (FILE_ID, NPLAN, IERR)
 !
 !BRIEF    READS NUMBER OF PLANES (3D)
@@ -3104,7 +3197,7 @@
 !
       SUBROUTINE SET_MESH_MED(FILE_ID,NB_DIM_PB,NB_DIM_MESH,TYPE_ELEM,
      &  NDP,NPTIR,NELEM,NPOIN,IKLE,KNOLG,COORD,NPLAN,
-     &  DATE,TIME,IERR)
+     &  DATE,TIME,X_ORIG,Y_ORIG,IERR)
 !
 !BRIEF    WRITES A MESH IN A MED FILE
 !
@@ -3123,6 +3216,8 @@
 !| NPLAN          |<--| NUMBER OF PLANES
 !| DATE           |<--| DATE OF THE FILE
 !| TIME           |<--| TIME OF THE FILE
+!| X_ORIG         |<--| Off set of the X coordinates
+!| Y_ORIG         |<--| Off set of the Y coordinates
 !| IERR           |-->| ERROR TAG
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !
@@ -3130,7 +3225,7 @@
 !
       INTEGER, INTENT(IN) :: FILE_ID, NB_DIM_PB, NB_DIM_MESH
       INTEGER, INTENT(IN) :: NELEM, NPOIN, TYPE_ELEM, NDP, NPTIR
-      INTEGER, INTENT(IN) :: NPLAN
+      INTEGER, INTENT(IN) :: NPLAN, X_ORIG, Y_ORIG
       INTEGER, INTENT(IN) :: IKLE(NDP*NELEM), KNOLG(*)
       DOUBLE PRECISION, INTENT(IN) :: COORD(NB_DIM_MESH*NPOIN)
       INTEGER, INTENT(IN) :: DATE(3), TIME(3)
@@ -3256,6 +3351,46 @@
         NPLAN_TMP = NPLAN
       ENDIF
       CALL MPRIVW(FID,PNAME,MED_NO_DT,MED_NO_IT,0.0,NPLAN_TMP,IERR)
+      IF(IERR.NE.0) THEN
+        ERROR_MESSAGE = 'ERROR IN '//
+     &       TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &       'SET_MESH_MED:MPRIVW'
+        RETURN
+      ENDIF
+!     WRITES THE ORIGIN
+      PNAME = 'X_ORIG'//char(0)
+      COMMENT = 'X origin'//char(0)
+!
+!     CREATES THE PARAMETER
+      CALL MPRCRE(FID,PNAME,MED_INT,COMMENT,DT_UNIT_MED,IERR)
+      IF(IERR.NE.0) THEN
+        ERROR_MESSAGE = 'ERROR IN '//
+     &       TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &       'SET_MESH_MED:MPRCRE'
+        RETURN
+      ENDIF
+      ! write value
+      CALL MPRIVW(FID,PNAME,MED_NO_DT,MED_NO_IT,0.0,X_ORIG,IERR)
+      IF(IERR.NE.0) THEN
+        ERROR_MESSAGE = 'ERROR IN '//
+     &       TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &       'SET_MESH_MED:MPRIVW'
+        RETURN
+      ENDIF
+      PNAME = 'Y_ORIG'//char(0)
+      COMMENT = 'Y origin'//char(0)
+!
+!     CREATES THE PARAMETER
+      CALL MPRCRE(FID,PNAME,MED_INT,COMMENT,DT_UNIT_MED,IERR)
+      IF(IERR.NE.0) THEN
+        ERROR_MESSAGE = 'ERROR IN '//
+     &       TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//
+     &       'SET_MESH_MED:MPRCRE'
+        RETURN
+      ENDIF
+!
+      ! write value
+      CALL MPRIVW(FID,PNAME,MED_NO_DT,MED_NO_IT,0.0,Y_ORIG,IERR)
       IF(IERR.NE.0) THEN
         ERROR_MESSAGE = 'ERROR IN '//
      &       TRIM(MED_OBJ_TAB(MED_ID)%FILE_NAME)//': '//

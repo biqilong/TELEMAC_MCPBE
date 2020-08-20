@@ -167,11 +167,11 @@
 !       GET MESH INFORMATION FROM THE GEOMETRY
         CALL READ_MESH_INFO(GEOFORMAT,NGEO,TITLE,NVAR_GEO,NPOIN_GEO,
      &                      TYP_ELM_GEO,NELEM_GEO,NPTFR_GEO,NPTIR_GEO,
-     &                      NDP_GEO,NPLAN_GEO)
+     &                      NDP_GEO,NPLAN_GEO,X_ORIG,Y_ORIG)
 !       GET MESH INFORMATION FROM THE INP FILE
         CALL READ_MESH_INFO(INPFORMAT,NINP,TITLE,NVAR_INP,NPOIN_INP,
      &                      TYP_ELM_INP,NELEM_INP,NPTFR_INP,NPTIR_INP,
-     &                      NDP_INP,NPLAN_INP)
+     &                      NDP_INP,NPLAN_INP,X_ORIG,Y_ORIG)
         IF(NPLAN_INP.GT.1) THEN
           WRITE(LU,*) ' '
           WRITE(LU,*) '3D MESH DETECTED'
@@ -307,7 +307,7 @@
           CALL SET_MESH(INPFORMAT,NINP_PAR,MESH_DIM,TYP_ELM_INP,NDP_INP,
      &                  NPTFR_GEO,NPTIR_GEO,NELEM_P,NPOIN_P,
      &                  IKLE3D,KNOLG3D,KNOLG3D,X3D,Y3D,NPLAN_INP,
-     &                  DATE,TIME,IERR)
+     &                  DATE,TIME,X_ORIG,Y_ORIG,IERR)
           DEALLOCATE(IKLE3D)
           DEALLOCATE(X3D,Y3D)
 
@@ -323,7 +323,7 @@
           CALL SET_MESH(INPFORMAT,NINP_PAR,MESH_DIM,TYP_ELM_GEO,NDP_GEO,
      &                  NPTFR_GEO,NPTIR_GEO,NELEM_GEO,NPOIN_GEO,
      &                  IKLE,KNOLG,KNOLG,X,Y,NPLAN_GEO,DATE,TIME,
-     &                  IERR)
+     &                  X_ORIG,Y_ORIG,IERR)
         ENDIF
         DEALLOCATE(X,Y)
         DEALLOCATE(IKLES)

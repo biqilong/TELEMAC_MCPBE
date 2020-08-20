@@ -161,6 +161,8 @@
 ! real field pointers for node coordinates
 !
       DOUBLE PRECISION, DIMENSION(:), POINTER :: X,Y,Z
+      ! COORDINATES OFFSET
+      INTEGER X_ORIG,Y_ORIG
 !
 ! a number of extremely useful integers describing the mesh structure
 ! see almesh.f and point_telemac3d.f

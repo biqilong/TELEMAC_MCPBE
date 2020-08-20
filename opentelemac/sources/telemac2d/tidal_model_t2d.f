@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC2D   V7P3
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    FINDS TIDAL BOUNDARY CONDITIONS AT THE OPEN SEA BOUNDARIES
@@ -143,7 +143,8 @@
      &                       TIDALTYPE,BOUNDARY_COLOUR,MAXFRO,
      &                       T2D_FILES(T2DBDD)%LU,
      &                       T2D_FILES(T2DTID)%FMT,T2D_FILES(T2DTID)%LU,
-     &                       T2D_FILES(T2DHAR)%LU,XSHIFT,YSHIFT,BETA)
+     &                       T2D_FILES(T2DHAR)%LU,XSHIFT,YSHIFT,BETA,
+     &                       I_ORIG,J_ORIG)
         ENDIF
 !
         IF(T2D_FILES(T2DHAR)%NAME(1:1).EQ.' ') THEN
@@ -169,7 +170,7 @@
      &                      HBTIDE,UBTIDE,VBTIDE,ICALHWG,
      &                      MARDAT,MARTIM,T2D_FILES,T2DBB1,T2DBB2,
      &                      X,Y,GEOSYST,NUMZONE,T2DL93,LAMBD0,PHI0,
-     &                      INTMICON)
+     &                      I_ORIG,J_ORIG,INTMICON,HMIN_VIT_BC)
       ELSEIF(TIDALDB.EQ.3) THEN
         IF(T2D_FILES(T2DHAR)%NAME(1:1).EQ.' ') THEN
           WRITE(LU,*) 'PLEASE GIVE THE HARMONIC CONTANTS FILE.'

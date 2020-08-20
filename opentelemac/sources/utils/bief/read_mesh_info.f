@@ -3,7 +3,7 @@
 !                   *************************
 !
      &(FFORMAT,NFIC,TITLE,NVAR,NPOIN,TYP_ELEM,NELEM,NPTFR,NPTIR,
-     & NDP,NPLAN,TYP_BND_ELEM,NELEBD)
+     & NDP,NPLAN,X_ORIG,Y_ORIG,TYP_BND_ELEM,NELEBD)
 !
 !***********************************************************************
 ! HERMES   V6P3                                   21/08/2010
@@ -31,6 +31,8 @@
 !| NPTFR        |<--| NUMBER OF BOUNDARY NODES
 !| NPTIR        |<--| NUMBER OF INTERFACES
 !| NFIC         |<--| FILE TO READ
+!| X_ORIG       |<--| Off set of the X coordinates
+!| Y_ORIG       |<--| Off set of the Y coordinates
 !| TYP_BND_ELEM |<--| TYPE OF BOUNDARY ELEMENTS
 !| NELEBD       |<--| NUMBER OF BOUNDARY ELEMENTS
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,6 +55,8 @@
       INTEGER, INTENT(OUT)           :: NPLAN  ! NUMBER OF PLAN
       INTEGER, INTENT(OUT)           :: NPTFR  ! NUMBER OF BOUNDARY NODES
       INTEGER, INTENT(OUT)           :: NPTIR  ! NUMBER OF INTERFACES
+      INTEGER, INTENT(OUT)           :: X_ORIG  ! X ORIGIN
+      INTEGER, INTENT(OUT)           :: Y_ORIG  ! Y_ORIGIN
       INTEGER, INTENT(IN)            :: NFIC   ! FILE TO READ
       INTEGER,OPTIONAL,INTENT(OUT)   :: TYP_BND_ELEM ! TYPE OF BND ELEMENTS
       INTEGER,OPTIONAL,INTENT(OUT)   :: NELEBD ! NUMBER OF BOUNDARY ELEMENTS
@@ -169,6 +173,9 @@
         CALL GET_MESH_NPTIR(FFORMAT,NFIC,NPTIR,IERR)
         CALL CHECK_CALL(IERR,'READ_MESH_INFO:GET_MESH_NPTIR')
       ENDIF
+
+      CALL GET_MESH_ORIG(FFORMAT,NFIC,X_ORIG,Y_ORIG,IERR)
+      CALL CHECK_CALL(IERR,'READ_MESH_INFO:GET_MESH_ORIG')
 !
 !     IF(PRESENT(NELEBD).AND.) THEN
 !       CALL GET_MESH_NELEM(FFORMAT,NFIC,TYP_BND,NELEBD,IERR)

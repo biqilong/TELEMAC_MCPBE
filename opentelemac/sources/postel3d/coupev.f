@@ -211,7 +211,7 @@
         CANAL = NCOU(IC)
         CALL SET_MESH(FFORMAT,CANAL,2,TRIANGLE_ELT_TYPE,3,0,0,NUMELEM,
      &                IB(2),IKLE,IPOBO,IPOBO,TAB1,TAB2,0,
-     &                DATE,TIME,IERR)
+     &                DATE,TIME,0,0,IERR)
         CALL CHECK_CALL(IERR,'COUPEV:SET_MESH')
 !
 !-----------------------------------------------------------------------

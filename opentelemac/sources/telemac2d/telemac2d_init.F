@@ -446,6 +446,37 @@
 !
 !=======================================================================
 !
+! GET OFFSET I_ORIG AND J_ORIG IN THE MESH
+!
+      CALL GET_MESH_ORIG(T2D_FILES(T2DGEO)%FMT,T2D_FILES(T2DGEO)%LU,
+     &                   I_ORIG,J_ORIG,IERR)
+!
+      IF(I_ORIG.NE.0.OR.J_ORIG.NE.0) THEN
+!       IF MODELLING TIDE WITH GEOGRAPHIC SYSTEM DIFFERENT FROM UTM OR
+!       LAMBERT PROJECTIONS
+        IF(TIDALTYPE.NE.0.AND.
+     &     GEOSYST.NE.2.AND.GEOSYST.NE.3.AND.GEOSYST.NE.4) THEN
+!         WARNING MESSAGE FOR EVERY TIDAL SOLUTION (I.E. WITH JMJ, 
+!         POSSIBLE IF HARMONIC CONSTANTS FILE ALREADY GENERATED)
+          IF(GEOSYST.EQ.1.OR.(SPHERI.AND..NOT.(PROTYP.EQ.2))) THEN
+            WRITE(LU,*) 'WHEN MODELLING TIDE, THE OFFSET _ORIG IS'
+            WRITE(LU,*) 'NOT IMPLEMENTED FOR GEOGRAPHIC SYSTEM OTHER'
+            WRITE(LU,*) 'THAN UTM OR LAMBERT PROJECTIONS'
+!           BUT ERROR MESSAGE IF USING OSU SOLUTIONS LIKE TPXO
+            IF(TIDALDB.EQ.2) THEN
+              WRITE(LU,*) 'IF USING OSU TIDAL SOLUTIONS LIKE TPXO'
+              WRITE(LU,*) 'YOU HAVE TO IMPLEMENT YOUR TRANSFORMATION'
+              WRITE(LU,*) 'WITH GEOGRAPHIC SYSTEM = 0 (USER DEFINED)'
+              WRITE(LU,*) 'GOOD LUCK!'
+              CALL PLANTE(1)
+              STOP
+            ENDIF
+          ENDIF
+        ENDIF
+      ENDIF
+!
+!=======================================================================
+!
 ! : 2                  INITIALISES
 !
 !=======================================================================

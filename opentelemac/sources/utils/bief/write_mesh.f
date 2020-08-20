@@ -158,13 +158,15 @@
           CALL SET_MESH(FFORMAT,NFILE,MESH%DIM1,MESH%TYPELM,NDP,
      &                  MESH%NPTFR,NPTIR,MESH%NELEM,MESH%NPOIN,
      &                 MESH%IKLE%I,IPOBO,MESH%KNOLG%I,T1%R,T2%R,
-     &                  NPLAN,DATE,TIME,IERR,Z=MESH%Z%R)
+     &                  NPLAN,DATE,TIME,MESH%X_ORIG,MESH%Y_ORIG,
+     &                  IERR,Z=MESH%Z%R)
           CALL CHECK_CALL(IERR,'WRITE_MESH:SET_MESH')
         ELSE
           CALL SET_MESH(FFORMAT,NFILE,MESH%DIM1,MESH%TYPELM,NDP,
      &                  MESH%NPTFR,NPTIR,MESH%NELEM,MESH%NPOIN,
      &                 MESH%IKLE%I,IPOBO,MESH%KNOLG%I,T1%R,T2%R,
-     &                  NPLAN,DATE,TIME,IERR)
+     &                  NPLAN,DATE,TIME,MESH%X_ORIG,MESH%Y_ORIG,
+     &                  IERR)
           CALL CHECK_CALL(IERR,'WRITE_MESH:SET_MESH')
         ENDIF
 !
@@ -173,13 +175,15 @@
           CALL SET_MESH(FFORMAT,NFILE,MESH%DIM1,MESH%TYPELM,NDP,
      &                  MESH%NPTFR,NPTIR,MESH%NELEM,MESH%NPOIN,
      &                 MESH%IKLE%I,IPOBO,MESH%KNOLG%I,MESH%X%R,MESH%Y%R,
-     &                  NPLAN,DATE,TIME,IERR,Z=MESH%Z%R)
+     &                  NPLAN,DATE,TIME,MESH%X_ORIG,MESH%Y_ORIG,
+     &                  IERR,Z=MESH%Z%R)
           CALL CHECK_CALL(IERR,'WRITE_MESH:SET_MESH')
         ELSE
           CALL SET_MESH(FFORMAT,NFILE,MESH%DIM1,MESH%TYPELM,NDP,
      &                  MESH%NPTFR,NPTIR,MESH%NELEM,MESH%NPOIN,
      &                 MESH%IKLE%I,IPOBO,MESH%KNOLG%I,MESH%X%R,MESH%Y%R,
-     &                  NPLAN,DATE,TIME,IERR)
+     &                  NPLAN,DATE,TIME,MESH%X_ORIG,MESH%Y_ORIG,
+     &                  IERR)
           CALL CHECK_CALL(IERR,'WRITE_MESH:SET_MESH')
         ENDIF
       ENDIF

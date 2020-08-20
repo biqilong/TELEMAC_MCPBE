@@ -68,7 +68,9 @@ def add_options_timeseries(subparser):
     parser.add_argument(
         "-v", "--var",
         dest="var", default="",
-        help="Name of the variable to display")
+        help="List of names of the variable to display ',' separated. "
+             "If more than one is given csv_name will be appended the "
+             "name of the variable")
 
     group = parser.add_mutually_exclusive_group()
 

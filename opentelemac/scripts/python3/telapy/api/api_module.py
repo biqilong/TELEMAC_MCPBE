@@ -130,20 +130,20 @@ class ApiModule():
         if comm is not None:
             self.rank = comm.Get_rank()
             self.parallel_run = comm.Get_size() > 1
-        if recompile:
-            # Compiling API with user_fortran
-            if user_fortran is not None:
+        # Compiling API with user_fortran
+        if user_fortran is not None:
+            from config import update_config, CFGS
+            options = Namespace()
+            options.root_dir = ''
+            options.config_name = ''
+            options.config_file = ''
+            update_config(options)
+            cfg = CFGS.configs[CFGS.cfgname]
+            if recompile:
                 from compilation.compil_tools import \
                         get_api_ld_flags, get_api_incs_flags,\
                         compile_princi_lib
-                from config import update_config, CFGS
                 # Get configuration information
-                options = Namespace()
-                options.root_dir = ''
-                options.config_name = ''
-                options.config_file = ''
-                update_config(options)
-                cfg = CFGS.configs[CFGS.cfgname]
                 # compile user fortran
                 if self.rank == 0:
                     self.logger.debug('%d: starting compilation: %s',
@@ -153,14 +153,14 @@ class ApiModule():
                     compile_princi_lib(user_fortran,
                                        incs_flags, ld_flags)
 
-                # Waiting for proc 0 to finish recompiling API
-                if comm is not None:
-                    comm.barrier()
-                    # Load user fortran
-                user_fortran_lib_path = \
-                    path.join(os.getcwd(),
-                              'libuser_fortran'+cfg['sfx_lib'])
-                cdll.LoadLibrary(user_fortran_lib_path)
+            # Waiting for proc 0 to finish recompiling API
+            if comm is not None:
+                comm.barrier()
+                # Load user fortran
+            user_fortran_lib_path = \
+                path.join(os.getcwd(),
+                          'libuser_fortran'+cfg['sfx_lib'])
+            cdll.LoadLibrary(user_fortran_lib_path)
 
         # Load api
         try:

@@ -885,6 +885,7 @@ def generate_api():
     src_list.append("get_mesh_npoin_per_element.f")
     src_list.append("get_mesh_nptir.f")
     src_list.append("get_mesh_title.f")
+    src_list.append("get_mesh_orig.f")
     src_list.append("open_bnd.f")
     src_list.append("open_mesh.f")
     src_list.append("set_bnd.f")

@@ -2,10 +2,10 @@
                     SUBROUTINE INTERPMETEO
 !                   **********************
 !
-     &(WW,WINDX,WINDY,TAIR,PATM,HREL,NEBU,RAINFALL,EVAPORATION,AT,NFO)
+     &(WW,WINDX,WINDY,TAIR,PATM,HREL,NEBU,RAINFALL,SOLRAD,AT,NFO)
 !
 !***********************************************************************
-! TELEMAC2D   V7P2
+! TELEMAC2D   V8P2
 !***********************************************************************
 !
 !brief    READS AND INTERPOLATES VARIABLES IN AN ASCII FILE
@@ -38,7 +38,7 @@
 !| NFO            |-->| LOGICAL UNIT OF THE FORMATTED DATA FILE
 !| PATM           |<--| ATMOSPHERIC PRESSURE
 !| RAINFALL       |<--| RAINFALL
-!| EVAPORATION    |<--| EVAPORATION RATE
+!| SOLAR RADIATION|<--| SOLAR RADIATION IF AVAILABLE
 !| TAIR           |<--| AIR TEMPERATURE
 !| WINDX          |<--| WIND ALONG X
 !| WINDY          |<--| WIND ALONG Y
@@ -56,7 +56,7 @@
       INTEGER, INTENT(IN)             :: NFO
       DOUBLE PRECISION, INTENT(IN)    :: AT
       DOUBLE PRECISION, INTENT(INOUT) :: WW,WINDX,WINDY,TAIR,PATM,HREL
-      DOUBLE PRECISION, INTENT(INOUT) :: NEBU,RAINFALL,EVAPORATION
+      DOUBLE PRECISION, INTENT(INOUT) :: NEBU,RAINFALL,SOLRAD
 !
 !+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 !
@@ -205,7 +205,7 @@
 !
       RAINFALL = TABENT_IPM(POSTAB_IPM+1,8)/DELTAT
 !
-      EVAPORATION   = TABENT_IPM(POSTAB_IPM,9)
+      SOLRAD = TABENT_IPM(POSTAB_IPM,9)
      &     + (TABENT_IPM(POSTAB_IPM+1,9)-TABENT_IPM(POSTAB_IPM,9))*ALPHA
 !
 !-----------------------------------------------------------------------
@@ -219,7 +219,7 @@
      &              'ATMOSPHERIC DATA FILE'
         WRITE(LU,*) 'THE EXPECTED FORMAT IS 1-TIME 2-WIND MAGN ' //
      &              '3-WIND DIR 4-TAIR 5-PATM 6-HREL 7-NEBULO ' //
-     &              '8-RAIN 9-EVAP'
+     &              '8-RAIN 9-SOLAR RAD'
         CALL PLANTE(1)
         STOP
 !

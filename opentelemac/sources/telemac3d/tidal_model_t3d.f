@@ -4,7 +4,7 @@
 !
 !
 !***********************************************************************
-! TELEMAC3D   V7P3
+! TELEMAC3D   V8P2
 !***********************************************************************
 !
 !brief    FINDS TIDAL BOUNDARY CONDITIONS AT THE OPEN SEA BOUNDARIES
@@ -143,7 +143,8 @@
      &                       TIDALTYPE,BOUNDARY_COLOUR,MAXFRO,
      &                       T3D_FILES(T3DBDD)%LU,
      &                       T3D_FILES(T3DTID)%FMT,T3D_FILES(T3DTID)%LU,
-     &                       T3D_FILES(T3DHAR)%LU,XSHIFT,YSHIFT,BETA0)
+     &                       T3D_FILES(T3DHAR)%LU,XSHIFT,YSHIFT,BETA0,
+     &                       I_ORIG,J_ORIG)
         ENDIF
 !
         IF(T3D_FILES(T3DHAR)%NAME(1:1).EQ.' ') THEN
@@ -169,7 +170,7 @@
      &                      HBTIDE,UBTIDE,VBTIDE,ICALHWG,
      &                      MARDAT,MARTIM,T3D_FILES,T3DBB1,T3DBB2,
      &                      X,Y,GEOSYST,NUMZONE,T3DL93,LATIT,LONGIT,
-     &                      INTMICON)
+     &                      I_ORIG,J_ORIG,INTMICON,HMIN_VIT_BC)
       ELSEIF(TIDALDB.EQ.3) THEN
         IF(T3D_FILES(T3DHAR)%NAME(1:1).EQ.' ') THEN
           WRITE(LU,*) 'PLEASE GIVE THE HARMONIC CONTANTS FILE.'
@@ -220,6 +221,9 @@
                 UBORL%R(IBORD) = UBTIDE%R(K)
                 VBORL%R(IBORD) = VBTIDE%R(K)
                 WBORL%R(IBORD) = 0.D0
+                U%R((NP-1)*NPOIN2+NBOR2%I(K)) = UBORL%R(IBORD)
+                V%R((NP-1)*NPOIN2+NBOR2%I(K)) = VBORL%R(IBORD)
+                W%R((NP-1)*NPOIN2+NBOR2%I(K)) = 0.D0
               ENDDO
             ENDIF
             IF(LIHBOR%I(K).EQ.KENT) THEN

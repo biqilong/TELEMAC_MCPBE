@@ -234,7 +234,7 @@
         TIME = (/0,0,0/)
         CALL SET_MESH(FMTRSED,NRSED,3,PRISM_ELT_TYPE,NDP,NPTFR,NPTIR,
      &                NELEM3,NPOIN3,IKLES,IPOBO,IPOBO,X,Y,NPLAN,
-     &                DATE,TIME,IERR)
+     &                DATE,TIME,0,0,IERR)
         DEALLOCATE(X)
         DEALLOCATE(Y)
         DEALLOCATE(IKLES)

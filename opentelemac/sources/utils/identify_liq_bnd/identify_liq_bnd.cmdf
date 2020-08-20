@@ -43,6 +43,7 @@ files: interface_hermes.f
   get_mesh_npoin.f
   get_mesh_npoin_per_element.f
   get_mesh_nptir.f
+  get_mesh_orig.f
   get_mesh_title.f
 
 [identify_liq_bnd]

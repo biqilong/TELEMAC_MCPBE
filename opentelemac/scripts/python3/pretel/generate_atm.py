@@ -184,6 +184,7 @@ def generate_atm(geo_file, slf_file, atm_file, ll2utm):
 
     print('   +> writing header')
     # Write header
+    atm.datetime = slf.datetime
     atm.append_header_slf()
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -191,7 +192,6 @@ def generate_atm(geo_file, slf_file, atm_file, ll2utm):
 
     print('   +> setting variables')
     # TIME and DATE extraction
-    atm.datetime = slf.datetime
     atm.tags['times'] = slf.tags['times']
     # VARIABLE extraction
     vrs = subset_variables_slf(';'.join([var+': ' for var in atm.varnames]),

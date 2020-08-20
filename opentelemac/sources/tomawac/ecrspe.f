@@ -202,6 +202,8 @@
           ALLOCATE(MESHF%DIM1)
           ALLOCATE(MESHF%KNOLG)
           ALLOCATE(MESHF%KNOLG%I(NDIRE*NF))
+          ALLOCATE(MESHF%X_ORIG)
+          ALLOCATE(MESHF%Y_ORIG)
 !
 !
           MESHF%NAME = 'MESH'
@@ -209,6 +211,8 @@
           MESHF%NELEM  = NELEM
           MESHF%NPOIN  = NPSPE
           MESHF%DIM1   = 2
+          MESHF%X_ORIG = 0
+          MESHF%Y_ORIG = 0
           II=0
           DO JF=1,NF-1
             DO K=1,NDIRE
